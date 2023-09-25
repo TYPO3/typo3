@@ -296,8 +296,9 @@ In case :ref:`redirects:checkintegrity <redirects-checkintegrity>` was not run
 within the last 24 hours an additional informational status will appear in the
 report:
 
-""List of conflicting redirects may not be up to date!
-Regularly run the console command redirects:checkintegrity."
+..  attention::
+    List of conflicting redirects may not be up to date!
+    Regularly run the console command `redirects:checkintegrity`.
 
 This can be configured in the extension configuration with these 2 settings:
 
@@ -311,20 +312,20 @@ Extension configuration
 
 **Reports**
 
-.. _extconf_showCheckIntegrityInfoInReports:
+..  _extconf_showCheckIntegrityInfoInReports:
 
-.. confval:: Show information in reports if checkintegrity was not run.
+..  confval:: Show information in reports if checkintegrity was not run.
 
     :Field: showCheckIntegrityInfoInReports
 
     Show informational status in the reports if redirects:checkintegrity was
     not run within the last 24 hours, or rather the number of seconds indicated
     in the setting
-    :ref:`showCheckIntegrityInfoInReportsSeconds <extconf-showCheckIntegrityInfoInReportsSeconds>`.
+    :ref:`showCheckIntegrityInfoInReportsSeconds <extconf_showCheckIntegrityInfoInReportsSeconds>`.
 
-.. _extconf_showCheckIntegrityInfoInReportsSeconds:
+..  _extconf_showCheckIntegrityInfoInReportsSeconds:
 
-.. confval:: Number of seconds to consider last checkintegrity report.
+..  confval:: Number of seconds to consider last checkintegrity report.
 
     :Field: showCheckIntegrityInfoInReportsSeconds
     :Default: 86400 (is 24 hours in seconds)
