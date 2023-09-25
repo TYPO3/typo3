@@ -181,7 +181,7 @@ InvestigateMutationsEvent
 -------------------------
 
 The :php:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\InvestigateMutationsEvent` will
-be dispatched when the Content-Security-Policy backend module searcges for potential resolutions
+be dispatched when the Content-Security-Policy backend module searches for potential resolutions
 to a specific CSP violation report. This way, third-party integrations that rely on external resources
 (for example, maps, file storage, content processing/translation, ...) can provide the necessary mutations.
 
