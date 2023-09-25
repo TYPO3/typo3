@@ -50,8 +50,8 @@ The Configuration module displays various configuration settings:
 - :ref:`Soft Reference Parsers <t3coreapi:soft-references>`
 - :ref:`Form: YAML Configuration <ext_form:concepts-configuration>` (with installed :doc:`Form system extension <ext_form:Index>`)
 - `Backend Toolbar Items`
-- `Symfony Expression Language Providers`
-- `Reactions`
+- :ref:`Symfony Expression Language Providers <t3coreapi:sel-ts-registering-new-provider-within-extension>`
+- :ref:`Reactions <ext_reactions:reactions-overview>` (with installed :doc:`Reactions system extension <ext_reactions:Index>`)
 
 
 Extending the Configuration module
