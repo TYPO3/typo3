@@ -136,6 +136,7 @@ function subscribeEvents(): void {
     [data]: [{ status: string, formDefinition: FormElementDefinition }]
   ): void => {
     getFormEditorApp().setUnsavedContent(false);
+    getViewModel().setPreviewMode(false);
     getViewModel().showSaveSuccessMessage();
     getViewModel().showSaveButtonSaveIcon();
 
@@ -205,6 +206,7 @@ function subscribeEvents(): void {
    * @subscribe view/header/formSettings/clicked
    */
   getPublisherSubscriber().subscribe('view/header/formSettings/clicked', (): void => {
+    getViewModel().setPreviewMode(false);
     getViewModel().addStructureRootElementSelection();
     getFormEditorApp().setCurrentlySelectedFormElement(getRootFormElement());
     getViewModel().renderAbstractStageArea();
@@ -359,6 +361,7 @@ function subscribeEvents(): void {
   ): void => {
     getFormEditorApp().setCurrentlySelectedFormElement(draggedFormElementIdentifierPath);
     getViewModel().renewStructure();
+    getViewModel().setPreviewMode(false);
     getViewModel().renderAbstractStageArea(false, false);
     getViewModel().refreshSelectedElementItemsBatch();
     getViewModel().addAbstractViewValidationResults();
@@ -485,6 +488,7 @@ function subscribeEvents(): void {
     if (getCurrentlySelectedFormElement().get('__identifierPath') !== formElementIdentifierPath) {
       oldPageIndex = getFormEditorApp().getCurrentlySelectedPageIndex();
       getFormEditorApp().setCurrentlySelectedFormElement(formElementIdentifierPath);
+      getViewModel().setPreviewMode(false);
       if (oldPageIndex !== getFormEditorApp().getCurrentlySelectedPageIndex()) {
         getViewModel().renderAbstractStageArea();
       } else {
@@ -517,6 +521,7 @@ function subscribeEvents(): void {
     if (!getFormEditorApp().isRootFormElementSelected()) {
       getViewModel().addStructureRootElementSelection();
       getFormEditorApp().setCurrentlySelectedFormElement(getRootFormElement());
+      getViewModel().setPreviewMode(false);
       getViewModel().renderAbstractStageArea();
       getViewModel().renewStructure();
       getViewModel().renderPagination();
@@ -547,6 +552,7 @@ function subscribeEvents(): void {
     getFormEditorApp().setCurrentlySelectedFormElement(draggedFormElementIdentifierPath);
     getViewModel().renewStructure();
     getViewModel().renderPagination();
+    getViewModel().setPreviewMode(false);
     getViewModel().renderAbstractStageArea();
     getViewModel().renderInspectorEditors();
   });
