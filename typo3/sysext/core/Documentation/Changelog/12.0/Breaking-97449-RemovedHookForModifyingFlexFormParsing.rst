@@ -11,7 +11,7 @@ See :issue:`97449`
 Description
 ===========
 
-The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray']`,
+The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing']`,
 supporting the four hook methods
 
 - :php:`getDataStructureIdentifierPreProcess`
