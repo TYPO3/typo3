@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidHashException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Service\ExtractorService;
@@ -307,7 +308,7 @@ class Indexer implements LoggerAwareInterface
     {
         $fileInfo = $this->storage->getFileInfoByIdentifier($identifier);
         $fileInfo = $this->transformFromDriverFileInfoArrayToFileObjectFormat($fileInfo);
-        $fileInfo['type'] = $this->getFileType($fileInfo['mime_type']);
+        $fileInfo['type'] = $this->getFileType($fileInfo['mime_type'])->value;
         $fileInfo['sha1'] = $this->storage->hashFileByIdentifier($identifier, 'sha1');
         $fileInfo['missing'] = 0;
 
@@ -316,34 +317,10 @@ class Indexer implements LoggerAwareInterface
 
     /**
      * Maps the mimetype to a sys_file table type
-     *
-     * @param string $mimeType
-     * @return string
      */
-    protected function getFileType($mimeType)
+    protected function getFileType(string $mimeType): FileType
     {
-        [$fileType] = explode('/', $mimeType);
-        switch (strtolower($fileType)) {
-            case 'text':
-                $type = File::FILETYPE_TEXT;
-                break;
-            case 'image':
-                $type = File::FILETYPE_IMAGE;
-                break;
-            case 'audio':
-                $type = File::FILETYPE_AUDIO;
-                break;
-            case 'video':
-                $type = File::FILETYPE_VIDEO;
-                break;
-            case 'application':
-            case 'software':
-                $type = File::FILETYPE_APPLICATION;
-                break;
-            default:
-                $type = File::FILETYPE_UNKNOWN;
-        }
-        return $type;
+        return FileType::tryFromMimeType($mimeType);
     }
 
     /**

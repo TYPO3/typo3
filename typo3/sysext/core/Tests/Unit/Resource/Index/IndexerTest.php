@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Index;
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -46,7 +47,7 @@ final class IndexerTest extends UnitTestCase
 
         $fileMock = $this->createMock(File::class);
         $fileMock->method('getUid')->willReturn(42);
-        $fileMock->method('getType')->willReturn(File::FILETYPE_TEXT);
+        $fileMock->method('getType')->willReturn(FileType::TEXT->value);
         $fileMock->method('getStorage')->willReturn($mockStorage);
 
         $extractorServiceMock = $this->getMockBuilder(ExtractorService::class)->getMock();

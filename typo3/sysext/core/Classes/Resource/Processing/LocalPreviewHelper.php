@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -126,7 +127,7 @@ class LocalPreviewHelper
     protected function generatePreviewFromFile(File $file, array $configuration, string $targetFilePath)
     {
         // Check file extension
-        if ($file->getType() !== File::FILETYPE_IMAGE && !$file->isImage()) {
+        if (!$file->isType(FileType::IMAGE) && !$file->isImage()) {
             // Create a default image
             $graphicalFunctions = GeneralUtility::makeInstance(GifBuilder::class);
             $graphicalFunctions->getTemporaryImageWithText(

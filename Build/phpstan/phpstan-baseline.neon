@@ -731,11 +731,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\Indexer\\:\\:getFileType\\(\\) should return string but returns int\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Index/Indexer.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Processing/TaskTypeRegistry.php

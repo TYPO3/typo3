@@ -69,36 +69,42 @@ abstract class AbstractFile implements FileInterface
 
     /**
      * any other file
+     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::UNKNOWN instead
      */
     public const FILETYPE_UNKNOWN = 0;
 
     /**
      * Any kind of text
      * @see http://www.iana.org/assignments/media-types/text
+     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::TEXT instead
      */
     public const FILETYPE_TEXT = 1;
 
     /**
      * Any kind of image
      * @see http://www.iana.org/assignments/media-types/image
+     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::IMAGE instead
      */
     public const FILETYPE_IMAGE = 2;
 
     /**
      * Any kind of audio file
      * @see http://www.iana.org/assignments/media-types/audio
+     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::AUDIO instead
      */
     public const FILETYPE_AUDIO = 3;
 
     /**
      * Any kind of video
      * @see http://www.iana.org/assignments/media-types/video
+     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::VIDEO instead
      */
     public const FILETYPE_VIDEO = 4;
 
     /**
      * Any kind of application
      * @see http://www.iana.org/assignments/media-types/application
+     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::APPLICATION instead
      */
     public const FILETYPE_APPLICATION = 5;
 
@@ -269,41 +275,26 @@ abstract class AbstractFile implements FileInterface
      * "text"
      * "video"
      * "other"
-     * see the constants in this class
+     * see FileType enum
      *
      * @return int $fileType
+     * @todo will return an instance of FileType enum in TYPO3 v14.0
      */
+    #[\ReturnTypeWillChange]
     public function getType()
     {
         // this basically extracts the mimetype and guess the filetype based
         // on the first part of the mimetype works for 99% of all cases, and
         // we don't need to make an SQL statement like EXT:media does currently
         if (!($this->properties['type'] ?? false)) {
-            $mimeType = $this->getMimeType();
-            [$fileType] = explode('/', $mimeType);
-            switch (strtolower($fileType)) {
-                case 'text':
-                    $this->properties['type'] = self::FILETYPE_TEXT;
-                    break;
-                case 'image':
-                    $this->properties['type'] = self::FILETYPE_IMAGE;
-                    break;
-                case 'audio':
-                    $this->properties['type'] = self::FILETYPE_AUDIO;
-                    break;
-                case 'video':
-                    $this->properties['type'] = self::FILETYPE_VIDEO;
-                    break;
-                case 'application':
-
-                case 'software':
-                    $this->properties['type'] = self::FILETYPE_APPLICATION;
-                    break;
-                default:
-                    $this->properties['type'] = self::FILETYPE_UNKNOWN;
-            }
+            $this->properties['type'] = FileType::tryFromMimeType($this->getMimeType())->value;
         }
         return (int)$this->properties['type'];
+    }
+
+    public function isType(FileType $fileType): bool
+    {
+        return FileType::tryFrom($this->getType()) === $fileType;
     }
 
     /**

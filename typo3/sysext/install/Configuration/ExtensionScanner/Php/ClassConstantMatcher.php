@@ -582,4 +582,34 @@ return [
             'Deprecation-101475-IconSizeStringConstants.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_UNKNOWN' => [
+        'restFiles' => [
+            'Deprecation-102032-AbstractFileConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_TEXT' => [
+        'restFiles' => [
+            'Deprecation-102032-AbstractFileConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_IMAGE' => [
+        'restFiles' => [
+            'Deprecation-102032-AbstractFileConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_AUDIO' => [
+        'restFiles' => [
+            'Deprecation-102032-AbstractFileConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_VIDEO' => [
+        'restFiles' => [
+            'Deprecation-102032-AbstractFileConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_APPLICATION' => [
+        'restFiles' => [
+            'Deprecation-102032-AbstractFileConstants.rst',
+        ],
+    ],
 ];
