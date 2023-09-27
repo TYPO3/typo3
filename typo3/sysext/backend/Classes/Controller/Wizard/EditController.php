@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class EditController
 {
-    protected const JAVASCRIPT_HELPER = 'EXT:backend/Resources/Public/JavaScript/Helper.js';
+    protected const JAVASCRIPT_HELPER = 'EXT:backend/Resources/Public/JavaScript/helper.js';
 
     /**
      * Wizard parameters, coming from FormEngine linking to the wizard.
