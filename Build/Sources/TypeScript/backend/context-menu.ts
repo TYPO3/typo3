@@ -126,18 +126,18 @@ class ContextMenu {
       this.eventSources.push(focusableSource);
     }
 
-    let parameters = '';
+    const parameters = new URLSearchParams();
     if (typeof table !== 'undefined') {
-      parameters += 'table=' + encodeURIComponent(table);
+      parameters.set('table', table);
     }
     if (typeof uid !== 'undefined') {
-      parameters += (parameters.length > 0 ? '&' : '') + 'uid=' + (typeof uid === 'number' ? uid : encodeURIComponent(uid));
+      parameters.set('uid', uid.toString());
     }
     if (typeof context !== 'undefined') {
-      parameters += (parameters.length > 0 ? '&' : '') + 'context=' + encodeURIComponent(context);
+      parameters.set('context', context);
     }
 
-    this.fetch(parameters);
+    this.fetch(parameters.toString());
   }
 
   /**
