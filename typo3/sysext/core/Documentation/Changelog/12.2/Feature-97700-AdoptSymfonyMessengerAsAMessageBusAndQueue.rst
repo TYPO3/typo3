@@ -194,8 +194,8 @@ respective identifier.
           identifier: 'demo'
 
     messenger.transport.default:
-      factory: [ '@Symfony\Component\Messenger\Transport\InMemoryTransportFactory', 'createTransport' ]
-      class: 'Symfony\Component\Messenger\Transport\InMemoryTransport'
+      factory: [ '@Symfony\Component\Messenger\Transport\InMemory\InMemoryTransportFactory', 'createTransport' ]
+      class: 'Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport'
       arguments:
         $dsn: 'in-memory://default'
         $options: [ ]
@@ -209,12 +209,12 @@ The TYPO3 Core has been tested with three transports:
 
 -   :php:`\Symfony\Component\Messenger\Transport\Sync\SyncTransport` (default)
 -   :php:`\Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport` (using the Doctrine DBAL messenger transport)
--   :php:`\Symfony\Component\Messenger\Transport\InMemoryTransport` (for testing)
+-   :php:`\Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport` (for testing)
 
 InMemoryTransport for testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:php:`\Symfony\Component\Messenger\Transport\InMemoryTransport` is a
+:php:`\Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport` is a
 transport that should only be used while testing. See the `SymfonyCasts
 tutorial <https://symfonycasts.com/screencast/messenger/test-in-memory>`__
 for more details.
@@ -222,8 +222,8 @@ for more details.
 ..  code-block:: yaml
 
     messenger.transport.default:
-      factory: [ '@Symfony\Component\Messenger\Transport\InMemoryTransportFactory', 'createTransport' ]
-      class: 'Symfony\Component\Messenger\Transport\InMemoryTransport'
+      factory: [ '@Symfony\Component\Messenger\Transport\InMemory\InMemoryTransportFactory', 'createTransport' ]
+      class: 'Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport'
       public: true
       arguments:
         $dsn: 'in-memory://default'
