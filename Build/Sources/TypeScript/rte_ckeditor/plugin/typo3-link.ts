@@ -1,6 +1,6 @@
 import { UI, Core, Engine, Typing, Link, LinkUtils, LinkActionsView, Widget, Utils } from '@typo3/ckeditor5-bundle';
 import { default as modalObject, ModalElement } from '@typo3/backend/modal';
-import type { AttributeElement, ViewElement, Schema, Writer } from '@ckeditor/ckeditor5-engine';
+import type { ViewAttributeElement, ViewElement, Schema, Writer } from '@ckeditor/ckeditor5-engine';
 import type { GeneralHtmlSupport, DataFilter } from '@ckeditor/ckeditor5-html-support';
 import type { GHSViewAttributes } from '@ckeditor/ckeditor5-html-support/src/utils';
 
@@ -11,6 +11,13 @@ export const LINK_ALLOWED_ATTRIBUTES = ['href', 'title', 'class', 'target', 'rel
 export function addLinkPrefix(attribute: string): string {
   const capitalizedAttribute = attribute.charAt(0).toUpperCase() + attribute.slice(1);
   return 'link' + capitalizedAttribute;
+}
+
+export function removeLinkPrefix(attribute: string): string {
+  if (attribute.startsWith('link') && attribute.length >= 5) {
+    return attribute.charAt(4).toLowerCase() + attribute.slice(5);
+  }
+  return attribute;
 }
 
 export interface Typo3LinkDict {
@@ -44,23 +51,49 @@ export class Typo3TextView extends UI.View {
  * Inspired by @ckeditor/ckeditor5-link/src/linkcommand.js
  */
 export class Typo3LinkCommand extends Core.Command {
-  refresh() {
+  public value: string | undefined;
+  public attrs: Record<string, string> = {};
+
+  public refresh() {
     const model = this.editor.model;
     const selection = model.document.selection;
     const selectedElement = selection.getSelectedElement() || Utils.first(selection.getSelectedBlocks());
 
     // A check for any integration that allows linking elements (e.g. `LinkImage`).
     // Currently the selection reads attributes from text nodes only. See #7429 and #7465.
-    if (LinkUtils.isLinkableElement(selectedElement, model.schema)) {
+    const sourceSelection = LinkUtils.isLinkableElement(selectedElement, model.schema) ? selectedElement : selection
+    if (sourceSelection === selectedElement) {
       this.value = selectedElement.getAttribute('linkHref') as string;
       this.isEnabled = model.schema.checkAttribute(selectedElement, 'linkHref');
     } else {
       this.value = selection.getAttribute('linkHref') as string;
       this.isEnabled = model.schema.checkAttributeInSelection(selection, 'linkHref');
     }
+
+    const htmlSupport: GeneralHtmlSupport = this.editor.plugins.get('GeneralHtmlSupport');
+    const ghsAttributeName = htmlSupport.getGhsAttributeNameForElement('a');
+    const attrs: Record<string, string> = {};
+    for (const attribute of this.getLinkAttributesAllowedOnText(model.schema)) {
+      if (attribute === 'linkHref') {
+        continue;
+      }
+
+      if (attribute === ghsAttributeName) {
+        const value: GHSViewAttributes = sourceSelection.getAttribute(attribute);
+        if (value?.classes && value.classes.length !== 0) {
+          attrs.class = value.classes.join(' ');
+        }
+      } else {
+        const value = sourceSelection.getAttribute(attribute) as string | undefined;
+        if (value !== undefined) {
+          attrs[removeLinkPrefix(attribute)] = value;
+        }
+      }
+    }
+    this.attrs = attrs;
   }
 
-  execute(href: string, linkAttr: Typo3LinkDict = {}): void {
+  public execute(href: string, linkAttr: Typo3LinkDict = {}): void {
     const model = this.editor.model;
     const selection = model.document.selection;
 
@@ -196,21 +229,19 @@ export class Typo3LinkCommand extends Core.Command {
  * Inspired by @ckeditor/ckeditor5-link/src/unlinkcommand.js
  */
 export class Typo3UnlinkCommand extends Core.Command {
-  refresh() {
+  public refresh() {
     const model = this.editor.model;
     const selection = model.document.selection;
     const selectedElement = selection.getSelectedElement();
 
     if (LinkUtils.isLinkableElement(selectedElement, model.schema)) {
-      this.value = selectedElement.getAttribute('linkHref');
       this.isEnabled = model.schema.checkAttribute(selectedElement, 'linkHref');
     } else {
-      this.value = selection.getAttribute('linkHref');
       this.isEnabled = model.schema.checkAttributeInSelection(selection, 'linkHref');
     }
   }
 
-  execute(): void {
+  public execute(): void {
     const model = this.editor.model;
     const selection = model.document.selection;
 
@@ -562,7 +593,7 @@ export class Typo3LinkUI extends Core.Plugin {
     return { target };
   }
 
-  private getSelectedLinkElement(): AttributeElement | null {
+  private getSelectedLinkElement(): ViewAttributeElement | null {
     const view = this.editor.editing.view;
     const selection = view.document.selection;
     const selectedElement = selection.getSelectedElement();
@@ -638,16 +669,14 @@ export class Typo3LinkUI extends Core.Plugin {
   }
 
   private openLinkBrowser(editor: Core.Editor): void {
-    const element = this.getSelectedLinkElement();
+    const linkCommand = editor.commands.get('link') as unknown as Typo3LinkCommand;
     let additionalParameters = '';
-    if (element) {
-      additionalParameters += '&P[curUrl][url]=' + encodeURIComponent(element.getAttribute('href'));
-      ['target', 'class', 'title', 'rel'].forEach((attrName) => {
-        const attrValue = element.getAttribute(attrName);
-        if (attrValue) {
-          additionalParameters += '&P[curUrl][' + attrName + ']=' + encodeURIComponent(attrValue);
-        }
-      });
+
+    if (linkCommand.value) {
+      additionalParameters += '&P[curUrl][url]=' + encodeURIComponent(linkCommand.value);
+      for (const [attr, value] of Object.entries(linkCommand.attrs)) {
+        additionalParameters += '&P[curUrl][' + encodeURIComponent(attr) + ']=' + encodeURIComponent(value);
+      }
     }
     this.openElementBrowser(
       editor,

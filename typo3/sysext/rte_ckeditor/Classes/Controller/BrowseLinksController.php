@@ -159,11 +159,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 }
             }
 
-            $linkClass = trim(str_replace('ck-link_selected', '', $this->linkAttributeValues['class'] ?? ''));
+            $linkClass = $this->linkAttributeValues['class'] ?? '';
             if ($linkClass !== '') {
-                // Cleanup current link class value by removing the automatically applied highlighting class `ck-link_selected`.
-                $this->linkAttributeValues['class'] = $linkClass;
-
                 $currentLinkClassIsAllowed = true;
                 if (!in_array($linkClass, $classesAnchorArray, true)) {
                     // Current class is not a globally allowed class
