@@ -5,7 +5,8 @@
 !/config/system
 /config/system/*
 !/config/system/additional.php.dist
-/local
+/packages/*
+!/packages/.gitkeep
 /public
 /var
 /vendor
