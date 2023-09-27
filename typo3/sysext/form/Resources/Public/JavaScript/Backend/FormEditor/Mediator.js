@@ -206,6 +206,7 @@ define(['jquery',
        */
       getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/success', function(topic, args) {
         getFormEditorApp().setUnsavedContent(false);
+        getViewModel().setPreviewMode(false);
         getViewModel().showSaveSuccessMessage();
         getViewModel().showSaveButtonSaveIcon();
 
@@ -297,6 +298,7 @@ define(['jquery',
        * @subscribe view/header/formSettings/clicked
        */
       getPublisherSubscriber().subscribe('view/header/formSettings/clicked', function(topic, args) {
+        getViewModel().setPreviewMode(false);
         getViewModel().addStructureRootElementSelection();
         getFormEditorApp().setCurrentlySelectedFormElement(getRootFormElement());
         getViewModel().renderAbstractStageArea();
@@ -466,6 +468,7 @@ define(['jquery',
       getPublisherSubscriber().subscribe('view/stage/abstract/dnd/stop', function(topic, args) {
         getFormEditorApp().setCurrentlySelectedFormElement(args[0]);
         getViewModel().renewStructure();
+        getViewModel().setPreviewMode(false);
         getViewModel().renderAbstractStageArea(false, false);
         getViewModel().refreshSelectedElementItemsBatch();
         getViewModel().addAbstractViewValidationResults();
@@ -609,6 +612,7 @@ define(['jquery',
         if (getCurrentlySelectedFormElement().get('__identifierPath') !== args[0]) {
           oldPageIndex = getFormEditorApp().getCurrentlySelectedPageIndex();
           getFormEditorApp().setCurrentlySelectedFormElement(args[0]);
+          getViewModel().setPreviewMode(false);
           if (oldPageIndex !== getFormEditorApp().getCurrentlySelectedPageIndex()) {
             getViewModel().renderAbstractStageArea();
           } else {
@@ -650,6 +654,7 @@ define(['jquery',
         if (!getFormEditorApp().isRootFormElementSelected()) {
           getViewModel().addStructureRootElementSelection();
           getFormEditorApp().setCurrentlySelectedFormElement(getRootFormElement());
+          getViewModel().setPreviewMode(false);
           getViewModel().renderAbstractStageArea();
           getViewModel().renewStructure();
           getViewModel().renderPagination();
@@ -686,6 +691,7 @@ define(['jquery',
         getFormEditorApp().setCurrentlySelectedFormElement(args[0]);
         getViewModel().renewStructure();
         getViewModel().renderPagination();
+        getViewModel().setPreviewMode(false);
         getViewModel().renderAbstractStageArea();
         getViewModel().renderInspectorEditors();
       });
