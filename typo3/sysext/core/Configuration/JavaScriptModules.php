@@ -12,6 +12,7 @@ return [
         'autosize' => 'EXT:core/Resources/Public/JavaScript/Contrib/autosize.js',
         'bootstrap' => 'EXT:core/Resources/Public/JavaScript/Contrib/bootstrap.js',
         'cropperjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/cropperjs.js',
+        'css-tree' => 'EXT:core/Resources/Public/JavaScript/Contrib/css-tree.js',
         'd3-dispatch' => 'EXT:core/Resources/Public/JavaScript/Contrib/d3-dispatch.js',
         'd3-drag' => 'EXT:core/Resources/Public/JavaScript/Contrib/d3-drag.js',
         'd3-selection' => 'EXT:core/Resources/Public/JavaScript/Contrib/d3-selection.js',

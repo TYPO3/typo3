@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\RteCKEditor\Controller\ResourceController;
 use TYPO3\CMS\RteCKEditor\Form\Element\Event\AfterGetExternalPluginsEvent;
 use TYPO3\CMS\RteCKEditor\Form\Element\Event\AfterPrepareConfigurationForEditorEvent;
 use TYPO3\CMS\RteCKEditor\Form\Element\Event\BeforeGetExternalPluginsEvent;
@@ -83,7 +82,6 @@ class RichTextElement extends AbstractFormElement
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly UriBuilder $uriBuilder,
         private readonly Locales $locales,
-        private readonly ResourceController $resourceController,
     ) {
     }
 
@@ -117,24 +115,6 @@ class RichTextElement extends AbstractFormElement
 
         $this->rteConfiguration = $config['richtextConfiguration']['editor'] ?? [];
         $ckeditorConfiguration = $this->resolveCkEditorConfiguration();
-
-        $styleSources = (array)($ckeditorConfiguration['options']['contentsCss'] ?? []);
-        foreach ($styleSources as $styleSrc) {
-            $styleSrcParams = json_encode([
-                'styleSrc' => $styleSrc,
-                'cssPrefix' => sprintf('#%sckeditor5 .ck-content', $fieldId),
-            ]);
-            // Prefixes custom stylesheets with id of the container element and a required `.ck-content` selector
-            // see https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/content-styles.html
-            $styleSrcLoader = $this->uriBuilder->buildUriFromRoute(
-                'rteckeditor_resource_stylesheet',
-                [
-                    'params' => $styleSrcParams,
-                    'hmac' => $this->resourceController->hmac($styleSrcParams, 'stylesheet'),
-                ]
-            ) . '#' . sha1_file(Environment::getPublicPath() . $styleSrc);
-            $resultArray['stylesheetFiles'][] = $styleSrcLoader;
-        }
 
         $ckeditorAttributes = GeneralUtility::implodeAttributes([
             'id' => $fieldId . 'ckeditor5',

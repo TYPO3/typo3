@@ -725,6 +725,7 @@ module.exports = function (grunt) {
         files: {
           'autosize.js': 'autosize/dist/autosize.esm.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
+          'css-tree.js': 'css-tree/dist/csstree.esm.js',
           'luxon.js': 'luxon/build/es6/luxon.js',
           'sortablejs.js': 'sortablejs/modular/sortable.complete.esm.js',
         }
