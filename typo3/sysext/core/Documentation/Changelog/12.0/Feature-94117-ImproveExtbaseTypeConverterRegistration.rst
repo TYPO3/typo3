@@ -39,7 +39,7 @@ Registration is now done in your :file:`Services.yaml` like the following:
 
     services:
       Vendor\Extension\Property\TypeConverter\MyBooleanConverter:
-        tag:
+        tags:
           - name: extbase.type_converter
             priority: 10
             target: boolean
