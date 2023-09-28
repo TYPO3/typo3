@@ -2,7 +2,9 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
 import { CKEditor5, Core, WordCount } from '@typo3/ckeditor5-bundle';
 import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { Editor, PluginConstructor } from '@ckeditor/ckeditor5-core';
+import { prefixAndRebaseCss } from '@typo3/rte-ckeditor/css-prefixer';
 
 interface CKEditor5Config {
   // in TYPO3 always `items` property is used, skipping `string[]`
@@ -10,6 +12,7 @@ interface CKEditor5Config {
   extraPlugins?: string[];
   removePlugins?: string[];
   importModules?: string[];
+  contentsCss?: string[];
   style?: any;
   heading?: any;
   alignment?: any;
@@ -56,12 +59,24 @@ export class CKEditor5Element extends LitElement {
 
   @query('textarea') target: HTMLElement;
 
-  public constructor() {
-    super();
+  private readonly styleSheets: Map<CSSStyleSheet, true> = new Map();
+
+  public connectedCallback(): void {
+    super.connectedCallback();
+    if (Array.isArray(this.options.contentsCss)) {
+      for (const url of this.options.contentsCss) {
+        this.prefixAndLoadContentsCss(url, this.getAttribute('id'));
+      }
+    }
   }
 
-  firstUpdated(): void
-  {
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+    document.adoptedStyleSheets = document.adoptedStyleSheets.filter(styleSheet => !this.styleSheets.has(styleSheet));
+    this.styleSheets.clear();
+  }
+
+  protected firstUpdated(): void {
     if (!(this.target instanceof HTMLElement)) {
       throw new Error('No rich-text content target found.');
     }
@@ -157,6 +172,27 @@ export class CKEditor5Element extends LitElement {
         data-formengine-validation-rules="${this.formEngine.validationRules}"
         >${this.formEngine.value}</textarea>
     `;
+  }
+
+  private async prefixAndLoadContentsCss(url: string, fieldId: string): Promise<void> {
+    let content: string;
+    try {
+      const response = await new AjaxRequest(url).get();
+      content = await response.resolve();
+    } catch {
+      return;
+    }
+    // Prefix custom stylesheets with id of the container element and a required `.ck-content` selector
+    // see https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/content-styles.html
+    const newParent = `#${fieldId} .ck-content`;
+    const prefixedCss = prefixAndRebaseCss(content, url, newParent);
+
+    const styleSheet = new CSSStyleSheet();
+    await styleSheet.replace(
+      prefixedCss
+    );
+    this.styleSheets.set(styleSheet, true);
+    document.adoptedStyleSheets = [...document.adoptedStyleSheets, styleSheet];
   }
 
   private applyEditableElementStyles(editor: Core.Editor): void {

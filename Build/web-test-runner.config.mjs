@@ -101,6 +101,7 @@ export default {
             'autosize': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize.js',
             'bootstrap': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/bootstrap.js',
             'cropperjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/cropperjs.js',
+            'css-tree': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/css-tree.js',
             'd3-dispatch': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/d3-dispatch.js',
             'd3-drag': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/d3-drag.js',
             'd3-selection': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/d3-selection.js',

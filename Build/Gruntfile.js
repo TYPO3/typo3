@@ -800,6 +800,7 @@ module.exports = function (grunt) {
           'autosize.js': 'autosize/dist/autosize.esm.js',
           'require.js': 'requirejs/require.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
+          'css-tree.js': 'css-tree/dist/csstree.esm.js',
           'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',
           'luxon.js': 'luxon/build/es6/luxon.js',
           '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
