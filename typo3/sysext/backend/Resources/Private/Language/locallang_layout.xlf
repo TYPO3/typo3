@@ -333,6 +333,9 @@
 			<trans-unit id="languageModeMixed">
 				<source>Mixed Mode</source>
 			</trans-unit>
+			<trans-unit id="languageContainsWorkspaceDeletePlaceholderRecords">
+				<source>Deleted workspace elements are not shown</source>
+			</trans-unit>
 			<trans-unit id="staleUnusedElementsWarning">
 				<source>These elements don't belong to any of the available columns of this page. You should either delete them or move them to existing columns. We highlighted the problematic records for you.</source>
 			</trans-unit>

@@ -24,6 +24,11 @@
                         <f:if condition="{languageColumn.context.languageMode}">
                             <span class="badge badge-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
                         </f:if>
+                        <f:if condition="{languageColumn.translationData.hasElementsWithWorkspaceDeletePlaceholders}">
+                            <span class="badge badge-warning">
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageContainsWorkspaceDeletePlaceholderRecords"/>
+                            </span>
+                        </f:if>
                     </td>
                 </f:for>
             </tr>
