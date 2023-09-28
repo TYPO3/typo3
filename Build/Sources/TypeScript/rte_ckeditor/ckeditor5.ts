@@ -142,13 +142,15 @@ export class CKEditor5Element extends LitElement {
             this.applyEditableElementStyles(editor);
             this.handleWordCountPlugin(editor);
             this.applyReadOnly(editor);
-            const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
-            editor.model.document.on('change:data', (): void => {
-              if(!sourceEditingPlugin.isSourceEditingMode) {
-                editor.updateSourceElement()
-              }
-              this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-            });
+            if (editor.plugins.has('SourceEditing')) {
+              const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
+              editor.model.document.on('change:data', (): void => {
+                if (!sourceEditingPlugin.isSourceEditingMode) {
+                  editor.updateSourceElement()
+                }
+                this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+              });
+            }
 
             if (this.options.debug) {
               import('@typo3/ckeditor5-inspector').then(({ CKEditorInspector }) => CKEditorInspector.attach(editor, { isCollapsed: true }));
