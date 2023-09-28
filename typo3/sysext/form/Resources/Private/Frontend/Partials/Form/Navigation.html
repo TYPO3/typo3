@@ -2,15 +2,15 @@
 <nav class="form-navigation">
     <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
-            <f:if condition="{form.previousPage}">
+            <f:if condition="{form.previousEnabledPage}">
                 <span class="btn-group previous">
-                    <f:form.button property="__currentPage" value="{form.previousPage.index}" formnovalidate="formnovalidate" class="btn btn-cancel">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'previousButtonLabel')}</f:form.button>
+                    <f:form.button property="__currentPage" value="{form.previousEnabledPage.index}" formnovalidate="formnovalidate" class="btn btn-cancel">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'previousButtonLabel')}</f:form.button>
                 </span>
             </f:if>
-            <f:if condition="{form.nextPage}">
+            <f:if condition="{form.nextEnabledPage}">
                 <f:then>
                     <span class="btn-group next">
-                        <f:form.button property="__currentPage" value="{form.nextPage.index}" class="btn btn-primary">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'nextButtonLabel')}</f:form.button>
+                        <f:form.button property="__currentPage" value="{form.nextEnabledPage.index}" class="btn btn-primary">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'nextButtonLabel')}</f:form.button>
                     </span>
                 </f:then>
                 <f:else>
