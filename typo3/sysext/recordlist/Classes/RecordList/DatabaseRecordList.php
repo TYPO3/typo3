@@ -2299,9 +2299,9 @@ class DatabaseRecordList
             if (empty($row)) {
                 return ($table === 'pages') || !$pageHasEditLock;
             }
-            if (($table === 'pages' && $row['editlock']) || ($table !== 'pages' && $pageHasEditLock)) {
+            if (($table === 'pages' && ($row['editlock'] ?? false)) || ($table !== 'pages' && $pageHasEditLock)) {
                 $editPermission = false;
-            } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['editlock']) && $row[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
+            } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['editlock']) && ($row[$GLOBALS['TCA'][$table]['ctrl']['editlock']] ?? false)) {
                 $editPermission = false;
             }
         }
