@@ -17,7 +17,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import PasswordStrength from '../password-strength';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
@@ -25,6 +25,11 @@ import type { ModalElement } from '@typo3/backend/modal';
 enum Identifiers {
   changeButton = '.t3js-changeInstallToolPassword-change'
 }
+
+type PasswordUpdatedResponse = {
+  status: MessageInterface[],
+  success: boolean,
+};
 
 /**
  * Module: @typo3/install/module/change-install-tool-password
@@ -46,7 +51,7 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
 
@@ -75,7 +80,7 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
         passwordCheck: (this.findInModal('.t3js-changeInstallToolPassword-password-check') as HTMLInputElement).value,
       },
     }).then(async (response: AjaxResponse): Promise<void> => {
-      const data = await response.resolve();
+      const data: PasswordUpdatedResponse = await response.resolve();
       if (data.success === true && Array.isArray(data.status)) {
         data.status.forEach((element: MessageInterface): void => {
           Notification.showMessage(element.title, element.message, element.severity);

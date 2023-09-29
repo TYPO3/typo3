@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -26,6 +26,16 @@ import type { ModalElement } from '@typo3/backend/modal';
 enum Identifiers {
   outputContainer = '.t3js-mailTest-output',
   mailTestButton = '.t3js-mailTest-execute'
+}
+
+type MailGetDataResponse = ModuleLoadedResponseWithButtons & {
+  messages: MessageInterface[],
+  sendPossible: boolean,
+};
+
+type SendTestMailResponse = {
+  success: boolean,
+  status: MessageInterface[],
 }
 
 /**
@@ -54,7 +64,7 @@ class MailTest extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: MailGetDataResponse = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer);
@@ -91,7 +101,7 @@ class MailTest extends AbstractInteractableModule {
       },
     }).then(
       async (response: AjaxResponse): Promise<void> => {
-        const data = await response.resolve();
+        const data: SendTestMailResponse = await response.resolve();
         outputContainer.innerHTML = '';
         if (Array.isArray(data.status)) {
           data.status.forEach((element: MessageInterface): void => {

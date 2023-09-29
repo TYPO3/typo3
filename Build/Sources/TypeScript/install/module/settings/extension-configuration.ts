@@ -16,7 +16,7 @@ import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
 import '../../renderable/wrap-group';
 import '../../renderable/offset-group';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
 import ModuleMenu from '@typo3/backend/module-menu';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -31,6 +31,11 @@ import type { ModalElement } from '@typo3/backend/modal';
 enum Identifiers {
   formListener = '.t3js-extensionConfiguration-form',
   searchInput = '.t3js-extensionConfiguration-search'
+}
+
+type ExtensionConfigurationWrittenResponse = {
+  status: MessageInterface[],
+  success: boolean,
 }
 
 /**
@@ -96,7 +101,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponse = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             (modalContent.querySelector(Identifiers.searchInput) as HTMLInputElement).clearable();
@@ -145,7 +150,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ExtensionConfigurationWrittenResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               Notification.showMessage(element.title, element.message, element.severity);

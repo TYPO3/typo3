@@ -12,7 +12,7 @@
  */
 
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -23,6 +23,11 @@ import type { ModalElement } from '@typo3/backend/modal';
 
 enum Identifiers {
   saveTrigger = '.t3js-features-save'
+}
+
+type FeaturesWrittenResponse = {
+  status: MessageInterface[],
+  success: boolean,
 }
 
 /**
@@ -45,7 +50,7 @@ class Features extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
@@ -75,7 +80,7 @@ class Features extends AbstractInteractableModule {
       .post(postData)
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: FeaturesWrittenResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               Notification.showMessage(element.title, element.message, element.severity);

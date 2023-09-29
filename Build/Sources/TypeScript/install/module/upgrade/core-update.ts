@@ -12,7 +12,7 @@
  */
 
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -28,13 +28,13 @@ enum Identifiers {
   updateButton = '.t3js-coreUpdate-button'
 }
 
-interface ActionItem {
+type ActionItem = {
   loadingMessage: string;
   finishMessage: string;
   nextActionName: string;
 }
 
-interface ActionQueue {
+type ActionQueue = {
   [k: string]: ActionItem;
 }
 
@@ -120,7 +120,7 @@ class CoreUpdate extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
@@ -167,6 +167,7 @@ class CoreUpdate extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
+          // @todo: build a map containing the desired type for the response of `actionName`
           const result = await response.resolve();
           const canContinue = this.handleResult(result, this.actionQueue[actionName].finishMessage);
           if (canContinue === true && (this.actionQueue[actionName].nextActionName !== undefined)) {

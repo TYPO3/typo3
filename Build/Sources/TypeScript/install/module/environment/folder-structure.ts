@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -22,6 +22,7 @@ import Severity from '../../renderable/severity';
 import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
+import MessageInterface from '@typo3/install/message-interface';
 
 enum Identifiers {
   outputContainer = '.t3js-folderStructure-output',
@@ -31,6 +32,13 @@ enum Identifiers {
   okContainer = '.t3js-folderStructure-ok',
   okList = '.t3js-folderStructure-ok-list',
   permissionContainer = '.t3js-folderStructure-permissions'
+}
+
+type FolderStructureResponse = ModuleLoadedResponseWithButtons & {
+  errorStatus: MessageInterface[],
+  okStatus: MessageInterface[],
+  folderStructureFilePermissionStatus: MessageInterface,
+  folderStructureDirectoryPermissionStatus: MessageInterface,
 }
 
 /**
@@ -61,7 +69,7 @@ class FolderStructure extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: FolderStructureResponse = await response.resolve();
           modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.errorStatus)) {

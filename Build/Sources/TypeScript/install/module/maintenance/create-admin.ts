@@ -17,7 +17,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import PasswordStrength from '../password-strength';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
@@ -30,6 +30,12 @@ enum Identifiers {
   adminPasswordCheckInput = '.t3js-createAdmin-password-check',
   adminEmailInput = '.t3js-createAdmin-email',
   adminSysMaintainterInput = '.t3js-createAdmin-system-maintainer'
+}
+
+type BackendUserCreatedResponse = {
+  status: MessageInterface[],
+  success: boolean,
+  userCreated: boolean,
 }
 
 /**
@@ -52,7 +58,7 @@ class CreateAdmin extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
 
@@ -90,7 +96,7 @@ class CreateAdmin extends AbstractInteractableModule {
     });
 
     (new AjaxRequest(Router.getUrl())).post(payload).then(async (response: AjaxResponse): Promise<void> => {
-      const data = await response.resolve();
+      const data: BackendUserCreatedResponse = await response.resolve();
       if (data.success === true && Array.isArray(data.status)) {
         data.status.forEach((element: MessageInterface): void => {
           Notification.showMessage(element.title, element.message, element.severity);

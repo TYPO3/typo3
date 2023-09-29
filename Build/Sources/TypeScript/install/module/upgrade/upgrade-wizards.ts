@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
@@ -69,6 +69,55 @@ type UpgradeWizardsBlockingDatabaseAddsResponse = {
     }[]
   }
 };
+
+type UpgradeWizardBlockingDatabaseCharsetTestResponse = {
+  needsUpdate: boolean;
+  success: boolean;
+}
+
+type UpgradeWizardBlockingDatabaseCharsetFixResponse = {
+  status: MessageInterface[];
+  success: boolean;
+}
+
+type UpgradeWizardsBlockingDatabaseExecuteResponse = {
+  status: MessageInterface[];
+  success: boolean;
+}
+
+type UpgradeWizardsListResponse = {
+  status: MessageInterface[];
+  success: boolean;
+  wizards: UpgradeWizard[]
+}
+
+type UpgradeWizardsInputResponse = {
+  status: MessageInterface[];
+  success: boolean;
+  userInput: {
+    identifier: string;
+    title: string;
+    description: string;
+    wizardHtml: string;
+  }
+}
+
+type UpgradeWizardsExecuteResponse = {
+  status: MessageInterface[];
+  success: boolean;
+};
+
+type UpgradeWizardsDoneUpgradesResponse = {
+  status: MessageInterface[];
+  success: boolean;
+  wizardsDone: UpgradeWizardDone[];
+  rowUpdatersDone: UpgradeWizardDone[];
+};
+
+type UpgradeWizardsMarkUndoneResponse = {
+  status: MessageInterface[];
+  success: boolean;
+}
 
 type UpgradeWizard = {
   class: string;
@@ -145,7 +194,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponse = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             this.blockingUpgradesDatabaseCharsetTest();
@@ -170,7 +219,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: UpgradeWizardBlockingDatabaseCharsetTestResponse = await response.resolve();
           UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (data.needsUpdate === true) {
@@ -196,7 +245,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: UpgradeWizardBlockingDatabaseCharsetFixResponse = await response.resolve();
           UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
@@ -273,7 +322,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: UpgradeWizardsBlockingDatabaseExecuteResponse = await response.resolve();
           UpgradeWizards.removeLoadingMessage(outputContainer);
           if (Array.isArray(data.status) && data.status.length > 0) {
             data.status.forEach((element: MessageInterface): void => {
@@ -326,7 +375,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: UpgradeWizardsListResponse = await response.resolve();
           UpgradeWizards.removeLoadingMessage(outputContainer);
           const list = modalContent.querySelector(Identifiers.wizardsListTemplate).cloneNode(true) as HTMLElement;
           list.classList.remove('t3js-upgradeWizards-list-template');
@@ -335,7 +384,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             let numberOfWizards = 0;
             if (Array.isArray(data.wizards) && data.wizards.length > 0) {
               numberOfWizards = data.wizards.length;
-              data.wizards.forEach((element: UpgradeWizard): void => {
+              data.wizards.forEach((element): void => {
                 if (element.shouldRenderWizard === true) {
                   const aRow = modalContent.querySelector(Identifiers.wizardsListRowTemplate).cloneNode(true) as HTMLElement;
                   numberOfWizardsTodo = numberOfWizardsTodo + 1;
@@ -397,7 +446,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: UpgradeWizardsInputResponse = await response.resolve();
           outputContainer.innerHTML = '';
           const input = modalContent.querySelector(Identifiers.wizardsInputTemplate).cloneNode(true) as HTMLElement;
           input.classList.remove('t3js-upgradeWizards-input');
@@ -445,7 +494,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       .post(postData)
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: UpgradeWizardsExecuteResponse = await response.resolve();
           outputContainer.innerHTML = '';
           if (data.success === true) {
             if (Array.isArray(data.status)) {
@@ -476,7 +525,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: UpgradeWizardsDoneUpgradesResponse = await response.resolve();
           UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
@@ -488,7 +537,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             const wizardsDoneContainer = body.querySelector(Identifiers.wizardsDoneRows);
             let hasBodyContent: boolean = false;
             if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
-              data.wizardsDone.forEach((element: UpgradeWizardDone): void => {
+              data.wizardsDone.forEach((element): void => {
                 hasBodyContent = true;
                 const aRow = modalContent.querySelector(Identifiers.wizardsDoneRowTemplate).cloneNode(true) as HTMLElement;
                 aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
@@ -497,7 +546,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               });
             }
             if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
-              data.rowUpdatersDone.forEach((element: UpgradeWizardDone): void => {
+              data.rowUpdatersDone.forEach((element): void => {
                 hasBodyContent = true;
                 const aRow = modalContent.querySelector(Identifiers.wizardsDoneRowTemplate).cloneNode(true) as HTMLElement;
                 aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
@@ -536,7 +585,7 @@ class UpgradeWizards extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: UpgradeWizardsMarkUndoneResponse = await response.resolve();
           outputContainer.innerHTML = '';
           modalContent.querySelector(Identifiers.outputDoneContainer).innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {

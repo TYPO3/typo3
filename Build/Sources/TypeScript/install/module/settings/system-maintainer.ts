@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
@@ -29,19 +29,18 @@ enum Identifiers {
   selectPureField = '.t3js-systemMaintainer-select-pure'
 }
 
-type SystemMaintainerListResponse = {
-  success: boolean;
+type SystemMaintainerListResponse = ModuleLoadedResponseWithButtons & {
   users: {
     uid: number;
     username: string;
     disable: boolean;
     isSystemMaintainer: boolean;
   }[];
-  html: string;
-  buttons: {
-    btnClass: string;
-    text: string
-  }[]
+}
+
+type SystemMaintainersWrittenResponse = {
+  status: MessageInterface[],
+  success: boolean,
 }
 
 /**
@@ -98,7 +97,7 @@ class SystemMaintainer extends AbstractInteractableModule {
         action: 'systemMaintainerWrite',
       },
     }).then(async (response: AjaxResponse): Promise<void> => {
-      const data = await response.resolve();
+      const data: SystemMaintainersWrittenResponse = await response.resolve();
       if (data.success === true) {
         if (Array.isArray(data.status)) {
           data.status.forEach((element: MessageInterface): void => {

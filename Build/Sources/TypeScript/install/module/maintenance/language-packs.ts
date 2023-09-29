@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { FlashMessage } from '../../renderable/flash-message';
 import { InfoBox } from '../../renderable/info-box';
@@ -37,6 +37,16 @@ enum Identifiers {
   contentContainer = '.t3js-languagePacks-mainContent',
   notifications = '.t3js-languagePacks-notifications'
 }
+
+type LanguageActivationChangedResponse = {
+  status: MessageInterface[],
+  success: boolean,
+};
+
+type LanguageUpdatedResponse = {
+  packResult: string,
+  success: true,
+};
 
 /**
  * Module: @typo3/install/module/language-packs
@@ -76,7 +86,7 @@ class LanguagePacks extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data: { success: boolean, html: string } & LanguagePacksGetDataResponse = await response.resolve();
+          const data: ModuleLoadedResponse & LanguagePacksGetDataResponse = await response.resolve();
           const { success, html, ...state } = data;
           if (success === true) {
             this.activeLanguages = data.activeLanguages;
@@ -138,7 +148,7 @@ class LanguagePacks extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: LanguageActivationChangedResponse = await response.resolve();
           outputContainer.innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
@@ -170,7 +180,7 @@ class LanguagePacks extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: LanguageActivationChangedResponse = await response.resolve();
           outputContainer.innerHTML = '';
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
@@ -232,7 +242,7 @@ class LanguagePacks extends AbstractInteractableModule {
           })
           .then(
             async (response: AjaxResponse): Promise<void> => {
-              const data = await response.resolve();
+              const data: LanguageUpdatedResponse = await response.resolve();
               if (data.success === true) {
                 this.packsUpdateDetails.handled++;
                 if (data.packResult === 'new') {

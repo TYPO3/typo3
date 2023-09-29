@@ -12,7 +12,7 @@
  */
 
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { FlashMessage } from '../../renderable/flash-message';
@@ -27,6 +27,10 @@ enum Identifiers {
   checkTrigger = '.t3js-tcaMigrationsCheck-check',
   outputContainer = '.t3js-tcaMigrationsCheck-output'
 }
+
+type TcaMigrationCheckResponse = ModuleLoadedResponseWithButtons & {
+  status: MessageInterface[]
+};
 
 /**
  * Module: @typo3/install/module/tca-migrations-check
@@ -53,7 +57,7 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: TcaMigrationCheckResponse = await response.resolve();
           modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {

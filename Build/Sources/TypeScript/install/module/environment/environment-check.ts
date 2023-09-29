@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -28,8 +28,7 @@ enum Identifiers {
   outputContainer = '.t3js-environmentCheck-output'
 }
 
-interface EnvironmentCheckResponse {
-  success: boolean,
+type EnvironmentCheckResponse = ModuleLoadedResponseWithButtons & {
   status: {
     error: MessageInterface[],
     warning: MessageInterface[],
@@ -37,8 +36,6 @@ interface EnvironmentCheckResponse {
     information: MessageInterface[],
     notice: MessageInterface[]
   },
-  html: string,
-  buttons: { btnClass: string, text: string }[]
 }
 
 /**

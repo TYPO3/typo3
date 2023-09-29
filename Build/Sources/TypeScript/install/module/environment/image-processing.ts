@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -32,6 +32,15 @@ enum Identifiers {
   commandText = '.t3js-imageProcessing-command-text',
   twinImages = '.t3js-imageProcessing-images'
 }
+
+type ImageProcessResponse = {
+  command?: string[],
+  fileExists: boolean,
+  outputFile: string,
+  referenceFile: string,
+  success: boolean,
+  status?: MessageInterface[]
+};
 
 /**
  * Module: @typo3/install/module/image-processing
@@ -53,7 +62,7 @@ class ImageProcessing extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
@@ -80,7 +89,7 @@ class ImageProcessing extends AbstractInteractableModule {
         .get({ cache: 'no-cache' })
         .then(
           async (response: AjaxResponse): Promise<void> => {
-            const data = await response.resolve();
+            const data: ImageProcessResponse = await response.resolve();
             if (data.success === true) {
               container.innerHTML = '';
               if (Array.isArray(data.status)) {

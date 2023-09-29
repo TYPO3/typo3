@@ -12,7 +12,7 @@
  */
 
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -20,6 +20,19 @@ import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
+
+type DatabaseTableListResponse = ModuleLoadedResponseWithButtons & {
+  stats: {
+    description: string,
+    name: string,
+    rowCount: number,
+  }[]
+}
+
+type DatabaseTableClearedResponse = {
+  status: MessageInterface[],
+  success: boolean
+}
 
 enum Identifiers {
   clearTrigger = '.t3js-clearTables-clear',
@@ -61,7 +74,7 @@ class ClearTables extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: DatabaseTableListResponse = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
@@ -100,7 +113,7 @@ class ClearTables extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: DatabaseTableClearedResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               Notification.success(element.title, element.message);
