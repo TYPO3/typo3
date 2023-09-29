@@ -145,6 +145,10 @@ any curly braces level, resetting current scope to top level. While inclusion of
 never been documented to be valid within braces assignments, it still worked until TYPO3 v11.
 This is now disallowed and must not be used anymore.
 
+:typoscript:`<INCLUDE_TYPOSCRIPT:` with :typoscript:`DIR:` and relative paths
+always assumes the :file:`public/` directory as base directory now.
+(Formerly it was relative to the file holding the include statement.)
+
 @import is more restrictive with wildcards
 ------------------------------------------
 
