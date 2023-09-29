@@ -311,6 +311,7 @@
 			"TYPO3Tests\\TestIrreForeignfield\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/",
 			"TYPO3Tests\\TestLogger\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger/Classes/",
 			"TYPO3Tests\\TestMeta\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Classes/",
+			"TYPO3Tests\\TestTcaEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tca_event/Classes/",
 			"TYPO3Tests\\TestTyposcriptAstFunctionEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_ast_function_event/Classes/",
 			"TYPO3Tests\\TestTyposcriptPagetsconfigfactory\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory/Classes/",
 			"TYPO3Tests\\TestTsconfigEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tsconfig_event/Classes/",

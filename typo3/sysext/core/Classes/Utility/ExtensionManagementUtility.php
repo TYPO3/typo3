@@ -22,6 +22,7 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
+use TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
@@ -1318,6 +1319,8 @@ tt_content.' . $key . $suffix . ' {
             }
         }
 
+        static::dispatchBaseTcaIsBeingBuiltEvent($GLOBALS['TCA']);
+
         // To require TCA Overrides in a safe scoped environment avoiding local variable clashes.
         // @see TYPO3\CMS\Core\Tests\Functional\Utility\ExtensionManagementUtility\ExtensionManagementUtilityTcaOverrideRequireTest
         $scopedRequire = static function (string $filename): void {
@@ -1353,6 +1356,14 @@ tt_content.' . $key . $suffix . ' {
         $GLOBALS['TCA'] = $tcaPreparation->prepare($GLOBALS['TCA']);
 
         static::dispatchTcaIsBeingBuiltEvent($GLOBALS['TCA']);
+    }
+
+    /**
+     * Triggers an event for manipulating the TCA before overrides are applied.
+     */
+    protected static function dispatchBaseTcaIsBeingBuiltEvent(array $tca): void
+    {
+        $GLOBALS['TCA'] = static::$eventDispatcher->dispatch(new BeforeTcaOverridesEvent($tca))->getTca();
     }
 
     /**

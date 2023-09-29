@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/test-tca-event",
+	"type": "typo3-cms-extension",
+	"description": "This extension defines event listeners for TCA modification.",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_tca_event"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestTcaEvent\\": "Classes/"
+		}
+	}
+}
