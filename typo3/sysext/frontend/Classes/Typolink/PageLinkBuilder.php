@@ -103,7 +103,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $siteOfTargetPage = null;
             $currentSite = null;
         }
-        if ($siteOfTargetPage == null) {
+        if ($siteOfTargetPage === null) {
             throw new UnableToLinkException('Could not link to page with ID: ' . $page['uid'], 1546887172, null, $linkText);
         }
 
@@ -119,12 +119,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($siteLanguageOfTargetPage->getLanguageId() > 0) {
             $pageObject = $conf['page'] ?? null;
             if ($pageObject instanceof Page
-                && $pageObject->getPageId() == $page['uid'] // No MP/Shortcut changes
+                && $pageObject->getPageId() === (int)$page['uid'] // No MP/Shortcut changes
                 && !$event->pageWasModified()
                 && (
                     $pageObject->getLanguageId() === $languageAspect->getId()
                     || $pageObject->getRequestedLanguage() === $languageAspect->getId() // Page is suitable for that language
-                    || $pageObject->getLanguageId() == 0 // No translation found
+                    || $pageObject->getLanguageId() === 0 // No translation found
                 )
             ) {
                 $page = $pageObject->toArray(true);
