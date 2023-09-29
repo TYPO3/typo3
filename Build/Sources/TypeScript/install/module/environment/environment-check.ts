@@ -14,7 +14,7 @@
 import 'bootstrap';
 import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -24,8 +24,7 @@ import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 
-interface EnvironmentCheckResponse {
-  success: boolean,
+type EnvironmentCheckResponse = ModuleLoadedResponseWithButtons & {
   status: {
     error: MessageInterface[],
     warning: MessageInterface[],
@@ -33,8 +32,6 @@ interface EnvironmentCheckResponse {
     information: MessageInterface[],
     notice: MessageInterface[]
   },
-  html: string,
-  buttons: { btnClass: string, text: string }[]
 }
 
 /**

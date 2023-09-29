@@ -17,8 +17,14 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import PasswordStrength from '../password-strength';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import MessageInterface from '@typo3/install/message-interface';
+
+type BackendUserCreatedResponse = {
+  status: MessageInterface[],
+  success: boolean,
+  userCreated: boolean,
+}
 
 /**
  * Module: @typo3/install/module/create-admin
@@ -46,7 +52,7 @@ class CreateAdmin extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
             Modal.setButtons(data.buttons);
@@ -80,7 +86,7 @@ class CreateAdmin extends AbstractInteractableModule {
     this.getModuleContent().find(':input').prop('disabled', true);
 
     (new AjaxRequest(Router.getUrl())).post(payload).then(async (response: AjaxResponse): Promise<void> => {
-      const data = await response.resolve();
+      const data: BackendUserCreatedResponse = await response.resolve();
       if (data.success === true && Array.isArray(data.status)) {
         data.status.forEach((element: MessageInterface): void => {
           Notification.showMessage(element.title, element.message, element.severity);

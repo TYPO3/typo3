@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -22,6 +22,16 @@ import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+
+type MailGetDataResponse = ModuleLoadedResponseWithButtons & {
+  messages: MessageInterface[],
+  sendPossible: boolean,
+};
+
+type SendTestMailResponse = {
+  success: boolean,
+  status: MessageInterface[],
+}
 
 /**
  * Module: @typo3/install/module/create-admin
@@ -49,7 +59,7 @@ class MailTest extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: MailGetDataResponse = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
             const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
@@ -89,7 +99,7 @@ class MailTest extends AbstractInteractableModule {
       },
     }).then(
       async (response: AjaxResponse): Promise<void> => {
-        const data = await response.resolve();
+        const data: SendTestMailResponse = await response.resolve();
         $outputContainer.empty();
         if (Array.isArray(data.status)) {
           data.status.forEach((element: MessageInterface): void => {

@@ -15,37 +15,42 @@ import 'bootstrap';
 import $ from 'jquery';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxQueue from '../../ajax/ajax-queue';
 import Router from '../../router';
 
-interface FileData {
-  success: boolean;
-  matches: Array<Match>;
-  isFileIgnored: boolean;
-  effectiveCodeLines: number;
-  ignoredLines: number;
-}
-
-interface Match {
+type Match = {
   uniqueId: string;
   message: string;
   indicator: string;
   silenced: boolean;
   lineContent: string;
   line: number;
-  restFiles: Array<RestFile>;
+  restFiles: RestFile[];
 }
 
-interface RestFile {
+type RestFile = {
   uniqueId: string;
   version: string;
   headline: string;
   content: string;
   class: string;
   file_hash: string;
+}
+
+type ExtensionScannerFilesResponse = {
+  files: string[],
+  success: boolean,
+}
+
+type ExtensionScannerScanFileResponse = {
+  effectiveCodeLines: number,
+  ignoredLines: number,
+  isFileIgnored: boolean,
+  matches: Match[],
+  success: boolean,
 }
 
 class ExtensionScanner extends AbstractInteractableModule {
@@ -87,7 +92,7 @@ class ExtensionScanner extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     (new AjaxRequest(Router.getUrl('extensionScannerGetData'))).get().then(
       async (response: AjaxResponse): Promise<void> => {
-        const data = await response.resolve();
+        const data: ModuleLoadedResponseWithButtons = await response.resolve();
         if (data.success === true) {
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
@@ -205,7 +210,7 @@ class ExtensionScanner extends AbstractInteractableModule {
       },
     }).then(
       async (response: AjaxResponse): Promise<void> => {
-        const data = await response.resolve();
+        const data: ExtensionScannerFilesResponse = await response.resolve();
         if (data.success === true && Array.isArray(data.files)) {
           const numberOfFiles = data.files.length;
           if (numberOfFiles <= 0) {
@@ -230,7 +235,7 @@ class ExtensionScanner extends AbstractInteractableModule {
               },
               url: Router.getUrl(),
               onfulfilled: async (response: AjaxResponse): Promise<void> => {
-                const fileData: FileData = await response.resolve();
+                const fileData: ExtensionScannerScanFileResponse = await response.resolve();
                 doneFiles++;
                 this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
                 this.setProgressForScan(extension, doneFiles, numberOfFiles);

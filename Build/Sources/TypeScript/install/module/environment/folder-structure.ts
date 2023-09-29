@@ -14,7 +14,7 @@
 import 'bootstrap';
 import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -22,6 +22,14 @@ import InfoBox from '../../renderable/info-box';
 import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
+import MessageInterface from '@typo3/install/message-interface';
+
+type FolderStructureResponse = ModuleLoadedResponseWithButtons & {
+  errorStatus: MessageInterface[],
+  okStatus: MessageInterface[],
+  folderStructureFilePermissionStatus: MessageInterface,
+  folderStructureDirectoryPermissionStatus: MessageInterface,
+}
 
 /**
  * Module: @typo3/install/module/folder-structure
@@ -63,7 +71,7 @@ class FolderStructure extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: FolderStructureResponse = await response.resolve();
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.errorStatus)) {

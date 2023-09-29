@@ -15,7 +15,7 @@ import 'bootstrap';
 import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
 import ModuleMenu from '@typo3/backend/module-menu';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -24,6 +24,11 @@ import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-im
 import MessageInterface from '@typo3/install/message-interface';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
+
+type ExtensionConfigurationWrittenResponse = {
+  status: MessageInterface[],
+  success: boolean,
+}
 
 /**
  * Module: @typo3/install/module/extension-configuration
@@ -87,7 +92,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponse = await response.resolve();
           if (data.success === true) {
             modalContent.html(data.html);
             (modalContent.get(0).querySelector(this.selectorSearchInput) as HTMLInputElement).clearable();
@@ -138,7 +143,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ExtensionConfigurationWrittenResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               Notification.showMessage(element.title, element.message, element.severity);

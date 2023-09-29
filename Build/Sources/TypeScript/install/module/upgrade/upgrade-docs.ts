@@ -15,7 +15,7 @@ import 'bootstrap';
 import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
@@ -72,7 +72,7 @@ class UpgradeDocs extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponse = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             modalContent.empty().append(data.html);
 
@@ -100,7 +100,7 @@ class UpgradeDocs extends AbstractInteractableModule {
         .get({ cache: 'no-cache' })
         .then(
           async (response: AjaxResponse): Promise<void> => {
-            const data = await response.resolve();
+            const data: ModuleLoadedResponse = await response.resolve();
             if (data.success === true) {
               const $panelGroup = $(el);
               const $container = $panelGroup.find(this.selectorChangeLogsForVersion);

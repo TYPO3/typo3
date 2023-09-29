@@ -15,7 +15,7 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
 
 /**
  * Module: @typo3/install/module/php-info
@@ -32,7 +32,7 @@ class PhpInfo extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponse = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
           } else {

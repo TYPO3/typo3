@@ -11,6 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import MessageInterface from '@typo3/install/message-interface';
+
+export type ActionResponse = {
+  status: MessageInterface[],
+  success: boolean
+}
+
 export abstract class AbstractInlineModule {
   protected setButtonState(button: JQuery, interactable: boolean): void {
     button.toggleClass('disabled', !interactable).prop('disabled', !interactable);

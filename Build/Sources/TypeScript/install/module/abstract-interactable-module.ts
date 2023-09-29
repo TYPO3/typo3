@@ -13,6 +13,15 @@
 
 import $ from 'jquery';
 
+export type ModuleLoadedResponse = {
+  success: boolean,
+  html: string,
+};
+
+export type ModuleLoadedResponseWithButtons = ModuleLoadedResponse & {
+  buttons: { btnClass: string, text: string }[]
+};
+
 export abstract class AbstractInteractableModule {
   protected currentModal: JQuery;
   private readonly selectorModalBody: string = '.t3js-modal-body';

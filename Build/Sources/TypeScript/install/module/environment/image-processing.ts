@@ -14,7 +14,7 @@
 import 'bootstrap';
 import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -22,6 +22,15 @@ import InfoBox from '../../renderable/info-box';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+
+type ImageProcessResponse = {
+  command?: string[],
+  fileExists: boolean,
+  outputFile: string,
+  referenceFile: string,
+  success: boolean,
+  status?: MessageInterface[]
+};
 
 /**
  * Module: @typo3/install/module/image-processing
@@ -50,7 +59,7 @@ class ImageProcessing extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
             Modal.setButtons(data.buttons);
@@ -81,7 +90,7 @@ class ImageProcessing extends AbstractInteractableModule {
         .get({ cache: 'no-cache' })
         .then(
           async (response: AjaxResponse): Promise<void> => {
-            const data = await response.resolve();
+            const data: ImageProcessResponse = await response.resolve();
             if (data.success === true) {
               $container.empty();
               if (Array.isArray(data.status)) {

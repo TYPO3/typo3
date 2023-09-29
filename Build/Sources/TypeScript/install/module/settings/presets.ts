@@ -14,12 +14,17 @@
 import 'bootstrap';
 import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+
+type PresetsWrittenResponse = {
+  status: MessageInterface[],
+  success: boolean,
+}
 
 /**
  * Module: @typo3/install/module/presets
@@ -57,7 +62,7 @@ class Presets extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
             modalContent.empty().append(data.html);
             Modal.setButtons(data.buttons);
@@ -114,7 +119,7 @@ class Presets extends AbstractInteractableModule {
     postData['install[token]'] = executeToken;
     (new AjaxRequest(Router.getUrl())).post(postData).then(
       async (response: AjaxResponse): Promise<void> => {
-        const data = await response.resolve();
+        const data: PresetsWrittenResponse = await response.resolve();
         if (data.success === true && Array.isArray(data.status)) {
           data.status.forEach((element: MessageInterface): void => {
             Notification.showMessage(element.title, element.message, element.severity);

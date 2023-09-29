@@ -13,7 +13,7 @@
 
 import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -22,6 +22,25 @@ import ProgressBar from '../../renderable/progress-bar';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+
+type SuggestionsResponse = {
+  status: MessageInterface[],
+  success: boolean,
+  suggestions: {
+    children: {
+      hash: string,
+      statement: string,
+    }[],
+    enabled: boolean,
+    key: string,
+    label: string,
+  }[]
+}
+
+type SuggestionsExecutedResponse = {
+  status: MessageInterface[],
+  success: boolean,
+};
 
 /**
  * Module: @typo3/install/module/database-analyzer
@@ -59,7 +78,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ModuleLoadedResponseWithButtons = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
             Modal.setButtons(data.buttons);
@@ -93,7 +112,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: SuggestionsResponse = await response.resolve();
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               outputContainer.find('.alert-loading').remove();
@@ -175,7 +194,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: SuggestionsExecutedResponse = await response.resolve();
           if (Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               Notification.showMessage(element.title, element.message, element.severity);

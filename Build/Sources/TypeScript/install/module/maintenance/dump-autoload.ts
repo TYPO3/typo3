@@ -15,7 +15,7 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInlineModule } from '../abstract-inline-module';
+import { AbstractInlineModule, ActionResponse } from '../abstract-inline-module';
 import MessageInterface from '@typo3/install/message-interface';
 
 /**
@@ -29,7 +29,7 @@ class DumpAutoload extends AbstractInlineModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: ActionResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
               data.status.forEach((element: MessageInterface): void => {

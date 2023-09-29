@@ -13,12 +13,25 @@
 
 import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from '../abstract-interactable-module';
+import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
+
+type TemporaryAssetsListResponse = ModuleLoadedResponseWithButtons & {
+  stats: {
+    description: string,
+    name: string,
+    rowCount: number,
+  }[]
+}
+
+type TemporaryAssetsClearedResponse = {
+  status: MessageInterface[],
+  success: boolean
+}
 
 /**
  * Module: @typo3/install/module/clear-typo3temp-files
@@ -57,7 +70,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
       .get({ cache: 'no-cache' })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: TemporaryAssetsListResponse = await response.resolve();
           if (data.success === true) {
             modalContent.empty().append(data.html);
             Modal.setButtons(data.buttons);
@@ -97,7 +110,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
       })
       .then(
         async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
+          const data: TemporaryAssetsClearedResponse = await response.resolve();
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element: MessageInterface): void => {
               Notification.success(element.title, element.message);
