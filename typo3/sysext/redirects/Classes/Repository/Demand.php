@@ -52,6 +52,7 @@ class Demand
     private int $maxHits;
     private ?\DateTimeInterface $olderThan;
     protected ?int $creationType = -1;
+    protected ?int $protected = -1;
 
     public function __construct(
         int $page = 1,
@@ -63,7 +64,8 @@ class Demand
         array $statusCodes = [],
         int $maxHits = 0,
         \DateTimeInterface $olderThan = null,
-        ?int $creationType = -1
+        ?int $creationType = -1,
+        ?int $protected = -1
     ) {
         $this->page = $page;
         if (!in_array($orderField, self::ORDER_FIELDS, true)) {
@@ -82,6 +84,7 @@ class Demand
         $this->maxHits = $maxHits;
         $this->olderThan = $olderThan;
         $this->creationType = $creationType;
+        $this->protected = $protected;
     }
 
     public static function fromRequest(ServerRequestInterface $request): self
@@ -101,7 +104,8 @@ class Demand
         $target = $demand['target'] ?? '';
         $maxHits = (int)($demand['max_hits'] ?? 0);
         $creationType = isset($demand['creation_type']) ? ((int)$demand['creation_type']) : -1;
-        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType);
+        $protected = isset($demand['protected']) ? ((int)$demand['protected']) : -1;
+        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType, $protected);
     }
 
     public static function fromCommandInput(InputInterface $input): self
@@ -204,6 +208,11 @@ class Demand
         return $this->creationType;
     }
 
+    public function getProtected(): ?int
+    {
+        return $this->protected;
+    }
+
     public function getFirstStatusCode(): int
     {
         return $this->statusCodes[0] ?? 0;
@@ -239,6 +248,11 @@ class Demand
         return $this->creationType !== null && $this->creationType !== -1;
     }
 
+    public function hasProtected(): bool
+    {
+        return $this->protected !== null && $this->protected !== -1;
+    }
+
     public function hasConstraints(): bool
     {
         return $this->hasSourcePath()
@@ -246,7 +260,8 @@ class Demand
             || $this->hasTarget()
             || $this->hasStatusCodes()
             || $this->hasMaxHits()
-            || $this->hasCreationType();
+            || $this->hasCreationType()
+            || $this->hasProtected();
     }
 
     /**
@@ -285,6 +300,9 @@ class Demand
         }
         if ($this->hasCreationType()) {
             $parameters['creation_type'] = $this->getCreationType();
+        }
+        if ($this->hasProtected()) {
+            $parameters['protected'] = $this->getProtected();
         }
         return $parameters;
     }

@@ -59,15 +59,15 @@ final class RedirectModuleCest
 
     public function canEditRecordFromListView(ApplicationTester $I): void
     {
-        $sourceHost = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(1)');
-        $sourcePath = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(2) > a');
+        $sourceHost = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(2)');
+        $sourcePath = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(3) > a');
 
         $I->amGoingTo('test edit on source path');
-        $I->click('table.table-striped > tbody > tr > td:nth-child(2) > a');
+        $I->click('table.table-striped > tbody > tr > td:nth-child(3) > a');
         $this->openAndCloseTheEditForm($I, $sourceHost . ', ' . $sourcePath);
 
         $I->amGoingTo('test edit on edit button');
-        $I->click('table.table-striped > tbody > tr > td:nth-child(6) > div > a:nth-child(2)');
+        $I->click('table.table-striped > tbody > tr > td:nth-child(7) > div > a:nth-child(2)');
         $this->openAndCloseTheEditForm($I, $sourceHost . ', ' . $sourcePath);
     }
 

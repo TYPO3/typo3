@@ -81,6 +81,11 @@ final class RedirectRepositoryTest extends FunctionalTestCase
                 $allRecordCount,
                 $allRecordCount - 3,
             ],
+            'demand with creation type "manually created"' => [
+                self::getDemand(0, [], [], '', 1),
+                $allRecordCount,
+                $allRecordCount - 1,
+            ],
         ];
     }
 
@@ -140,6 +145,14 @@ final class RedirectRepositoryTest extends FunctionalTestCase
             new Demand(target: 'https://example.com/bar'),
             5,
         ];
+        yield 'demand with creation type "manually created"' => [
+            new Demand(creationType: 1),
+            1,
+        ];
+        yield 'demand with protected state' => [
+            new Demand(protected: 1),
+            1,
+        ];
     }
 
     /**
@@ -171,7 +184,8 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         int $hitCount = 0,
         array $statusCodes = [],
         array $domains = [],
-        string $path = ''
+        string $path = '',
+        int $creationType = -1
     ): Demand {
         return new Demand(
             1,
@@ -182,7 +196,8 @@ final class RedirectRepositoryTest extends FunctionalTestCase
             '',
             $statusCodes,
             $hitCount,
-            new \DateTimeImmutable('90 days ago')
+            new \DateTimeImmutable('90 days ago'),
+            $creationType
         );
     }
 }

@@ -25,14 +25,50 @@ final class DemandTest extends UnitTestCase
     public static function getParametersRespectsDemandStateStateDataProvider(): array
     {
         return [
-            [[1, '', '', [], '', '', []], []],
-            [[2, '', '', ['host'], '', '', []], ['source_host' => 'host']],
-            [[3, '', '', [], 'path', '', []], ['source_path' => 'path']],
-            [[4, '', '', [], '', 'target', []], ['target' => 'target']],
-            [[5, '', '', [], '', '', [301]], ['target_statuscode' => 301]],
-            [[6, '', '', ['host'], '', 'target'], ['source_host' => 'host', 'target' => 'target']],
-            [[7, '', '', [], 'path', '', [302]], ['source_path' => 'path', 'target_statuscode' => 302]],
-            [[8, '', '', ['host'], 'path', 'target', [307]], ['source_path' => 'path', 'source_host' => 'host', 'target' => 'target', 'target_statuscode' => 307]],
+            [
+                [1, '', '', [], '', '', []],
+                [],
+            ],
+            [
+                [2, '', '', ['host'], '', '', []],
+                ['source_host' => 'host'],
+            ],
+            [
+                [3, '', '', [], 'path', '', []],
+                ['source_path' => 'path'],
+            ],
+            [
+                [4, '', '', [], '', 'target', []],
+                ['target' => 'target'],
+            ],
+            [
+                [5, '', '', [], '', '', [301]],
+                ['target_statuscode' => 301],
+            ],
+            [
+                [6, '', '', ['host'], '', 'target'],
+                ['source_host' => 'host', 'target' => 'target'],
+            ],
+            [
+                [7, '', '', [], 'path', '', [302]],
+                ['source_path' => 'path', 'target_statuscode' => 302],
+            ],
+            [
+                [8, '', '', ['host'], 'path', 'target', [307]],
+                ['source_path' => 'path', 'source_host' => 'host', 'target' => 'target', 'target_statuscode' => 307],
+            ],
+            [
+                [9, '', '', [], '', '', [], 100],
+                ['max_hits' => 100],
+            ],
+            [
+                [10, '', '', [], '', '', [], 0, null, 1],
+                ['creation_type' => 1],
+            ],
+            [
+                [11, '', '', [], '', '', [], 0, null, -1, 1],
+                ['protected' => 1],
+            ],
         ];
     }
 

@@ -76,7 +76,7 @@ final class ManagementControllerTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(ModifyRedirectManagementControllerViewDataEvent::class, 'modify-redirect-management-controller-view-data-event');
 
-        $response = $this->subject->handleRequest($request);
+        $this->subject->handleRequest($request);
 
         self::assertInstanceOf(ModifyRedirectManagementControllerViewDataEvent::class, $modifyRedirectManagementControllerViewDataEvent);
         self::assertSame($setHosts, $modifyRedirectManagementControllerViewDataEvent->getHosts());

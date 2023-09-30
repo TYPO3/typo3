@@ -129,7 +129,14 @@ class RedirectRepository
         if ($demand->hasCreationType()) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'creation_type',
-                $queryBuilder->createNamedParameter($demand->getCreationType(), \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($demand->getCreationType(), Connection::PARAM_INT)
+            );
+        }
+
+        if ($demand->hasProtected()) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                'protected',
+                $queryBuilder->createNamedParameter($demand->getProtected(), Connection::PARAM_INT)
             );
         }
 
@@ -232,7 +239,7 @@ class RedirectRepository
 
         if ($demand->hasCreationType()) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('creation_type', $queryBuilder->createNamedParameter($demand->getCreationType(), \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('creation_type', $queryBuilder->createNamedParameter($demand->getCreationType(), Connection::PARAM_INT))
             );
         }
 

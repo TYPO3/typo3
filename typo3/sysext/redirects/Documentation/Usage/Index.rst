@@ -50,7 +50,7 @@ The :guilabel:`+` sign on the top will open an edit form to create a **new
 redirect**.
 
 It is also possible to **filter**, e.g. by the *Source Path*, *Status Code*,
-*Creation type* or only show redirect records which were "*Never hit*"
+*Creation type*, *Protected* or only show redirect records which were "*Never hit*"
 (see Information on :ref:`Hit counter <hit-counter>` which must be explicitly
 enabled via Feature Toggle).
 

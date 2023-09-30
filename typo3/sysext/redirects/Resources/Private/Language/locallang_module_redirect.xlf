@@ -54,6 +54,18 @@
 			<trans-unit id="filter.creationType.showAll" resname="filter.creationType.showAll">
 				<source>Show All</source>
 			</trans-unit>
+			<trans-unit id="filter.protected" resname="filter.protected">
+				<source>Protected</source>
+			</trans-unit>
+			<trans-unit id="filter.protected.showAll" resname="filter.protected.showAll">
+				<source>Show All</source>
+			</trans-unit>
+			<trans-unit id="filter.protected.unprotected" resname="filter.protected.unprotected">
+				<source>unprotected</source>
+			</trans-unit>
+			<trans-unit id="filter.protected.protected" resname="filter.protected.protected">
+				<source>protected</source>
+			</trans-unit>
 			<trans-unit id="filter.neverHit" resname="filter.neverHit">
 				<source>Never hit</source>
 			</trans-unit>
@@ -66,6 +78,9 @@
 
 			<trans-unit id="record_disabled" resname="record_disabled">
 				<source>Redirect is not activated!</source>
+			</trans-unit>
+			<trans-unit id="redirect_protected" resname="redirect_protected">
+				<source>Redirect is protected</source>
 			</trans-unit>
 			<trans-unit id="source_path.placeholder" resname="source_path.placeholder">
 				<source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
