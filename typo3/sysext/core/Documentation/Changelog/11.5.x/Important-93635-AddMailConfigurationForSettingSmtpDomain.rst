@@ -12,7 +12,7 @@ Description
 ===========
 
 Some smtp-relay-server require to set the domain under which the sender is
-sending a email. As default the EsmtpTransport from Symfony will use the current
+sending an email. As default the EsmtpTransport from Symfony will use the current
 domain/IP of the host or container. This will be sufficient for the most of the
 servers but some servers requires a valid domain is passed. If this isn't done,
 sending emails via such servers will fail.

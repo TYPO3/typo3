@@ -20,7 +20,7 @@ and a description that explains the purpose of the message.
 
 Optionally, a property method can be set for the attribute,
 that contains the factory method. By default this is `createFromEvent`,
-which is typically used when creating a message by a event listener, see
+which is typically used when creating a message by an event listener, see
 webhooks documentation for more details.
 
 Example

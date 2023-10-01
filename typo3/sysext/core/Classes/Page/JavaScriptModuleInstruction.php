@@ -28,7 +28,7 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     public const FLAG_LOAD_REQUIRE_JS = 1;
 
     /**
-     * Indicates a ES6/11 module shall be loaded (paths mapped by an importmap)
+     * Indicates an ES6/11 module shall be loaded (paths mapped by an importmap)
      */
     public const FLAG_LOAD_IMPORTMAP = 2;
 

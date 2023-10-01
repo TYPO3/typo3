@@ -60,7 +60,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $this->commandTester = new CommandTester($this->subject);
         $this->setUpBackendUser(1);
 
-        // create filadmin (1) and a additional absolute local storage (2)
+        // create fileadmin (1) and an additional absolute local storage (2)
         $subject = GeneralUtility::makeInstance(StorageRepository::class);
         $subject->createLocalStorage(
             'fileadmin',

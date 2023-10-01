@@ -47,7 +47,7 @@ Impact
 ======
 
 If an instance provides additional authentication services, and if one of that services does
-not return correct authentication values, this may open a authentication bypass security issue
+not return correct authentication values, this may open an authentication bypass security issue
 when upgrading to TYPO3 v9.
 
 

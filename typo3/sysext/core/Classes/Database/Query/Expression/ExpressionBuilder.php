@@ -253,7 +253,7 @@ class ExpressionBuilder
     }
 
     /**
-     * Creates a IN () comparison expression with the given arguments.
+     * Creates an IN () comparison expression with the given arguments.
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param string|array $value The placeholder or the array of values to be used by IN() comparison.
@@ -504,7 +504,7 @@ class ExpressionBuilder
     }
 
     /**
-     * Creates a AVG expression for the given field/alias.
+     * Creates an AVG expression for the given field/alias.
      *
      * @param string|null $alias
      */

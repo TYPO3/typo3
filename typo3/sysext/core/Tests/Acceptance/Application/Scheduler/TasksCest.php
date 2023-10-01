@@ -76,7 +76,7 @@ final class TasksCest
 
     public function canEnableAndDisableTask(ApplicationTester $I): void
     {
-        $I->wantTo('See a enable button for a task');
+        $I->wantTo('See an enable button for a task');
         $I->click('//button[contains(@title, "Enable")]', '#tx_scheduler_form_0');
         $I->dontSeeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
         $I->dontSee('disabled');

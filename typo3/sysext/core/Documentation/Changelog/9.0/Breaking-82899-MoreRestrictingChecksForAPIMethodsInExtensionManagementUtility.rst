@@ -40,6 +40,6 @@ Migration
 =========
 
 Add the required parameters to the API calls in your extension registration files, typically
-located within :file:`ext_localconf.php`, :file:`ext_tables.php` or :file:`Configuration/TCA/*` of a extension.
+located within :file:`ext_localconf.php`, :file:`ext_tables.php` or :file:`Configuration/TCA/*` of an extension.
 
 .. index:: PHP-API, PartiallyScanned

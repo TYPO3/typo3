@@ -58,7 +58,7 @@ allows to load a file directly when interpreting the HTML of the
 browser, instead of first interpreting the HTML, then the CSS
 and have a blocking call to an external URL to continue interpreting the CSS.
 
-It is recommended to use the :html:`<link>` tag or create a inlineCSS TypoScript
+It is recommended to use the :html:`<link>` tag or create an inlineCSS TypoScript
 manually to load such a file with the :css:`@import` syntax.
 
 .. index:: TypoScript, NotScanned, ext:frontend

@@ -52,7 +52,7 @@ of them beforehand:
   :php:`parseDataStructureByIdentifierPreProcess` to specify an own "identifier" syntax
   and to resolve that syntax to a data structure later: flux_
 
-* EXT:gridelements: Similar to flux, gridelements has a own logic to choose which specific
+* EXT:gridelements: Similar to flux, gridelements has an own logic to choose which specific
   data structure should be used. However, the data structures are located in database row fields,
   so the "record" syntax of the core can be re-used to refer to those. gridelements uses the hook
   :php:`getDataStructureIdentifierPreProcess` together with a small implementation in

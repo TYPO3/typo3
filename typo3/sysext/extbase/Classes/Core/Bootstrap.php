@@ -133,7 +133,7 @@ class Bootstrap
      * If the Framework is not initialized yet, it will be initialized.
      *
      * This is usually used in Frontend plugins.
-     * This method will be marked as internal in the future, use EXTBASEPLUGIN in TypoScript to execute a Extbase plugin
+     * This method will be marked as internal in the future, use EXTBASEPLUGIN in TypoScript to execute an Extbase plugin
      * instead.
      *
      * @param string $content The content. Not used

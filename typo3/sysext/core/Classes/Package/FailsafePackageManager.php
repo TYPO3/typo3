@@ -77,7 +77,7 @@ class FailsafePackageManager extends PackageManager
     }
 
     /**
-     * Create PackageStates.php if missing and LocalConfiguration exists, used to have a Install Tool session running
+     * Create PackageStates.php if missing and LocalConfiguration exists, used to have an Install Tool session running
      *
      * It is fired if PackageStates.php is deleted on a running instance,
      * all packages marked as "part of minimal system" are activated in this case.

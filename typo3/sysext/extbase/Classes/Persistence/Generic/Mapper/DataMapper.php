@@ -317,7 +317,7 @@ class DataMapper
         }
         if (!in_array($storageFormat, $dateTimeTypes, true)) {
             // Integer timestamps are also stored "as is" in the database, but are UTC by definition,
-            // so we convert the timestamp to a ISO representation.
+            // so we convert the timestamp to an ISO representation.
             $value = date('c', (int)$value);
         }
         // All date/datetime/time values are stored in the database "as is", independent of any time zone information.

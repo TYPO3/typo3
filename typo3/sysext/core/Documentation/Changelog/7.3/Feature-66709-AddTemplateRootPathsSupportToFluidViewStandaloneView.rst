@@ -39,7 +39,7 @@ Basic example:
 
 
 
-Example of rendering a email template:
+Example of rendering an email template:
 
 .. code-block:: php
 

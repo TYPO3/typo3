@@ -3195,7 +3195,7 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 	<type id="IMGTEXT" extends="cObjArray">
 		<property name="1" type="IMAGE">
 			<description><![CDATA[Rendering of the images
-The register "IMAGE_NUM" is set with the number of image being rendered for each rendering of a image-object. Starting with zero.
+The register "IMAGE_NUM" is set with the number of image being rendered for each rendering of an image-object. Starting with zero.
 The image-object should not be of type GIFBUILDER!
 Important:
 "file.import.current = 1" fetches the name of the images!
@@ -3205,7 +3205,7 @@ Important:
 		</property>
 		<property name="2" type="IMAGE">
 			<description><![CDATA[Rendering of the images
-The register "IMAGE_NUM" is set with the number of image being rendered for each rendering of a image-object. Starting with zero.
+The register "IMAGE_NUM" is set with the number of image being rendered for each rendering of an image-object. Starting with zero.
 The image-object should not be of type GIFBUILDER!
 Important:
 "file.import.current = 1" fetches the name of the images!
@@ -3215,7 +3215,7 @@ Important:
 		</property>
 		<property name="3" type="IMAGE">
 			<description><![CDATA[Rendering of the images
-The register "IMAGE_NUM" is set with the number of image being rendered for each rendering of a image-object. Starting with zero.
+The register "IMAGE_NUM" is set with the number of image being rendered for each rendering of an image-object. Starting with zero.
 The image-object should not be of type GIFBUILDER!
 Important:
 "file.import.current = 1" fetches the name of the images!
@@ -3576,7 +3576,7 @@ This adds the tables tt_content, tt_address, tt_links, tx_myexttable]]></descrip
 	<type id="SEARCHRESULT">
 		<property name="addExtUrlsAndShortCuts" type="boolean">
 			<description><![CDATA[If set, then the doktypes 3 and 4 (External URLS and Shortcuts) are added to the doktypes being searched.
-However at this point in time, no pages will be select if they do not have at least one tt_content record on them! That is because the pages and tt_content (or other) table is joined. So there must at least one occurrence of a tt_content element on a External URL / Shortcut page for them to show up.]]></description>
+However at this point in time, no pages will be select if they do not have at least one tt_content record on them! That is because the pages and tt_content (or other) table is joined. So there must at least one occurrence of a tt_content element on an External URL / Shortcut page for them to show up.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -5752,7 +5752,7 @@ If a "@" is in the string, it's an email
 If a period (.) is in the string AND if the period (.) is found before a slash (/) is found OR if a doubleslash is found, then it's a URL
 If a slash (/) is found, it's a filereference. If the file/directory does not exist on the server, the link is NOT made!
 
-Now the input can be an alias or page-id. If the input is an integer it's a page-id, if it's two comma separated integers, it's a id/type pair, else it's an alias. For page-id's or aliases you can prepend a "#" mark with a number indication tt_content record number on the page to jump to! (if .section-property is present, it overrides this).
+Now the input can be an alias or page-id. If the input is an integer it's a page-id, if it's two comma separated integers, it's an id/type pair, else it's an alias. For page-id's or aliases you can prepend a "#" mark with a number indication tt_content record number on the page to jump to! (if .section-property is present, it overrides this).
 If you insert only "#234" where "234" is the tt_content record number, it links to the current page-id
 Notice: The parameter can contain a keyword that hands over link generation to an external function. See example below this table!
 

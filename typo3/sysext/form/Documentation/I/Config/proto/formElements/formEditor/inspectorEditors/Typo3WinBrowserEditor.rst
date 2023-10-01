@@ -157,7 +157,7 @@ propertyValidators
       This ``inspector editors`` is able to validate it's value through JavaScript methods.
       This JavaScript validators can be registered through ``getFormEditorApp().addPropertyValidationValidator()``.
       The first method argument is the identifier for such a validator.
-      Every array value within ``propertyValidators`` must be equal to such a identifier.
+      Every array value within ``propertyValidators`` must be equal to such an identifier.
 
       For example:
 

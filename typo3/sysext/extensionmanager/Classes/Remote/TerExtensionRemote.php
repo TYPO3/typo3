@@ -87,7 +87,7 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
     }
 
     /**
-     * TER provides a extensions.md5 which contains the hashsum of the current remote extensions.gz file.
+     * TER provides an extensions.md5 which contains the hashsum of the current remote extensions.gz file.
      * Let's check if this is the same, if so, it is not needed to download a new extensions.gz.
      */
     protected function isDownloadedExtensionListUpToDate(): bool

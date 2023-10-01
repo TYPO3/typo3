@@ -297,7 +297,7 @@ class SchemaMigrator
     /**
      * doctrine/dbal detects both sqlite autoincrement variants (row_id alias and autoincrement) through assumptions
      * which have been made. TYPO3 reads the ext_tables.sql files as MySQL/MariaDB variant, thus not setting the
-     * autoincrement value to true for the row_id alias variant, which leads to a endless missmatch during database
+     * autoincrement value to true for the row_id alias variant, which leads to an endless missmatch during database
      * comparison. This method adopts the doctrine/dbal assumption and apply it to the meta schema to mitigate
      * endless database compare detections in these cases.
      *

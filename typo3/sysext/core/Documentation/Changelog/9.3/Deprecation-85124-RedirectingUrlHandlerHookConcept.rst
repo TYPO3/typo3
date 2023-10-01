@@ -14,7 +14,7 @@ Description
 The URL handler concept introduced in TYPO3 v7 to allow pages to do redirects has been deprecated in favor
 of using PSR-7 / PSR-15 middlewares.
 
-The Redirect URL handlers were used for e.g. jumpURLs, pages that should redirect to a external URL
+The Redirect URL handlers were used for e.g. jumpURLs, pages that should redirect to an external URL
 or special handlings registered via the :php:`\TYPO3\CMS\Frontend\Http\UrlHandlerInterface`.
 
 All functionality and methods have been marked as deprecated and will be removed in TYPO3 v10.0.
