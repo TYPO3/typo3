@@ -12,7 +12,7 @@ Configuration Best Practices
 Use a Sitepackage extension
 ===========================
 
-It is generally recommended to use a a sitepackage extension to
+It is generally recommended to use a sitepackage extension to
 customize a TYPO3 website. The sitepackage contains configuration files
 for that site.
 

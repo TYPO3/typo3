@@ -23,7 +23,7 @@ Components, this functionality will be marked as deprecated in later TYPO3 v11 r
 
 The main benefit of the Folder Navigation based on the SVG tree is the enhanced
 loading functionality. This way, the Folder Navigation has the exact same
-look&feel as the Page Tree, and also now contains a always-enabled filter
+look&feel as the Page Tree, and also now contains an always-enabled filter
 on top of the Component, just as the Page Tree Navigation Component.
 
 

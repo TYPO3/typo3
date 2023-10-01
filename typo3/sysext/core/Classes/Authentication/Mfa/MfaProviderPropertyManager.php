@@ -120,7 +120,7 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
 
     /**
      * Create a new provider entry for the current user
-     * Note: If a entry already exists, use updateProperties() instead.
+     * Note: If an entry already exists, use updateProperties() instead.
      *       This can be checked with hasProviderEntry().
      *
      * @param array $properties

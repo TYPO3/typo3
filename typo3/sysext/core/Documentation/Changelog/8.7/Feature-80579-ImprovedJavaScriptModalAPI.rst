@@ -75,8 +75,8 @@ Modal.types.ajax
    Content will be grabbed from a url set in the option `content`
 
 Modal.types.iframe
-   Url provided in the option `content` will be loaded in a iframe in the modal.
-   Also it will automaticly set the title from the contained document.
+   Url provided in the option `content` will be loaded in an iframe in the modal.
+   Also it will automatically set the title from the contained document.
 
 
 Title
@@ -216,9 +216,9 @@ Size
 
 While the modal itself adapts to the window, there are several options available
 to limit the maximal size of the modal. The sizes :js:`Modal.sizes.small` and the
-default :js:`Modal.sizes.default` will automaticly adapt to the content and are only
+default :js:`Modal.sizes.default` will automatically adapt to the content and are only
 limited to the width of the modal. :js:`Modal.sizes.large` and :js:`Modal.sizes.full`
-are designed to contain a undefined lenth of content in a fixed sized modal.
+are designed to contain a undefined length of content in a fixed sized modal.
 These are suited best for :js:`Modal.types.ajax` or :js:`Modal.types.iframe` content.
 
 .. code-block:: javascript

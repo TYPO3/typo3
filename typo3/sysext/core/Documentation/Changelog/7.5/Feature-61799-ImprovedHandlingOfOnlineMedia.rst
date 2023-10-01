@@ -10,7 +10,7 @@ See :issue:`61799`
 Description
 ===========
 
-Editors can now use YouTube and Vimeo videos (online media) just like a any other file, organising them just like any
+Editors can now use YouTube and Vimeo videos (online media) just like any other file, organising them just like any
 other file in the file list and selecting them in element browser to use in a CE or any other record.
 Adding new online media files is done providing the URL to online media. The matching helper class will fetch the
 needed metadata and supply an image that will be used as preview if available.

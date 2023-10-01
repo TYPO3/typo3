@@ -50,7 +50,7 @@ Setting any of the PHP properties above will have no effect anymore.
 Affected Installations
 ======================
 
-Any TYPO3 installation with a extension accessing directly GraphicalFunctions or GifBuilder API
+Any TYPO3 installation with an extension accessing directly GraphicalFunctions or GifBuilder API
 via PHP and using any of the properties above.
 
 

@@ -33,7 +33,7 @@ Usage in TypeScript:
 
 	import Popover = require('TYPO3/CMS/Backend/Popover');
 
-To use popovers in a amd module, add it as a dependency and a corresponding argument to the anonymous function:
+To use popovers in an amd module, add it as a dependency and a corresponding argument to the anonymous function:
 
 .. code-block:: javascript
 

@@ -8,7 +8,7 @@
 			</trans-unit>
 			<trans-unit id="totp.description" resname="totp.description">
 				<source>This provider allows to authenticate with a single-use passcode which is based on the current time.
-					Each code is only valid for 30 seconds. You need a OTP application or device, supporting such tokens.</source>
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
 			</trans-unit>
 			<trans-unit id="totp.setupInstructions" resname="totp.setupInstructions">
 				<source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.

@@ -556,7 +556,7 @@ formElementPropertyValidatorsDefinition
       Some inspector editors are able to validate it's values through a JavaScript methods.
       ``formElementPropertyValidatorsDefinition`` define basic configurations for such JavaScript validators.
       This JavaScript validators can be registered through ``getFormEditorApp().addPropertyValidationValidator()``. The first method argument is the identifier
-      for this validator. Every array key within ``formElementPropertyValidatorsDefinition`` must be equal to such a identifier.
+      for this validator. Every array key within ``formElementPropertyValidatorsDefinition`` must be equal to such an identifier.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition.<formelementpropertyvalidatoridentifier>.errormessage:
@@ -608,7 +608,7 @@ formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>
       - :ref:`"Form editor"<concepts-formeditor>`
 
 :aspect:`Description`
-      The error message for a inspector editor property validator which is shown if the validation fails.
+      The error message for an inspector editor property validator which is shown if the validation fails.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.formelementgroups:

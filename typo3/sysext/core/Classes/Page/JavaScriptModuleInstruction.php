@@ -26,6 +26,7 @@ class JavaScriptModuleInstruction implements \JsonSerializable
      * @todo In future versions this might be ES6 module as well
      */
     public const FLAG_LOAD_REQUIRE_JS = 1;
+
     /**
      * Indicates all actions shall be applied globally to `top.window`.
      */

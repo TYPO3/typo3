@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class DatabaseSchemaService
 {
     /**
-     * A event listener to inject the required mysql fulltext definition
+     * An event listener to inject the required mysql fulltext definition
      * to schema migration.
      *
      * @param AlterTableDefinitionStatementsEvent $event

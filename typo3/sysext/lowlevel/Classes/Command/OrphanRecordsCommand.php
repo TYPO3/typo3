@@ -59,7 +59,7 @@ Automatic Repair of Errors:
 - Silently deleting the orphaned records. In theory they should not be used anywhere in the system, but there could be references. See below for more details on this matter.
 
 Manual repair suggestions:
-- Possibly re-connect orphaned records to page tree by setting their "pid" field to a valid page id. A lookup in the sys_refindex table can reveal if there are references to a orphaned record. If there are such references (from records that are not themselves orphans) you might consider to re-connect the record to the page tree, otherwise it should be safe to delete it.
+- Possibly re-connect orphaned records to page tree by setting their "pid" field to a valid page id. A lookup in the sys_refindex table can reveal if there are references to an orphaned record. If there are such references (from records that are not themselves orphans) you might consider to re-connect the record to the page tree, otherwise it should be safe to delete it.
 
  If you want to get more detailed information, use the --verbose option.')
             ->addOption(

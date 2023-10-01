@@ -14,7 +14,7 @@ In order to comfortably render video, audio and all other file types with a regi
 introduced with #61800) in FE, the `MediaViewHelper` has been added.
 
 The `MediaViewHelper` first checks if there is a Renderer present for the given file. If not,  it will as fallback
-render a image tag. This way it is a replacement for the `ImageViewHelper` in most cases when rendering video and
+render an image tag. This way it is a replacement for the `ImageViewHelper` in most cases when rendering video and
 audio tags.
 
 Examples:

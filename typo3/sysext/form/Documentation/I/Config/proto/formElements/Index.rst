@@ -560,7 +560,7 @@ formEditor.propertyCollections.validators.[*].identifier
       - :ref:`"\<validatorIdentifier>"<typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>>`
 
 :aspect:`Description`
-      Identifies the validator which should be attached to the form element. Must be equal to a existing ``<validatorIdentifier>``.
+      Identifies the validator which should be attached to the form element. Must be equal to an existing ``<validatorIdentifier>``.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators.*.editors:
@@ -642,7 +642,7 @@ formEditor.propertyCollections.finishers.[*].identifier
       - :ref:`"\<finisherIdentifier>"<typo3.cms.form.prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>>`
 
 :aspect:`Description`
-      Identifies the finisher which should be attached to the form definition. Must be equal to a existing ``<finisherIdentifier>``.
+      Identifies the finisher which should be attached to the form definition. Must be equal to an existing ``<finisherIdentifier>``.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.editors:

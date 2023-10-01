@@ -10,7 +10,7 @@ See :issue:`65585`
 Description
 ===========
 
-TCA type `imageManipulation` brings a image manipulation wizard to the core.
+TCA type `imageManipulation` brings an image manipulation wizard to the core.
 
 This first version brings image cropping with the possibility to
 set a certain aspect ratio for the cropped area. The

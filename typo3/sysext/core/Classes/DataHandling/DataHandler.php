@@ -3655,7 +3655,7 @@ class DataHandler implements LoggerAwareInterface
 
         // When a record is copied in workspace (eg. to create a delete placeholder record for a live record), records
         // pointing to that record need a reference index update. This is for instance the case in FAL, if a sys_file_reference
-        // for a eg. tt_content record is marked as deleted. The tt_content record then needs a reference index update.
+        // that refers e.g. to a tt_content record is marked as deleted. The tt_content record then needs a reference index update.
         // This scenario seems to currently only show up if in workspaces, so the refindex update is restricted to this for now.
         if (!empty($workspaceOptions)) {
             $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, (int)$row['uid'], (int)$this->BE_USER->workspace);

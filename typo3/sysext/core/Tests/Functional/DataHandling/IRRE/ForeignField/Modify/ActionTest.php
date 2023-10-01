@@ -653,7 +653,7 @@ class ActionTest extends AbstractActionTestCase
     }
 
     /**
-     * Checks for a page having a IRRE record. The page is then localized and
+     * Checks for a page having an IRRE record. The page is then localized and
      * an IRRE record is then added to the localized page
      *
      * @test

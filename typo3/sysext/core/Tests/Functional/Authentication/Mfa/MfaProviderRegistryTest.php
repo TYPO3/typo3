@@ -118,7 +118,7 @@ class MfaProviderRegistryTest extends FunctionalTestCase
         self::assertNull($this->subject->getFirstAuthenticationAwareProvider($this->user));
 
         $this->activateProvider('recovery-codes');
-        // Recovery codes can NOT be a authentication aware provider, without another provider being active
+        // Recovery codes can NOT be an authentication aware provider, without another provider being active
         self::assertNull($this->subject->getFirstAuthenticationAwareProvider($this->user));
 
         $this->activateProvider('totp');

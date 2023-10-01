@@ -96,7 +96,7 @@ class FormEditorController extends AbstractBackendController
             PathUtility::isExtensionPath($formPersistenceIdentifier)
             && !$this->formSettings['persistenceManager']['allowSaveToExtensionPaths']
         ) {
-            throw new PersistenceManagerException('Edit a extension formDefinition is not allowed.', 1478265661);
+            throw new PersistenceManagerException('Edit an extension formDefinition is not allowed.', 1478265661);
         }
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);

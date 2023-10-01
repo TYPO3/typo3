@@ -49,7 +49,7 @@ The following methods are marked as deprecated. Calling these methods will trigg
 
 Soft reference parsers must implement
 :php:`TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserInterface`.
-Otherwise a a PHP :php:`E_USER_DEPRECATED` error will be triggered and an exception will be thrown
+Otherwise a PHP :php:`E_USER_DEPRECATED` error will be triggered and an exception will be thrown
 in TYPO3 v12.
 
 Affected Installations

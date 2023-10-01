@@ -63,11 +63,11 @@ class Inline1nCest
 
     public function hideAndUnhideInline1nInlineElement(ApplicationTester $I): void
     {
-        $I->wantTo('Can hide a Inline Element');
+        $I->wantTo('Can hide an Inline Element');
         $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
         $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_child]["].t3-form-field-container-inline-hidden');
         $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_child]["] button span[data-identifier="actions-edit-unhide"]');
-        $I->wantTo('Can unhide a Inline Element');
+        $I->wantTo('Can unhide an Inline Element');
         $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
         $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["].t3-form-field-container-inline-hidden', 2);
     }
