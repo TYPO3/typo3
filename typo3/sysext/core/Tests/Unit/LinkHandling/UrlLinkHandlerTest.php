@@ -117,7 +117,7 @@ final class UrlLinkHandlerTest extends UnitTestCase
                 ['url' => 'http://my-products.com'],
                 'http://my-products.com',
             ],
-            'URL that could be a host or a absolute path' => [
+            'URL that could be a host or an absolute path' => [
                 ['url' => '/www.my-products.com'],
                 ['url' => '/www.my-products.com'],
                 '/www.my-products.com',

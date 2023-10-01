@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class JavaScriptModuleInstruction implements \JsonSerializable
 {
     /**
-     * Indicates a ES6/11 module shall be loaded (paths mapped by an importmap)
+     * Indicates an ES6/11 module shall be loaded (paths mapped by an importmap)
      */
     public const FLAG_LOAD_IMPORTMAP = 2;
 

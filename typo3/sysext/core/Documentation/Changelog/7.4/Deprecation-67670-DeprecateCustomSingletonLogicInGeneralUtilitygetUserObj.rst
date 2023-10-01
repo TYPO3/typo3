@@ -13,7 +13,7 @@ Description
 ===========
 
 The functionality of instantiating classes only once by calling `GeneralUtility::getUserObj($className)` multiple times
-while having a `$className` that is prepended with a ampersand ("&") has been marked as deprecated.
+while having a `$className` that is prepended with an ampersand ("&") has been marked as deprecated.
 
 
 An example of the deprecated behaviour in the ext_localconf.php of an extension:

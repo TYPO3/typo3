@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * based on user or group configuration.
  *
  * We do not have AOP in TYPO3 for now, thus the aspect which
- * deals with resource security is a EventListener which reacts on storage object creation.
+ * deals with resource security is an EventListener which reacts on storage object creation.
  *
  * @internal this is an Event Listener, and not part of TYPO3 Core API.
  */

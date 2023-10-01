@@ -14,7 +14,7 @@ Description
 
 Before #56726 the metadata extraction was only called through the extract metadata
 scheduler task.
-So when a editor uploaded a new file he had to wait until the scheduler task had
+So when an editor uploaded a new file he had to wait until the scheduler task had
 been triggered again and extracted the metadata.
 
 Now the metadata extraction is by default triggered after adding/uploading a file

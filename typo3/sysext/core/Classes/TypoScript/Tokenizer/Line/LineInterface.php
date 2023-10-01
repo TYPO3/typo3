@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStreamInterface;
  * The TypoScript tokenizers deliver streams of lines. This is the main line interface.
  *
  * Each line is represented by a specific line type. For instance, "foo.bar {" creates
- * a IdentifierBlockOpenLine and has the additional method getIdentifierTokenStream()
+ * an IdentifierBlockOpenLine and has the additional method getIdentifierTokenStream()
  * to retrieve the "foo" and "bar" identifier tokens.
  *
  * @internal: Internal tokenizer structure.

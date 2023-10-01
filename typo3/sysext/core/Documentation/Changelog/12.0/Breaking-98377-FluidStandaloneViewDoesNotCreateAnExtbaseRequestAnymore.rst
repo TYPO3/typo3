@@ -13,7 +13,7 @@ Description
 
 In our efforts to further speed up, streamline and separate Fluid from Extbase,
 the :php:`\TYPO3\CMS\Fluid\View\StandaloneView` has been changed to no longer
-create a Extbase Request anymore.
+create an Extbase Request anymore.
 
 StandaloneView is typically not used in Extbase context, creating an Extbase
 Request at this point was a very unfortunate architectural flaw leading to a

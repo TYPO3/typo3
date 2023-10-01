@@ -365,7 +365,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                             // pick the uid field from the array ... Basically, we need the uid of the 'default language' record,
                             // since this is used in JS to locate and remove the 'shadowed' container.
                             // @todo: Find out if this is really necessary that sometimes ['databaseRow']['l10n_parent'][0]
-                            // is resolved to a direct uid, and sometimes it's a array with items. Could this be harmonized?
+                            // is resolved to a direct uid, and sometimes it's an array with items. Could this be harmonized?
                             $transOrigPointerFieldValue = $transOrigPointerFieldValue['uid'];
                         }
                     }

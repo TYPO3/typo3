@@ -34,7 +34,7 @@ TYPO3 installations having this option set in their TypoScript setup.
 Migration
 =========
 
-In case you still want to keep a email SPAM protection around, it is recommended
+In case you still want to keep an email SPAM protection around, it is recommended
 to set the option :typoscript:`config.spamProtectEmailAddresses` to a numeric value between
 `-10` and `10`.
 

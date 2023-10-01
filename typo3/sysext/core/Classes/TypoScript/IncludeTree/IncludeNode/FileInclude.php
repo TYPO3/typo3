@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode;
  * A classic include from sys_template "include_static_file":
  * EXT:/My/Path/[constants|setup].[typoscript|ts|txt]
  *
- * This is always a child of a IncludeStaticFileDatabaseInclude.
+ * This is always a child of an IncludeStaticFileDatabaseInclude.
  *
  * @internal: Internal tree structure.
  */

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 
 /**
- * Exception indicating that a online media asset is already present in the target folder
+ * Exception indicating that an online media asset is already present in the target folder
  */
 class OnlineMediaAlreadyExistsException extends Exception
 {

@@ -14,7 +14,7 @@ Description
 The short-hand method :php:`GeneralUtility::getUrl()` provides a
 fast way to fetch the contents of a local file or remote URL.
 
-For Remote URLs, TYPO3 v8 provides a object-oriented (PSR-7 compatible) way by using
+For Remote URLs, TYPO3 v8 provides an object-oriented (PSR-7 compatible) way by using
 the :php:`RequestFactory->request($url, $method, $options)` API. Under the hood, the PHP library GuzzleHTTP is used,
 which evaluates what best option (e.g. curl library) should handle
 the download to TYPO3.

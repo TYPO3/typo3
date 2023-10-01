@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * This class deals with metadata translation as a event listener which reacts on an event MetadataRepository.
+ * This class deals with metadata translation as an event listener which reacts on an event MetadataRepository.
  *
  * The listener injects user permissions and mount points into the storage
  * based on user or group configuration.

@@ -20,7 +20,7 @@ backend.
 The Record Selectors are used when e.g. choosing a :guilabel:`Target Page` for a
 :guilabel:`Shortcut Page`, or selecting a :guilabel:`Storage Page` in a plugin.
 
-The file selectors are used when choosing a file for a IRRE-based FAL-based
+The file selectors are used when choosing a file for an IRRE-based FAL-based
 file reference.
 
 Link Pickers are used when linking to a specific page, content element, file,

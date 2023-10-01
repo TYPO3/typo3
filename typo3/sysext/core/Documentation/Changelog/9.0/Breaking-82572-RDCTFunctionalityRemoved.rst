@@ -40,7 +40,7 @@ Calling :php:`$TSFE->sendRedirect()`, :php:`$TSFE->updateMD5paramsRecord()` and
 :php:`GeneralUtility::makeRedirectUrl()` will result in a fatal PHP error.
 
 Accessing the now non-existent property :php:`$TSFE->RDCT` will trigger a PHP notice, as well
-as setting up a new instance of `TypoScriptFrontendController` with a eighth parameter.
+as setting up a new instance of `TypoScriptFrontendController` with an eighth parameter.
 
 Accessing the database table `cache_md5params` will also lead to unexpected results as this table
 does not exist in new installations anymore.

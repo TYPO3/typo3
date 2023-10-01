@@ -21,7 +21,7 @@ link them to another page, for example, a special login page:
     config.typolinkLinkAccessRestrictedPages = 13
     config.typolinkLinkAccessRestrictedPages_addParams = &originalPage=###PAGE_ID###
 
-The resulting link to a access-restricted page (e.g. `22`) looks like this:
+The resulting link to an access-restricted page (e.g. `22`) looks like this:
 :html:`<a href="/login?originalPage=22">My page</a>`
 
 The newly introduced option

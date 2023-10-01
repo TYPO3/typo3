@@ -744,7 +744,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * Create page localization in live, then move default language page in workspaces to different pages twice.
      * Verifies the page localization is moved together with the default language page.
-     * This should create "move" a overlay for the localization.
+     * This should create "move" an overlay for the localization.
      *
      * No ext:core implementation of this test since it is identical with
      * moveLocalizedPageToDifferentPageTwice() in non-workspace

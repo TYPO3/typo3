@@ -12,7 +12,7 @@ Description
 ===========
 
 The TypoScript setting :typoscript:`page.CSS_inlineStyle` which was used to
-inject a inline CSS string into the TYPO3 Frontend has been removed.
+inject an inline CSS string into the TYPO3 Frontend has been removed.
 
 Impact
 ======

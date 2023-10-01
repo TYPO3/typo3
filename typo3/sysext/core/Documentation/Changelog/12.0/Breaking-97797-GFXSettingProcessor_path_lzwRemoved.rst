@@ -42,7 +42,7 @@ Migration
 =========
 
 It is recommended to switch to PNG thumbnails (TYPO3 setting `GFX/thumbnails_png`),
-or use a ImageMagick version supporting LZW compression for GIF files, if this
+or use an ImageMagick version supporting LZW compression for GIF files, if this
 functionality is explicitly needed.
 
 In addition, solutions such as `gifsicle` can be used instead to optimize

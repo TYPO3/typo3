@@ -15,7 +15,7 @@ When indexing a page, the indexer of `Indexed search` previously kept the used c
 used "cHashParams" for storing search entries. This is not necessary anymore, as Site Handling now
 contains the relevant arguments already in the search entry as well. This can be removed now.
 
-In addition, when setting up a Indexing configuration, the option to respect cHash is removed,
+In addition, when setting up an Indexing configuration, the option to respect cHash is removed,
 as this is done automatically when needed.
 
 The public property :php:`TYPO3\CMS\IndexedSearch\Indexer->cHashParams` has been removed.

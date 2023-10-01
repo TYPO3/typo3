@@ -31,4 +31,4 @@ formEditor.propertyCollections.finishers.10.identifier
       - :ref:`"\<finisherIdentifier>"<prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>>`
 
 :aspect:`Description`
-      Identifies the finisher which should be attached to the form definition. Must be equal to a existing ``<finisherIdentifier>``.
+      Identifies the finisher which should be attached to the form definition. Must be equal to an existing ``<finisherIdentifier>``.

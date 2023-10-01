@@ -13,7 +13,7 @@ Description
 ===========
 
 The ClickMenu has seen some major changes under the hood. This implies some refactoring within JavaScript where existing
-functionality is replaced by a AMD Module based on jQuery. The following JS methods are now replaced by respective
+functionality is replaced by an AMD Module based on jQuery. The following JS methods are now replaced by respective
 methods:
 
 - showClickmenu_raw()

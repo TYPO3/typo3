@@ -49,7 +49,7 @@ final class IncludeTreeConditionAggregatorVisitor implements IncludeTreeVisitorI
     }
 
     /**
-     * If the given include is a IncludeConditionInterface, grab it's original (unchanged by constants)
+     * If the given include is an IncludeConditionInterface, grab it's original (unchanged by constants)
      * condition token.
      */
     public function visit(IncludeInterface $include, int $currentDepth): void

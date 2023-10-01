@@ -535,7 +535,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * If user is admin TRUE is also returned
      *
      * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules", "available_widgets", "mfa_providers"
-     * @param string|int $value String to search for in the groupData-list, can also be a integer for "pagetypes_select" or "allowed_languages")
+     * @param string|int $value String to search for in the groupData-list, can also be an integer for "pagetypes_select" or "allowed_languages")
      * @return bool TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
      */
     public function check($type, $value)

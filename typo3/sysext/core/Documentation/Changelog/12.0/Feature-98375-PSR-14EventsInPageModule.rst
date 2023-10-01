@@ -109,7 +109,7 @@ The corresponding event listener class:
             $queryBuilder = $event->getQueryBuilder();
 
             // Add an additional condition to the QueryBuilder for the table
-            // Note: This is only a example, modify the QueryBuilder instance
+            // Note: This is only an example, modify the QueryBuilder instance
             //       here to your needs.
             $queryBuilder = $queryBuilder->andWhere(
                 $queryBuilder->expr()->neq(
