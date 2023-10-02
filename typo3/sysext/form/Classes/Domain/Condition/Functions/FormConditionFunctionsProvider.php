@@ -45,8 +45,8 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
         return new ExpressionFunction(
             'getFormValue',
             static fn() => null, // Not implemented, we only use the evaluator
-            static function ($arguments, $field) {
-                return $arguments['formValues'][$field] ?? null;
+            static function ($arguments, $field, $default = null) {
+                return $arguments['formValues'][$field] ?? $default;
             }
         );
     }
