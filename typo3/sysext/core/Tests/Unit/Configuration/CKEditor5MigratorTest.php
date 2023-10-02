@@ -1036,6 +1036,133 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 ],
             ],
 
+            // typo3link.additionalAttributes
+            'Migrate typo3link.additionalAttributes to config.htmlSupport' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'typo3link' => [
+                                'additionalAttributes' => [
+                                    'foo',
+                                    'bar',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'htmlSupport' => [
+                                'allow' => [
+                                    [
+                                        'name' => 'a',
+                                        'attributes' => [
+                                            'foo',
+                                            'bar',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'Unset empty typo3link.additionalAttributes' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'typo3link' => [
+                                'additionalAttributes' => [],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'Unset invalid values in typo3link.additionalAttributes' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'typo3link' => [
+                                'additionalAttributes' => 'invalid string value',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
             // Plugin Alignment Handling
             'Remove Alignment Plugin' => [
                 [

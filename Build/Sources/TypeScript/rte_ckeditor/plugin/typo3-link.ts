@@ -274,7 +274,6 @@ export class Typo3LinkEditing extends Core.Plugin {
     // @todo: Why is this needed? Remove.
     (window as any).editor = editor;
 
-    // @todo YAML additionalAttributes is not implemented yet
     editor.model.schema.extend('$text', { allowAttributes: ['linkTitle', 'linkTarget', 'linkRel', 'linkDataRteError'] });
 
     const ghsDataFilter: DataFilter = editor.plugins.get('DataFilter');

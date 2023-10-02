@@ -198,6 +198,7 @@ class CKEditor5Migrator
             $this->migrateFormatTagsToHeadings();
             $this->migrateStylesSetToStyleDefinitions();
             $this->migrateContentsCssToArray();
+            $this->migrateTypo3LinkAdditionalAttributes();
             // configure plugins
             $this->handleAlignmentPlugin();
             $this->handleWhitespacePlugin();
@@ -580,6 +581,25 @@ class CKEditor5Migrator
                 })
             );
         }
+    }
+
+    protected function migrateTypo3LinkAdditionalAttributes(): void
+    {
+        if (!isset($this->configuration['editor']['config']['typo3link']['additionalAttributes'])) {
+            return;
+        }
+        $additionalAttributes = $this->configuration['editor']['config']['typo3link']['additionalAttributes'];
+        unset($this->configuration['editor']['config']['typo3link']['additionalAttributes']);
+        if ($this->configuration['editor']['config']['typo3link'] === []) {
+            unset($this->configuration['editor']['config']['typo3link']);
+        }
+        if (!is_array($additionalAttributes) || $additionalAttributes === []) {
+            return;
+        }
+        $this->configuration['editor']['config']['htmlSupport']['allow'][] = [
+            'name' => 'a',
+            'attributes' => array_values($additionalAttributes),
+        ];
     }
 
     protected function handleAlignmentPlugin(): void
