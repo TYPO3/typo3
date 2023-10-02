@@ -62,6 +62,7 @@ The following options are not needed anymore in CKEditor 5:
 *    editor.config.entities_latin
 *    editor.config.entities
 *    editor.config.extraAllowedContent (covered via GeneralHTMLSupport plugin)
+*    :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes']`
 
 More migration options can be found here:
 https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/migration-from-ckeditor-4.html

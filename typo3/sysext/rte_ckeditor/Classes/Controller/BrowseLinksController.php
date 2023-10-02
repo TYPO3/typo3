@@ -46,7 +46,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected array $classesAnchorDefaultTarget = [];
     protected array $classesAnchorJSOptions = [];
     protected string $defaultLinkTarget = '';
-    protected array $additionalAttributes = [];
     protected string $siteUrl = '';
 
     public function __construct(
@@ -243,14 +242,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
             ? $this->classesAnchorDefaultTarget[$this->displayedLinkHandlerId]
             : ($this->buttonConfig[$this->displayedLinkHandlerId]['properties']['target']['default'] ?? $this->buttonConfig['properties']['target']['default'] ?? '');
 
-        // todo: find new name for this option
-        // Initializing additional attributes
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes'] ?? false) {
-            $addAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rte_ckeditor']['plugins']['TYPO3Link']['additionalAttributes'], true);
-            foreach ($addAttributes as $attribute) {
-                $this->additionalAttributes[$attribute] = $this->linkAttributeValues[$attribute] ?? '';
-            }
-        }
         return parent::renderLinkAttributeFields($view);
     }
 
