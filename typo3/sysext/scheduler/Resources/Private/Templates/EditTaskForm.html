@@ -72,6 +72,11 @@
     </form>
 
     <div id="extraFieldsHidden"></div>
+
+    <form name="tx_scheduler_form_delete_{uid}" id="tx_scheduler_form_delete_{uid}" method="post">
+        <input name="action[delete]" type="hidden" value="{uid}">
+    </form>
+
     <f:render partial="ServerTime" arguments="{dateFormat: dateFormat}" />
 
 </f:section>
