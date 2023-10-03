@@ -184,7 +184,12 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             $cObj->setRequest($request);
             $linkFactory = GeneralUtility::makeInstance(LinkFactory::class);
             $linkResult = $linkFactory->create((string)$this->renderChildren(), $typolinkConfiguration, $cObj);
-            $this->tag->addAttributes($linkResult->getAttributes());
+
+            // Removing TypoLink target here to ensure same behaviour with extbase uri builder in this context.
+            $linkResultAttributes = $linkResult->getAttributes();
+            unset($linkResultAttributes['target']);
+
+            $this->tag->addAttributes($linkResultAttributes);
             $this->tag->setContent($this->renderChildren());
             $this->tag->forceClosingTag(true);
             $result = $this->tag->render();

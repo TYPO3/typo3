@@ -23,10 +23,13 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -225,6 +228,31 @@ final class PageViewHelperTest extends FunctionalTestCase
                 '<f:link.page pageUid="3" additionalParams="{tx_examples_haiku: {action: \'show\', haiku: 42}}">haiku title</f:link.page>',
                 '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bhaiku%5D=42&amp;cHash=1e0eb1e54d6bacf0138a50107c6ae29a">haiku title</a>',
             ],
+            // see: https://forge.typo3.org/issues/101432
+            'link with target renders the correct target attribute if intTarget is configured' => [
+                '<f:link.page pageUid="3" target="home">link me</f:link.page>',
+                '<a target="home" href="/dummy-1-2/dummy-1-2-3">link me</a>',
+                [
+                    'config.' => [
+                        'intTarget' => '_self',
+                    ],
+                ],
+            ],
+            // see: https://forge.typo3.org/issues/101432
+            'link skips configured intTarget if no target viewhelper attribute is provided' => [
+                '<f:link.page pageUid="3">link me</f:link.page>',
+                '<a href="/dummy-1-2/dummy-1-2-3">link me</a>',
+                [
+                    'config.' => [
+                        'intTarget' => '_self',
+                    ],
+                ],
+                [
+                    'config' => [
+                        'intTarget' => '_self',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -232,20 +260,26 @@ final class PageViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderDataProvider
      */
-    public function renderInFrontendWithCoreContext(string $template, string $expected): void
+    public function renderInFrontendWithCoreContext(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
         $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
+        $request = $request->withAttribute('frontent.controller', $GLOBALS['TSFE']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE']->id = 1;
         $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $GLOBALS['TSFE']->config = $tsfeConfigArray;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
@@ -257,20 +291,25 @@ final class PageViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderDataProvider
      */
-    public function renderInFrontendWithExtbaseContext(string $template, string $expected): void
+    public function renderInFrontendWithExtbaseContext(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
+        $request = $request->withAttribute('frontent.controller', $GLOBALS['TSFE']);
         $request = new Request($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->id = 1;
         $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $view = new StandaloneView();
