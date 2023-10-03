@@ -111,26 +111,57 @@ final class ActionViewHelperTest extends FunctionalTestCase
             '<f:link.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show" pageType="1234">link to root page with page type</f:link.action>',
             '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;type=1234&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to root page with page type</a>',
         ];
+        // see: https://forge.typo3.org/issues/101432
+        yield 'link with target renders the correct target attribute if intTarget is configured' => [
+            '<f:link.action pageUid="3" target="home" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
+            '<a target="home" href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
+            [
+                'config.' => [
+                    'intTarget' => '_self',
+                ],
+            ],
+        ];
+        // see: https://forge.typo3.org/issues/101432
+        yield 'link skips configured intTarget if no target viewhelper attribute is provided' => [
+            '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
+            [
+                'config.' => [
+                    'intTarget' => '_self',
+                ],
+            ],
+            [
+                'config' => [
+                    'intTarget' => '_self',
+                ],
+            ],
+        ];
     }
 
     /**
      * @test
      * @dataProvider renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider
      */
-    public function renderInFrontendWithCoreContextAndAllNecessaryExtbaseArguments(string $template, string $expected): void
+    public function renderInFrontendWithCoreContextAndAllNecessaryExtbaseArguments(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
+        $request = $request->withAttribute('frontent.controller', $GLOBALS['TSFE']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE']->id = 1;
         $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $GLOBALS['TSFE']->config = $tsfeConfigArray;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
@@ -192,13 +223,38 @@ final class ActionViewHelperTest extends FunctionalTestCase
             '<f:link.action pageUid="3" additionalParams="{tx_examples_haiku: {action: \'show\', haiku: 42}}">haiku title</f:link.action>',
             '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;tx_examples_haiku%5Bhaiku%5D=42&amp;cHash=aefc37bc2323ebd8c8e39c222adb7413">haiku title</a>',
         ];
+        // see: https://forge.typo3.org/issues/101432
+        yield 'link with target renders the correct target attribute if intTarget is configured' => [
+            '<f:link.action pageUid="3" target="home" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
+            '<a target="home" href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
+            [
+                'config.' => [
+                    'intTarget' => '_self',
+                ],
+            ],
+        ];
+        // see: https://forge.typo3.org/issues/101432
+        yield 'link skips configured intTarget if no target viewhelper attribute is provided' => [
+            '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
+            [
+                'config.' => [
+                    'intTarget' => '_self',
+                ],
+            ],
+            [
+                'config' => [
+                    'intTarget' => '_self',
+                ],
+            ],
+        ];
     }
 
     /**
      * @test
      * @dataProvider renderInFrontendWithExtbaseContextDataProvider
      */
-    public function renderInFrontendWithExtbaseContext(string $template, string $expected): void
+    public function renderInFrontendWithExtbaseContext(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -206,7 +262,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, '/'),
         );
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Examples');
         $extbaseRequestParameters->setControllerName('Detail');
@@ -218,11 +274,13 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('extbase', $extbaseRequestParameters);
         $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
+        $request = $request->withAttribute('frontent.controller', $GLOBALS['TSFE']);
         $request = new Request($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->id = 1;
         $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $GLOBALS['TSFE']->config = $tsfeConfigArray;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
