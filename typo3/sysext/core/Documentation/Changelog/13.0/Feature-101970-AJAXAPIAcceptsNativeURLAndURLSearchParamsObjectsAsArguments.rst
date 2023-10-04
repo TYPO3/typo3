@@ -19,7 +19,7 @@ Impact
 ======
 
 The constructor now accepts a :js:`URL` object as argument, along with the
-already established `string` type. Also, the :js:`withQueryString()` method
+already established `string` type. Also, the :js:`withQueryArguments()` method
 accepts an object of type :js:`URLSearchParams` as argument.
 
 Example
