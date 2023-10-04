@@ -5,6 +5,7 @@ import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { Editor, PluginConstructor } from '@ckeditor/ckeditor5-core';
 import { prefixAndRebaseCss } from '@typo3/rte-ckeditor/css-prefixer';
+import type { GeneralHtmlSupportConfig } from '@ckeditor/ckeditor5-html-support';
 
 interface CKEditor5Config {
   // in TYPO3 always `items` property is used, skipping `string[]`
@@ -22,7 +23,7 @@ interface CKEditor5Config {
   language?: any;
   table?: any;
   ui?: any;
-  htmlSupport?: any;
+  htmlSupport?: GeneralHtmlSupportConfig;
 
   wordCount?: any;
   typo3link?: any;
@@ -133,7 +134,7 @@ export class CKEditor5Element extends LitElement {
           config.ui = this.options.ui;
         }
         if (this.options.htmlSupport) {
-          config.htmlSupport = this.options.htmlSupport;
+          config.htmlSupport = convertPseudoRegExp(this.options.htmlSupport) as GeneralHtmlSupportConfig;
         }
 
         CKEditor5
@@ -236,6 +237,36 @@ export class CKEditor5Element extends LitElement {
       editor.enableReadOnlyMode('typo3-lock');
     }
   }
+}
+
+type RecurseMapInput = Record<string, unknown>|Array<unknown>|unknown;
+type PseudoRegExp = {
+  pattern: string,
+  flags?: string
+};
+
+function walkObj(data: RecurseMapInput, proc: (value: unknown) => unknown|null): RecurseMapInput {
+  if (typeof data === 'object') {
+    if (Array.isArray(data)) {
+      return data.map((element: RecurseMapInput) => proc(element) ?? walkObj(element, proc));
+    }
+    const newData: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(data)) {
+      newData[key] = proc(value) ?? walkObj(value, proc);
+    }
+    return newData;
+  }
+  return data;
+}
+
+function convertPseudoRegExp(data: RecurseMapInput): RecurseMapInput {
+  return walkObj(data, (entry: PseudoRegExp | unknown): RegExp | null => {
+    if (typeof entry === 'object' && 'pattern' in entry && typeof entry.pattern === 'string') {
+      const pseudoRegExp = entry as PseudoRegExp;
+      return new RegExp(pseudoRegExp.pattern, pseudoRegExp.flags || undefined);
+    }
+    return null;
+  });
 }
 
 declare global {
