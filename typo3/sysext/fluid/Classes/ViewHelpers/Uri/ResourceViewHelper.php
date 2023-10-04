@@ -29,6 +29,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * A ViewHelper for creating URIs to resources.
  *
+ * This ViewHelper should be used for extension resource files.
+ *
+ * For images within FAL storages, or where graphical operations are
+ * performed, use :ref:`<f:uri.image> <typo3-fluid-uri-image>` instead.
+ *
  * Examples
  * ========
  *
