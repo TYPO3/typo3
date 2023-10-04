@@ -49,6 +49,7 @@ use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
+use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\VariableRenderableInterface;
 use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
@@ -568,7 +569,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         }
 
         foreach ($page->getElementsRecursively() as $element) {
-            if (!$element->isEnabled()) {
+            if (!$this->isRenderableEnabled($element)) {
                 continue;
             }
 
@@ -1105,5 +1106,20 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'] ?? null;
+    }
+
+    protected function isRenderableEnabled(RenderableInterface $renderable): bool
+    {
+        if (!$renderable->isEnabled()) {
+            return false;
+        }
+
+        while ($renderable = $renderable->getParentRenderable()) {
+            if ($renderable instanceof RenderableInterface && !$renderable->isEnabled()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
