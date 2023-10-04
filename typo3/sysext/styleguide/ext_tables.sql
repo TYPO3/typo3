@@ -160,15 +160,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     unknown_1 text,
 );
 
-CREATE TABLE tx_styleguide_elements_group (
-);
-
-CREATE TABLE tx_styleguide_elements_folder (
-);
-
-CREATE TABLE tx_styleguide_elements_imagemanipulation (
-);
-
 
 CREATE TABLE tx_styleguide_elements_rte (
     rte_1 text,
@@ -254,15 +245,6 @@ CREATE TABLE tx_styleguide_elements_select (
     select_tree_6 text,
 
     select_requestUpdate_1 text
-);
-
-
-# @todo: This is the first table statement that can vanish altogether when fal_1 is removed
-#        and https://review.typo3.org/c/Packages/TYPO3.CMS/+/80374 is done.
-#        Core parser needs a patch to deal with non-existing table definition, though.
-#        This entry can be removed when its done.
-CREATE TABLE tx_styleguide_elements_select_single_12_foreign (
-    fal_1 int unsigned DEFAULT 0 NOT NULL,
 );
 
 
