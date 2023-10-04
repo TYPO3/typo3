@@ -1162,6 +1162,176 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
+            // {extraA,disa,a}allowedContent
+            'Migrate {extraA,disa,a}allowedContent from string representation to config.htmlSupport' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'extraAllowedContent' => 'div[aria-label,data-*];a(classname)',
+                            'allowedContent' => '*[*](*){*}',
+                            'disallowedContent' => 'strong underline;em[*](*){*}',
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'htmlSupport' => [
+                                'allow' => [
+                                    [
+                                        'classes' => true,
+                                        'attributes' => true,
+                                        'styles' => true,
+                                    ],
+                                    [
+                                        'name' => 'div',
+                                        'attributes' => [
+                                            'aria-label',
+                                            [
+                                                'pattern' => 'data-.+',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'name' => 'a',
+                                        'classes' => [
+                                            'classname',
+                                        ],
+                                    ],
+                                ],
+                                'disallow' => [
+                                    [
+                                        'name' => [
+                                            'pattern' => 'strong|underline',
+                                        ],
+                                    ],
+                                    [
+                                        'name' => 'em',
+                                        'classes' => true,
+                                        'attributes' => true,
+                                        'styles' => true,
+                                    ],
+                                ],
+                            ],
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            // {extraA,disa,a}allowedContent
+            'Migrate {extraA,disa,a}allowedContent from object representation to config.htmlSupport' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'extraAllowedContent' => [
+                                'div' => [
+                                    'attributes' => 'aria-label,data-*',
+                                ],
+                                'a' => [
+                                    'classes' => 'classname',
+                                ],
+                            ],
+                            'allowedContent' => [
+                                '*' => [
+                                    'styles' => '*',
+                                    'classes' => '*',
+                                    'attributes' => '*',
+                                ],
+                            ],
+                            'disallowedContent' => [
+                                'strong underline' => true,
+                                'em' => [
+                                    'styles' => '*',
+                                    'classes' => '*',
+                                    'attributes' => '*',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'htmlSupport' => [
+                                'allow' => [
+                                    [
+                                        'classes' => true,
+                                        'attributes' => true,
+                                        'styles' => true,
+                                    ],
+                                    [
+                                        'name' => 'div',
+                                        'attributes' => [
+                                            'aria-label',
+                                            [
+                                                'pattern' => 'data-.+',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'name' => 'a',
+                                        'classes' => [
+                                            'classname',
+                                        ],
+                                    ],
+                                ],
+                                'disallow' => [
+                                    [
+                                        'name' => [
+                                            'pattern' => 'strong|underline',
+                                        ],
+                                    ],
+                                    [
+                                        'name' => 'em',
+                                        'classes' => true,
+                                        'attributes' => true,
+                                        'styles' => true,
+                                    ],
+                                ],
+                            ],
+                            'removePlugins' => [],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
 
             // Plugin Alignment Handling
             'Remove Alignment Plugin' => [

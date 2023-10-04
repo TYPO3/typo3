@@ -199,6 +199,7 @@ class CKEditor5Migrator
             $this->migrateStylesSetToStyleDefinitions();
             $this->migrateContentsCssToArray();
             $this->migrateTypo3LinkAdditionalAttributes();
+            $this->migrateAllowedContent();
             // configure plugins
             $this->handleAlignmentPlugin();
             $this->handleWhitespacePlugin();
@@ -600,6 +601,143 @@ class CKEditor5Migrator
             'name' => 'a',
             'attributes' => array_values($additionalAttributes),
         ];
+    }
+
+    protected function parseRuleProperties(string $properties, string $type): ?string
+    {
+        $groupsPatterns = [
+            'styles' => '/{([^}]+)}/',
+            'attrs' => '/\[([^\]]+)\]/',
+            'classes' => '/\(([^\)]+)\)/',
+        ];
+        $pattern = $groupsPatterns[$type] ?? null;
+        if ($pattern === null) {
+            throw new \InvalidArgumentException('Expected type to be styles, attrs or classes', 1696326899);
+        }
+
+        $matches = [];
+        if (preg_match($pattern, $properties, $matches) === 1) {
+            return trim($matches[1]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Based on https://github.com/ckeditor/ckeditor4/blob/4.23.0-lts/core/filter.js#L1438
+     */
+    protected function parseRulesString(string $input): array
+    {
+        $ruleConfig = [];
+        do {
+            $matches = [];
+            $res = preg_match(
+                // Based on https://github.com/ckeditor/ckeditor4/blob/4.23.0-lts/core/filter.js#L1431
+                // <   elements   ><                       styles, attributes and classes                        >< separator >
+                '/^([a-z0-9\-*\s]+)((?:\s*\{[!\w\-,\s\*]+\}\s*|\s*\[[!\w\-,\s\*]+\]\s*|\s*\([!\w\-,\s\*]+\)\s*){0,3})(?:;\s*|$)/i',
+                $input,
+                $matches
+            );
+            if ($res === false || $res === 0) {
+                return $ruleConfig;
+            }
+            $name = $matches[1];
+            $properties = $matches[2] ?? null;
+            $config = true;
+            if ($properties !== null) {
+                $config = [];
+                $config['styles'] = $this->parseRuleProperties($properties, 'styles');
+                $config['attributes'] = $this->parseRuleProperties($properties, 'attrs');
+                $config['classes'] = $this->parseRuleProperties($properties, 'classes');
+            }
+            $ruleConfig[$name] = $config;
+
+            $input = substr($input, strlen($matches[0]));
+        } while ($input !== '');
+        return $ruleConfig;
+    }
+
+    protected function migrateAllowedContent(): void
+    {
+        $types = [
+            'allowedContent' => 'allow',
+            'extraAllowedContent' => 'allow',
+            'disallowedContent' => 'disallow',
+        ];
+
+        foreach ($types as $option4 => $option5) {
+            if (!isset($this->configuration['editor']['config'][$option4])) {
+                continue;
+            }
+
+            if ($option4 === 'allowedContent') {
+                if ($this->configuration['editor']['config']['allowedContent'] === true || $this->configuration['editor']['config']['allowedContent'] === '1') {
+                    $this->configuration['editor']['config']['htmlSupport']['allow'][] = [
+                        // Allow *any* tag (even custom elements)
+                        'name' => [
+                            'pattern' => '.+',
+                        ],
+                        'attributes' => true,
+                        'classes' => true,
+                        'styles' => true,
+                    ];
+                    unset($this->configuration['editor']['config']['allowedContent']);
+                    continue;
+                }
+            }
+
+            $config4 = $this->configuration['editor']['config'][$option4];
+            if (is_string($config4)) {
+                $config4 = $this->parseRulesString($config4);
+            }
+
+            foreach ($config4 as $name => $options) {
+                $config = [];
+                if ($name !== '*') {
+                    $config['name'] = str_contains($name, '*') || str_contains($name, ' ') ?
+                        [ 'pattern' => str_replace(['*', ' '], ['.+', '|'], $name) ] :
+                        $name;
+                }
+
+                if (is_bool($options)) {
+                    if ($options) {
+                        $this->configuration['editor']['config']['htmlSupport'][$option5][] = $config;
+                    }
+                    continue;
+                }
+
+                if (!is_array($options)) {
+                    continue;
+                }
+
+                $wildcardToRegex = fn (string $v): string|array => str_contains($v, '*') ? [ 'pattern' => str_replace('*', '.+', $v) ] : $v;
+                if (isset($options['classes'])) {
+                    if ($options['classes'] === '*') {
+                        $config['classes'] = true;
+                    } else {
+                        $config['classes'] = array_map($wildcardToRegex, explode(',', $options['classes']));
+                    }
+                }
+
+                if (isset($options['attributes'])) {
+                    if ($options['attributes'] === '*') {
+                        $config['attributes'] = true;
+                    } else {
+                        $config['attributes'] = array_map($wildcardToRegex, explode(',', $options['attributes']));
+                    }
+                }
+
+                if (isset($options['styles'])) {
+                    if ($options['styles'] === '*') {
+                        $config['styles'] = true;
+                    } else {
+                        $config['styles'] = array_map($wildcardToRegex, explode(',', $options['styles']));
+                    }
+                }
+                $this->configuration['editor']['config']['htmlSupport'][$option5][] = $config;
+            }
+            unset($this->configuration['editor']['config'][$option4]);
+        }
     }
 
     protected function handleAlignmentPlugin(): void
