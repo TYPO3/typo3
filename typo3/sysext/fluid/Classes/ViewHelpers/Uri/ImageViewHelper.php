@@ -29,6 +29,22 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * Resizes a given image (if required) and returns its relative path.
  *
+ * This ViewHelper should only be used for images within FAL storages,
+ * or where graphical operations shall be performed.
+ *
+ * Note that when the contents of a non-FAL image are changed,
+ * an image may not show updated processed contents unless either the
+ * FAL record is updated/removed, or the temporary processed images are
+ * cleared.
+ *
+ * Also note that image operations (cropping, scaling, converting) on
+ * non-FAL files may be changed in future TYPO3 versions, since those operations
+ * are coupled with FAL metadata. Each non-FAL image operation creates a
+ * "fake" FAL record, which may lead to problems.
+ *
+ * For extension resource files, use :ref:`<f:uri.resource> <typo3-fluid-uri-resource>`
+ * instead.
+ *
  * External URLs are not processed and just returned as is.
  *
  * Examples
