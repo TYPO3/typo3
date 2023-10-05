@@ -30,32 +30,67 @@ final class DateFormatterTest extends UnitTestCase
             "yyyy.MM.dd G 'at' HH:mm:ss zzz",
         ];
         yield 'full - no locale' => [
-            'Thursday, February 2, 2023 at 13:05:00 Coordinated Universal Time',
+            'Thursday, February 2, 2023 at 1:05:00 PM Coordinated Universal Time',
             'FULL',
         ];
+        yield 'full - locale C' => [
+            'Thursday, February 2, 2023 at 1:05:00 PM Coordinated Universal Time',
+            'FULL',
+            new Locale('C'),
+        ];
         yield 'long - no locale' => [
-            'February 2, 2023 at 13:05:00 UTC',
+            'February 2, 2023 at 1:05:00 PM UTC',
             'LONG',
         ];
+        yield 'long - locale C' => [
+            'February 2, 2023 at 1:05:00 PM UTC',
+            'LONG',
+            new Locale('C'),
+        ];
         yield 'medium - no locale' => [
-            'Feb 2, 2023, 13:05:00',
+            'Feb 2, 2023, 1:05:00 PM',
             'MEDIUM',
         ];
+        yield 'medium - locale C' => [
+            'Feb 2, 2023, 1:05:00 PM',
+            'MEDIUM',
+            new Locale('C'),
+        ];
         yield 'medium with int - no locale' => [
-            'Feb 2, 2023, 13:05:00',
+            'Feb 2, 2023, 1:05:00 PM',
             \IntlDateFormatter::MEDIUM,
         ];
+        yield 'medium with int - locale C' => [
+            'Feb 2, 2023, 1:05:00 PM',
+            \IntlDateFormatter::MEDIUM,
+            new Locale('C'),
+        ];
         yield 'medium with int as string - no locale' => [
-            'Feb 2, 2023, 13:05:00',
+            'Feb 2, 2023, 1:05:00 PM',
             (string)\IntlDateFormatter::MEDIUM,
         ];
+        yield 'medium with int as string - locale C' => [
+            'Feb 2, 2023, 1:05:00 PM',
+            (string)\IntlDateFormatter::MEDIUM,
+            new Locale('C'),
+        ];
         yield 'short - no locale' => [
-            '2/2/23, 13:05',
+            '2/2/23, 1:05 PM',
             'SHORT',
         ];
+        yield 'short - locale C' => [
+            '2/2/23, 1:05 PM',
+            'SHORT',
+            new Locale('C'),
+        ];
         yield 'short in lowercase - no locale' => [
-            '2/2/23, 13:05',
+            '2/2/23, 1:05 PM',
             'short',
+        ];
+        yield 'short in lowercase - locale C' => [
+            '2/2/23, 1:05 PM',
+            'short',
+            new Locale('C'),
         ];
         yield 'regular formatting - en-US locale' => [
             '2023.02.02 AD at 13:05:00 UTC',

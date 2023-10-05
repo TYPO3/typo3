@@ -36,6 +36,10 @@ class DateFormatter
     public function format(mixed $date, string|int $format, string|Locale $locale): string
     {
         $locale = (string)$locale;
+        // Use fallback locale if 'C' is provided.
+        if ($locale === 'C') {
+            $locale = 'en-US';
+        }
         if (is_int($format) || MathUtility::canBeInterpretedAsInteger($format)) {
             $dateFormatter = new \IntlDateFormatter($locale, (int)$format, (int)$format);
         } else {
@@ -82,9 +86,13 @@ class DateFormatter
 
         if (empty($locale)) {
             // get current locale
-            $locale = setlocale(LC_TIME, '0');
+            $locale = (string)setlocale(LC_TIME, '0');
         } else {
             $locale = (string)$locale;
+        }
+        // Use fallback locale if 'C' is provided.
+        if ($locale === 'C') {
+            $locale = 'en-US';
         }
         // remove trailing part not supported by ext-intl locale
         $locale = preg_replace('/[^\w-].*$/', '', $locale);
