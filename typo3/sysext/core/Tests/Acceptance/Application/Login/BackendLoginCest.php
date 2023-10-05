@@ -132,7 +132,7 @@ final class BackendLoginCest
             // "editor" doesn't have any modules available in this setup
             $I->waitForElement('.scaffold-modulemenu', 30);
         }
-        $I->waitForElement('.scaffold-content iframe', 30);
+        $I->waitForElement('.toolbar-item-user', 30);
         $I->seeCookie('be_typo_user');
     }
 
