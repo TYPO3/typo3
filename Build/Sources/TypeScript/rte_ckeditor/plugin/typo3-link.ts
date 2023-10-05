@@ -1,4 +1,11 @@
-import { UI, Core, Engine, Typing, Link, LinkUtils, LinkActionsView, Widget, Utils } from '@typo3/ckeditor5-bundle';
+import * as UI from '@ckeditor/ckeditor5-ui';
+import * as Core from '@ckeditor/ckeditor5-core';
+import * as Engine from '@ckeditor/ckeditor5-engine';
+import * as Typing from '@ckeditor/ckeditor5-typing'
+import * as Widget from '@ckeditor/ckeditor5-widget';
+import * as Utils from '@ckeditor/ckeditor5-utils';
+import * as Link from '@ckeditor/ckeditor5-link';
+import { LinkUtils, LinkActionsView } from '@ckeditor/ckeditor5-link';
 import { default as modalObject, ModalElement } from '@typo3/backend/modal';
 import type { ViewAttributeElement, ViewElement, Schema, Writer } from '@ckeditor/ckeditor5-engine';
 import type { GeneralHtmlSupport, DataFilter } from '@ckeditor/ckeditor5-html-support';
@@ -715,8 +722,11 @@ export class Typo3LinkUI extends Core.Plugin {
   }
 }
 
-export default class Typo3Link extends Core.Plugin {
+export class Typo3Link extends Core.Plugin {
   static readonly pluginName = 'Typo3Link';
   static readonly requires = ['GeneralHtmlSupport', Link.LinkEditing, Link.AutoLink, Typo3LinkEditing, Typo3LinkUI];
   static readonly overrides?: Array<typeof Core.Plugin> = [Link.Link];
 }
+
+// Provided for backwards compatibility
+export default Typo3Link;

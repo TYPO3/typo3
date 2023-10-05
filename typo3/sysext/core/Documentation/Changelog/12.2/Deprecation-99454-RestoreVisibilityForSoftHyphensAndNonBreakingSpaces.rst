@@ -61,7 +61,7 @@ After
     editor:
         config:
             importModules:
-                - '@typo3/rte-ckeditor/plugin/whitespace.js'
+                - { module: '@typo3/rte-ckeditor/plugin/whitespace.js', exports: ['Whitespace'] }
 
 
 .. index:: Backend, JavaScript, RTE, NotScanned, ext:rte_ckeditor

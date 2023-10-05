@@ -1,4 +1,7 @@
-import { Core, UI, Utils, Typing } from '@typo3/ckeditor5-bundle';
+import * as Core from '@ckeditor/ckeditor5-core';
+import * as UI from '@ckeditor/ckeditor5-ui';
+import * as Utils from '@ckeditor/ckeditor5-utils';
+import * as Typing from '@ckeditor/ckeditor5-typing';
 import type { InsertTextCommand } from '@ckeditor/ckeditor5-typing';
 
 /**
@@ -17,7 +20,7 @@ import type { InsertTextCommand } from '@ckeditor/ckeditor5-typing';
  *   - alt+shift+dash on MacOS
  *   - ctrl+shift+dash on all other Systems
  */
-export default class Whitespace extends Core.Plugin {
+export class Whitespace extends Core.Plugin {
   static readonly pluginName = 'Whitespace';
   static readonly requires = [ Typing.Typing ] as const;
 
@@ -106,3 +109,6 @@ export default class Whitespace extends Core.Plugin {
     editor.editing.view.focus();
   }
 }
+
+// Provided for backwards compatibility
+export default Whitespace;

@@ -21,8 +21,5 @@ editor:
       - Underline
       - Strike
 
-    removePlugins:
-      - image
-
     extraPlugins:
       - autolink

@@ -18,6 +18,7 @@ return [
         ],
         '@typo3/backend/contrib/mark.js' => 'EXT:backend/Resources/Public/JavaScript/Contrib/mark.js',
         'alwan' => 'EXT:backend/Resources/Public/JavaScript/Contrib/alwan.js',
+        'lodash-es' => 'EXT:backend/Resources/Public/JavaScript/Contrib/lodash-es.js',
         'select-pure' => 'EXT:backend/Resources/Public/JavaScript/Contrib/select-pure.js',
     ],
 ];

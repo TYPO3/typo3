@@ -36,7 +36,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -73,7 +72,12 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => ['Image'],
+                            'removeImportModules' => [
+                                [
+                                    'module' => '@ckeditor/ckeditor5-image',
+                                    'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],
+                                ],
+                            ],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -117,7 +121,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -160,7 +163,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -208,7 +210,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -276,7 +277,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -332,7 +332,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -392,7 +391,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -451,7 +449,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -512,7 +509,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -568,7 +564,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -622,7 +617,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -665,7 +659,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -712,7 +705,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'style',
@@ -802,7 +794,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'undo',
@@ -885,7 +876,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'bold',
@@ -932,7 +922,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                             'contentsCss' => [
                                 'EXT:example/Resources/Public/Css/ckeditor.css',
                             ],
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -967,7 +956,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1011,7 +999,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 'EXT:example/Resources/Public/Css/ckeditor.css',
                                 'EXT:example/Resources/Public/Css/ckeditor2.css',
                             ],
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1064,7 +1051,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                     ],
                                 ],
                             ],
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1101,7 +1087,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1138,7 +1123,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1213,7 +1197,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                     ],
                                 ],
                             ],
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1308,7 +1291,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                     ],
                                 ],
                             ],
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1345,7 +1327,12 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => ['Alignment'],
+                            'removeImportModules' => [
+                                [
+                                    'module' => '@ckeditor/ckeditor5-alignment',
+                                    'exports' => [ 'Alignment' ],
+                                ],
+                            ],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1383,7 +1370,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1421,7 +1407,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1463,7 +1448,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1503,7 +1487,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1534,7 +1517,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'removePlugins' => [
-                                'whitespace',
+                                'Whitespace',
                             ],
                         ],
                     ],
@@ -1542,7 +1525,12 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => ['Whitespace'],
+                            'removeImportModules' => [
+                                [
+                                    'module' =>  '@typo3/rte-ckeditor/plugin/whitespace.js',
+                                    'exports' => [ 'Whitespace' ],
+                                ],
+                            ],
                             'toolbar' => [
                                 'items' => [],
                                 'removeItems' => [
@@ -1579,7 +1567,12 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => ['Whitespace'],
+                            'removeImportModules' => [
+                                [
+                                    'module' =>  '@typo3/rte-ckeditor/plugin/whitespace.js',
+                                    'exports' => [ 'Whitespace' ],
+                                ],
+                            ],
                             'toolbar' => [
                                 'items' => [],
                                 'removeItems' => [
@@ -1619,7 +1612,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1657,7 +1649,12 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => ['WordCount'],
+                            'removeImportModules' => [
+                                [
+                                    'module' => '@ckeditor/ckeditor5-word-count',
+                                    'exports' => [ 'WordCount' ],
+                                ],
+                            ],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1691,7 +1688,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1729,7 +1725,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1767,7 +1762,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1804,7 +1798,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',
@@ -1892,7 +1885,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                     ],
                                 ],
                             ],
-                            'removePlugins' => [],
                             'toolbar' => [
                                 'items' => [
                                     'softhyphen',

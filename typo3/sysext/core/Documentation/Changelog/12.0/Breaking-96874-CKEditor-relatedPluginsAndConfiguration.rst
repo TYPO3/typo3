@@ -47,9 +47,10 @@ which adds a toolbar item to add the current timestamp into the editor.
 
 ..  code-block:: javascript
 
-    import {Core, UI} from '@typo3/ckeditor5-bundle.js';
+    import { Plugin } from '@ckeditor/ckeditor5-core';
+    import { ButtonView } from '@ckeditor/ckeditor5-ui';
 
-    export default class Timestamp extends Core.Plugin {
+    export class Timestamp extends Plugin {
       static pluginName = 'Timestamp';
 
       init() {
@@ -59,7 +60,7 @@ which adds a toolbar item to add the current timestamp into the editor.
         // to be displayed in the toolbar.
         editor.ui.componentFactory.add(Timestamp.pluginName, () => {
           // The button will be an instance of ButtonView.
-          const button = new UI.ButtonView();
+          const button = new ButtonView();
 
           button.set({
             label: 'Timestamp',
@@ -90,7 +91,7 @@ In the RTE configuration, this then needs to be added like this:
   editor:
     config:
       importModules:
-        - '@my-vendor/my-package/timestamp-plugin.js'
+        - { module: '@my-vendor/my-package/timestamp-plugin.js', exports: ['Timestamp'] }
       toolbar:
         items:
           - bold
