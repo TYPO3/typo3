@@ -148,8 +148,8 @@ class TcaGroup implements FormDataProviderInterface
                 }
             } else {
                 throw new \UnexpectedValueException(
-                    'Invalid TCA internal_type of field "' . $fieldName . '" in table ' . $result['tableName']
-                    . ': Must not be set, or set to "folder".',
+                    'Invalid TCA internal_type "' . $internalType . '" for field "' . $fieldName
+                    . '" of table "' . $result['tableName'] . '". Valid values are "db" (default) and "folder".',
                     1438780511
                 );
             }
