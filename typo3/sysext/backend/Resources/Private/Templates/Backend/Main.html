@@ -34,11 +34,7 @@
         </div>
     </f:if>
     <div class="scaffold-content t3js-scaffold-content {f:if(condition: '!{hasModules}', then: 'scaffold-no-modules')}">
-        <div class="scaffold-content-navigation t3js-scaffold-content-navigation">
-            <div class="scaffold-content-navigation-component" data-component="typo3-navigationIframe">
-                <iframe name="nav_frame" src="about:blank" id="typo3-navigationContainerIframe" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:iframe.navFrame')}" scrolling="no" class="scaffold-content-navigation-iframe t3js-scaffold-content-navigation-iframe"></iframe>
-            </div>
-        </div>
+        <div class="scaffold-content-navigation t3js-scaffold-content-navigation"></div>
         <typo3-backend-navigation-switcher
             parent=".t3js-scaffold"
             navigation=".t3js-scaffold-content-navigation"
