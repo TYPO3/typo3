@@ -269,7 +269,7 @@ class ElementHistoryController
         }
         $languageService = $this->getLanguageService();
         $lines = [];
-        $beUserArray = BackendUtility::getUserNames();
+        $beUserArray = BackendUtility::getUserNames('username,realName,usergroup,uid');
 
         // Traverse changeLog array:
         foreach ($historyEntries as $entry) {
@@ -279,10 +279,12 @@ class ElementHistoryController
             // Get user names
             $singleLine['backendUserUid'] = $entry['userid'];
             $singleLine['backendUserName'] = $beUserArray[$entry['userid']]['username'] ?? '';
+            $singleLine['backendUserRealName'] = $beUserArray[$entry['userid']]['realName'] ?? '';
             // Executed by switch user
             if (!empty($entry['originaluserid'])) {
                 $singleLine['originalBackendUserUid'] = $entry['originaluserid'];
                 $singleLine['originalBackendUserName'] = $beUserArray[$entry['originaluserid']]['username'] ?? '';
+                $singleLine['originalBackendRealName'] = $beUserArray[$entry['originaluserid']]['realName'] ?? '';
             }
 
             // Is a change in a workspace?
