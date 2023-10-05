@@ -1,7 +1,7 @@
-import { Core } from '@typo3/ckeditor5-bundle';
+import { Plugin } from '@ckeditor/ckeditor5-core';
 import Whitespace from '@typo3/rte-ckeditor/plugin/whitespace';
 
-export default class SoftHyphen extends Core.Plugin {
+export default class SoftHyphen extends Plugin {
   static readonly pluginName = 'SoftHyphen';
   static readonly requires = [Whitespace];
 

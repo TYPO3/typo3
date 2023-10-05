@@ -1,18 +1,25 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
-import { CKEditor5, Core, WordCount } from '@typo3/ckeditor5-bundle';
-import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import type { Editor, PluginConstructor } from '@ckeditor/ckeditor5-core';
 import { prefixAndRebaseCss } from '@typo3/rte-ckeditor/css-prefixer';
+import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
+import type { WordCount } from '@ckeditor/ckeditor5-word-count';
+import type { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
+import type { Editor, PluginConstructor } from '@ckeditor/ckeditor5-core';
 import type { GeneralHtmlSupportConfig } from '@ckeditor/ckeditor5-html-support';
+
+type PluginModuleDescriptor = {
+  module: string,
+  exports: string[],
+};
 
 interface CKEditor5Config {
   // in TYPO3 always `items` property is used, skipping `string[]`
   toolbar?: { items: string[], shouldNotGroupWhenFull?: boolean };
   extraPlugins?: string[];
   removePlugins?: string[];
-  importModules?: string[];
+  importModules?: Array<string|PluginModuleDescriptor>;
+  removeImportModules?: Array<string|PluginModuleDescriptor>;
   contentsCss?: string[];
   style?: any;
   heading?: any;
@@ -30,9 +37,8 @@ interface CKEditor5Config {
   debug?: boolean;
 }
 
-interface PluginModule {
-  default?: PluginConstructor<Editor>;
-}
+type Typo3Plugin = PluginConstructor<Editor> & {overrides?: PluginConstructor<Editor>[]};
+type PluginModule = Record<string, Typo3Plugin>;
 
 interface FormEngineConfig {
   id?: string;
@@ -41,7 +47,28 @@ interface FormEngineConfig {
   validationRules?: any;
 }
 
-type Typo3Plugin = PluginConstructor<Editor> & {overrides?: PluginConstructor<Editor>[]};
+const defaultPlugins: PluginModuleDescriptor[] = [
+  { module: '@ckeditor/ckeditor5-block-quote', exports: ['BlockQuote'] },
+  { module: '@ckeditor/ckeditor5-essentials', exports: ['Essentials'] },
+  { module: '@ckeditor/ckeditor5-find-and-replace', exports: ['FindAndReplace'] },
+  { module: '@ckeditor/ckeditor5-heading', exports: ['Heading'] },
+  { module: '@ckeditor/ckeditor5-indent', exports: ['Indent'] },
+  { module: '@ckeditor/ckeditor5-link', exports: ['Link'] },
+  { module: '@ckeditor/ckeditor5-list', exports: ['DocumentList'] },
+  { module: '@ckeditor/ckeditor5-paragraph', exports: ['Paragraph'] },
+  { module: '@ckeditor/ckeditor5-clipboard', exports: ['PastePlainText'] },
+  { module: '@ckeditor/ckeditor5-paste-from-office', exports: ['PasteFromOffice'] },
+  { module: '@ckeditor/ckeditor5-remove-format', exports: ['RemoveFormat'] },
+  { module: '@ckeditor/ckeditor5-table', exports: ['Table', 'TableToolbar', 'TableProperties', 'TableCellProperties'] },
+  { module: '@ckeditor/ckeditor5-typing', exports: ['TextTransformation'] },
+  { module: '@ckeditor/ckeditor5-source-editing', exports: ['SourceEditing'] },
+  { module: '@ckeditor/ckeditor5-alignment', exports: ['Alignment'] },
+  { module: '@ckeditor/ckeditor5-style', exports: ['Style'] },
+  { module: '@ckeditor/ckeditor5-html-support', exports: ['GeneralHtmlSupport'] },
+  { module: '@ckeditor/ckeditor5-basic-styles', exports: ['Bold', 'Italic', 'Subscript', 'Superscript', 'Strikethrough', 'Underline'] },
+  { module: '@ckeditor/ckeditor5-special-characters', exports: ['SpecialCharacters', 'SpecialCharactersEssentials'] },
+  { module: '@ckeditor/ckeditor5-horizontal-line', exports: ['HorizontalLine'] },
+];
 
 /**
  * Module: @typo3/rte_ckeditor/ckeditor5
@@ -77,86 +104,119 @@ export class CKEditor5Element extends LitElement {
     this.styleSheets.clear();
   }
 
-  protected firstUpdated(): void {
+  protected async firstUpdated(): Promise<void> {
     if (!(this.target instanceof HTMLElement)) {
       throw new Error('No rich-text content target found.');
     }
 
-    const importModules = this.options.importModules || [];
-    // @todo import error handling (module not found)
-    const importPromises = importModules.map((name: string) => import(name));
-    // when all modules have been imported
-    Promise.all(importPromises)
-      .then((modules: PluginModule[]) => {
-        const importedPlugins = modules
-          // @todo warning when no default export was used
-          .filter((module) => module.default)
-          .map((module) => module.default);
-        // all declared plugins (builtinPlugins + importedPlugins)
-        const declaredPlugins = CKEditor5.builtinPlugins.concat(importedPlugins);
-        // plugins that were overridden by other custom plugin implementations
-        const overriddenPlugins = [].concat(...declaredPlugins
-          .filter((plugin: Typo3Plugin) => plugin.overrides?.length > 0)
-          .map((plugin: Typo3Plugin) => plugin.overrides));
-        // plugins, without those that have been overridden
-        const plugins = declaredPlugins.filter((plugin: Typo3Plugin) => !overriddenPlugins.includes(plugin));
+    const removeImportModules: Array<PluginModuleDescriptor> = normalizeImportModules(this.options.removeImportModules || []);
+    const importModules: Array<PluginModuleDescriptor> = normalizeImportModules([
+      ...defaultPlugins,
+      ...(this.options.importModules || []),
+    ]).map((moduleDescriptor: PluginModuleDescriptor) => {
+      const { module } = moduleDescriptor;
+      let { exports } = moduleDescriptor;
+      for (const toRemove of removeImportModules) {
+        if (toRemove.module === module) {
+          exports = exports.filter(el => !toRemove.exports.includes(el));
+        }
+      }
+      return { module, exports };
+    });
 
-        const toolbar = this.options.toolbar;
-
-        const config = {
-          // link.defaultProtocol: 'https://'
-          // @todo use complete `config` later - currently step-by-step only
-          toolbar,
-          plugins,
-          typo3link: this.options.typo3link || null,
-          // alternative, purge from `plugins` (classes) above already (probably better)
-          removePlugins: this.options.removePlugins || [],
-        } as any;
-        if (this.options.language) {
-          config.language = this.options.language;
-        }
-        if (this.options.style) {
-          config.style = this.options.style;
-        }
-        if (this.options.wordCount) {
-          config.wordCount = this.options.wordCount;
-        }
-        if (this.options.table) {
-          config.table = this.options.table;
-        }
-        if (this.options.heading) {
-          config.heading = this.options.heading;
-        }
-        if (this.options.alignment) {
-          config.alignment = this.options.alignment;
-        }
-        if (this.options.ui) {
-          config.ui = this.options.ui;
-        }
-        if (this.options.htmlSupport) {
-          config.htmlSupport = convertPseudoRegExp(this.options.htmlSupport) as GeneralHtmlSupportConfig;
-        }
-
-        CKEditor5
-          .create(this.target, config)
-          .then((editor: CKEditor5) => {
-            this.applyEditableElementStyles(editor);
-            this.handleWordCountPlugin(editor);
-            this.applyReadOnly(editor);
-            if (editor.plugins.has('SourceEditing')) {
-              const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
-              editor.model.document.on('change:data', (): void => {
-                if (!sourceEditingPlugin.isSourceEditingMode) {
-                  editor.updateSourceElement()
-                }
-                this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-              });
+    const pluginModules: Array<{module: PluginModule, exports: string[]}> = await Promise.all(
+      importModules
+        .map(async (moduleDescriptor: PluginModuleDescriptor): Promise<{module: PluginModule, exports: string[]}> => {
+          try {
+            return {
+              module: await import(moduleDescriptor.module) as PluginModule,
+              exports: moduleDescriptor.exports,
             }
-
-            if (this.options.debug) {
-              import('@typo3/ckeditor5-inspector').then(({ CKEditorInspector }) => CKEditorInspector.attach(editor, { isCollapsed: true }));
+          } catch (e) {
+            console.error(`Failed to load CKEditor5 module ${moduleDescriptor.module}`, e);
+            return {
+              module: null,
+              exports: []
             }
+          }
+        })
+    );
+
+    const declaredPlugins: Array<Typo3Plugin> = [];
+    pluginModules.forEach(({ module, exports }) => {
+      for (const exportName of exports) {
+        if (exportName in module) {
+          declaredPlugins.push(module[exportName]);
+        } else {
+          console.error(`CKEditor5 plugin export "${exportName}" not available in`, module);
+        }
+      }
+    });
+
+    // plugins that were overridden by other custom plugin implementations
+    const overriddenPlugins = declaredPlugins
+      .filter(plugin => plugin.overrides?.length > 0)
+      .map(plugin => plugin.overrides)
+      .flat(1);
+
+    // plugins, without those that have been overridden
+    const plugins: Array<PluginConstructor<Editor>> = declaredPlugins
+      .filter(plugin => !overriddenPlugins.includes(plugin as PluginConstructor<Editor>));
+
+    const toolbar = this.options.toolbar;
+
+    const config = {
+      // link.defaultProtocol: 'https://'
+      // @todo use complete `config` later - currently step-by-step only
+      toolbar,
+      plugins,
+      typo3link: this.options.typo3link || null,
+      removePlugins: this.options.removePlugins || [],
+    } as any;
+    if (this.options.language) {
+      config.language = this.options.language;
+    }
+    if (this.options.style) {
+      config.style = this.options.style;
+    }
+    if (this.options.wordCount) {
+      config.wordCount = this.options.wordCount;
+    }
+    if (this.options.table) {
+      config.table = this.options.table;
+    }
+    if (this.options.heading) {
+      config.heading = this.options.heading;
+    }
+    if (this.options.alignment) {
+      config.alignment = this.options.alignment;
+    }
+    if (this.options.ui) {
+      config.ui = this.options.ui;
+    }
+    if (this.options.htmlSupport) {
+      config.htmlSupport = convertPseudoRegExp(this.options.htmlSupport) as GeneralHtmlSupportConfig;
+    }
+
+    ClassicEditor
+      .create(this.target, config)
+      .then((editor: ClassicEditor) => {
+        this.applyEditableElementStyles(editor);
+        this.handleWordCountPlugin(editor);
+        this.applyReadOnly(editor);
+        if (editor.plugins.has('SourceEditing')) {
+          const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
+          editor.model.document.on('change:data', (): void => {
+            if (!sourceEditingPlugin.isSourceEditingMode) {
+              editor.updateSourceElement()
+            }
+            this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
           });
+        }
+
+        if (this.options.debug) {
+          import('@ckeditor/ckeditor5-inspector').then(({ default: CKEditorInspector }) => CKEditorInspector.attach(editor, { isCollapsed: true }));
+        }
       });
   }
 
@@ -198,7 +258,7 @@ export class CKEditor5Element extends LitElement {
     document.adoptedStyleSheets = [...document.adoptedStyleSheets, styleSheet];
   }
 
-  private applyEditableElementStyles(editor: Core.Editor): void {
+  private applyEditableElementStyles(editor: Editor): void {
     const view = editor.editing.view;
     const styles: Record<string, any> = {
       'min-height': this.options.height,
@@ -221,7 +281,7 @@ export class CKEditor5Element extends LitElement {
   /**
    * see https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html
    */
-  private handleWordCountPlugin(editor: Core.Editor): void {
+  private handleWordCountPlugin(editor: Editor): void {
     if (editor.plugins.has('WordCount') && (this.options?.wordCount?.displayWords || this.options?.wordCount?.displayCharacters)) {
       const wordCountPlugin = editor.plugins.get('WordCount') as WordCount;
       this.renderRoot.appendChild(wordCountPlugin.wordCountContainer);
@@ -266,6 +326,18 @@ function convertPseudoRegExp(data: RecurseMapInput): RecurseMapInput {
       return new RegExp(pseudoRegExp.pattern, pseudoRegExp.flags || undefined);
     }
     return null;
+  });
+}
+
+function normalizeImportModules(modules: Array<string|PluginModuleDescriptor>): Array<PluginModuleDescriptor> {
+  return modules.map(moduleDescriptor => {
+    if (typeof moduleDescriptor === 'string') {
+      return {
+        module: moduleDescriptor,
+        exports: [ 'default' ],
+      }
+    }
+    return moduleDescriptor;
   });
 }
 

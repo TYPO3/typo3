@@ -1,15 +1,15 @@
 # Register custom plugins for ckeditor
 editor:
   config:
-    # Explicitly remove (bundled or external) plugins
-    # removePlugins: []
+    # Explicitly remove (default or external) plugins
+    # removeImportModules: []
 
     # load modules for plugins when CKEditor is initialized
     # see CKEditor plugin API for details
     importModules:
       # Plugin for whitespace control like soft hypens and non breaking spaces
-      - '@typo3/rte-ckeditor/plugin/whitespace.js'
-      - '@typo3/rte-ckeditor/plugin/typo3-link.js'
+      - { module: '@typo3/rte-ckeditor/plugin/whitespace.js', exports: [ 'Whitespace' ] }
+      - { module: '@typo3/rte-ckeditor/plugin/typo3-link.js', exports: [ 'Typo3Link' ] }
 
     # Configure global wordCount plugin defaults
     # Overwrite them in your RTE presets as it is necessary

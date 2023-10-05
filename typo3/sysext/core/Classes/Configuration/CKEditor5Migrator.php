@@ -178,12 +178,62 @@ class CKEditor5Migrator
      * Mapping of plugins
      */
     private const PLUGIN_MAP = [
-        'image' => 'Image',
-        'alignment' => 'Alignment',
-        'justify' => 'Alignment',
-        'softhyphen' => 'Whitespace',
-        'whitespace' => 'Whitespace',
-        'wordcount' => 'WordCount',
+        'image' => [
+            'module' => '@ckeditor/ckeditor5-image',
+            'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],
+        ],
+        'Image' => [
+            'module' => '@ckeditor/ckeditor5-image',
+            'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],
+        ],
+        'alignment' => [
+            'module' => '@ckeditor/ckeditor5-alignment',
+            'exports' => [ 'Alignment' ],
+        ],
+        'Alignment' => [
+            'module' => '@ckeditor/ckeditor5-alignment',
+            'exports' => [ 'Alignment' ],
+        ],
+        'autolink' => [
+            'module' => '@ckeditor/ckeditor5-link',
+            'exports' => [ 'AutoLink' ],
+        ],
+        'AutoLink' => [
+            'module' => '@ckeditor/ckeditor5-link',
+            'exports' => [ 'AutoLink' ],
+        ],
+        'justify' => [
+            'module' => '@ckeditor/ckeditor5-alignment',
+            'exports' => [ 'Alignment' ],
+        ],
+        'showblocks' => [
+            'module' =>  '@ckeditor/ckeditor5-show-blocks',
+            'exports' => [ 'ShowBlocks' ],
+        ],
+        'ShowBlocks' => [
+            'module' =>  '@ckeditor/ckeditor5-show-blocks',
+            'exports' => [ 'ShowBlocks' ],
+        ],
+        'softhyphen' => [
+            'module' =>  '@typo3/rte-ckeditor/plugin/whitespace.js',
+            'exports' => [ 'Whitespace' ],
+        ],
+        'whitespace' => [
+            'module' =>  '@typo3/rte-ckeditor/plugin/whitespace.js',
+            'exports' => [ 'Whitespace' ],
+        ],
+        'Whitespace' => [
+            'module' =>  '@typo3/rte-ckeditor/plugin/whitespace.js',
+            'exports' => [ 'Whitespace' ],
+        ],
+        'wordcount' =>  [
+            'module' => '@ckeditor/ckeditor5-word-count',
+            'exports' => [ 'WordCount' ],
+        ],
+        'WordCount' =>  [
+            'module' => '@ckeditor/ckeditor5-word-count',
+            'exports' => [ 'WordCount' ],
+        ],
     ];
 
     /**
@@ -192,6 +242,7 @@ class CKEditor5Migrator
     public function __construct(protected array $configuration)
     {
         if (isset($this->configuration['editor']['config'])) {
+            $this->migrateExtraPlugins();
             $this->migrateRemovePlugins();
             $this->migrateToolbar();
             $this->migrateRemoveButtonsFromToolbar();
@@ -219,22 +270,38 @@ class CKEditor5Migrator
         return $this->configuration;
     }
 
-    protected function migrateRemovePlugins(): void
+    protected function migrateExtraPlugins(): void
     {
-        if (!isset($this->configuration['editor']['config']['removePlugins'])) {
-            $this->configuration['editor']['config']['removePlugins'] = [];
+        if (!isset($this->configuration['editor']['config']['extraPlugins'])) {
             return;
         }
 
-        // Handle custom plugin names to ckeditor
-        $this->configuration['editor']['config']['removePlugins'] = array_map(function ($entry) {
-            if (isset(self::PLUGIN_MAP[$entry])) {
-                return self::PLUGIN_MAP[$entry];
+        foreach ($this->configuration['editor']['config']['extraPlugins'] as $entry) {
+            $moduleToBeLoaded = self::PLUGIN_MAP[$entry] ?? null;
+            if ($moduleToBeLoaded === null) {
+                continue;
             }
-            return $entry;
-        }, $this->configuration['editor']['config']['removePlugins']);
+            $this->configuration['editor']['config']['importModules'][] = $moduleToBeLoaded;
+            $this->removeExtraPlugin($entry);
+        }
+    }
 
-        $this->configuration['editor']['config']['removePlugins'] = $this->getUniqueArrayValues($this->configuration['editor']['config']['removePlugins']);
+    protected function migrateRemovePlugins(): void
+    {
+        if (!isset($this->configuration['editor']['config']['removePlugins'])) {
+            return;
+        }
+
+        foreach ($this->configuration['editor']['config']['removePlugins'] as $key => $entry) {
+            $moduleToBeRemoved = self::PLUGIN_MAP[$entry] ?? null;
+            if ($moduleToBeRemoved !== null) {
+                unset($this->configuration['editor']['config']['removePlugins'][$key]);
+                $this->configuration['editor']['config']['removeImportModules'][] = $moduleToBeRemoved;
+            }
+        }
+        if (count($this->configuration['editor']['config']['removePlugins']) === 0) {
+            unset($this->configuration['editor']['config']['removePlugins']);
+        }
     }
 
     /**
@@ -767,10 +834,11 @@ class CKEditor5Migrator
         $this->removeExtraPlugin('justify');
 
         // Remove related configuration if plugin should not be loaded
-        if (array_search('Alignment', $this->configuration['editor']['config']['removePlugins']) !== false) {
-            // Remove all related plugins
-            $this->removePlugin('Alignment');
-
+        if (in_array(
+            '@ckeditor/ckeditor5-alignment',
+            array_column($this->configuration['editor']['config']['removeImportModules'] ?? [], 'module'),
+            true
+        )) {
             // Remove toolbar items
             $this->removeToolbarItem('alignment');
             $this->removeToolbarItem('alignment:left');
@@ -811,10 +879,11 @@ class CKEditor5Migrator
     protected function handleWhitespacePlugin(): void
     {
         // Remove related configuration if plugin should not be loaded
-        if (in_array('Whitespace', $this->configuration['editor']['config']['removePlugins'], true)) {
-            // Remove all related plugins
-            $this->removePlugin('Whitespace');
-
+        if (in_array(
+            '@typo3/rte-ckeditor/plugin/whitespace.js',
+            array_column($this->configuration['editor']['config']['removeImportModules'] ?? [], 'module'),
+            true
+        )) {
             // Remove toolbar items
             $this->removeToolbarItem('softhyphen');
 
@@ -849,10 +918,11 @@ class CKEditor5Migrator
         }
 
         // Remove related configuration if plugin should not be loaded
-        if (in_array('WordCount', $this->configuration['editor']['config']['removePlugins'], true)) {
-            // Remove all related plugins
-            $this->removePlugin('WordCount');
-
+        if (in_array(
+            '@ckeditor/ckeditor5-word-count',
+            array_column($this->configuration['editor']['config']['removeImportModules'] ?? [], 'module'),
+            true
+        )) {
             // Remove config
             if (isset($this->configuration['editor']['config']['wordCount'])) {
                 unset($this->configuration['editor']['config']['wordCount']);
@@ -912,12 +982,6 @@ class CKEditor5Migrator
     {
         $this->configuration['editor']['config']['toolbar']['removeItems'][] = $name;
         $this->configuration['editor']['config']['toolbar']['removeItems'] = $this->getUniqueArrayValues($this->configuration['editor']['config']['toolbar']['removeItems']);
-    }
-
-    private function removePlugin(string $name): void
-    {
-        $this->configuration['editor']['config']['removePlugins'][] = $name;
-        $this->configuration['editor']['config']['removePlugins'] = $this->getUniqueArrayValues($this->configuration['editor']['config']['removePlugins']);
     }
 
     private function removeExtraPlugin(string $name): void

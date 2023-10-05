@@ -581,6 +581,32 @@ module.exports = function (grunt) {
           ]
         }
       },
+      'lodash-es': {
+        options: {
+          preserveModules: false,
+          plugins: () => [
+            {
+              name: 'terser',
+              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
+            },
+            {
+              name: 'externals',
+              resolveId: (source, importer) => {
+                if (source.startsWith('.') && importer) {
+                  const path = require('path');
+                  return require.resolve(path.resolve(path.dirname(importer), source))
+                }
+                return null;
+              }
+            }
+          ]
+        },
+        files: {
+          '<%= paths.backend %>Public/JavaScript/Contrib/lodash-es.js': [
+            'node_modules/lodash-es/lodash.js'
+          ]
+        }
+      },
       'chart.js': {
         options: {
           preserveModules: false,

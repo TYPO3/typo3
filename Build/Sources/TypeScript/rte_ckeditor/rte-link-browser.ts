@@ -15,8 +15,8 @@ import LinkBrowser, { LinkAttributes } from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
-import Position from '@ckeditor/ckeditor5-engine/src/model/position';
-import { Core } from '@typo3/ckeditor5-bundle';
+import * as Core from '@ckeditor/ckeditor5-core';
+import type Position from '@ckeditor/ckeditor5-engine/src/model/position';
 
 /**
  * Module: @typo3/rte-ckeditor/rte-link-browser

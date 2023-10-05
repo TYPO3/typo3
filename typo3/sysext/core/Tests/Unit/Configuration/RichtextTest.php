@@ -218,7 +218,6 @@ final class RichtextTest extends UnitTestCase
                     'contentsCss' => [
                         'my.css',
                     ],
-                    'removePlugins' => [],
                     'toolbar' => [
                         'items' => [
                             'softhyphen',
@@ -309,7 +308,6 @@ final class RichtextTest extends UnitTestCase
                     'contentsCss' => [
                         'my.css',
                     ],
-                    'removePlugins' => [],
                     'toolbar' => [
                         'items' => [
                             'softhyphen',
@@ -414,7 +412,6 @@ final class RichtextTest extends UnitTestCase
                     'contentsCss' => [
                         'your.css',
                     ],
-                    'removePlugins' => [],
                     'toolbar' => [
                         'items' => [
                             'softhyphen',
@@ -488,7 +485,6 @@ final class RichtextTest extends UnitTestCase
                             ['name' => 'justify', 'className' => 'text-justify'],
                         ],
                     ],
-                    'removePlugins' => [],
                     'toolbar' => [
                         'items' => [
                             'softhyphen',
