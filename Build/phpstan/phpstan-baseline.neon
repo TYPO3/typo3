@@ -701,11 +701,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:copyRecord_raw\\(\\) should return int but returns null\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:doesPageHaveUnallowedTables\\(\\) should return array\\|bool but returns string\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php

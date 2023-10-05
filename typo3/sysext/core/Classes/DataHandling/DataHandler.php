@@ -3594,7 +3594,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $pid Element PID (real PID, not checked)
      * @param array $overrideArray Override array - must NOT contain any fields not in the table!
      * @param array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
-     * @return int Returns the new ID of the record (if applicable)
+     * @return int|null Returns the new ID of the record (if applicable)
      * @internal should only be used from within DataHandler
      */
     public function copyRecord_raw($table, $uid, $pid, $overrideArray = [], array $workspaceOptions = [])
