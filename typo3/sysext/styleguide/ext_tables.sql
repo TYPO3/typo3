@@ -98,11 +98,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     link_4 text,
     link_5 text,
 
-    color_1 varchar(7) DEFAULT '' NOT NULL,
-    color_2 varchar(7) DEFAULT '' NOT NULL,
-    color_3 varchar(7) DEFAULT '' NOT NULL,
-    color_4 varchar(7) DEFAULT NULL,
-
     number_1 text,
     number_2 int(11) DEFAULT '0' NOT NULL,
     number_3 int(11) DEFAULT '0' NOT NULL,
@@ -275,7 +270,6 @@ CREATE TABLE tx_styleguide_inline_1n_inline_1_child (
 
     input_1 text,
     input_3 text,
-    color_1 varchar(7) DEFAULT '' NOT NULL,
     select_tree_1 text
 );
 
@@ -568,14 +562,12 @@ CREATE TABLE tx_styleguide_staticdata (
 CREATE TABLE tx_styleguide_type (
     record_type text,
     input_1 text,
-    color_1 varchar(7) DEFAULT '' NOT NULL,
 );
 
 
 CREATE TABLE tx_styleguide_typeforeign (
     foreign_table int(11) DEFAULT '0' NOT NULL,
     input_1 text,
-    color_1 varchar(7) DEFAULT '' NOT NULL,
 );
 
 
@@ -594,7 +586,6 @@ CREATE TABLE tx_styleguide_valuesdefault (
 
 CREATE TABLE tx_styleguide_l10nreadonly (
     input text,
-    color varchar(7) DEFAULT '' NOT NULL,
     link text,
     radio int(11) DEFAULT '0' NOT NULL,
     none text,
