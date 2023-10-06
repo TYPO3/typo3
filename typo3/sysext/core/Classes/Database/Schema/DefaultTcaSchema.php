@@ -759,6 +759,36 @@ class DefaultTcaSchema
                     );
                 }
             }
+
+            // Add fields for all tables, defining color columns (TCA type=color)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'color'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                if ($fieldConfig['config']['nullable'] ?? false) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                            'length' => 7,
+                            'default' => null,
+                            'notnull' => false,
+                        ]
+                    );
+                } else {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                            'length' => 7,
+                            'default' => '',
+                            'notnull' => true,
+                        ]
+                    );
+                }
+            }
         }
 
         return $tables;

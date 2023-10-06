@@ -1274,4 +1274,53 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('password')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsColor(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['color'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'color',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`color`',
+            Type::getType('string'),
+            [
+                'length' => 7,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('color')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsColorNullable(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['color'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'color',
+                'nullable' => true,
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`color`',
+            Type::getType('string'),
+            [
+                'length' => 7,
+                'default' => null,
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('color')->toArray());
+    }
 }
