@@ -17,9 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor;
 
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\AtImportInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionElseInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionIncludeTyposcriptInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeTyposcriptInclude;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\BlockCloseLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierBlockOpenLine;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ImportLine;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ImportOldLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\InvalidLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineInterface;
 
@@ -32,12 +39,12 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineInterface;
 final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterface
 {
     /**
-     * @var list<array{type: string, include: IncludeInterface, line: LineInterface}>
+     * @var list<array{type: string, include: IncludeInterface, line: LineInterface, lineNumber: int}>
      */
     private array $errors = [];
 
     /**
-     * @return list<array{type: string, include: IncludeInterface, line: LineInterface}>
+     * @return list<array{type: string, include: IncludeInterface, line: LineInterface, lineNumber: int}>
      */
     public function getErrors(): array
     {
@@ -49,6 +56,27 @@ final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterfa
     }
 
     public function visit(IncludeInterface $include, int $currentDepth): void
+    {
+        $this->brokenLinesAndBraces($include);
+        $this->emptyImports($include);
+
+        // Add the line number of the first token of the line object to the error array.
+        // Not strictly needed, but more convenient in Fluid template to render.
+        foreach ($this->errors as &$error) {
+            /** @var LineInterface $line */
+            $line = $error['line'];
+            $error['lineNumber'] = $line->getTokenStream()->reset()->peekNext()->getLine();
+        }
+
+        // Sort array by line number to list them top->bottom in view.
+        usort($this->errors, fn ($a, $b) => $a['lineNumber'] <=> $b['lineNumber']);
+    }
+
+    /**
+     * Scan for invalid lines ("foo.bar <" is invalid since there must be something after "<"),
+     * and scan for "too many" and "not enough" "}" braces.
+     */
+    private function brokenLinesAndBraces(IncludeInterface $include): void
     {
         if ($include->isSplit()) {
             // If this node is split, don't check for syntax errors, this is
@@ -92,13 +120,67 @@ final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterfa
                 'line' => $lastLine,
             ];
         }
+    }
 
-        // Add the line number of the first token of the line object to the error array.
-        // Not strictly needed, but more convenient in Fluid template to render.
-        foreach ($this->errors as &$error) {
-            /** @var LineInterface $line */
-            $line = $error['line'];
-            $error['lineNumber'] = $line->getTokenStream()->reset()->peekNext()->getLine();
+    /**
+     * Look for @import and INCLUDE_TYPOSCRIPT that don't find to-include file(s).
+     *
+     * @todo: This code is far more complex than it could be. See #102102 and #102103 for
+     *        changes we should apply to the include tree structure to simplify this.
+     */
+    private function emptyImports(IncludeInterface $include): void
+    {
+        if (!$include->isSplit()) {
+            // Nodes containing @import are always split
+            return;
+        }
+        $lineStream = $include->getLineStream();
+        if (!$lineStream) {
+            // A node that is split should never have an empty line stream,
+            // this may be obsolete, but does not hurt much.
+            return;
+        }
+        // Find @import lines in this include, index by
+        // combination of line number and column position.
+        $allImportLines = [];
+        foreach ($lineStream->getNextLine() as $line) {
+            if ($line instanceof ImportLine || $line instanceof ImportOldLine) {
+                $valueToken = $line->getValueToken();
+                $allImportLines[$valueToken->getLine() . '-' . $valueToken->getColumn()] = $line;
+            }
+        }
+        // Now iterate children to exclude valid allImportLines, those that included something.
+        foreach ($include->getNextChild() as $child) {
+            if ($child instanceof AtImportInclude || $child instanceof IncludeTyposcriptInclude) {
+                /** @var ImportLine|ImportOldLine $originalLine */
+                $originalLine = $child->getOriginalLine();
+                $valueToken = $originalLine->getValueToken();
+                unset($allImportLines[$valueToken->getLine() . '-' . $valueToken->getColumn()]);
+            }
+            // Condition includes don't have the "body" lines itself (or a "body" sub node). This may change,
+            // but until then we'll have to scan the parent node and loop condition includes here to find out
+            // which of them resolved to child nodes.
+            if ($child instanceof ConditionInclude
+                || $child instanceof ConditionElseInclude
+                || $child instanceof ConditionIncludeTyposcriptInclude
+            ) {
+                foreach ($child->getNextChild() as $conditionChild) {
+                    if ($conditionChild instanceof AtImportInclude || $conditionChild instanceof IncludeTyposcriptInclude) {
+                        /** @var ImportLine|ImportOldLine $originalLine */
+                        $originalLine = $conditionChild->getOriginalLine();
+                        $valueToken = $originalLine->getValueToken();
+                        unset($allImportLines[$valueToken->getLine() . '-' . $valueToken->getColumn()]);
+                    }
+                }
+            }
+        }
+        // Everything left are invalid includes
+        foreach ($allImportLines as $importLine) {
+            $this->errors[] = [
+                'type' => 'import.empty',
+                'include' => $include,
+                'line' => $importLine,
+            ];
         }
     }
 }

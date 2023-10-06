@@ -135,6 +135,9 @@
 			<trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.missing" resname="module.pagetsconfig_includes.syntaxError.type.brace.missing">
 				<source>Brace missing in "%1$s", line number "%2$s"</source>
 			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.syntaxError.type.import.empty" resname="module.pagetsconfig_includes.syntaxError.type.import.empty">
+				<source>Import does not find a file in "%1$s", line number "%2$s"</source>
+			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" resname="module.pagetsconfig_includes.tree.child.type.Segment">
 				<source>Code segment</source>
 			</trans-unit>
