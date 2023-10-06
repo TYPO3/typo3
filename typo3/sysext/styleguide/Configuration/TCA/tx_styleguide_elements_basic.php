@@ -328,15 +328,6 @@ return [
                 'max' => 4,
             ],
         ],
-        'input_44' => [
-            'label' => 'input_44',
-            'description' => 'min=4, required=true',
-            'config' => [
-                'type' => 'input',
-                'min' => 4,
-                'required' => true,
-            ],
-        ],
 
         'inputdatetime_1' => [
             'label' => 'inputdatetime_1',
@@ -1863,7 +1854,7 @@ backend_layout {
         '0' => [
             'showitem' => '
                 --div--;input,
-                    input_1, input_40, input_2, input_3, input_41, input_42, input_43, input_44, input_4, input_5, input_10,
+                    input_1, input_40, input_2, input_3, input_41, input_42, input_43, input_4, input_5, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_26, input_27, input_14, input_28,
                     input_33, input_35, input_36,
