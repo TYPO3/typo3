@@ -821,11 +821,6 @@ parameters:
 			path: ../Classes/UserFunctions/FormEngine/TypeUserPalette.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\UserFunctions\\\\FormEngine\\\\WizardInput33\\:\\:render\\(\\) has parameter \\$PA with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../Classes/UserFunctions/FormEngine/WizardInput33.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\Tests\\\\Acceptance\\\\Support\\\\Extension\\\\BackendStyleguideEnvironment\\:\\:\\$localConfig type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Tests/Acceptance/Support/Extension/BackendStyleguideEnvironment.php

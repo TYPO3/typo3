@@ -830,24 +830,6 @@ return [
                 ],
             ],
         ],
-        'number_6' => [
-            'label' => 'number_6',
-            'description' => 'wizard userFunc',
-            'config' => [
-                'type' => 'number',
-                'size' => 10,
-                // @todo This does no longer work - Migrate to  FieldWizard
-                'wizards' => [
-                    'userFuncInputWizard' => [
-                        'type' => 'userFunc',
-                        'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\WizardInput33->render',
-                        'params' => [
-                            'color' => 'green',
-                        ],
-                    ],
-                ],
-            ],
-        ],
         'number_7' => [
             'label' => 'number_7',
             'description' => 'readonly=1',
@@ -1881,7 +1863,7 @@ backend_layout {
                 --div--;color,
                     color_1,color_2,color_3,color_4,
                 --div--;number,
-                    number_1, number_2, number_3, number_4, number_5, number_6, number_7,
+                    number_1, number_2, number_3, number_4, number_5, number_7,
                 --div--;email,
                     email_1, email_2, email_3, email_4,
                 --div--;text,
