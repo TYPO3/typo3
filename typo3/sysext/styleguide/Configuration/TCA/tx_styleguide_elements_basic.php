@@ -726,6 +726,14 @@ return [
                 ],
             ],
         ],
+        'password_8' => [
+            'label' => 'password_8',
+            'description' => 'type=password nullable',
+            'config' => [
+                'type' => 'password',
+                'nullable' => true,
+            ],
+        ],
 
         'color_1' => [
             'label' => 'color_1',
@@ -1869,7 +1877,7 @@ backend_layout {
                 --div--;link,
                     link_1,link_2,link_3,link_4,link_5,
                 --div--;password,
-                    password_1,password_2,password_3,password_4,password_5,password_6,password_7,
+                    password_1,password_2,password_3,password_8,password_4,password_5,password_6,password_7,
                 --div--;color,
                     color_1,color_2,color_3,
                 --div--;number,
