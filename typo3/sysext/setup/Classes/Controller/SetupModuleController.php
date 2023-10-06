@@ -434,18 +434,25 @@ class SetupModuleController
                         $value = '';
                         $noAutocomplete = 'autocomplete="new-password" ';
                     }
+
+                    $addPasswordRequirementsDescription = false;
+                    if ($fieldName === 'password' && $this->passwordPolicyValidator->isEnabled() && $this->passwordPolicyValidator->hasRequirements()) {
+                        $addPasswordRequirementsDescription = true;
+                    }
+
                     $html = '<input id="field_' . htmlspecialchars($fieldName) . '"
-                        type="' . htmlspecialchars($type) . '"
-                        name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" ' .
+                        type="' . htmlspecialchars($type) . '" ' .
+                        ($addPasswordRequirementsDescription ? 'aria-describedby="description_' . htmlspecialchars($fieldName) . '" ' : '') .
+                        'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" ' .
                         $noAutocomplete .
                         'value="' . htmlspecialchars((string)$value) . '" ' .
                         $more .
                         ' />';
 
-                    if ($fieldName === 'password' && $this->passwordPolicyValidator->isEnabled() && $this->passwordPolicyValidator->hasRequirements()) {
+                    if ($addPasswordRequirementsDescription) {
                         $description = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_password_policy.xlf:passwordRequirements.description');
-                        $html .= '<p class="mt-2 mb-1 text-body-secondary">' . htmlspecialchars($description) . '</p>';
-                        $html .= '<ul class="mb-0"><li class="text-body-secondary">' . implode('</li><li class="text-body-secondary">', $this->passwordPolicyValidator->getRequirements()) . '</li></ul>';
+                        $html .= '<div id="description_' . htmlspecialchars($fieldName) . '"><p class="mt-2 mb-1 text-body-secondary">' . htmlspecialchars($description) . '</p>';
+                        $html .= '<ul class="mb-0"><li class="text-body-secondary">' . implode('</li><li class="text-body-secondary">', $this->passwordPolicyValidator->getRequirements()) . '</li></ul></div>';
                     }
 
                     break;
