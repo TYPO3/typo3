@@ -73,7 +73,14 @@ class SysLogSerializationUpdate implements UpgradeWizardInterface
             ['log_data' => 'a:1:{i:0;s:0:"";}']
         );
 
-        foreach ($this->getRecordsToUpdate() as $record) {
+        $queryBuilder = $this->getPreparedQueryBuilder();
+        $result = $queryBuilder
+            ->select('uid', 'log_data')
+            ->where(
+                $queryBuilder->expr()->like('log_data', $queryBuilder->createNamedParameter('a:%'))
+            )
+            ->executeQuery();
+        while ($record = $result->fetchAssociative()) {
             $logData = $this->unserializeLogData($record['log_data'] ?? '');
             $connection->update(
                 self::TABLE_NAME,
@@ -81,6 +88,7 @@ class SysLogSerializationUpdate implements UpgradeWizardInterface
                 ['uid' => (int)$record['uid']]
             );
         }
+
         return true;
     }
 
@@ -94,18 +102,6 @@ class SysLogSerializationUpdate implements UpgradeWizardInterface
             )
             ->executeQuery()
             ->fetchOne();
-    }
-
-    protected function getRecordsToUpdate(): array
-    {
-        $queryBuilder = $this->getPreparedQueryBuilder();
-        return $queryBuilder
-            ->select('uid', 'log_data')
-            ->where(
-                $queryBuilder->expr()->like('log_data', $queryBuilder->createNamedParameter('a:%'))
-            )
-            ->executeQuery()
-            ->fetchAllAssociative();
     }
 
     protected function getPreparedQueryBuilder(): QueryBuilder
