@@ -70,9 +70,9 @@ syntax, and integrators are encouraged to fully switch to :typoscript:`@import`.
 ..  code-block:: typoscript
 
     [frontend.user.isLoggedIn]
-      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
+      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript'
     [ELSE]
-      @import 'EXT:my_extension/Configuration/TypoScript/NotLoggedInUser.typoscript
+      @import 'EXT:my_extension/Configuration/TypoScript/NotLoggedInUser.typoscript'
     [END]
 
 Scope restriction to file / snipped level
@@ -96,9 +96,9 @@ two conditions follow directly in one snippet:
 ..  code-block:: typoscript
 
     [frontend.user.isLoggedIn]
-      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
+      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript'
     [applicationContext == "Development"]
-      @import 'EXT:my_extension/Configuration/TypoScript/Development.typoscript
+      @import 'EXT:my_extension/Configuration/TypoScript/Development.typoscript'
     [END]
 
 This always worked and did not change with the new parser: Opening a new condition
@@ -113,12 +113,12 @@ included if a user is logged in *and* the application is in development context.
 ..  code-block:: typoscript
 
     [frontend.user.isLoggedIn]
-      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript
+      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUser.typoscript'
     [END]
 
     # File LoggedInUser.typoscript:
     [applicationContext == "Development"]
-      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUserDevelopment.typoscript
+      @import 'EXT:my_extension/Configuration/TypoScript/LoggedInUserDevelopment.typoscript'
     [END]
 
 Irrelevant order of <INCLUDE_TYPOSCRIPT: tokens

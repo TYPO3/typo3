@@ -60,6 +60,9 @@
 			<trans-unit id="syntaxError.type.brace.missing" resname="syntaxError.type.brace.missing">
 				<source>Brace missing in "%1$s", line number "%2$s"</source>
 			</trans-unit>
+			<trans-unit id="syntaxError.type.import.empty" resname="syntaxError.type.import.empty">
+				<source>Import does not find a file in "%1$s", line number "%2$s"</source>
+			</trans-unit>
 			<trans-unit id="tree.child.btn.sourceCode" resname="tree.child.btn.sourceCode">
 				<source>Show code</source>
 			</trans-unit>

@@ -19,13 +19,26 @@ namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree\Visitor;
 
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\FileInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
 {
-    protected bool $initializeDatabase = false;
+    /**
+     * Helper method to remove line. This is more convenient
+     * to compare, we simply rely on lineNumber.
+     */
+    private function removeLineFromErrors(array $errors): array
+    {
+        foreach ($errors as &$error) {
+            unset($error['line']);
+        }
+        return $errors;
+    }
 
     public static function visitDataProvider(): iterable
     {
@@ -125,14 +138,26 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
     }
 
     /**
-     * Helper method to remove line. This is more convenient
-     * to compare, we simply rely on lineNumber.
+     * @test
      */
-    private function removeLineFromErrors(array $errors): array
+    public function visitFindsEmptyImports()
     {
-        foreach ($errors as &$error) {
-            unset($error['line']);
-        }
-        return $errors;
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/IncludeTreeSyntaxScannerVisitor/RootTemplate.csv');
+        $rootline = [
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        $subject = $this->get(SysTemplateTreeBuilder::class);
+        $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LosslessTokenizer());
+        $traverser = new IncludeTreeTraverser();
+        $visitor = new IncludeTreeSyntaxScannerVisitor();
+        $traverser->traverse($includeTree, [$visitor]);
+        $erroneousLineNumbers = array_column($visitor->getErrors(), 'lineNumber');
+        $expectedLineNumbers = [0, 2, 4, 6, 9, 12, 13, 15];
+        self::assertSame($expectedLineNumbers, $erroneousLineNumbers);
     }
 }
