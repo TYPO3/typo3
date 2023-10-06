@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Create final showitem configuration in processedTca for types and palette
@@ -54,25 +53,11 @@ class TcaTypesShowitem implements FormDataProviderInterface
             }
         }
 
-        // Handle bitmask_value_field, bitmask_excludelist_bits
-        if (!empty($result['processedTca']['types'][$recordTypeValue]['bitmask_value_field'])
-            && isset($result['processedTca']['types'][$recordTypeValue]['bitmask_excludelist_bits'])
-            && is_array($result['processedTca']['types'][$recordTypeValue]['bitmask_excludelist_bits'])
-        ) {
-            $bitmaskFieldName = $result['processedTca']['types'][$recordTypeValue]['bitmask_value_field'];
-            if (array_key_exists($bitmaskFieldName, $result['databaseRow'])) {
-                $bitmaskValue = $result['databaseRow'][$bitmaskFieldName];
-                $result = $this->removeFieldsByBitmaskExcludeBits($result, $bitmaskValue, $recordTypeValue);
-            }
-        }
-
         // Handling of these parameters is finished. Unset them to not allow other handlers to fiddle with it.
         // unset does not throw notice, even if not set
         unset($result['processedTca']['types'][$recordTypeValue]['subtype_value_field']);
         unset($result['processedTca']['types'][$recordTypeValue]['subtypes_excludelist']);
         unset($result['processedTca']['types'][$recordTypeValue]['subtypes_addlist']);
-        unset($result['processedTca']['types'][$recordTypeValue]['bitmask_value_field']);
-        unset($result['processedTca']['types'][$recordTypeValue]['bitmask_excludelist_bits']);
 
         return $result;
     }
@@ -164,40 +149,6 @@ class TcaTypesShowitem implements FormDataProviderInterface
             $result = $this->removeFieldsFromPalettes($result, $removeListArray);
         }
         return $result;
-    }
-
-    /**
-     * Remove fields from showitem based on subtypes_excludelist
-     *
-     * databaseRow['theSubtypeValueField'] = 5 // 1 0 1
-     * showitem = 'foo,toRemoveBy4,bar'
-     * bitmask_value_field = 'theSubtypeValueField'
-     * bitmask_excludelist_bits[+2] = 'toRemoveBy4'
-     *
-     * -> showitem = 'foo,bar'
-     *
-     * @param array $result Result array
-     * @param int $bitmaskValue subtype value
-     * @param string $recordTypeValue Given record type value
-     * @return array Modified result array
-     */
-    protected function removeFieldsByBitmaskExcludeBits(array $result, $bitmaskValue, $recordTypeValue)
-    {
-        $removeListArray = [];
-        $bitmaskValue = MathUtility::forceIntegerInRange($bitmaskValue, 0);
-        $excludeListBitsArray = $this->processedTca['types'][$recordTypeValue]['bitmask_excludelist_bits'];
-        foreach ($excludeListBitsArray as $bitKey => $excludeList) {
-            $bitKey = (int)$bitKey;
-            $isNegative = (bool)($bitKey < 0);
-            $bit = abs($bitKey);
-            if (!$isNegative && ($bitmaskValue & 2 ** $bit)
-                || $isNegative && !($bitmaskValue & 2 ** $bit)
-            ) {
-                $removeListArray = array_merge($removeListArray, GeneralUtility::trimExplode(',', $excludeList, true));
-            }
-        }
-        $result = $this->removeFields($result, $removeListArray, $recordTypeValue);
-        return $this->removeFieldsFromPalettes($result, $removeListArray);
     }
 
     /**

@@ -45,8 +45,6 @@ final class TcaTypesShowitemTest extends UnitTestCase
                         'subtype_value_field' => 'bar',
                         'subtypes_excludelist' => [],
                         'subtypes_addlist' => [],
-                        'bitmask_value_field' => 'foobar',
-                        'bitmask_excludelist_bits' => [],
                     ],
                 ],
             ],
@@ -223,100 +221,6 @@ final class TcaTypesShowitemTest extends UnitTestCase
                 'palettes' => [
                     'aPalette' => [
                         'showitem' => 'aField,anotherField',
-                    ],
-                ],
-            ],
-        ];
-        self::assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataRemovesMatchingBitmaskExcludeListItems(): void
-    {
-        $input = [
-            'recordTypeValue' => 'aType',
-            'databaseRow' => [
-                'theSubtypeValueField' => 10, // 1 0 1 0
-            ],
-            'processedTca' => [
-                'types' => [
-                    'aType' => [
-                        'showitem' => 'aField, removedBy3, anotherField, removedBy2',
-                        'bitmask_value_field' => 'theSubtypeValueField',
-                        'bitmask_excludelist_bits' => [
-                            '-2' => 'removedBy2', // Remove if bit 2 is NOT set
-                            '+3' => 'removedBy3', // Remove if bit 3 is set
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        $expected = [
-            'recordTypeValue' => 'aType',
-            'databaseRow' => [
-                'theSubtypeValueField' => 10,
-            ],
-            'processedTca' => [
-                'types' => [
-                    'aType' => [
-                        'showitem' => 'aField,anotherField',
-                    ],
-                ],
-            ],
-        ];
-        self::assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataRemovesMatchingBitmaskExcludeListItemsFromPalettes(): void
-    {
-        $input = [
-            'recordTypeValue' => 'aType',
-            'databaseRow' => [
-                'theSubtypeValueField' => 10, // 1 0 1 0
-            ],
-            'processedTca' => [
-                'types' => [
-                    'aType' => [
-                        'showitem' => '',
-                        'bitmask_value_field' => 'theSubtypeValueField',
-                        'bitmask_excludelist_bits' => [
-                            '-2' => 'removeMe', // Remove if bit 2 is NOT set
-                            '+3' => 'removeMe2', // Remove if bit 3 is set
-                        ],
-                    ],
-                ],
-                'palettes' => [
-                    'aPalette' => [
-                        'showitem' => 'aField, removeMe, anotherField',
-                    ],
-                    'anotherPalette' => [
-                        'showitem' => 'removeMe2',
-                    ],
-                ],
-            ],
-        ];
-        $expected = [
-            'recordTypeValue' => 'aType',
-            'databaseRow' => [
-                'theSubtypeValueField' => 10,
-            ],
-            'processedTca' => [
-                'types' => [
-                    'aType' => [
-                        'showitem' => '',
-                    ],
-                ],
-                'palettes' => [
-                    'aPalette' => [
-                        'showitem' => 'aField,anotherField',
-                    ],
-                    'anotherPalette' => [
-                        'showitem' => '',
                     ],
                 ],
             ],

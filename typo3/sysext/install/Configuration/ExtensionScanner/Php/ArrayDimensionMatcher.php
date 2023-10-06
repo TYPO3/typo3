@@ -1046,4 +1046,14 @@ return [
             'Deprecation-101807-ExtensionManagementUtilityaddUserTSConfig.rst',
         ],
     ],
+    '$GLOBALS[\'TCA\'][\'someTable\'][\'types\'][\'bitmask_excludelist_bits\']' => [
+        'restFiles' => [
+            'Breaking-102108-TCATypesbitmask_Settings.rst',
+        ],
+    ],
+    '$GLOBALS[\'TCA\'][\'someTable\'][\'types\'][\'bitmask_value_field\']' => [
+        'restFiles' => [
+            'Breaking-102108-TCATypesbitmask_Settings.rst',
+        ],
+    ],
 ];
