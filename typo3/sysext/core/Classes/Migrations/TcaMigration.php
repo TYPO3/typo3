@@ -29,12 +29,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TcaMigration
 {
-    /**
-     * Accumulate migration messages
-     *
-     * @var array
-     */
-    protected $messages = [];
+    /** Accumulate migration messages */
+    protected array $messages = [];
 
     /**
      * Run some general TCA validations, then migrate old TCA to new TCA.
@@ -45,8 +41,6 @@ class TcaMigration
      * For flex form TCA, this class is called dynamically if opening a record in the backend.
      *
      * See unit tests for details.
-     *
-     * @param array $tca
      */
     public function migrate(array $tca): array
     {
