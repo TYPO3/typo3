@@ -731,6 +731,34 @@ class DefaultTcaSchema
                     ]
                 );
             }
+
+            // Add fields for all tables, defining password columns (TCA type=password)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'password'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                if ($fieldConfig['config']['nullable'] ?? false) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                            'default' => null,
+                            'notnull' => false,
+                        ]
+                    );
+                } else {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                            'default' => '',
+                            'notnull' => true,
+                        ]
+                    );
+                }
+            }
         }
 
         return $tables;

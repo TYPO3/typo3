@@ -36,7 +36,6 @@ CREATE TABLE be_sessions (
 #
 CREATE TABLE be_users (
 	username varchar(50) DEFAULT '' NOT NULL,
-	password varchar(255) DEFAULT '' NOT NULL,
 	usergroup text,
 	lang varchar(10) DEFAULT 'default' NOT NULL,
 	realName varchar(80) DEFAULT '' NOT NULL,

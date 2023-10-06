@@ -1227,4 +1227,51 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('text')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsPassword(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['password'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'password',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`password`',
+            Type::getType('string'),
+            [
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('password')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsPasswordNullable(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['password'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'password',
+                'nullable' => true,
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`password`',
+            Type::getType('string'),
+            [
+                'default' => null,
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('password')->toArray());
+    }
 }
