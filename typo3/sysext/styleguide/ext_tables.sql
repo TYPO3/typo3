@@ -99,15 +99,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     link_4 text,
     link_5 text,
 
-    password_1 varchar(255) DEFAULT '' NOT NULL,
-    password_2 varchar(255) DEFAULT '' NOT NULL,
-    password_3 varchar(255) DEFAULT '' NOT NULL,
-    password_4 varchar(255) DEFAULT '' NOT NULL,
-    password_5 varchar(255) DEFAULT '' NOT NULL,
-    password_6 varchar(255) DEFAULT '' NOT NULL,
-    password_7 varchar(255) DEFAULT '' NOT NULL,
-    password_8 varchar(255) DEFAULT NULL,
-
     color_1 text,
     color_2 text,
     color_3 text,
