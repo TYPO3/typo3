@@ -261,4 +261,29 @@ used "\\r" as single linebreak character. This old linebreak type is no longer d
 when parsing TypoScript and may lead to funny results, but chances are very low any
 instance is affected by this.
 
+Operator matching has higher precedence
+---------------------------------------
+
+The new parser looks for valid operators first, then parses things behind it.
+Consider this example:
+
+..  code-block:: typoscript
+
+    lib.nav.wrap =<ul id="nav">|</ul>
+
+This is ambiguous: The above :typoscript:`=<ul` could be interpreted both as an
+assignment :typoscript:`=` of the value :typoscript:`<ul`, or as a reference
+:typoscript:`=<` to the identifier :typoscript:`ul`.
+
+While the old parser interpreted this as an assignment, the new parser treats it
+as a reference.
+
+The above example aims for an assignment, though, which can be achieved by adding
+a whitespace between :typoscript:`=` and :typoscript:`<`:
+
+..  code-block:: typoscript
+
+    lib.nav.wrap = <ul id="nav">|</ul>
+
+
 .. index:: Backend, Frontend, TSConfig, TypoScript, NotScanned, ext:core

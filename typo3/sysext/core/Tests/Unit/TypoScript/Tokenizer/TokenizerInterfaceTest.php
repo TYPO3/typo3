@@ -387,7 +387,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
             ],
-            'identifier, assignment, value with whitespaces' => [
+            'identifier, assignment, whitespace, value' => [
                 'foo = bar',
                 (new LineStream())
                     ->append(
@@ -419,6 +419,41 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             ->setValueTokenStream(
                                 (new TokenStream())
                                     ->append(new Token(TokenType::T_VALUE, 'bar'))
+                            )
+                    ),
+            ],
+            'identifier, assignment, whitespace, value with < is considered an assignment line, not a reference' => [
+                'foo = <bar',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 5))
+                                    ->append(new Token(TokenType::T_VALUE, '<bar', 0, 6)),
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, '<bar', 0, 6))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, '<bar'))
                             )
                     ),
             ],
@@ -1731,7 +1766,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
             ],
-            'identifier, reference, identifiers with whitespaces' => [
+            'identifier, reference, whitespace, identifiers' => [
                 'foo =< bar1.bar2',
                 (new LineStream())
                     ->append(
@@ -1770,7 +1805,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
             ],
-            'identifier, reference, relative identifiers with whitespaces' => [
+            'identifier, reference, whitespace, relative identifiers' => [
                 'foo =< .bar1.bar2',
                 (new LineStream())
                     ->append(
