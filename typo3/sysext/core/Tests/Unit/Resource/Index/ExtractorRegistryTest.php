@@ -22,6 +22,9 @@ use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @todo: Use fixture classes instead of mocks for the extractors to simplify the setup.
+ */
 final class ExtractorRegistryTest extends UnitTestCase
 {
     /**

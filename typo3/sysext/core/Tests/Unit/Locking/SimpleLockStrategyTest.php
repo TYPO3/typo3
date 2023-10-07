@@ -99,9 +99,6 @@ final class SimpleLockStrategyTest extends UnitTestCase
     {
         // Create test file
         @touch($file);
-        if (!is_file($file)) {
-            self::markTestIncomplete('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() skipped: Test file could not be created');
-        }
         // Create instance, set lock file to invalid path
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, null, ['999999999']);
         $lock->_set('filePath', $file);
@@ -111,9 +108,7 @@ final class SimpleLockStrategyTest extends UnitTestCase
         $lock->release();
         // Check if file is still there and clean up
         $fileExists = is_file($file);
-        if (is_file($file)) {
-            unlink($file);
-        }
+        @unlink($file);
         self::assertTrue($fileExists);
     }
 
