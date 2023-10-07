@@ -3655,21 +3655,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $imageResource = null;
         if ($file === 'GIFBUILDER') {
             $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-            if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
-                $gifCreator->start($fileArray, $this->data);
-                $theImage = $gifCreator->gifBuild();
-                if ($theImage !== '') {
-                    $fullPath = Environment::getPublicPath() . '/' . $theImage;
-                    $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullPath);
-                    if ($imageInfo->getWidth() > 0) {
-                        $imageResource = [
-                            0 => $imageInfo->getWidth(),
-                            1 => $imageInfo->getHeight(),
-                            2 => $imageInfo->getExtension(),
-                            3 => $fullPath,
-                            'origFile' => $theImage,
-                        ];
-                    }
+            $gifCreator->start($fileArray, $this->data);
+            $theImage = $gifCreator->gifBuild();
+            if ($theImage !== '') {
+                $fullPath = Environment::getPublicPath() . '/' . $theImage;
+                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullPath);
+                if ($imageInfo->getWidth() > 0) {
+                    $imageResource = [
+                        0 => $imageInfo->getWidth(),
+                        1 => $imageInfo->getHeight(),
+                        2 => $imageInfo->getExtension(),
+                        3 => $fullPath,
+                        'origFile' => $theImage,
+                    ];
                 }
             }
         } else {

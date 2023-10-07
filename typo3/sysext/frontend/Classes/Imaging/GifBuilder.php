@@ -47,12 +47,8 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  * Here is an example of how to use this class:
  *
  * $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
- * $gifCreator->init();
- * $theImage='';
- * if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
- *   $gifCreator->start($fileArray, $this->data);
- *   $theImage = $gifCreator->gifBuild();
- * }
+ * $gifCreator->start($fileArray, $this->data);
+ * $theImage = $gifCreator->gifBuild();
  * return GeneralUtility::makeInstance(GraphicalFunctions::class)->getImageDimensions($theImage);
  */
 class GifBuilder
@@ -195,7 +191,6 @@ class GifBuilder
     /**
      * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
      * Modifies the ->setup, ->objBB internal arrays
-     * Should be called after the ->init() function which initializes the parent class functions/variables in general.
      *
      * @param array $conf TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
      * @param array $data The current data record from \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer. Stored internally in the variable ->data
@@ -203,7 +198,7 @@ class GifBuilder
      */
     public function start($conf, $data)
     {
-        if (!is_array($conf)) {
+        if (!is_array($conf) || !class_exists(\GdImage::class)) {
             return;
         }
         $this->setup = $conf;
@@ -420,7 +415,7 @@ class GifBuilder
      */
     public function gifBuild()
     {
-        if (!$this->setup) {
+        if (!$this->setup || !class_exists(\GdImage::class)) {
             return '';
         }
 
@@ -2712,7 +2707,7 @@ class GifBuilder
      */
     public function getTemporaryImageWithText($filename, $textline1, $textline2 = '', $textline3 = '')
     {
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'])) {
+        if (!class_exists(\GdImage::class)) {
             throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $textline1 . ' ' . $textline2 . ' ' . $textline3, 1270853952);
         }
         // Creates the basis for the error image

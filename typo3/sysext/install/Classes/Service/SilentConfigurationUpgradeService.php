@@ -194,6 +194,8 @@ class SilentConfigurationUpgradeService
         'GFX/gdlib_png',
         // #102023
         'SYS/features/security.usePasswordPolicyForFrontendUsers',
+        // #102113
+        'GFX/gdlib',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)

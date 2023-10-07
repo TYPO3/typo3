@@ -8,9 +8,6 @@ GFX:
         imagefile_ext:
             type: list
             description: 'Commalist of file extensions perceived as images by TYPO3. List should be set to ''gif,png,jpeg,jpg'' if IM is not available. Lowercase and no spaces between!'
-        gdlib:
-            type: bool
-            description: 'Enables the use of GD.'
         processor_enabled:
             type: bool
             description: 'Enables the use of Image- or GraphicsMagick.'

@@ -329,7 +329,7 @@ class EnvironmentController extends AbstractController
             'imageProcessingPath' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'],
             'imageProcessingVersion' => $this->determineImageMagickVersion(),
             'imageProcessingEffects' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects'],
-            'imageProcessingGdlibEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'],
+            'imageProcessingGdlibEnabled' => class_exists(\GdImage::class),
             'imageProcessingFileFormats' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
         ]);
         return new JsonResponse([
