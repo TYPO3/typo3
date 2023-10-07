@@ -112,15 +112,15 @@ class PasswordRecoveryController extends ActionController
         if ($currentTimestamp > $timestamp || !$this->userRepository->existsUserWithHash(GeneralUtility::hmac($hash))) {
             /** @var ExtbaseRequestParameters $extbaseRequestParameters */
             $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
-            $result = $extbaseRequestParameters->getOriginalRequestMappingResults();
-            $result->addError(new Error($this->getTranslation('change_password_notvalid_message'), 1554994253));
-            $extbaseRequestParameters->setOriginalRequestMappingResults($result);
+            $originalResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
+            $originalResult->addError(new Error($this->getTranslation('change_password_notvalid_message'), 1554994253));
+            $extbaseRequestParameters->setOriginalRequestMappingResults($originalResult);
             $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
 
             return (new ForwardResponse('recovery'))
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
-                ->withArgumentsValidationResult($result);
+                ->withArgumentsValidationResult($originalResult);
         }
 
         return null;
@@ -171,8 +171,6 @@ class PasswordRecoveryController extends ActionController
                 $this->getTranslation('empty_password_and_password_repeat'),
                 1554971665
             ));
-            $extbaseRequestParameters->setOriginalRequestMappingResults($originalResult);
-            $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
 
             return (new ForwardResponse('showChangePassword'))
                 ->withControllerName('PasswordRecovery')
@@ -266,12 +264,6 @@ class PasswordRecoveryController extends ActionController
                 $originalResult->merge($validationResult);
             }
         }
-
-        // Set the result from all validators
-        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
-        $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
-        $extbaseRequestParameters->setOriginalRequestMappingResults($originalResult);
-        $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
     }
 
     /**
@@ -306,15 +298,14 @@ class PasswordRecoveryController extends ActionController
             // No user found
             /** @var ExtbaseRequestParameters $extbaseRequestParameters */
             $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
-            $requestResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
-            $requestResult->addError(new Error('Invalid hash', 1562846832));
-            $extbaseRequestParameters->setOriginalRequestMappingResults($requestResult);
-            $this->request = $this->request->withAttribute('extbase', $extbaseRequestParameters);
+            $originalResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
+            $originalResult->addError(new Error('Invalid hash', 1562846832));
 
             return (new ForwardResponse('showChangePassword'))
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
-                ->withArguments(['hash' => $hash]);
+                ->withArguments(['hash' => $hash])
+                ->withArgumentsValidationResult($originalResult);
         }
 
         return $hashedPassword;
