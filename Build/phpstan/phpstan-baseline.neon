@@ -1151,6 +1151,11 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
 
 		-
+			message: "#^Parameter \\#1 \\$name of method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\ExtractorInterface\\>\\:\\:setMockClassName\\(\\) expects class\\-string, string given\\.$#"
+			count: 10
+			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
+
+		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Serializer/Typo3XmlParserTest.php
