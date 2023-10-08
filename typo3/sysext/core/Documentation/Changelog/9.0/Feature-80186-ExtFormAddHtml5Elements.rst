@@ -22,8 +22,8 @@ The form editor contains new selectable form elements
 * :html:`url` (HTML5)
 * :html:`number` (HTML5)
 
-The server side 'TYPO3\CMS\Extbase\Validation\Validator\NumberValidator' validator can be used.
------------------------------------------------------------------------------------------------
+The server side 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator' validator can be used.
+----------------------------------------------------------------------------------------------------
 
 .. code-block:: yaml
 
