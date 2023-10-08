@@ -78,8 +78,8 @@ Password policy validators
 TYPO3 ships with two password policy validators, which are both used in the
 default password policy.
 
-\TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\TYPO3\\CMS\\Core\\PasswordPolicy\\Validator\\CorePasswordValidator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This validator has the ability to ensure a complex password with a defined
 minimum length and 4 individual requirements.
@@ -100,8 +100,8 @@ The following options are available:
 | `specialCharacterRequired`   | Special char check    | Boolean | false   |
 +------------------------------+-----------------------+---------+---------+
 
-\TYPO3\CMS\Core\PasswordPolicy\Validator\NotCurrentPasswordValidator
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\TYPO3\\CMS\\Core\\PasswordPolicy\\Validator\\NotCurrentPasswordValidator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This validator can be used to ensure, that the new user password is not
 equal to the old password. The validator must always be configured with
