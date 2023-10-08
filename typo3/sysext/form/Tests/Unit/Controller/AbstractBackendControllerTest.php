@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
-use TYPO3\CMS\Form\Controller\AbstractBackendController;
+use TYPO3\CMS\Form\Tests\Unit\Controller\Fixtures\TestingController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractBackendControllerTest extends UnitTestCase
@@ -25,23 +25,14 @@ final class AbstractBackendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveResourcePathsExpectResolve(): void
+    public function resolveResourcePathsResolvesExtNotation(): void
     {
-        $mockController = $this->getAccessibleMockForAbstractClass(
-            AbstractBackendController::class,
-            [],
-            '',
-            false
-        );
+        $subject = new TestingController();
+        $input = [0 => 'EXT:form/Resources/Public/Css/form.css'];
 
-        $input = [
-            0 => 'EXT:form/Resources/Public/Css/form.css',
-        ];
+        $result = $subject->resolveResourcePaths($input);
 
-        $expected = [
-            0 => 'typo3/sysext/form/Resources/Public/Css/form.css',
-        ];
-
-        self::assertSame($expected, $mockController->_call('resolveResourcePaths', $input));
+        $expected = [0 => 'typo3/sysext/form/Resources/Public/Css/form.css'];
+        self::assertSame($expected, $result);
     }
 }
