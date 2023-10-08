@@ -38,10 +38,10 @@ This class has to implement the :php:class:`WidgetInterface` and could look like
 
         public function __construct(
             private readonly WidgetConfigurationInterface $configuration,
-            private readonly  Cache $cache,
+            private readonly Cache $cache,
             private readonly BackendViewFactory $backendViewFactory,
             private readonly ButtonProviderInterface $buttonProvider = null,
-            private readonly  array $options = []
+            private readonly array $options = []
         ) {
         }
 
@@ -52,7 +52,6 @@ This class has to implement the :php:class:`WidgetInterface` and could look like
 
         public function renderWidgetContent(): string
         {
-            // @todo: The second argument will fall with one of the next patches, adapt this then.
             $view = $this->backendViewFactory->create($this->request);
             $this->view->assignMultiple([
                 'items' => $this->getRssItems(),
@@ -106,7 +105,7 @@ There are two ways to add JavaScript for an widget:
 JavaScript module
     Implement :php:class:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
 
-    .. code-block:: php
+    ..  code-block:: php
 
         class ExampleChartWidget implements JavaScriptInterface
         {
@@ -124,9 +123,9 @@ JavaScript module
             }
         }
 
-   .. seealso::
+    ..  seealso::
 
-      :ref:`t3coreapi:backend-javascript-es6` for more info about JavaScript in TYPO3 Backend.
+        :ref:`t3coreapi:backend-javascript-es6` for more info about JavaScript in TYPO3 Backend.
 
 Plain JS files
     Implement :php:class:`AdditionalJavaScriptInterface`:
