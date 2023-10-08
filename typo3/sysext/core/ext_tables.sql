@@ -393,7 +393,9 @@ CREATE TABLE sys_http_report (
 	KEY type_scope (type,scope),
 	KEY created (created),
 	KEY changed (changed),
-	KEY request_time (request_time)
+	KEY request_time (request_time),
+	KEY summary_created (summary,created),
+	KEY all_conditions (type,status,scope,summary,request_time)
 ) ENGINE=InnoDB;
 
 #
