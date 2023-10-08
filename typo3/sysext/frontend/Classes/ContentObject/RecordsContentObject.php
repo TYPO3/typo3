@@ -81,14 +81,13 @@ class RecordsContentObject extends AbstractContentObject
             // Property "source" is considered more precise and thus takes precedence over "categories"
             $source = (string)$this->cObj->stdWrapValue('source', $conf ?? []);
             $categories = (string)$this->cObj->stdWrapValue('categories', $conf ?? []);
-            if ($source) {
+            if ($source !== '') {
                 $this->collectRecordsFromSource($source, $tablesArray);
-            } elseif ($categories) {
+            } elseif ($categories !== '') {
                 $relationField = (string)$this->cObj->stdWrapValue('relation', $conf['categories.'] ?? []);
                 $this->collectRecordsFromCategories($categories, $tablesArray, $relationField);
             }
-            $itemArrayCount = count($this->itemArray);
-            if ($itemArrayCount > 0) {
+            if (!empty($this->itemArray)) {
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $frontendController);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
@@ -108,30 +107,26 @@ class RecordsContentObject extends AbstractContentObject
                         }
                     }
                     // Might be unset during the overlay process
-                    if (is_array($row)) {
-                        $dontCheckPid = $this->cObj->stdWrapValue('dontCheckPid', $conf ?? []);
-                        if (!$dontCheckPid) {
-                            $validPageId = $pageRepository->filterAccessiblePageIds([$row['pid']]);
-                            $row = !empty($validPageId) ? $row : '';
-                        }
-                        if ($row && !empty($val['table']) && !($frontendController->recordRegister[$val['table'] . ':' . $val['id']] ?? false)) {
-                            $renderObjName = ($conf['conf.'][$val['table']] ?? false) ? $conf['conf.'][$val['table']] : '<' . $val['table'];
-                            $renderObjKey = ($conf['conf.'][$val['table']] ?? false) ? 'conf.' . $val['table'] : '';
-                            $renderObjConf = ($conf['conf.'][$val['table'] . '.'] ?? false) ? $conf['conf.'][$val['table'] . '.'] : [];
-                            $this->cObj->currentRecordNumber++;
-                            $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-                            $frontendController->currentRecord = $val['table'] . ':' . $val['id'];
-                            $this->cObj->lastChanged($row['tstamp'] ?? 0);
-                            $cObj->setRequest($this->request);
-                            $cObj->start($row, $val['table']);
-                            $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-                            $theValue .= $tmpValue;
-                        }
+                    if (is_array($row)
+                        && $this->isRecordsPageAccessible($val['table'], $row, $conf ?? [])
+                        && !($frontendController->recordRegister[$val['table'] . ':' . $val['id']] ?? false)
+                    ) {
+                        $renderObjName = ($conf['conf.'][$val['table']] ?? false) ? $conf['conf.'][$val['table']] : '<' . $val['table'];
+                        $renderObjKey = ($conf['conf.'][$val['table']] ?? false) ? 'conf.' . $val['table'] : '';
+                        $renderObjConf = ($conf['conf.'][$val['table'] . '.'] ?? false) ? $conf['conf.'][$val['table'] . '.'] : [];
+                        $this->cObj->currentRecordNumber++;
+                        $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
+                        $frontendController->currentRecord = $val['table'] . ':' . $val['id'];
+                        $this->cObj->lastChanged($row['tstamp'] ?? 0);
+                        $cObj->setRequest($this->request);
+                        $cObj->start($row, $val['table']);
+                        $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+                        $theValue .= $tmpValue;
                     }
                 }
             }
         }
-        $wrap = $this->cObj->stdWrapValue('wrap', $conf ?? []);
+        $wrap = $this->cObj->stdWrapValue('wrap', $conf);
         if ($wrap) {
             $theValue = $this->cObj->wrap($theValue, $wrap);
         }
@@ -144,6 +139,26 @@ class RecordsContentObject extends AbstractContentObject
             --$frontendController->recordRegister[$originalRec];
         }
         return $theValue;
+    }
+
+    /**
+     * Checks if the records page is accessible
+     */
+    protected function isRecordsPageAccessible(string $table, array $row, array $conf): bool
+    {
+        $pageId = (int)($table === 'pages' ? $row['uid'] : $row['pid']);
+        if ($pageId === $this->getTypoScriptFrontendController()->id) {
+            // Access to current page has already been checked in TypoScriptFrontendController
+            // before rendering this content object.
+            return true;
+        }
+
+        if ($this->cObj->stdWrapValue('dontCheckPid', $conf)) {
+            return true;
+        }
+
+        $validPageId = $this->getPageRepository()->filterAccessiblePageIds([$pageId]);
+        return $validPageId !== [];
     }
 
     /**
