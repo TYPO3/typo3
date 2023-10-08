@@ -66,5 +66,3 @@ editor:
         - mergeTableCells
         - tableProperties
         - tableCellProperties
-
-    extraPlugins:

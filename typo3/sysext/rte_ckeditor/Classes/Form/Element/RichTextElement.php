@@ -117,7 +117,7 @@ class RichTextElement extends AbstractFormElement
 
         $ckeditorAttributes = GeneralUtility::implodeAttributes([
             'id' => $fieldId . 'ckeditor5',
-            'options' => GeneralUtility::jsonEncodeForHtmlAttribute($ckeditorConfiguration['options'], false),
+            'options' => GeneralUtility::jsonEncodeForHtmlAttribute($ckeditorConfiguration, false),
             'form-engine' => GeneralUtility::jsonEncodeForHtmlAttribute([
                 'id' => $fieldId,
                 'name' => $itemFormElementName,
@@ -154,12 +154,12 @@ class RichTextElement extends AbstractFormElement
         $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/rte-ckeditor/ckeditor5.js');
 
-        $uiLanguage = $ckeditorConfiguration['options']['language']['ui'];
+        $uiLanguage = $ckeditorConfiguration['language']['ui'];
         if ($this->translationExists($uiLanguage)) {
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/ckeditor5/translations/' . $uiLanguage . '.js');
         }
 
-        $contentLanguage = $ckeditorConfiguration['options']['language']['content'];
+        $contentLanguage = $ckeditorConfiguration['language']['content'];
         if ($this->translationExists($contentLanguage)) {
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/ckeditor5/translations/' . $contentLanguage . '.js');
         }
@@ -194,14 +194,10 @@ class RichTextElement extends AbstractFormElement
         return $contentLanguage;
     }
 
-    /**
-     * @return array{options: array, externalPlugins: array}
-     */
     protected function resolveCkEditorConfiguration(): array
     {
         $configuration = $this->prepareConfigurationForEditor();
 
-        $externalPlugins = [];
         foreach ($this->getExtraPlugins() as $extraPluginName => $extraPluginConfig) {
             $configName = $extraPluginConfig['configName'] ?? $extraPluginName;
             if (!empty($extraPluginConfig['config']) && is_array($extraPluginConfig['config'])) {
@@ -211,20 +207,11 @@ class RichTextElement extends AbstractFormElement
                     $configuration[$configName] = array_replace_recursive($extraPluginConfig['config'], $configuration[$configName]);
                 }
             }
-            $configuration['extraPlugins'] = ($configuration['extraPlugins'] ?? '') . ',' . $extraPluginName;
-            if (isset($this->data['parameterArray']['fieldConf']['config']['placeholder'])) {
-                $configuration['editorplaceholder'] = (string)$this->data['parameterArray']['fieldConf']['config']['placeholder'];
-            }
-
-            $externalPlugins[] = [
-                'name' => $extraPluginName,
-                'resource' => $extraPluginConfig['resource'] ?? null,
-            ];
         }
-        return [
-            'options' => $configuration,
-            'externalPlugins' => $externalPlugins,
-        ];
+        if (isset($this->data['parameterArray']['fieldConf']['config']['placeholder'])) {
+            $configuration['placeholder'] = (string)$this->data['parameterArray']['fieldConf']['config']['placeholder'];
+        }
+        return $configuration;
     }
 
     /**
@@ -253,10 +240,8 @@ class RichTextElement extends AbstractFormElement
             $pluginConfiguration[$pluginName] = [
                 'configName' => $configuration['configName'] ?? $pluginName,
             ];
-            if ($configuration['resource'] ?? null) {
-                $configuration['resource'] = $this->resolveUrlPath($configuration['resource']);
-            }
             unset($configuration['configName']);
+            // CKEditor4 style config, unused in CKEditor5 and not forwarded to the resutling plugin config
             unset($configuration['resource']);
 
             if ($configuration['route'] ?? null) {
@@ -354,14 +339,6 @@ class RichTextElement extends AbstractFormElement
         // Replace all paths
         $configuration = $this->replaceAbsolutePathsToRelativeResourcesPath($configuration);
 
-        // there are some places where we define an array, but it needs to be a list in order to work
-        if (is_array($configuration['extraPlugins'] ?? null)) {
-            $configuration['extraPlugins'] = implode(',', $configuration['extraPlugins']);
-        }
-        if (is_array($configuration['removeButtons'] ?? null)) {
-            $configuration['removeButtons'] = implode(',', $configuration['removeButtons']);
-        }
-
         // unless explicitly set, the debug mode is enabled in development context
         if (!isset($configuration['debug'])) {
             $configuration['debug'] = ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) && Environment::getContext()->isDevelopment();
@@ -376,7 +353,7 @@ class RichTextElement extends AbstractFormElement
 
     protected function sanitizeFieldId(string $itemFormElementName): string
     {
-        $fieldId = (string)preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $itemFormElementName);
+        $fieldId = (string)preg_replace('/[^a-zA-Z0-9_:-]/', '_', $itemFormElementName);
         return htmlspecialchars((string)preg_replace('/^[^a-zA-Z]/', 'x', $fieldId));
     }
 
