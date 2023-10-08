@@ -1,0 +1,6 @@
+"sys_http_report"
+,"uuid","status","type","scope","summary","created","changed","request_time","meta","details"
+,"006462e9-fdc3-446d-a5b8-ba782deb6e02",0,"csp-report","backend","b90146a4ef6737eb3ae105f19ef67ff7ebea37e9","1693987016","1693987016","1693987016","{}","{}"
+,"959e8a2f-1c73-42c7-805b-7af8ac23edc8",0,"csp-report","backend","b90146a4ef6737eb3ae105f19ef67ff7ebea37e9","1693566575","1693566575","1693566575","{}","{}"
+,"0bced4d7-03df-4707-b306-d13da6739874",0,"csp-report","backend","b3c2159ff7469294a6e6baf55c76294d6ca6e5a1","1690666308","1690666308","1690666308","{}","{}"
+,"0c59b5e8-9cab-46b0-a739-e06e38f28eee",0,"csp-report","backend","b3c2159ff7469294a6e6baf55c76294d6ca6e5a1","1689363363","1689363363","1689363363","{}","{}"

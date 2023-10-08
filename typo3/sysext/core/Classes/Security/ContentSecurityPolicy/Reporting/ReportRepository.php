@@ -57,13 +57,56 @@ class ReportRepository
     public function findAllSummarized(ReportDemand $demand = null): array
     {
         $demand ??= ReportDemand::create();
-        $queryBuilder = $this->prepareQueryBuilder($demand);
-        $subQueryBuilder = $this->prepareQueryBuilder($demand, $queryBuilder)
-            ->select('uuid')
+        $queryBuilder = $this->prepareQueryBuilder($demand, 'report');
+        $uuidQueryBuilder = $this->getQueryBuilder()->from(self::TABLE_NAME, 'tab_uuid');
+        $summaryQueryBuilder = $this->getQueryBuilder()->from(self::TABLE_NAME, 'tab_summary');
+        $expr = $queryBuilder->expr();
+
+        // these nested query builders are doing a bunch of things to meet `ONLY_FULL_GROUP_BY` constraints
+        // + inner "summary" builder: build [summary; created] relation, summary must be distinct
+        // + helping "uuid" builder: build [uuid <= {summary; created}] relation, summary must be distinct
+        // + outer "report" builder: finally query [* <= {uuid <= {summary; created}}],
+        //   conditions/filters are applied to this effective outer query builder
+
+        $summaryQueryBuilder
+            ->selectLiteral($this->createFunctionLiteral(
+                $queryBuilder,
+                'MAX',
+                'tab_summary.created',
+                'created'
+            ))
+            ->addSelectLiteral('summary')
             ->groupBy('summary');
+
+        $this->applySummaryJoin(
+            $uuidQueryBuilder,
+            'tab_uuid',
+            $summaryQueryBuilder->getSQL(),
+            'res_summary',
+            (string)$expr->and(
+                $expr->eq('tab_uuid.summary', 'res_summary.summary'),
+                $expr->eq('tab_uuid.created', 'res_summary.created')
+            )
+        );
+        $uuidQueryBuilder
+            ->selectLiteral($this->createFunctionLiteral(
+                $queryBuilder,
+                // using `MAX(col)` since `ANY_VALUE(col)` is not supported by PostgreSQL
+                'MAX',
+                'tab_uuid.uuid',
+                'uuid'
+            ))
+            ->groupBy('tab_uuid.summary');
+
+        $this->applySummaryJoin(
+            $queryBuilder,
+            'report',
+            $uuidQueryBuilder->getSQL(),
+            'res_uuid',
+            $expr->eq('report.uuid', 'res_uuid.uuid')
+        );
         $result = $queryBuilder
-            ->select('*')
-            ->where($queryBuilder->expr()->in('uuid', $subQueryBuilder->getSQL()))
+            ->select('report.*')
             ->executeQuery();
 
         $summaryCountMap = $this->fetchSummaryCountMap();
@@ -113,7 +156,7 @@ class ReportRepository
             self::TABLE_NAME,
             array_merge(
                 $report->toArray(),
-                ['type' => 'csp-report']
+                ['type' => self::TYPE]
             )
         ) === 1;
     }
@@ -173,61 +216,109 @@ class ReportRepository
         );
     }
 
-    protected function prepareQueryBuilder(ReportDemand $demand, QueryBuilder $effectiveQueryBuilder = null): QueryBuilder
+    protected function prepareQueryBuilder(ReportDemand $demand, string $alias = null): QueryBuilder
     {
         $queryBuilder = $this->getQueryBuilder();
-        $effectiveQueryBuilder = $effectiveQueryBuilder ?? $queryBuilder;
-        $queryBuilder
-            ->from(self::TABLE_NAME)
-            ->andWhere($effectiveQueryBuilder->expr()->eq(
-                'type',
-                $effectiveQueryBuilder->createNamedParameter(self::TYPE)
-            ));
-        $this->applyDemand($demand, $queryBuilder, $effectiveQueryBuilder);
+        $queryBuilder->from(self::TABLE_NAME, $alias);
+        $this->applyStaticTypeCondition($queryBuilder, $alias);
+        $this->applyDemand($demand, $queryBuilder, $alias);
         return $queryBuilder;
     }
 
-    protected function applyDemand(ReportDemand $demand, QueryBuilder $queryBuilder, QueryBuilder $effectiveQueryBuilder): void
+    protected function applyDemand(ReportDemand $demand, QueryBuilder $queryBuilder, string $alias = null): void
     {
-        $expr = $effectiveQueryBuilder->expr();
+        $this->applyDemandConditions($demand, $queryBuilder, $alias);
+        $this->applyDemandSorting($demand, $queryBuilder, $alias);
+    }
+
+    protected function applyDemandConditions(ReportDemand $demand, QueryBuilder $queryBuilder, string $alias = null): void
+    {
+        $expr = $queryBuilder->expr();
+        $aliasPrefix = $this->prepareAliasPrefix($alias);
         if ($demand->status !== null) {
             $queryBuilder->andWhere($expr->eq(
-                'status',
-                $effectiveQueryBuilder->createNamedParameter($demand->status->value, Connection::PARAM_INT)
+                $aliasPrefix . 'status',
+                $queryBuilder->createNamedParameter($demand->status->value, Connection::PARAM_INT)
             ));
         }
         if ($demand->scope !== null) {
             $queryBuilder->andWhere($expr->eq(
-                'scope',
-                $effectiveQueryBuilder->createNamedParameter((string)$demand->scope)
+                $aliasPrefix . 'scope',
+                $queryBuilder->createNamedParameter((string)$demand->scope)
             ));
         }
         if ($demand->summaries !== null) {
             $queryBuilder->andWhere($expr->in(
-                'summary',
-                $effectiveQueryBuilder->createNamedParameter(
+                $aliasPrefix . 'summary',
+                $queryBuilder->createNamedParameter(
                     $demand->summaries,
                     ArrayParameterType::STRING
                 ),
             ));
         }
         if ($demand->requestTime !== null) {
-            $requestTimeParam = $effectiveQueryBuilder->createNamedParameter(
+            $requestTimeParam = $queryBuilder->createNamedParameter(
                 $demand->requestTime,
                 Connection::PARAM_INT
             );
             if ($demand->afterRequestTime) {
-                $queryBuilder->andWhere($expr->gt('request_time', $requestTimeParam));
+                $queryBuilder->andWhere($expr->gt($aliasPrefix . 'request_time', $requestTimeParam));
             } else {
-                $queryBuilder->andWhere($expr->eq('request_time', $requestTimeParam));
+                $queryBuilder->andWhere($expr->eq($aliasPrefix . 'request_time', $requestTimeParam));
             }
         }
+    }
+
+    protected function applyDemandSorting(ReportDemand $demand, QueryBuilder $queryBuilder, string $alias = null): void
+    {
+        $aliasPrefix = $this->prepareAliasPrefix($alias);
         if ($demand->orderFieldName !== null && $demand->orderDirection !== null) {
             $queryBuilder->orderBy(
-                $demand->orderFieldName,
+                $aliasPrefix . $demand->orderFieldName,
                 $demand->orderDirection
             );
         }
+    }
+
+    protected function applyStaticTypeCondition(QueryBuilder $queryBuilder, string $alias = null): void
+    {
+        $aliasPrefix = $this->prepareAliasPrefix($alias);
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->eq(
+                $aliasPrefix . 'type',
+                $queryBuilder->createNamedParameter(self::TYPE)
+            )
+        );
+    }
+
+    protected function applySummaryJoin(QueryBuilder $queryBuilder, string $fromAlias, string $join, string $alias, string $condition): void
+    {
+        $queryBuilder->getConcreteQueryBuilder()->join(
+            $queryBuilder->quoteIdentifier($fromAlias),
+            sprintf('(%s)', $join),
+            $queryBuilder->quoteIdentifier($alias),
+            $condition
+        );
+    }
+
+    protected function createFunctionLiteral(QueryBuilder $queryBuilder, string $functionName, string $fieldName, string $alias = null): string
+    {
+        $values = [
+            $functionName,
+            $queryBuilder->quoteIdentifier($fieldName),
+        ];
+        if ($alias === null) {
+            $format = '%s(%s)';
+        } else {
+            $format = '%s(%s) AS %s';
+            $values[] = $queryBuilder->quoteIdentifier($alias);
+        }
+        return vsprintf($format, $values);
+    }
+
+    protected function prepareAliasPrefix(string $alias = null): string
+    {
+        return $alias === null ? '' : $alias . '.';
     }
 
     protected function getQueryBuilder(): QueryBuilder
