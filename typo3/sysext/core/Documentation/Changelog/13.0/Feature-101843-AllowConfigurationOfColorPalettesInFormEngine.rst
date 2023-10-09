@@ -20,9 +20,10 @@ Impact
 
 In case commonly used colors or e.g. colors defined in a corporate design should
 be made accessible in an easy way, integrators may configure multiple color palettes
-to be used in FormEngine via PageTS.
+to be used in FormEngine via page TSconfig.
 
-::
+..  code-block:: typoscript
+    :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
     # Configure colors and assign colors to palettes
     colorPalettes {
@@ -45,7 +46,7 @@ to be used in FormEngine via PageTS.
       }
       palettes {
         main = typo3
-        key_colors = typo3, blue, darkgrey
+        key_colors = typo3, blue, darkgray
         messages = valid, error
       }
     }
