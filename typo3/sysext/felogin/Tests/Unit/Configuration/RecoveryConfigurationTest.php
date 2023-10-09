@@ -61,9 +61,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
 
     protected function setupSubject(Context $context = null): void
     {
-        if (!$context instanceof Context) {
-            $context = new Context();
-        }
+        $context ??= new Context();
 
         $this->configurationManager->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)
             ->willReturn($this->settings);

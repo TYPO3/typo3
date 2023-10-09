@@ -168,9 +168,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
             $flashMessages = array_map('json_encode', $flashMessages);
         }
         $user = $this->getUserByContext();
-        if ($user instanceof AbstractUserAuthentication) {
-            $user->setAndSaveSessionData($this->identifier, $flashMessages);
-        }
+        $user?->setAndSaveSessionData($this->identifier, $flashMessages);
     }
 
     /**
@@ -212,7 +210,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     {
         $sessionMessages = [];
         $user = $this->getUserByContext();
-        if ($user instanceof AbstractUserAuthentication) {
+        if ($user !== null) {
             $messagesFromSession = $user->getSessionData($this->identifier);
             $messagesFromSession = is_array($messagesFromSession) ? $messagesFromSession : [];
             foreach ($messagesFromSession as $messageData) {

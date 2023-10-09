@@ -97,7 +97,7 @@ class PageRouter implements RouterInterface
      */
     public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface
     {
-        if (!($previousResult instanceof RouteResultInterface)) {
+        if ($previousResult === null) {
             throw new RouteNotFoundException('No previous result given. Cannot find a page for an empty route part', 1555303496);
         }
 

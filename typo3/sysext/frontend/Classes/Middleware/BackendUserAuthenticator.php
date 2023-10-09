@@ -62,7 +62,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // Load specific dependencies which are necessary for a valid Backend User
         // like $GLOBALS['LANG'] for labels in the language of the BE User, the router, and ext_tables.php for all modules
         // So things like Frontend Editing and Admin Panel can use this for generating links to the TYPO3 Backend.
-        if ($backendUserObject instanceof FrontendBackendUserAuthentication) {
+        if ($backendUserObject !== null) {
             $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
             Bootstrap::loadExtTables();
             $this->setBackendUserAspect($GLOBALS['BE_USER']);

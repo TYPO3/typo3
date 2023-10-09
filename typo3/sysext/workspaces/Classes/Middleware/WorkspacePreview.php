@@ -99,7 +99,7 @@ class WorkspacePreview implements MiddlewareInterface
             $previewWorkspaceId = (int)$this->getWorkspaceIdFromRequest($keyword);
             if ($previewWorkspaceId > 0 && $routeResult instanceof RouteResultInterface) {
                 $previewUser = $this->initializePreviewUser($previewWorkspaceId);
-                if ($previewUser instanceof PreviewUserAuthentication) {
+                if ($previewUser !== null) {
                     $GLOBALS['BE_USER'] = $previewUser;
                     // Register the preview user as aspect
                     $this->setBackendUserAspect($context, $previewUser);
@@ -127,12 +127,12 @@ class WorkspacePreview implements MiddlewareInterface
         $response = $handler->handle($request);
 
         $tsfe = $this->getTypoScriptFrontendController();
-        if ($tsfe instanceof TypoScriptFrontendController && $addInformationAboutDisabledCache) {
+        if ($tsfe !== null && $addInformationAboutDisabledCache) {
             $tsfe->set_no_cache('GET Parameter ADMCMD_prev=LIVE was given', true);
         }
 
         // Add an info box to the frontend content
-        if ($tsfe instanceof TypoScriptFrontendController && $context->getPropertyFromAspect('workspace', 'isOffline', false)) {
+        if ($tsfe !== null && $context->getPropertyFromAspect('workspace', 'isOffline', false)) {
             $previewInfo = $this->renderPreviewInfo($tsfe, $request->getUri());
             $body = $response->getBody();
             $body->rewind();

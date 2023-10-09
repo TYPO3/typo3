@@ -652,7 +652,7 @@ class DataMapper
                     ->getProperty($propertyName)
                     ->getPrimaryType();
 
-                if (!$primaryType instanceof Type) {
+                if ($primaryType === null) {
                     throw NoPropertyTypesException::create($parentObject::class, $propertyName);
                 }
 
@@ -704,7 +704,7 @@ class DataMapper
             $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
             $primaryType = $property->getPrimaryType();
 
-            if (!$primaryType instanceof Type) {
+            if ($primaryType === null) {
                 throw NoPropertyTypesException::create($parentObject::class, $propertyName);
             }
 
@@ -813,7 +813,7 @@ class DataMapper
                 ->getProperty($propertyName)
                 ->getPrimaryType();
 
-            if (!$primaryType instanceof Type) {
+            if ($primaryType === null) {
                 throw NoPropertyTypesException::create($parentClassName, $propertyName);
             }
 

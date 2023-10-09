@@ -64,32 +64,32 @@ class RedirectHandler implements MiddlewareInterface
         );
 
         // If the matched redirect is found, resolve it, and check further
-        if (is_array($matchedRedirect)) {
-            $url = $this->redirectService->getTargetUrl($matchedRedirect, $request);
-            if ($url instanceof UriInterface) {
-                if ($this->redirectUriWillRedirectToCurrentUri($request, $url)) {
-                    if ($this->isEmptyRedirectUri($url)) {
-                        // Empty uri leads to a redirect loop in Firefox, whereas Chrome would stop it but not displaying anything.
-                        // @see https://forge.typo3.org/issues/100791
-                        $this->logger->error('Empty redirect points to itself! Aborting.', ['record' => $matchedRedirect, 'uri' => (string)$url]);
-                    } elseif ($url->getFragment()) {
-                        // Enrich error message for unsharp check with target url fragment.
-                        $this->logger->error('Redirect ' . $url->getPath() . ' eventually points to itself! Target with fragment can not be checked and we take the safe check to avoid redirect loops. Aborting.', ['record' => $matchedRedirect, 'uri' => (string)$url]);
-                    } else {
-                        $this->logger->error('Redirect ' . $url->getPath() . ' points to itself! Aborting.', ['record' => $matchedRedirect, 'uri' => (string)$url]);
-                    }
-                    return $handler->handle($request);
-                }
-                $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => (string)$url]);
-                $response = $this->buildRedirectResponse($url, $matchedRedirect);
-                // Dispatch event, allowing listeners to execute further tasks and to adjust the PSR-7 response
-                return $this->eventDispatcher->dispatch(
-                    new RedirectWasHitEvent($request, $response, $matchedRedirect, $url)
-                )->getResponse();
-            }
+        if (!is_array($matchedRedirect)) {
+            return $handler->handle($request);
         }
-
-        return $handler->handle($request);
+        $url = $this->redirectService->getTargetUrl($matchedRedirect, $request);
+        if ($url === null) {
+            return $handler->handle($request);
+        }
+        if ($this->redirectUriWillRedirectToCurrentUri($request, $url)) {
+            if ($this->isEmptyRedirectUri($url)) {
+                // Empty uri leads to a redirect loop in Firefox, whereas Chrome would stop it but not displaying anything.
+                // @see https://forge.typo3.org/issues/100791
+                $this->logger->error('Empty redirect points to itself! Aborting.', ['record' => $matchedRedirect, 'uri' => (string)$url]);
+            } elseif ($url->getFragment()) {
+                // Enrich error message for unsharp check with target url fragment.
+                $this->logger->error('Redirect ' . $url->getPath() . ' eventually points to itself! Target with fragment can not be checked and we take the safe check to avoid redirect loops. Aborting.', ['record' => $matchedRedirect, 'uri' => (string)$url]);
+            } else {
+                $this->logger->error('Redirect ' . $url->getPath() . ' points to itself! Aborting.', ['record' => $matchedRedirect, 'uri' => (string)$url]);
+            }
+            return $handler->handle($request);
+        }
+        $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => (string)$url]);
+        $response = $this->buildRedirectResponse($url, $matchedRedirect);
+        // Dispatch event, allowing listeners to execute further tasks and to adjust the PSR-7 response
+        return $this->eventDispatcher->dispatch(
+            new RedirectWasHitEvent($request, $response, $matchedRedirect, $url)
+        )->getResponse();
     }
 
     protected function buildRedirectResponse(UriInterface $uri, array $redirectRecord): ResponseInterface

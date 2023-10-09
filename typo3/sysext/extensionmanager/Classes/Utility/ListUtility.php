@@ -209,17 +209,20 @@ class ListUtility implements SingletonInterface
         $extensions = $this->enrichExtensionsWithEmConfInformation($extensions);
         foreach ($extensions as $extensionKey => $properties) {
             $terObject = $this->getExtensionTerData($extensionKey, $extensions[$extensionKey]['version'] ?? '');
-            if ($terObject instanceof Extension) {
-                $extensions[$extensionKey]['terObject'] = $terObject;
-                $extensions[$extensionKey]['remote'] = $terObject->getRemoteIdentifier();
-                $extensions[$extensionKey]['updateAvailable'] = false;
-                $extensions[$extensionKey]['updateToVersion'] = null;
-                $extensionToUpdate = $this->getUpdateableVersion($terObject);
-                if ($extensionToUpdate instanceof Extension) {
-                    $extensions[$extensionKey]['updateAvailable'] = true;
-                    $extensions[$extensionKey]['updateToVersion'] = $extensionToUpdate;
-                }
+            if ($terObject === null) {
+                continue;
             }
+            $extensions[$extensionKey]['terObject'] = $terObject;
+            $extensions[$extensionKey]['remote'] = $terObject->getRemoteIdentifier();
+            $extensions[$extensionKey]['updateAvailable'] = false;
+            $extensions[$extensionKey]['updateToVersion'] = null;
+
+            $extensionToUpdate = $this->getUpdateableVersion($terObject);
+            if ($extensionToUpdate === null) {
+                continue;
+            }
+            $extensions[$extensionKey]['updateAvailable'] = true;
+            $extensions[$extensionKey]['updateToVersion'] = $extensionToUpdate;
         }
         return $extensions;
     }
