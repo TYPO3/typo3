@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
@@ -57,7 +56,7 @@ class FilesContentObject extends AbstractContentObject
         $limit = (int)$this->cObj->stdWrapValue('maxItems', $conf, $availableFileObjectCount);
         $end = MathUtility::forceIntegerInRange($start + $limit, $start, $availableFileObjectCount);
 
-        if ($frontendController instanceof TypoScriptFrontendController) {
+        if ($frontendController !== null) {
             $frontendController->register['FILES_COUNT'] = min($limit, $availableFileObjectCount);
         }
         $fileObjectCounter = 0;
@@ -68,7 +67,7 @@ class FilesContentObject extends AbstractContentObject
             $key = $keys[$i];
             $fileObject = $fileObjects[$key];
 
-            if ($frontendController instanceof TypoScriptFrontendController) {
+            if ($frontendController !== null) {
                 $frontendController->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
             }
             $this->cObj->setCurrentFile($fileObject);

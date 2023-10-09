@@ -1307,11 +1307,9 @@ class PageRepository implements LoggerAwareInterface
         }
         $validPageIds = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        if ($restrictionContainer instanceof QueryRestrictionContainerInterface) {
-            $queryBuilder->setRestrictions($restrictionContainer);
-        } else {
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
-        }
+        $queryBuilder->setRestrictions(
+            $restrictionContainer ?? GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
+        );
         $statement = $queryBuilder->select('uid')
             ->from('pages')
             ->where(

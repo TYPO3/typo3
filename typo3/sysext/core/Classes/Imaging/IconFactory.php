@@ -86,17 +86,15 @@ class IconFactory
      */
     public function getIcon($identifier, string|IconSize $size = IconSize::MEDIUM, $overlayIdentifier = null, \TYPO3\CMS\Core\Type\Icon\IconState|IconState $state = null)
     {
-        if ($state instanceof IconState) {
-            $stateValue = $state->value;
-        } else {
-            if ($state instanceof \TYPO3\CMS\Core\Type\Icon\IconState) {
-                trigger_error(
-                    'Using the non-native enumeration TYPO3\CMS\Core\Type\Icon\IconState in IconFactory->getIcon()'
-                    . ' will not work in TYPO3 v14.0 anymore. Use native TYPO3\CMS\Core\Imaging\IconState instead.',
-                    E_USER_DEPRECATED
-                );
-            }
+        if ($state instanceof \TYPO3\CMS\Core\Type\Icon\IconState) {
+            trigger_error(
+                'Using the non-native enumeration TYPO3\CMS\Core\Type\Icon\IconState in IconFactory->getIcon()'
+                . ' will not work in TYPO3 v14.0 anymore. Use native TYPO3\CMS\Core\Imaging\IconState instead.',
+                E_USER_DEPRECATED
+            );
             $stateValue = (string)$state;
+        } else {
+            $stateValue = $state?->value ?? '';
         }
         if (is_string($size)) {
             $size = IconSize::from($size);

@@ -66,7 +66,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         }
 
         $data = [];
-        if ($loggingMiddleware instanceof DoctrineSqlLoggingMiddleware) {
+        if ($loggingMiddleware !== null) {
             $queries = $loggingMiddleware->getQueries();
             $data['totalQueries'] = count($queries);
             $data['queries'] = $this->groupQueries($queries);

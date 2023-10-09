@@ -302,10 +302,7 @@ class BackendLayoutView implements SingletonInterface
     public function getSelectedBackendLayout($pageId)
     {
         $layout = $this->getBackendLayoutForPage((int)$pageId);
-        if ($layout instanceof BackendLayout) {
-            return $layout->getStructure();
-        }
-        return null;
+        return $layout?->getStructure();
     }
 
     /**

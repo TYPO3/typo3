@@ -4,6 +4,17 @@ includes:
   - ../../vendor/friendsoftypo3/phpstan-typo3/extension.neon
   - ../../vendor/phpstan/phpstan-phpunit/extension.neon
 
+services:
+  -
+    class: TYPO3\CMS\PHPStan\Rules\Classes\UnneededInstanceOfRule
+    arguments:
+      # treatPhpDocTypesAsCertain is explicitly disabled as long as we have ignored errors
+      # in our baseline, as that we MUST not trust doc types 100%.
+      # We can switch to the global parameter `%treatPhpDocTypesAsCertain%` once that's fixed.
+      treatPhpDocTypesAsCertain: false
+    tags:
+      - phpstan.rules.rule
+
 parameters:
   # Use local .cache dir instead of /tmp
   tmpDir: ../../.cache/phpstan

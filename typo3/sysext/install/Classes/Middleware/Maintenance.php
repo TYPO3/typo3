@@ -200,7 +200,7 @@ class Maintenance implements MiddlewareInterface
             ]);
         } else {
             $enforceReferrerResponse = $this->enforceReferrer($request);
-            if ($enforceReferrerResponse instanceof ResponseInterface) {
+            if ($enforceReferrerResponse !== null) {
                 return $enforceReferrerResponse;
             }
             $session->initializeSession();

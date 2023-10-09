@@ -728,10 +728,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     protected function getStorageByUid(int $storageUid): ResourceStorage
     {
         $storage = $this->storageRepository->findByUid($storageUid);
-        if (
-            !$storage instanceof ResourceStorage
-            || !$storage->isBrowsable()
-        ) {
+        if (!$storage?->isBrowsable()) {
             throw new PersistenceManagerException(sprintf('Could not access storage with uid "%d".', $storageUid), 1471630581);
         }
         return $storage;

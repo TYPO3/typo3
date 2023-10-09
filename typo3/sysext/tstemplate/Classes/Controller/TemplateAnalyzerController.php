@@ -27,7 +27,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
@@ -40,7 +39,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisitor;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -197,12 +195,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $nodeFinderVisitor->setNodeIdentifier($includeIdentifier);
         $this->treeTraverser->traverse($includeTree, [$nodeFinderVisitor]);
         $foundNode = $nodeFinderVisitor->getFoundNode();
-
-        if (!$foundNode instanceof IncludeInterface) {
-            return $this->responseFactory->createResponse(400);
-        }
-        $lineStream = $foundNode->getLineStream();
-        if (!$lineStream instanceof LineStream) {
+        if ($foundNode?->getLineStream() === null) {
             return $this->responseFactory->createResponse(400);
         }
 

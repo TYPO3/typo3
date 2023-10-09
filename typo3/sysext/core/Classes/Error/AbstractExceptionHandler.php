@@ -149,7 +149,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         $workspace = 0;
         $data = [];
         $backendUser = $this->getBackendUser();
-        if ($backendUser instanceof BackendUserAuthentication) {
+        if ($backendUser !== null) {
             if (isset($backendUser->user['uid'])) {
                 $userId = $backendUser->user['uid'];
             }

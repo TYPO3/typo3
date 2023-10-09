@@ -58,7 +58,7 @@ final class PageTsConfigFactory
         $pagesTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($fullRootLine, $this->tokenizer, $this->cache);
 
         // Overloading with user TSconfig if hand over
-        if ($userTsConfig instanceof UserTsConfig) {
+        if ($userTsConfig !== null) {
             $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
             $userTsConfigPageOverrides = '';
             // @todo: This is ugly and expensive. There should be a better way to do this. Similar in BE page TSconfig controllers.

@@ -60,9 +60,10 @@ class DataHandlerSlugUpdateHook
         }
 
         $changeItem = $this->slugRedirectChangeItemFactory->create((int)$id);
-        if ($changeItem instanceof SlugRedirectChangeItem) {
-            $this->persistedChangedItems[(int)$id] = $changeItem;
+        if ($changeItem === null) {
+            return;
         }
+        $this->persistedChangedItems[(int)$id] = $changeItem;
     }
 
     /**
@@ -79,8 +80,7 @@ class DataHandlerSlugUpdateHook
             $table !== 'pages'
             || $status !== 'update'
             || empty($fieldArray['slug'])
-            || !($persistedChangedItem instanceof SlugRedirectChangeItem)
-            || $persistedChangedItem->getOriginal()['slug'] === $fieldArray['slug']
+            || $persistedChangedItem?->getOriginal()['slug'] === $fieldArray['slug']
             || $this->isNestedHookInvocation($dataHandler)
         ) {
             return;

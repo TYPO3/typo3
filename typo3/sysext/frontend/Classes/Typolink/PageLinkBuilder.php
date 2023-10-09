@@ -466,15 +466,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     protected function getSiteLanguageOfTargetPage(Site $siteOfTargetPage, string $targetLanguageId): SiteLanguage
     {
         $currentSite = $this->getCurrentSite();
-        $currentSiteLanguage = $this->getCurrentSiteLanguage();
-        // Happens when currently on a pseudo-site configuration
-        // We assume to use the default language then
-        if ($currentSite && !($currentSiteLanguage instanceof SiteLanguage)) {
-            $currentSiteLanguage = $currentSite->getDefaultLanguage();
-        }
+        $currentSiteLanguage = $this->getCurrentSiteLanguage() ?? $currentSite?->getDefaultLanguage();
 
         if ($targetLanguageId === 'current') {
-            $targetLanguageId = $currentSiteLanguage ? $currentSiteLanguage->getLanguageId() : 0;
+            $targetLanguageId = $currentSiteLanguage?->getLanguageId() ?? 0;
         } else {
             $targetLanguageId = (int)$targetLanguageId;
         }
@@ -495,12 +490,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $currentSite = $this->getCurrentSite();
-        $currentSiteLanguage = $this->getCurrentSiteLanguage();
-        // Happens when currently on a pseudo-site configuration
-        // We assume to use the default language then
-        if ($currentSite && !($currentSiteLanguage instanceof SiteLanguage)) {
-            $currentSiteLanguage = $currentSite->getDefaultLanguage();
-        }
+        $currentSiteLanguage = $this->getCurrentSiteLanguage() ?? $currentSite?->getDefaultLanguage();
 
         $siteLanguageOfTargetPage = $this->getSiteLanguageOfTargetPage($siteOfTargetPage, (string)($conf['language'] ?? 'current'));
 
@@ -517,7 +507,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (
             !$currentSite
             || $currentSite->getRootPageId() !== $siteOfTargetPage->getRootPageId()
-            || $siteLanguageOfTargetPage->getBase()->getHost() !== $currentSiteLanguage->getBase()->getHost()) {
+            || $siteLanguageOfTargetPage->getBase()->getHost() !== $currentSiteLanguage?->getBase()?->getHost()) {
             $useAbsoluteUrl = true;
         }
 

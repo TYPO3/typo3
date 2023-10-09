@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SiteInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\TsConfigInclude;
@@ -45,9 +44,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisitor;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
-use TYPO3\CMS\Core\TypoScript\UserTsConfig;
 
 /**
  * Page TSconfig > Included page TSconfig
@@ -118,7 +115,7 @@ final class PageTsConfigIncludesController
 
         // Overload tree with user TSconfig if any
         $userTsConfig = $backendUser->getUserTsConfig();
-        if (!$userTsConfig instanceof UserTsConfig) {
+        if ($userTsConfig === null) {
             throw new \RuntimeException('User TSconfig not initialized', 1675535278);
         }
         $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
@@ -202,7 +199,7 @@ final class PageTsConfigIncludesController
 
             // Overload tree with user TSconfig if any
             $userTsConfig = $backendUser->getUserTsConfig();
-            if (!$userTsConfig instanceof UserTsConfig) {
+            if ($userTsConfig === null) {
                 throw new \RuntimeException('UserTsConfig not initialized', 1675535279);
             }
             $userTsConfigAst = $userTsConfig->getUserTsConfigTree();
@@ -227,20 +224,15 @@ final class PageTsConfigIncludesController
         $nodeFinderVisitor->setNodeIdentifier($includeIdentifier);
         $treeTraverser = new IncludeTreeTraverser();
         $treeTraverser->traverse($includeTree, [$nodeFinderVisitor]);
-        $foundNode = $nodeFinderVisitor->getFoundNode();
-
-        if (!$foundNode instanceof IncludeInterface) {
-            return $this->responseFactory->createResponse(400);
-        }
-        $lineStream = $foundNode->getLineStream();
-        if (!$lineStream instanceof LineStream) {
+        $lineStream = $nodeFinderVisitor->getFoundNode()?->getLineStream();
+        if ($lineStream === null) {
             return $this->responseFactory->createResponse(400);
         }
 
         return $this->responseFactory
             ->createResponse()
             ->withHeader('Content-Type', 'text/plain')
-            ->withBody($this->streamFactory->createStream((string)$foundNode->getLineStream()));
+            ->withBody($this->streamFactory->createStream((string)$lineStream));
     }
 
     public function sourceWithIncludesAction(ServerRequestInterface $request): ResponseInterface
@@ -278,7 +270,7 @@ final class PageTsConfigIncludesController
 
             // Overload tree with user TSconfig if any
             $userTsConfig = $backendUser->getUserTsConfig();
-            if (!$userTsConfig instanceof UserTsConfig) {
+            if ($userTsConfig === null) {
                 throw new \RuntimeException('UserTsConfig not initialized', 1675535280);
             }
             $userTsConfigAst = $userTsConfig->getUserTsConfigTree();

@@ -125,7 +125,7 @@ class ExportController
             return $this->getDownload($export);
         }
         $saveFolder = $export->getOrCreateDefaultImportExportFolder();
-        if (($inputData['save_export'] ?? false) && ($saveFolder instanceof Folder)) {
+        if (($inputData['save_export'] ?? false) && $saveFolder !== null) {
             $this->saveExportToFile($view, $export, $saveFolder);
         }
         $inputData['filename'] = $export->getExportFileName();
@@ -144,7 +144,7 @@ class ExportController
             'presetSelectOptions' => $this->presetRepository->getPresets($id),
             'fileName' => '',
             'filetypeSelectOptions' => $this->getFileSelectOptions($export),
-            'saveFolder' => ($saveFolder instanceof Folder) ? $saveFolder->getPublicUrl() : '',
+            'saveFolder' => $saveFolder?->getPublicUrl() ?? '',
             'hasSaveFolder' => true,
             'extensions' => $this->getExtensionList(),
             'inData' => $inputData,

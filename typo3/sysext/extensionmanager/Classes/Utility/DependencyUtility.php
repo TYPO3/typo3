@@ -340,7 +340,7 @@ class DependencyUtility implements SingletonInterface
         }
 
         $latestCompatibleExtensionByDependency = $this->getLatestCompatibleExtensionByDependency($dependency);
-        if (!$latestCompatibleExtensionByDependency instanceof Extension) {
+        if ($latestCompatibleExtensionByDependency === null) {
             if (!$this->skipDependencyCheck) {
                 throw new MissingExtensionDependencyException(
                     'Could not resolve dependency for "' . $dependency->getIdentifier() . '"',

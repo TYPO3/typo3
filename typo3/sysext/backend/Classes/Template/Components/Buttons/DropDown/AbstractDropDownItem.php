@@ -46,9 +46,7 @@ abstract class AbstractDropDownItem implements \Stringable
 
     public function setIcon(?Icon $icon): self
     {
-        if ($icon instanceof Icon) {
-            $icon->setSize(IconSize::SMALL);
-        }
+        $icon?->setSize(IconSize::SMALL);
         $this->icon = $icon;
         return $this;
     }

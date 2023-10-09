@@ -48,7 +48,7 @@ class ErrorController
             throw new InternalServerErrorException($message, 1607585445);
         }
         $errorHandler = $this->getErrorHandlerFromSite($request, 500);
-        if ($errorHandler instanceof PageErrorHandlerInterface) {
+        if ($errorHandler !== null) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
         return $this->handleDefaultError($request, 500, $message ?: 'Internal Server Error');
@@ -66,7 +66,7 @@ class ErrorController
             throw new ServiceUnavailableException($message, 1518472181);
         }
         $errorHandler = $this->getErrorHandlerFromSite($request, 503);
-        if ($errorHandler instanceof PageErrorHandlerInterface) {
+        if ($errorHandler !== null) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
         return $this->handleDefaultError($request, 503, $message ?: 'Service Unavailable');
@@ -81,7 +81,7 @@ class ErrorController
     public function pageNotFoundAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
         $errorHandler = $this->getErrorHandlerFromSite($request, 404);
-        if ($errorHandler instanceof PageErrorHandlerInterface) {
+        if ($errorHandler !== null) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
         try {
@@ -100,7 +100,7 @@ class ErrorController
     public function accessDeniedAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
         $errorHandler = $this->getErrorHandlerFromSite($request, 403);
-        if ($errorHandler instanceof PageErrorHandlerInterface) {
+        if ($errorHandler !== null) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
         try {

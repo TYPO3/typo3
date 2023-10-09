@@ -67,7 +67,7 @@ class DashboardInitializationService
     protected function defineCurrentDashboard(): Dashboard
     {
         $currentDashboard = $this->dashboardRepository->getDashboardByIdentifier($this->loadCurrentDashboard($this->user));
-        if (!$currentDashboard instanceof Dashboard) {
+        if ($currentDashboard === null) {
             $dashboards = $this->getDashboardsForUser();
             /** @var Dashboard $currentDashboard */
             $currentDashboard = reset($dashboards);
@@ -94,9 +94,10 @@ class DashboardInitializationService
                     (int)$this->user->user['uid']
                 );
 
-                if ($dashboard instanceof Dashboard) {
-                    $dashboardsForUser[$dashboard->getIdentifier()] = $dashboard;
+                if ($dashboard === null) {
+                    continue;
                 }
+                $dashboardsForUser[$dashboard->getIdentifier()] = $dashboard;
             }
         }
 

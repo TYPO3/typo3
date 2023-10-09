@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\Error;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Error\Http\AbstractClientErrorException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -106,10 +105,10 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
         }
         // Only show errors if a BE user is authenticated
         $backendUser = $this->getBackendUser();
-        if ($backendUser instanceof BackendUserAuthentication) {
-            return ($backendUser->user['uid'] ?? 0) > 0;
+        if ($backendUser === null) {
+            return false;
         }
-        return false;
+        return ($backendUser->user['uid'] ?? 0) > 0;
     }
 
     /**

@@ -1318,7 +1318,7 @@ class Export extends ImportExport
         $filesFolderName = $fileName . '.files';
         $fileContent = $this->render();
 
-        if (!($saveFolder instanceof Folder && $saveFolder->checkActionPermission('write'))) {
+        if (!($saveFolder?->checkActionPermission('write'))) {
             throw new InsufficientFolderWritePermissionsException(
                 'You are not allowed to write to the target folder "' . $saveFolder->getPublicUrl() . '"',
                 1602432207

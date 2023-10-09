@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
-use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -102,7 +101,7 @@ class ImportController
         if ($request->getMethod() === 'POST' && isset($parsedBody['_upload'])) {
             $uploadStatus = self::UPLOAD_FAILED;
             $file = $this->handleFileUpload($request);
-            if (($file instanceof File) && in_array($file->getExtension(), ['t3d', 'xml'], true)) {
+            if ($file !== null && in_array($file->getExtension(), ['t3d', 'xml'], true)) {
                 $inputData['file'] = $file->getCombinedIdentifier();
                 $uploadStatus = self::UPLOAD_DONE;
                 $uploadedFileName = $file->getName();
@@ -113,7 +112,7 @@ class ImportController
         $importFolder = $import->getOrCreateDefaultImportExportFolder();
 
         $view->assignMultiple([
-            'importFolder' => ($importFolder instanceof Folder) ? $importFolder->getCombinedIdentifier() : '',
+            'importFolder' => $importFolder?->getCombinedIdentifier() ?? '',
             'import' => $import,
             'errors' => $import->getErrorLog(),
             'preview' => $import->renderPreview(),

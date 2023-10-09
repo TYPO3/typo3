@@ -118,7 +118,7 @@ class DashboardController
                 (int)$this->getBackendUser()->user['uid'],
                 $parameters['dashboard-title'] ?? ''
             );
-            if ($dashboard instanceof Dashboard) {
+            if ($dashboard !== null) {
                 $this->saveCurrentDashboard($dashboard->getIdentifier());
             }
         }

@@ -44,7 +44,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregator
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
-use TYPO3\CMS\Core\TypoScript\UserTsConfig;
 
 /**
  * Page TSconfig > Active page TSconfig
@@ -133,7 +132,7 @@ final class PageTsConfigActiveController
 
         // Overload tree with user TSconfig if any
         $userTsConfig = $backendUser->getUserTsConfig();
-        if (!$userTsConfig instanceof UserTsConfig) {
+        if ($userTsConfig === null) {
             throw new \RuntimeException('User TSconfig not initialized', 1674609098);
         }
         $userTsConfigAst = $userTsConfig->getUserTsConfigTree();

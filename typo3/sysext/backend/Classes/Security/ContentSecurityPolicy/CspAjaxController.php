@@ -92,7 +92,7 @@ class CspAjaxController
         if ($action === 'deleteReports') {
             return $this->deleteReportsAction($scope);
         }
-        if ($action === 'handleReport' && $uuid instanceof UuidV4) {
+        if ($action === 'handleReport' && $uuid !== null) {
             return $this->handleReportAction($uuid);
         }
         if ($action === 'mutateReport'

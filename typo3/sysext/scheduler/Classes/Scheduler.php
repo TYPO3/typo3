@@ -194,7 +194,7 @@ class Scheduler implements SingletonInterface
             ]);
             // Now that the result of the task execution has been handled,
             // throw the exception again, if any
-            if ($e instanceof \Throwable) {
+            if ($e !== null) {
                 throw $e;
             }
         }

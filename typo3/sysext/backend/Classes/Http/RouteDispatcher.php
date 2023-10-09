@@ -63,7 +63,7 @@ class RouteDispatcher extends Dispatcher
         $route = $request->getAttribute('route');
 
         $enforceReferrerResponse = $this->enforceReferrer($request, $route);
-        if ($enforceReferrerResponse instanceof ResponseInterface) {
+        if ($enforceReferrerResponse !== null) {
             return $enforceReferrerResponse;
         }
         // Ensure that a token exists, and the token is requested, if the route requires a valid token

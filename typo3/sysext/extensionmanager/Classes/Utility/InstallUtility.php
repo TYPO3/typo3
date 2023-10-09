@@ -389,10 +389,7 @@ class InstallUtility implements LoggerAwareInterface
             }
         }
         $newSites = array_diff_key($siteConfiguration->resolveAllExistingSites(false), $existingSites);
-        $importedPages = [];
-        if ($import instanceof Import) {
-            $importedPages = $import->getImportMapId()['pages'] ?? null;
-        }
+        $importedPages = $import?->getImportMapId()['pages'] ?? [];
         $newSiteIdentifierList = [];
         foreach ($newSites as $newSite) {
             $exportedPageId = $newSite->getRootPageId();
