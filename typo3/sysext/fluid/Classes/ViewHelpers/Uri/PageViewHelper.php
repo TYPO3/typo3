@@ -164,7 +164,7 @@ final class PageViewHelper extends AbstractViewHelper
         $pageType = isset($arguments['pageType']) ? (int)$arguments['pageType'] : 0;
         $noCache = isset($arguments['noCache']) && (bool)$arguments['noCache'];
         $section = isset($arguments['section']) ? (string)$arguments['section'] : '';
-        $language = $arguments['language'] ?? null;
+        $language = isset($arguments['language']) ? (string)$arguments['language'] : null;
         $linkAccessRestrictedPages = isset($arguments['linkAccessRestrictedPages']) && (bool)$arguments['linkAccessRestrictedPages'];
         $additionalParams = isset($arguments['additionalParams']) ? (array)$arguments['additionalParams'] : [];
         $absolute = isset($arguments['absolute']) && (bool)$arguments['absolute'];
@@ -220,7 +220,7 @@ final class PageViewHelper extends AbstractViewHelper
         $pageType = (int)($arguments['pageType'] ?? 0);
         $noCache = $arguments['noCache'];
         $section = $arguments['section'];
-        $language = $arguments['language'] ?? null;
+        $language = isset($arguments['language']) ? (string)$arguments['language'] : null;
         $linkAccessRestrictedPages = $arguments['linkAccessRestrictedPages'];
         $absolute = $arguments['absolute'];
         $addQueryString = $arguments['addQueryString'] ?? false;

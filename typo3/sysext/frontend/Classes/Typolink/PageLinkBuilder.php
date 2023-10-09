@@ -413,7 +413,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // It is needed to also resolve the page translation now, as it might have a different shortcut
         // page
         if (isset($configuration['language']) && $configuration['language'] !== 'current') {
-            $page = $pageRepository->getLanguageOverlay('pages', $page, new LanguageAspect($configuration['language'], $configuration['language']));
+            $page = $pageRepository->getLanguageOverlay('pages', $page, new LanguageAspect((int)$configuration['language'], (int)$configuration['language']));
         }
 
         $page = $this->resolveShortcutPage($page, $pageRepository, $disableGroupAccessCheck);

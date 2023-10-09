@@ -104,7 +104,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $pageType = (int)($this->arguments['pageType'] ?? 0);
         $noCache = (bool)($this->arguments['noCache'] ?? false);
         /** @var string|null $language */
-        $language = $this->arguments['language'] ?? null;
+        $language = isset($this->arguments['language']) ? (string)$this->arguments['language'] : null;
         /** @var string|null $section */
         $section = $this->arguments['section'] ?? null;
         $linkAccessRestrictedPages = (bool)($this->arguments['linkAccessRestrictedPages'] ?? false);
@@ -212,7 +212,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $pageUid = (int)$this->arguments['pageUid'] ?: null;
         $pageType = (int)($this->arguments['pageType'] ?? 0);
         $noCache = (bool)($this->arguments['noCache'] ?? false);
-        $language = $this->arguments['language'] ?? null;
+        $language = isset($this->arguments['language']) ? (string)$this->arguments['language'] : null;
         $section = (string)$this->arguments['section'];
         $format = (string)$this->arguments['format'];
         $linkAccessRestrictedPages = (bool)($this->arguments['linkAccessRestrictedPages'] ?? false);

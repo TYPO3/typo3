@@ -141,7 +141,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;
         $noCache = isset($this->arguments['noCache']) && (bool)$this->arguments['noCache'];
         $section = isset($this->arguments['section']) ? (string)$this->arguments['section'] : '';
-        $language = $this->arguments['language'] ?? null;
+        $language = isset($this->arguments['language']) ? (string)$this->arguments['language'] : null;
         $linkAccessRestrictedPages = isset($this->arguments['linkAccessRestrictedPages']) && (bool)$this->arguments['linkAccessRestrictedPages'];
         $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
         $absolute = isset($this->arguments['absolute']) && (bool)$this->arguments['absolute'];
@@ -250,7 +250,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;
         $noCache = isset($this->arguments['noCache']) && (bool)$this->arguments['noCache'];
         $section = isset($this->arguments['section']) ? (string)$this->arguments['section'] : '';
-        $language = $this->arguments['language'] ?? null;
+        $language = isset($this->arguments['language']) ? (string)$this->arguments['language'] : null;
         $linkAccessRestrictedPages = isset($this->arguments['linkAccessRestrictedPages']) && (bool)$this->arguments['linkAccessRestrictedPages'];
         $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
         $absolute = isset($this->arguments['absolute']) && (bool)$this->arguments['absolute'];
