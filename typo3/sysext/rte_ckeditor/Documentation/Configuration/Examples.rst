@@ -10,9 +10,10 @@ How do I use a different preset?
 ================================
 
 Instead of using the default "default" preset, you can change this, for example
-to "full", using **Page TSconfig**:
+to "full", using **page TSconfig**:
 
 .. code-block:: typoscript
+   :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
    RTE.default.preset = full
 
@@ -24,6 +25,7 @@ Additionally, you can set specific presets for specific types of textfields.
 For example to use preset "full" for the field "bodytext" of all content elements:
 
 .. code-block:: typoscript
+   :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
    RTE.config.tt_content.bodytext.preset = full
 
@@ -31,6 +33,7 @@ To use preset "minimal" for the field "bodytext" of only content elements
 with ctype="text":
 
 .. code-block:: typoscript
+   :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
    RTE.config.tt_content.bodytext.types.text.preset = minimal
 
@@ -46,16 +49,20 @@ In :file:`ext_localconf.php`, replace `my_extension` with your extension key, re
 with the name of your preset.
 
 .. code-block:: php
+   :caption: EXT:my_sitepackage/ext_localconf.php
 
    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['my_preset'] = 'EXT:my_extension/Configuration/RTE/MyPreset.yaml';
 
-In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for example::
+In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for example:
+
+.. code-block:: yaml
+   :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
 
    # Import basic configuration
    imports:
-    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
-    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
-    - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
+     - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
+     - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
+     - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
    # Add configuration for the editor
    # For complete documentation see http://docs.ckeditor.com/#!/api/CKEDITOR.config
    editor:
@@ -73,6 +80,7 @@ configuration of the minimal editor setup included in file
 :file:`EXT:rte_ckeditor/Configuration/RTE/Minimal.yaml`:
 
 .. code-block:: yaml
+   :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
 
    # Minimal configuration for the editor
    editor:
@@ -101,6 +109,7 @@ possible to group several items into a dropdown as shown in the following
 example:
 
 .. code-block:: yaml
+   :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
 
    # Minimal configuration for the editor
    editor:
@@ -110,6 +119,33 @@ example:
            - bold
            - italic
            - { label: 'Additional', icon: 'threeVerticalDots', items: [ 'specialCharacters', 'horizontalLine' ] }
+
+
+How do I allow a specific tag?
+==============================
+
+Allowed content in CKEditor5 is to be configured via the General HTML Support
+plugin option :yaml:`config.htmlSupport`.
+
+.. code-block:: yaml
+   :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
+
+   # Allow the <iframe> tag with all attributes, all classes and all styles:
+   RTE:
+     config:
+       htmlSupport:
+         allow:
+           - { name: 'iframe', attributes: true, classes: true, styles: true }
+
+.. note::
+   :yaml:`config.htmlSupport` only applies to elements that are "known" to
+   CKEditor5. Tags like :html:`<svg>` or custom elements like
+   :html:`<my-element>` are not configurable this way as
+   :yaml:`htmlSupport.allow` can only handle
+   elements that are defined in the `CKEditor5 schema`_.
+
+.. _CKEditor5 schema: https://ckeditor.com/docs/ckeditor5/latest/features/html/general-html-support.html#enabling-custom-elements
+
 
 
 .. _config-example-customplugin:

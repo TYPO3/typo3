@@ -145,16 +145,17 @@ can be set via :ref:`t3tca:columns-text-properties-richtextConfiguration`, setti
 
 .. _override-configuration-via-page-tsconfig:
 
-Overriding Configuration via Page TSconfig
+Overriding Configuration via page TSconfig
 ------------------------------------------
 
 Instead of overriding all TCA fields to use a custom preset, it is possible
-to override this information via Page TSconfig.
+to override this information via page TSconfig.
 
 The option :typoscript:`RTE.default.preset = news` can also be set on a per-field
 and per-type basis:
 
 .. code-block:: typoscript
+   :caption: EXT:my_sitepackage/Configuration/page.tsconfig
    :linenos:
 
    # per-field
@@ -172,10 +173,13 @@ line #4
 
 Of course, any other specific option set via YAML can be overridden via Page TSconfig as well:
 
-.. code-block:: typoscript
+Specific options set via YAML can be overridden via page TSconfig as well - but
+be aware that boolean values can not be set, and arrays are not merged but
+overridden.
 
-   # Allow iframe tag with all attributes and all styles in bodytext field of content elements (Requires additional processing configuration)
-   RTE.config.tt_content.bodytext.editor.config.extraAllowedContent = iframe[*]{*}
+.. code-block:: typoscript
+   :caption: EXT:my_sitepackage/Configuration/page.tsconfig
+
    # Restrict format_tags to h2 in bodytext field of content elements
    RTE.config.tt_content.bodytext.editor.config.format_tags = h2
 
@@ -183,7 +187,7 @@ The loading order for configuration is:
 
 #. ``preset`` defined for a specific field via PageTS
 #. ``richtextConfiguration`` defined for a specific field via TCA
-#. general preset defined via PageTS
+#. general preset defined via page TSconfig
 #. ``default``
 
 
