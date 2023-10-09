@@ -1191,7 +1191,7 @@ class Import extends ImportExport
                     foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $relation) {
                         // Field "uid_local" of sys_file_reference needs no update because the correct reference uid was already written.
                         // @see ImportExport::fixUidLocalInSysFileReferenceRecords()
-                        if (isset($relation['type']) && !($table === 'sys_file_reference' && $field === 'uid_local') && $relation['type'] === 'db') {
+                        if (isset($relation['type']) && !($table === 'sys_file_reference' && $field === 'uid_local') && $relation['type'] === 'db' && isset($GLOBALS['TCA'][$table]['columns'][$field])) {
                             if (is_array($relation['itemArray'] ?? null) && !empty($relation['itemArray'])) {
                                 $fieldTca = $GLOBALS['TCA'][$table]['columns'][$field];
                                 $actualRelations = $this->remapRelationsOfField($relation['itemArray'], $fieldTca['config']);
@@ -1565,7 +1565,7 @@ class Import extends ImportExport
      */
     protected function processSoftReferencesSaveFile(string $relFileName, array $softref, string $table, string $uid): string
     {
-        if ($this->dat['header']['files'][$softref['file_ID']]) {
+        if (isset($this->dat['header']['files'][$softref['file_ID']])) {
             // Initialize; Get directory prefix for file and find possible RTE filename
             $dirPrefix = PathUtility::dirname($relFileName) . '/';
             if (str_starts_with($dirPrefix, $this->getFileadminFolderName() . '/')) {

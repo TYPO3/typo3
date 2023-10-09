@@ -52,6 +52,17 @@ than it is to attempt to update old installations of TYPO3.
 The following images show the export dialog of a current TYPO3 installation and
 TYPO3 v3.8.0: They correspond pretty much.
 
+However, several details may change due to Deprecations and Breaking Changes,
+which can lead to issues with old import data. In cases where the import fails,
+it is recommended to try to manually export assets/files, and re-create the
+reference Index after import. The older an installation is, the more manual
+rework is expected.
+
+Ongoing improvements to the Import/Export code base can only made, when
+legacy considerations are not the first priority. A "guaranteed" fully-working
+export and re-import is only given for T3D structures within the same
+major version.
+
 .. include:: /Images/AutomaticScreenshots/ImpExp.rst.txt
 
 .. include:: /Images/ManualScreenshots/ImpExpV3.8.rst.txt

@@ -718,14 +718,21 @@ abstract class ImportExport
         foreach ($relations as $ID) {
             $line = [];
             $line['msg'] = '';
-            $fileInfo = $this->dat['header']['files'][$ID];
+            $fileInfo = $this->dat['header']['files'][$ID] ?? null;
             if (!is_array($fileInfo)) {
                 if ($tokenID !== '' || $this->isSoftRefIncluded($tokenID)) {
                     $line['msg'] = 'MISSING FILE: ' . $ID;
                     $this->addError('MISSING FILE: ' . $ID);
-                } else {
-                    return;
+
+                    // In case of an error, this relation shall be unset,
+                    // so that no follow-up errors on the missing file
+                    // softref can occur.
+                    unset($this->remainHeader['files'][$ID]);
+                    $line['type'] = '';
+                    $lines[] = $line;
+                    continue;
                 }
+                return;
             }
             $line['ref'] = 'FILE';
             $line['type'] = 'file';
@@ -735,14 +742,14 @@ abstract class ImportExport
                     ->getIcon('status-reference-hard', IconSize::SMALL)
                     ->setTitle($line['ref'])
                     ->render();
-            $line['title'] = htmlspecialchars($fileInfo['filename']);
+            $line['title'] = htmlspecialchars($fileInfo['filename'] ?? 'Missing filename');
             $line['showDiffContent'] = PathUtility::stripPathSitePrefix((string)($this->fileIdMap[$ID] ?? ''));
             // If import mode and there is a non-RTE soft reference, check the destination directory.
             if ($this->mode === 'import' && $tokenID !== '' && !($fileInfo['RTE_ORIG_ID'] ?? false)) {
                 // Check folder existence
                 if (isset($fileInfo['parentRelFileName'])) {
                     $line['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
-                } else {
+                } elseif (isset($fileInfo['relFileName'])) {
                     $origDirPrefix = PathUtility::dirname($fileInfo['relFileName']) . '/';
                     $dirPrefix = $this->resolveStoragePath($origDirPrefix);
                     if ($dirPrefix === null) {
