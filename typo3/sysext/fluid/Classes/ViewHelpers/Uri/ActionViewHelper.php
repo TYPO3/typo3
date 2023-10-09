@@ -94,7 +94,7 @@ final class ActionViewHelper extends AbstractViewHelper
         $pageType = (int)($arguments['pageType'] ?? 0);
         $noCache = (bool)($arguments['noCache'] ?? false);
         /** @var string|null $language */
-        $language = $arguments['language'] ?? null;
+        $language = isset($arguments['language']) ? (string)$arguments['language'] : null;
         /** @var string|null $section */
         $section = $arguments['section'] ?? null;
         $linkAccessRestrictedPages = (bool)($arguments['linkAccessRestrictedPages'] ?? false);
@@ -191,7 +191,7 @@ final class ActionViewHelper extends AbstractViewHelper
         $pageType = (int)($arguments['pageType'] ?? 0);
         $noCache = (bool)($arguments['noCache'] ?? false);
         /** @var string|null $language */
-        $language = $arguments['language'] ?? null;
+        $language = isset($arguments['language']) ? (string)$arguments['language'] : null;
         /** @var string|null $section */
         $section = $arguments['section'] ?? null;
         /** @var string|null $format */
