@@ -24,6 +24,7 @@ class TelephoneLinkBuilder extends AbstractTypolinkBuilder
 {
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
+        $linkText = $linkText ?: $linkDetails['telephone'] ?? '';
         return (new LinkResult($linkDetails['type'], $linkDetails['typoLinkParameter']))->withLinkConfiguration($conf)->withLinkText($linkText);
     }
 }
