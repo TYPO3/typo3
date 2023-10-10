@@ -1271,11 +1271,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 0 and string\\|null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/Parser/TableBuilderTest.php
-
-		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Log\\\\Logger\\:\\:\\$records\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
