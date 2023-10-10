@@ -3,9 +3,9 @@ import { customElement, property, query } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { prefixAndRebaseCss } from '@typo3/rte-ckeditor/css-prefixer';
 import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
-import type { Editor, EditorConfig, PluginConstructor } from '@ckeditor/ckeditor5-core';
-import type { WordCount, WordCountConfig } from '@ckeditor/ckeditor5-word-count';
+import type { WordCount } from '@ckeditor/ckeditor5-word-count';
 import type { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
+import type { Editor, PluginConstructor } from '@ckeditor/ckeditor5-core';
 import type { GeneralHtmlSupportConfig } from '@ckeditor/ckeditor5-html-support';
 
 type PluginModuleDescriptor = {
@@ -13,15 +13,27 @@ type PluginModuleDescriptor = {
   exports: string[],
 };
 
-type CKEditor5Config = Omit<EditorConfig, 'toolbar'> & {
+interface CKEditor5Config {
   // in TYPO3 always `items` property is used, skipping `string[]`
   toolbar?: { items: string[], shouldNotGroupWhenFull?: boolean };
+  extraPlugins?: string[];
+  removePlugins?: string[];
   importModules?: Array<string|PluginModuleDescriptor>;
   removeImportModules?: Array<string|PluginModuleDescriptor>;
   contentsCss?: string[];
-  width?: string|number;
-  height?: string|number;
+  style?: any;
+  heading?: any;
+  alignment?: any;
+  width?: any;
+  height?: any;
   readOnly?: boolean;
+  language?: any;
+  table?: any;
+  ui?: any;
+  htmlSupport?: GeneralHtmlSupportConfig;
+
+  wordCount?: any;
+  typo3link?: any;
   debug?: boolean;
 }
 
@@ -32,7 +44,7 @@ interface FormEngineConfig {
   id?: string;
   name?: string;
   value?: string;
-  validationRules?: string;
+  validationRules?: any;
 }
 
 const defaultPlugins: PluginModuleDescriptor[] = [
@@ -97,94 +109,10 @@ export class CKEditor5Element extends LitElement {
       throw new Error('No rich-text content target found.');
     }
 
-    const {
-      // options handled by this wrapper
-      importModules,
-      removeImportModules,
-      width,
-      height,
-      readOnly,
-      debug,
-
-      // options forwarded to CKEditor5
-      toolbar,
-      placeholder,
-      htmlSupport,
-      wordCount,
-      typo3link,
-      removePlugins,
-      ...otherOptions
-    } = this.options;
-
-    if ('contentsCss' in otherOptions) {
-      delete otherOptions.contentsCss;
-    }
-
-    const plugins = await this.resolvePlugins(defaultPlugins, importModules, removeImportModules);
-
-    const config: EditorConfig = {
-      ...otherOptions,
-      // link.defaultProtocol: 'https://'
-      toolbar,
-      plugins,
-      placeholder,
-      wordCount,
-      typo3link: typo3link || null,
-      removePlugins: removePlugins || [],
-    };
-
-    if (htmlSupport !== undefined) {
-      config.htmlSupport = convertPseudoRegExp(htmlSupport) as GeneralHtmlSupportConfig;
-    }
-
-    ClassicEditor
-      .create(this.target, config)
-      .then((editor: ClassicEditor) => {
-        this.applyEditableElementStyles(editor, width, height);
-        this.handleWordCountPlugin(editor, wordCount);
-        this.applyReadOnly(editor, readOnly);
-        if (editor.plugins.has('SourceEditing')) {
-          const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
-          editor.model.document.on('change:data', (): void => {
-            if (!sourceEditingPlugin.isSourceEditingMode) {
-              editor.updateSourceElement()
-            }
-            this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
-          });
-        }
-
-        if (debug) {
-          import('@ckeditor/ckeditor5-inspector').then(({ default: CKEditorInspector }) => CKEditorInspector.attach(editor, { isCollapsed: true }));
-        }
-      });
-  }
-
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
-    // const renderRoot = this.attachShadow({mode: 'open'});
-    return this;
-  }
-
-  protected render(): TemplateResult {
-    return html`
-      <textarea
-        id="${this.formEngine.id}"
-        name="${this.formEngine.name}"
-        class="form-control"
-        rows="18"
-        data-formengine-validation-rules="${this.formEngine.validationRules}"
-        >${this.formEngine.value}</textarea>
-    `;
-  }
-
-  private async resolvePlugins(
-    defaultPlugins: Array<PluginModuleDescriptor>,
-    importModulesOption: Array<string|PluginModuleDescriptor>|undefined,
-    removeImportModulesOption: Array<string|PluginModuleDescriptor>|undefined
-  ): Promise<Array<PluginConstructor<Editor>>> {
-    const removeImportModules: Array<PluginModuleDescriptor> = normalizeImportModules(removeImportModulesOption || []);
+    const removeImportModules: Array<PluginModuleDescriptor> = normalizeImportModules(this.options.removeImportModules || []);
     const importModules: Array<PluginModuleDescriptor> = normalizeImportModules([
       ...defaultPlugins,
-      ...(importModulesOption || []),
+      ...(this.options.importModules || []),
     ]).map((moduleDescriptor: PluginModuleDescriptor) => {
       const { module } = moduleDescriptor;
       let { exports } = moduleDescriptor;
@@ -232,8 +160,81 @@ export class CKEditor5Element extends LitElement {
       .flat(1);
 
     // plugins, without those that have been overridden
-    return declaredPlugins
+    const plugins: Array<PluginConstructor<Editor>> = declaredPlugins
       .filter(plugin => !overriddenPlugins.includes(plugin as PluginConstructor<Editor>));
+
+    const toolbar = this.options.toolbar;
+
+    const config = {
+      // link.defaultProtocol: 'https://'
+      // @todo use complete `config` later - currently step-by-step only
+      toolbar,
+      plugins,
+      typo3link: this.options.typo3link || null,
+      removePlugins: this.options.removePlugins || [],
+    } as any;
+    if (this.options.language) {
+      config.language = this.options.language;
+    }
+    if (this.options.style) {
+      config.style = this.options.style;
+    }
+    if (this.options.wordCount) {
+      config.wordCount = this.options.wordCount;
+    }
+    if (this.options.table) {
+      config.table = this.options.table;
+    }
+    if (this.options.heading) {
+      config.heading = this.options.heading;
+    }
+    if (this.options.alignment) {
+      config.alignment = this.options.alignment;
+    }
+    if (this.options.ui) {
+      config.ui = this.options.ui;
+    }
+    if (this.options.htmlSupport) {
+      config.htmlSupport = convertPseudoRegExp(this.options.htmlSupport) as GeneralHtmlSupportConfig;
+    }
+
+    ClassicEditor
+      .create(this.target, config)
+      .then((editor: ClassicEditor) => {
+        this.applyEditableElementStyles(editor);
+        this.handleWordCountPlugin(editor);
+        this.applyReadOnly(editor);
+        if (editor.plugins.has('SourceEditing')) {
+          const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
+          editor.model.document.on('change:data', (): void => {
+            if (!sourceEditingPlugin.isSourceEditingMode) {
+              editor.updateSourceElement()
+            }
+            this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+          });
+        }
+
+        if (this.options.debug) {
+          import('@ckeditor/ckeditor5-inspector').then(({ default: CKEditorInspector }) => CKEditorInspector.attach(editor, { isCollapsed: true }));
+        }
+      });
+  }
+
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    // const renderRoot = this.attachShadow({mode: 'open'});
+    return this;
+  }
+
+  protected render(): TemplateResult {
+    return html`
+      <textarea
+        id="${this.formEngine.id}"
+        name="${this.formEngine.name}"
+        class="form-control"
+        rows="18"
+        data-formengine-validation-rules="${this.formEngine.validationRules}"
+        >${this.formEngine.value}</textarea>
+    `;
   }
 
   private async prefixAndLoadContentsCss(url: string, fieldId: string): Promise<void> {
@@ -257,22 +258,19 @@ export class CKEditor5Element extends LitElement {
     document.adoptedStyleSheets = [...document.adoptedStyleSheets, styleSheet];
   }
 
-  private applyEditableElementStyles(editor: Editor, width: string|number|undefined, height: string|number|undefined): void {
+  private applyEditableElementStyles(editor: Editor): void {
     const view = editor.editing.view;
-    const styles: Record<string, string|number|undefined> = {
-      'min-height': height,
-      'min-width': width,
+    const styles: Record<string, any> = {
+      'min-height': this.options.height,
+      'min-width': this.options.width,
     };
     Object.keys(styles).forEach((key) => {
-      const _assignment: string|number = styles[key];
-      if (!_assignment) {
+      let assignment: any = styles[key];
+      if (!assignment) {
         return;
       }
-      let assignment: string;
-      if (typeof _assignment === 'number' || !Number.isNaN(Number(assignment))) {
-        assignment = `${_assignment}px`;
-      } else {
-        assignment = _assignment
+      if (isFinite(assignment) && !Number.isNaN(parseFloat(assignment))) {
+        assignment += 'px';
       }
       view.change((writer) => {
         writer.setStyle(key, assignment, view.document.getRoot());
@@ -283,8 +281,8 @@ export class CKEditor5Element extends LitElement {
   /**
    * see https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html
    */
-  private handleWordCountPlugin(editor: Editor, wordCount: WordCountConfig|undefined): void {
-    if (editor.plugins.has('WordCount') && (wordCount?.displayWords || wordCount?.displayCharacters)) {
+  private handleWordCountPlugin(editor: Editor): void {
+    if (editor.plugins.has('WordCount') && (this.options?.wordCount?.displayWords || this.options?.wordCount?.displayCharacters)) {
       const wordCountPlugin = editor.plugins.get('WordCount') as WordCount;
       this.renderRoot.appendChild(wordCountPlugin.wordCountContainer);
     }
@@ -292,9 +290,10 @@ export class CKEditor5Element extends LitElement {
 
   /**
    * see https://ckeditor.com/docs/ckeditor5/latest/features/read-only.html
+   * does not work with types yet. so the editor is added with "any".
    */
-  private applyReadOnly(editor: Editor, readOnly: boolean): void {
-    if (readOnly) {
+  private applyReadOnly(editor: any): void {
+    if (this.options.readOnly) {
       editor.enableReadOnlyMode('typo3-lock');
     }
   }

@@ -27,10 +27,6 @@ export function removeLinkPrefix(attribute: string): string {
   return attribute;
 }
 
-export interface Typo3LinkConfig {
-  routeUrl: string;
-}
-
 export interface Typo3LinkDict {
   attrs?: {
     linkTitle?: string;
@@ -693,7 +689,7 @@ export class Typo3LinkUI extends Core.Plugin {
       'Link',
       this.makeUrlFromModulePath(
         editor,
-        editor.config.get('typo3link')?.routeUrl,
+        (editor.config.get('typo3link') as any)?.routeUrl,
         additionalParameters
       ));
   }
@@ -730,12 +726,6 @@ export class Typo3Link extends Core.Plugin {
   static readonly pluginName = 'Typo3Link';
   static readonly requires = ['GeneralHtmlSupport', Link.LinkEditing, Link.AutoLink, Typo3LinkEditing, Typo3LinkUI];
   static readonly overrides?: Array<typeof Core.Plugin> = [Link.Link];
-}
-
-declare module '@ckeditor/ckeditor5-core' {
-  interface EditorConfig {
-    typo3link?: Typo3LinkConfig;
-  }
 }
 
 // Provided for backwards compatibility

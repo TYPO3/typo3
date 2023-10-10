@@ -20,3 +20,6 @@ editor:
       - Style
       - Underline
       - Strike
+
+    extraPlugins:
+      - autolink
