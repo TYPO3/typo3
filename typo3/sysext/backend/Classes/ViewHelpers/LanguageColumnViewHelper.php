@@ -29,8 +29,8 @@ class LanguageColumnViewHelper extends AbstractViewHelper
         $this->registerArgument('columnNumber', 'int', 'Number (colPos) of column within LanguageColumn to be returned', true);
     }
 
-    public function render(): GridColumn
+    public function render(): ?GridColumn
     {
-        return $this->arguments['languageColumn']->getGrid()->getColumns()[$this->arguments['columnNumber']];
+        return $this->arguments['languageColumn']->getGrid()->getColumns()[$this->arguments['columnNumber']] ?? null;
     }
 }

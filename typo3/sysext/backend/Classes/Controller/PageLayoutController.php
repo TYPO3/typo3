@@ -590,7 +590,7 @@ class PageLayoutController
                     $this->colPosList = implode(',', $backendLayout->getColumnPositionNumbers());
                 }
                 // Removing duplicates, if any
-                $colPosArray = array_unique(GeneralUtility::intExplode(',', $this->colPosList));
+                $colPosArray = array_unique(GeneralUtility::intExplode(',', $this->colPosList, true));
                 // Accessible columns
                 if (isset($this->modSharedTSconfig['properties']['colPos_list']) && trim($this->modSharedTSconfig['properties']['colPos_list']) !== '') {
                     $activeColPosArray = array_unique(GeneralUtility::intExplode(',', trim($this->modSharedTSconfig['properties']['colPos_list'])));
