@@ -198,10 +198,9 @@ class ReferenceIndexUpdater
         // Perform reference index updates
         $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
         foreach ($this->updateRegistry as $workspace => $tableArray) {
-            $referenceIndex->setWorkspaceId($workspace);
             foreach ($tableArray as $table => $uidArray) {
                 foreach ($uidArray as $uid) {
-                    $referenceIndex->updateRefIndexTable($table, $uid);
+                    $referenceIndex->updateRefIndexTable($table, $uid, false, $workspace);
                 }
             }
         }

@@ -33,21 +33,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
-    /**
-     * @var object|\TYPO3\CMS\Core\Database\ReferenceIndex
-     */
-    private $referenceIndex;
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
 
-    /**
-     * ReferenceIndexUpdatedPrerequisite constructor
-     */
-    public function __construct()
-    {
-        $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+    public function __construct(
+        private readonly ReferenceIndex $referenceIndex,
+    ) {
     }
 
     public function getTitle(): string

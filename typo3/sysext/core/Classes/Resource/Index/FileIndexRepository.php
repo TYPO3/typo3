@@ -302,11 +302,8 @@ class FileIndexRepository implements SingletonInterface
 
     /**
      * Helper to reduce code duplication
-     *
-     *
-     * @return int
      */
-    protected function insertRecord(array $data)
+    protected function insertRecord(array $data): int
     {
         $data = array_intersect_key($data, array_flip($this->fields));
         $data['tstamp'] = time();
@@ -506,16 +503,14 @@ class FileIndexRepository implements SingletonInterface
                 'uid' => (int)$fileUid,
             ]
         );
-        $this->updateRefIndex($fileUid);
+        $this->updateRefIndex((int)$fileUid);
         $this->eventDispatcher->dispatch(new AfterFileRemovedFromIndexEvent((int)$fileUid));
     }
 
     /**
      * Update Reference Index (sys_refindex) for a file
-     *
-     * @param int $id Record UID
      */
-    public function updateRefIndex($id)
+    public function updateRefIndex(int $id): void
     {
         $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
         $refIndexObj->updateRefIndexTable($this->table, $id);

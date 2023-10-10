@@ -28,20 +28,9 @@ use TYPO3\CMS\Backend\View\ProgressListenerInterface;
  */
 class ReferenceIndexProgressListener implements ProgressListenerInterface
 {
-    /**
-     * @var SymfonyStyle
-     */
-    protected $io;
-
-    /**
-     * @var ProgressBar|null
-     */
-    protected $progressBar;
-
-    /**
-     * @var bool
-     */
-    protected $isEnabled = false;
+    protected SymfonyStyle $io;
+    protected ?ProgressBar $progressBar = null;
+    protected bool $isEnabled = false;
 
     public function initialize(SymfonyStyle $io)
     {
@@ -60,7 +49,7 @@ class ReferenceIndexProgressListener implements ProgressListenerInterface
             $this->progressBar = $this->io->createProgressBar($maxSteps);
             $this->progressBar->start($maxSteps);
         } else {
-            $this->io->section('Nothing to update for table ' . $tableName);
+            $this->io->section('Nothing to update for empty table ' . $tableName);
             $this->progressBar = null;
         }
     }
@@ -88,8 +77,8 @@ class ReferenceIndexProgressListener implements ProgressListenerInterface
         if ($this->progressBar !== null) {
             $this->progressBar->finish();
             $this->progressBar = null;
+            $this->io->writeln(PHP_EOL);
         }
-        $this->io->writeln(PHP_EOL);
         if ($additionalMessage) {
             $this->io->writeln($additionalMessage);
         }

@@ -17,10 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database;
 
-use Doctrine\DBAL\Exception as DBALException;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ProgressListenerInterface;
@@ -41,10 +38,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal Extensions shouldn't fiddle with the reference index themselves, it's task of DataHandler to do this.
  */
-class ReferenceIndex implements LoggerAwareInterface
+class ReferenceIndex
 {
-    use LoggerAwareTrait;
-
     /**
      * Definition of tables to exclude from the ReferenceIndex
      *
@@ -53,9 +48,6 @@ class ReferenceIndex implements LoggerAwareInterface
      * *_mm-tables.
      *
      * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array()
-     *
-     * @see updateRefIndexTable()
-     * @see shouldExcludeTableFromReferenceIndex()
      */
     protected array $excludedTables = [
         'sys_log' => true,
@@ -63,13 +55,8 @@ class ReferenceIndex implements LoggerAwareInterface
     ];
 
     /**
-     * Definition of fields to exclude from ReferenceIndex in *every* table
-     *
-     * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array()
-     *
-     * @see getRelations()
-     * @see fetchTableRelationFields()
-     * @see shouldExcludeTableColumnFromReferenceIndex()
+     * Definition of fields to exclude from ReferenceIndex in *every* table.
+     * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array().
      */
     protected array $excludedColumns = [
         'uid' => true,
@@ -81,34 +68,13 @@ class ReferenceIndex implements LoggerAwareInterface
         'pid' => true,
     ];
 
-    /**
-     * This array holds the FlexForm references of a record
-     *
-     * @var array
-     * @see getRelations()
-     * @see FlexFormTools::traverseFlexFormXMLData()
-     * @see getRelations_flexFormCallBack()
-     */
-    protected $temp_flexRelations = [];
-
-    /**
-     * An index of all found references of a single record
-     *
-     * @var array
-     */
-    protected $relations = [];
-
-    /**
-     * Number which we can increase if a change in the code means we will have to force a re-generation of the index.
-     *
-     * @var int
-     * @see updateRefIndexTable()
-     */
-    protected $hashVersion = 1;
-
-    /**
-     * Current workspace id
-     */
+    /** Holds the FlexForm references of a record */
+    protected array $temp_flexRelations = [];
+    /** An index of all found references of a single record */
+    protected array $relations = [];
+    /** Number which we can increase if a change in the code means we will have to force a re-generation of the index. */
+    protected int $hashVersion = 1;
+    /** Current workspace id */
     protected int $workspaceId = 0;
 
     /**
@@ -118,35 +84,12 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     protected array $tableRelationFieldCache = [];
 
-    protected EventDispatcherInterface $eventDispatcher;
-    protected SoftReferenceParserFactory $softReferenceParserFactory;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher = null, SoftReferenceParserFactory $softReferenceParserFactory = null)
-    {
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
-        $this->softReferenceParserFactory = $softReferenceParserFactory ?? GeneralUtility::makeInstance(SoftReferenceParserFactory::class);
-    }
-
-    /**
-     * Sets the current workspace id
-     *
-     * @param int $workspaceId
-     * @see updateIndex()
-     */
-    public function setWorkspaceId($workspaceId)
-    {
-        $this->workspaceId = (int)$workspaceId;
-    }
-
-    /**
-     * Gets the current workspace id
-     *
-     * @return int
-     * @see updateRefIndexTable()
-     */
-    protected function getWorkspaceId()
-    {
-        return $this->workspaceId;
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SoftReferenceParserFactory $softReferenceParserFactory,
+        private readonly ConnectionPool $connectionPool,
+        private readonly Registry $registry,
+    ) {
     }
 
     /**
@@ -156,113 +99,88 @@ class ReferenceIndex implements LoggerAwareInterface
      * deleted records! This will also result in bad cleaning up in DataHandler I think... Anyway, that's the story of
      * FlexForms; as long as the DS can change, lots of references can get lost in no time.
      *
-     * @param string $tableName Table name
-     * @param int $uid UID of record
-     * @param bool $testOnly If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
-     * @return array Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
+     * @return array Statistics about how many index records were added, deleted and not altered.
      */
-    public function updateRefIndexTable($tableName, $uid, $testOnly = false)
+    public function updateRefIndexTable(string $tableName, int $uid, bool $testOnly = false, int $workspaceUid = 0): array
     {
+        $this->workspaceId = $workspaceUid;
+
         $result = [
             'keptNodes' => 0,
             'deletedNodes' => 0,
             'addedNodes' => 0,
         ];
 
-        $uid = $uid ? (int)$uid : 0;
-        if (!$uid) {
+        // Not a valid uid, the table is excluded, or can not contain relations.
+        if ($uid < 1 || $this->shouldExcludeTableFromReferenceIndex($tableName) || !$this->hasTableRelationFields($tableName)) {
             return $result;
         }
 
-        // If this table cannot contain relations, skip it
-        if ($this->shouldExcludeTableFromReferenceIndex($tableName)) {
-            return $result;
-        }
+        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
 
-        $tableRelationFields = $this->fetchTableRelationFields($tableName);
-
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionForTable('sys_refindex');
-
-        // Get current index from Database with hash as index using $uidIndexField
-        // no restrictions are needed, since sys_refindex is not a TCA table
+        // Get current index from Database with hash as index. sys_refindex is not a TCA table, so no restrictions.
         $queryBuilder = $connection->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $queryResult = $queryBuilder->select('hash')->from('sys_refindex')->where(
             $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
             $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-            $queryBuilder->expr()->eq(
-                'workspace',
-                $queryBuilder->createNamedParameter($this->getWorkspaceId(), Connection::PARAM_INT)
-            )
+            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($this->workspaceId, Connection::PARAM_INT))
         )->executeQuery();
         $currentRelationHashes = [];
         while ($relation = $queryResult->fetchAssociative()) {
             $currentRelationHashes[$relation['hash']] = true;
         }
 
-        // If the table has fields which could contain relations and the record does exist
-        if ($tableRelationFields !== []) {
-            $existingRecord = $this->getRecord($tableName, $uid);
-            if ($existingRecord) {
-                // Table has relation fields and record exists - get relations
-                $this->relations = [];
-                $relations = $this->generateDataUsingRecord($tableName, $existingRecord);
-                if (!is_array($relations)) {
-                    return $result;
+        // Handle this record.
+        $existingRecord = $this->getRecord($tableName, $uid);
+        if ($existingRecord) {
+            // Table has relation fields and record exists - get relations
+            $this->relations = [];
+            $relations = $this->generateDataUsingRecord($tableName, $existingRecord);
+            // Traverse the generated index:
+            foreach ($relations as &$relation) {
+                if (!is_array($relation)) {
+                    continue;
                 }
-                // Traverse the generated index:
-                foreach ($relations as &$relation) {
-                    if (!is_array($relation)) {
-                        continue;
-                    }
-                    // Exclude any relations TO a specific table
-                    if (($relation['ref_table'] ?? '') && $this->shouldExcludeTableFromReferenceIndex($relation['ref_table'])) {
-                        continue;
-                    }
-                    $relation['hash'] = md5(implode('///', $relation) . '///' . $this->hashVersion);
-                    // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
-                    if (isset($currentRelationHashes[$relation['hash']])) {
-                        unset($currentRelationHashes[$relation['hash']]);
-                        $result['keptNodes']++;
-                        $relation['_ACTION'] = 'KEPT';
-                    } else {
-                        // If new, add it:
-                        if (!$testOnly) {
-                            $connection->insert('sys_refindex', $relation);
-                        }
-                        $result['addedNodes']++;
-                        $relation['_ACTION'] = 'ADDED';
-                    }
+                // Exclude any relations TO a specific table
+                if (($relation['ref_table'] ?? '') && $this->shouldExcludeTableFromReferenceIndex($relation['ref_table'])) {
+                    continue;
                 }
-                $result['relations'] = $relations;
+                $relation['hash'] = md5(implode('///', $relation) . '///' . $this->hashVersion);
+                // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
+                if (isset($currentRelationHashes[$relation['hash']])) {
+                    unset($currentRelationHashes[$relation['hash']]);
+                    $result['keptNodes']++;
+                    $relation['_ACTION'] = 'KEPT';
+                } else {
+                    // If new, add it:
+                    if (!$testOnly) {
+                        $connection->insert('sys_refindex', $relation);
+                    }
+                    $result['addedNodes']++;
+                    $relation['_ACTION'] = 'ADDED';
+                }
             }
+            $result['relations'] = $relations;
         }
 
-        // If any old are left, remove them:
-        if (!empty($currentRelationHashes)) {
-            $hashList = array_keys($currentRelationHashes);
-            if (!empty($hashList)) {
-                $result['deletedNodes'] = count($hashList);
-                $result['deletedNodes_hashList'] = implode(',', $hashList);
-                if (!$testOnly) {
-                    $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
-                    foreach (array_chunk($hashList, $maxBindParameters - 10, true) as $chunk) {
-                        if (empty($chunk)) {
-                            continue;
-                        }
-                        $queryBuilder = $connection->createQueryBuilder();
-                        $queryBuilder
-                            ->delete('sys_refindex')
-                            ->where(
-                                $queryBuilder->expr()->in(
-                                    'hash',
-                                    $queryBuilder->createNamedParameter($chunk, Connection::PARAM_STR_ARRAY)
-                                )
-                            )
-                            ->executeStatement();
-                    }
+        // If any existing are left, they are not in the current set anymore, and removed
+        $numberOfLeftOverRelationHashes = count($currentRelationHashes);
+        $result['deletedNodes'] = $numberOfLeftOverRelationHashes;
+        if ($numberOfLeftOverRelationHashes > 0 && !$testOnly) {
+            $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+            $chunks = array_chunk(array_keys($currentRelationHashes), $maxBindParameters - 10, true);
+            foreach ($chunks as $chunk) {
+                if (empty($chunk)) {
+                    continue;
                 }
+                $queryBuilder = $connection->createQueryBuilder();
+                $queryBuilder
+                    ->delete('sys_refindex')
+                    ->where(
+                        $queryBuilder->expr()->in('hash', $queryBuilder->createNamedParameter($chunk, Connection::PARAM_STR_ARRAY))
+                    )
+                    ->executeStatement();
             }
         }
 
@@ -274,7 +192,7 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     public function getNumberOfReferencedRecords(string $tableName, int $uid): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
         return (int)$queryBuilder
             ->count('*')->from('sys_refindex')
             ->where(
@@ -349,7 +267,7 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     protected function createEntryDataUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, string $referencedTable, int $referencedUid, string $referenceString = '', int $sort = -1, string $softReferenceKey = '', string $softReferenceId = '')
     {
-        $currentWorkspace = $this->getWorkspaceId();
+        $currentWorkspace = $this->workspaceId;
         if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
             $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
             if (isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $currentWorkspace && empty($fieldConfig['MM'])) {
@@ -419,12 +337,6 @@ class ReferenceIndex implements LoggerAwareInterface
             }
         }
     }
-
-    /*******************************
-     *
-     * Get relations from table row
-     *
-     *******************************/
 
     /**
      * Returns relation information for a $table/$row-array
@@ -578,7 +490,7 @@ class ReferenceIndex implements LoggerAwareInterface
         if (($conf['type'] === 'inline' || $conf['type'] === 'file') && !empty($conf['foreign_table']) && empty($conf['MM'])) {
             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
             $dbAnalysis->setUseLiveReferenceIds(false);
-            $dbAnalysis->setWorkspaceId($this->getWorkspaceId());
+            $dbAnalysis->setWorkspaceId($this->workspaceId);
             $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
             return $dbAnalysis->itemArray;
             // DB record lists:
@@ -591,12 +503,12 @@ class ReferenceIndex implements LoggerAwareInterface
             }
 
             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-            $dbAnalysis->setWorkspaceId($this->getWorkspaceId());
+            $dbAnalysis->setWorkspaceId($this->workspaceId);
             $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $uid, $table, $conf);
             $itemArray = $dbAnalysis->itemArray;
 
             if (ExtensionManagementUtility::isLoaded('workspaces')
-                && $this->getWorkspaceId() > 0
+                && $this->workspaceId > 0
                 && !empty($conf['MM'] ?? '')
                 && !empty($conf['allowed'] ?? '')
                 && empty($conf['MM_opposite_field'] ?? '')
@@ -640,7 +552,9 @@ class ReferenceIndex implements LoggerAwareInterface
      * To ensure proper working only admin-BE_USERS in live workspace should use this function
      *
      * @param string $hash 32-byte hash string identifying the record from sys_refindex which you wish to change the value for
-     * @param mixed $newValue Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]". Any other case, the input value is set as-is
+     * @param mixed $newValue Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can
+     *                        only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]".
+     *                        Any other case, the input value is set as-is
      * @param bool $returnDataArray Return $dataArray only, do not submit it to database.
      * @param bool $bypassWorkspaceAdminCheck If set, it will bypass check for workspace-zero and admin user
      * @return string|bool|array FALSE (=OK), error message string or array (if $returnDataArray is set!)
@@ -649,7 +563,7 @@ class ReferenceIndex implements LoggerAwareInterface
     {
         $backendUser = $this->getBackendUser();
         if ($backendUser->workspace === 0 && $backendUser->isAdmin() || $bypassWorkspaceAdminCheck) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
             $queryBuilder->getRestrictions()->removeAll();
 
             // Get current index from Database
@@ -673,8 +587,7 @@ class ReferenceIndex implements LoggerAwareInterface
             }
 
             // Get that record from database
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($referenceRecord['tablename']);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($referenceRecord['tablename']);
             $queryBuilder->getRestrictions()->removeAll();
             $record = $queryBuilder
                 ->select('*')
@@ -877,6 +790,27 @@ class ReferenceIndex implements LoggerAwareInterface
     }
 
     /**
+     * Early check to see if a table has any possible relation fields at all.
+     * This is true if there are columns with type group, select and friends,
+     * or if a table has a column with a 'softref' defined.
+     */
+    protected function hasTableRelationFields(string $tableName): bool
+    {
+        if (empty($GLOBALS['TCA'][$tableName]['columns'])) {
+            return false;
+        }
+        foreach ($GLOBALS['TCA'][$tableName]['columns'] as $fieldDefinition) {
+            if (empty($fieldDefinition['config'])) {
+                continue;
+            }
+            if ($this->isReferenceField($fieldDefinition['config'])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns all fields of a table which could contain a relation
      *
      * @param string $tableName Name of the table
@@ -913,49 +847,128 @@ class ReferenceIndex implements LoggerAwareInterface
     /**
      * Updating Index (External API)
      *
-     * @param bool $testOnly If set, only a test
      * @param ProgressListenerInterface|null $progressListener If set, the current progress is added to the listener
      * @return array Header and body status content
      * @todo: Consider moving this together with the helper methods to a dedicated class.
      */
-    public function updateIndex($testOnly, ?ProgressListenerInterface $progressListener = null)
+    public function updateIndex(bool $testOnly, ?ProgressListenerInterface $progressListener = null): array
     {
         $errors = [];
-        $tableNames = [];
-        $recCount = 0;
-        $isWorkspacesLoaded = ExtensionManagementUtility::isLoaded('workspaces');
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $refIndexConnectionName = empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping']['sys_refindex'])
-                ? ConnectionPool::DEFAULT_CONNECTION_NAME
-                : $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping']['sys_refindex'];
+        $numberOfHandledRecords = 0;
 
-        // Drop sys_refindex rows from deleted workspaces
+        $isWorkspacesLoaded = ExtensionManagementUtility::isLoaded('workspaces');
+        $tcaTableNames = array_keys($GLOBALS['TCA']);
+        sort($tcaTableNames);
+
+        $progressListener?->log('Remember to create missing tables and columns before running this.', LogLevel::WARNING);
+
+        // Remove dangling workspace sys_refindex rows
         $listOfActiveWorkspaces = $this->getListOfActiveWorkspaces();
-        $unusedWorkspaceRows = $this->getAmountOfUnusedWorkspaceRowsInReferenceIndex($listOfActiveWorkspaces);
-        if ($unusedWorkspaceRows > 0) {
-            $error = 'Index table hosted ' . $unusedWorkspaceRows . ' indexes for non-existing or deleted workspaces, now removed.';
+        $numberOfUnusedWorkspaceRows = $testOnly
+            ? $this->getNumberOfUnusedWorkspaceRowsInReferenceIndex($listOfActiveWorkspaces)
+            : $this->removeUnusedWorkspaceRowsFromReferenceIndex($listOfActiveWorkspaces);
+        if ($numberOfUnusedWorkspaceRows > 0) {
+            $error = 'Index table hosted ' . $numberOfUnusedWorkspaceRows . ' indexes for non-existing or deleted workspaces, now removed.';
             $errors[] = $error;
-            if ($progressListener) {
-                $progressListener->log($error, LogLevel::WARNING);
-            }
-            if (!$testOnly) {
-                $this->removeUnusedWorkspaceRowsFromReferenceIndex($listOfActiveWorkspaces);
-            }
+            $progressListener?->log($error, LogLevel::WARNING);
+        }
+
+        // Remove sys_refindex rows of tables no longer defined in TCA
+        $numberOfRowsOfOldTables = $testOnly
+            ? $this->getNumberOfUnusedTablesInReferenceIndex($tcaTableNames)
+            : $this->removeReferenceIndexDataFromUnusedDatabaseTables($tcaTableNames);
+        if ($numberOfRowsOfOldTables > 0) {
+            $error = 'Index table hosted ' . $numberOfRowsOfOldTables . ' indexes for non-existing tables, now removed';
+            $errors[] = $error;
+            $progressListener?->log($error, LogLevel::WARNING);
         }
 
         // Main loop traverses all records of all TCA tables
-        foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-            if ($this->shouldExcludeTableFromReferenceIndex($tableName)) {
+        foreach ($tcaTableNames as $tableName) {
+            $tableTca = $GLOBALS['TCA'][$tableName];
+
+            // Count number of records in table to have a correct $numberOfHandledRecords in the end
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+            $numberOfRecordsInTargetTable = $queryBuilder
+                ->count('uid')
+                ->from($tableName)
+                ->executeQuery()
+                ->fetchOne();
+
+            $progressListener?->start($numberOfRecordsInTargetTable, $tableName);
+
+            if ($this->shouldExcludeTableFromReferenceIndex($tableName) || !$this->hasTableRelationFields($tableName)) {
+                // This table should be excluded, or it can not have relations, blindly remove any existing sys_refindex rows.
+                $numberOfHandledRecords += $numberOfRecordsInTargetTable;
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+                $queryBuilder->getRestrictions()->removeAll();
+                if ($testOnly) {
+                    $countDeleted = $queryBuilder
+                        ->count('hash')
+                        ->from('sys_refindex')
+                        ->where(
+                            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName))
+                        )
+                        ->executeQuery()
+                        ->fetchOne();
+                } else {
+                    $countDeleted = $queryBuilder
+                        ->delete('sys_refindex')
+                        ->where(
+                            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName))
+                        )
+                        ->executeStatement();
+                }
+                if ($countDeleted > 0) {
+                    $error = 'Index table hosted ' . $countDeleted . ' ignored or outdated indexed, now removed.';
+                    $errors[] = $error;
+                    $progressListener?->log($error, LogLevel::WARNING);
+                }
+                $progressListener?->finish();
                 continue;
             }
-            $tableConnectionName = empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName])
-                ? ConnectionPool::DEFAULT_CONNECTION_NAME
-                : $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName];
+
+            // Delete lost indexes of table: sys_refindex rows where the uid no longer exists in target table.
+            $subQueryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $subQueryBuilder->getRestrictions()->removeAll();
+            $subQueryBuilder
+                ->select('uid')
+                ->from($tableName, 'sub_' . $tableName)
+                ->where(
+                    $subQueryBuilder->expr()->eq('sub_' . $tableName . '.uid', $subQueryBuilder->quoteIdentifier('sys_refindex.recuid'))
+                );
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+            $queryBuilder->getRestrictions()->removeAll();
+            if ($testOnly) {
+                $numberOfRefindexRowsWithoutExistingTableRow = $queryBuilder
+                    ->count('hash')
+                    ->from('sys_refindex')
+                    ->where(
+                        $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+                        'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
+                    )
+                    ->executeQuery()
+                    ->fetchOne();
+            } else {
+                $numberOfRefindexRowsWithoutExistingTableRow = $queryBuilder
+                    ->delete('sys_refindex')
+                    ->where(
+                        $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+                        'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
+                    )
+                    ->executeStatement();
+            }
+            if ($numberOfRefindexRowsWithoutExistingTableRow > 0) {
+                $error = 'Table ' . $tableName . ' has ' . $numberOfRefindexRowsWithoutExistingTableRow . ' lost indexes which are now deleted';
+                $errors[] = $error;
+                $progressListener?->log($error, LogLevel::WARNING);
+            }
 
             // Some additional magic is needed if the table has a field that is the local side of
             // a mm relation. See the variable usage below for details.
             $tableHasLocalSideMmRelation = false;
-            foreach (($cfg['columns'] ?? []) as $fieldConfig) {
+            foreach (($tableTca['columns'] ?? []) as $fieldConfig) {
                 if (!empty($fieldConfig['config']['MM'] ?? '')
                     && !empty($fieldConfig['config']['allowed'] ?? '')
                     && empty($fieldConfig['config']['MM_opposite_field'] ?? '')
@@ -968,168 +981,66 @@ class ReferenceIndex implements LoggerAwareInterface
             if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
                 $fields[] = 't3ver_wsid';
             }
-            // Traverse all records in tables, including deleted records
-            $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
-            try {
-                $queryResult = $queryBuilder
-                    ->select(...$fields)
-                    ->from($tableName)
-                    ->orderBy('uid')
-                    ->executeQuery();
-            } catch (DBALException $e) {
-                // Table exists in TCA but does not exist in the database
-                $this->logger->error('Table {table_name} exists in TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.', [
-                    'table_name' => $tableName,
-                    'exception' => $e,
-                ]);
-                continue;
-            }
 
-            if ($progressListener) {
-                $progressListener->start($queryResult->rowCount(), $tableName);
-            }
-            $tableNames[] = $tableName;
+            // Traverse all records in tables, including deleted records
+            // @todo: Potential optimization - Fetch list of 'deleted=1' records first and delete
+            //        all their sys_refindex rows, maybe use a sub select in one query, or chunking?
+            //        Then only fetch deleted=0 records below. Needs investigation on MM
+            //        workspace records, though?
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryResult = $queryBuilder
+                ->select(...$fields)
+                ->from($tableName)
+                ->orderBy('uid')
+                ->executeQuery();
+
             while ($record = $queryResult->fetchAssociative()) {
-                if ($progressListener) {
-                    $progressListener->advance();
-                }
+                $progressListener?->advance();
 
                 if ($isWorkspacesLoaded && $tableHasLocalSideMmRelation && (int)($record['t3ver_wsid'] ?? 0) === 0) {
-                    // If we have record that can be the local side of a workspace relation, workspace records
+                    // If we have a record that can be the local side of a workspace relation, workspace records
                     // may point to it, even though the record has no workspace overlay. See workspace ManyToMany
                     // Modify addCategoryRelation as example. In those cases, we need to iterate all active workspaces
                     // and update refindex for all foreign workspace records that point to it.
                     foreach ($listOfActiveWorkspaces as $workspaceId) {
-                        $refIndexObj = GeneralUtility::makeInstance(self::class);
-                        $refIndexObj->setWorkspaceId($workspaceId);
-                        $result = $refIndexObj->updateRefIndexTable($tableName, $record['uid'], $testOnly);
-                        $recCount++;
+                        $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, $workspaceId);
+                        $numberOfHandledRecords++;
                         if ($result['addedNodes'] || $result['deletedNodes']) {
                             $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
                             $errors[] = $error;
-                            if ($progressListener) {
-                                $progressListener->log($error, LogLevel::WARNING);
-                            }
+                            $progressListener?->log($error, LogLevel::WARNING);
                         }
                     }
                 } else {
-                    $refIndexObj = GeneralUtility::makeInstance(self::class);
-                    if (isset($record['t3ver_wsid'])) {
-                        $refIndexObj->setWorkspaceId($record['t3ver_wsid']);
-                    }
-                    $result = $refIndexObj->updateRefIndexTable($tableName, $record['uid'], $testOnly);
-                    $recCount++;
+                    $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, (int)($record['t3ver_wsid'] ?? 0));
+                    $numberOfHandledRecords++;
                     if ($result['addedNodes'] || $result['deletedNodes']) {
                         $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
                         $errors[] = $error;
-                        if ($progressListener) {
-                            $progressListener->log($error, LogLevel::WARNING);
-                        }
+                        $progressListener?->log($error, LogLevel::WARNING);
                     }
                 }
             }
-            if ($progressListener) {
-                $progressListener->finish();
-            }
 
-            // Subselect based queries only work on the same connection
-            // @todo: Consider dropping this in v12 and always use sub select: The base set of tables should
-            //        be in exactly one DB and only tables like caches should be "extractable" to a different DB?!
-            //        Even though sys_refindex is a "cache-like" table since it only holds secondary information that
-            //        can always be re-created by analyzing the entire data set, it shouldn't be possible to run it
-            //        on a different database since that prevents quick joins between sys_refindex and target relations.
-            //        We should probably have some report and/or install tool check to make sure all main tables
-            //        are on the same connection in v12.
-            if ($refIndexConnectionName !== $tableConnectionName) {
-                $this->logger->error('Not checking table {table_name} for lost indexes, "sys_refindex" table uses a different connection', ['table_name' => $tableName]);
-                continue;
-            }
-
-            // Searching for lost indexes for this table
-            // Build sub-query to find lost records
-            $subQueryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
-            $subQueryBuilder->getRestrictions()->removeAll();
-            $subQueryBuilder
-                ->select('uid')
-                ->from($tableName, 'sub_' . $tableName)
-                ->where(
-                    $subQueryBuilder->expr()->eq(
-                        'sub_' . $tableName . '.uid',
-                        $queryBuilder->quoteIdentifier('sys_refindex.recuid')
-                    )
-                );
-
-            // Main query to find lost records
-            $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
-            $queryBuilder->getRestrictions()->removeAll();
-            $lostIndexes = $queryBuilder
-                ->count('hash')
-                ->from('sys_refindex')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'tablename',
-                        $queryBuilder->createNamedParameter($tableName)
-                    ),
-                    'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
-                )
-                ->executeQuery()
-                ->fetchOne();
-
-            if ($lostIndexes > 0) {
-                $error = 'Table ' . $tableName . ' has ' . $lostIndexes . ' lost indexes which are now deleted';
-                $errors[] = $error;
-                if ($progressListener) {
-                    $progressListener->log($error, LogLevel::WARNING);
-                }
-                if (!$testOnly) {
-                    $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
-                    $queryBuilder->delete('sys_refindex')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'tablename',
-                                $queryBuilder->createNamedParameter($tableName)
-                            ),
-                            'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
-                        )
-                        ->executeStatement();
-                }
-            }
+            $progressListener?->finish();
         }
 
-        // Searching lost indexes for non-existing tables
-        // @todo: Consider moving this *before* the main re-index logic to have a smaller
-        //        dataset when starting with heavy lifting.
-        $lostTables = $this->getAmountOfUnusedTablesInReferenceIndex($tableNames);
-        if ($lostTables > 0) {
-            $error = 'Index table hosted ' . $lostTables . ' indexes for non-existing tables, now removed';
-            $errors[] = $error;
-            if ($progressListener) {
-                $progressListener->log($error, LogLevel::WARNING);
-            }
-            if (!$testOnly) {
-                $this->removeReferenceIndexDataFromUnusedDatabaseTables($tableNames);
-            }
-        }
         $errorCount = count($errors);
-        $recordsCheckedString = $recCount . ' records from ' . count($tableNames) . ' tables were checked/updated.';
-        if ($progressListener) {
-            if ($errorCount) {
-                $progressListener->log($recordsCheckedString . ' Updates: ' . $errorCount, LogLevel::WARNING);
-            } else {
-                $progressListener->log($recordsCheckedString . ' Index Integrity was perfect!', LogLevel::INFO);
-            }
+        $recordsCheckedString = $numberOfHandledRecords . ' records from ' . count($tcaTableNames) . ' tables were checked/updated.';
+        if ($errorCount) {
+            $progressListener?->log($recordsCheckedString . ' Updates: ' . $errorCount, LogLevel::WARNING);
+        } else {
+            $progressListener?->log($recordsCheckedString . ' Index Integrity was perfect!');
         }
         if (!$testOnly) {
-            $registry = GeneralUtility::makeInstance(Registry::class);
-            $registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
+            $this->registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
         }
         return ['resultText' => trim($recordsCheckedString), 'errors' => $errors];
     }
 
     /**
-     * Helper method of updateIndex().
-     * Create list of non-deleted "active" workspace uid's. This contains at least 0 "live workspace".
+     * Create list of non-deleted "active" workspace uids. This contains at least 0 "live workspace".
      *
      * @return int[]
      */
@@ -1139,8 +1050,8 @@ class ReferenceIndex implements LoggerAwareInterface
             // If ext:workspaces is not loaded, "0" is the only valid one.
             return [0];
         }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
-        // There are no "hidden" workspaces, which wouldn't make much sense anyways.
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_workspace');
+        // Workspaces can't be 'hidden', so we only use deleted restriction here.
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $result = $queryBuilder->select('uid')->from('sys_workspace')->orderBy('uid')->executeQuery();
         // "0", plus non-deleted workspaces are active
@@ -1157,16 +1068,15 @@ class ReferenceIndex implements LoggerAwareInterface
      * not loaded at all, but has been loaded somewhere in the past and sys_refindex
      * rows have been created.
      */
-    private function getAmountOfUnusedWorkspaceRowsInReferenceIndex(array $activeWorkspaces): int
+    private function getNumberOfUnusedWorkspaceRowsInReferenceIndex(array $activeWorkspaces): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $numberOfInvalidWorkspaceRecords = $queryBuilder->count('hash')
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->getRestrictions()->removeAll();
+        $numberOfInvalidWorkspaceRecords = $queryBuilder
+            ->count('hash')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->notIn(
-                    'workspace',
-                    $queryBuilder->createNamedParameter($activeWorkspaces, Connection::PARAM_INT_ARRAY)
-                )
+                $queryBuilder->expr()->notIn('workspace', $queryBuilder->createNamedParameter($activeWorkspaces, Connection::PARAM_INT_ARRAY))
             )
             ->executeQuery()
             ->fetchOne();
@@ -1174,51 +1084,53 @@ class ReferenceIndex implements LoggerAwareInterface
     }
 
     /**
-     * Pair method of getAmountOfUnusedWorkspaceRowsInReferenceIndex() to actually delete
-     * sys_refindex rows of deleted workspace records, or all if ext:workspace is not loaded.
+     * Delete sys_refindex rows of deleted / not existing workspace records, or all if ext:workspace is not loaded.
      */
-    private function removeUnusedWorkspaceRowsFromReferenceIndex(array $activeWorkspaces): void
+    private function removeUnusedWorkspaceRowsFromReferenceIndex(array $activeWorkspaces): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
-        $queryBuilder->delete('sys_refindex')
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->getRestrictions()->removeAll();
+        return $queryBuilder
+            ->delete('sys_refindex')
             ->where(
-                $queryBuilder->expr()->notIn(
-                    'workspace',
-                    $queryBuilder->createNamedParameter($activeWorkspaces, Connection::PARAM_INT_ARRAY)
-                )
+                $queryBuilder->expr()->notIn('workspace', $queryBuilder->createNamedParameter($activeWorkspaces, Connection::PARAM_INT_ARRAY))
             )
             ->executeStatement();
     }
 
-    protected function getAmountOfUnusedTablesInReferenceIndex(array $tableNames): int
+    /**
+     * When a TCA table with references has been removed, there may be old sys_refindex
+     * rows for it. The query finds the number of affected rows.
+     */
+    protected function getNumberOfUnusedTablesInReferenceIndex(array $tableNames): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
         $queryBuilder->getRestrictions()->removeAll();
-        $lostTables = $queryBuilder
+        $numberOfRowsOfUnusedTables = $queryBuilder
             ->count('hash')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->notIn(
-                    'tablename',
-                    $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
-                )
-            )->executeQuery()
+                $queryBuilder->expr()->notIn('tablename', $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY))
+            )
+            ->executeQuery()
             ->fetchOne();
-        return (int)$lostTables;
+        return (int)$numberOfRowsOfUnusedTables;
     }
 
-    protected function removeReferenceIndexDataFromUnusedDatabaseTables(array $tableNames): void
+    /**
+     * When a TCA table with references has been removed, there may be old sys_refindex
+     * rows for it. The query deletes those.
+     */
+    protected function removeReferenceIndexDataFromUnusedDatabaseTables(array $tableNames): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
-        $queryBuilder->delete('sys_refindex')
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->getRestrictions()->removeAll();
+        return $queryBuilder
+            ->delete('sys_refindex')
             ->where(
-                $queryBuilder->expr()->notIn(
-                    'tablename',
-                    $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
-                )
-            )->executeStatement();
+                $queryBuilder->expr()->notIn('tablename', $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY))
+            )
+            ->executeStatement();
     }
 
     /**
@@ -1243,8 +1155,7 @@ class ReferenceIndex implements LoggerAwareInterface
             }
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($tableName);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder
             ->select(...array_unique($tableRelationFields))
@@ -1270,17 +1181,12 @@ class ReferenceIndex implements LoggerAwareInterface
 
     /**
      * Checks if a given table should be excluded from ReferenceIndex
-     *
-     * @param string $tableName Name of the table
-     * @return bool true if it should be excluded
      */
     protected function shouldExcludeTableFromReferenceIndex(string $tableName): bool
     {
         if (isset($this->excludedTables[$tableName])) {
             return $this->excludedTables[$tableName];
         }
-        // Only exclude tables from ReferenceIndex which do not contain any relations and never
-        // did since existing references won't be deleted!
         $event = new IsTableExcludedFromReferenceIndexEvent($tableName);
         $event = $this->eventDispatcher->dispatch($event);
         $this->excludedTables[$tableName] = $event->isTableExcluded();
@@ -1295,11 +1201,8 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param string $onlyColumn Name of a specific column to fetch
      * @return bool true if it should be excluded
      */
-    protected function shouldExcludeTableColumnFromReferenceIndex(
-        string $tableName,
-        string $column,
-        string $onlyColumn
-    ): bool {
+    protected function shouldExcludeTableColumnFromReferenceIndex(string $tableName, string $column, string $onlyColumn): bool
+    {
         if (isset($this->excludedColumns[$column])) {
             return true;
         }

@@ -36,7 +36,7 @@ final class ReferenceIndexWorkspaceLoadedTest extends FunctionalTestCase
     public function updateIndexRemovesRecordsOfNotExistingWorkspaces(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexRemoveNonExistingWorkspaceImport.csv');
-        $result = (new ReferenceIndex())->updateIndex(false);
+        $result = $this->get(ReferenceIndex::class)->updateIndex(false);
         self::assertSame('Index table hosted 2 indexes for non-existing or deleted workspaces, now removed.', $result['errors'][0]);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexRemoveNonExistingWorkspaceResult.csv');
     }
@@ -47,7 +47,7 @@ final class ReferenceIndexWorkspaceLoadedTest extends FunctionalTestCase
     public function updateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecordImport.csv');
-        $result = (new ReferenceIndex())->updateIndex(false);
+        $result = $this->get(ReferenceIndex::class)->updateIndex(false);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecordResult.csv');
     }
 }

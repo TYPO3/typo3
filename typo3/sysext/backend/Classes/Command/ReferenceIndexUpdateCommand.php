@@ -51,7 +51,7 @@ class ReferenceIndexUpdateCommand extends Command
         Bootstrap::initializeBackendAuthentication();
         $io = new SymfonyStyle($input, $output);
 
-        $isTestOnly = $input->getOption('check');
+        $isTestOnly = (bool)$input->getOption('check');
 
         $progressListener = GeneralUtility::makeInstance(ReferenceIndexProgressListener::class);
         $progressListener->initialize($io);

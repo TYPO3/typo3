@@ -491,11 +491,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
 
 		-
-			message: "#^Variable \\$hashList in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/RelationHandler.php

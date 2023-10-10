@@ -396,7 +396,7 @@ class DatabaseIntegrityController
     protected function referenceIndexAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $isUpdate = $request->getParsedBody()['update'] ?? false;
-        $isCheckOnly = $request->getParsedBody()['checkOnly'] ?? false;
+        $isCheckOnly = (bool)($request->getParsedBody()['checkOnly'] ?? false);
         $referenceIndexResult = [];
         if ($isUpdate || $isCheckOnly) {
             $referenceIndexResult = GeneralUtility::makeInstance(ReferenceIndex::class)->updateIndex($isCheckOnly);
