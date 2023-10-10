@@ -7764,8 +7764,11 @@ class DataHandler implements LoggerAwareInterface
                 // This feature is used by the import functionality to force a new record to have a certain UID value.
                 // This is only recommended for use when the destination server is a passive mirror of another server.
                 // As a security measure this feature is available only for Admin Users (for now)
+                // The value of $this->suggestedInsertUids["table":"uid"] is either string 'DELETE' (ext:impexp) to trigger
+                // a blind delete of any possibly existing row before insert with forced uid, or boolean true (testing-framework)
+                // to only force the uid insert and skipping deletion of an existing row.
                 $suggestedUid = (int)$suggestedUid;
-                if ($this->BE_USER->isAdmin() && $suggestedUid && $this->suggestedInsertUids[$table . ':' . $suggestedUid]) {
+                if ($this->BE_USER->isAdmin() && $suggestedUid && ($this->suggestedInsertUids[$table . ':' . $suggestedUid] ?? false)) {
                     // When the value of ->suggestedInsertUids[...] is "DELETE" it will try to remove the previous record
                     if ($this->suggestedInsertUids[$table . ':' . $suggestedUid] === 'DELETE') {
                         $this->hardDeleteSingleRecord($table, (int)$suggestedUid);
