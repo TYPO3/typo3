@@ -1265,9 +1265,8 @@ class FileList
             $isSelected = $this->clipObj->isSelected('_FILE', md5($resourceView->getIdentifier()));
             $button = GeneralUtility::makeInstance(LinkButton::class);
             $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSelected === 'cut' ? 'cutrelease' : 'cut')));
-            $button->setHref($this->clipObj->selUrlFile($resourceView->getIdentifier(), true, $isSelected === 'cut'));
+            $button->setHref($this->clipObj->selUrlFile($resourceView->getIdentifier(), false, $isSelected === 'cut'));
             $button->setIcon($this->iconFactory->getIcon($isSelected === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', Icon::SIZE_SMALL));
-            $actions['cut'] = $button;
 
             return $button;
         }
