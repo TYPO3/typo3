@@ -103,7 +103,7 @@ from `editor.config.wordcount` to `editor.config.wordCount`:
     properly.
 
 *   `editor.config.stylesSet` which is used for the dropdown of custom
-    style elements, is moved to `config.editor.config.style.definitions`
+    style elements, is moved to `editor.config.style.definitions`
     with a similar syntax.
 
     ..  code-block:: yaml
@@ -178,7 +178,7 @@ from `editor.config.wordcount` to `editor.config.wordCount`:
     need, however a list of `editor.config.toolbar.removeItems` can be given.
 
 *   `editor.config.stylesSet` which is used for the dropdown of custom
-    style elements, is moved to `config.editor.config.style.definitions`
+    style elements, is moved to `editor.config.style.definitions`
     with a similar syntax.
 
     ..  code-block:: yaml
