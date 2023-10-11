@@ -434,6 +434,7 @@ module.exports = function (grunt) {
             'lit-element/decorators/*.js',
             '@lit/reactive-element/*.js',
             '@lit/reactive-element/decorators/*.js',
+            '@lit/task/*.js',
           ],
         }]
       },
