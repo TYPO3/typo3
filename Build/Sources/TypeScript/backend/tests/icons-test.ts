@@ -19,21 +19,5 @@ describe('@typo3/backend/icons-test', () => {
       expect(Icons.markupIdentifiers.inline).to.equal('inline');
     });
   });
-
-  describe('tests for Icons::putInCache', () => {
-    it('works for simply identifier and markup', () => {
-      const promise = new Promise<void>((reveal) => reveal());
-      (Icons as any).putInPromiseCache('foo', promise);
-      expect((Icons as any).getFromPromiseCache('foo')).to.equal(promise);
-      expect((Icons as any).isPromiseCached('foo')).to.be.true;
-    });
-  });
-
-  describe('tests for Icons::getFromPromiseCache', () => {
-    it('return undefined for uncached promise', () => {
-      expect((Icons as any).getFromPromiseCache('bar')).to.be.undefined;
-      expect((Icons as any).isPromiseCached('bar')).to.be.false;
-    });
-  });
 });
 

@@ -113,6 +113,8 @@ export default {
             'jquery-ui/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui/',
             '@lit/reactive-element': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/reactive-element.js',
             '@lit/reactive-element/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/',
+            '@lit/task': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/task/index.js',
+            '@lit/task/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/task/',
             'lit': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit/index.js',
             'lit/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit/',
             'lit-element': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit-element/index.js',

@@ -11,15 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from './storage/client';
 import { Sizes, States, MarkupIdentifiers } from './enum/icon-types';
 import { css, CSSResult, unsafeCSS } from 'lit';
-
-interface PromiseCache {
-  [key: string]: Promise<string>;
-}
+import { DedupeAsyncTask } from '@typo3/core/cache/dedupe-async-task'
 
 export class IconStyles {
   public static getStyles(): CSSResult[] {
@@ -140,17 +136,10 @@ class Icons {
   public readonly sizes: typeof Sizes = Sizes;
   public readonly states: typeof States = States;
   public readonly markupIdentifiers: typeof MarkupIdentifiers = MarkupIdentifiers;
-  private readonly promiseCache: PromiseCache = {};
+  private readonly promiseCache: DedupeAsyncTask<string> = new DedupeAsyncTask();
 
   /**
    * Get the icon by its identifier
-   *
-   * @param {string} identifier
-   * @param {Sizes} size
-   * @param {string} overlayIdentifier
-   * @param {string} state
-   * @param {MarkupIdentifiers} markupIdentifier
-   * @returns {Promise<string>}
    */
   public getIcon(
     identifier: string,
@@ -158,6 +147,7 @@ class Icons {
     overlayIdentifier?: string,
     state?: string,
     markupIdentifier?: MarkupIdentifiers,
+    signal?: AbortSignal | null,
   ): Promise<string> {
 
     /**
@@ -185,7 +175,7 @@ class Icons {
       }
 
       return this.fetchFromLocal(cacheIdentifier).then(null, (): Promise<string> => {
-        return this.fetchFromRemote(describedIcon, cacheIdentifier);
+        return this.fetchFromRemote(describedIcon, cacheIdentifier, signal);
       });
     });
   }
@@ -193,44 +183,37 @@ class Icons {
   private getIconRegistryCache(): Promise<string> {
     const promiseCacheIdentifier = 'icon_registry_cache_identifier';
 
-    if (!this.isPromiseCached(promiseCacheIdentifier)) {
-      this.putInPromiseCache(
-        promiseCacheIdentifier,
-        (new AjaxRequest(TYPO3.settings.ajaxUrls.icons_cache)).get()
-          .then(async (response: AjaxResponse): Promise<string> => {
-            return await response.resolve();
-          })
-      );
-    }
-
-    return this.getFromPromiseCache(promiseCacheIdentifier);
+    return this.promiseCache.get(
+      promiseCacheIdentifier,
+      async (signal: AbortSignal): Promise<string> => {
+        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.icons_cache).get({ signal })
+        return await response.resolve();
+      }
+    );
   }
 
   /**
    * Performs the AJAX request to fetch the icon
-   *
-   * @param {Array<string>} icon
-   * @param {string} cacheIdentifier
-   * @returns {JQueryPromise<any>}
    */
-  private fetchFromRemote(icon: Array<string>, cacheIdentifier: string): Promise<string> {
-    if (!this.isPromiseCached(cacheIdentifier)) {
-      const queryArguments = {
-        icon: JSON.stringify(icon),
-      };
-      this.putInPromiseCache(
-        cacheIdentifier,
-        (new AjaxRequest(TYPO3.settings.ajaxUrls.icons)).withQueryArguments(queryArguments).get()
-          .then(async (response: AjaxResponse): Promise<string> => {
-            const markup = await response.resolve();
-            if (!response.response.redirected && markup.startsWith('<span') && markup.includes('t3js-icon') && markup.includes('<span class="icon-markup">')) {
-              ClientStorage.set('icon_' + cacheIdentifier, markup);
-            }
-            return markup;
-          })
-      );
-    }
-    return this.getFromPromiseCache(cacheIdentifier);
+  private fetchFromRemote(icon: Array<string>, cacheIdentifier: string, signal?: AbortSignal | null): Promise<string> {
+    return this.promiseCache.get(
+      cacheIdentifier,
+      async (signal: AbortSignal): Promise<string> => {
+        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.icons)
+          .withQueryArguments({ icon: JSON.stringify(icon) })
+          .get({ signal })
+        const markup = await response.resolve();
+        if (!response.response.redirected &&
+            markup.startsWith('<span') &&
+            markup.includes('t3js-icon') &&
+            markup.includes('<span class="icon-markup">')
+        ) {
+          ClientStorage.set('icon_' + cacheIdentifier, markup);
+        }
+        return markup;
+      },
+      signal
+    );
   }
 
   /**
@@ -244,36 +227,6 @@ class Icons {
     }
 
     return Promise.reject();
-  }
-
-  /**
-   * Check whether icon was fetched already
-   *
-   * @param {string} cacheIdentifier
-   * @returns {boolean}
-   */
-  private isPromiseCached(cacheIdentifier: string): boolean {
-    return typeof this.promiseCache[cacheIdentifier] !== 'undefined';
-  }
-
-  /**
-   * Get icon from cache
-   *
-   * @param {string} cacheIdentifier
-   * @returns {Promise<string>}
-   */
-  private getFromPromiseCache(cacheIdentifier: string): Promise<string> {
-    return this.promiseCache[cacheIdentifier];
-  }
-
-  /**
-   * Put icon into cache
-   *
-   * @param {string} cacheIdentifier
-   * @param {Promise<string>} markup
-   */
-  private putInPromiseCache(cacheIdentifier: string, markup: Promise<string>): void {
-    this.promiseCache[cacheIdentifier] = markup;
   }
 }
 

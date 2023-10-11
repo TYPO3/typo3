@@ -25,6 +25,8 @@ return [
         'jquery-ui/' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery-ui/',
         '@lit/reactive-element' => 'EXT:core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/reactive-element.js',
         '@lit/reactive-element/' => 'EXT:core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/',
+        '@lit/task' => 'EXT:core/Resources/Public/JavaScript/Contrib/@lit/task/index.js',
+        '@lit/task/' => 'EXT:core/Resources/Public/JavaScript/Contrib/@lit/task/',
         'lit' => 'EXT:core/Resources/Public/JavaScript/Contrib/lit/index.js',
         'lit/' => 'EXT:core/Resources/Public/JavaScript/Contrib/lit/',
         'lit-element' => 'EXT:core/Resources/Public/JavaScript/Contrib/lit-element/index.js',
