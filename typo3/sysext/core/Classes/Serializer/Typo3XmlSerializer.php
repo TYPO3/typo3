@@ -109,8 +109,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * - disableTypeAttrib [bool|int]
  *      Disable node attribute "type" for all value types
  *      (true = disable for all except arrays, 2 = disable for all).
- * - useCDATA [bool]
- *      Wrap node value with <![CDATA[{node value}]]> - if text contains special characters.
  * - alt_options[/.../nodeName] [array]
  *      Set new options for specific array path.
  * - clearStackPath [bool]
@@ -271,9 +269,6 @@ class Typo3XmlSerializer
                     $type = gettype($value);
                     if ($type === 'string') {
                         $nodeValue = htmlspecialchars($value);
-                        if (($additionalOptions['useCDATA'] ?? false) && $nodeValue !== $value) {
-                            $nodeValue = '<![CDATA[' . $value . ']]>';
-                        }
                     } else {
                         $nodeValue = $value;
                         if (($additionalOptions['disableTypeAttrib'] ?? false) === false) {

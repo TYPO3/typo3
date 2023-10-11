@@ -323,28 +323,6 @@ final class Typo3XmlSerializerTest extends UnitTestCase
     /**
      * @test
      */
-    public function encodeCanWrapStringWithCDATAIfStringContainsSpecialCharacters(): void
-    {
-        $xmlEncoder = new Typo3XmlSerializer();
-        $xml = $xmlEncoder->encode(
-            [
-                'node-1' => 'value without special character',
-                'node-2' => 'value with special character &',
-            ],
-            null,
-            [
-                'useCDATA' => true,
-            ]
-        );
-        self::assertEquals('<phparray>
-	<node-1>value without special character</node-1>
-	<node-2><![CDATA[value with special character &]]></node-2>
-</phparray>', $xml);
-    }
-
-    /**
-     * @test
-     */
     public function encodeAddsTypeAttributeToNodeIfValueIsNotString(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();

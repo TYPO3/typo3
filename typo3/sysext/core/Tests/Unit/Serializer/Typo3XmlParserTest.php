@@ -609,9 +609,6 @@ final class Typo3XmlParserTest extends UnitTestCase
         $additionalOptions = [
             'useIndexTagForNum' => 'numbered-index',
             'alt_options' => [
-                '/types' => [
-                    'useCDATA' => true,
-                ],
                 '/numeric-n-index' => [
                     'useNindex' => true,
                 ],

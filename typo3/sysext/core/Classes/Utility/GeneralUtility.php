@@ -1211,11 +1211,7 @@ class GeneralUtility
                     // Otherwise, just htmlspecialchar the stuff:
                     $content = htmlspecialchars($stringValue);
                     $dType = gettype($v);
-                    if ($dType === 'string') {
-                        if (isset($options['useCDATA']) && $options['useCDATA'] && $content != $stringValue) {
-                            $content = '<![CDATA[' . $stringValue . ']]>';
-                        }
-                    } elseif (!($options['disableTypeAttrib'] ?? false)) {
+                    if ($dType !== 'string' && !($options['disableTypeAttrib'] ?? false)) {
                         $attr .= ' type="' . $dType . '"';
                     }
                 }

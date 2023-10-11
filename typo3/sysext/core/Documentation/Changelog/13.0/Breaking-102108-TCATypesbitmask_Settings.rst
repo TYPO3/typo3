@@ -31,7 +31,7 @@ rendering records in the backend record editing interface.
 Affected installations
 ======================
 
-Both settings have been use very rarely: Neither core nor published TER extensions
+Both settings have been used very rarely: Neither core nor published TER extensions
 revealed a single usage. The extension scanner will find affected extensions.
 
 
@@ -43,7 +43,7 @@ switch to casual :php:`$GLOBALS['TCA']['someTable']['ctrl']['type']` fields inst
 which can be powered by columns based on string values.
 
 Note the overall "subtype" record logic of TCA is within an ongoing process to
-be removed in TYPO3 v13, so the basic thinking should be: There is a record, and it's
+be removed in TYPO3 v13, so the basic thinking should be: There is a record, and its
 details can be configured using :php:`$GLOBALS['TCA']['someTable']['ctrl']['type']`,
 and that's it. Extensions using "sub types" or this bitmask detail need to simplify
 and eventually deliver according upgrade wizards to adapt existing records.

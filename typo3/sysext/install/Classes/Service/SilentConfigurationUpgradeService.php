@@ -196,6 +196,8 @@ class SilentConfigurationUpgradeService
         'SYS/features/security.usePasswordPolicyForFrontendUsers',
         // #102113
         'GFX/gdlib',
+        // #102146
+        'BE/flexformForceCDATA',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager)
