@@ -114,7 +114,7 @@ interface FileInterface extends ResourceInterface
      * @param non-empty-string $newName The new file name
      * @param DuplicationBehavior::* $conflictMode
      */
-    public function rename(string $newName, string $conflictMode = DuplicationBehavior::RENAME): FileInterface;
+    public function rename(string $newName, $conflictMode = DuplicationBehavior::RENAME): FileInterface;
 
     /*****************
      * SPECIAL METHODS
