@@ -963,9 +963,70 @@ class ReferenceIndex
                     ->executeStatement();
             }
             if ($numberOfRefindexRowsWithoutExistingTableRow > 0) {
-                $error = 'Table ' . $tableName . ' has ' . $numberOfRefindexRowsWithoutExistingTableRow . ' lost indexes which are now deleted';
+                $error = 'Table ' . $tableName . ' has ' . $numberOfRefindexRowsWithoutExistingTableRow . ' lost indexes, which are now deleted';
                 $errors[] = $error;
                 $progressListener?->log($error, LogLevel::WARNING);
+            }
+
+            // Delete rows in sys_refindex related to this table where the record is soft-deleted=1.
+            if (!empty($tableTca['ctrl']['delete'])) {
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+                $queryBuilder->getRestrictions()->removeAll();
+                $numberOfDeletedRecordsInTargetTable = $queryBuilder
+                    ->count('uid')
+                    ->from($tableName)
+                    ->where($queryBuilder->expr()->eq($tableTca['ctrl']['delete'], 1))
+                    ->executeQuery()
+                    ->fetchOne();
+                if ($numberOfDeletedRecordsInTargetTable > 0) {
+                    $numberOfHandledRecords += $numberOfDeletedRecordsInTargetTable;
+                    // List of deleted=0 records in target table that have records in sys_refindex.
+                    $subQueryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+                    $subQueryBuilder->getRestrictions()->removeAll();
+                    $subQueryBuilder
+                        ->select('sub_' . $tableName . '.uid')
+                        ->distinct()
+                        ->from($tableName, 'sub_' . $tableName)
+                        ->join(
+                            'sub_' . $tableName,
+                            'sys_refindex',
+                            'sub_refindex',
+                            $queryBuilder->expr()->eq('sub_refindex.recuid', $queryBuilder->quoteIdentifier('sub_' . $tableName . '.uid'))
+                        )
+                        ->where(
+                            $queryBuilder->expr()->eq('sub_refindex.tablename', $queryBuilder->createNamedParameter($tableName)),
+                            $queryBuilder->expr()->eq('sub_' . $tableName . '.' . $tableTca['ctrl']['delete'], 1),
+                        );
+                    if ($testOnly) {
+                        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+                        $queryBuilder->getRestrictions()->removeAll();
+                        $numberOfRemovedIndexes = $queryBuilder
+                            ->count('hash')
+                            ->from('sys_refindex')
+                            ->where(
+                                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+                                $queryBuilder->quoteIdentifier('recuid') . ' IN ( ' . $subQueryBuilder->getSQL() . ' )'
+                            )
+                            ->executeQuery()
+                            ->fetchOne();
+                    } else {
+                        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+                        $queryBuilder->getRestrictions()->removeAll();
+                        $numberOfRemovedIndexes = $queryBuilder
+                            ->delete('sys_refindex')
+                            ->where(
+                                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+                                $queryBuilder->quoteIdentifier('recuid') . ' IN ( ' . $subQueryBuilder->getSQL() . ' )'
+                            );
+                        $numberOfRemovedIndexes = $numberOfRemovedIndexes->executeStatement();
+                    }
+                    if ($numberOfRemovedIndexes > 0) {
+                        $error = 'Table ' . $tableName . ' has ' . $numberOfRemovedIndexes . ' indexes from soft-deleted records, which are now deleted';
+                        $errors[] = $error;
+                        $progressListener?->log($error, LogLevel::WARNING);
+                    }
+                    $progressListener?->advance($numberOfDeletedRecordsInTargetTable);
+                }
             }
 
             // Some additional magic is needed if the table has a field that is the local side of
@@ -985,22 +1046,16 @@ class ReferenceIndex
                 $fields[] = 't3ver_wsid';
             }
 
-            // Traverse all records in tables, including deleted records
-            // @todo: Potential optimization - Fetch list of 'deleted=1' records first and delete
-            //        all their sys_refindex rows, maybe use a sub select in one query, or chunking?
-            //        Then only fetch deleted=0 records below. Needs investigation on MM
-            //        workspace records, though?
+            // Traverse all records in tables, not including soft-deleted records
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryResult = $queryBuilder
                 ->select(...$fields)
                 ->from($tableName)
                 ->orderBy('uid')
                 ->executeQuery();
-
             while ($record = $queryResult->fetchAssociative()) {
                 $progressListener?->advance();
-
                 if ($isWorkspacesLoaded && $tableHasLocalSideMmRelation && (int)($record['t3ver_wsid'] ?? 0) === 0) {
                     // If we have a record that can be the local side of a workspace relation, workspace records
                     // may point to it, even though the record has no workspace overlay. See workspace ManyToMany
@@ -1025,7 +1080,6 @@ class ReferenceIndex
                     }
                 }
             }
-
             $progressListener?->finish();
         }
 

@@ -65,7 +65,7 @@ class ReferenceIndexProgressListener implements ProgressListenerInterface
             });
         }
         if ($this->progressBar !== null) {
-            $this->progressBar->advance();
+            $this->progressBar->advance($step);
         }
     }
 
