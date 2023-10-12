@@ -40,11 +40,15 @@ class GraphicalFunctions
 
     /**
      * defines the RGB colorspace to use
+     *
+     * @var non-empty-string
      */
     protected string $colorspace = 'RGB';
 
     /**
      * colorspace names allowed
+     *
+     * @var list<non-empty-string>
      */
     protected array $allowedColorSpaceNames = [
         'CMY',
@@ -77,17 +81,21 @@ class GraphicalFunctions
 
     /**
      * Allowed file extensions perceived as images by TYPO3.
-     * List should be set to 'gif,png,jpeg,jpg' if IM is not available.
+     * List should be set to `gif,png,jpeg,jpg` if IM is not available.
+     *
+     * @var list<non-empty-string>
      */
     protected array $imageFileExt = ['gif', 'jpg', 'jpeg', 'png', 'tif', 'bmp', 'tga', 'pcx', 'ai', 'pdf', 'webp'];
 
     /**
      * Web image extensions (can be shown by a webbrowser)
+     *
+     * @var list<non-empty-string>
      */
     protected array $webImageExt = ['gif', 'jpg', 'jpeg', 'png'];
 
     /**
-     * @var array
+     * @var array{jpg: string, jpeg: string, gif: string, png: string}
      */
     public $cmds = [
         'jpg' => '',
@@ -135,31 +143,41 @@ class GraphicalFunctions
     /**
      * All ImageMagick commands executed is stored in this array for tracking. Used by the Install Tools Image section
      *
-     * @var array
+     * @var list<array{0: string, 1: string}>
      */
     public $IM_commands = [];
 
     /**
      * ImageMagick scaling command; "-auto-orient -geometry" or "-auto-orient -sample". Used in makeText() and imageMagickConvert()
      *
-     * @var string
+     * @var non-empty-string
      */
     public $scalecmd = '-auto-orient -geometry';
 
     /**
      * Used by v5_blur() to simulate 10 continuous steps of blurring
+     *
+     * @var non-empty-string
      */
     protected string $im5fx_blurSteps = '1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';
 
     /**
      * Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
+     *
+     * @var non-empty-string
      */
     protected string $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
 
     /**
      * This is the limit for the number of pixels in an image before it will be rendered as JPG instead of GIF/PNG
+     *
+     * @var int<1, max>
      */
     protected int $pixelLimitGif = 10000;
+
+    /**
+     * @var int<1, 100>
+     */
     protected int $jpegQuality = 85;
 
     /**
