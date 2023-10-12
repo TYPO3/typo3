@@ -875,7 +875,7 @@ class FlexFormTools
         $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
         $flexObj->reNumberIndexesOfSectionData = true;
         $flexObj->traverseFlexFormXMLData($table, $field, $row, $this, 'cleanFlexFormXML_callBackFunction');
-        return $this->flexArray2Xml($this->cleanFlexFormXML, true);
+        return $this->flexArray2Xml($this->cleanFlexFormXML);
     }
 
     /**
@@ -896,18 +896,11 @@ class FlexFormTools
 
     /**
      * Convert FlexForm data array to XML
-     *
-     * @param array $array Array to output in <T3FlexForms> XML
-     * @param bool $addPrologue If set, the XML prologue is returned as well.
-     * @return string XML content.
      */
-    public function flexArray2Xml($array, $addPrologue = false)
+    public function flexArray2Xml(array $array): string
     {
-        $output = GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', 4, $this->flexArray2Xml_options);
-        if ($addPrologue) {
-            $output = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . $output;
-        }
-        return $output;
+        return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF .
+            GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', 4, $this->flexArray2Xml_options);
     }
 
     /**

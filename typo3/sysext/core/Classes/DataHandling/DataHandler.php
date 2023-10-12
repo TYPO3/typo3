@@ -2630,7 +2630,7 @@ class DataHandler implements LoggerAwareInterface
     public function checkValue_flexArray2Xml($array): string
     {
         $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
-        return $flexObj->flexArray2Xml($array, true);
+        return $flexObj->flexArray2Xml($array);
     }
 
     /**

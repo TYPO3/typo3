@@ -435,4 +435,10 @@ return [
             'Breaking-98490-VariousHooksAndMethodsChangedInDatabaseRecordList.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->flexArray2Xml' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-102151-XMLPrologueAlwaysAddedInFlexArray2Xml.rst',
+        ],
+    ],
 ];

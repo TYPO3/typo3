@@ -243,7 +243,7 @@ class StorageRepository implements LoggerAwareInterface
             ],
         ];
 
-        $flexFormXml = GeneralUtility::makeInstance(FlexFormTools::class)->flexArray2Xml($flexFormData, true);
+        $flexFormXml = GeneralUtility::makeInstance(FlexFormTools::class)->flexArray2Xml($flexFormData);
 
         // create the record
         $field_values = [
