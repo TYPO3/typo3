@@ -163,6 +163,10 @@ class GifBuilder
      * @var int<10, 100>
      */
     protected int $jpegQuality = 85;
+    /**
+     * @var int<10, 100>
+     */
+    protected int $webpQuality = 85;
 
     public function __construct()
     {
@@ -170,14 +174,17 @@ class GifBuilder
         if ($gfxConf['processor_effects'] ?? false) {
             $this->processorEffectsEnabled = true;
         }
-        // Setting default JPG parameters:
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
+        $this->webpQuality = MathUtility::forceIntegerInRange($gfxConf['webp_quality'], 10, 100, 85);
         if (function_exists('imagecreatefromjpeg') && function_exists('imagejpeg')) {
             $this->gdlibExtensions[] = 'jpg';
             $this->gdlibExtensions[] = 'jpeg';
         }
         if (function_exists('imagecreatefrompng') && function_exists('imagepng')) {
             $this->gdlibExtensions[] = 'png';
+        }
+        if (function_exists('imagecreatefromwebp') && function_exists('imagewebp')) {
+            $this->gdlibExtensions[] = 'webp';
         }
         if (function_exists('imagecreatefromgif') && function_exists('imagegif')) {
             $this->gdlibExtensions[] = 'gif';
@@ -456,6 +463,7 @@ class GifBuilder
                 break;
             case 'jpg':
             case 'jpeg':
+            case 'webp':
                 // Use the default
                 $quality = isset($this->setup['quality']) ? MathUtility::forceIntegerInRange((int)$this->setup['quality'], 10, 100) : 0;
                 $this->ImageWrite($gdImage, $file, $quality);
@@ -1397,20 +1405,15 @@ class GifBuilder
 
     /**
      * Returns the file extension used in the filename
-     *
-     * @return string Extension; "jpg" or "gif"/"png"
      */
     protected function extension(): string
     {
-        switch (strtolower($this->setup['format'] ?? '')) {
-            case 'jpg':
-            case 'jpeg':
-                return 'jpg';
-            case 'gif':
-                return 'gif';
-            default:
-                return 'png';
-        }
+        return match (strtolower($this->setup['format'] ?? '')) {
+            'jpg', 'jpeg' => 'jpg',
+            'gif' => 'gif',
+            'webp' => 'webp',
+            default => 'png',
+        };
     }
 
     /**
@@ -2613,10 +2616,12 @@ class GifBuilder
             case 'jpg':
             case 'jpeg':
                 if (function_exists('imagejpeg')) {
-                    if ($quality === 0) {
-                        $quality = $this->jpegQuality;
-                    }
-                    $result = imagejpeg($destImg, $theImage, $quality);
+                    $result = imagejpeg($destImg, $theImage, ($quality ?: $this->jpegQuality));
+                }
+                break;
+            case 'webp':
+                if (function_exists('imagewebp')) {
+                    $result = imagewebp($destImg, $theImage, ($quality ?: $this->webpQuality));
                 }
                 break;
             case 'gif':
@@ -2667,6 +2672,11 @@ class GifBuilder
             case 'jpeg':
                 if (function_exists('imagecreatefromjpeg')) {
                     return imagecreatefromjpeg($sourceImg);
+                }
+                break;
+            case 'webp':
+                if (function_exists('imagecreatefromwebp')) {
+                    return imagecreatefromwebp($sourceImg);
                 }
                 break;
         }

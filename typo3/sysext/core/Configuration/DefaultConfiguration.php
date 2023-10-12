@@ -36,6 +36,7 @@ return [
         'processor_colorspace' => '',
         'processor_interlace' => 'None',
         'jpg_quality' => 85,
+        'webp_quality' => 85,
     ],
     'SYS' => [
         // System related concerning both frontend and backend.

@@ -59,16 +59,27 @@ final class GifBuilderTest extends FunctionalTestCase
         );
     }
 
+    public static function fileExtensionDataProvider(): array
+    {
+        return [
+            'jpg' => ['jpg'],
+            'png' => ['png'],
+            'gif' => ['gif'],
+            'webp' => ['webp'],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider fileExtensionDataProvider
      */
-    public function buildSimpleGifBuilderImageInComposerMode(): void
+    public function buildSimpleGifBuilderImageInComposerMode(string $fileExtension): void
     {
         $this->simulateCliRequestInComposerMode();
 
         $conf = [
             'XY' => '10,10',
-            'format' => 'jpg',
+            'format' => $fileExtension,
         ];
 
         $gifBuilder = new GifBuilder();
@@ -77,6 +88,7 @@ final class GifBuilderTest extends FunctionalTestCase
 
         self::assertFileDoesNotExist(Environment::getProjectPath() . '/' . $gifFileName);
         self::assertFileExists(Environment::getPublicPath() . '/' . $gifFileName);
+        self::assertStringEndsWith('.' . $fileExtension, $gifFileName);
     }
 
     /**

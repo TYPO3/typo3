@@ -668,8 +668,7 @@ class EnvironmentController extends AbstractController
         $inputFile = $imageBasePath . 'TestInput/BackgroundOrange.gif';
         $overlayFile = $imageBasePath . 'TestInput/Test.jpg';
         $maskFile = $imageBasePath . 'TestInput/MaskBlackWhite.gif';
-        $resultFile = $this->getImagesPath() . $imageService->filenamePrefix
-            . StringUtility::getUniqueId($imageService->alternativeOutputKey . 'combine1') . '.jpg';
+        $resultFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId($imageService->alternativeOutputKey . 'combine1') . '.jpg';
         $imageService->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
         $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $resultFile);
         if ($imageInfo->getWidth() > 0) {
@@ -704,8 +703,7 @@ class EnvironmentController extends AbstractController
         $inputFile = $imageBasePath . 'TestInput/BackgroundCombine.jpg';
         $overlayFile = $imageBasePath . 'TestInput/Test.jpg';
         $maskFile = $imageBasePath . 'TestInput/MaskCombine.jpg';
-        $resultFile = $this->getImagesPath() . $imageService->filenamePrefix
-            . StringUtility::getUniqueId($imageService->alternativeOutputKey . 'combine2') . '.jpg';
+        $resultFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId($imageService->alternativeOutputKey . 'combine2') . '.jpg';
         $imageService->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
         $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $resultFile);
         if ($imageInfo->getWidth() > 0) {
@@ -739,7 +737,7 @@ class EnvironmentController extends AbstractController
             'color' => 'olive',
         ];
         $gifBuilder->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.png';
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdSimple') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
@@ -765,12 +763,38 @@ class EnvironmentController extends AbstractController
             'color' => 'olive',
         ];
         $gifBuilder->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.png';
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdBox') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
             'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.png',
+            'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
+        ];
+        return $this->getImageTestResponse($result);
+    }
+
+    /**
+     * GD from image with box exported as webp file
+     */
+    public function imageProcessingGdlibFromFileToWebpAction(): ResponseInterface
+    {
+        $gifBuilder = $this->initializeGifBuilder();
+        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $inputFile = $imageBasePath . 'TestInput/Test.webp';
+        $image = $gifBuilder->imageCreateFromFile($inputFile);
+        $workArea = [0, 0, 400, 300];
+        $conf = [
+            'dimensions' => '20,100,740,100',
+            'color' => 'olive',
+        ];
+        $gifBuilder->makeBox($image, $conf, $workArea);
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdBox') . '.webp';
+        $gifBuilder->ImageWrite($image, $outputFile);
+        $result = [
+            'fileExists' => true,
+            'outputFile' => $outputFile,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.webp',
             'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -798,7 +822,7 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $gifBuilder->calcBBox($conf);
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.png';
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
@@ -837,12 +861,12 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $gifBuilder->calcBBox($conf);
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.png';
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,120';
         $conf['niceText'] = 1;
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.png';
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdNiceText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
@@ -881,12 +905,12 @@ class EnvironmentController extends AbstractController
         ];
         $conf['BBOX'] = $gifBuilder->calcBBox($conf);
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdText') . '.png';
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,120';
         $conf['niceText'] = 1;
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.png';
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdNiceText') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $conf['offset'] = '30,160';
         $conf['niceText'] = 1;
@@ -899,7 +923,7 @@ class EnvironmentController extends AbstractController
         // Warning: Re-uses $image from above!
         $gifBuilder->makeShadow($image, $conf['shadow.'], $workArea, $conf);
         $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . $gifBuilder->getGraphicalFunctions()->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.png';
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.png';
         $gifBuilder->ImageWrite($image, $outputFile);
         $result = [
             'fileExists' => true,
@@ -915,12 +939,7 @@ class EnvironmentController extends AbstractController
      */
     protected function initializeGifBuilder(): GifBuilder
     {
-        $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
-        $gifBuilder->getGraphicalFunctions()->dontCheckForExistingTempFile = true;
-        $gifBuilder->getGraphicalFunctions()->filenamePrefix = 'installTool-';
-        $gifBuilder->getGraphicalFunctions()->alternativeOutputKey = 'typo3InstallTest';
-        $gifBuilder->getGraphicalFunctions()->setImageFileExt(self::IMAGE_FILE_EXT);
-        return $gifBuilder;
+        return GeneralUtility::makeInstance(GifBuilder::class);
     }
 
     /**

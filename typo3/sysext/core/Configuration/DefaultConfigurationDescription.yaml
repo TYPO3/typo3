@@ -44,6 +44,9 @@ GFX:
         jpg_quality:
             type: int
             description: 'Integer: Default JPEG generation quality'
+        webp_quality:
+            type: int
+            description: 'Integer: Default WebP generation quality'
 SYS:
     type: container
     description: 'System'
