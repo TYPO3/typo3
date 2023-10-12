@@ -898,8 +898,11 @@ class ReferenceIndex
 
             $progressListener?->start($numberOfRecordsInTargetTable, $tableName);
 
-            if ($this->shouldExcludeTableFromReferenceIndex($tableName) || !$this->hasTableRelationFields($tableName)) {
-                // This table should be excluded, or it can not have relations, blindly remove any existing sys_refindex rows.
+            if ($numberOfRecordsInTargetTable === 0
+                || $this->shouldExcludeTableFromReferenceIndex($tableName)
+                || !$this->hasTableRelationFields($tableName)
+            ) {
+                // Table is empty, should be excluded, or can not have relations. Blindly remove any existing sys_refindex rows.
                 $numberOfHandledRecords += $numberOfRecordsInTargetTable;
                 $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
                 $queryBuilder->getRestrictions()->removeAll();
