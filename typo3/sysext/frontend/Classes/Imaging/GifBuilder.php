@@ -144,8 +144,6 @@ class GifBuilder
      */
     protected array $OFFSET;
 
-    protected ?\GdImage $im = null;
-
     /**
      * File formats supported by gdlib. This variable gets filled in the constructor
      *
@@ -407,9 +405,9 @@ class GifBuilder
     /**
      * Initiates the image file generation if ->setup is TRUE and if the file did not exist already.
      * Gets filename from fileName() and if file exists in typo3temp/assets/images/ dir it will - of course - not be rendered again.
-     * Otherwise rendering means calling ->make(), then ->output(), then ->destroy()
+     * Otherwise rendering means calling ->make(), then ->output(), then destroys the image
      *
-     * @return string The filename for the created GIF/PNG file.
+     * @return string The filename for the created GIF/PNG file, relative to the public path.
      * @see make()
      * @see fileName()
      */
@@ -420,63 +418,64 @@ class GifBuilder
         }
 
         // Relative to Environment::getPublicPath()
-        $gifFileName = $this->fileName('assets/images/');
+        $gifFileName = $this->fileName();
+        $relativeFileName = 'typo3temp/assets/images/' . $gifFileName;
+        $fullFileName = Environment::getPublicPath() . '/' . $relativeFileName;
 
-        if (!file_exists(Environment::getPublicPath() . '/' . $gifFileName)) {
+        if (!file_exists($fullFileName)) {
             // Create temporary directory if not done
-            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
+            GeneralUtility::mkdir_deep(dirname($fullFileName));
             // Create file
-            $this->make();
-            $this->output(Environment::getPublicPath() . '/' . $gifFileName);
-            $this->destroy();
+            $gdImage = $this->make();
+            $this->output($gdImage, $fullFileName);
+            imagedestroy($gdImage);
         }
-        return $gifFileName;
+        return $relativeFileName;
     }
 
     /**
-     * Writing the internal image pointer, $this->im, to file based on the extension of the input filename
-     * Used in GIFBUILDER
+     * Writing the image pointer, to file based on the extension of the input filename.
      * Uses $this->setup['quality'] for jpg images to reduce size/quality if needed.
      *
      * @param string $file The absolute filename to write to
-     * @return string Returns input filename
      * @see gifBuild()
-     * @internal
      */
-    public function output($file)
+    protected function output(\GdImage $gdImage, string $file): void
     {
-        if ($file) {
-            $reg = [];
-            preg_match('/([^\\.]*)$/', $file, $reg);
-            $ext = strtolower($reg[0]);
-            switch ($ext) {
-                case 'gif':
-                case 'png':
-                    $this->ImageWrite($this->im, $file);
-                    break;
-                case 'jpg':
-                case 'jpeg':
-                    // Use the default
-                    $quality = 0;
-                    if ($this->setup['quality'] ?? false) {
-                        $quality = MathUtility::forceIntegerInRange($this->setup['quality'], 10, 100);
-                    }
-                    $this->ImageWrite($this->im, $file, $quality);
-                    break;
-            }
+        if ($file === '') {
+            return;
         }
-        return $file;
+
+        $reg = [];
+        preg_match('/([^\\.]*)$/', $file, $reg);
+        $ext = strtolower($reg[0]);
+        switch ($ext) {
+            case 'gif':
+            case 'png':
+                $this->ImageWrite($gdImage, $file);
+                break;
+            case 'jpg':
+            case 'jpeg':
+                // Use the default
+                $quality = isset($this->setup['quality']) ? MathUtility::forceIntegerInRange((int)$this->setup['quality'], 10, 100) : 0;
+                $this->ImageWrite($gdImage, $file, $quality);
+                break;
+        }
     }
 
     /**
      * The actual rendering of the image file.
-     * Basically sets the dimensions, the background color, the traverses the array of GIFBUILDER objects and finally setting the transparent color if defined.
-     * Creates a GDlib resource in $this->im and works on that
+     *
+     * Creates a GDlib resource, works on that and returns it.
+     *
+     * Basically sets the dimensions, the background color, the traverses the array of GIFBUILDER objects
+     * and finally setting the transparent color if defined.
+     *
      * Called by gifBuild()
      *
      * @see gifBuild()
      */
-    protected function make()
+    protected function make(): \GdImage
     {
         // Get trivial data
         $XY = $this->XY;
@@ -487,16 +486,15 @@ class GifBuilder
         if (!$im instanceof \GdImage) {
             throw new \RuntimeException('imagecreatetruecolor returned false', 1598350445);
         }
-        $this->im = $im;
         $this->w = $XY[0];
         $this->h = $XY[1];
         // Transparent layer as background if set and requirements are met
         if (($this->setup['backColor'] ?? '') === 'transparent' && (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
             // Set transparency properties
-            imagesavealpha($this->im, true);
+            imagesavealpha($im, true);
             // Fill with a transparent background
-            $transparentColor = imagecolorallocatealpha($this->im, 0, 0, 0, 127);
-            imagefill($this->im, 0, 0, $transparentColor);
+            $transparentColor = imagecolorallocatealpha($im, 0, 0, 0, 127);
+            imagefill($im, 0, 0, $transparentColor);
             // Set internal properties to keep the transparency over the rendering process
             $this->saveAlphaLayer = true;
             // Force PNG in case no format is set
@@ -505,8 +503,8 @@ class GifBuilder
         } else {
             // Fill the background with the given color
             $BGcols = $this->convertColor($this->setup['backColor']);
-            $Bcolor = imagecolorallocate($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
-            imagefilledrectangle($this->im, 0, 0, $XY[0], $XY[1], $Bcolor);
+            $Bcolor = imagecolorallocate($im, $BGcols[0], $BGcols[1], $BGcols[2]);
+            imagefilledrectangle($im, 0, 0, $XY[0], $XY[1], $Bcolor);
         }
         // Traverse the GIFBUILDER objects and render each one:
         if (is_array($this->setup)) {
@@ -531,9 +529,9 @@ class GifBuilder
                     switch ($theValue) {
                         case 'IMAGE':
                             if ($conf['mask'] ?? false) {
-                                $this->maskImageOntoImage($this->im, $conf, $this->workArea);
+                                $this->maskImageOntoImage($im, $conf, $this->workArea);
                             } else {
-                                $this->copyImageOntoImage($this->im, $conf, $this->workArea);
+                                $this->copyImageOntoImage($im, $conf, $this->workArea);
                             }
                             break;
                         case 'TEXT':
@@ -547,7 +545,7 @@ class GifBuilder
                                             $isStdWrapped[$parameter] = 1;
                                         }
                                     }
-                                    $this->makeShadow($this->im, $conf['shadow.'], $this->workArea, $conf);
+                                    $this->makeShadow($im, $conf['shadow.'], $this->workArea, $conf);
                                 }
                                 if (is_array($conf['emboss.'] ?? null)) {
                                     $isStdWrapped = [];
@@ -558,7 +556,7 @@ class GifBuilder
                                             $isStdWrapped[$parameter] = 1;
                                         }
                                     }
-                                    $this->makeEmboss($this->im, $conf['emboss.'], $this->workArea, $conf);
+                                    $this->makeEmboss($im, $conf['emboss.'], $this->workArea, $conf);
                                 }
                                 if (is_array($conf['outline.'] ?? null)) {
                                     $isStdWrapped = [];
@@ -569,40 +567,40 @@ class GifBuilder
                                             $isStdWrapped[$parameter] = 1;
                                         }
                                     }
-                                    $this->makeOutline($this->im, $conf['outline.'], $this->workArea, $conf);
+                                    $this->makeOutline($im, $conf['outline.'], $this->workArea, $conf);
                                 }
-                                $this->makeText($this->im, $conf, $this->workArea);
+                                $this->makeText($im, $conf, $this->workArea);
                             }
                             break;
                         case 'OUTLINE':
                             if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-                                $this->makeOutline($this->im, $conf, $this->workArea, $txtConf);
+                                $this->makeOutline($im, $conf, $this->workArea, $txtConf);
                             }
                             break;
                         case 'EMBOSS':
                             if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-                                $this->makeEmboss($this->im, $conf, $this->workArea, $txtConf);
+                                $this->makeEmboss($im, $conf, $this->workArea, $txtConf);
                             }
                             break;
                         case 'SHADOW':
                             if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-                                $this->makeShadow($this->im, $conf, $this->workArea, $txtConf);
+                                $this->makeShadow($im, $conf, $this->workArea, $txtConf);
                             }
                             break;
                         case 'BOX':
-                            $this->makeBox($this->im, $conf, $this->workArea);
+                            $this->makeBox($im, $conf, $this->workArea);
                             break;
                         case 'EFFECT':
-                            $this->makeEffect($this->im, $conf);
+                            $this->makeEffect($im, $conf);
                             break;
                         case 'ADJUST':
-                            $this->adjust($this->im, $conf);
+                            $this->adjust($im, $conf);
                             break;
                         case 'CROP':
-                            $this->crop($this->im, $conf);
+                            $this->crop($im, $conf);
                             break;
                         case 'SCALE':
-                            $this->scale($this->im, $conf);
+                            $this->scale($im, $conf);
                             break;
                         case 'WORKAREA':
                             if ($conf['set']) {
@@ -615,7 +613,7 @@ class GifBuilder
                             }
                             break;
                         case 'ELLIPSE':
-                            $this->makeEllipse($this->im, $conf, $this->workArea);
+                            $this->makeEllipse($im, $conf, $this->workArea);
                             break;
                     }
                 }
@@ -625,18 +623,19 @@ class GifBuilder
         if (!$this->saveAlphaLayer) {
             if ($this->setup['transparentBackground']) {
                 // Auto transparent background is set
-                $Bcolor = imagecolorclosest($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
-                imagecolortransparent($this->im, $Bcolor);
+                $Bcolor = imagecolorclosest($im, $BGcols[0], $BGcols[1], $BGcols[2]);
+                imagecolortransparent($im, $Bcolor);
             } elseif (is_array($this->setup['transparentColor_array'])) {
                 // Multiple transparent colors are set. This is done via the trick that all transparent colors get
                 // converted to one color and then this one gets set as transparent as png/gif can just have one
                 // transparent color.
-                $Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], (bool)($this->setup['transparentColor.']['closest'] ?? false));
+                $Tcolor = $this->unifyColors($im, $this->setup['transparentColor_array'], (bool)($this->setup['transparentColor.']['closest'] ?? false));
                 if ($Tcolor >= 0) {
-                    imagecolortransparent($this->im, $Tcolor);
+                    imagecolortransparent($im, $Tcolor);
                 }
             }
         }
+        return $im;
     }
 
     /**
@@ -1363,15 +1362,12 @@ class GifBuilder
     }
 
     /**
-     * Calculates the GIFBUILDER output filename/path based on a serialized, hashed value of this->setup
-     * and prefixes the original filename
-     * also, the filename gets an additional prefix (max 100 characters),
-     * something like "GB_MD5HASH_myfilename_is_very_long_and_such.jpg"
-     *
-     * @param string $pre Filename prefix, eg. "GB_
-     * @return string The filepath, relative to Environment::getPublicPath()
+     * Calculates the GIFBUILDER output filename based on a serialized, hashed
+     * value of this->setup and prefixes the original filename.
+     * The filename gets an additional prefix (max 100 characters),
+     * something like "GB_MD5HASH_myfilename_is_very_long_and_such.jpg".
      */
-    protected function fileName($pre)
+    protected function fileName(): string
     {
         $basicFileFunctions = GeneralUtility::makeInstance(BasicFileUtility::class);
         $filePrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
@@ -1387,7 +1383,6 @@ class GifBuilder
         $hashInputForFileName = [
             $configurationService->serialize($this->setup),
             $filePrefix,
-            $this->im,
             $this->XY,
             $this->w,
             $this->h,
@@ -1397,15 +1392,15 @@ class GifBuilder
             $this->combinedFileNames,
             $this->data,
         ];
-        return 'typo3temp/' . $pre . $filePrefix . '_' . md5((string)json_encode($hashInputForFileName)) . '.' . $this->extension();
+        return $filePrefix . '_' . md5((string)json_encode($hashInputForFileName)) . '.' . $this->extension();
     }
 
     /**
      * Returns the file extension used in the filename
      *
-     * @return string Extension; "jpg" or "gif"/"png
+     * @return string Extension; "jpg" or "gif"/"png"
      */
-    protected function extension()
+    protected function extension(): string
     {
         switch (strtolower($this->setup['format'] ?? '')) {
             case 'jpg':
@@ -2681,16 +2676,6 @@ class GifBuilder
         $Bcolor = imagecolorallocate($im, 128, 128, 128);
         imagefilledrectangle($im, 0, 0, $imageInfo->getWidth(), $imageInfo->getHeight(), $Bcolor);
         return $im;
-    }
-
-    /**
-     * Destroy internal image pointer, $this->im
-     *
-     * @see gifBuild()
-     */
-    protected function destroy()
-    {
-        imagedestroy($this->im);
     }
 
     /**
