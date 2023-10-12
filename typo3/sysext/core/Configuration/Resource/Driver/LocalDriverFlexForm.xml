@@ -5,9 +5,9 @@
 		<el>
 			<basePath>
 				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath</label>
+				<description>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath_placeholder</description>
 				<config>
 					<type>input</type>
-					<placeholder>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath_placeholder</placeholder>
 					<required>1</required>
 					<size>30</size>
 				</config>
@@ -31,9 +31,9 @@
 			</pathType>
 			<baseUri>
 				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri</label>
+				<description>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri_placeholder</description>
 				<config>
 					<type>input</type>
-					<placeholder>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri_placeholder</placeholder>
 					<size>30</size>
 				</config>
 			</baseUri>
