@@ -107,13 +107,6 @@ CREATE TABLE tx_styleguide_elements_basic (
 
     text_12 text,
 
-    radio_1 int(11) DEFAULT '0' NOT NULL,
-    radio_2 int(11) DEFAULT '0' NOT NULL,
-    radio_3 int(11) DEFAULT '0' NOT NULL,
-    radio_4 text,
-    radio_5 int(11) DEFAULT '0' NOT NULL,
-    radio_6 int(11) DEFAULT '0' NOT NULL,
-
     none_1 text,
     none_2 text,
     none_3 text,
@@ -575,10 +568,6 @@ CREATE TABLE tx_styleguide_valuesdefault (
 
     number_1 int(11) DEFAULT '0' NOT NULL,
 
-    radio_1 int(11) DEFAULT '0' NOT NULL,
-    radio_2 text,
-    radio_3 text,
-
     select_1 text,
     select_2 text
 );
@@ -586,7 +575,6 @@ CREATE TABLE tx_styleguide_valuesdefault (
 CREATE TABLE tx_styleguide_l10nreadonly (
     input text,
     link text,
-    radio int(11) DEFAULT '0' NOT NULL,
     none text,
     language int(11) DEFAULT '0' NOT NULL,
     select_single text,
