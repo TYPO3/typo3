@@ -1634,7 +1634,7 @@ abstract class AbstractMenuContentObject
         }
         // Used only for special=language
         if ($page['_ADD_GETVARS'] ?? false) {
-            $conf['addQueryString'] = 1;
+            $conf['addQueryString'] = $page['_ADD_GETVARS'];
             $conf['addQueryString.'] = $this->conf['addQueryString.'] ?? [];
         }
 
