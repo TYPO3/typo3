@@ -151,9 +151,9 @@ class LocalPreviewHelper
     {
         // Create the temporary file
         $imageService = GeneralUtility::makeInstance(GraphicalFunctions::class);
-        $result = $imageService->imageMagickConvert($originalFileName, 'WEB', $configuration['width'], $configuration['height'], '', '0', ['sample' => true]);
+        $result = $imageService->resize($originalFileName, 'WEB', $configuration['width'], $configuration['height'], '', ['sample' => true]);
         if ($result) {
-            $targetFilePath = $result[3];
+            $targetFilePath = $result->getRealPath();
         }
         if (!file_exists($targetFilePath)) {
             // Create an error gif

@@ -67,25 +67,23 @@ class LocalCropScaleMaskHelper
 
         $croppedImage = null;
         if (!empty($configuration['crop'])) {
-            // the result info is an array with 0=width,1=height,2=extension,3=filename
             $result = $imageOperations->crop($originalFileName, $targetFileExtension, $configuration['crop'], $configuration);
             // @todo: in the future, we want this to be one crop call (together with the scale command)
             unset($configuration['crop']);
             if ($result !== null) {
-                $originalFileName = $croppedImage = $result[3];
+                $originalFileName = $croppedImage = $result->getRealPath();
             }
         }
 
         // Normal situation (no masking) - just scale the image
         if (!is_array($configuration['maskImages'] ?? null)) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
-            $result = $imageOperations->imageMagickConvert(
+            $result = $imageOperations->resize(
                 $originalFileName,
                 $targetFileExtension,
                 $configuration['width'] ?? '',
                 $configuration['height'] ?? '',
                 $configuration['additionalParameters'],
-                $configuration['frame'] ?? '',
                 $configuration,
                 // in case file is in `/typo3temp/` from the crop operation above, it must create a result
                 $result !== null
@@ -96,20 +94,19 @@ class LocalCropScaleMaskHelper
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
             if ($maskImage instanceof FileInterface && $maskBackgroundImage instanceof FileInterface) {
                 // This converts the original image to a temporary PNG file during all steps of the masking process
-                $tempFileInfo = $imageOperations->imageMagickConvert(
+                $tempFileInfo = $imageOperations->resize(
                     $originalFileName,
                     'png',
                     $configuration['width'] ?? '',
                     $configuration['height'] ?? '',
                     $configuration['additionalParameters'],
-                    $configuration['frame'] ?? '',
                     $configuration
                 );
-                if (is_array($tempFileInfo)) {
+                if ($tempFileInfo !== null) {
                     // Scaling
-                    $command = '-geometry ' . $tempFileInfo[0] . 'x' . $tempFileInfo[1] . '!';
+                    $command = '-geometry ' . $tempFileInfo->getWidth() . 'x' . $tempFileInfo->getHeight() . '!';
                     $imageOperations->mask(
-                        $tempFileInfo[3],
+                        $tempFileInfo->getRealPath(),
                         $temporaryFileName,
                         $maskImage->getForLocalProcessing(),
                         $maskBackgroundImage->getForLocalProcessing(),
@@ -129,7 +126,6 @@ class LocalCropScaleMaskHelper
                             $configuration
                         );
                     }
-                    $tempFileInfo[3] = $temporaryFileName;
                 }
                 $result = $tempFileInfo;
             }
@@ -137,11 +133,11 @@ class LocalCropScaleMaskHelper
 
         // check if the processing really generated a new file (scaled and/or cropped)
         if ($result !== null) {
-            if ($result[3] !== $originalFileName || $originalFileName === $croppedImage) {
+            if ($result->getRealPath() !== $originalFileName || $originalFileName === $croppedImage) {
                 $result = [
-                    'width' => $result[0],
-                    'height' => $result[1],
-                    'filePath' => $result[3],
+                    'width' => $result->getWidth(),
+                    'height' => $result->getHeight(),
+                    'filePath' => $result->getRealPath(),
                 ];
             } else {
                 // No file was generated
@@ -162,10 +158,10 @@ class LocalCropScaleMaskHelper
         if ($result === null && ($configuration['noScale'] ?? false)) {
             $configuration = $task->getConfiguration();
             $localProcessedFile = $task->getSourceFile()->getForLocalProcessing(false);
-            $imageDimensions = $imageOperations->getImageDimensions($localProcessedFile);
+            $imageDimensions = $imageOperations->getImageDimensions($localProcessedFile, true);
             $imageScaleInfo = ImageProcessingInstructions::fromCropScaleValues(
-                $imageDimensions[0],
-                $imageDimensions[1],
+                $imageDimensions->getWidth(),
+                $imageDimensions->getHeight(),
                 $configuration['width'] ?? '',
                 $configuration['height'] ?? '',
                 $configuration

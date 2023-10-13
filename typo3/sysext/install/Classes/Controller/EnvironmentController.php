@@ -447,13 +447,13 @@ class EnvironmentController extends AbstractController
         $inputFile = $imageBasePath . 'TestInput/Test.gif';
         $imageService = $this->initializeGraphicalFunctions();
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-gif');
-        $imResult = $imageService->imageMagickConvert($inputFile, 'gif', '300', '', '', '', [], true);
+        $imResult = $imageService->resize($inputFile, 'gif', '300', '', '', [], true);
         $messages = new FlashMessageQueue('install');
-        if ($imResult !== null && is_file($imResult[3])) {
+        if ($imResult !== null && $imResult->isFile()) {
             $result = [
                 'status' => $messages,
                 'fileExists' => true,
-                'outputFile' => $imResult[3],
+                'outputFile' => $imResult->getRealPath(),
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Write-gif.gif',
                 'command' => $imageService->IM_commands,
             ];
@@ -481,11 +481,11 @@ class EnvironmentController extends AbstractController
         $inputFile = $imageBasePath . 'TestInput/Test.png';
         $imageService = $this->initializeGraphicalFunctions();
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-png');
-        $imResult = $imageService->imageMagickConvert($inputFile, 'png', '300', '', '', '', [], true);
-        if ($imResult !== null && is_file($imResult[3])) {
+        $imResult = $imageService->resize($inputFile, 'png', '300', '', '', [], true);
+        if ($imResult !== null && $imResult->isFile()) {
             $result = [
                 'fileExists' => true,
-                'outputFile' => $imResult[3],
+                'outputFile' => $imResult->getRealPath(),
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Write-png.png',
                 'command' => $imageService->IM_commands,
             ];
@@ -512,11 +512,11 @@ class EnvironmentController extends AbstractController
         $inputFile = $imageBasePath . 'TestInput/Test.webp';
         $imageService = $this->initializeGraphicalFunctions();
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-webp');
-        $imResult = $imageService->imageMagickConvert($inputFile, 'webp', '300', '', '', '', [], true);
-        if ($imResult !== null && is_file($imResult[3])) {
+        $imResult = $imageService->resize($inputFile, 'webp', '300', '', '', [], true);
+        if ($imResult !== null && $imResult->isFile()) {
             $result = [
                 'fileExists' => true,
-                'outputFile' => $imResult[3],
+                'outputFile' => $imResult->getRealPath(),
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Write-webp.webp',
                 'command' => $imageService->IM_commands,
             ];
@@ -544,11 +544,11 @@ class EnvironmentController extends AbstractController
         $imageService = $this->initializeGraphicalFunctions();
         $inputFile = $imageBasePath . 'TestInput/Transparent.gif';
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-gif');
-        $imResult = $imageService->imageMagickConvert($inputFile, 'gif', '300', '', '', '', [], true);
-        if ($imResult !== null && file_exists($imResult[3])) {
+        $imResult = $imageService->resize($inputFile, 'gif', '300', '', '', [], true);
+        if ($imResult !== null && $imResult->isFile()) {
             $result = [
                 'fileExists' => true,
-                'outputFile' => $imResult[3],
+                'outputFile' => $imResult->getRealPath(),
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Scale-gif.gif',
                 'command' => $imageService->IM_commands,
             ];
@@ -576,11 +576,11 @@ class EnvironmentController extends AbstractController
         $imageService = $this->initializeGraphicalFunctions();
         $inputFile = $imageBasePath . 'TestInput/Transparent.png';
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-png');
-        $imResult = $imageService->imageMagickConvert($inputFile, 'png', '300', '', '', '', [], true);
-        if ($imResult !== null && file_exists($imResult[3])) {
+        $imResult = $imageService->resize($inputFile, 'png', '300', '', '', [], true);
+        if ($imResult !== null && $imResult->isFile()) {
             $result = [
                 'fileExists' => true,
-                'outputFile' => $imResult[3],
+                'outputFile' => $imResult->getRealPath(),
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Scale-png.png',
                 'command' => $imageService->IM_commands,
             ];
@@ -608,11 +608,11 @@ class EnvironmentController extends AbstractController
         $imageService = $this->initializeGraphicalFunctions();
         $inputFile = $imageBasePath . 'TestInput/Transparent.gif';
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-jpg');
-        $imResult = $imageService->imageMagickConvert($inputFile, 'jpg', '300', '', '-opaque white -background white -flatten', '', [], true);
-        if ($imResult !== null && file_exists($imResult[3])) {
+        $imResult = $imageService->resize($inputFile, 'jpg', '300', '', '-opaque white -background white -flatten', [], true);
+        if ($imResult !== null && $imResult->isFile()) {
             $result = [
                 'fileExists' => true,
-                'outputFile' => $imResult[3],
+                'outputFile' => $imResult->getRealPath(),
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Scale-jpg.jpg',
                 'command' => $imageService->IM_commands,
             ];
@@ -640,11 +640,11 @@ class EnvironmentController extends AbstractController
         $imageService = $this->initializeGraphicalFunctions();
         $inputFile = $imageBasePath . 'TestInput/Test.jpg';
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read-webp');
-        $imResult = $imageService->imageMagickConvert($inputFile, 'webp', '300', '', '', '', [], true);
+        $imResult = $imageService->resize($inputFile, 'webp', '300', '', '', [], true);
         if ($imResult !== null) {
             $result = [
-                'fileExists' => file_exists($imResult[3]),
-                'outputFile' => $imResult[3],
+                'fileExists' => $imResult->isFile(),
+                'outputFile' => $imResult->getRealPath(),
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Convert-webp.webp',
                 'command' => $imageService->IM_commands,
             ];
@@ -1006,11 +1006,11 @@ class EnvironmentController extends AbstractController
         $imageService = $this->initializeGraphicalFunctions();
         $inputFile = $imageBasePath . 'TestInput/Test.' . $inputFormat;
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read') . '-' . $inputFormat;
-        $imResult = $imageService->imageMagickConvert($inputFile, 'jpg', '300', '', '', '', [], true);
+        $imResult = $imageService->resize($inputFile, 'jpg', '300', '', '', [], true);
         if ($imResult !== null) {
             $result = [
-                'fileExists' => file_exists($imResult[3]),
-                'outputFile' => $imResult[3],
+                'fileExists' => $imResult->isFile(),
+                'outputFile' => $imResult->getRealPath(),
                 'referenceFile' => self::TEST_REFERENCE_PATH . '/Read-' . $inputFormat . '.jpg',
                 'command' => $imageService->IM_commands,
             ];

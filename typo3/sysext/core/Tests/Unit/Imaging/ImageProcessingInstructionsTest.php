@@ -281,6 +281,8 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider fromCropScaleValuesImageDataProvider
+     * @param int<0, max> $incomingWidth
+     * @param int<0, max> $incomingHeight
      */
     public function fromCropScaleValuesTest(
         int $incomingWidth,

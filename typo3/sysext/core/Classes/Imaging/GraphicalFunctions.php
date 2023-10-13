@@ -278,35 +278,47 @@ class GraphicalFunctions
      * Scaling, Dimensions of images
      *
      ***********************************/
+
     /**
-     * Converts $imagefile to another file in temp-dir of type $targetFileExtension.
+     * A simple call to migrate a file to a different web-based file format. Let's say you want to convert
+     * a PDF to a PNG, use this method.
+     * If you want to also resize it, try "resize" instead.
      *
-     * @param string $imagefile The absolute image filepath
-     * @param string $targetFileExtension New image file extension. If $targetFileExtension is NOT set, the new imagefile will be of the original format. If set to = 'WEB' then one of the web-formats is applied.
-     * @param string $w Width. $w / $h is optional. If only one is given the image is scaled proportionally. If an 'm' exists in the $w or $h and if both are present the $w and $h is regarded as the Maximum w/h and the proportions will be kept
-     * @param string $h Height. See $w
-     * @param string $params Additional ImageMagick parameters.
-     * @param string $frame Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
-     * @param array $options An array with options passed to getImageScale (see this function).
-     * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise, you can risk that the input image is good enough regarding measures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
-     * @return array|null [0]/[1] is w/h, [2] is file extension and [3] is the filename.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
-     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::maskImageOntoImage()
-     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::copyImageOntoImage()
-     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::scale()
+     * @see resize()
      */
-    public function imageMagickConvert($imagefile, $targetFileExtension = '', $w = '', $h = '', $params = '', $frame = '', $options = [], $mustCreate = false)
+    public function convert(string $sourceFile, string $targetFileExtension = 'web'): ?ImageProcessingResult
+    {
+        return $this->resize($sourceFile, $targetFileExtension);
+    }
+
+    /**
+     * Converts $sourceFile to another file in temp-dir of type $targetFileExtension.
+     *
+     * @param string $sourceFile The absolute image filepath
+     * @param string $targetFileExtension New extension, eg. "gif", "png", "jpg", "tif". If $targetFileExtension is NOT set, the new imagefile will be of the original format. If $targetFileExtension = 'WEB' then one of the web-formats is applied.
+     * @param int|string $width Width. $width / $height is optional. If only one is given the image is scaled proportionally. If an 'm' exists in the $width or $height and if both are present the $width and $height is regarded as the Maximum w/h and the proportions will be kept
+     * @param int|string $height Height. See $width
+     * @param string $additionalParameters Additional ImageMagick parameters.
+     * @param array $options An array with options passed to getImageScale (see this function).
+     * @param bool $forceCreation If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding measures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
+     * @see maskImageOntoImage()
+     * @see copyImageOntoImage()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::scale()
+     * @internal until imageMagickConvert() is marked as deprecated.
+     */
+    public function resize(string $sourceFile, string $targetFileExtension, int|string $width = '', int|string $height = '', string $additionalParameters = '', array $options = [], bool $forceCreation = false): ?ImageProcessingResult
     {
         if (!$this->processorEnabled) {
             // Returning file info right away
-            return $this->getImageDimensions($imagefile);
+            return $this->getImageDimensions($sourceFile, true);
         }
-        $info = $this->getImageDimensions($imagefile);
+        $info = $this->getImageDimensions($sourceFile, true);
         if (!$info) {
             return null;
         }
+        $originalFileExtension = $info->getExtension();
 
-        $originalFileExtension = $info[2];
         // Determine the final target file extension
         $targetFileExtension = strtolower(trim($targetFileExtension));
         // If no extension is given the original extension is used
@@ -315,33 +327,38 @@ class GraphicalFunctions
             if (in_array($originalFileExtension, $this->webImageExt, true)) {
                 $targetFileExtension = $originalFileExtension;
             } else {
-                $targetFileExtension = $this->gif_or_jpg($originalFileExtension, $info[0], $info[1]);
+                $targetFileExtension = $this->gif_or_jpg($originalFileExtension, $info->getWidth(), $info->getHeight());
             }
         }
         if (!in_array($targetFileExtension, $this->imageFileExt, true)) {
             return null;
         }
         // Clean up additional $params
-        $params = trim($params);
+        $additionalParameters = trim($additionalParameters);
+        // Refers to which frame-number to select in the image. null or 0 will select the first frame, 1 will select the next and so on...
+        $frame = $this->addFrameSelection && isset($options['frame']) ? (int)$options['frame'] : 0;
 
-        $processingInstructions = ImageProcessingInstructions::fromCropScaleValues((int)$info[0], (int)$info[1], $w, $h, $options);
+        $processingInstructions = ImageProcessingInstructions::fromCropScaleValues($info->getWidth(), $info->getHeight(), $width, $height, $options);
+        $w = $processingInstructions->originalWidth;
+        $h = $processingInstructions->originalHeight;
         // Check if conversion should be performed ($noScale - no processing needed).
         // $noScale flag is TRUE if the width / height does NOT dictate the image to be scaled. That is if no
         // width / height is given or if the destination w/h matches the original image dimensions, or if
         // the option to not scale the image is set.
-        $noScale = !$processingInstructions->originalWidth && !$processingInstructions->originalHeight || $processingInstructions->width === (int)$info[0] && $processingInstructions->height === (int)$info[1] || !empty($options['noScale']);
-        if ($noScale && !$processingInstructions->cropArea && !$params && !$frame && $targetFileExtension === $originalFileExtension && !$mustCreate) {
+        $noScale = !$processingInstructions->originalWidth && !$processingInstructions->originalHeight || $processingInstructions->width === $info->getWidth() && $processingInstructions->height === $info->getHeight() || !empty($options['noScale']);
+        if ($noScale && !$processingInstructions->cropArea && !$additionalParameters && !$frame && $targetFileExtension === $info->getExtension() && !$forceCreation) {
             // Set the new width and height before returning,
             // if the noScale option is set, otherwise the incoming
             // values are calculated.
             if (!empty($options['noScale'])) {
-                $info[0] = $processingInstructions->width;
-                $info[1] = $processingInstructions->height;
+                return new ImageProcessingResult(
+                    $sourceFile,
+                    $processingInstructions->width,
+                    $processingInstructions->height
+                );
             }
-            $info[3] = $imagefile;
             return $info;
         }
-        $frame = $this->addFrameSelection ? (int)$frame : 0;
 
         // Start with the default scale command
         // check if we should use -sample or -geometry
@@ -362,8 +379,8 @@ class GraphicalFunctions
             $command .= ' -crop ' . $cropArea->getWidth() . 'x' . $cropArea->getHeight() . '+' . $cropArea->getOffsetLeft() . '+' . $cropArea->getOffsetTop() . '! +repage';
         }
         // Add params
-        $params = $this->modifyImageMagickStripProfileParameters($params, $options);
-        $command .= ($params ? ' ' . $params : $this->cmds[$targetFileExtension] ?? '');
+        $additionalParameters = $this->modifyImageMagickStripProfileParameters($additionalParameters, $options);
+        $command .= ($additionalParameters ? ' ' . $additionalParameters : $this->cmds[$targetFileExtension] ?? '');
 
         // Add quality parameter for jpg, jpeg or webp if not already set
         if (!str_contains($command, '-quality') && ($targetFileExtension === 'jpg' || $targetFileExtension === 'jpeg')) {
@@ -384,9 +401,9 @@ class GraphicalFunctions
             $command .= ' -colorspace ' . $this->colorspace;
         }
         if ($this->alternativeOutputKey) {
-            $theOutputName = md5($command . $processingInstructions->cropArea . PathUtility::basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
+            $theOutputName = md5($command . $processingInstructions->cropArea . PathUtility::basename($sourceFile) . $this->alternativeOutputKey . '[' . $frame . ']');
         } else {
-            $theOutputName = md5($command . $processingInstructions->cropArea . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
+            $theOutputName = md5($command . $processingInstructions->cropArea . $sourceFile . filemtime($sourceFile) . '[' . $frame . ']');
         }
         if ($this->imageMagickConvert_forceFileNameBody) {
             $theOutputName = $this->imageMagickConvert_forceFileNameBody;
@@ -396,21 +413,42 @@ class GraphicalFunctions
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
         $output = Environment::getPublicPath() . '/typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $targetFileExtension;
         if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
-            $this->imageMagickExec($imagefile, $output, $command, $frame);
+            $this->imageMagickExec($sourceFile, $output, $command, $frame);
         }
         if (file_exists($output)) {
             // params might change some image data, so this should be calculated again
-            if ($params) {
-                return $this->getImageDimensions($output);
+            if ($additionalParameters) {
+                return $this->getImageDimensions($output, true);
             }
-            return [
-                0 => $processingInstructions->width,
-                1 => $processingInstructions->height,
-                2 => $targetFileExtension,
-                3 => $output,
-            ];
+            return new ImageProcessingResult($output, $processingInstructions->width, $processingInstructions->height);
         }
         return null;
+    }
+
+    /**
+     * Converts $imagefile to another file in temp-dir of type $targetFileExtension.
+     *
+     * @param string $imagefile The absolute image filepath
+     * @param string $targetFileExtension New image file extension. If $targetFileExtension is NOT set, the new imagefile will be of the original format. If set to = 'WEB' then one of the web-formats is applied.
+     * @param string $w Width. $w / $h is optional. If only one is given the image is scaled proportionally. If an 'm' exists in the $w or $h and if both are present the $w and $h is regarded as the Maximum w/h and the proportions will be kept
+     * @param string $h Height. See $w
+     * @param string $params Additional ImageMagick parameters.
+     * @param string $frame Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
+     * @param array $options An array with options passed to getImageScale (see this function).
+     * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise, you can risk that the input image is good enough regarding measures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
+     * @return array|null [0]/[1] is w/h, [2] is file extension and [3] is the filename.
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::maskImageOntoImage()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::copyImageOntoImage()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::scale()
+     */
+    public function imageMagickConvert($imagefile, $targetFileExtension = '', $w = '', $h = '', $params = '', $frame = '', $options = [], $mustCreate = false)
+    {
+        if ($frame !== '') {
+            $options['frame'] = (int)$frame;
+        }
+        $result = $this->resize($imagefile, $targetFileExtension, $w, $h, $params, $options, $mustCreate);
+        return $result?->toLegacyArray();
     }
 
     /**
@@ -419,7 +457,7 @@ class GraphicalFunctions
      *
      * @internal until API is finalized
      */
-    public function crop(string $imageFile, string $targetFileExtension, string $cropInformation, array $options): ?array
+    public function crop(string $imageFile, string $targetFileExtension, string $cropInformation, array $options): ?ImageProcessingResult
     {
         // check if it is a json object
         $cropData = json_decode($cropInformation);
@@ -432,13 +470,12 @@ class GraphicalFunctions
             [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $cropInformation, 4);
         }
 
-        return $this->imageMagickConvert(
+        return $this->resize(
             $imageFile,
             $targetFileExtension,
             '',
             '',
             sprintf('-crop %dx%d+%d+%d! +repage', $newWidth, $newHeight, $offsetLeft, $offsetTop),
-            '',
             isset($options['skipProfile']) ? ['skipProfile' => $options['skipProfile']] : [],
             true
         );
@@ -469,11 +506,11 @@ class GraphicalFunctions
      * Gets the input image dimensions.
      *
      * @param string $imageFile The absolute image filepath
-     * @return array|null Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the absolute filepath.
+     * @return ImageProcessingResult|array|null Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the absolute filepath.
      * @see imageMagickConvert()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
      */
-    public function getImageDimensions($imageFile)
+    public function getImageDimensions(string $imageFile, bool $useResultObject = false): ImageProcessingResult|array|null
     {
         preg_match('/([^\\.]*)$/', $imageFile, $reg);
         if (!file_exists($imageFile)) {
@@ -485,12 +522,8 @@ class GraphicalFunctions
         }
         $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $imageFile);
         if ($imageInfoObject->isFile() && $imageInfoObject->getWidth()) {
-            return [
-                $imageInfoObject->getWidth(),
-                $imageInfoObject->getHeight(),
-                $imageInfoObject->getExtension(),
-                $imageFile,
-            ];
+            $result = ImageProcessingResult::createFromImageInfo($imageInfoObject);
+            return $useResultObject ? $result : $result->toLegacyArray();
         }
         return null;
     }

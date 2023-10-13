@@ -671,16 +671,16 @@ class GifBuilder
             $imgInf = pathinfo($conf['file']);
             $imgExt = strtolower($imgInf['extension']);
             if (!in_array($imgExt, $this->gdlibExtensions, true)) {
-                $BBimage = $this->imageService->imageMagickConvert($conf['file'], 'png');
+                $BBimage = $this->imageService->convert($conf['file'], 'png');
             } else {
-                $BBimage = $this->imageService->getImageDimensions($conf['file']);
+                $BBimage = $this->imageService->getImageDimensions($conf['file'], true);
             }
             $maskInf = pathinfo($conf['mask']);
             $maskExt = strtolower($maskInf['extension']);
             if (!in_array($maskExt, $this->gdlibExtensions, true)) {
-                $BBmask = $this->imageService->imageMagickConvert($conf['mask'], 'png');
+                $BBmask = $this->imageService->convert($conf['mask'], 'png');
             } else {
-                $BBmask = $this->imageService->getImageDimensions($conf['mask']);
+                $BBmask = $this->imageService->getImageDimensions($conf['mask'], true);
             }
             if ($BBimage && $BBmask) {
                 $w = imagesx($im);
@@ -690,7 +690,7 @@ class GifBuilder
                 $theDest = $tmpStr . '_dest.png';
                 $theMask = $tmpStr . '_mask.png';
                 // Prepare overlay image
-                $cpImg = $this->imageCreateFromFile($BBimage[3]);
+                $cpImg = $this->imageCreateFromFile($BBimage->getRealPath());
                 $destImg = imagecreatetruecolor($w, $h);
                 // Preserve alpha transparency
                 if ($this->saveAlphaLayer) {
@@ -706,7 +706,7 @@ class GifBuilder
                 imagedestroy($cpImg);
                 imagedestroy($destImg);
                 // Prepare mask image
-                $cpImg = $this->imageCreateFromFile($BBmask[3]);
+                $cpImg = $this->imageCreateFromFile($BBmask->getRealPath());
                 $destImg = imagecreatetruecolor($w, $h);
                 if ($this->saveAlphaLayer) {
                     imagesavealpha($destImg, true);
@@ -754,8 +754,8 @@ class GifBuilder
     {
         if ($conf['file']) {
             if (!in_array($conf['BBOX'][2], $this->gdlibExtensions, true)) {
-                $conf['BBOX'] = $this->imageService->imageMagickConvert($conf['BBOX'][3], 'png');
-                $conf['file'] = $conf['BBOX'][3];
+                $conf['BBOX'] = $this->imageService->convert($conf['BBOX']->getRealPath(), 'png');
+                $conf['file'] = $conf['BBOX'] ? $conf['BBOX']->getRealPath() : null;
             }
             $cpImg = $this->imageCreateFromFile($conf['file']);
             $this->copyGifOntoGif($im, $cpImg, $conf, $workArea);
@@ -1168,23 +1168,26 @@ class GifBuilder
      */
     protected function scale(\GdImage &$im, array $conf): void
     {
-        if ($conf['width'] || $conf['height'] || $conf['params']) {
+        // @todo: not covered with tests
+        if (isset($conf['width']) || isset($conf['height']) || isset($conf['params'])) {
             $tmpStr = $this->imageService->randomName();
             $theFile = $tmpStr . '.png';
             $this->ImageWrite($im, $theFile);
-            $theNewFile = $this->imageService->imageMagickConvert($theFile, 'png', $conf['width'] ?? '', $conf['height'] ?? '', $conf['params'] ?? '');
-            $tmpImg = $this->imageCreateFromFile($theNewFile[3]);
-            if ($tmpImg) {
-                imagedestroy($im);
-                $im = $tmpImg;
-                $this->w = imagesx($im);
-                $this->h = imagesy($im);
-                // Clears workArea to total image
-                $this->setWorkArea('');
-            }
-            unlink($theFile);
-            if ($theNewFile[3] && $theNewFile[3] != $theFile) {
-                unlink($theNewFile[3]);
+            $theNewFile = $this->imageService->resize($theFile, 'png', $conf['width'] ?? '', $conf['height'] ?? '', $conf['params'] ?? '');
+            if ($theNewFile->isFile()) {
+                $tmpImg = $this->imageCreateFromFile($theNewFile->getRealPath());
+                if ($tmpImg) {
+                    imagedestroy($im);
+                    $im = $tmpImg;
+                    $this->w = imagesx($im);
+                    $this->h = imagesy($im);
+                    // Clears workArea to total image
+                    $this->setWorkArea('');
+                }
+                unlink($theFile);
+                if ($theNewFile->getRealPath() !== $theFile) {
+                    unlink($theNewFile->getRealPath());
+                }
             }
         }
     }
