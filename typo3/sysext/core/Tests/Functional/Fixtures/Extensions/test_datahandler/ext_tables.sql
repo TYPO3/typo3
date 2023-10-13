@@ -4,7 +4,6 @@
 CREATE TABLE tt_content (
 		tx_testdatahandler_select text,
 		tx_testdatahandler_select_dynamic text,
-		tx_testdatahandler_radio text,
 		tx_testdatahandler_input_minvalue text,
 		tx_testdatahandler_input_minvalue_zero text,
 );

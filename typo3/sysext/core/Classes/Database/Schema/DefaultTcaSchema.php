@@ -22,6 +22,7 @@ use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Schema\Exception\DefaultTcaSchemaTablePositionException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * This class is called by the SchemaMigrator after all extension's ext_tables.sql
@@ -789,6 +790,82 @@ class DefaultTcaSchema
                     );
                 }
             }
+
+            // Add fields for all tables, defining radio columns (TCA type=radio)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'radio'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $hasItemsProcFunc = ($fieldConfig['config']['itemsProcFunc'] ?? '') !== '';
+                $items = $fieldConfig['config']['items'] ?? [];
+
+                // With itemsProcFunc we can't be sure, which values are persisted. Use type string.
+                if ($hasItemsProcFunc) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                            'length' => 255,
+                            'default' => '',
+                            'notnull' => true,
+                        ]
+                    );
+                    continue;
+                }
+
+                // If no items are configured, use type string to be safe for values added directly.
+                if ($items === []) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                            'length' => 255,
+                            'default' => '',
+                            'notnull' => true,
+                        ]
+                    );
+                    continue;
+                }
+
+                // If only one value is NOT an integer use type string.
+                foreach ($items as $item) {
+                    if (!MathUtility::canBeInterpretedAsInteger($item['value'])) {
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote($fieldName),
+                            Types::STRING,
+                            [
+                                'length' => 255,
+                                'default' => '',
+                                'notnull' => true,
+                            ]
+                        );
+                        // continue with next $tableDefinition['columns']
+                        // see: DefaultTcaSchemaTest->enrichAddsRadioStringVerifyThatCorrectLoopIsContinued()
+                        continue 2;
+                    }
+                }
+
+                // Use integer type.
+                $allValues = array_map(fn (array $item): int => (int)$item['value'], $items);
+                $minValue = min($allValues);
+                $maxValue = max($allValues);
+                // Try to safe some bytes - can be reconsidered to simply use Types::INTEGER.
+                $integerType = ($minValue >= -32768 && $maxValue < 32768)
+                    ? Types::SMALLINT
+                    : Types::INTEGER;
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    $integerType,
+                    [
+                        'default' => 0,
+                        'notnull' => true,
+                    ]
+                );
+            }
+            // Keep the house clean.
+            unset($items, $allValues, $minValue, $maxValue, $integerType);
         }
 
         return $tables;

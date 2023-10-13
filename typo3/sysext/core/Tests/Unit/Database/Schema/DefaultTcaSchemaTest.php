@@ -1323,4 +1323,232 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('color')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsRadioString(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['radio'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'radio',
+                'items' => [
+                    [
+                        'label' => 'Radio 1',
+                        'value' => 'item1',
+                    ],
+                    [
+                        'label' => 'Radio 2',
+                        'value' => 'item2',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`radio`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsRadioStringVerifyThatCorrectLoopIsContinued(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['radio1'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'radio',
+                'items' => [
+                    [
+                        'label' => 'Radio 1',
+                        'value' => 'item1',
+                    ],
+                    [
+                        'label' => 'Radio 2',
+                        'value' => 'item2',
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['TCA']['aTable']['columns']['radio2'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'radio',
+                'items' => [
+                    [
+                        'label' => 'Radio 1',
+                        'value' => 'item1',
+                    ],
+                    [
+                        'label' => 'Radio 2',
+                        'value' => 'item2',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn1 = new Column(
+            '`radio1`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        $expectedColumn2 = new Column(
+            '`radio2`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn1->toArray(), $result[0]->getColumn('radio1')->toArray());
+        self::assertSame($expectedColumn2->toArray(), $result[0]->getColumn('radio2')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsRadioStringWhenNoItemsOrUserFuncAreSet(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['radio'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'radio',
+                'items' => [],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`radio`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsRadioStringWhenItemsProcFuncSet(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['radio'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'radio',
+                'itemsProcFunc' => 'Foo->bar',
+                'items' => [
+                    [
+                        'label' => 'Radio 1',
+                        'value' => '0',
+                    ],
+                    [
+                        'label' => 'Radio 2',
+                        'value' => '1',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`radio`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsRadioSmallInt(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['radio'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'radio',
+                'items' => [
+                    [
+                        'label' => 'Radio 1',
+                        'value' => '0',
+                    ],
+                    [
+                        'label' => 'Radio 2',
+                        'value' => '1',
+                    ],
+                    [
+                        'label' => 'Radio 3',
+                        'value' => '2',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`radio`',
+            Type::getType('smallint'),
+            [
+                'default' => 0,
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsRadioInt(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['radio'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'radio',
+                'items' => [
+                    [
+                        'label' => 'Radio 1',
+                        'value' => '0',
+                    ],
+                    [
+                        'label' => 'Radio 2',
+                        'value' => '1',
+                    ],
+                    [
+                        'label' => 'Radio 3',
+                        'value' => '32768',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`radio`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+    }
 }
