@@ -292,7 +292,8 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getLoginController(ContainerInterface $container): Controller\LoginController
     {
         return new Controller\LoginController(
-            $container->get(FormProtectionFactory::class)
+            $container->get(FormProtectionFactory::class),
+            $container->get(ConfigurationManager::class),
         );
     }
 
