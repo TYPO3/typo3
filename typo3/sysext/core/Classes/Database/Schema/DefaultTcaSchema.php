@@ -863,9 +863,29 @@ class DefaultTcaSchema
                         'notnull' => true,
                     ]
                 );
+
+                // Keep the house clean.
+                unset($items, $allValues, $minValue, $maxValue, $integerType);
             }
-            // Keep the house clean.
-            unset($items, $allValues, $minValue, $maxValue, $integerType);
+
+            // Add fields for all tables, defining link columns (TCA type=link)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'link'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $nullable = $fieldConfig['config']['nullable'] ?? false;
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    Types::STRING,
+                    [
+                        'length' => 2048,
+                        'default' => $nullable ? null : '',
+                        'notnull' => !$nullable,
+                    ]
+                );
+            }
         }
 
         return $tables;

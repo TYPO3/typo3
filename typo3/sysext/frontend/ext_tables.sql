@@ -92,7 +92,6 @@ CREATE TABLE tt_content (
 	space_after_class varchar(60) DEFAULT '' NOT NULL,
 	colPos int(11) unsigned DEFAULT '0' NOT NULL,
 	subheader varchar(255) DEFAULT '' NOT NULL,
-	header_link varchar(1024) DEFAULT '' NOT NULL,
 	header_layout varchar(30) DEFAULT '0' NOT NULL,
 	list_type varchar(255) DEFAULT '' NOT NULL,
 	filelink_sorting varchar(64) DEFAULT '' NOT NULL,

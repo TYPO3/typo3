@@ -1551,4 +1551,52 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsLink(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['link'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'link',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`link`',
+            Type::getType('string'),
+            [
+                'length' => 2048,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('link')->toArray());
+    }
+    /**
+     * @test
+     */
+    public function enrichAddsLinkNullable(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['link'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'link',
+                'nullable' => true,
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`link`',
+            Type::getType('string'),
+            [
+                'length' => 2048,
+                'default' => null,
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('link')->toArray());
+    }
 }

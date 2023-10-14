@@ -3,7 +3,6 @@
 #
 CREATE TABLE sys_webhook (
 	name varchar(100) DEFAULT '' NOT NULL,
-	url varchar(2048) DEFAULT '' NOT NULL,
 	method varchar(10) DEFAULT '' NOT NULL,
 	webhook_type varchar(255) DEFAULT '' NOT NULL,
 
