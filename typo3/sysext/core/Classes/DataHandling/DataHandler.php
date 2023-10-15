@@ -922,7 +922,7 @@ class DataHandler implements LoggerAwareInterface
                         $recordAccess = $this->checkRecordInsertAccess($table, $theRealPid);
                     }
                     if ($recordAccess) {
-                        $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray, $theRealPid);
+                        $incomingFieldArray = $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray, $theRealPid);
                         $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, true);
                         if (!$recordAccess) {
                             $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', -1, ['reason' => $this->BE_USER->errorMsg]);
@@ -8251,33 +8251,27 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * If a "languageField" is specified for $table this function will add a possible value to the incoming array if none is found in there already.
+     * If a "languageField" is specified for $table this function will add a
+     * possible value to the incoming array if none is found in there already.
      *
-     * @param string $table Table name
-     * @param array $incomingFieldArray Incoming array (passed by reference)
-     * @param int $pageId the PID of the table (where the record should be inserted)
      * @internal should only be used from within DataHandler
      */
-    protected function addDefaultPermittedLanguageIfNotSet(string $table, &$incomingFieldArray, int $pageId): void
+    protected function addDefaultPermittedLanguageIfNotSet(string $table, array $incomingFieldArray, int $pageId): array
     {
         $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
-        if (empty($languageFieldName)) {
-            return;
-        }
-        if (isset($incomingFieldArray[$languageFieldName])) {
-            return;
+        if (empty($languageFieldName) || isset($incomingFieldArray[$languageFieldName])) {
+            return $incomingFieldArray;
         }
         try {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
-            // Checking languages
             foreach ($site->getAvailableLanguages($this->BE_USER, false, $pageId) as $languageId => $language) {
                 $incomingFieldArray[$languageFieldName] = $languageId;
                 break;
             }
-        } catch (SiteNotFoundException $e) {
+        } catch (SiteNotFoundException) {
             // No site found, do not set a default language if nothing was set explicitly
-            return;
         }
+        return $incomingFieldArray;
     }
 
     /**
