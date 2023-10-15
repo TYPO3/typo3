@@ -1610,7 +1610,7 @@ class BackendUtility
                 }
                 break;
             case 'folder':
-                $l = implode(', ', GeneralUtility::trimExplode(',', $value, true));
+                $l = implode(', ', GeneralUtility::trimExplode(',', (string)$value, true));
                 break;
             case 'check':
                 if (!is_array($theColConf['items'] ?? null)) {
