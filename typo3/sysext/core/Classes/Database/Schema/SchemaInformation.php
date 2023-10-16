@@ -41,7 +41,7 @@ final class SchemaInformation
             str_replace(
                 ['.', ':', '/', '\\', '!', '?'],
                 '_',
-                (string)$connection->getDatabase()
+                (string)($connection->getParams()['dbname'] ?? 'generic')
             ),
             // hash connection params, which holds various information like host,
             // port etc. to get a descriptive hash for this connection.
