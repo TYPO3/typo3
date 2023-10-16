@@ -39,7 +39,7 @@ class FieldMapElement extends AbstractFormElement
         ],
     ];
 
-    protected array $supportedFieldTypes = ['input', 'textarea', 'text'];
+    protected array $supportedFieldTypes = ['input', 'textarea', 'text', 'email', 'number', 'datetime', 'color'];
 
     public function render(): array
     {
