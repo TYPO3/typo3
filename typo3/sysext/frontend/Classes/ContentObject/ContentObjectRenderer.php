@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Html\SanitizerInitiator;
-use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\DateFormatter;
@@ -3759,22 +3758,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         ];
                     }
                 }
-            }
-        }
-        // Triggered when the resolved file object isn't considered as image, processing failed and likely other scenarios
-        // This code path dates back to pre FAL times and should be deprecated and removed eventually
-        if (!isset($imageResource) && is_string($file)) {
-            try {
-                $theImage = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
-                $info = GeneralUtility::makeInstance(GraphicalFunctions::class)->imageMagickConvert($theImage, 'WEB');
-                if ($info !== null) {
-                    $info['origFile'] = $theImage;
-                    // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
-                    $info['origFile_mtime'] = @filemtime(Environment::getPublicPath() . '/' . $theImage);
-                    $imageResource = $info;
-                }
-            } catch (Exception $e) {
-                // do nothing in case the file path is invalid
             }
         }
         // Hook 'getImgResource': Post-processing of image resources

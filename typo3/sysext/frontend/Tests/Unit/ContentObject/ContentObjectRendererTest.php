@@ -47,7 +47,6 @@ use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -69,7 +68,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
@@ -373,48 +371,6 @@ final class ContentObjectRendererTest extends UnitTestCase
                 ),
             ],
         ]);
-    }
-
-    /////////////////////////////////////////////
-    // Tests concerning the getImgResource hook
-    /////////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function getImgResourceCallsGetImgResourcePostProcessHook(): void
-    {
-        $resourceFactory = $this->createMock(ResourceFactory::class);
-        $this->subject->method('getResourceFactory')->willReturn($resourceFactory);
-
-        $className = StringUtility::getUniqueId('tx_coretest');
-        $getImgResourceHookMock = $this->getMockBuilder(ContentObjectGetImageResourceHookInterface::class)
-            ->onlyMethods(['getImgResourcePostProcess'])
-            ->setMockClassName($className)
-            ->getMock();
-        $getImgResourceHookMock
-            ->expects(self::once())
-            ->method('getImgResourcePostProcess')
-            ->willReturnCallback($this->isGetImgResourceHookCalledCallback(...));
-        $getImgResourceHookObjects = [$getImgResourceHookMock];
-        $this->subject->_set('getImgResourceHookObjects', $getImgResourceHookObjects);
-        $this->subject->getImgResource('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', []);
-    }
-
-    /**
-     * Handles the arguments that have been sent to the getImgResource hook.
-     * @see getImgResourceHookGetsCalled
-     */
-    public function isGetImgResourceHookCalledCallback(
-        string $file,
-        array $fileArray,
-        array $imageResource,
-        ContentObjectRenderer $parent
-    ): array {
-        self::assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $file);
-        self::assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $imageResource['origFile']);
-        self::assertIsArray($fileArray);
-        self::assertInstanceOf(ContentObjectRenderer::class, $parent);
-        return $imageResource;
     }
 
     //////////////////////////////////////
