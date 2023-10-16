@@ -963,7 +963,7 @@ class ReferenceIndex
                     ->executeStatement();
             }
             if ($numberOfRefindexRowsWithoutExistingTableRow > 0) {
-                $error = 'Table ' . $tableName . ' has ' . $numberOfRefindexRowsWithoutExistingTableRow . ' lost indexes, which are now deleted';
+                $error = 'Table ' . $tableName . ' hosted ' . $numberOfRefindexRowsWithoutExistingTableRow . ' lost indexes, now removed.';
                 $errors[] = $error;
                 $progressListener?->log($error, LogLevel::WARNING);
             }
@@ -981,25 +981,28 @@ class ReferenceIndex
                 if ($numberOfDeletedRecordsInTargetTable > 0) {
                     $numberOfHandledRecords += $numberOfDeletedRecordsInTargetTable;
                     // List of deleted=0 records in target table that have records in sys_refindex.
-                    $subQueryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-                    $subQueryBuilder->getRestrictions()->removeAll();
-                    $subQueryBuilder
-                        ->select('sub_' . $tableName . '.uid')
-                        ->distinct()
-                        ->from($tableName, 'sub_' . $tableName)
-                        ->join(
-                            'sub_' . $tableName,
-                            'sys_refindex',
-                            'sub_refindex',
-                            $queryBuilder->expr()->eq('sub_refindex.recuid', $queryBuilder->quoteIdentifier('sub_' . $tableName . '.uid'))
-                        )
-                        ->where(
-                            $queryBuilder->expr()->eq('sub_refindex.tablename', $queryBuilder->createNamedParameter($tableName)),
-                            $queryBuilder->expr()->eq('sub_' . $tableName . '.' . $tableTca['ctrl']['delete'], 1),
-                        );
                     if ($testOnly) {
                         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
                         $queryBuilder->getRestrictions()->removeAll();
+                        // $subQueryBuilder actually fills parameter placeholders for the main $queryBuilder.
+                        // The subQuery is never meant to be executed on its own, only used to be filled-in
+                        // via $subQueryBuilder->getSQL().
+                        $subQueryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+                        $subQueryBuilder->getRestrictions()->removeAll();
+                        $subQueryBuilder
+                            ->select('sub_' . $tableName . '.uid')
+                            ->distinct()
+                            ->from($tableName, 'sub_' . $tableName)
+                            ->join(
+                                'sub_' . $tableName,
+                                'sys_refindex',
+                                'sub_refindex',
+                                $queryBuilder->expr()->eq('sub_refindex.recuid', $queryBuilder->quoteIdentifier('sub_' . $tableName . '.uid'))
+                            )
+                            ->where(
+                                $queryBuilder->expr()->eq('sub_refindex.tablename', $queryBuilder->createNamedParameter($tableName)),
+                                $queryBuilder->expr()->eq('sub_' . $tableName . '.' . $tableTca['ctrl']['delete'], 1),
+                            );
                         $numberOfRemovedIndexes = $queryBuilder
                             ->count('hash')
                             ->from('sys_refindex')
@@ -1010,18 +1013,51 @@ class ReferenceIndex
                             ->executeQuery()
                             ->fetchOne();
                     } else {
-                        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
-                        $queryBuilder->getRestrictions()->removeAll();
-                        $numberOfRemovedIndexes = $queryBuilder
-                            ->delete('sys_refindex')
+                        // MySQL is picky when using the same table in a sub-query and an outer delete query, if
+                        // it is not materialized into a temporary table. Enforcing a temporary table would mitigate this
+                        // MySQL limit, but we simply fetch the affected uid list instead and fire a chunked delete query.
+                        // In contrast to $testOnly above, we execute the subQuery, named parameter placeholders need
+                        // to be relative to its QueryBuilder.
+                        $uidListQueryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+                        $uidListQueryBuilder->getRestrictions()->removeAll();
+                        $uidListQueryBuilder
+                            ->select('sub_' . $tableName . '.uid')
+                            ->distinct()
+                            ->from($tableName, 'sub_' . $tableName)
+                            ->join(
+                                'sub_' . $tableName,
+                                'sys_refindex',
+                                'sub_refindex',
+                                $uidListQueryBuilder->expr()->eq('sub_refindex.recuid', $uidListQueryBuilder->quoteIdentifier('sub_' . $tableName . '.uid'))
+                            )
                             ->where(
-                                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
-                                $queryBuilder->quoteIdentifier('recuid') . ' IN ( ' . $subQueryBuilder->getSQL() . ' )'
+                                $uidListQueryBuilder->expr()->eq('sub_refindex.tablename', $uidListQueryBuilder->createNamedParameter($tableName)),
+                                $uidListQueryBuilder->expr()->eq('sub_' . $tableName . '.' . $tableTca['ctrl']['delete'], 1),
                             );
-                        $numberOfRemovedIndexes = $numberOfRemovedIndexes->executeStatement();
+                        $uidListOfRemovableIndexes = $uidListQueryBuilder->executeQuery()->fetchFirstColumn();
+                        $numberOfRemovedIndexes = 0;
+                        // Another variant to solve this would be a limit/offset query for the upper query, feeding delete.
+                        // This would be more memory efficient. We however think there shouldn't be *that* many affected
+                        // rows to delete in casual scenarios, so we skip that optimization for now since chunking isn't
+                        // needed in most cases anyway.
+                        // 10k is an arbitrary number. Reasoning: 1MB max query length with 10-char uids (9mio uid-range with comma)
+                        // would allow ~10k uids. Combi tablename/recuid is indexed, so delete should be relatively quick even with
+                        // larger sets, so delete-hard-locking on for instance innodb shouldn't be a huge issue here.
+                        foreach (array_chunk($uidListOfRemovableIndexes, 10000) as $uidChunkOfRemovableIndexes) {
+                            $chunkQueryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+                            $chunkQueryBuilder->getRestrictions()->removeAll();
+                            $chunkedNumberOfRemovedIndexes = $chunkQueryBuilder
+                                ->delete('sys_refindex')
+                                ->where(
+                                    $chunkQueryBuilder->expr()->eq('tablename', $chunkQueryBuilder->createNamedParameter($tableName)),
+                                    $chunkQueryBuilder->expr()->in('recuid', $uidChunkOfRemovableIndexes)
+                                )
+                                ->executeStatement();
+                            $numberOfRemovedIndexes += $chunkedNumberOfRemovedIndexes;
+                        }
                     }
                     if ($numberOfRemovedIndexes > 0) {
-                        $error = 'Table ' . $tableName . ' has ' . $numberOfRemovedIndexes . ' indexes from soft-deleted records, which are now deleted';
+                        $error = 'Table ' . $tableName . ' hosted ' . $numberOfRemovedIndexes . ' indexes from soft-deleted records, now removed.';
                         $errors[] = $error;
                         $progressListener?->log($error, LogLevel::WARNING);
                     }
