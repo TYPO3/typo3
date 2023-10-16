@@ -92,12 +92,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_42 text,
     input_43 text,
 
-    link_1 text,
-    link_2 text,
-    link_3 text,
-    link_4 text,
-    link_5 text,
-
     number_1 text,
     number_2 int(11) DEFAULT '0' NOT NULL,
     number_3 int(11) DEFAULT '0' NOT NULL,
@@ -488,8 +482,6 @@ CREATE TABLE tx_styleguide_required (
 
     input_1 text,
 
-    link_1 text,
-
     select_1 text,
     select_2 text,
     select_3 text,
@@ -574,7 +566,6 @@ CREATE TABLE tx_styleguide_valuesdefault (
 
 CREATE TABLE tx_styleguide_l10nreadonly (
     input text,
-    link text,
     none text,
     language int(11) DEFAULT '0' NOT NULL,
     select_single text,
