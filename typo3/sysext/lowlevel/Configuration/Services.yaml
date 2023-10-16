@@ -36,7 +36,7 @@ services:
     tags:
       - name: 'console.command'
         command: 'cleanup:flexforms'
-        description: 'Updates all database records which have a FlexForm field and the XML data does not match the chosen datastructure.'
+        description: 'Clean up database FlexForm fields that do not match the chosen data structure.'
 
   TYPO3\CMS\Lowlevel\Command\CleanUpLocalProcessedFilesCommand:
     tags:

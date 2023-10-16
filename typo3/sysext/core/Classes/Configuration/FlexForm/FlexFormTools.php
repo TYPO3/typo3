@@ -867,7 +867,7 @@ class FlexFormTools
      * @param array $row The record
      * @return string Clean XML from FlexForm field
      */
-    public function cleanFlexFormXML($table, $field, $row)
+    public function cleanFlexFormXML(string $table, string $field, array $row): string
     {
         // New structure:
         $this->cleanFlexFormXML = [];
