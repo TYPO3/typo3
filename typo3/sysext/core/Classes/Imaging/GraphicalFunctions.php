@@ -40,17 +40,13 @@ class GraphicalFunctions
 
     /**
      * defines the RGB colorspace to use
-     *
-     * @var string
      */
-    protected $colorspace = 'RGB';
+    protected string $colorspace = 'RGB';
 
     /**
      * colorspace names allowed
-     *
-     * @var array
      */
-    protected $allowedColorSpaceNames = [
+    protected array $allowedColorSpaceNames = [
         'CMY',
         'CMYK',
         'Gray',
@@ -104,11 +100,7 @@ class GraphicalFunctions
      * Whether ImageMagick/GraphicsMagick is enabled or not
      */
     protected bool $processorEnabled;
-
-    /**
-     * @var bool
-     */
-    protected $mayScaleUp = true;
+    protected bool $mayScaleUp = true;
 
     /**
      * Filename prefix for images scaled in imageMagickConvert()
@@ -156,28 +148,18 @@ class GraphicalFunctions
 
     /**
      * Used by v5_blur() to simulate 10 continuous steps of blurring
-     *
-     * @var string
      */
-    protected $im5fx_blurSteps = '1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';
+    protected string $im5fx_blurSteps = '1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';
 
     /**
      * Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
-     *
-     * @var string
      */
-    protected $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
+    protected string $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
 
     /**
      * This is the limit for the number of pixels in an image before it will be rendered as JPG instead of GIF/PNG
-     *
-     * @var int
      */
-    protected $pixelLimitGif = 10000;
-
-    /**
-     * @var int
-     */
+    protected int $pixelLimitGif = 10000;
     protected int $jpegQuality = 85;
 
     /**
@@ -190,20 +172,17 @@ class GraphicalFunctions
         $this->colorspace = $this->getColorspaceFromConfiguration();
 
         $this->processorEnabled = (bool)$gfxConf['processor_enabled'];
-        // Setting default JPG parameters:
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
         $this->addFrameSelection = (bool)$gfxConf['processor_allowFrameSelection'];
         $this->imageFileExt = GeneralUtility::trimExplode(',', $gfxConf['imagefile_ext']);
 
-        // Boolean. This is necessary if using ImageMagick 5+.
-        // Effects in Imagemagick 5+ tends to render very slowly!!
-        // - therefore must be disabled in order not to perform sharpen, blurring and such.
-        $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality;
-
-        // ... but if 'processor_effects' is set, enable effects
+        // Processor Effects. This is necessary if using ImageMagick 5+.
+        // Effects in Imagemagick 5+ tends to render very slowly!
+        // Therefore, must be disabled in order not to perform sharpen, blurring and such.
+        // but if 'processor_effects' is set, enable effects
         if ($gfxConf['processor_effects']) {
-            $this->cmds['jpg'] .= $this->v5_sharpen(10);
-            $this->cmds['jpeg'] .= $this->v5_sharpen(10);
+            $this->cmds['jpg'] = $this->v5_sharpen(10);
+            $this->cmds['jpeg'] = $this->v5_sharpen(10);
         }
         // Secures that images are not scaled up.
         $this->mayScaleUp = (bool)$gfxConf['processor_allowUpscaling'];
@@ -214,7 +193,7 @@ class GraphicalFunctions
      * Uses $this->im5fx_sharpenSteps for translation of the factor to an actual command.
      *
      * @param int $factor The sharpening factor, 0-100 (effectively in 10 steps)
-     * @return string The sharpening command, eg. " -sharpen 3x4
+     * @return string The sharpening command, eg. " -sharpen 3x4"
      * @see makeText()
      * @see IMparams()
      * @see v5_blur()
@@ -269,23 +248,23 @@ class GraphicalFunctions
      *
      ***********************************/
     /**
-     * Converts $imagefile to another file in temp-dir of type $newExt (extension).
+     * Converts $imagefile to another file in temp-dir of type $targetFileExtension.
      *
      * @param string $imagefile The absolute image filepath
-     * @param string $newExt New extension, eg. "gif", "png", "jpg", "tif". If $newExt is NOT set, the new imagefile will be of the original format. If newExt = 'WEB' then one of the web-formats is applied.
+     * @param string $targetFileExtension New image file extension. If $targetFileExtension is NOT set, the new imagefile will be of the original format. If set to = 'WEB' then one of the web-formats is applied.
      * @param string $w Width. $w / $h is optional. If only one is given the image is scaled proportionally. If an 'm' exists in the $w or $h and if both are present the $w and $h is regarded as the Maximum w/h and the proportions will be kept
      * @param string $h Height. See $w
      * @param string $params Additional ImageMagick parameters.
      * @param string $frame Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
      * @param array $options An array with options passed to getImageScale (see this function).
-     * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding measures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
+     * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise, you can risk that the input image is good enough regarding measures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
      * @return array|null [0]/[1] is w/h, [2] is file extension and [3] is the filename.
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
-     * @see maskImageOntoImage()
-     * @see copyImageOntoImage()
-     * @see scale()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::maskImageOntoImage()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::copyImageOntoImage()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::scale()
      */
-    public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = [], $mustCreate = false)
+    public function imageMagickConvert($imagefile, $targetFileExtension = '', $w = '', $h = '', $params = '', $frame = '', $options = [], $mustCreate = false)
     {
         if (!$this->processorEnabled) {
             // Returning file info right away
@@ -296,39 +275,37 @@ class GraphicalFunctions
             return null;
         }
 
-        $params = $this->modifyImageMagickStripProfileParameters($params, $options);
-        $newExt = strtolower(trim($newExt));
+        // Determine the final target file extension
+        $targetFileExtension = strtolower(trim($targetFileExtension));
         // If no extension is given the original extension is used
-        if (!$newExt) {
-            $newExt = $info[2];
+        if (!$targetFileExtension) {
+            $targetFileExtension = $info[2];
         }
-        if ($newExt === 'web') {
+        if ($targetFileExtension === 'web') {
             if (in_array($info[2], $this->webImageExt, true)) {
-                $newExt = $info[2];
+                $targetFileExtension = $info[2];
             } else {
-                $newExt = $this->gif_or_jpg($info[2], $info[0], $info[1]);
-                if (!$params) {
-                    $params = $this->cmds[$newExt];
-                }
+                $targetFileExtension = $this->gif_or_jpg($info[2], $info[0], $info[1]);
             }
         }
-        if (!in_array($newExt, $this->imageFileExt, true)) {
+        if (!in_array($targetFileExtension, $this->imageFileExt, true)) {
             return null;
         }
+        // Clean up additional $params
+        $params = trim($params);
 
-        $processingInstructions = ImageProcessingInstructions::fromCropScaleValues($info, $newExt, $w, $h, $options);
+        $processingInstructions = ImageProcessingInstructions::fromCropScaleValues($info, $targetFileExtension, $w, $h, $options);
         $w = $processingInstructions->originalWidth;
         $h = $processingInstructions->originalHeight;
-        // If no conversion should be performed
-        // this flag is TRUE if the width / height does NOT dictate
-        // the image to be scaled!! (that is if no width / height is
-        // given or if the destination w/h matches the original image
-        // dimensions or if the option to not scale the image is set)
+        // Check if conversion should be performed ($noScale - no processing needed).
+        // $noScale flag is TRUE if the width / height does NOT dictate the image to be scaled. That is if no
+        // width / height is given or if the destination w/h matches the original image dimensions, or if
+        // the option to not scale the image is set.
         $noScale = !$w && !$h || $processingInstructions->width === (int)$info[0] && $processingInstructions->height === (int)$info[1] || !empty($options['noScale']);
-        if ($noScale && !$processingInstructions->cropArea && !$params && !$frame && $processingInstructions->fileExtension === $info[2] && !$mustCreate) {
+        if ($noScale && !$processingInstructions->cropArea && !$params && !$frame && $targetFileExtension === $info[2] && !$mustCreate) {
             // Set the new width and height before returning,
             // if the noScale option is set, otherwise the incoming
-            // values are calculated
+            // values are calculated.
             if (!empty($options['noScale'])) {
                 $info[0] = $processingInstructions->width;
                 $info[1] = $processingInstructions->height;
@@ -336,17 +313,9 @@ class GraphicalFunctions
             $info[3] = $imagefile;
             return $info;
         }
-        $info[0] = $processingInstructions->width;
-        $info[1] = $processingInstructions->height;
         $frame = $this->addFrameSelection ? (int)$frame : 0;
-        if (!$params) {
-            $params = $this->cmds[$newExt] ?? '';
-        }
-        if ($processingInstructions->cropArea) {
-            $cropArea = $processingInstructions->cropArea;
-            $params .= ' -crop ' . $cropArea->getWidth() . 'x' . $cropArea->getHeight() . '+' . $cropArea->getOffsetLeft() . '+' . $cropArea->getOffsetTop() . '! +repage';
-        }
-        // start with the default scale command
+
+        // Start with the default scale command
         // check if we should use -sample or -geometry
         if ($options['sample'] ?? false) {
             $command = '-auto-orient -sample';
@@ -359,9 +328,22 @@ class GraphicalFunctions
         // stretching the image. In this case just tell ImageMagick you really mean it (!) by appending an exclamation
         // operator to the geometry. This will force the image size to exactly what you specify.
         // So, for example, if you specify 100x200! the dimensions will become exactly 100x200"
-        $command .= ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
+        $command .= ' ' . $processingInstructions->width . 'x' . $processingInstructions->height . '!';
+        if ($processingInstructions->cropArea) {
+            $cropArea = $processingInstructions->cropArea;
+            $command .= ' -crop ' . $cropArea->getWidth() . 'x' . $cropArea->getHeight() . '+' . $cropArea->getOffsetLeft() . '+' . $cropArea->getOffsetTop() . '! +repage';
+        }
+        // Add params
+        $params = $this->modifyImageMagickStripProfileParameters($params, $options);
+        $command .= ($params ? ' ' . $params : $this->cmds[$targetFileExtension] ?? '');
+
+        if ($targetFileExtension === 'jpg' || $targetFileExtension === 'jpeg') {
+            $command .= ' -quality ' . $this->jpegQuality;
+        }
         // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
-        $command .= ' -colorspace ' . $this->colorspace;
+        if (!str_contains($command, '-colorspace')) {
+            $command .= ' -colorspace ' . $this->colorspace;
+        }
         if ($this->alternativeOutputKey) {
             $theOutputName = md5($command . $processingInstructions->cropArea . PathUtility::basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
         } else {
@@ -373,18 +355,21 @@ class GraphicalFunctions
         }
         // Making the temporary filename
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
-        $output = Environment::getPublicPath() . '/typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+        $output = Environment::getPublicPath() . '/typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $targetFileExtension;
         if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
             $this->imageMagickExec($imagefile, $output, $command, $frame);
         }
         if (file_exists($output)) {
-            $info[3] = $output;
-            $info[2] = $newExt;
-            // params might change some image data!
+            // params might change some image data, so this should be calculated again
             if ($params) {
-                $info = $this->getImageDimensions($info[3]);
+                return $this->getImageDimensions($output);
             }
-            return $info;
+            return [
+                0 => $processingInstructions->width,
+                1 => $processingInstructions->height,
+                2 => $targetFileExtension,
+                3 => $output,
+            ];
         }
         return null;
     }
@@ -413,7 +398,7 @@ class GraphicalFunctions
             $targetFileExtension,
             '',
             '',
-            sprintf('-crop %dx%d+%d+%d! +repage -quality %d', $newWidth, $newHeight, $offsetLeft, $offsetTop, $this->jpegQuality),
+            sprintf('-crop %dx%d+%d+%d! +repage', $newWidth, $newHeight, $offsetLeft, $offsetTop),
             '',
             isset($options['skipProfile']) ? ['skipProfile' => $options['skipProfile']] : [],
             true
@@ -659,6 +644,6 @@ class GraphicalFunctions
             return 'RGB';
         }
 
-        return $gfxConf['processor_colorspace'];
+        return in_array($gfxConf['processor_colorspace'], $this->allowedColorSpaceNames, true) ? $gfxConf['processor_colorspace'] : $this->colorspace;
     }
 }
