@@ -52,29 +52,29 @@
 					<title>Test content</title>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array">
-						<softref_element index="pi_flexform:sDEF/lDEF/softrefLink/vDEF/:typolink:97bfc48409f1287b86193f36dbc5ea89:0" type="array">
-							<field>pi_flexform</field>
-							<spKey>typolink</spKey>
-							<structurePath>sDEF/lDEF/softrefLink/vDEF/</structurePath>
-							<matchString>t3://page?uid=2</matchString>
-							<subst type="array">
-								<type>db</type>
-								<recordRef>pages:2</recordRef>
-								<tokenID>97bfc48409f1287b86193f36dbc5ea89</tokenID>
-								<tokenValue>2</tokenValue>
-							</subst>
-						</softref_element>
-						<softref_element index="header_link:typolink:2487ce518ed56d22f20f259928ff43f1:0" type="array">
-							<field>header_link</field>
-							<spKey>typolink</spKey>
-							<matchString>file:1</matchString>
-							<subst type="array">
-								<type>db</type>
-								<recordRef>sys_file:1</recordRef>
-								<tokenID>2487ce518ed56d22f20f259928ff43f1</tokenID>
-								<tokenValue>file:1</tokenValue>
-							</subst>
-						</softref_element>
+                        <softref_element index="header_link:typolink:2487ce518ed56d22f20f259928ff43f1:0" type="array">
+                            <field>header_link</field>
+                            <spKey>typolink</spKey>
+                            <matchString>file:1</matchString>
+                            <subst type="array">
+                                <type>db</type>
+                                <recordRef>sys_file:1</recordRef>
+                                <tokenID>2487ce518ed56d22f20f259928ff43f1</tokenID>
+                                <tokenValue>file:1</tokenValue>
+                            </subst>
+                        </softref_element>
+                        <softref_element index="pi_flexform:sDEF/lDEF/softrefLink/vDEF/:typolink:97bfc48409f1287b86193f36dbc5ea89:0" type="array">
+                            <field>pi_flexform</field>
+                            <spKey>typolink</spKey>
+                            <structurePath>sDEF/lDEF/softrefLink/vDEF/</structurePath>
+                            <matchString>t3://page?uid=2</matchString>
+                            <subst type="array">
+                                <type>db</type>
+                                <recordRef>pages:2</recordRef>
+                                <tokenID>97bfc48409f1287b86193f36dbc5ea89</tokenID>
+                                <tokenValue>2</tokenValue>
+                            </subst>
+                        </softref_element>
 					</softrefs>
 				</rec>
 			</table>
@@ -147,6 +147,24 @@
 				<field index="header_link">file:1</field>
 			</fieldlist>
 			<related index="rels" type="array">
+                <field index="header_link" type="array">
+                    <softrefs type="array">
+                        <keys type="array">
+                            <softref_key index="typolink" type="array">
+                                <softref_element index="2487ce518ed56d22f20f259928ff43f1:0" type="array">
+                                    <matchString>file:1</matchString>
+                                    <subst type="array">
+                                        <type>db</type>
+                                        <recordRef>sys_file:1</recordRef>
+                                        <tokenID>2487ce518ed56d22f20f259928ff43f1</tokenID>
+                                        <tokenValue>file:1</tokenValue>
+                                    </subst>
+                                </softref_element>
+                            </softref_key>
+                        </keys>
+                        <tokenizedContent>{softref:2487ce518ed56d22f20f259928ff43f1}</tokenizedContent>
+                    </softrefs>
+                </field>
 				<field index="pi_flexform" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
@@ -170,24 +188,6 @@
 							</structurePath>
 						</softref_relations>
 					</flexform>
-				</field>
-				<field index="header_link" type="array">
-					<softrefs type="array">
-						<keys type="array">
-							<softref_key index="typolink" type="array">
-								<softref_element index="2487ce518ed56d22f20f259928ff43f1:0" type="array">
-									<matchString>file:1</matchString>
-									<subst type="array">
-										<type>db</type>
-										<recordRef>sys_file:1</recordRef>
-										<tokenID>2487ce518ed56d22f20f259928ff43f1</tokenID>
-										<tokenValue>file:1</tokenValue>
-									</subst>
-								</softref_element>
-							</softref_key>
-						</keys>
-						<tokenizedContent>{softref:2487ce518ed56d22f20f259928ff43f1}</tokenizedContent>
-					</softrefs>
 				</field>
 			</related>
 		</tablerow>

@@ -79,8 +79,7 @@ class ReferenceIndex
 
     /**
      * A list of fields that may contain relations per TCA table.
-     * This is either ['*'] or an array of single field names. The list
-     * depends on TCA and is built when a first table row is handled.
+     * The list depends on TCA, entries are created once per table, per class instance.
      */
     protected array $tableRelationFieldCache = [];
 
@@ -93,102 +92,81 @@ class ReferenceIndex
     }
 
     /**
-     * Call this function to update the sys_refindex table for a record (even one just deleted)
-     * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within FlexForm
-     * fields in some cases where the data structure is defined by another record since the resolving process ignores
-     * deleted records! This will also result in bad cleaning up in DataHandler I think... Anyway, that's the story of
-     * FlexForms; as long as the DS can change, lots of references can get lost in no time.
+     * Update the sys_refindex table for a record, even one just deleted.
+     * This is used by DataHandler ReferenceIndexUpdater as entry method to take care of single records.
+     * It is also used internally via updateIndex() by CLI "referenceindex:update" and lowlevel BE module.
      *
+     * @param array|null $currentRecord Current full (select *) record from DB. Optimization for updateIndex().
      * @return array Statistics about how many index records were added, deleted and not altered.
      */
-    public function updateRefIndexTable(string $tableName, int $uid, bool $testOnly = false, int $workspaceUid = 0): array
+    public function updateRefIndexTable(string $tableName, int $uid, bool $testOnly = false, int $workspaceUid = 0, array $currentRecord = null): array
     {
         $this->workspaceId = $workspaceUid;
-
         $result = [
             'keptNodes' => 0,
             'deletedNodes' => 0,
             'addedNodes' => 0,
         ];
-
-        // Not a valid uid, the table is excluded, or can not contain relations.
-        if ($uid < 1 || $this->shouldExcludeTableFromReferenceIndex($tableName) || !$this->hasTableRelationFields($tableName)) {
+        if ($uid < 1 || $this->shouldExcludeTableFromReferenceIndex($tableName) || empty($this->getTableRelationFields($tableName))) {
+            // Not a valid uid, the table is excluded, or can not contain relations.
+            return $result;
+        }
+        if ($currentRecord === null) {
+            // Fetch record if not provided.
+            $currentRecord = BackendUtility::getRecord($tableName, $uid);
+        }
+        if ($currentRecord === null) {
+            // If there is no record because it was hard or soft-deleted, remove any existing sys_refindex rows of it.
+            $currentRelationHashes = $this->getCurrentRelationHashes($tableName, $uid, $workspaceUid);
+            $numberOfLeftOverRelationHashes = count($currentRelationHashes);
+            $result['deletedNodes'] = $numberOfLeftOverRelationHashes;
+            if ($numberOfLeftOverRelationHashes > 0 && !$testOnly) {
+                $this->removeRelationHashes($currentRelationHashes);
+            }
             return $result;
         }
 
+        $currentRelationHashes = $this->getCurrentRelationHashes($tableName, $uid, $workspaceUid);
+        $this->relations = [];
+        $relations = $this->generateDataUsingRecord($tableName, $currentRecord);
         $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
-
-        // Get current index from Database with hash as index. sys_refindex is not a TCA table, so no restrictions.
-        $queryBuilder = $connection->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll();
-        $queryResult = $queryBuilder->select('hash')->from('sys_refindex')->where(
-            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
-            $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($this->workspaceId, Connection::PARAM_INT))
-        )->executeQuery();
-        $currentRelationHashes = [];
-        while ($relation = $queryResult->fetchAssociative()) {
-            $currentRelationHashes[$relation['hash']] = true;
-        }
-
-        // Handle this record.
-        $existingRecord = $this->getRecord($tableName, $uid);
-        if ($existingRecord) {
-            // Table has relation fields and record exists - get relations
-            $this->relations = [];
-            $relations = $this->generateDataUsingRecord($tableName, $existingRecord);
-            // Traverse the generated index:
-            foreach ($relations as &$relation) {
-                if (!is_array($relation)) {
-                    continue;
-                }
-                // Exclude any relations TO a specific table
-                if (($relation['ref_table'] ?? '') && $this->shouldExcludeTableFromReferenceIndex($relation['ref_table'])) {
-                    continue;
-                }
-                $relation['hash'] = md5(implode('///', $relation) . '///' . $this->hashVersion);
-                // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
-                if (isset($currentRelationHashes[$relation['hash']])) {
-                    unset($currentRelationHashes[$relation['hash']]);
-                    $result['keptNodes']++;
-                    $relation['_ACTION'] = 'KEPT';
-                } else {
-                    // If new, add it:
-                    if (!$testOnly) {
-                        $connection->insert('sys_refindex', $relation);
-                    }
-                    $result['addedNodes']++;
-                    $relation['_ACTION'] = 'ADDED';
-                }
+        foreach ($relations as &$relation) {
+            if (!is_array($relation)) {
+                continue;
             }
-            $result['relations'] = $relations;
+            // Exclude any relations TO a specific table
+            if (($relation['ref_table'] ?? '') && $this->shouldExcludeTableFromReferenceIndex($relation['ref_table'])) {
+                continue;
+            }
+            $relation['hash'] = md5(implode('///', $relation) . '///' . $this->hashVersion);
+            // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
+            if (isset($currentRelationHashes[$relation['hash']])) {
+                unset($currentRelationHashes[$relation['hash']]);
+                $result['keptNodes']++;
+                $relation['_ACTION'] = 'KEPT';
+            } else {
+                // If new, add it:
+                if (!$testOnly) {
+                    $connection->insert('sys_refindex', $relation);
+                }
+                $result['addedNodes']++;
+                $relation['_ACTION'] = 'ADDED';
+            }
         }
+        $result['relations'] = $relations;
 
-        // If any existing are left, they are not in the current set anymore, and removed
+        // If any existing are left, they are not in the current set anymore. Remove them.
         $numberOfLeftOverRelationHashes = count($currentRelationHashes);
         $result['deletedNodes'] = $numberOfLeftOverRelationHashes;
         if ($numberOfLeftOverRelationHashes > 0 && !$testOnly) {
-            $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
-            $chunks = array_chunk(array_keys($currentRelationHashes), $maxBindParameters - 10, true);
-            foreach ($chunks as $chunk) {
-                if (empty($chunk)) {
-                    continue;
-                }
-                $queryBuilder = $connection->createQueryBuilder();
-                $queryBuilder
-                    ->delete('sys_refindex')
-                    ->where(
-                        $queryBuilder->expr()->in('hash', $queryBuilder->createNamedParameter($chunk, Connection::PARAM_STR_ARRAY))
-                    )
-                    ->executeStatement();
-            }
+            $this->removeRelationHashes($currentRelationHashes);
         }
 
         return $result;
     }
 
     /**
-     * Returns the amount of references for the given record
+     * Returns the amount of references for the given record.
      */
     public function getNumberOfReferencedRecords(string $tableName, int $uid): int
     {
@@ -205,6 +183,52 @@ class ReferenceIndex
                     $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             )->executeQuery()->fetchOne();
+    }
+
+    /**
+     * Get current sys_refindex rows of table:uid from database with hash as index.
+     *
+     * @return array<string, true>
+     */
+    private function getCurrentRelationHashes(string $tableName, int $uid, int $workspaceUid): array
+    {
+        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryResult = $queryBuilder->select('hash')->from('sys_refindex')->where(
+            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+            $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
+            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspaceUid, Connection::PARAM_INT))
+        )->executeQuery();
+        $currentRelationHashes = [];
+        while ($relation = $queryResult->fetchAssociative()) {
+            $currentRelationHashes[$relation['hash']] = true;
+        }
+        return $currentRelationHashes;
+    }
+
+    /**
+     * Remove sys_refindex rows by hash.
+     *
+     * @param array<string, true> $currentRelationHashes
+     */
+    private function removeRelationHashes(array $currentRelationHashes): void
+    {
+        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        $chunks = array_chunk(array_keys($currentRelationHashes), $maxBindParameters - 10, true);
+        foreach ($chunks as $chunk) {
+            if (empty($chunk)) {
+                continue;
+            }
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder
+                ->delete('sys_refindex')
+                ->where(
+                    $queryBuilder->expr()->in('hash', $queryBuilder->createNamedParameter($chunk, Connection::PARAM_STR_ARRAY))
+                )
+                ->executeStatement();
+        }
     }
 
     /**
@@ -348,13 +372,16 @@ class ReferenceIndex
      * @param string $onlyField Specific field to fetch for.
      * @return array Array with information about relations
      * @see export_addRecord()
+     * @internal
      */
     public function getRelations($table, $row, $onlyField = '')
     {
         // Initialize:
         $uid = $row['uid'];
         $outRow = [];
-        foreach ($row as $field => $value) {
+        $relationFields = $this->getTableRelationFields($table);
+        foreach ($relationFields as $field) {
+            $value = $row[$field] ?? null;
             if ($this->shouldExcludeTableColumnFromReferenceIndex($table, $field, $onlyField) === false) {
                 $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                 // Add a softref definition for link fields if the TCA does not specify one already
@@ -428,6 +455,7 @@ class ReferenceIndex
      * @param string $structurePath Path of value in DS structure
      * @see DataHandler::checkValue_flex_procInData_travDS()
      * @see FlexFormTools::traverseFlexFormXMLData()
+     * @internal
      */
     public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath)
     {
@@ -532,12 +560,6 @@ class ReferenceIndex
         return false;
     }
 
-    /*******************************
-     *
-     * Setting values
-     *
-     *******************************/
-
     /**
      * Setting the value of a reference or removing it completely.
      * Usage: For lowlevel clean up operations!
@@ -558,6 +580,7 @@ class ReferenceIndex
      * @param bool $returnDataArray Return $dataArray only, do not submit it to database.
      * @param bool $bypassWorkspaceAdminCheck If set, it will bypass check for workspace-zero and admin user
      * @return string|bool|array FALSE (=OK), error message string or array (if $returnDataArray is set!)
+     * @internal
      */
     public function setReferenceValue($hash, $newValue, $returnDataArray = false, $bypassWorkspaceAdminCheck = false)
     {
@@ -750,14 +773,8 @@ class ReferenceIndex
         return false;
     }
 
-    /*******************************
-     *
-     * Helper functions
-     *
-     *******************************/
-
     /**
-     * Returns TRUE if the TCA/columns field type is a DB reference field
+     * Returns true if the TCA/columns field type is a DB reference field
      *
      * @param array $configuration Config array for TCA/columns field
      * @return bool TRUE if DB reference field (group/db or select with foreign-table)
@@ -773,10 +790,8 @@ class ReferenceIndex
     }
 
     /**
-     * Returns TRUE if the TCA/columns field type is a reference field
-     *
-     * @param array $configuration Config array for TCA/columns field
-     * @return bool TRUE if reference field
+     * Returns true if the TCA/columns field may carry references. True for
+     * group, inline and friends, for flex, and if there is a 'softref' definition.
      */
     protected function isReferenceField(array $configuration): bool
     {
@@ -790,66 +805,39 @@ class ReferenceIndex
     }
 
     /**
-     * Early check to see if a table has any possible relation fields at all.
-     * This is true if there are columns with type group, select and friends,
-     * or if a table has a column with a 'softref' defined.
+     * List of TCA columns that can have relations. Typically inline, group
+     * and friends, as well as flex fields and fields with 'softref' config.
+     * If empty, the table can not have relations.
+     * Uses a class cache to be quick for multiple calls on same table.
      */
-    protected function hasTableRelationFields(string $tableName): bool
+    private function getTableRelationFields(string $tableName): array
     {
-        if (empty($GLOBALS['TCA'][$tableName]['columns'])) {
-            return false;
+        if (isset($this->tableRelationFieldCache[$tableName])) {
+            return $this->tableRelationFieldCache[$tableName];
         }
-        foreach ($GLOBALS['TCA'][$tableName]['columns'] as $fieldDefinition) {
-            if (empty($fieldDefinition['config'])) {
+        if (!is_array($GLOBALS['TCA'][$tableName]['columns'] ?? false)) {
+            $this->tableRelationFieldCache[$tableName] = [];
+            return [];
+        }
+        $relationFields = [];
+        foreach ($GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $fieldDefinition) {
+            if (!is_array($fieldDefinition['config'] ?? false)) {
                 continue;
             }
             if ($this->isReferenceField($fieldDefinition['config'])) {
-                return true;
+                $relationFields[] = $fieldName;
             }
         }
-        return false;
+        $this->tableRelationFieldCache[$tableName] = $relationFields;
+        return $relationFields;
     }
 
     /**
-     * Returns all fields of a table which could contain a relation
-     *
-     * @param string $tableName Name of the table
-     * @return array Fields which may contain relations
-     */
-    protected function fetchTableRelationFields(string $tableName): array
-    {
-        if (!empty($this->tableRelationFieldCache[$tableName])) {
-            return $this->tableRelationFieldCache[$tableName];
-        }
-        if (!isset($GLOBALS['TCA'][$tableName]['columns'])) {
-            return [];
-        }
-        $fields = [];
-        foreach ($GLOBALS['TCA'][$tableName]['columns'] as $field => $fieldDefinition) {
-            if (is_array($fieldDefinition['config'])) {
-                // Check for flex field
-                if (isset($fieldDefinition['config']['type']) && $fieldDefinition['config']['type'] === 'flex') {
-                    // Fetch all fields if the is a field of type flex in the table definition because the complete row is passed to
-                    // FlexFormTools->getDataStructureIdentifier() in the end and might be needed in ds_pointerField or a hook
-                    $this->tableRelationFieldCache[$tableName] = ['*'];
-                    return ['*'];
-                }
-                // Only fetch this field if it can contain a reference
-                if ($this->isReferenceField($fieldDefinition['config'])) {
-                    $fields[] = $field;
-                }
-            }
-        }
-        $this->tableRelationFieldCache[$tableName] = $fields;
-        return $fields;
-    }
-
-    /**
-     * Updating Index (External API)
+     * Update full refindex. Used by 'referenceindex:update' CLI and ext:lowlevel BE UI.
      *
      * @param ProgressListenerInterface|null $progressListener If set, the current progress is added to the listener
      * @return array Header and body status content
-     * @todo: Consider moving this together with the helper methods to a dedicated class.
+     * @internal
      */
     public function updateIndex(bool $testOnly, ?ProgressListenerInterface $progressListener = null): array
     {
@@ -898,10 +886,7 @@ class ReferenceIndex
 
             $progressListener?->start($numberOfRecordsInTargetTable, $tableName);
 
-            if ($numberOfRecordsInTargetTable === 0
-                || $this->shouldExcludeTableFromReferenceIndex($tableName)
-                || !$this->hasTableRelationFields($tableName)
-            ) {
+            if ($numberOfRecordsInTargetTable === 0 || $this->shouldExcludeTableFromReferenceIndex($tableName) || empty($this->getTableRelationFields($tableName))) {
                 // Table is empty, should be excluded, or can not have relations. Blindly remove any existing sys_refindex rows.
                 $numberOfHandledRecords += $numberOfRecordsInTargetTable;
                 $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
@@ -1077,16 +1062,11 @@ class ReferenceIndex
                 }
             }
 
-            $fields = ['uid'];
-            if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                $fields[] = 't3ver_wsid';
-            }
-
-            // Traverse all records in tables, not including soft-deleted records
+            // Traverse all records in table, not including soft-deleted records
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryResult = $queryBuilder
-                ->select(...$fields)
+                ->select('*')
                 ->from($tableName)
                 ->orderBy('uid')
                 ->executeQuery();
@@ -1098,7 +1078,7 @@ class ReferenceIndex
                     // Modify addCategoryRelation as example. In those cases, we need to iterate all active workspaces
                     // and update refindex for all foreign workspace records that point to it.
                     foreach ($listOfActiveWorkspaces as $workspaceId) {
-                        $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, $workspaceId);
+                        $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, $workspaceId, $record);
                         $numberOfHandledRecords++;
                         if ($result['addedNodes'] || $result['deletedNodes']) {
                             $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
@@ -1107,7 +1087,7 @@ class ReferenceIndex
                         }
                     }
                 } else {
-                    $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, (int)($record['t3ver_wsid'] ?? 0));
+                    $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, (int)($record['t3ver_wsid'] ?? 0), $record);
                     $numberOfHandledRecords++;
                     if ($result['addedNodes'] || $result['deletedNodes']) {
                         $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
@@ -1224,52 +1204,6 @@ class ReferenceIndex
                 $queryBuilder->expr()->notIn('tablename', $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY))
             )
             ->executeStatement();
-    }
-
-    /**
-     * Get one record from database.
-     *
-     * @return array|false
-     */
-    protected function getRecord(string $tableName, int $uid)
-    {
-        // Fetch fields of the table which might contain relations
-        $tableRelationFields = $this->fetchTableRelationFields($tableName);
-
-        if ($tableRelationFields === []) {
-            // Return if there are no fields which could contain relations
-            return $this->relations;
-        }
-        if ($tableRelationFields !== ['*']) {
-            // Only fields that might contain relations are fetched
-            $tableRelationFields[] = 'uid';
-            if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                $tableRelationFields = array_merge($tableRelationFields, ['t3ver_wsid', 't3ver_state']);
-            }
-        }
-
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()->removeAll();
-        $queryBuilder
-            ->select(...array_unique($tableRelationFields))
-            ->from($tableName)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                )
-            );
-        // Do not fetch soft deleted records
-        $deleteField = (string)($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? '');
-        if ($deleteField !== '') {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq(
-                    $deleteField,
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                )
-            );
-        }
-        return $queryBuilder->executeQuery()->fetchAssociative();
     }
 
     /**
