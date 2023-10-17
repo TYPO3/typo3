@@ -29,6 +29,10 @@ are found.
 Migration
 =========
 
-The configuration value has been removed without replacement. No migration is neccesary.
+The configuration value has been removed without replacement.
+
+Custom code that relied on :php:`$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']`
+should instead also adopt to the simpler check
+ :php:`if (class_exists(\GdImage::class))`.
 
 .. index:: LocalConfiguration, FullyScanned, ext:core
