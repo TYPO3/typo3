@@ -625,7 +625,7 @@ class DataHandlerHook
         }
         // l10n-fields must be kept otherwise the localization
         // will be lost during the publishing
-        if ($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? false) {
             $keepFields[] = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         }
         // Swap "keepfields"
