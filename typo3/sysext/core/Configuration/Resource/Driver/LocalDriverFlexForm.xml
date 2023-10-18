@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <T3DataStructure>
-	<ROOT>
-		<type>array</type>
-		<el>
-			<basePath>
-				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath</label>
-				<description>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath_placeholder</description>
-				<config>
-					<type>input</type>
-					<required>1</required>
-					<size>30</size>
-				</config>
-			</basePath>
-			<pathType>
-				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType</label>
-				<config>
-					<type>radio</type>
-					<items type="array">
-						<numIndex index="0" type="array">
-							<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_relative</label>
-							<value>relative</value>
-						</numIndex>
-						<numIndex index="1" type="array">
-							<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_absolute</label>
-							<value>absolute</value>
-						</numIndex>
-					</items>
-					<default>relative</default>
-				</config>
-			</pathType>
-			<baseUri>
-				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri</label>
-				<description>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri_placeholder</description>
-				<config>
-					<type>input</type>
-					<size>30</size>
-				</config>
-			</baseUri>
-			<caseSensitive>
-				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_caseSensitive</label>
-				<config>
-					<type>check</type>
-					<default>1</default>
-				</config>
-			</caseSensitive>
-		</el>
-	</ROOT>
+    <ROOT>
+        <type>array</type>
+        <el>
+            <basePath>
+                <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath</label>
+                <description>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath_placeholder</description>
+                <config>
+                    <type>input</type>
+                    <required>1</required>
+                    <size>30</size>
+                </config>
+            </basePath>
+            <pathType>
+                <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType</label>
+                <config>
+                    <type>radio</type>
+                    <items type="array">
+                        <numIndex index="0" type="array">
+                            <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_relative</label>
+                            <value>relative</value>
+                        </numIndex>
+                        <numIndex index="1" type="array">
+                            <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_absolute</label>
+                            <value>absolute</value>
+                        </numIndex>
+                    </items>
+                    <default>relative</default>
+                </config>
+            </pathType>
+            <baseUri>
+                <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri</label>
+                <description>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri_placeholder</description>
+                <config>
+                    <type>input</type>
+                    <size>30</size>
+                </config>
+            </baseUri>
+            <caseSensitive>
+                <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_caseSensitive</label>
+                <config>
+                    <type>check</type>
+                    <default>1</default>
+                </config>
+            </caseSensitive>
+        </el>
+    </ROOT>
 </T3DataStructure>
