@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -88,13 +87,6 @@ class FlexFormTools
      * @var object
      */
     public $callBackObj;
-
-    /**
-     * Used for accumulation of clean XML
-     *
-     * @var array
-     */
-    public $cleanFlexFormXML = [];
 
     public function __construct(
         private ?EventDispatcherInterface $eventDispatcher = null,
@@ -853,45 +845,77 @@ class FlexFormTools
         return $this->callBackObj->$methodName(...$parameterArray);
     }
 
-    /***********************************
-     *
-     * Processing functions
-     *
-     ***********************************/
     /**
-     * Cleaning up FlexForm XML to hold only the values it may according to its Data Structure. Also the order of tags will follow that of the data structure.
-     * BE CAREFUL: DO not clean records in workspaces unless IN the workspace! The Data Structure might resolve falsely on a workspace record when cleaned from Live workspace.
+     * Clean up FlexForm value XML to hold only the values it may according to its Data Structure.
+     * The order of tags will follow that of the data structure.
      *
-     * @param string $table Table name
-     * @param string $field Field name of the flex form field in which the XML is found that should be cleaned.
-     * @param array $row The record
-     * @return string Clean XML from FlexForm field
+     * @internal Signature may change, for instance to split 'DS finding' and flexArray2Xml(),
+     *           which would allow broader use of the method. It is currently consumed by
+     *           cleanup:flexforms CLI only.
      */
     public function cleanFlexFormXML(string $table, string $field, array $row): string
     {
-        // New structure:
-        $this->cleanFlexFormXML = [];
-        // Create and call iterator object:
-        $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-        $flexObj->reNumberIndexesOfSectionData = true;
-        $flexObj->traverseFlexFormXMLData($table, $field, $row, $this, 'cleanFlexFormXML_callBackFunction');
-        return $this->flexArray2Xml($this->cleanFlexFormXML);
-    }
-
-    /**
-     * Call back function for \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools class
-     * Basically just setting the value in a new array (thus cleaning because only values that are valid are visited!)
-     *
-     * @param array $dsArr Data structure for the current value
-     * @param mixed $data Current value
-     * @param array $PA Additional configuration used in calling function
-     * @param string $path Path of value in DS structure
-     * @param FlexFormTools $pObj caller
-     */
-    public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
-    {
-        // Just setting value in our own result array, basically replicating the structure:
-        $this->cleanFlexFormXML = ArrayUtility::setValueByPath($this->cleanFlexFormXML, $path, $data);
+        if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? false) || !isset($row[$field])) {
+            throw new \RuntimeException('Can not clean up FlexForm XML for a column not declared in TCA or not in record.', 1697554398);
+        }
+        try {
+            $dataStructureArray = $this->parseDataStructureByIdentifier($this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row));
+        } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException) {
+            // Data structure can not be resolved or parsed. Reset value to empty string.
+            return '';
+        }
+        $valueArray = GeneralUtility::xml2array($row[$field]);
+        if (!is_array($valueArray)) {
+            // Current flex form values can not be parsed to an array. The entire thing is invalid. Reset to empty string.
+            return '';
+        }
+        if (!is_array($dataStructureArray['sheets'] ?? false)) {
+            // We might return empty string instead of throwing here, unsure.
+            throw new \RuntimeException('Data structure should always declare at least one sheet', 1697555523);
+        }
+        $newValueArray = [];
+        foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementData) {
+                // For all elements allowed in Data Structure.
+                if (($sheetElementData['type'] ?? '') === 'array') {
+                    // This is a section.
+                    if (!is_array($sheetElementData['el'] ?? false) || !is_array($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        // No possible containers defined for this section in DS, or no values set for this section.
+                        continue;
+                    }
+                    foreach ($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        // We have containers for this section in values.
+                        if (!is_array($valueSectionContainers ?? false)) {
+                            // Values don't validate to an array, skip.
+                            continue;
+                        }
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            // For all value containers in this section.
+                            if (!is_array($sheetElementData['el'][$valueContainerType]['el'] ?? false)) {
+                                // There is no DS for this container type, skip.
+                                continue;
+                            }
+                            foreach (array_keys($sheetElementData['el'][$valueContainerType]['el']) as $containerElement) {
+                                // Container type of this value container exists in DS. Iterate DS container to pick allowed single elements.
+                                if (isset($valueContainerElements['el'][$containerElement]['vDEF'])) {
+                                    $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] =
+                                        $valueContainerElements['el'][$containerElement]['vDEF'];
+                                }
+                            }
+                        }
+                        if (isset($valueSectionContainers['_TOGGLE'])) {
+                            // @todo: _TOGGLE is a UI artefact storing open/close containers. This should of course be stored in BE user uc instead.
+                            //        See DataHandler and FormEngine for further handling. We keep it for now if set, though.
+                            $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey]['_TOGGLE'] = $valueSectionContainers['_TOGGLE'];
+                        }
+                    }
+                } elseif (isset($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
+                    // Not a section but a simple field. Keep value if set.
+                    $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] = $valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
+                }
+            }
+        }
+        return $this->flexArray2Xml($newValueArray);
     }
 
     /**

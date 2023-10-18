@@ -41,6 +41,8 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -1277,7 +1279,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     public function parseDataStructureByIdentifierFetchesFromFile(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default']
-            = ' FILE:EXT:core/Tests/Unit/Configuration/FlexForm/Fixtures/DataStructureWithSheet.xml ';
+            = ' FILE:EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureWithSheet.xml ';
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => [
@@ -1387,7 +1389,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
             <T3DataStructure>
                 <sheets>
                     <aSheet>
-                        EXT:core/Tests/Unit/Configuration/FlexForm/Fixtures/DataStructureOfSingleSheet.xml
+                        EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureOfSingleSheet.xml
                     </aSheet>
                 </sheets>
             </T3DataStructure>
@@ -1423,7 +1425,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
             <T3DataStructure>
                 <sheets>
                     <aSheet>
-                        FILE:EXT:core/Tests/Unit/Configuration/FlexForm/Fixtures/DataStructureOfSingleSheet.xml
+                        FILE:EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureOfSingleSheet.xml
                     </aSheet>
                 </sheets>
             </T3DataStructure>
@@ -1639,5 +1641,154 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $this->expectExceptionCode(1627640210);
 
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+    }
+
+    /**
+     * @test
+     */
+    public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingField(): void
+    {
+        $dataStruct = [
+            'dummy_field' => [
+                'config' => [],
+            ],
+        ];
+        $pA = [
+            'vKeys' => ['ES'],
+            'callBackMethod_value' => 'dummy',
+        ];
+        $editData = [];
+        $subject = $this->getMockBuilder(FlexFormTools::class)
+            ->setConstructorArgs([new MockEventDispatcher()])
+            ->onlyMethods(['executeCallBackMethod'])
+            ->getMock();
+        $subject->expects(self::never())->method('executeCallBackMethod');
+        $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
+    }
+
+    /**
+     * @test
+     */
+    public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingArrayField(): void
+    {
+        $dataStruct = [
+            'dummy_field' => [
+                'type' => 'array',
+                'el' => 'field_not_in_data',
+            ],
+        ];
+        $pA = [
+            'vKeys' => ['ES'],
+            'callBackMethod_value' => 'dummy',
+        ];
+        $editData = [
+            'field' => [
+                'el' => 'dummy',
+            ],
+        ];
+        $editData2 = [];
+        $flexFormTools = new FlexFormTools(new NoopEventDispatcher());
+        $flexFormTools->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
+        $flexFormTools->traverseFlexFormXMLData_recurse($dataStruct, $editData2, $pA);
+    }
+
+    /**
+     * @test
+     */
+    public function cleanFlexFormXMLThrowsWithMissingTca(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1697554398);
+        (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('fooTable', 'fooField', []);
+    }
+
+    /**
+     * @test
+     */
+    public function cleanFlexFormXMLThrowsWithMissingDataField(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1697554398);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = 'invalid';
+        (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('fooTable', 'fooField', []);
+    }
+
+    /**
+     * @test
+     */
+    public function cleanFlexFormXMLReturnsEmptyStringWithInvalidDataStructure(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = 'invalid';
+        $result = (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid']);
+        self::assertSame('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function cleanFlexFormXMLReturnsEmptyStringWithInvalidValue(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <ROOT>
+                    <type>array</type>
+                    <el>
+                        <aFlexField>
+                            <label>aFlexFieldLabel</label>
+                            <config>
+                                <type>input</type>
+                            </config>
+                        </aFlexField>
+                    </el>
+                </ROOT>
+            </T3DataStructure>
+        ';
+        $result = (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid']);
+        self::assertSame('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function cleanFlexFormXMLThrowsWithDataStructureWithoutSheets(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1697555523);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <ROOT></ROOT>
+            </T3DataStructure>
+        ';
+        $flexXml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+            <T3FlexForms>
+                <data>
+                </data>
+            </T3FlexForms>
+        ';
+        (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXml]);
+    }
+
+    /**
+     * @test
+     */
+    public function cleanFlexFormHandlesValuesOfSimpleDataStructure(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructure.xml');
+        $flexXmlInput = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructureValueInput.xml');
+        $flexXmlExpected = trim(file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructureValueExpected.xml'));
+        $flexXmlOutput = (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput]);
+        self::assertSame($flexXmlExpected, $flexXmlOutput);
+    }
+
+    /**
+     * @test
+     */
+    public function cleanFlexFormHandlesValuesOfComplexDataStructure(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructure.xml');
+        $flexXmlInput = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructureValueInput.xml');
+        $flexXmlExpected = trim(file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructureValueExpected.xml'));
+        $flexXmlOutput = (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput]);
+        self::assertSame($flexXmlExpected, $flexXmlOutput);
     }
 }

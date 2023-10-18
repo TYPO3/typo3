@@ -1,0 +1,32 @@
+<T3DataStructure>
+    <sheets>
+        <sheet_1>
+            <ROOT>
+                <sheetTitle>sheet 1</sheetTitle>
+                <type>array</type>
+                <el>
+                    <input_1>
+                        <label>input_1</label>
+                        <config>
+                            <type>input</type>
+                        </config>
+                    </input_1>
+                </el>
+            </ROOT>
+        </sheet_1>
+        <sheet_2>
+            <ROOT>
+                <sheetTitle>sheet 2</sheetTitle>
+                <type>array</type>
+                <el>
+                    <input_2>
+                        <label>input_2</label>
+                        <config>
+                            <type>input</type>
+                        </config>
+                    </input_2>
+                </el>
+            </ROOT>
+        </sheet_2>
+    </sheets>
+</T3DataStructure>

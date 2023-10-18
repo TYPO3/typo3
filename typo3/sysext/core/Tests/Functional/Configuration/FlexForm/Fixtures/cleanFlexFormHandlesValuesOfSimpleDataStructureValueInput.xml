@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sheet_1">
+            <language index="lDEF">
+                <field index="input_1">
+                    <value index="vDEF">keep Me</value>
+                </field>
+                <field index="input_2">
+                    <value index="vDEF">remove Me</value>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="sheet_2">
+            <language index="lDEF">
+                <field index="input_1">
+                    <value index="vDEF">remove Me</value>
+                </field>
+                <field index="input_2">
+                    <value index="vDEF">keep Me</value>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="sheet_remove_me">
+            <language index="lDEF">
+                <field index="input_1">
+                    <value index="vDEF">remove Me</value>
+                </field>
+                <field index="input_2">
+                    <value index="vDEF">remove Me</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>
