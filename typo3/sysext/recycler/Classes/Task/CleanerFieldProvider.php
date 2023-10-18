@@ -84,7 +84,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             if (!empty($tableConf['ctrl']['delete'])) {
                 $selected = in_array($table, $selectedTables, true) ? ' selected="selected"' : '';
-                $tableTitle = $this->getLanguageService()->sL($tableConf['ctrl']['title']);
+                $tableTitle = !empty($tableConf['ctrl']['title']) ? $this->getLanguageService()->sL($tableConf['ctrl']['title']) : '';
                 $options[$tableTitle . ' ' . $table] = '<option' . $selected . ' value="' . $table . '">' . htmlspecialchars($tableTitle . ' (' . $table . ')') . '</option>';
             }
         }
