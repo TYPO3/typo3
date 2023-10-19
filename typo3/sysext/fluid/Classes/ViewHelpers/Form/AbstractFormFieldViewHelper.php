@@ -51,7 +51,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         $this->registerArgument(
             'property',
             'string',
-            'Name of Object Property. If used in conjunction with <f:form object="...">, "name" and "value" properties will be ignored.'
+            'Name of Object Property. If used in conjunction with <f:form object="...">, the "name" property will be ignored, while "value" can be used to specify a default field value instead of the object property value.'
         );
     }
 
