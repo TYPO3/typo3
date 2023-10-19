@@ -21,6 +21,7 @@ import MultiStepWizard from '@typo3/backend/multi-step-wizard';
 import Icons from '@typo3/backend/icons';
 import Notification from '@typo3/backend/notification';
 import SecurityUtility from '@typo3/core/security-utility';
+import { selector } from '@typo3/core/literals';
 import type { FormManager } from '@typo3/form/backend/form-manager';
 
 const securityUtility = new SecurityUtility();
@@ -299,7 +300,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         $(Identifiers.newFormPrototypeName, modal).trigger('change');
 
         if (settings.templatePathOnPrev) {
-          $(Identifiers.newFormTemplate, modal).find('option[value="' + settings.templatePathOnPrev + '"]').prop('selected', true);
+          $(Identifiers.newFormTemplate, modal).find(selector`option[value="${settings.templatePathOnPrev}"]`).prop('selected', true);
           $(Identifiers.newFormTemplate, modal).trigger('change');
         }
       }

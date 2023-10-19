@@ -25,6 +25,7 @@ import Severity from '@typo3/backend/severity';
 import Utility from './utility';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DomHelper from '@typo3/backend/utility/dom-helper';
+import { selector } from '@typo3/core/literals';
 
 type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement;
 type CustomEvaluationCallback = (value: string) => string;
@@ -86,7 +87,7 @@ export default (function() {
     formEngineFormElement.querySelectorAll(FormEngineValidation.inputSelector).forEach((visibleField: FormEngineFieldElement): void => {
       const config = JSON.parse(visibleField.dataset.formengineInputParams);
       const fieldName = config.field;
-      const actualValueField = formEngineFormElement.querySelector('[name="' + fieldName + '"]') as HTMLInputElement;
+      const actualValueField = formEngineFormElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
 
       // ignore fields which already have been initialized
       if (!('formengineInputInitialized' in visibleField.dataset)) {
@@ -100,8 +101,8 @@ export default (function() {
    * Initialize field by name
    */
   FormEngineValidation.initializeInputField = function(fieldName: string): void {
-    const field = formEngineFormElement.querySelector('[name="' + fieldName + '"]') as HTMLInputElement;
-    const humanReadableField = formEngineFormElement.querySelector('[data-formengine-input-name="' + fieldName + '"]') as FormEngineFieldElement;
+    const field = formEngineFormElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
+    const humanReadableField = formEngineFormElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
 
     if (field.dataset.config !== undefined) {
       const config = JSON.parse(field.dataset.config);
@@ -200,8 +201,8 @@ export default (function() {
    * Update input field after change
    */
   FormEngineValidation.updateInputField = function(fieldName: string): void {
-    const field = formEngineFormElement.querySelector('[name="' + fieldName + '"]') as HTMLInputElement;
-    const humanReadableField = formEngineFormElement.querySelector('[data-formengine-input-name="' + fieldName + '"]') as FormEngineFieldElement;
+    const field = formEngineFormElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
+    const humanReadableField = formEngineFormElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
 
     if (field.dataset.config !== undefined) {
       const config = JSON.parse(field.dataset.config);
@@ -276,7 +277,7 @@ export default (function() {
         case 'range':
           if (value !== '') {
             if (rule.minItems || rule.maxItems) {
-              relatedField = formEngineFormElement.querySelector('[name="' + field.dataset.relatedfieldname + '"]') as FormEngineFieldElement;
+              relatedField = formEngineFormElement.querySelector(selector`[name="${field.dataset.relatedfieldname}"]`) as FormEngineFieldElement;
               if (relatedField !== null) {
                 selected = Utility.trimExplode(',', relatedField.value).length;
               } else {
@@ -312,7 +313,7 @@ export default (function() {
         case 'select':
         case 'category':
           if (rule.minItems || rule.maxItems) {
-            relatedField = formEngineFormElement.querySelector('[name="' + field.dataset.relatedfieldname + '"]') as FormEngineFieldElement;
+            relatedField = formEngineFormElement.querySelector(selector`[name="${field.dataset.relatedfieldname}"]`) as FormEngineFieldElement;
             if (relatedField !== null) {
               selected = Utility.trimExplode(',', relatedField.value).length;
             } else if (field instanceof HTMLSelectElement) {

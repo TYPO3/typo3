@@ -14,6 +14,7 @@
 import 'bootstrap';
 import DocumentService from '@typo3/core/document-service';
 import FormEngine from '@typo3/backend/form-engine';
+import { selector } from '@typo3/core/literals';
 import '@typo3/backend/element/icon-element';
 import Popover from './popover';
 import { Popover as BootstrapPopover, Tab as BootstrapTab } from 'bootstrap';
@@ -132,7 +133,7 @@ class FormEngineReview {
     let ref = inputField;
     while (ref) {
       if (ref.matches('[id][role="tabpanel"]')) {
-        const tabContainer = document.querySelector('[aria-controls="' + ref.id + '"]');
+        const tabContainer = document.querySelector(selector`[aria-controls="${ref.id}"]`);
         new BootstrapTab(tabContainer).show();
       }
       ref = ref.parentElement;

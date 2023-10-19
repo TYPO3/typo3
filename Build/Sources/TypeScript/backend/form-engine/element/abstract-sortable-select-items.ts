@@ -14,6 +14,7 @@
 import FormEngine from '@typo3/backend/form-engine';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { selector } from '@typo3/core/literals';
 
 export abstract class AbstractSortableSelectItems {
 
@@ -85,7 +86,7 @@ export abstract class AbstractSortableSelectItems {
   private static removeOption(fieldElement: HTMLSelectElement, availableFieldElement: HTMLSelectElement): void {
     const previousSelectIndex = fieldElement.selectedIndex;
     fieldElement.querySelectorAll(':checked').forEach((option: HTMLOptionElement): void => {
-      const originalOption = <HTMLOptionElement>availableFieldElement.querySelector('option[value="' + option.value + '"]');
+      const originalOption = <HTMLOptionElement>availableFieldElement.querySelector(selector`option[value="${option.value}"]`);
       if (originalOption !== null) {
         originalOption.classList.remove('hidden');
         originalOption.disabled = false;

@@ -20,6 +20,7 @@ import { InfoBox } from './renderable/info-box';
 import './renderable/progress-bar';
 import '@typo3/backend/element/icon-element';
 import MessageInterface from '@typo3/install/message-interface';
+import { selector } from '@typo3/core/literals';
 
 enum Identifiers {
   body = '.t3js-body',
@@ -85,7 +86,7 @@ class Installer {
       const driver: string = target.value;
       document.querySelectorAll('.t3-install-driver-data').forEach(el => el.setAttribute('hidden', ''));
       document.querySelectorAll('.t3-install-driver-data input').forEach(el => el.setAttribute('disabled', 'disabled'));
-      document.querySelectorAll('#' + driver + ' input').forEach(el => el.removeAttribute('disabled'));
+      document.querySelectorAll(selector`#${driver} input`).forEach(el => el.removeAttribute('disabled'));
       document.querySelector('#' + driver)?.removeAttribute('hidden');
     }).delegateTo(document, '#t3js-connect-database-driver');
   }

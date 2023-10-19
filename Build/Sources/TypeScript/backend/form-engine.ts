@@ -31,6 +31,7 @@ import InteractionRequestMap from '@typo3/backend/event/interaction-request-map'
 import InteractionRequest from '@typo3/backend/event/interaction-request';
 import TriggerRequest from '@typo3/backend/event/trigger-request';
 import Utility from '@typo3/backend/utility';
+import { selector } from '@typo3/core/literals';
 
 interface OnFieldChangeItem {
   name: string;
@@ -72,8 +73,8 @@ export default (function() {
 
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-update-value', (data: {elementName: string}) => {
-    const valueField = document.querySelector('[name="' + CSS.escape(data.elementName) + '"]');
-    const humanReadableField = document.querySelector('[data-formengine-input-name="' + CSS.escape(data.elementName) + '"]');
+    const valueField = document.querySelector(selector`[name="${data.elementName}"]`);
+    const humanReadableField = document.querySelector(selector`[data-formengine-input-name="${data.elementName}]`);
     FormEngine.Validation.updateInputField(data.elementName);
     if (valueField !== null) {
       FormEngine.Validation.markFieldAsChanged(valueField as HTMLInputElement);
@@ -229,7 +230,7 @@ export default (function() {
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
         for (const el of fieldEl.querySelectorAll('option') as NodeListOf<HTMLOptionElement>) {
-          const $option = $availableFieldEl.find('option[value="' + CSS.escape($(el).attr('value')) + '"]');
+          const $option = $availableFieldEl.find(selector`option[value="${$(el).attr('value')}"]`);
           if ($option.length) {
             $option.removeClass('hidden').prop('disabled', false);
             FormEngine.enableOptGroup($option.get(0));
@@ -352,7 +353,7 @@ export default (function() {
    * @returns {*|HTMLElement}
    */
   FormEngine.getFormElement = function(fieldName: string): JQuery|HTMLElement|void {
-    const $formEl = $('form[name="' + FormEngine.formName + '"]:first');
+    const $formEl = $(selector`form[name="${FormEngine.formName}"]:first`);
     if (fieldName) {
       const $fieldEl = FormEngine.getFieldElement(fieldName)
         , $listFieldEl = FormEngine.getFieldElement(fieldName, '_list');
@@ -385,21 +386,21 @@ export default (function() {
    * @returns {*|HTMLElement}
    */
   FormEngine.getFieldElement = function(fieldName: string, appendix: string, noFallback: boolean): JQuery|HTMLElement {
-    const $formEl = $('form[name="' + FormEngine.formName + '"]:first');
+    const $formEl = $(selector`form[name="${FormEngine.formName}"]:first`);
 
     // if an appendix is set, return the field with the appendix (like _mul or _list)
     if (appendix) {
       let $fieldEl;
       switch (appendix) {
         case '_list':
-          $fieldEl = $(':input[data-formengine-input-name="' + fieldName + '"]:not([type=hidden])', $formEl);
+          $fieldEl = $(selector`:input[data-formengine-input-name="${fieldName}"]:not([type=hidden])`, $formEl);
           break;
         case '_avail':
-          $fieldEl = $(':input[data-relatedfieldname="' + fieldName + '"]', $formEl);
+          $fieldEl = $(selector`:input[data-relatedfieldname="${fieldName}"]`, $formEl);
           break;
         case '_mul':
         case '_hr':
-          $fieldEl = $(':input[type=hidden][data-formengine-input-name="' + fieldName + '"]', $formEl);
+          $fieldEl = $(selector`:input[type=hidden][data-formengine-input-name="${fieldName}"]`, $formEl);
           break;
         default:
           $fieldEl = null;
@@ -410,7 +411,7 @@ export default (function() {
       }
     }
 
-    return $(':input[name="' + fieldName + '"]', $formEl);
+    return $(selector`:input[name="${fieldName}"]`, $formEl);
   };
 
   /**
@@ -775,7 +776,8 @@ export default (function() {
    * @return {boolean}
    */
   FormEngine.hasChange = function(): boolean {
-    const formElementChanges = $('form[name="' + FormEngine.formName + '"] .has-change').length > 0,
+
+    const formElementChanges = $(selector`form[name="${FormEngine.formName}"] .has-change`).length > 0,
       inlineRecordChanges = $('[name^="data["].has-change').length > 0;
     return formElementChanges || inlineRecordChanges;
   };
@@ -843,7 +845,7 @@ export default (function() {
           modal.hideModal();
           callback.call(null, true);
         } else if ((e.target as HTMLButtonElement).name === 'save') {
-          $('form[name=' + FormEngine.formName + ']').append($elem);
+          $(selector`form[name="${FormEngine.formName}"]`).append($elem);
           modal.hideModal();
           FormEngine.saveDocument();
         }
@@ -958,7 +960,7 @@ export default (function() {
     if (FormEngine.hasChange()) {
       FormEngine.showPreviewModal(previewUrl, isNew, $actionElement, callback);
     } else {
-      $('form[name=' + FormEngine.formName + ']').append($actionElement);
+      $(selector`form[name="${FormEngine.formName}"]`).append($actionElement);
       window.open('', 'newTYPO3frontendWindow');
       FormEngine.formElement.submit();
     }
@@ -983,7 +985,7 @@ export default (function() {
         }
         break;
       case 'save':
-        $('form[name=' + FormEngine.formName + ']').append($(actionElement));
+        $(selector`form[name="${FormEngine.formName}"]`).append($(actionElement));
         window.open('', 'newTYPO3frontendWindow');
         FormEngine.saveDocument();
         break;
@@ -1064,7 +1066,7 @@ export default (function() {
     if (FormEngine.hasChange()) {
       FormEngine.showNewModal(isNew, $actionElement, callback);
     } else {
-      $('form[name=' + FormEngine.formName + ']').append($actionElement);
+      $(selector`form[name="${FormEngine.formName}"]`).append($actionElement);
       FormEngine.formElement.submit();
     }
   };
@@ -1076,7 +1078,7 @@ export default (function() {
    * @param {element} $actionElement
    */
   FormEngine.newActionCallback = function(modalButtonName: string, $actionElement: JQuery): void {
-    const $form = $('form[name=' + FormEngine.formName + ']');
+    const $form = $(selector`form[name="${FormEngine.formName}"]`);
     Modal.dismiss();
     switch(modalButtonName) {
       case 'no':
@@ -1155,7 +1157,7 @@ export default (function() {
     if (FormEngine.hasChange()) {
       FormEngine.showDuplicateModal(isNew, $actionElement, callback);
     } else {
-      $('form[name=' + FormEngine.formName + ']').append($actionElement);
+      $(selector`form[name="${FormEngine.formName}"]`).append($actionElement);
       FormEngine.formElement.submit();
     }
   };
@@ -1167,7 +1169,7 @@ export default (function() {
    * @param {element} $actionElement
    */
   FormEngine.duplicateActionCallback = function(modalButtonName: string, $actionElement: JQuery): void {
-    const $form = $('form[name=' + FormEngine.formName + ']');
+    const $form = $(selector`form[name="${FormEngine.formName}"]`);
     Modal.dismiss();
     switch(modalButtonName) {
       case 'no':

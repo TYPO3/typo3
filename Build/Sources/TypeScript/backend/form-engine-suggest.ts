@@ -18,6 +18,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { selector } from '@typo3/core/literals';
 
 class FormEngineSuggest {
   private readonly element: HTMLInputElement;
@@ -50,7 +51,7 @@ class FormEngineSuggest {
         insertData = e.detail.element.table + '_' + e.detail.element.uid;
       }
       FormEngine.setSelectOptionFromExternalSource(this.element.dataset.field, insertData, e.detail.element.label, e.detail.element.label);
-      FormEngine.Validation.markFieldAsChanged(document.querySelector('input[name="' + this.element.dataset.field + '"]') as HTMLInputElement);
+      FormEngine.Validation.markFieldAsChanged(document.querySelector(selector`input[name="${this.element.dataset.field}"]`) as HTMLInputElement);
       this.resultContainer.hidden = true;
     }).bindTo(this.resultContainer);
 

@@ -21,6 +21,7 @@ import Icons from '@typo3/backend/icons';
 import Modal from '@typo3/backend/modal';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import Sortable from 'sortablejs';
+import { selector } from '@typo3/core/literals';
 
 import type {
   FormEditor,
@@ -945,7 +946,7 @@ export function renderCollectionElementSelectionEditor(
   selectElement.on('change', function(this: HTMLSelectElement) {
     if ($(this).val() !== '') {
       const value = $(this).val();
-      $('option[value="' + value + '"]', $(this)).remove();
+      $(selector`option[value="${value}"]`, $(this)).remove();
 
       getFormEditorApp().getPublisherSubscriber().publish(
         'view/inspector/collectionElement/new/selected',
@@ -2432,7 +2433,7 @@ export function renderFormElementSelectorEditorAddition(
             + '</a>'
             + '</li>');
 
-          $('[data-formelement-identifier="' + nonCompositeNonToplevelFormElement.get('identifier') + '"]', itemTemplate)
+          $(selector`[data-formelement-identifier="${nonCompositeNonToplevelFormElement.get('identifier')}"]`, itemTemplate)
             .append($(icon))
             .append(' ' + nonCompositeNonToplevelFormElement.get('label'));
 

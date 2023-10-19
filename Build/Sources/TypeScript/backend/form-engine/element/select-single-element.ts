@@ -15,6 +15,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
 import FormEngine from '@typo3/backend/form-engine';
 import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
+import { selector } from '@typo3/core/literals';
 
 interface SelectSingleElementOptions {
   onChange?: OnFieldChangeItem[];
@@ -31,8 +32,8 @@ class SelectSingleElement {
     });
   }
 
-  public initialize = (selector: string, options: SelectSingleElementOptions): void => {
-    const selectElement: HTMLSelectElement = document.querySelector(selector);
+  public initialize = (elementSelector: string, options: SelectSingleElementOptions): void => {
+    const selectElement: HTMLSelectElement = document.querySelector(elementSelector);
     options = options || {};
 
     new RegularEvent('change', (e: Event): void => {
@@ -51,7 +52,7 @@ class SelectSingleElement {
           activeItem.classList.remove('active');
         }
 
-        const selectionIcon = selectIcons.querySelector('[data-select-index="' + target.selectedIndex + '"]');
+        const selectionIcon = selectIcons.querySelector(selector`[data-select-index="${target.selectedIndex.toString(10)}"]`);
         if (selectionIcon !== null) {
           selectionIcon.closest('.form-wizard-icon-list-item a').classList.add('active');
         }

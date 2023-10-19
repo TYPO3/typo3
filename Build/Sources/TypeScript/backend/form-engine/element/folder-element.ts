@@ -12,6 +12,7 @@
  */
 
 import { AbstractSortableSelectItems } from '@typo3/backend/form-engine/element/abstract-sortable-select-items';
+import { selector } from '@typo3/core/literals';
 
 class FolderSortableSelectItems extends AbstractSortableSelectItems {
   public registerEventHandler(element: HTMLSelectElement): void {
@@ -36,8 +37,12 @@ class FolderElement extends HTMLElement {
   private recordField: HTMLSelectElement = null;
 
   public connectedCallback(): void {
-    this.recordField = <HTMLSelectElement>this.querySelector('#' + (this.getAttribute('recordFieldId') || '' as string));
+    const recordFieldId = this.getAttribute('recordFieldId');
+    if (recordFieldId === null) {
+      return;
+    }
 
+    this.recordField = this.querySelector<HTMLSelectElement>(selector`#${recordFieldId}`);
     if (!this.recordField) {
       return;
     }

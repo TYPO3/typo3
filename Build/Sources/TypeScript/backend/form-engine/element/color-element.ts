@@ -13,6 +13,7 @@
 
 import RegularEvent from '@typo3/core/event/regular-event';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
+import { selector } from '@typo3/core/literals';
 
 /**
  * Module: @typo3/backend/form-engine/element/color-element
@@ -31,8 +32,12 @@ class ColorElement extends HTMLElement {
   private element: HTMLInputElement = null;
 
   public connectedCallback(): void {
-    this.element = document.getElementById((this.getAttribute('recordFieldId') || '' as string)) as HTMLInputElement;
+    const recordFieldId = this.getAttribute('recordFieldId');
+    if (recordFieldId === null) {
+      return;
+    }
 
+    this.element = this.querySelector<HTMLInputElement>(selector`#${recordFieldId}`);
     if (!this.element) {
       return;
     }
@@ -48,7 +53,7 @@ class ColorElement extends HTMLElement {
   }
 
   private registerEventHandler(): void {
-    const hiddenElement: HTMLInputElement|null = document.querySelector('input[name="' + this.element.dataset.formengineInputName + '"]');
+    const hiddenElement: HTMLInputElement|null = document.querySelector(selector`input[name="${this.element.dataset.formengineInputName}"]`);
 
     new RegularEvent('blur', (e: Event): void => {
       hiddenElement.value = (e.target as HTMLInputElement).value;

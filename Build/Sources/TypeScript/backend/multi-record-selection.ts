@@ -15,6 +15,7 @@ import Notification from '@typo3/backend/notification';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
+import { selector } from '@typo3/core/literals';
 
 export enum MultiRecordSelectionSelectors {
   actionsSelector = '.t3js-multi-record-selection-actions',
@@ -67,8 +68,8 @@ class MultiRecordSelection {
     return document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.checkboxSelector + state, identifier));
   }
 
-  private static getCombinedSelector(selector: string, identifier: string): string {
-    return identifier !== '' ? ['[data-multi-record-selection-identifier="' + identifier + '"]', selector].join (' ') : selector;
+  private static getCombinedSelector(query: string, identifier: string): string {
+    return identifier !== '' ? [selector`[data-multi-record-selection-identifier="${identifier}"]`, query].join (' ') : query;
   }
 
   private static getIdentifier(element: HTMLElement): string {

@@ -14,6 +14,7 @@
 import DocumentService from '@typo3/core/document-service';
 import Icons from './icons';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { selector } from '@typo3/core/literals';
 
 export type PreSubmitCallback = (e: Event) => boolean;
 
@@ -125,7 +126,7 @@ class DocumentSaveActions {
   private getAttachedForm(trigger: SubmitTriggerHTMLElement): HTMLFormElement|null {
     let form;
     if (trigger instanceof HTMLAnchorElement) {
-      form = document.querySelector('#' + trigger.dataset.form) as HTMLFormElement|null;
+      form = document.querySelector(selector`#${trigger.dataset.form}`) as HTMLFormElement|null;
     } else {
       form = trigger.form;
     }

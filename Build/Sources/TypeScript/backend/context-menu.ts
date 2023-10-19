@@ -17,6 +17,7 @@ import ContextMenuActions from './context-menu-actions';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
+import { selector } from '@typo3/core/literals';
 
 interface MousePosition {
   X: number;
@@ -165,7 +166,7 @@ class ContextMenu {
 
         new DebounceEvent('mouseleave', (event: MouseEvent) => {
           const target: HTMLElement = event.target as HTMLElement;
-          const childMenu: HTMLElement | null = document.querySelector('[data-parent="#' + target.id + '"]');
+          const childMenu: HTMLElement | null = document.querySelector(selector`[data-parent="#${target.id}"]`);
 
           const hideThisMenu =
             !ContextMenu.within(target, this.mousePos.X, this.mousePos.Y) // cursor it outside triggered context menu
