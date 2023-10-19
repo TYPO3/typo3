@@ -50,7 +50,7 @@
                                 <f:if condition="{historyRow.backendUserRealName}">
                                     <f:then>
                                         {historyRow.backendUserRealName}
-                                        <span class="text-muted d-block">({f:if(condition: historyRow.backendUserName, then: historyRow.backendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')})</span>
+                                        <div class="text-muted">({f:if(condition: historyRow.backendUserName, then: historyRow.backendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')})</div>
                                     </f:then>
                                     <f:else>
                                         {f:if(condition: historyRow.backendUserName, then: historyRow.backendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')}
@@ -62,7 +62,7 @@
                             </f:else>
                         </f:if>
                         <f:if condition="{historyRow.originalBackendUserUid}">
-                            ({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {f:if(condition: historyRow.originalBackendUserName, then: historyRow.originalBackendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')})
+                            <div>({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {f:if(condition: historyRow.originalBackendUserName, then: historyRow.originalBackendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')})</div>
                         </f:if>
                     </td>
                     <f:if condition="{isUserInWorkspace}">
