@@ -139,6 +139,7 @@ class RootlineUtility
             $this->languageUid,
             $this->workspaceUid,
             $this->context->getAspect('visibility')->includeHiddenContent() ? '1' : '0',
+            $this->context->getAspect('visibility')->includeHiddenPages() ? '1' : '0',
         ]);
     }
 

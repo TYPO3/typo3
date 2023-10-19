@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
@@ -121,11 +120,6 @@ class PreviewSimulator implements MiddlewareInterface
         } catch (\Exception) {
             // if the rootline cannot be resolved (404 because of delete placeholder in workspaces for example)
             // we do not want to fail here but rather continue handling the request to trigger the TSFE 404 handling
-        } finally {
-            // clear the rootline cache to ensure it's cleanly built with the full context later on.
-            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-            $cacheManager->getCache('runtime')->flushByTag(RootlineUtility::RUNTIME_CACHE_TAG);
-            $cacheManager->getCache('rootline')->flush();
         }
         return $groupRestricted || $timeRestricted || $hidden;
     }

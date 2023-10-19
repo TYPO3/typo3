@@ -300,16 +300,16 @@ final class RootlineUtilityTest extends UnitTestCase
 
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(15));
-        $context->setAspect('visibility', new VisibilityAspect());
+        $context->setAspect('visibility', new VisibilityAspect(true));
         $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
         $this->subject->__construct(42, '47-11', $context);
-        self::assertSame('42_47-11_8_15_0', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_15_0_1', $this->subject->getCacheIdentifier());
         $this->subject->__construct(42, '47-11', $context);
-        self::assertSame('42_47-11_8_15_0', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_15_0_1', $this->subject->getCacheIdentifier());
 
         $context->setAspect('workspace', new WorkspaceAspect(0));
         $this->subject->__construct(42, '47-11', $context);
-        self::assertSame('42_47-11_8_0_0', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_0_0_1', $this->subject->getCacheIdentifier());
     }
 
     /**
