@@ -18,6 +18,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import Notification from '@typo3/backend/notification';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
+import { selector } from '@typo3/core/literals';
 
 interface FieldOptions {
   userId: number,
@@ -136,7 +137,7 @@ class MfaInfoElement {
       if (this.providersList === null) {
         return;
       }
-      const providerEntry: HTMLLIElement = this.providersList.querySelector('li#provider-' + provider);
+      const providerEntry: HTMLLIElement = this.providersList.querySelector(selector`li#provider-${provider}`);
       if (providerEntry === null) {
         return;
       }

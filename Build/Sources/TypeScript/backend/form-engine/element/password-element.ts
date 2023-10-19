@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { selector } from '@typo3/core/literals';
+
 /**
  * Module: @typo3/backend/form-engine/element/password-element
  *
@@ -30,13 +32,18 @@ class PasswordElement extends HTMLElement {
   private passwordPolicySet: boolean = false;
 
   public connectedCallback(): void {
-    this.element = <HTMLInputElement>this.querySelector('#' + (this.getAttribute('recordFieldId') || '' as string));
-    this.passwordPolicyInfo = <HTMLElement>this.querySelector('#password-policy-info-' + this.element.id);
-    this.passwordPolicySet = (this.getAttribute('passwordPolicy') || '') !== '';
+    const recordFieldId = this.getAttribute('recordFieldId');
+    if (recordFieldId === null) {
+      return;
+    }
 
+    this.element = this.querySelector<HTMLInputElement>(selector`#${recordFieldId}`);
     if (!this.element) {
       return;
     }
+
+    this.passwordPolicyInfo = this.querySelector<HTMLElement>(selector`#password-policy-info-${this.element.id}`);
+    this.passwordPolicySet = (this.getAttribute('passwordPolicy') || '') !== '';
 
     this.registerEventHandler();
   }

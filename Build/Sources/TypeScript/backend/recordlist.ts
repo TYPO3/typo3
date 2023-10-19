@@ -21,6 +21,7 @@ import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
+import { selector } from '@typo3/core/literals';
 
 interface IconIdentifier {
   collapse: string;
@@ -183,11 +184,11 @@ class Recordlist {
       if (selection.length) {
         // If there are selected records, only those are added to the list
         selection.forEach((entity: HTMLInputElement): void => {
-          entityIdentifiers.push((entity.closest(this.identifier.entity + '[data-uid][data-table="' + tableName + '"]') as HTMLElement).dataset.uid);
+          entityIdentifiers.push((entity.closest(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`) as HTMLElement).dataset.uid);
         });
       } else {
         // Get all records for the current table and add their uid to the list
-        const entities: NodeListOf<HTMLElement> = tableContainer.querySelectorAll(this.identifier.entity + '[data-uid][data-table="' + tableName + '"]');
+        const entities: NodeListOf<HTMLElement> = tableContainer.querySelectorAll(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`);
         if (!entities.length) {
           return;
         }

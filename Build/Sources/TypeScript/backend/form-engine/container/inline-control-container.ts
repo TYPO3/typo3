@@ -27,6 +27,7 @@ import Notification from '../../notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
 import Utility from '../../utility';
+import { selector } from '@typo3/core/literals';
 
 enum Selectors {
   toggleSelector = '[data-bs-toggle="formengine-inline"]',
@@ -117,7 +118,7 @@ class InlineControlContainer {
    * @return HTMLDivElement
    */
   private static getInlineRecordContainer(objectId: string): HTMLDivElement {
-    return <HTMLDivElement>document.querySelector('[data-object-id="' + objectId + '"]');
+    return <HTMLDivElement>document.querySelector(selector`[data-object-id="${objectId}"]`);
   }
 
   /**
@@ -125,7 +126,7 @@ class InlineControlContainer {
    * @return HTMLButtonElement
    */
   private static getCollapseButton(objectId: string): HTMLButtonElement {
-    return <HTMLButtonElement>document.querySelector('[aria-controls="' + objectId + '_fields"]');
+    return <HTMLButtonElement>document.querySelector(selector`[aria-controls="${objectId}_fields"]`);
   }
 
   /**
@@ -197,7 +198,7 @@ class InlineControlContainer {
   }
 
   private static selectOptionValueExists(selectElement: HTMLSelectElement, value: string): boolean {
-    return selectElement.querySelector('option[value="' + value + '"]') !== null;
+    return selectElement.querySelector(selector`option[value="${value}"]`) !== null;
   }
 
   /**
@@ -205,7 +206,7 @@ class InlineControlContainer {
    * @param {string} value
    */
   private static removeSelectOptionByValue(selectElement: HTMLSelectElement, value: string): void {
-    const option = selectElement.querySelector('option[value="' + value + '"]');
+    const option = selectElement.querySelector(selector`option[value="${value}"]`);
     if (option !== null) {
       option.remove();
     }
@@ -413,7 +414,7 @@ class InlineControlContainer {
 
       const objectId = (<HTMLDivElement>target.closest('[data-object-id]')).dataset.objectId;
       const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
-      const hiddenFieldName = 'data' + recordContainer.dataset.fieldName + '[' + target.dataset.hiddenField + ']';
+      const hiddenFieldName = selector`data${recordContainer.dataset.fieldName}[${target.dataset.hiddenField}]`;
       const hiddenValueCheckBox = <HTMLInputElement>document.querySelector('[data-formengine-input-name="' + hiddenFieldName + '"');
       const hiddenValueInput = <HTMLInputElement>document.querySelector('[name="' + hiddenFieldName + '"');
 
@@ -735,7 +736,7 @@ class InlineControlContainer {
     }
 
     const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
-    const records = Array.from(recordListContainer.querySelectorAll('[data-object-parent-group="' + this.container.dataset.objectGroup + '"][data-placeholder-record="0"]'))
+    const records = Array.from(recordListContainer.querySelectorAll(selector`[data-object-parent-group="${this.container.dataset.objectGroup}"][data-placeholder-record="0"]`))
       .map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
@@ -757,7 +758,7 @@ class InlineControlContainer {
     recordContainer.classList.add('t3js-inline-record-deleted');
 
     if (!InlineControlContainer.isNewRecord(objectId) && !forceDirectRemoval) {
-      const deleteCommandInput = this.container.querySelector('[name="cmd' + recordContainer.dataset.fieldName + '[delete]"]');
+      const deleteCommandInput = this.container.querySelector(selector`[name="cmd${recordContainer.dataset.fieldName}[delete]"]`);
       deleteCommandInput.removeAttribute('disabled');
 
       // Move input field to inline container so we can remove the record container
@@ -881,7 +882,7 @@ class InlineControlContainer {
       const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId + Separators.structureSeparator + recordUid);
       const headerIdentifier = recordContainer.dataset.objectIdHash + '_header';
       const headerElement = document.getElementById(headerIdentifier);
-      const sortUp = headerElement.querySelector('[data-action="sort"][data-direction="' + SortDirections.UP + '"]');
+      const sortUp = headerElement.querySelector(selector`[data-action="sort"][data-direction="${SortDirections.UP}"]`);
 
       if (sortUp !== null) {
         let iconIdentifier = 'actions-move-up';
@@ -896,7 +897,7 @@ class InlineControlContainer {
         });
       }
 
-      const sortDown = headerElement.querySelector('[data-action="sort"][data-direction="' + SortDirections.DOWN + '"]');
+      const sortDown = headerElement.querySelector(selector`[data-action="sort"][data-direction="${SortDirections.DOWN}"]`);
       if (sortDown !== null) {
         let iconIdentifier = 'actions-move-down';
         if (index === records.length - 1) {

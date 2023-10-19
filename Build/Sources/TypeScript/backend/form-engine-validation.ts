@@ -22,6 +22,7 @@ import Md5 from '@typo3/backend/hashing/md5';
 import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Modal from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
+import { selector } from '@typo3/core/literals';
 
 type CustomEvaluationCallback = (value: string) => string;
 
@@ -84,7 +85,7 @@ export default (function() {
     return $(document).find(FormEngineValidation.inputSelector).each(function(index: number, field: HTMLElement) {
       const config = $(field).data('formengine-input-params');
       const fieldName = config.field;
-      const $field = $('[name="' + fieldName + '"]');
+      const $field = $(selector`[name="${fieldName}"]`);
 
       // ignore fields which already have been initialized
       if ($field.data('main-field') === undefined) {
@@ -101,9 +102,9 @@ export default (function() {
    * @param {String} fieldName
    */
   FormEngineValidation.initializeInputField = function(fieldName: string): void {
-    const $field = $('[name="' + fieldName + '"]');
-    const $humanReadableField = $('[data-formengine-input-name="' + fieldName + '"]');
-    let $mainField = $('[name="' + $field.data('main-field') + '"]');
+    const $field = $(selector`[name="${fieldName}"]`);
+    const $humanReadableField = $(selector`[data-formengine-input-name="${fieldName}"]`);
+    let $mainField = $(selector`[name="${$field.data('main-field')}"]`);
     if ($mainField.length === 0) {
       $mainField = $field;
     }
@@ -212,12 +213,13 @@ export default (function() {
    * @param {String} fieldName
    */
   FormEngineValidation.updateInputField = function(fieldName: string): void {
-    const $field = $('[name="' + fieldName + '"]');
-    let $mainField = $('[name="' + $field.data('main-field') + '"]');
+
+    const $field = $(selector`[name="${fieldName}"]`);
+    let $mainField = $(selector`[name="${$field.data('main-field')}"]`);
     if ($mainField.length === 0) {
       $mainField = $field;
     }
-    const $humanReadableField = $('[data-formengine-input-name="' + $mainField.attr('name') + '"]');
+    const $humanReadableField = $(selector`[data-formengine-input-name="${$mainField.attr('name')}"]`);
 
     const config = $mainField.data('config');
     if (typeof config !== 'undefined') {
@@ -286,7 +288,7 @@ export default (function() {
         case 'range':
           if (value !== '') {
             if (rule.minItems || rule.maxItems) {
-              $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
+              $relatedField = $(document).find(selector`[name="${field.dataset.relatedfieldname}"]`);
               if ($relatedField.length) {
                 selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
               } else {
@@ -322,7 +324,7 @@ export default (function() {
         case 'select':
         case 'category':
           if (rule.minItems || rule.maxItems) {
-            $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
+            $relatedField = $(document).find(selector`[name="${field.dataset.relatedfieldname}"]`);
             if ($relatedField.length) {
               selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
             } else if (field instanceof HTMLSelectElement) {

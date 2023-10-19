@@ -17,6 +17,7 @@ import './select-tree';
 import './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
 import { TreeNode } from '@typo3/backend/tree/tree-node';
+import { selector } from '@typo3/core/literals';
 
 /**
  * Module: @typo3/backend/form-engine/element/category-element
@@ -37,8 +38,8 @@ class CategoryElement extends HTMLElement{
   private tree: SelectTree = null;
 
   public connectedCallback(): void {
-    this.recordField = <HTMLInputElement>this.querySelector('#' + (this.getAttribute('recordFieldId') || '' as string));
-    this.treeWrapper = <HTMLElement>this.querySelector('#' + (this.getAttribute('treeWrapperId') || '' as string));
+    this.recordField = <HTMLInputElement>this.querySelector(selector`#${this.getAttribute('recordFieldId') || '' as string}`);
+    this.treeWrapper = <HTMLElement>this.querySelector(selector`#${this.getAttribute('treeWrapperId') || '' as string}`);
 
     if (!this.recordField || !this.treeWrapper) {
       return;

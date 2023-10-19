@@ -25,6 +25,7 @@ import Modal, { ModalElement } from '../../modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
 import Utility from '../../utility';
+import { selector } from '@typo3/core/literals';
 
 enum Selectors {
   toggleSelector = '[data-bs-toggle="formengine-file"]',
@@ -88,10 +89,10 @@ class FilesControlContainer extends HTMLElement {
 
   public connectedCallback(): void {
     const identifier = this.getAttribute('identifier') || '' as string;
-    this.container = <HTMLElement>this.querySelector('[id="' + identifier + '"]');
+    this.container = <HTMLElement>this.querySelector(selector`[id="${identifier}"]`);
 
     if (this.container !== null) {
-      this.recordsContainer = <HTMLDivElement>this.container.querySelector('[id="' + this.container.getAttribute('id') + '_records"]');
+      this.recordsContainer = <HTMLDivElement>this.container.querySelector(selector`[id="${this.container.getAttribute('id')}_records"]`);
       this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
       this.registerEvents();
     }
@@ -120,11 +121,11 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private getFileReferenceContainer(objectId: string): HTMLDivElement {
-    return <HTMLDivElement>this.container.querySelector('[data-object-id="' + objectId + '"]');
+    return <HTMLDivElement>this.container.querySelector(selector`[data-object-id="${objectId}"]`);
   }
 
   private getCollapseButton(objectId: string): HTMLButtonElement {
-    return <HTMLButtonElement>this.container.querySelector('[aria-controls="' + objectId + '_fields"]');
+    return <HTMLButtonElement>this.container.querySelector(selector`[aria-controls="${objectId}_fields"]`);
   }
 
   private collapseElement(recordContainer: HTMLDivElement, objectId: string): void {
@@ -250,7 +251,7 @@ class FilesControlContainer extends HTMLElement {
 
       const objectId = (<HTMLDivElement>target.closest('[data-object-id]')).dataset.objectId;
       const recordContainer = this.getFileReferenceContainer(objectId);
-      const hiddenFieldName = 'data' + recordContainer.dataset.fieldName + '[' + target.dataset.hiddenField + ']';
+      const hiddenFieldName = selector`data${recordContainer.dataset.fieldName}[${target.dataset.hiddenField}]`;
       const hiddenValueCheckBox = <HTMLInputElement>this.recordsContainer.querySelector('[data-formengine-input-name="' + hiddenFieldName + '"');
       const hiddenValueInput = <HTMLInputElement>this.recordsContainer.querySelector('[name="' + hiddenFieldName + '"');
 
@@ -344,7 +345,7 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private loadRecordDetails(objectId: string): void {
-    const recordFieldsContainer = this.recordsContainer.querySelector('[id="' + objectId + '_fields"]');
+    const recordFieldsContainer = this.recordsContainer.querySelector(selector`[id="${objectId}_fields"]`);
     const recordContainer = this.getFileReferenceContainer(objectId);
     const isLoading = typeof this.requestQueue[objectId] !== 'undefined';
     const isLoaded = recordFieldsContainer !== null && !recordContainer.classList.contains(States.notLoaded);
@@ -511,7 +512,7 @@ class FilesControlContainer extends HTMLElement {
       return;
     }
 
-    const records = Array.from(this.recordsContainer.querySelectorAll('[data-object-parent-group="' + this.container.dataset.objectGroup + '"][data-placeholder-record="0"]'))
+    const records = Array.from(this.recordsContainer.querySelectorAll(selector`[data-object-parent-group="${this.container.dataset.objectGroup}"][data-placeholder-record="0"]`))
       .map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
@@ -529,7 +530,7 @@ class FilesControlContainer extends HTMLElement {
     recordContainer.classList.add('t3js-file-reference-deleted');
 
     if (!this.isNewRecord(objectId) && !forceDirectRemoval) {
-      const deleteCommandInput = this.container.querySelector('[name="cmd' + recordContainer.dataset.fieldName + '[delete]"]');
+      const deleteCommandInput = this.container.querySelector(selector`[name="cmd${recordContainer.dataset.fieldName}[delete]"]`);
       deleteCommandInput.removeAttribute('disabled');
 
       // Move input field to inline container so we can remove the record container
@@ -604,7 +605,7 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private getFormFieldForElements(): HTMLInputElement | null {
-    const formFields = this.container.querySelectorAll('[name="' + this.container.dataset.formField + '"]');
+    const formFields = this.container.querySelectorAll(selector`[name="${this.container.dataset.formField}"]`);
     if (formFields.length > 0) {
       return <HTMLInputElement>formFields[0];
     }

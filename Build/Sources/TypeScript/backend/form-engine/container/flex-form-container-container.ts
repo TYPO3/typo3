@@ -17,6 +17,7 @@ import FlexFormSectionContainer from './flex-form-section-container';
 import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '@typo3/backend/severity';
+import { selector } from '@typo3/core/literals';
 
 enum Selectors {
   toggleSelector = '[data-bs-toggle="flexform-inline"]',
@@ -51,8 +52,8 @@ class FlexFormContainerContainer {
     this.containerContent = container.querySelector(Selectors.sectionContentContainerSelector);
     this.containerId = container.dataset.flexformContainerId;
 
-    this.panelHeading = container.querySelector('[data-bs-target="#flexform-container-' + this.containerId + '"]');
-    this.panelButton = this.panelHeading.querySelector('[aria-controls="flexform-container-' + this.containerId + '"]');
+    this.panelHeading = container.querySelector(selector`[data-bs-target="#flexform-container-${this.containerId}"]`);
+    this.panelButton = this.panelHeading.querySelector(selector`[aria-controls="flexform-container-${this.containerId}"]`);
     this.toggleField = container.querySelector(Selectors.toggleFieldSelector);
 
     this.registerEvents();

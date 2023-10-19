@@ -15,6 +15,7 @@ import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
 import { AbstractContainer } from './abstract-container';
 import TriggerRequest from '../event/trigger-request';
 import InteractionRequest from '../event/interaction-request';
+import { selector } from '@typo3/core/literals';
 
 class NavigationContainer extends AbstractContainer {
   private activeComponentId: string = '';
@@ -57,7 +58,7 @@ class NavigationContainer extends AbstractContainer {
     const navigationComponentElement = 'navigationComponent-' + componentCssName;
 
     // The component was already set up, so requiring the module again can be excluded.
-    if (container.querySelectorAll('[data-component="' + navigationComponentId + '"]').length === 1) {
+    if (container.querySelectorAll(selector`[data-component="${navigationComponentId}"]`).length === 1) {
       this.show(navigationComponentId);
       this.activeComponentId = navigationComponentId;
       return;

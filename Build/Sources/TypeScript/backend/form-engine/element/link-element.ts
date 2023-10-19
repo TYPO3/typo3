@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { selector } from '@typo3/core/literals';
+
 enum Selectors {
   toggleSelector = '.t3js-form-field-link-explanation-toggle',
   inputFieldSelector = '.t3js-form-field-link-input',
@@ -39,8 +41,12 @@ class LinkElement extends HTMLElement {
   private icon: HTMLSpanElement = null;
 
   public connectedCallback(): void {
-    this.element = <HTMLSelectElement>this.querySelector('#' + (this.getAttribute('recordFieldId') || '' as string));
+    const recordFieldId = this.getAttribute('recordFieldId');
+    if (recordFieldId === null) {
+      return;
+    }
 
+    this.element = this.querySelector<HTMLSelectElement>(selector`#${recordFieldId}`);
     if (!this.element) {
       return;
     }

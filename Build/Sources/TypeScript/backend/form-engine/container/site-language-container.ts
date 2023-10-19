@@ -23,6 +23,7 @@ import Notification from '../../notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
 import Utility from '../../utility';
+import { selector } from '@typo3/core/literals';
 
 enum Selectors {
   toggleSelector = '[data-bs-toggle="formengine-inline"]',
@@ -90,7 +91,7 @@ class SiteLanguageContainer extends HTMLElement {
   private progressQueue: ProgressQueue = {};
 
   private static getInlineRecordContainer(objectId: string): HTMLDivElement {
-    return <HTMLDivElement>document.querySelector('[data-object-id="' + objectId + '"]');
+    return <HTMLDivElement>document.querySelector(selector`[data-object-id="${objectId}"]`);
   }
 
   private static getValuesFromHashMap(hashmap: UniqueDefinitionCollection): Array<any> {
@@ -98,11 +99,11 @@ class SiteLanguageContainer extends HTMLElement {
   }
 
   private static selectOptionValueExists(selectElement: HTMLSelectElement, value: string): boolean {
-    return selectElement.querySelector('option[value="' + value + '"]') !== null;
+    return selectElement.querySelector(selector`option[value="${value}"]`) !== null;
   }
 
   private static removeSelectOptionByValue(selectElement: HTMLSelectElement, value: string): void {
-    const option = selectElement.querySelector('option[value="' + value + '"]');
+    const option = selectElement.querySelector(selector`option[value="${value}"]`);
     if (option !== null) {
       option.remove();
     }
@@ -144,7 +145,7 @@ class SiteLanguageContainer extends HTMLElement {
 
   private static collapseExpandRecord(objectId: string): void {
     const recordContainer = SiteLanguageContainer.getInlineRecordContainer(objectId);
-    const collapseButton = <HTMLButtonElement>document.querySelector('[aria-controls="' + objectId + '_fields"]');
+    const collapseButton = <HTMLButtonElement>document.querySelector(selector`[aria-controls="${objectId}_fields"]`);
     if (recordContainer.classList.contains(States.collapsed)) {
       recordContainer.classList.remove(States.collapsed);
       recordContainer.classList.add(States.visible);
@@ -158,7 +159,7 @@ class SiteLanguageContainer extends HTMLElement {
 
   public connectedCallback(): void {
     const identifier = this.getAttribute('identifier') || '' as string;
-    this.container = <HTMLElement>this.querySelector('#' + identifier);
+    this.container = <HTMLElement>this.querySelector(selector`#${identifier}`);
 
     if (this.container !== null) {
       this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
@@ -429,7 +430,7 @@ class SiteLanguageContainer extends HTMLElement {
     recordContainer.classList.add('t3js-inline-record-deleted');
 
     if (!recordContainer.classList.contains(States.new) && !forceDirectRemoval) {
-      const deleteCommandInput = this.container.querySelector('[name="cmd' + recordContainer.dataset.fieldName + '[delete]"]');
+      const deleteCommandInput = this.container.querySelector(selector`[name="cmd${recordContainer.dataset.fieldName}[delete]"]`);
       deleteCommandInput.removeAttribute('disabled');
 
       // Move input field to inline container so we can remove the record container

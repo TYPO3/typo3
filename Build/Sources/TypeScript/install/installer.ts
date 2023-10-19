@@ -21,6 +21,7 @@ import ProgressBar from './renderable/progress-bar';
 import Severity from './renderable/severity';
 import '@typo3/backend/element/icon-element';
 import MessageInterface from '@typo3/install/message-interface';
+import { selector } from '@typo3/core/literals';
 
 /**
  * Walk through the installation process of TYPO3
@@ -88,8 +89,8 @@ class Installer {
       const driver: string = $(e.currentTarget).val();
       $('.t3-install-driver-data').hide();
       $('.t3-install-driver-data input').attr('disabled', 'disabled');
-      $('#' + driver + ' input').attr('disabled', null);
-      $('#' + driver).show();
+      $(selector`#${driver} input`).attr('disabled', null);
+      $(selector`#${driver}`).show();
     });
   }
 

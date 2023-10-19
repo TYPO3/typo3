@@ -15,6 +15,7 @@ import 'bootstrap';
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import FormEngine from '@typo3/backend/form-engine';
+import { selector } from '@typo3/core/literals';
 import '@typo3/backend/element/icon-element';
 import Popover from './popover';
 import { Popover as BootstrapPopover } from 'bootstrap';
@@ -138,7 +139,7 @@ class FormEngineReview {
 
     // iterate possibly nested tab panels
     $referenceField.parents('[id][role="tabpanel"]').each(function(this: Element): void {
-      $('[aria-controls="' + $(this).attr('id') + '"]').tab('show');
+      $(selector`[aria-controls="${$(this).attr('id')}]`).tab('show');
     });
 
     $referenceField.focus();

@@ -17,6 +17,7 @@ import $ from 'jquery';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import SecurityUtility from '@typo3/core/security-utility';
 import Icons from './icons';
+import { selector } from '@typo3/core/literals';
 
 /**
  * GridEditorConfigurationInterface
@@ -68,7 +69,7 @@ export class GridEditor {
     this.colCount = $element.data('colcount');
     this.rowCount = $element.data('rowcount');
     this.readOnly = $element.data('readonly');
-    this.field = $('input[name="' + $element.data('field') + '"]');
+    this.field = $(selector`input[name="${$element.data('field')}"]`);
     this.data = $element.data('data');
     this.nameLabel = config !== null ? config.nameLabel : 'Name';
     this.columnLabel = config !== null ? config.columnLabel : 'Column';

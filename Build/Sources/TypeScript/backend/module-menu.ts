@@ -23,6 +23,7 @@ import InteractionRequest from './event/interaction-request';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ModuleStateStorage } from './storage/module-state-storage';
+import { selector } from '@typo3/core/literals';
 
 enum ModuleMenuSelector {
   menu = '[data-modulemenu]',
@@ -191,7 +192,7 @@ class ModuleMenu {
   private static highlightModuleMenuItem(module: Module, current: boolean = true): void {
     // Handle modulemenu
     const menu = document.querySelector(ModuleMenuSelector.menu);
-    const menuElements = menu.querySelectorAll(ModuleMenuSelector.item + '[data-modulemenu-identifier="' + module.name + '"]');
+    const menuElements = menu.querySelectorAll(ModuleMenuSelector.item + selector`[data-modulemenu-identifier="${module.name}"]`);
     menuElements.forEach((element: HTMLElement) => {
       element.classList.add('modulemenu-action-active');
       if (current) {
@@ -206,7 +207,7 @@ class ModuleMenu {
     // workaround until this changes. Even the code matches the handling of
     // module-menu-items we keep this separate to show the problem here.
     const toolbar = document.querySelector('.t3js-scaffold-toolbar');
-    const toolbarElements = toolbar.querySelectorAll(ModuleSelector.link + '[data-moduleroute-identifier="' + module.name + '"].dropdown-item');
+    const toolbarElements = toolbar.querySelectorAll(ModuleSelector.link + selector`[data-moduleroute-identifier="${module.name}"].dropdown-item`);
     toolbarElements.forEach((element: HTMLElement) => {
       element.classList.add('active');
       if (current) {

@@ -25,6 +25,7 @@ import Wizard from '@typo3/backend/wizard';
 import SecurityUtility from '@typo3/core/security-utility';
 import windowManager from '@typo3/backend/window-manager';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { selector } from '@typo3/core/literals';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -260,7 +261,7 @@ class Backend extends Workspaces {
    * @param {boolean} check The checked state
    */
   private static changeCollectionChildrenState(collectionCurrent: string, check: boolean): void {
-    const collectionChildren: NodeListOf<HTMLInputElement> = document.querySelectorAll('tr[data-collection="' + collectionCurrent + '"] input[type=checkbox]');
+    const collectionChildren: NodeListOf<HTMLInputElement> = document.querySelectorAll(selector`tr[data-collection="${collectionCurrent}"] input[type=checkbox]`);
     if (collectionChildren.length) {
       collectionChildren.forEach((checkbox: HTMLInputElement): void => {
         if (checkbox.checked !== check) {
