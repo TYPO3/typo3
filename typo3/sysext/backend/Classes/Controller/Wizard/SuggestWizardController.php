@@ -35,6 +35,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SuggestWizardController
 {
+    public function __construct(
+        private readonly FlexFormTools $flexFormTools,
+    ) {
+    }
+
     /**
      * Ajax handler for the "suggest" feature in FormEngine.
      *
@@ -76,8 +81,7 @@ class SuggestWizardController
             }
         } else {
             // A flex flex form field
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $dataStructure = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
             if (empty($flexFormContainerFieldName)) {
                 // @todo: See if a path in pageTsConfig like "TCEForm.tableName.theContainerFieldName =" is useful and works with other pageTs, too.
                 $fieldNameInPageTsConfig = $flexFormFieldName;

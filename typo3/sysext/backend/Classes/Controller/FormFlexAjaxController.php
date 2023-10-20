@@ -39,6 +39,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
+        private readonly FlexFormTools $flexFormTools,
     ) {
     }
 
@@ -62,8 +63,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
 
         // Prepare TCA and data values for a new section container using data providers
         $processedTca = $GLOBALS['TCA'][$tableName];
-        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-        $dataStructure = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
         $processedTca['columns'][$fieldName]['config']['ds'] = $dataStructure;
         $processedTca['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
         // Get a new unique id for this container.

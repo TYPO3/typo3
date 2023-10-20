@@ -46,6 +46,9 @@ services:
         description: 'Shows the configuration of the specified site'
         schedulable: false
 
+  TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools:
+    public: true
+
   TYPO3\CMS\Core\Configuration\SiteConfiguration:
     arguments:
       $cache: '@cache.core'

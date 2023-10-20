@@ -34,6 +34,7 @@ class FormSelectTreeAjaxController
 {
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
+        private readonly FlexFormTools $flexFormTools,
     ) {
     }
 
@@ -88,8 +89,7 @@ class FormSelectTreeAjaxController
             $flexFormContainerFieldName = $request->getQueryParams()['flexFormContainerFieldName'];
             $flexFormSectionContainerIsNew = (bool)$request->getQueryParams()['flexFormSectionContainerIsNew'];
 
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $dataStructure = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
 
             // Reduce given data structure down to the relevant element only
             if (empty($flexFormContainerFieldName)) {

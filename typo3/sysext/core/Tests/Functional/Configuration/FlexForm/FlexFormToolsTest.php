@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Configuration\FlexForm;
 use Doctrine\DBAL\Result;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent;
@@ -41,7 +39,6 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
-use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -52,27 +49,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class FlexFormToolsTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        // Underlying static GeneralUtility::xml2array() uses caches that have to be mocked here
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
-        $cacheMock->method('get')->with(self::anything())->willReturn(false);
-        $cacheMock->method('set')->with(self::anything())->willReturn(false);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-    }
-
     /**
      * @test
      */
     public function getDataStructureIdentifierWithNoListenersReturnsDefault(): void
     {
-        $subject = new FlexFormTools();
-
         $fieldTca = [
             'config' => [
                 'ds' => [
@@ -80,9 +61,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-
-        $result = $subject->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
-
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         self::assertSame($expected, $result);
     }
@@ -92,8 +71,6 @@ final class FlexFormToolsTest extends FunctionalTestCase
      */
     public function getDataStructureIdentifierWithNoOpListenerReturnsDefault(): void
     {
-        $subject = new FlexFormTools();
-
         $fieldTca = [
             'config' => [
                 'ds' => [
@@ -101,22 +78,17 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-
         /** @var Container $container */
         $container = $this->getContainer();
-
         $container->set(
             'noop',
             static function (BeforeFlexFormDataStructureIdentifierInitializedEvent $event) {
                 // noop
             }
         );
-
-        $eventListener = GeneralUtility::makeInstance(ListenerProvider::class);
+        $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeFlexFormDataStructureIdentifierInitializedEvent::class, 'noop');
-
-        $result = $subject->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
-
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         self::assertSame($expected, $result);
     }
@@ -126,11 +98,8 @@ final class FlexFormToolsTest extends FunctionalTestCase
      */
     public function getDataStructureIdentifierWithListenerReturnsThatListenersValue(): void
     {
-        $subject = new FlexFormTools();
-
         /** @var Container $container */
         $container = $this->getContainer();
-
         $container->set(
             'identifier-one',
             static function (BeforeFlexFormDataStructureIdentifierInitializedEvent $event) {
@@ -140,12 +109,9 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ]);
             }
         );
-
-        $eventListener = GeneralUtility::makeInstance(ListenerProvider::class);
+        $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeFlexFormDataStructureIdentifierInitializedEvent::class, 'identifier-one');
-
-        $result = $subject->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []);
-
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []);
         $expected = '{"type":"myExtension","further":"data"}';
         self::assertSame($expected, $result);
     }
@@ -155,11 +121,8 @@ final class FlexFormToolsTest extends FunctionalTestCase
      */
     public function getDataStructureIdentifierWithModifyListenerCallsListener(): void
     {
-        $subject = new FlexFormTools();
-
         /** @var Container $container */
         $container = $this->getContainer();
-
         $container->set(
             'modifier-one',
             static function (AfterFlexFormDataStructureIdentifierInitializedEvent $event) {
@@ -168,7 +131,6 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 $event->setIdentifier($id);
             }
         );
-
         $fieldTca = [
             'config' => [
                 'ds' => [
@@ -176,12 +138,9 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-
-        $eventListener = GeneralUtility::makeInstance(ListenerProvider::class);
+        $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(AfterFlexFormDataStructureIdentifierInitializedEvent::class, 'modifier-one');
-
-        $result = $subject->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
-
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default","beep":"boop"}';
         self::assertSame($expected, $result);
     }
@@ -199,7 +158,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1463826960);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
     }
 
     /**
@@ -215,7 +174,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
             ],
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
     }
 
     /**
@@ -230,7 +189,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(InvalidTcaException::class);
         $this->expectExceptionCode(1463652560);
-        self::assertSame('default', (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
+        self::assertSame('default', $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
     }
 
     /**
@@ -246,7 +205,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1463577497);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
     }
 
     /**
@@ -265,7 +224,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1463578899);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -284,7 +243,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1463578899);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -303,7 +262,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1463578900);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -323,7 +282,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
             'aField' => 'thePointerValue',
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"thePointerValue"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -343,7 +302,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
             'aField' => 'thePointerValue',
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -365,7 +324,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(InvalidSinglePointerFieldException::class);
         $this->expectExceptionCode(1463653197);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -476,7 +435,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 'ds_pointerField' => 'firstField,secondField',
             ],
         ];
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -499,7 +458,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(InvalidCombinedPointerFieldException::class);
         $this->expectExceptionCode(1463678524);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -546,7 +505,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $queryBuilderMock->expects(self::atLeastOnce())->method('count')->with('uid')->willReturn($queryBuilderMock);
         $this->expectException(InvalidParentRowException::class);
         $this->expectExceptionCode(1463833794);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -639,7 +598,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
 
         $this->expectException(InvalidParentRowLoopException::class);
         $this->expectExceptionCode(1464110956);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow);
     }
 
     /**
@@ -732,7 +691,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
 
         $this->expectException(InvalidParentRowRootException::class);
         $this->expectExceptionCode(1464112555);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow);
     }
 
     /**
@@ -750,7 +709,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(InvalidPointerFieldValueException::class);
         $this->expectExceptionCode(1464114011);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -768,7 +727,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(InvalidTcaException::class);
         $this->expectExceptionCode(1464115639);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -787,7 +746,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
         $this->expectException(InvalidTcaException::class);
         $this->expectExceptionCode(1464116002);
-        (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
     /**
@@ -805,7 +764,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
             'aPointerField' => '<T3DataStructure>...',
         ];
         $expected = '{"type":"record","tableName":"aTableName","uid":42,"fieldName":"aPointerField"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -897,7 +856,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $statementMock->method('fetchAssociative')->willReturn($secondRow, $thirdRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":1,"fieldName":"tx_templavoila_ds"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
     /**
@@ -954,7 +913,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $statementMock->method('fetchAssociative')->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_ds"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
     /**
@@ -1015,7 +974,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $statementMock->method('fetchAssociative')->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_next_ds"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
     /**
@@ -1035,7 +994,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
             'aPointerField' => 42,
         ];
         $expected = '{"type":"record","tableName":"foreignTableName","uid":42,"fieldName":"foreignTableField"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -1097,7 +1056,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $statementMock->method('fetchAssociative')->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"foreignTableName","uid":42,"fieldName":"foreignTableField"}';
-        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
     /**
@@ -1107,7 +1066,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     {
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478100828);
-        (new FlexFormTools())->parseDataStructureByIdentifier('');
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier('');
     }
 
     /**
@@ -1117,7 +1076,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478345642);
-        (new FlexFormTools())->parseDataStructureByIdentifier('egon');
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier('egon');
     }
 
     /**
@@ -1127,7 +1086,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     {
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478104554);
-        (new FlexFormTools())->parseDataStructureByIdentifier('{"some":"input"}');
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier('{"some":"input"}');
     }
 
     /**
@@ -1137,7 +1096,6 @@ final class FlexFormToolsTest extends FunctionalTestCase
     {
         /** @var Container $container */
         $container = $this->getContainer();
-
         $container->set(
             'string',
             static function (BeforeFlexFormDataStructureParsedEvent $event) {
@@ -1150,15 +1108,13 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 }
             }
         );
-
-        $eventListener = GeneralUtility::makeInstance(ListenerProvider::class);
+        $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeFlexFormDataStructureParsedEvent::class, 'string');
-
         $identifier = '{"type":"myExtension"}';
         $expected = [
             'sheets' => '',
         ];
-        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1168,7 +1124,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     {
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478104554);
-        (new FlexFormTools())->parseDataStructureByIdentifier('{"type":"bernd"}');
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier('{"type":"bernd"}');
     }
 
     /**
@@ -1179,7 +1135,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478113471);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName"}';
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1190,7 +1146,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478105491);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1207,7 +1163,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $expected = [
             'sheets' => '',
         ];
-        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1218,7 +1174,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478113873);
         $identifier = '{"type":"record","tableName":"foreignTableName","uid":42}';
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1257,7 +1213,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $expected = [
             'sheets' => '',
         ];
-        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1270,7 +1226,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478105826);
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1299,7 +1255,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1317,7 +1273,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478106090);
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1334,7 +1290,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1440676540);
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1377,7 +1333,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1413,7 +1369,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1449,7 +1405,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1463,10 +1419,8 @@ final class FlexFormToolsTest extends FunctionalTestCase
             </T3DataStructure>
         ';
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-
         /** @var Container $container */
         $container = $this->getContainer();
-
         $container->set(
             'mock',
             static function (AfterFlexFormDataStructureParsedEvent $event) {
@@ -1477,16 +1431,14 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ]);
             }
         );
-
-        $eventListener = GeneralUtility::makeInstance(ListenerProvider::class);
+        $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(AfterFlexFormDataStructureParsedEvent::class, 'mock');
-
         $expected = [
             'sheets' => [
                 'foo' => 'bar',
             ],
         ];
-        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1552,7 +1504,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1577,11 +1529,9 @@ final class FlexFormToolsTest extends FunctionalTestCase
             </T3DataStructure>
         ';
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1627640208);
-
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1607,11 +1557,9 @@ final class FlexFormToolsTest extends FunctionalTestCase
             </T3DataStructure>
         ';
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1627640209);
-
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1636,11 +1584,9 @@ final class FlexFormToolsTest extends FunctionalTestCase
             </T3DataStructure>
         ';
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1627640210);
-
-        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -1687,7 +1633,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
             ],
         ];
         $editData2 = [];
-        $flexFormTools = new FlexFormTools(new NoopEventDispatcher());
+        $flexFormTools = $this->get(FlexFormTools::class);
         $flexFormTools->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
         $flexFormTools->traverseFlexFormXMLData_recurse($dataStruct, $editData2, $pA);
     }
@@ -1699,7 +1645,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1697554398);
-        (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('fooTable', 'fooField', []);
+        $this->get(FlexFormTools::class)->cleanFlexFormXML('fooTable', 'fooField', []);
     }
 
     /**
@@ -1710,7 +1656,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1697554398);
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = 'invalid';
-        (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('fooTable', 'fooField', []);
+        $this->get(FlexFormTools::class)->cleanFlexFormXML('fooTable', 'fooField', []);
     }
 
     /**
@@ -1719,7 +1665,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     public function cleanFlexFormXMLReturnsEmptyStringWithInvalidDataStructure(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = 'invalid';
-        $result = (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid']);
+        $result = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid']);
         self::assertSame('', $result);
     }
 
@@ -1743,7 +1689,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 </ROOT>
             </T3DataStructure>
         ';
-        $result = (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid']);
+        $result = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid']);
         self::assertSame('', $result);
     }
 
@@ -1765,7 +1711,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 </data>
             </T3FlexForms>
         ';
-        (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXml]);
+        $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXml]);
     }
 
     /**
@@ -1776,7 +1722,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructure.xml');
         $flexXmlInput = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructureValueInput.xml');
         $flexXmlExpected = trim(file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructureValueExpected.xml'));
-        $flexXmlOutput = (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput]);
+        $flexXmlOutput = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput]);
         self::assertSame($flexXmlExpected, $flexXmlOutput);
     }
 
@@ -1788,7 +1734,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructure.xml');
         $flexXmlInput = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructureValueInput.xml');
         $flexXmlExpected = trim(file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructureValueExpected.xml'));
-        $flexXmlOutput = (new FlexFormTools(new NoopEventDispatcher()))->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput]);
+        $flexXmlOutput = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput]);
         self::assertSame($flexXmlExpected, $flexXmlOutput);
     }
 }

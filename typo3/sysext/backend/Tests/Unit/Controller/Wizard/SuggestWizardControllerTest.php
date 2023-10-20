@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Wizard;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SuggestWizardControllerTest extends UnitTestCase
@@ -60,12 +59,11 @@ final class SuggestWizardControllerTest extends UnitTestCase
             ],
         ];
         $flexFormToolsMock = $this->createMock(FlexFormTools::class);
-        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsMock);
         $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier)->willReturn($dataStructure);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        (new SuggestWizardController())->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock))->searchAction($request);
     }
 
     /**
@@ -103,12 +101,11 @@ final class SuggestWizardControllerTest extends UnitTestCase
             ],
         ];
         $flexFormToolsMock = $this->createMock(FlexFormTools::class);
-        GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsMock);
         $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier)->willReturn($dataStructure);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        (new SuggestWizardController())->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock))->searchAction($request);
     }
 
     /**

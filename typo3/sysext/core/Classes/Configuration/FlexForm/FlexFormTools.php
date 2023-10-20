@@ -89,9 +89,8 @@ class FlexFormTools
     public $callBackObj;
 
     public function __construct(
-        private ?EventDispatcherInterface $eventDispatcher = null,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->eventDispatcher ??= GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     /**
