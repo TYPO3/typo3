@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <!--
-	Unit test deprecated suite setup.
+    Unit test deprecated suite setup.
 
-	This suite allows tests to trigger E_USER_DEPRECATED errors
-	without making the tests fail. Used to test deprecated core
-	functionality.
+    This suite allows tests to trigger E_USER_DEPRECATED errors
+    without making the tests fail. Used to test deprecated core
+    functionality.
 
-	Unit tests should extend \TYPO3\TestingFramework\Core\Tests\UnitTestCase,
-	take a look at this class for further documentation on how to run the suite.
+    Unit tests should extend \TYPO3\TestingFramework\Core\Tests\UnitTestCase,
+    take a look at this class for further documentation on how to run the suite.
 
-	TYPO3 CMS unit test suite also needs phpunit bootstrap code, the
-	file is located next to this .xml as UnitTestsBootstrap.php
+    TYPO3 CMS unit test suite also needs phpunit bootstrap code, the
+    file is located next to this .xml as UnitTestsBootstrap.php
 
     The recommended way to execute the suite is "runTests.sh -s unitDeprecated"
     execute "Build/Scripts/runTests.sh -h" for more details.

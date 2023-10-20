@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3RecordDocument>
-	<header type="array">
-		<XMLversion>1.0</XMLversion>
+    <header type="array">
+        <XMLversion>1.0</XMLversion>
         <meta type="array"></meta>
-		<static_tables index="relStaticTables" type="array"></static_tables>
-		<excludeMap type="array"></excludeMap>
-		<softrefCfg type="array"></softrefCfg>
-		<extensionDependencies type="array"></extensionDependencies>
-		<charset>utf-8</charset>
-		<records type="array">
-			<table index="sys_news" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>0</pid>
-					<title>News</title>
-					<relations index="rels" type="array"></relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-			</table>
-		</records>
-		<pid_lookup type="array">
-			<page_contents index="0" type="array">
-				<table index="sys_news" type="array">
-					<item index="1">1</item>
-				</table>
-			</page_contents>
-		</pid_lookup>
-	</header>
-	<records type="array">
-		<tablerow index="sys_news:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">0</field>
-				<field index="tstamp" type="integer">1602145286</field>
-				<field index="crdate" type="integer">1602145286</field>
-				<field index="cruser" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
+        <static_tables index="relStaticTables" type="array"></static_tables>
+        <excludeMap type="array"></excludeMap>
+        <softrefCfg type="array"></softrefCfg>
+        <extensionDependencies type="array"></extensionDependencies>
+        <charset>utf-8</charset>
+        <records type="array">
+            <table index="sys_news" type="array">
+                <rec index="1" type="array">
+                    <uid>1</uid>
+                    <pid>0</pid>
+                    <title>News</title>
+                    <relations index="rels" type="array"></relations>
+                    <softrefs type="array"></softrefs>
+                </rec>
+            </table>
+        </records>
+        <pid_lookup type="array">
+            <page_contents index="0" type="array">
+                <table index="sys_news" type="array">
+                    <item index="1">1</item>
+                </table>
+            </page_contents>
+        </pid_lookup>
+    </header>
+    <records type="array">
+        <tablerow index="sys_news:1" type="array">
+            <fieldlist index="data" type="array">
+                <field index="uid" type="integer">1</field>
+                <field index="pid" type="integer">0</field>
+                <field index="tstamp" type="integer">1602145286</field>
+                <field index="crdate" type="integer">1602145286</field>
+                <field index="cruser" type="integer">1</field>
+                <field index="deleted" type="integer">0</field>
+                <field index="hidden" type="integer">0</field>
                 <field index="starttime" type="integer">0</field>
                 <field index="endtime" type="integer">0</field>
                 <field index="title">News</field>
-				<field index="content">content</field>
-			</fieldlist>
-			<related index="rels" type="array"></related>
-		</tablerow>
-	</records>
+                <field index="content">content</field>
+            </fieldlist>
+            <related index="rels" type="array"></related>
+        </tablerow>
+    </records>
 </T3RecordDocument>
