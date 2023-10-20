@@ -5,8 +5,6 @@ CREATE TABLE tx_blogexample_domain_model_blog (
 	title varchar(255) DEFAULT '' NOT NULL,
 	subtitle varchar(255) DEFAULT '',
 	administrator int(11) DEFAULT '0' NOT NULL,
-
-	posts varchar(255) DEFAULT '' NOT NULL
 );
 
 #
@@ -19,19 +17,13 @@ CREATE TABLE tx_blogexample_domain_model_post (
 	author int(11) DEFAULT '0' NOT NULL,
 	reviewer int(11) DEFAULT '0' NOT NULL,
 	tags int(11) unsigned DEFAULT '0' NOT NULL,
-	comments int(11) unsigned DEFAULT '0' NOT NULL,
 	related_posts int(11) unsigned DEFAULT '0' NOT NULL,
-	additional_name varchar(255) DEFAULT '' NOT NULL,
-	additional_info int(11) DEFAULT '0' NOT NULL,
-	additional_comments varchar(255) DEFAULT '' NOT NULL
 );
 
 #
 # Table structure for table 'tx_blogexample_domain_model_comment'
 #
 CREATE TABLE tx_blogexample_domain_model_comment (
-	post int(11) DEFAULT '0' NOT NULL,
-
 	author varchar(255) DEFAULT '' NOT NULL,
 );
 
@@ -66,7 +58,6 @@ CREATE TABLE tx_blogexample_domain_model_dateexample (
 #
 CREATE TABLE tx_blogexample_domain_model_info (
 	name varchar(255) DEFAULT '' NOT NULL,
-	post int(11) DEFAULT '0' NOT NULL
 );
 
 #

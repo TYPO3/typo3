@@ -66,6 +66,7 @@ Columns are auto-created for these :php:`TCA` :php:`columns` types:
 * :php:`type = 'color'` - new with core v13
 * :php:`type = 'radio'` - new with core v13
 * :php:`type = 'link'` - new with core v13
+* :php:`type = 'inline'` - new with core v13
 
 
 .. index:: TCA, ext:core, NotScanned

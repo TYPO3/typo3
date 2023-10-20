@@ -23,7 +23,6 @@ CREATE TABLE sys_workspace (
 	title varchar(30) DEFAULT '' NOT NULL,
 	file_mountpoints text,
 	previewlink_lifetime int(11) DEFAULT '0' NOT NULL,
-	custom_stages int(11) DEFAULT '0' NOT NULL,
 	stagechg_notification tinyint(3) DEFAULT '0' NOT NULL,
 );
 
@@ -33,6 +32,4 @@ CREATE TABLE sys_workspace (
 #
 CREATE TABLE sys_workspace_stage (
 	title varchar(30) DEFAULT '' NOT NULL,
-	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable varchar(255) DEFAULT '' NOT NULL,
 );

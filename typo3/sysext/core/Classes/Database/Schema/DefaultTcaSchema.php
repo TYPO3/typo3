@@ -886,6 +886,77 @@ class DefaultTcaSchema
                     ]
                 );
             }
+
+            // Add fields for all tables, defining inline columns (TCA type=inline)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'inline'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                if (($fieldConfig['config']['MM'] ?? '') !== '' || ($fieldConfig['config']['foreign_field'] ?? '') !== '') {
+                    // Parent "count" field
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::INTEGER,
+                        [
+                            'default' => 0,
+                            'notnull' => true,
+                            'unsigned' => true,
+                        ]
+                    );
+                } else {
+                    // Inline "csv"
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                            'default' => '',
+                            'notnull' => true,
+                            'length' => 255,
+                        ]
+                    );
+                }
+                if (($fieldConfig['config']['foreign_field'] ?? '') !== '') {
+                    // Add definition for "foreign_field" (contains parent uid) in the child table if it is not defined
+                    // in child TCA or if it is "just" a "passthrough" field, and not manually configured in ext_tables.sql
+                    $childTable = $fieldConfig['config']['foreign_table'];
+                    $childTablePosition = $this->getTableFirstPosition($tables, $childTable);
+                    $childTableForeignFieldName = $fieldConfig['config']['foreign_field'];
+                    $childTableForeignFieldConfig = $GLOBALS['TCA'][$childTable]['columns'][$childTableForeignFieldName] ?? [];
+                    if (($childTableForeignFieldConfig === [] || ($childTableForeignFieldConfig['config']['type'] ?? '') === 'passthrough')
+                        && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignFieldName)
+                    ) {
+                        $tables[$childTablePosition]->addColumn(
+                            $this->quote($childTableForeignFieldName),
+                            Types::INTEGER,
+                            [
+                                'default' => 0,
+                                'notnull' => true,
+                                'unsigned' => true,
+                            ]
+                        );
+                    }
+                    // Add definition for "foreign_table_field" (contains name of parent table) in the child table if it is not
+                    // defined in child TCA or if it is "just" a "passthrough" field, and not manually configured in ext_tables.sql
+                    $childTableForeignTableFieldName = $fieldConfig['config']['foreign_table_field'] ?? '';
+                    $childTableForeignTableFieldConfig = $GLOBALS['TCA'][$childTable]['columns'][$childTableForeignTableFieldName] ?? [];
+                    if ($childTableForeignTableFieldName !== ''
+                        && ($childTableForeignTableFieldConfig === [] || ($childTableForeignTableFieldConfig['config']['type'] ?? '') === 'passthrough')
+                        && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignTableFieldName)
+                    ) {
+                        $tables[$childTablePosition]->addColumn(
+                            $this->quote($childTableForeignTableFieldName),
+                            Types::STRING,
+                            [
+                                'default' => '',
+                                'notnull' => true,
+                                'length' => 255,
+                            ]
+                        );
+                    }
+                }
+            }
         }
 
         return $tables;

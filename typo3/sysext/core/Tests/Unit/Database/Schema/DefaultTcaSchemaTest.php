@@ -1599,4 +1599,130 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('link')->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function enrichAddsInlineWithMMSet(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['inline_MM'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'bTable',
+                'MM' => 'cTable',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable, new Table('bTable'), new Table('cTable')]);
+        $expectedColumn = new Column(
+            '`inline_MM`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'unsigned' => true,
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline_MM')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsInlineWithForeignFieldSet(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['inline_ff'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'bTable',
+                'foreign_field' => 'bField',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable, new Table('bTable')]);
+        $expectedColumn = new Column(
+            '`inline_ff`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'unsigned' => true,
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline_ff')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsInlineWithForeignFieldAndChildRelationSet(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['inline_ff'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'inline',
+                'foreign_field' => 'bField',
+                'foreign_table' => 'bTable',
+                'foreign_table_field' => 'cField',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable, new Table('bTable')]);
+        $expectedColumn = new Column(
+            '`inline_ff`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'unsigned' => true,
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline_ff')->toArray());
+
+        $expectedChildColumnForForeignField = new Column(
+            'bField',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'unsigned' => true,
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedChildColumnForForeignField->toArray(), $result[1]->getColumn('bField')->toArray());
+
+        $expectedChildColumnForForeignTableField = new Column(
+            'cField',
+            Type::getType('string'),
+            [
+                'default' => '',
+                'notnull' => true,
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedChildColumnForForeignTableField->toArray(), $result[1]->getColumn('cField')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsInlineWithoutRelationTableSet(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['inline'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'bTable',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`inline`',
+            Type::getType('string'),
+            [
+                'default' => '',
+                'notnull' => true,
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline')->toArray());
+    }
 }

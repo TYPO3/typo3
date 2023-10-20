@@ -150,7 +150,6 @@ CREATE TABLE sys_file (
 	# management information
 	storage int(11) DEFAULT '0' NOT NULL,
 	type varchar(10) DEFAULT '' NOT NULL,
-	metadata int(11) DEFAULT '0' NOT NULL,
 
 	# file info data
 	identifier text,

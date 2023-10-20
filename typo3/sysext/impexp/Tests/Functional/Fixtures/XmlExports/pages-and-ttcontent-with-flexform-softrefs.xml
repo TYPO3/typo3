@@ -191,7 +191,6 @@
                 <field index="pid">0</field>
                 <field index="storage">1</field>
                 <field index="type">1</field>
-                <field index="metadata">0</field>
                 <field index="identifier">/form_definitions/flexFormWithSoftReference.form.yaml</field>
                 <field index="identifier_hash">c6e1accb577763016f7fc2ea06a5a0735ac24a70</field>
                 <field index="folder_hash">c62e3e70a526a59f0f0b7687864947eab72d7d3f</field>
@@ -201,6 +200,7 @@
                 <field index="size">501</field>
                 <field index="creation_date">1628060459</field>
                 <field index="modification_date">1628060459</field>
+                <field index="metadata">0</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">

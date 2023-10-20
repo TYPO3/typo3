@@ -919,10 +919,10 @@
                 <field index="sorting" type="integer">1</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">1</field>
-                <field index="parenttable">tt_content</field>
                 <field index="parentidentifier">1nff.hotels</field>
                 <field index="title">Hotel 1 (nff)</field>
+                <field index="parentid" type="integer">1</field>
+                <field index="parenttable">tt_content</field>
                 <field index="offers" type="integer">2</field>
             </fieldlist>
             <related index="rels" type="array">
@@ -950,10 +950,10 @@
                 <field index="sorting" type="integer">2</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">1</field>
-                <field index="parenttable">tt_content</field>
                 <field index="parentidentifier">1nff.hotels</field>
                 <field index="title">Hotel 2 (nff)</field>
+                <field index="parentid" type="integer">1</field>
+                <field index="parenttable">tt_content</field>
                 <field index="offers" type="integer">1</field>
             </fieldlist>
             <related index="rels" type="array">
@@ -977,10 +977,10 @@
                 <field index="sorting" type="integer">1</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">1</field>
-                <field index="parenttable">tx_testirreforeignfield_hotel</field>
                 <field index="parentidentifier"></field>
                 <field index="title">Offer 1.1 (nff)</field>
+                <field index="parentid" type="integer">1</field>
+                <field index="parenttable">tx_testirreforeignfield_hotel</field>
                 <field index="prices" type="integer">2</field>
             </fieldlist>
             <related index="rels" type="array">
@@ -1008,10 +1008,10 @@
                 <field index="sorting" type="integer">2</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">1</field>
-                <field index="parenttable">tx_testirreforeignfield_hotel</field>
                 <field index="parentidentifier"></field>
                 <field index="title">Offer 1.2 (nff)</field>
+                <field index="parentid" type="integer">1</field>
+                <field index="parenttable">tx_testirreforeignfield_hotel</field>
                 <field index="prices" type="integer">1</field>
             </fieldlist>
             <related index="rels" type="array">
@@ -1035,10 +1035,10 @@
                 <field index="sorting" type="integer">3</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">2</field>
-                <field index="parenttable">tx_testirreforeignfield_hotel</field>
                 <field index="parentidentifier"></field>
                 <field index="title">Offer 2.1 (nff)</field>
+                <field index="parentid" type="integer">2</field>
+                <field index="parenttable">tx_testirreforeignfield_hotel</field>
                 <field index="prices" type="integer">1</field>
             </fieldlist>
             <related index="rels" type="array">
@@ -1062,11 +1062,11 @@
                 <field index="sorting" type="integer">1</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">1</field>
-                <field index="parenttable">tx_testirreforeignfield_offer</field>
                 <field index="parentidentifier"></field>
                 <field index="title">Price 1.1.1 (nff)</field>
                 <field index="price">4.00</field>
+                <field index="parentid" type="integer">1</field>
+                <field index="parenttable">tx_testirreforeignfield_offer</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -1079,11 +1079,11 @@
                 <field index="sorting" type="integer">2</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">1</field>
-                <field index="parenttable">tx_testirreforeignfield_offer</field>
                 <field index="parentidentifier"></field>
                 <field index="title">Price 1.1.2 (nff)</field>
                 <field index="price">869.00</field>
+                <field index="parentid" type="integer">1</field>
+                <field index="parenttable">tx_testirreforeignfield_offer</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -1096,11 +1096,11 @@
                 <field index="sorting" type="integer">3</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">2</field>
-                <field index="parenttable">tx_testirreforeignfield_offer</field>
                 <field index="parentidentifier"></field>
                 <field index="title">Price 1.2.1 (nff)</field>
                 <field index="price">678.00</field>
+                <field index="parentid" type="integer">2</field>
+                <field index="parenttable">tx_testirreforeignfield_offer</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -1113,11 +1113,11 @@
                 <field index="sorting" type="integer">4</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">3</field>
-                <field index="parenttable">tx_testirreforeignfield_offer</field>
                 <field index="parentidentifier"></field>
                 <field index="title">Price 2.1.1 (nff)</field>
                 <field index="price">5467567.00</field>
+                <field index="parentid" type="integer">3</field>
+                <field index="parenttable">tx_testirreforeignfield_offer</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -1466,9 +1466,9 @@
                 <field index="sorting" type="integer">1</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">1</field>
                 <field index="title">Price 1 1:2 (m:n ASym)</field>
                 <field index="price">678.00</field>
+                <field index="parentid" type="integer">1</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -1481,9 +1481,9 @@
                 <field index="sorting" type="integer">2</field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l18n_parent" type="integer">0</field>
-                <field index="parentid" type="integer">2</field>
                 <field index="title">Price 2 1:1 (m:n ASym)</field>
                 <field index="price">45.00</field>
+                <field index="parentid" type="integer">2</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>

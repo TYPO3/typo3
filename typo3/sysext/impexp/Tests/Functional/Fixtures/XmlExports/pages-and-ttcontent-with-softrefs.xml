@@ -220,7 +220,6 @@
                 <field index="pid">0</field>
                 <field index="storage">1</field>
                 <field index="type">2</field>
-                <field index="metadata">0</field>
                 <field index="identifier">/user_upload/typo3_image2.jpg</field>
                 <field index="identifier_hash">f90bb9a35622f35b5279195e324eddbaec8164b2</field>
                 <field index="folder_hash">19669f1e02c2f16705ec7587044c66443be70725</field>
@@ -230,6 +229,7 @@
                 <field index="size">7958</field>
                 <field index="creation_date">1389878273</field>
                 <field index="modification_date">1389878273</field>
+                <field index="metadata">0</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">
