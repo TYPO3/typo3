@@ -24,6 +24,7 @@ final class ReferenceIndexTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_refindex_softref',
     ];
 
     /**
@@ -35,5 +36,35 @@ final class ReferenceIndexTest extends FunctionalTestCase
         $result = $this->get(ReferenceIndex::class)->updateIndex(false);
         self::assertSame('Index table hosted 1 indexes for non-existing or deleted workspaces, now removed.', $result['errors'][0]);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexRemoveNonExistingWorkspaceResult.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function updateIndexHandlesSoftrefForDbFieldWithEmailSoftref(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForDbFieldWithEmailSoftrefImport.csv');
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForDbFieldWithEmailSoftrefResult.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function updateIndexHandlesSoftrefForFlexFieldSheetField(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForFlexFieldSheetFieldImport.csv');
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForFlexFieldSheetFieldResult.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function updateIndexHandlesSoftrefForFlexFieldContainerElementFields(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForFlexFieldContainerElementFieldsImport.csv');
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForFlexFieldContainerElementFieldsResult.csv');
     }
 }
