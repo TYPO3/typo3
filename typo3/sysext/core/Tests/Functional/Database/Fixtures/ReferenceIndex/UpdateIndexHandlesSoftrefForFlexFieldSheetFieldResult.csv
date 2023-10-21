@@ -11,6 +11,12 @@
                 <field index=""text_1"">
                     <value index=""vDEF"">foo@example.com</value>
                 </field>
+                <field index=""email_1"">
+                    <value index=""vDEF"">foo@example.com</value>
+                </field>
+                <field index=""link_1"">
+                    <value index=""vDEF"">t3://page?uid=1</value>
+                </field>
             </language>
         </sheet>
     </data>
@@ -18,3 +24,5 @@
 "sys_refindex"
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string"
 ,"39e493b1e8575e42a721851f4849b6e0","tx_test_refindex_softref",3,"flex_1","sheet_1/lDEF/text_1/vDEF/","email",2,-1,0,"_STRING",0,"foo@example.com"
+,"5ee9470703ae97fb66a812c98ddce489","tx_test_refindex_softref",3,"flex_1","sheet_1/lDEF/email_1/vDEF/","email",2,-1,0,"_STRING",0,"foo@example.com"
+,"0c0cafdf549371f45242a4bdb670a08a","tx_test_refindex_softref",3,"flex_1","sheet_1/lDEF/link_1/vDEF/","typolink","e40fc4f1fb854efa8350fe9902d09abf:0",-1,0,"pages",1,""

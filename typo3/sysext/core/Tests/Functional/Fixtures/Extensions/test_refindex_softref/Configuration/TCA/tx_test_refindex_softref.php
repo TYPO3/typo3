@@ -87,6 +87,18 @@ return [
                                                     <softref>email[subst]</softref>
                                                 </config>
                                             </text_1>
+                                            <email_1>
+                                                <label>email_1</label>
+                                                <config>
+                                                    <type>email</type>
+                                                </config>
+                                            </email_1>
+                                            <link_1>
+                                                <label>link_1</label>
+                                                <config>
+                                                    <type>link</type>
+                                                </config>
+                                            </link_1>
                                         </el>
                                     </ROOT>
                                 </sheet_1>
@@ -111,6 +123,18 @@ return [
                                                                     <softref>email[subst]</softref>
                                                                 </config>
                                                             </input_1>
+                                                            <email_1>
+                                                                <label>email_1</label>
+                                                                <config>
+                                                                    <type>email</type>
+                                                                </config>
+                                                            </email_1>
+                                                            <link_1>
+                                                                <label>link_1</label>
+                                                                <config>
+                                                                    <type>link</type>
+                                                                </config>
+                                                            </link_1>
                                                         </el>
                                                     </container_1>
                                                     <container_2>

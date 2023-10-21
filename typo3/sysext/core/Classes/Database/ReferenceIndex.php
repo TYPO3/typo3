@@ -22,6 +22,11 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ProgressListenerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -68,8 +73,6 @@ class ReferenceIndex
         'pid' => true,
     ];
 
-    /** Holds the FlexForm references of a record */
-    protected array $temp_flexRelations = [];
     /** An index of all found references of a single record */
     protected array $relations = [];
     /** Number which we can increase if a change in the code means we will have to force a re-generation of the index. */
@@ -88,6 +91,7 @@ class ReferenceIndex
         private readonly SoftReferenceParserFactory $softReferenceParserFactory,
         private readonly ConnectionPool $connectionPool,
         private readonly Registry $registry,
+        private readonly FlexFormTools $flexFormTools,
     ) {
     }
 
@@ -251,14 +255,13 @@ class ReferenceIndex
                     break;
                 case 'flex':
                     // DB references in FlexForms
-                    if (is_array($fieldRelations['flexFormRels']['db'])) {
+                    if (is_array($fieldRelations['flexFormRels']['db'] ?? false)) {
                         foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
                             $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, $flexPointer, $subList);
                         }
                     }
                     // Soft references in FlexForms
-                    // @todo #65464 Test correct handling of soft references in FlexForms
-                    if (is_array($fieldRelations['flexFormRels']['softrefs'])) {
+                    if (is_array($fieldRelations['flexFormRels']['softrefs'] ?? false)) {
                         foreach ($fieldRelations['flexFormRels']['softrefs'] as $flexPointer => $subList) {
                             $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, $flexPointer, $subList['keys']);
                         }
@@ -403,23 +406,11 @@ class ReferenceIndex
                 }
                 // For "flex" fieldtypes we need to traverse the structure looking for db references of course!
                 if ($conf['type'] === 'flex' && is_string($value) && $value !== '') {
-                    // Get current value array:
-                    // NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up
-                    // the note in the JavaDoc documentation for the function FlexFormTools->getDataStructureIdentifier()
-                    $currentValueArray = GeneralUtility::xml2array($value);
-                    // Traversing the XML structure, processing:
-                    if (is_array($currentValueArray)) {
-                        $this->temp_flexRelations = [
-                            'db' => [],
-                            'softrefs' => [],
-                        ];
-                        // Create and call iterator object:
-                        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                        $flexFormTools->traverseFlexFormXMLData($table, $field, $row, $this, 'getRelations_flexFormCallBack');
-                        // Create an entry for the field:
+                    $flexFormRelations = $this->getRelationsFromFlexData($table, $field, $row);
+                    if (!empty($flexFormRelations)) {
                         $outRow[$field] = [
                             'type' => 'flex',
-                            'flexFormRels' => $this->temp_flexRelations,
+                            'flexFormRels' => $flexFormRelations,
                         ];
                     }
                 }
@@ -446,58 +437,113 @@ class ReferenceIndex
         return $outRow;
     }
 
-    /**
-     * Callback function for traversing the FlexForm structure in relation to finding DB references!
-     *
-     * @param array $dsArr Data structure for the current value
-     * @param mixed $dataValue Current value
-     * @param array $PA Additional configuration used in calling function
-     * @param string $structurePath Path of value in DS structure
-     * @see DataHandler::checkValue_flex_procInData_travDS()
-     * @see FlexFormTools::traverseFlexFormXMLData()
-     * @internal
-     */
-    public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath)
+    private function getRelationsFromFlexData(string $tableName, string $fieldName, array $row): array
     {
-        // Removing "data/" in the beginning of path (which points to location in data array)
-        $structurePath = substr($structurePath, 5) . '/';
-        $dsConf = $dsArr['config'];
-        // Implode parameter values:
-        [$table, $uid, $field] = [
-            $PA['table'],
-            $PA['uid'],
-            $PA['field'],
-        ];
-        // Add a softref definition for link fields if the TCA does not specify one already
-        if (($dsConf['type'] ?? '') === 'link' && empty($dsConf['softref'])) {
-            $dsConf['softref'] = 'typolink';
+        $valueArray = GeneralUtility::xml2array($row[$fieldName] ?? '');
+        if (!is_array($valueArray)) {
+            // Current flex form values can not be parsed to an array. No relations.
+            return [];
         }
-        // Add a softref definition for email fields
-        if (($dsConf['type'] ?? '') === 'email') {
-            $dsConf['softref'] = 'email[subst]';
+        try {
+            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier(
+                $this->flexFormTools->getDataStructureIdentifier($GLOBALS['TCA'][$tableName]['columns'][$fieldName], $tableName, $fieldName, $row)
+            );
+        } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException) {
+            // Data structure can not be resolved or parsed. No relations.
+            return [];
         }
-        // Add DB:
-        $resultsFromDatabase = $this->getRelations_procDB($dataValue, $dsConf, $uid, $table);
-        if (!empty($resultsFromDatabase)) {
-            // Create an entry for the field with all DB relations:
-            $this->temp_flexRelations['db'][$structurePath] = $resultsFromDatabase;
+        if (!is_array($dataStructureArray['sheets'] ?? false)) {
+            // No sheet in DS. Shouldn't happen, though.
+            return [];
         }
-        // Soft References:
-        if (is_array($dataValue) || (string)$dataValue !== '') {
-            $softRefValue = $dataValue;
-            foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($dsConf['softref'] ?? '') as $softReferenceParser) {
-                $parserResult = $softReferenceParser->parse($table, $field, $uid, $softRefValue, $structurePath);
-                if ($parserResult->hasMatched()) {
-                    $this->temp_flexRelations['softrefs'][$structurePath]['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
-                    if ($parserResult->hasContent()) {
-                        $softRefValue = $parserResult->getContent();
+        $flexRelations = [];
+        foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
+                // For all elements allowed in Data Structure.
+                if (($sheetElementTca['type'] ?? '') === 'array') {
+                    // This is a section.
+                    if (!is_array($sheetElementTca['el'] ?? false) || !is_array($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        // No possible containers defined for this section in DS, or no values set for this section.
+                        continue;
+                    }
+                    foreach ($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        // We have containers for this section in values.
+                        if (!is_array($valueSectionContainers ?? false)) {
+                            // Values don't validate to an array, skip.
+                            continue;
+                        }
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            // For all value containers in this section.
+                            if (!is_array($sheetElementTca['el'][$valueContainerType]['el'] ?? false)) {
+                                // There is no DS for this container type, skip.
+                                continue;
+                            }
+                            foreach ($sheetElementTca['el'][$valueContainerType]['el'] as $containerElement => $containerElementTca) {
+                                // Container type of this value container exists in DS. Iterate DS container to find value relations.
+                                if (isset($valueContainerElements['el'][$containerElement]['vDEF'])) {
+                                    $fieldValue = $valueContainerElements['el'][$containerElement]['vDEF'];
+                                    $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/el/' . $valueSectionContainerKey . '/' . $valueContainerType . '/el/' . $containerElement . '/vDEF/';
+                                    // Flex form container section elements can not have DB relations, those are not checked.
+                                    // Add a softref definition for link and email fields if the TCA does not specify one already
+                                    if (($containerElementTca['config']['type'] ?? '') === 'link' && empty($containerElementTca['config']['softref'])) {
+                                        $containerElementTca['config']['softref'] = 'typolink';
+                                    }
+                                    if (($containerElementTca['config']['type'] ?? '') === 'email') {
+                                        $containerElementTca['config']['softref'] = 'email[subst]';
+                                    }
+                                    if ($fieldValue !== '' && ($containerElementTca['config']['softref'] ?? '') !== '') {
+                                        $tokenizedContent = $fieldValue;
+                                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($containerElementTca['config']['softref']) as $softReferenceParser) {
+                                            $parserResult = $softReferenceParser->parse($tableName, $fieldName, (int)$row['uid'], $fieldValue, $structurePath);
+                                            if ($parserResult->hasMatched()) {
+                                                $flexRelations['softrefs'][$structurePath]['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
+                                                if ($parserResult->hasContent()) {
+                                                    $tokenizedContent = $parserResult->getContent();
+                                                }
+                                            }
+                                        }
+                                        if (!empty($flexRelations['softrefs'][$structurePath]) && $fieldValue !== $tokenizedContent) {
+                                            $flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $tokenizedContent;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } elseif (isset($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
+                    // Not a section but a simple field. Get its relations.
+                    $fieldValue = $valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
+                    $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/vDEF/';
+                    $databaseRelations = $this->getRelations_procDB($fieldValue, $sheetElementTca['config'] ?? [], (int)$row['uid'], $tableName);
+                    if (!empty($databaseRelations)) {
+                        $flexRelations['db'][$structurePath] = $databaseRelations;
+                    }
+                    // Add a softref definition for link and email fields if the TCA does not specify one already
+                    if (($sheetElementTca['config']['type'] ?? '') === 'link' && empty($sheetElementTca['config']['softref'])) {
+                        $sheetElementTca['config']['softref'] = 'typolink';
+                    }
+                    if (($sheetElementTca['config']['type'] ?? '') === 'email') {
+                        $sheetElementTca['config']['softref'] = 'email[subst]';
+                    }
+                    if ($fieldValue !== '' && ($sheetElementTca['config']['softref'] ?? '') !== '') {
+                        $tokenizedContent = $fieldValue;
+                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($sheetElementTca['config']['softref']) as $softReferenceParser) {
+                            $parserResult = $softReferenceParser->parse($tableName, $fieldName, (int)$row['uid'], $fieldValue, $structurePath);
+                            if ($parserResult->hasMatched()) {
+                                $flexRelations['softrefs'][$structurePath]['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
+                                if ($parserResult->hasContent()) {
+                                    $tokenizedContent = $parserResult->getContent();
+                                }
+                            }
+                        }
+                        if (!empty($flexRelations['softrefs'][$structurePath]) && $fieldValue !== $tokenizedContent) {
+                            $flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $tokenizedContent;
+                        }
                     }
                 }
             }
-            if (!empty($this->temp_flexRelations['softrefs']) && (string)$dataValue !== (string)$softRefValue) {
-                $this->temp_flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $softRefValue;
-            }
         }
+        return $flexRelations;
     }
 
     /**

@@ -51,6 +51,12 @@
                                     <field index=""input_1"">
                                         <value index=""vDEF"">foo@example.com</value>
                                     </field>
+                                    <field index=""email_1"">
+                                        <value index=""vDEF"">foo@example.com</value>
+                                    </field>
+                                    <field index=""link_1"">
+                                        <value index=""vDEF"">t3://page?uid=1</value>
+                                    </field>
                                 </el>
                             </value>
                             <value index=""_TOGGLE"">0</value>
@@ -76,3 +82,5 @@
 ,"39e493b1e8575e42a721851f4849b6e0","tx_test_refindex_softref",3,"flex_1","sheet_1/lDEF/text_1/vDEF/","email",2,-1,0,"_STRING",0,"foo@example.com"
 ,"d6f15878518b1915362c6a98d614dc7e","tx_test_refindex_softref",3,"flex_1","section_1/lDEF/section_1/el/6532a0e5810c8735146538/container_1/el/input_1/vDEF/","email",2,-1,0,"_STRING",0,"foo@example.com"
 ,"44f57d934a0c7c31daa8e03ac984fd50","tx_test_refindex_softref",3,"flex_1","section_1/lDEF/section_1/el/6532a0ee05424283979143/container_2/el/input_1/vDEF/","email",2,-1,0,"_STRING",0,"foo@example.com"
+,"0858fcc3ad1512c47ec8f6589c429a6d","tx_test_refindex_softref",3,"flex_1","section_1/lDEF/section_1/el/6532a0e5810c8735146538/container_1/el/email_1/vDEF/","email",2,-1,0,"_STRING",0,"foo@example.com"
+,"923b2bae759f1c28a2416319dfcc4cfd","tx_test_refindex_softref",3,"flex_1","section_1/lDEF/section_1/el/6532a0e5810c8735146538/container_1/el/link_1/vDEF/","typolink","2e7e965dc23ad7f3a9ceb8dab07d8c5e:0",-1,0,"pages",1,""

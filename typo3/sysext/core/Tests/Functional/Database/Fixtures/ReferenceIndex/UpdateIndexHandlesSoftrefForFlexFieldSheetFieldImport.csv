@@ -11,6 +11,12 @@
                 <field index=""text_1"">
                     <value index=""vDEF"">foo@example.com</value>
                 </field>
+                <field index=""email_1"">
+                    <value index=""vDEF"">foo@example.com</value>
+                </field>
+                <field index=""link_1"">
+                    <value index=""vDEF"">t3://page?uid=1</value>
+                </field>
             </language>
         </sheet>
     </data>

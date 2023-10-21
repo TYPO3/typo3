@@ -365,15 +365,7 @@
 	&lt;/data&gt;
 &lt;/T3FlexForms&gt;</field>
             </fieldlist>
-            <related index="rels" type="array">
-                <field index="configuration" type="array">
-                    <type>flex</type>
-                    <flexform index="flexFormRels" type="array">
-                        <db_relations index="db" type="array"></db_relations>
-                        <softref_relations index="softrefs" type="array"></softref_relations>
-                    </flexform>
-                </field>
-            </related>
+            <related index="rels" type="array"/>
         </tablerow>
         <tablerow index="sys_file_metadata:1" type="array">
             <fieldlist index="data" type="array">

@@ -168,7 +168,6 @@
                 <field index="pi_flexform" type="array">
                     <type>flex</type>
                     <flexform index="flexFormRels" type="array">
-                        <db_relations index="db" type="array"></db_relations>
                         <softref_relations index="softrefs" type="array">
                             <structurePath index="sDEF/lDEF/softrefLink/vDEF/" type="array">
                                 <keys type="array">
