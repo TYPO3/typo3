@@ -228,7 +228,6 @@ If you want to get more detailed information, use the --verbose option.')
             ->select('ref_uid', 'ref_table', 'softref_key', 'hash', 'tablename', 'recuid', 'field', 'flexpointer')
             ->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->neq('ref_table', $queryBuilder->createNamedParameter('_FILE')),
                 $queryBuilder->expr()->gt('ref_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             )
             ->executeQuery();
