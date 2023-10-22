@@ -24,18 +24,13 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ImageViewHelperTest extends FunctionalTestCase
 {
-    protected array $additionalFoldersToCreate = [
-        '/fileadmin/user_upload',
-    ];
-
     protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelper/Folders/fileadmin/' => 'fileadmin/',
     ];
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/ViewHelpers/Link/FileViewHelper/DatabaseImport.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
     }
@@ -43,12 +38,36 @@ final class ImageViewHelperTest extends FunctionalTestCase
     public static function invalidArgumentsDataProvider(): array
     {
         return [
-            ['<f:image />', 1382284106],
-            ['<f:image src="" />', 1382284106],
-            ['<f:image src="something" />', 1509741911],
-            ['<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />', 1509741914],
-            ['<f:image src="fileadmin/user_upload/" />', 1509741912],
-            ['<f:image src="something" fileExtension="dummy" />', 1618989190],
+            [
+                '<f:image />',
+                1382284106,
+                'You must either specify a string src or a File object.',
+            ],
+            [
+                '<f:image src="" />',
+                1382284106,
+                'You must either specify a string src or a File object.',
+            ],
+            [
+                '<f:image src="something" />',
+                1509741911,
+                'Folder "/something/" does not exist.',
+            ],
+            [
+                '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
+                1509741914,
+                'File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
+            ],
+            [
+                '<f:image src="fileadmin/image.jpg" />',
+                1509741912,
+                'Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
+            ],
+            [
+                '<f:image src="something" fileExtension="dummy" />',
+                1618989190,
+                'The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
+            ],
         ];
     }
 
@@ -56,10 +75,11 @@ final class ImageViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider invalidArgumentsDataProvider
      */
-    public function renderThrowsExceptionOnInvalidArguments(string $template, int $expectedExceptionCode): void
+    public function renderThrowsExceptionOnInvalidArguments(string $template, int $expectedExceptionCode, string $message): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode($expectedExceptionCode);
+        $this->expectExceptionMessage($message);
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
