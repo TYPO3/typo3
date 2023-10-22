@@ -164,9 +164,6 @@ final class ImageViewHelper extends AbstractViewHelper
         } catch (\UnexpectedValueException $e) {
             // thrown if a file has been replaced with a folder
             throw new Exception($e->getMessage(), 1509741908, $e);
-        } catch (\RuntimeException $e) {
-            // RuntimeException thrown if a file is outside of a storage
-            throw new Exception($e->getMessage(), 1509741909, $e);
         } catch (\InvalidArgumentException $e) {
             // thrown if file storage does not exist
             throw new Exception($e->getMessage(), 1509741910, $e);
