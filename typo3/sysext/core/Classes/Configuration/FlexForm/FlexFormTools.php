@@ -18,26 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration\FlexForm;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Contains functions for manipulating flex form data
@@ -125,22 +116,18 @@ class FlexFormTools
      * @param array $row The data row
      * @return string Identifier JSON string
      * @throws \RuntimeException If TCA is misconfigured
-     * @throws InvalidParentRowException in getDataStructureIdentifierFromRecord
-     * @throws InvalidParentRowLoopException in getDataStructureIdentifierFromRecord
-     * @throws InvalidParentRowRootException in getDataStructureIdentifierFromRecord
-     * @throws InvalidPointerFieldValueException in getDataStructureIdentifierFromRecord
-     * @throws InvalidTcaException in getDataStructureIdentifierFromRecord
+     * @throws InvalidCombinedPointerFieldException
+     * @throws InvalidSinglePointerFieldException
+     * @throws InvalidTcaException
      */
     public function getDataStructureIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row): string
     {
         $dataStructureIdentifier = $this->eventDispatcher
             ->dispatch(new BeforeFlexFormDataStructureIdentifierInitializedEvent($fieldTca, $tableName, $fieldName, $row))
             ->getIdentifier() ?? $this->getDefaultIdentifier($fieldTca, $tableName, $fieldName, $row);
-
         $dataStructureIdentifier = $this->eventDispatcher
             ->dispatch(new AfterFlexFormDataStructureIdentifierInitializedEvent($fieldTca, $tableName, $fieldName, $row, $dataStructureIdentifier))
             ->getIdentifier();
-
         return json_encode($dataStructureIdentifier, JSON_THROW_ON_ERROR);
     }
 
@@ -151,20 +138,14 @@ class FlexFormTools
      * @param string $tableName The table name of the TCA field
      * @param string $fieldName The field name
      * @param array $row The data row
+     * @throws InvalidCombinedPointerFieldException
+     * @throws InvalidSinglePointerFieldException
+     * @throws InvalidTcaException
      */
     protected function getDefaultIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row): array
     {
         $tcaDataStructureArray = $fieldTca['config']['ds'] ?? null;
-        $tcaDataStructurePointerField = $fieldTca['config']['ds_pointerField'] ?? null;
-        if (!is_array($tcaDataStructureArray) && $tcaDataStructurePointerField) {
-            // "ds" is not an array, but "ds_pointerField" is set -> data structure is found in different table
-            $dataStructureIdentifier = $this->getDataStructureIdentifierFromRecord(
-                $fieldTca,
-                $tableName,
-                $fieldName,
-                $row
-            );
-        } elseif (is_array($tcaDataStructureArray)) {
+        if (is_array($tcaDataStructureArray)) {
             $dataStructureIdentifier = $this->getDataStructureIdentifierFromTcaArray(
                 $fieldTca,
                 $tableName,
@@ -180,188 +161,13 @@ class FlexFormTools
                 1463826960
             );
         }
-
-        return $dataStructureIdentifier;
-    }
-
-    /**
-     * The data structure is located in a record. This method resolves the record and
-     * returns an array to identify that record.
-     *
-     * The example setup below looks in current row for a tx_templavoila_ds value. If not found,
-     * it will search the rootline (the table is a tree, typically pages) until a value in
-     * tx_templavoila_next_ds or tx_templavoila_ds is found. That value should then be an
-     * integer, that points to a record in tx_templavoila_datastructure, and then the data
-     * structure is found in field dataprot:
-     *
-     * fieldTca = [
-     *     'config' => [
-     *         'type' => 'flex',
-     *         'ds_pointerField' => 'tx_templavoila_ds',
-     *         'ds_pointerField_searchParent' => 'pid',
-     *         'ds_pointerField_searchParent_subField' => 'tx_templavoila_next_ds',
-     *         'ds_tableField' => 'tx_templavoila_datastructure:dataprot',
-     *     ]
-     * ]
-     *
-     * More simple scenario without tree traversal and having a valid data structure directly
-     * located in field theFlexDataStructureField.
-     *
-     * fieldTca = [
-     *     'config' => [
-     *         'type' => 'flex',
-     *         'ds_pointerField' => 'theFlexDataStructureField',
-     *     ]
-     * ]
-     *
-     * Example return array:
-     * [
-     *     'type' => 'record',
-     *     'tableName' => 'tx_templavoila_datastructure',
-     *     'uid' => 42,
-     *     'fieldName' => 'dataprot',
-     * ];
-     *
-     * @param array $fieldTca Full TCA of the field in question that has type=flex set
-     * @param string $tableName The table name of the TCA field
-     * @param string $fieldName The field name
-     * @param array $row The data row
-     * @return array Identifier as array, see example above
-     * @throws InvalidParentRowException
-     * @throws InvalidParentRowLoopException
-     * @throws InvalidParentRowRootException
-     * @throws InvalidPointerFieldValueException
-     * @throws InvalidTcaException
-     */
-    protected function getDataStructureIdentifierFromRecord(array $fieldTca, string $tableName, string $fieldName, array $row): array
-    {
-        $pointerFieldName = $finalPointerFieldName = $fieldTca['config']['ds_pointerField'];
-        if (!array_key_exists($pointerFieldName, $row)) {
-            // Pointer field does not exist in row at all -> throw
-            throw new InvalidTcaException(
-                'No data structure for field "' . $fieldName . '" in table "' . $tableName . '" found, no "ds" array'
-                . ' configured and given row does not have a field with ds_pointerField name "' . $pointerFieldName . '".',
-                1464115059
-            );
-        }
-        $pointerValue = $row[$pointerFieldName];
-        // If set, this is typically set to "pid"
-        $parentFieldName = $fieldTca['config']['ds_pointerField_searchParent'] ?? null;
-        $pointerSubFieldName = $fieldTca['config']['ds_pointerField_searchParent_subField'] ?? null;
-        if (!$pointerValue && $parentFieldName) {
-            // Fetch rootline until a valid pointer value is found
-            $handledUids = [];
-            while (!$pointerValue) {
-                $handledUids[$row['uid']] = 1;
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $queryBuilder->select('uid', $parentFieldName, $pointerFieldName);
-                if (!empty($pointerSubFieldName)) {
-                    $queryBuilder->addSelect($pointerSubFieldName);
-                }
-                $queryStatement = $queryBuilder->from($tableName)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($row[$parentFieldName], Connection::PARAM_INT)
-                        )
-                    )
-                    ->executeQuery();
-                $rowCount = $queryBuilder
-                    ->count('uid')
-                    ->executeQuery()
-                    ->fetchOne();
-                if ($rowCount !== 1) {
-                    throw new InvalidParentRowException(
-                        'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
-                        . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
-                        . ' with uid "' . $row[$parentFieldName] . '" was done. This row however does not exist or was deleted.',
-                        1463833794
-                    );
-                }
-                $row = $queryStatement->fetchAssociative();
-                if (isset($handledUids[$row[$parentFieldName]])) {
-                    // Row has been fetched before already -> loop detected!
-                    throw new InvalidParentRowLoopException(
-                        'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
-                        . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
-                        . ' with uid "' . $row[$parentFieldName] . '" was done. A loop of records was detected, the tree is broken.',
-                        1464110956
-                    );
-                }
-                BackendUtility::workspaceOL($tableName, $row);
-                // New pointer value: This is the "subField" value if given, else the field value
-                // ds_pointerField_searchParent_subField is the "template on next level" structure from templavoila
-                if ($pointerSubFieldName && $row[$pointerSubFieldName]) {
-                    $finalPointerFieldName = $pointerSubFieldName;
-                    $pointerValue = $row[$pointerSubFieldName];
-                } else {
-                    $pointerValue = $row[$pointerFieldName];
-                }
-                if (!$pointerValue && ((int)$row[$parentFieldName] === 0 || $row[$parentFieldName] === null)) {
-                    // If on root level and still no valid pointer found -> exception
-                    throw new InvalidParentRowRootException(
-                        'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
-                        . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
-                        . ' with uid "' . $row[$parentFieldName] . '" was done. Root node with uid "' . $row['uid'] . '"'
-                        . ' was fetched and still no valid pointer field value was found.',
-                        1464112555
-                    );
-                }
-            }
-        }
-        if (!$pointerValue) {
-            // Still no valid pointer value -> exception, This still can be a data integrity issue, so throw a catchable exception
-            throw new InvalidPointerFieldValueException(
-                'No data structure for field "' . $fieldName . '" in table "' . $tableName . '" found, no "ds" array'
-                . ' configured and data structure could be found by resolving parents. This is probably a TCA misconfiguration.',
-                1464114011
-            );
-        }
-        // Ok, finally we have the field value. This is now either a data structure directly, or a pointer to a file,
-        // or the value can be interpreted as integer (is a uid) and "ds_tableField" is set, so this is the table, uid and field
-        // where the final data structure can be found.
-        if (MathUtility::canBeInterpretedAsInteger($pointerValue)) {
-            if (!isset($fieldTca['config']['ds_tableField'])) {
-                throw new InvalidTcaException(
-                    'Invalid data structure pointer for field "' . $fieldName . '" in table "' . $tableName . '", the value'
-                    . 'resolved to "' . $pointerValue . '" . which is an integer, so "ds_tableField" must be configured',
-                    1464115639
-                );
-            }
-            if (substr_count($fieldTca['config']['ds_tableField'], ':') !== 1) {
-                // ds_tableField must be of the form "table:field"
-                throw new InvalidTcaException(
-                    'Invalid TCA configuration for field "' . $fieldName . '" in table "' . $tableName . '", the setting'
-                    . '"ds_tableField" must be of the form "tableName:fieldName"',
-                    1464116002
-                );
-            }
-            [$foreignTableName, $foreignFieldName] = GeneralUtility::trimExplode(':', $fieldTca['config']['ds_tableField']);
-            $dataStructureIdentifier = [
-                'type' => 'record',
-                'tableName' => $foreignTableName,
-                'uid' => (int)$pointerValue,
-                'fieldName' => $foreignFieldName,
-            ];
-        } else {
-            $dataStructureIdentifier = [
-                'type' => 'record',
-                'tableName' => $tableName,
-                'uid' => (int)$row['uid'],
-                'fieldName' => $finalPointerFieldName,
-            ];
-        }
         return $dataStructureIdentifier;
     }
 
     /**
      * Find matching data structure in TCA ds array.
      *
-     * Data structure is defined in 'ds' config array.
-     * Also, there can be a ds_pointerField
+     * Data structure is defined in 'ds' config array, optionally with 'ds_pointerField'.
      *
      * fieldTca = [
      *     'config' => [
@@ -551,9 +357,7 @@ class FlexFormTools
                 1478100828
             );
         }
-
         $parsedIdentifier = json_decode($identifier, true);
-
         if (!is_array($parsedIdentifier) || $parsedIdentifier === []) {
             // If there is some identifier and it can't be decoded, programming error -> not catchable
             throw new \RuntimeException(
@@ -561,15 +365,12 @@ class FlexFormTools
                 1478345642
             );
         }
-
         $dataStructure = $this->eventDispatcher
             ->dispatch(new BeforeFlexFormDataStructureParsedEvent($parsedIdentifier))
             ->getDataStructure() ?? $this->getDefaultStructureForIdentifier($parsedIdentifier);
-
         $dataStructure = $this->convertDataStructureToArray($dataStructure);
         $dataStructure = $this->ensureDefaultSheet($dataStructure);
         $dataStructure = $this->resolveFileDirectives($dataStructure);
-
         return $this->eventDispatcher
             ->dispatch(new AfterFlexFormDataStructureParsedEvent($dataStructure, $parsedIdentifier))
             ->getDataStructure();
@@ -612,28 +413,7 @@ class FlexFormTools
 
     protected function getDefaultStructureForIdentifier(array $identifier): string
     {
-        if (($identifier['type'] ?? '') === 'record') {
-            // Handle "record" type, see getDataStructureIdentifierFromRecord()
-            if (empty($identifier['tableName']) || empty($identifier['uid']) || empty($identifier['fieldName'])) {
-                throw new \RuntimeException(
-                    'Incomplete "record" based identifier: ' . json_encode($identifier),
-                    1478113873
-                );
-            }
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($identifier['tableName']);
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $dataStructure = $queryBuilder
-                ->select($identifier['fieldName'])
-                ->from($identifier['tableName'])
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($identifier['uid'], Connection::PARAM_INT)
-                    )
-                )
-                ->executeQuery()
-                ->fetchOne();
-        } elseif (($identifier['type'] ?? '') === 'tca') {
+        if (($identifier['type'] ?? '') === 'tca') {
             // Handle "tca" type, see getDataStructureIdentifierFromTcaArray
             if (empty($identifier['tableName']) || empty($identifier['fieldName']) || empty($identifier['dataStructureKey'])) {
                 throw new \RuntimeException(
@@ -739,7 +519,7 @@ class FlexFormTools
         try {
             $dataStructureIdentifier = $this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row);
             $dataStructureArray = $this->parseDataStructureByIdentifier($dataStructureIdentifier);
-        } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException $e) {
+        } catch (InvalidIdentifierException) {
         }
 
         // Get flexform XML data
@@ -859,7 +639,7 @@ class FlexFormTools
         }
         try {
             $dataStructureArray = $this->parseDataStructureByIdentifier($this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row));
-        } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException) {
+        } catch (InvalidIdentifierException) {
             // Data structure can not be resolved or parsed. Reset value to empty string.
             return '';
         }

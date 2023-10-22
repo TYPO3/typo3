@@ -2362,4 +2362,24 @@ return [
             'Breaking-101948-FileBasedAbstractRepositoryClassRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException' => [
+        'restFiles' => [
+            'Breaking-102224-TemplaVoilaRelatedFlexFormDataStructureLookups.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException' => [
+        'restFiles' => [
+            'Breaking-102224-TemplaVoilaRelatedFlexFormDataStructureLookups.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootException' => [
+        'restFiles' => [
+            'Breaking-102224-TemplaVoilaRelatedFlexFormDataStructureLookups.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException' => [
+        'restFiles' => [
+            'Breaking-102224-TemplaVoilaRelatedFlexFormDataStructureLookups.rst',
+        ],
+    ],
 ];
