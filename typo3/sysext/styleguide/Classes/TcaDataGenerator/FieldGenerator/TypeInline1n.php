@@ -73,6 +73,9 @@ class TypeInline1n extends AbstractFieldGenerator implements FieldGeneratorInter
             'parentid' => $data['fieldValues']['uid'],
             'parenttable' => $data['tableName'],
         ];
+        if ($data['fieldConfig']['config']['foreign_match_fields']['role'] ?? false) {
+            $childFieldValues['role'] = $data['fieldConfig']['config']['foreign_match_fields']['role'];
+        }
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($childTable);
         $connection->insert($childTable, $childFieldValues);
         $childFieldValues['uid'] = (int)$connection->lastInsertId($childTable);

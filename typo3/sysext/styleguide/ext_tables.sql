@@ -234,6 +234,10 @@ CREATE TABLE tx_styleguide_inline_1n_inline_2_child (
     select_tree_1 text,
 );
 
+CREATE TABLE tx_styleguide_inline_1nreusabletable_child (
+    role text
+);
+
 CREATE TABLE tx_styleguide_inline_1nnol10n_child (
     input_1 text
 );
