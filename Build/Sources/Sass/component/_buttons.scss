@@ -79,7 +79,8 @@
 // Tables
 //
 .btn:not(.btn-sm) {
-    .table & {
+    .table &,
+    .diff-item-button & {
         --#{$prefix}btn-padding-x: var(--#{$prefix}btn-padding-y);
     }
 }

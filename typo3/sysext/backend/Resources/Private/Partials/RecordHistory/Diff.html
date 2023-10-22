@@ -1,19 +1,29 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 <div class="diff">
     <f:for each="{differences}" as="differencesItem" key="key">
         <div class="diff-item">
             <div class="diff-item-title">
-                <f:if condition="{differencesItem.rollbackUrl}">
-                    <a href="{differencesItem.rollbackUrl}" class="btn btn-default me-3">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertField')}</a>
-                </f:if>
                 {differencesItem.title}
             </div>
             <div class="diff-item-result"><f:spaceless>
                 <f:format.raw>{differencesItem.result}</f:format.raw>
             </f:spaceless></div>
+            <f:if condition="{differences -> f:count()} > 1">
+                <div class="diff-item-button col-control nowrap">
+                    <f:if condition="{differencesItem.rollbackUrl}">
+                        <div class="btn-group">
+                            <a href="{differencesItem.rollbackUrl}" class="btn btn-default">
+                                <core:icon identifier="actions-edit-undo" />
+                                {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertField')}
+                            </a>
+                        </div>
+                    </f:if>
+                </div>
+            </f:if>
         </div>
     </f:for>
 </div>

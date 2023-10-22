@@ -184,8 +184,13 @@ class ElementHistoryController
         if (is_array($pageAccess)) {
             $this->view->getDocHeaderComponent()->setMetaInformation($pageAccess);
         }
-        $this->view->assign('recordTable', $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
-        $this->view->assign('recordUid', $uid);
+
+        $this->view->assignMultiple([
+            'recordTable' => $table,
+            'recordTableReadable' => $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
+            'recordUid' => $uid,
+            'recordTitle' => $this->generateTitle($table, (string)$uid),
+        ]);
     }
 
     protected function getButtons(): void
@@ -224,6 +229,8 @@ class ElementHistoryController
      */
     protected function displayMultipleDiff(array $diff)
     {
+        $languageService = $this->getLanguageService();
+
         // Get all array keys needed
         /** @var string[] $arrayKeys */
         $arrayKeys = array_merge(array_keys($diff['newData']), array_keys($diff['insertsDeletes']), array_keys($diff['oldData']));
@@ -247,7 +254,27 @@ class ElementHistoryController
                         'newRecord' => $diff['oldData'][$key],
                         'oldRecord' => $diff['newData'][$key],
                     ];
-                    $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], (int)$elParts[1], true);
+
+                    // show changes
+                    if (!$this->showDiff) {
+                        // Display field names instead of full diff
+                        // Re-write field names with labels
+                        /** @var string[] $tmpFieldList */
+                        $tmpFieldList = array_keys($tmpArr['newRecord']);
+                        foreach ($tmpFieldList as $fieldKey => $value) {
+                            $tmp = str_replace(':', '', $languageService->sL(BackendUtility::getItemLabel($elParts[0], $value)));
+                            if ($tmp) {
+                                $tmpFieldList[$fieldKey] = $tmp;
+                            } else {
+                                // remove fields if no label available
+                                unset($tmpFieldList[$fieldKey]);
+                            }
+                        }
+                        $singleLine['fieldNames'] = implode(',', $tmpFieldList);
+                    } else {
+                        // Display diff
+                        $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], (int)$elParts[1], true);
+                    }
                 }
                 $elParts = explode(':', $key);
                 $singleLine['revertRecordUrl'] = $this->buildUrl(['rollbackFields' => $key]);
@@ -294,11 +321,13 @@ class ElementHistoryController
             // Diff link
             $singleLine['diffUrl'] = $this->buildUrl(['historyEntry' => $entry['uid']]);
             // Add time
-            $singleLine['time'] = BackendUtility::datetime($entry['tstamp']);
-            // Add age
-            $singleLine['age'] = BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears'));
+            $singleLine['day'] = BackendUtility::date($entry['tstamp']);
+            $singleLine['time'] = BackendUtility::time($entry['tstamp']);
 
             $singleLine['title'] = $this->generateTitle($entry['tablename'], $entry['recuid']);
+            $singleLine['recordTable'] = $entry['tablename'];
+            $singleLine['recordUid'] = $entry['recuid'];
+
             $singleLine['elementUrl'] = $this->buildUrl(['element' => $entry['tablename'] . ':' . $entry['recuid']]);
             $singleLine['actiontype'] = $entry['actiontype'];
             if ((int)$entry['actiontype'] === RecordHistoryStore::ACTION_MODIFY) {
@@ -410,10 +439,11 @@ class ElementHistoryController
      */
     protected function generateTitle($table, $uid): string
     {
-        $title = $table . ':' . $uid;
+        $title = '';
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['label'])) {
             $record = $this->getRecord($table, (int)$uid) ?? [];
-            $title .= ' (' . BackendUtility::getRecordTitle($table, $record, true) . ')';
+            $title .= '"' . BackendUtility::getRecordTitle($table, $record) . '"';
+            $title .= ' (' . $table . ':' . $uid . ')';
         }
         return $title;
     }

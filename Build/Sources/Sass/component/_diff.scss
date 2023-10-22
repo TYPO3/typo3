@@ -38,7 +38,9 @@ $diff-title-bgcolor: #fafafa;
     display: table;
 
     .diff-item-title,
-    .diff-item-result {
+    .diff-item-result,
+    .diff-item-button,
+    .diff-item-text {
         padding: $diff-padding;
         display: table-cell;
     }
@@ -46,7 +48,10 @@ $diff-title-bgcolor: #fafafa;
     .diff-item {
         display: table-row;
 
-        + .diff-item {
+        + .diff-item .diff-item-title,
+        + .diff-item .diff-item-result,
+        + .diff-item .diff-item-button,
+        + .diff-item .diff-item-text {
             border-top: 1px solid $diff-border;
         }
     }

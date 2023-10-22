@@ -96,11 +96,23 @@
         box-sizing: content-box;
     }
 
-    .col-state {
+    .col-username,
+    .col-action {
+        width: 15ch;
+    }
+
+    .col-recordtitle {
+        width: 200px;
+    }
+
+    .col-state,
+    .col-recordtitle,
+    .col-action {
         min-width: 120px;
     }
 
-    .col-task {
+    .col-task,
+    .col-differences {
         min-width: 400px;
     }
 

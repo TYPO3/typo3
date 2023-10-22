@@ -97,7 +97,7 @@
 				<source>Delete record (!)</source>
 			</trans-unit>
 			<trans-unit id="history" resname="history">
-				<source>Display change history / Un-do</source>
+				<source>History/Undo</source>
 			</trans-unit>
 			<trans-unit id="displayVersions" resname="displayVersions">
 				<source>Display versions</source>

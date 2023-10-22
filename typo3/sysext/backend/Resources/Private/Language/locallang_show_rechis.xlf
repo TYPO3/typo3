@@ -4,13 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id="title" resname="title">
-				<source>Record History / Undo</source>
+				<source>History/Undo</source>
+			</trans-unit>
+			<trans-unit id="headline.titleOf" resname="title">
+				<source>of</source>
 			</trans-unit>
 			<trans-unit id="time" resname="time">
 				<source>Time</source>
-			</trans-unit>
-			<trans-unit id="age" resname="age">
-				<source>Age</source>
 			</trans-unit>
 			<trans-unit id="user" resname="user">
 				<source>User</source>
@@ -18,14 +18,14 @@
 			<trans-unit id="workspace" resname="workspace">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="tableUid" resname="tableUid">
-				<source>Table:uid (Title)</source>
+			<trans-unit id="column.action" resname="column.action">
+				<source>Action</source>
+			</trans-unit>
+			<trans-unit id="column.recordTitle" resname="column.recordTitle">
+				<source>Record title</source>
 			</trans-unit>
 			<trans-unit id="differences" resname="differences">
 				<source>Differences</source>
-			</trans-unit>
-			<trans-unit id="rollback" resname="rollback">
-				<source>Rollback</source>
 			</trans-unit>
 			<trans-unit id="changes" resname="changes">
 				<source>Changelog</source>
@@ -55,7 +55,7 @@
 				<source>via</source>
 			</trans-unit>
 			<trans-unit id="sumUpChanges" resname="sumUpChanges">
-				<source>Rollback (Preview)</source>
+				<source>Rollback all changes to this state (preview)</source>
 			</trans-unit>
 			<trans-unit id="markState" resname="markState">
 				<source>mark this change</source>
@@ -78,14 +78,38 @@
 			<trans-unit id="fullView" resname="fullView">
 				<source>Return to full view</source>
 			</trans-unit>
-			<trans-unit id="insert" resname="insert">
-				<source>insert</source>
+			<trans-unit id="historyRow.actiontype.1" resname="historyRow.actiontype.1">
+				<source>inserted</source>
 			</trans-unit>
-			<trans-unit id="delete" resname="delete">
-				<source>delete</source>
+			<trans-unit id="historyRow.actiontype.2" resname="historyRow.actiontype.2">
+				<source>modified</source>
+			</trans-unit>
+			<trans-unit id="historyRow.actiontype.3" resname="historyRow.actiontype.3">
+				<source>moved</source>
+			</trans-unit>
+			<trans-unit id="historyRow.actiontype.4" resname="historyRow.actiontype.4">
+				<source>deleted</source>
+			</trans-unit>
+			<trans-unit id="historyRow.actiontype.5" resname="historyRow.actiontype.5">
+				<source>undeleted</source>
+			</trans-unit>
+			<trans-unit id="historyRow.actiontype.6" resname="historyRow.actiontype.6">
+				<source>stage changed</source>
+			</trans-unit>
+			<trans-unit id="rollback.plannedAction.insert" resname="rollback.plannedAction.insert">
+				<source>The record has been deleted and will be restored again with the rollback.</source>
+			</trans-unit>
+			<trans-unit id="rollback.plannedAction.delete" resname="rollback.plannedAction.delete">
+				<source>The record will be deleted with the rollback.</source>
+			</trans-unit>
+			<trans-unit id="undelete" resname="undelete">
+				<source>undelete</source>
 			</trans-unit>
 			<trans-unit id="mergedDifferences" resname="mergedDifferences">
-				<source>Preview for Rollback</source>
+				<source>Preview for rollback</source>
+			</trans-unit>
+			<trans-unit id="mergedDifferences.description" resname="mergedDifferences.description">
+				<source>It is possible to rollback either individual fields or entire elements. Alternatively, all displayed changes can be rolled back.</source>
 			</trans-unit>
 			<trans-unit id="settings" resname="settings">
 				<source>Settings</source>
@@ -101,12 +125,6 @@
 			</trans-unit>
 			<trans-unit id="showDiff" resname="showDiff">
 				<source>Show differences</source>
-			</trans-unit>
-			<trans-unit id="showDiff_no" resname="showDiff_no">
-				<source>No</source>
-			</trans-unit>
-			<trans-unit id="showDiff_inline" resname="showDiff_inline">
-				<source>Inline</source>
 			</trans-unit>
 			<trans-unit id="showSubElements" resname="showSubElements">
 				<source>Show sub elements</source>
