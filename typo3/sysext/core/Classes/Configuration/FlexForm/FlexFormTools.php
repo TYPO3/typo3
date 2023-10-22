@@ -31,54 +31,13 @@ use TYPO3\CMS\Core\Preparations\TcaPreparation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Contains functions for manipulating flex form data
+ * Service class to help with TCA type="flex" details.
  *
- * The data structure identifier (array) has several commonly used
- * elements (keys), but is generally undefined. Users of this system
- * should be extra careful of what array keys are defined or not.
- *
- * Recommended keys include:
- *  - type
- *  - tableName
- *  - fieldName
- *  - dataStructureKey
+ * This service provides various helpers to determine the data structure of flex form
+ * fields and to maintain integrity of flex form related details in general.
  */
 class FlexFormTools
 {
-    /**
-     * If set, section indexes are re-numbered before processing
-     *
-     * @var bool
-     */
-    public $reNumberIndexesOfSectionData = false;
-
-    /**
-     * Options for array2xml() for flexform.
-     * This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
-     *
-     * @var array
-     */
-    public $flexArray2Xml_options = [
-        'parentTagMap' => [
-            'data' => 'sheet',
-            'sheet' => 'language',
-            'language' => 'field',
-            'el' => 'field',
-            'field' => 'value',
-            'field:el' => 'el',
-            'el:_IS_NUM' => 'section',
-            'section' => 'itemType',
-        ],
-        'disableTypeAttrib' => 2,
-    ];
-
-    /**
-     * Reference to object called
-     *
-     * @var object
-     */
-    public $callBackObj;
-
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
@@ -129,6 +88,203 @@ class FlexFormTools
             ->dispatch(new AfterFlexFormDataStructureIdentifierInitializedEvent($fieldTca, $tableName, $fieldName, $row, $dataStructureIdentifier))
             ->getIdentifier();
         return json_encode($dataStructureIdentifier, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Parse a data structure identified by $identifier to the final data structure array.
+     * This method is called after getDataStructureIdentifier(), finds the data structure
+     * and returns it.
+     *
+     * Hooks allow to manipulate the find logic and to post process the data structure array.
+     *
+     * Note that the TCA for data structure definitions MUST NOT be overridden by
+     * 'columnsOverrides' or by parent TCA in an inline relation! This would create a huge mess.
+     *
+     * After the data structure definition is found, the method resolves:
+     * * FILE:EXT: prefix of the data structure itself - the ds is in a file
+     * * FILE:EXT: prefix for sheets - if single sheets are in files
+     * * Create an sDEF sheet if the data structure has non, yet.
+     *
+     * After that method is run, the data structure is fully resolved to an array,
+     * and same base normalization is done: If the ds did not contain a sheet,
+     * it will have one afterwards as "sDEF"
+     *
+     * This method gets: Target specification of the data structure.
+     * This method returns: The normalized data structure parsed to an array.
+     *
+     * Read the unit tests for nasty details.
+     *
+     * @param string $identifier JSON string to find the data structure location
+     * @return array Parsed and normalized data structure
+     * @throws InvalidIdentifierException
+     */
+    public function parseDataStructureByIdentifier(string $identifier): array
+    {
+        // Throw an exception for an empty string. This might be a valid use case for new
+        // records in some situations, so this is catchable to give callers a chance to deal with that.
+        if (empty($identifier)) {
+            throw new InvalidIdentifierException(
+                'Empty string given to parseFlexFormDataStructureByIdentifier(). This exception might '
+                . ' be caught to handle some new record situations properly',
+                1478100828
+            );
+        }
+        $parsedIdentifier = json_decode($identifier, true);
+        if (!is_array($parsedIdentifier) || $parsedIdentifier === []) {
+            // If there is some identifier and it can't be decoded, programming error -> not catchable
+            throw new \RuntimeException(
+                'Identifier could not be decoded to an array.',
+                1478345642
+            );
+        }
+        $dataStructure = $this->eventDispatcher
+            ->dispatch(new BeforeFlexFormDataStructureParsedEvent($parsedIdentifier))
+            ->getDataStructure() ?? $this->getDefaultStructureForIdentifier($parsedIdentifier);
+        $dataStructure = $this->convertDataStructureToArray($dataStructure);
+        $dataStructure = $this->ensureDefaultSheet($dataStructure);
+        $dataStructure = $this->resolveFileDirectives($dataStructure);
+        return $this->eventDispatcher
+            ->dispatch(new AfterFlexFormDataStructureParsedEvent($dataStructure, $parsedIdentifier))
+            ->getDataStructure();
+    }
+
+    /**
+     * Clean up FlexForm value XML to hold only the values it may according to its Data Structure.
+     * The order of tags will follow that of the data structure.
+     *
+     * @internal Signature may change, for instance to split 'DS finding' and flexArray2Xml(),
+     *           which would allow broader use of the method. It is currently consumed by
+     *           cleanup:flexforms CLI only.
+     */
+    public function cleanFlexFormXML(string $table, string $field, array $row): string
+    {
+        if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? false) || !isset($row[$field])) {
+            throw new \RuntimeException('Can not clean up FlexForm XML for a column not declared in TCA or not in record.', 1697554398);
+        }
+        try {
+            $dataStructureArray = $this->parseDataStructureByIdentifier($this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row));
+        } catch (InvalidIdentifierException) {
+            // Data structure can not be resolved or parsed. Reset value to empty string.
+            return '';
+        }
+        $valueArray = GeneralUtility::xml2array($row[$field]);
+        if (!is_array($valueArray)) {
+            // Current flex form values can not be parsed to an array. The entire thing is invalid. Reset to empty string.
+            return '';
+        }
+        if (!is_array($dataStructureArray['sheets'] ?? false)) {
+            // We might return empty string instead of throwing here, unsure.
+            throw new \RuntimeException('Data structure should always declare at least one sheet', 1697555523);
+        }
+        $newValueArray = [];
+        foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementData) {
+                // For all elements allowed in Data Structure.
+                if (($sheetElementData['type'] ?? '') === 'array') {
+                    // This is a section.
+                    if (!is_array($sheetElementData['el'] ?? false) || !is_array($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        // No possible containers defined for this section in DS, or no values set for this section.
+                        continue;
+                    }
+                    foreach ($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        // We have containers for this section in values.
+                        if (!is_array($valueSectionContainers ?? false)) {
+                            // Values don't validate to an array, skip.
+                            continue;
+                        }
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            // For all value containers in this section.
+                            if (!is_array($sheetElementData['el'][$valueContainerType]['el'] ?? false)) {
+                                // There is no DS for this container type, skip.
+                                continue;
+                            }
+                            foreach (array_keys($sheetElementData['el'][$valueContainerType]['el']) as $containerElement) {
+                                // Container type of this value container exists in DS. Iterate DS container to pick allowed single elements.
+                                if (isset($valueContainerElements['el'][$containerElement]['vDEF'])) {
+                                    $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] =
+                                        $valueContainerElements['el'][$containerElement]['vDEF'];
+                                }
+                            }
+                        }
+                        if (isset($valueSectionContainers['_TOGGLE'])) {
+                            // @todo: _TOGGLE is a UI artefact storing open/close containers. This should of course be stored in BE user uc instead.
+                            //        See DataHandler and FormEngine for further handling. We keep it for now if set, though.
+                            $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey]['_TOGGLE'] = $valueSectionContainers['_TOGGLE'];
+                        }
+                    }
+                } elseif (isset($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
+                    // Not a section but a simple field. Keep value if set.
+                    $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] = $valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
+                }
+            }
+        }
+        return $this->flexArray2Xml($newValueArray);
+    }
+
+    /**
+     * Convert FlexForm data array to XML
+     *
+     * @internal
+     */
+    public function flexArray2Xml(array $array): string
+    {
+        // Map the weird keys from the internal array to tags and attributes.
+        $options = [
+            'parentTagMap' => [
+                'data' => 'sheet',
+                'sheet' => 'language',
+                'language' => 'field',
+                'el' => 'field',
+                'field' => 'value',
+                'field:el' => 'el',
+                'el:_IS_NUM' => 'section',
+                'section' => 'itemType',
+            ],
+            'disableTypeAttrib' => 2,
+        ];
+        return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF .
+            GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', 4, $options);
+    }
+
+    /**
+     * Recursively migrate flex form TCA
+     *
+     * @internal
+     */
+    public function migrateFlexFormTcaRecursive(array $structure): array
+    {
+        $newStructure = [];
+        foreach ($structure as $key => $value) {
+            if ($key === 'el' && is_array($value)) {
+                $newSubStructure = [];
+                $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
+                foreach ($value as $subKey => $subValue) {
+                    // On-the-fly migration for flex form "TCA". Call the TcaMigration and log any deprecations.
+                    $dummyTca = [
+                        'dummyTable' => [
+                            'columns' => [
+                                'dummyField' => $subValue,
+                            ],
+                        ],
+                    ];
+                    $migratedTca = $tcaMigration->migrate($dummyTca);
+                    $messages = $tcaMigration->getMessages();
+                    if (!empty($messages)) {
+                        $context = 'FlexFormTools did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
+                            . ' Merge the following changes into the flex form definition "' . $subKey . '":';
+                        array_unshift($messages, $context);
+                        trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
+                    }
+                    $newSubStructure[$subKey] = $migratedTca['dummyTable']['columns']['dummyField'];
+                }
+                $value = $newSubStructure;
+            }
+            if (is_array($value)) {
+                $value = $this->migrateFlexFormTcaRecursive($value);
+            }
+            $newStructure[$key] = $value;
+        }
+        return $newStructure;
     }
 
     /**
@@ -318,70 +474,11 @@ class FlexFormTools
         return $dataStructureIdentifier;
     }
 
-    /**
-     * Parse a data structure identified by $identifier to the final data structure array.
-     * This method is called after getDataStructureIdentifier(), finds the data structure
-     * and returns it.
-     *
-     * Hooks allow to manipulate the find logic and to post process the data structure array.
-     *
-     * Note that the TCA for data structure definitions MUST NOT be overridden by
-     * 'columnsOverrides' or by parent TCA in an inline relation! This would create a huge mess.
-     *
-     * After the data structure definition is found, the method resolves:
-     * * FILE:EXT: prefix of the data structure itself - the ds is in a file
-     * * FILE:EXT: prefix for sheets - if single sheets are in files
-     * * Create an sDEF sheet if the data structure has non, yet.
-     *
-     * After that method is run, the data structure is fully resolved to an array,
-     * and same base normalization is done: If the ds did not contain a sheet,
-     * it will have one afterwards as "sDEF"
-     *
-     * This method gets: Target specification of the data structure.
-     * This method returns: The normalized data structure parsed to an array.
-     *
-     * Read the unit tests for nasty details.
-     *
-     * @param string $identifier JSON string to find the data structure location
-     * @return array Parsed and normalized data structure
-     * @throws InvalidIdentifierException
-     */
-    public function parseDataStructureByIdentifier(string $identifier): array
-    {
-        // Throw an exception for an empty string. This might be a valid use case for new
-        // records in some situations, so this is catchable to give callers a chance to deal with that.
-        if (empty($identifier)) {
-            throw new InvalidIdentifierException(
-                'Empty string given to parseFlexFormDataStructureByIdentifier(). This exception might '
-                . ' be caught to handle some new record situations properly',
-                1478100828
-            );
-        }
-        $parsedIdentifier = json_decode($identifier, true);
-        if (!is_array($parsedIdentifier) || $parsedIdentifier === []) {
-            // If there is some identifier and it can't be decoded, programming error -> not catchable
-            throw new \RuntimeException(
-                'Identifier could not be decoded to an array.',
-                1478345642
-            );
-        }
-        $dataStructure = $this->eventDispatcher
-            ->dispatch(new BeforeFlexFormDataStructureParsedEvent($parsedIdentifier))
-            ->getDataStructure() ?? $this->getDefaultStructureForIdentifier($parsedIdentifier);
-        $dataStructure = $this->convertDataStructureToArray($dataStructure);
-        $dataStructure = $this->ensureDefaultSheet($dataStructure);
-        $dataStructure = $this->resolveFileDirectives($dataStructure);
-        return $this->eventDispatcher
-            ->dispatch(new AfterFlexFormDataStructureParsedEvent($dataStructure, $parsedIdentifier))
-            ->getDataStructure();
-    }
-
     protected function convertDataStructureToArray(string|array $dataStructure): array
     {
         if (is_array($dataStructure)) {
             return $dataStructure;
         }
-
         // Resolve FILE: prefix pointing to a DS in a file
         if (str_starts_with(trim($dataStructure), 'FILE:')) {
             $fileName = substr(trim($dataStructure), 5);
@@ -394,10 +491,8 @@ class FlexFormTools
             }
             $dataStructure = (string)file_get_contents($file);
         }
-
         // Parse main structure
         $dataStructure = GeneralUtility::xml2array($dataStructure);
-
         // Throw if it still is not an array, probably because GeneralUtility::xml2array() failed.
         // This also may happen if artificial identifiers were constructed which don't resolve. The
         // flex form "exclude" access rights systems does that -> catchable
@@ -495,218 +590,6 @@ class FlexFormTools
     }
 
     /**
-     * Handler for Flex Forms
-     *
-     * @param string $table The table name of the record
-     * @param string $field The field name of the flexform field to work on
-     * @param array $row The record data array
-     * @param object $callBackObj Object in which the call back function is located
-     * @param string $callBackMethod_value Method name of call back function in object for values
-     * @return bool|string true on success, string if error happened (error string returned)
-     */
-    public function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value)
-    {
-        $PA = [];
-        if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
-            return 'TCA table/field was not defined.';
-        }
-        $this->callBackObj = $callBackObj;
-
-        // Get data structure. The methods may throw various exceptions, with some of them being
-        // ok in certain scenarios, for instance on new record rows. Those are ok to "eat" here
-        // and substitute with a dummy DS.
-        $dataStructureArray = ['sheets' => ['sDEF' => []]];
-        try {
-            $dataStructureIdentifier = $this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row);
-            $dataStructureArray = $this->parseDataStructureByIdentifier($dataStructureIdentifier);
-        } catch (InvalidIdentifierException) {
-        }
-
-        // Get flexform XML data
-        $editData = GeneralUtility::xml2array($row[$field]);
-        if (!is_array($editData)) {
-            return 'Parsing error: ' . $editData;
-        }
-        // Check if $dataStructureArray['sheets'] is indeed an array before loop or it will crash with runtime error
-        if (!is_array($dataStructureArray['sheets'])) {
-            return 'Data Structure ERROR: sheets is defined but not an array for table ' . $table . (isset($row['uid']) ? ' and uid ' . $row['uid'] : '');
-        }
-        // Traverse languages:
-        foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
-            // Render sheet:
-            if (isset($sheetData['ROOT']['el']) && is_array($sheetData['ROOT']['el'])) {
-                $PA['vKeys'] = ['DEF'];
-                $PA['lKey'] = 'lDEF';
-                $PA['callBackMethod_value'] = $callBackMethod_value;
-                $PA['table'] = $table;
-                $PA['field'] = $field;
-                $PA['uid'] = $row['uid'];
-                // Render flexform:
-                $this->traverseFlexFormXMLData_recurse($sheetData['ROOT']['el'], $editData['data'][$sheetKey]['lDEF'] ?? [], $PA, 'data/' . $sheetKey . '/lDEF');
-            } else {
-                return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheetKey . '".';
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Recursively traversing flexform data according to data structure and element data
-     *
-     * @param array $dataStruct (Part of) data structure array that applies to the sub section of the flexform data we are processing
-     * @param array $editData (Part of) edit data array, reflecting current part of data structure
-     * @param array $PA Additional parameters passed.
-     * @param string $path Telling the "path" to the element in the flexform XML
-     */
-    public function traverseFlexFormXMLData_recurse($dataStruct, $editData, &$PA, $path = ''): void
-    {
-        if (is_array($dataStruct)) {
-            foreach ($dataStruct as $key => $value) {
-                if (isset($value['type']) && $value['type'] === 'array') {
-                    // Array (Section) traversal
-                    if ($value['section'] ?? false) {
-                        if (isset($editData[$key]['el']) && is_array($editData[$key]['el'])) {
-                            if ($this->reNumberIndexesOfSectionData) {
-                                $temp = [];
-                                $c3 = 0;
-                                foreach ($editData[$key]['el'] as $v3) {
-                                    $temp[++$c3] = $v3;
-                                }
-                                $editData[$key]['el'] = $temp;
-                            }
-                            foreach ($editData[$key]['el'] as $k3 => $v3) {
-                                if (is_array($v3)) {
-                                    $cc = $k3;
-                                    $theType = key($v3);
-                                    $theDat = $v3[$theType];
-                                    $newSectionEl = $value['el'][$theType];
-                                    if (is_array($newSectionEl)) {
-                                        $this->traverseFlexFormXMLData_recurse([$theType => $newSectionEl], [$theType => $theDat], $PA, $path . '/' . $key . '/el/' . $cc);
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        // Array traversal
-                        if (isset($editData[$key]['el'])) {
-                            $this->traverseFlexFormXMLData_recurse($value['el'], $editData[$key]['el'], $PA, $path . '/' . $key . '/el');
-                        }
-                    }
-                } elseif (isset($value['config']) && is_array($value['config'])) {
-                    // Processing a field value:
-                    foreach ($PA['vKeys'] as $vKey) {
-                        $vKey = 'v' . $vKey;
-                        // Call back
-                        if (!empty($PA['callBackMethod_value']) && isset($editData[$key][$vKey])) {
-                            $this->executeCallBackMethod($PA['callBackMethod_value'], [
-                                $value,
-                                $editData[$key][$vKey],
-                                $PA,
-                                $path . '/' . $key . '/' . $vKey,
-                                $this,
-                            ]);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Execute method on callback object
-     *
-     * @param string $methodName Method name to call
-     * @param array $parameterArray Parameters
-     * @return mixed Result of callback object
-     */
-    protected function executeCallBackMethod($methodName, array $parameterArray)
-    {
-        return $this->callBackObj->$methodName(...$parameterArray);
-    }
-
-    /**
-     * Clean up FlexForm value XML to hold only the values it may according to its Data Structure.
-     * The order of tags will follow that of the data structure.
-     *
-     * @internal Signature may change, for instance to split 'DS finding' and flexArray2Xml(),
-     *           which would allow broader use of the method. It is currently consumed by
-     *           cleanup:flexforms CLI only.
-     */
-    public function cleanFlexFormXML(string $table, string $field, array $row): string
-    {
-        if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? false) || !isset($row[$field])) {
-            throw new \RuntimeException('Can not clean up FlexForm XML for a column not declared in TCA or not in record.', 1697554398);
-        }
-        try {
-            $dataStructureArray = $this->parseDataStructureByIdentifier($this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row));
-        } catch (InvalidIdentifierException) {
-            // Data structure can not be resolved or parsed. Reset value to empty string.
-            return '';
-        }
-        $valueArray = GeneralUtility::xml2array($row[$field]);
-        if (!is_array($valueArray)) {
-            // Current flex form values can not be parsed to an array. The entire thing is invalid. Reset to empty string.
-            return '';
-        }
-        if (!is_array($dataStructureArray['sheets'] ?? false)) {
-            // We might return empty string instead of throwing here, unsure.
-            throw new \RuntimeException('Data structure should always declare at least one sheet', 1697555523);
-        }
-        $newValueArray = [];
-        foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
-            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementData) {
-                // For all elements allowed in Data Structure.
-                if (($sheetElementData['type'] ?? '') === 'array') {
-                    // This is a section.
-                    if (!is_array($sheetElementData['el'] ?? false) || !is_array($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
-                        // No possible containers defined for this section in DS, or no values set for this section.
-                        continue;
-                    }
-                    foreach ($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
-                        // We have containers for this section in values.
-                        if (!is_array($valueSectionContainers ?? false)) {
-                            // Values don't validate to an array, skip.
-                            continue;
-                        }
-                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
-                            // For all value containers in this section.
-                            if (!is_array($sheetElementData['el'][$valueContainerType]['el'] ?? false)) {
-                                // There is no DS for this container type, skip.
-                                continue;
-                            }
-                            foreach (array_keys($sheetElementData['el'][$valueContainerType]['el']) as $containerElement) {
-                                // Container type of this value container exists in DS. Iterate DS container to pick allowed single elements.
-                                if (isset($valueContainerElements['el'][$containerElement]['vDEF'])) {
-                                    $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] =
-                                        $valueContainerElements['el'][$containerElement]['vDEF'];
-                                }
-                            }
-                        }
-                        if (isset($valueSectionContainers['_TOGGLE'])) {
-                            // @todo: _TOGGLE is a UI artefact storing open/close containers. This should of course be stored in BE user uc instead.
-                            //        See DataHandler and FormEngine for further handling. We keep it for now if set, though.
-                            $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey]['_TOGGLE'] = $valueSectionContainers['_TOGGLE'];
-                        }
-                    }
-                } elseif (isset($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
-                    // Not a section but a simple field. Keep value if set.
-                    $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] = $valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
-                }
-            }
-        }
-        return $this->flexArray2Xml($newValueArray);
-    }
-
-    /**
-     * Convert FlexForm data array to XML
-     */
-    public function flexArray2Xml(array $array): string
-    {
-        return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF .
-            GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', 4, $this->flexArray2Xml_options);
-    }
-
-    /**
      * Prepare type=category fields if given.
      *
      * NOTE: manyToMany relationships are not supported!
@@ -720,7 +603,6 @@ class FlexFormTools
             // Early return in case the no sheets are given
             return $dataStructureSheets;
         }
-
         foreach ($dataStructureSheets as &$structure) {
             if (!is_array($structure['el'] ?? false) || $structure['el'] === []) {
                 // Skip if no elements (fields) are defined
@@ -731,24 +613,19 @@ class FlexFormTools
                     // Skip if type is not "category"
                     continue;
                 }
-
                 // Add a default label if none is defined
                 if (!isset($fieldConfig['label'])) {
                     $fieldConfig['label'] = 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories';
                 }
-
                 // Initialize default column configuration and merge it with already defined
                 $fieldConfig['config']['size'] ??= 20;
-
                 // Force foreign_table_* fields for type category
                 $fieldConfig['config']['foreign_table'] = 'sys_category';
                 $fieldConfig['config']['foreign_table_where'] = ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)';
-
                 if (empty($fieldConfig['config']['relationship'])) {
                     // Fall back to "oneToMany" when no relationship is given
                     $fieldConfig['config']['relationship'] = 'oneToMany';
                 }
-
                 if (!in_array($fieldConfig['config']['relationship'], ['oneToOne', 'oneToMany'], true)) {
                     throw new \UnexpectedValueException(
                         '"relationship" must be one of "oneToOne" or "oneToMany", "manyToMany" is not supported as "relationship"' .
@@ -756,7 +633,6 @@ class FlexFormTools
                         1627640208
                     );
                 }
-
                 // Set the maxitems value (necessary for DataHandling and FormEngine)
                 if ($fieldConfig['config']['relationship'] === 'oneToOne') {
                     // In case relationship is set to "oneToOne", maxitems must be 1.
@@ -779,7 +655,6 @@ class FlexFormTools
                         );
                     }
                 }
-
                 // Add the default value if not set
                 if (!isset($fieldConfig['config']['default'])
                     && $fieldConfig['config']['relationship'] !== 'oneToMany'
@@ -788,7 +663,6 @@ class FlexFormTools
                 }
             }
         }
-
         return $dataStructureSheets;
     }
 
@@ -803,7 +677,6 @@ class FlexFormTools
             // Early return in case the no sheets are given
             return $dataStructureSheets;
         }
-
         foreach ($dataStructureSheets as &$structure) {
             if (!is_array($structure['el'] ?? false) || $structure['el'] === []) {
                 // Skip if no elements (fields) are defined
@@ -814,7 +687,6 @@ class FlexFormTools
                     // Skip if type is not "file"
                     continue;
                 }
-
                 $fieldConfig['config'] = array_replace_recursive(
                     $fieldConfig['config'],
                     [
@@ -838,46 +710,6 @@ class FlexFormTools
                 }
             }
         }
-
         return $dataStructureSheets;
-    }
-
-    /**
-     * Recursively migrate flex form TCA
-     */
-    public function migrateFlexFormTcaRecursive(array $structure): array
-    {
-        $newStructure = [];
-        foreach ($structure as $key => $value) {
-            if ($key === 'el' && is_array($value)) {
-                $newSubStructure = [];
-                $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
-                foreach ($value as $subKey => $subValue) {
-                    // On-the-fly migration for flex form "TCA". Call the TcaMigration and log any deprecations.
-                    $dummyTca = [
-                        'dummyTable' => [
-                            'columns' => [
-                                'dummyField' => $subValue,
-                            ],
-                        ],
-                    ];
-                    $migratedTca = $tcaMigration->migrate($dummyTca);
-                    $messages = $tcaMigration->getMessages();
-                    if (!empty($messages)) {
-                        $context = 'FlexFormTools did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
-                            . ' Merge the following changes into the flex form definition "' . $subKey . '":';
-                        array_unshift($messages, $context);
-                        trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
-                    }
-                    $newSubStructure[$subKey] = $migratedTca['dummyTable']['columns']['dummyField'];
-                }
-                $value = $newSubStructure;
-            }
-            if (is_array($value)) {
-                $value = $this->migrateFlexFormTcaRecursive($value);
-            }
-            $newStructure[$key] = $value;
-        }
-        return $newStructure;
     }
 }

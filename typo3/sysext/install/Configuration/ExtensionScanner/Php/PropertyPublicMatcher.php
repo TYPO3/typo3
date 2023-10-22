@@ -1081,4 +1081,24 @@ return [
             'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->reNumberIndexesOfSectionData' => [
+        'restFiles' => [
+            'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->flexArray2Xml_options' => [
+        'restFiles' => [
+            'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->callBackObj' => [
+        'restFiles' => [
+            'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->cleanFlexFormXML' => [
+        'restFiles' => [
+            'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
+        ],
+    ],
 ];

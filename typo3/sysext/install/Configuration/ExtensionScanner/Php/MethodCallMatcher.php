@@ -6073,4 +6073,25 @@ return [
             'Breaking-102009-ImagesizesCacheRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->traverseFlexFormXMLData' => [
+        'numberOfMandatoryArguments' => 5,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->traverseFlexFormXMLData_recurse' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->cleanFlexFormXML_callBackFunction' => [
+        'numberOfMandatoryArguments' => 5,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
+        ],
+    ],
 ];

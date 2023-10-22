@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldExc
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
-use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlexFormToolsTest extends FunctionalTestCase
@@ -923,55 +922,6 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1627640210);
         $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
-    }
-
-    /**
-     * @test
-     */
-    public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingField(): void
-    {
-        $dataStruct = [
-            'dummy_field' => [
-                'config' => [],
-            ],
-        ];
-        $pA = [
-            'vKeys' => ['ES'],
-            'callBackMethod_value' => 'dummy',
-        ];
-        $editData = [];
-        $subject = $this->getMockBuilder(FlexFormTools::class)
-            ->setConstructorArgs([new MockEventDispatcher()])
-            ->onlyMethods(['executeCallBackMethod'])
-            ->getMock();
-        $subject->expects(self::never())->method('executeCallBackMethod');
-        $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
-    }
-
-    /**
-     * @test
-     */
-    public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingArrayField(): void
-    {
-        $dataStruct = [
-            'dummy_field' => [
-                'type' => 'array',
-                'el' => 'field_not_in_data',
-            ],
-        ];
-        $pA = [
-            'vKeys' => ['ES'],
-            'callBackMethod_value' => 'dummy',
-        ];
-        $editData = [
-            'field' => [
-                'el' => 'dummy',
-            ],
-        ];
-        $editData2 = [];
-        $flexFormTools = $this->get(FlexFormTools::class);
-        $flexFormTools->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
-        $flexFormTools->traverseFlexFormXMLData_recurse($dataStruct, $editData2, $pA);
     }
 
     /**
