@@ -116,7 +116,6 @@ CREATE TABLE tx_styleguide_elements_basic (
 
 
 CREATE TABLE tx_styleguide_elements_rte (
-    rte_inline_1 text,
     input_palette_1 text,
     rte_palette_1 text
 );
@@ -132,13 +131,6 @@ CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
     parentid int(11) DEFAULT '0' NOT NULL,
     parenttable text,
 );
-
-
-CREATE TABLE tx_styleguide_elements_rte_inline_1_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-);
-
 
 CREATE TABLE tx_styleguide_elements_select (
     select_single_1 text,
@@ -208,7 +200,6 @@ CREATE TABLE tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm (
 
 CREATE TABLE tx_styleguide_elements_t3editor (
     t3editor_reload_1 int(11) DEFAULT '0' NOT NULL,
-    t3editor_inline_1 text,
 );
 
 
@@ -216,13 +207,6 @@ CREATE TABLE tx_styleguide_elements_t3editor_flex_1_inline_1_child (
     parentid int(11) DEFAULT '0' NOT NULL,
     parenttable text,
 );
-
-
-CREATE TABLE tx_styleguide_elements_t3editor_inline_1_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-);
-
 
 CREATE TABLE tx_styleguide_flex (
 );
@@ -235,137 +219,63 @@ CREATE TABLE tx_styleguide_flex_flex_3_inline_1_child (
     input_1 text
 );
 
-
-CREATE TABLE tx_styleguide_inline_1n (
-    inline_1 int(11) DEFAULT '0' NOT NULL,
-    inline_2 int(11) DEFAULT '0' NOT NULL
-);
-
-
-CREATE TABLE tx_styleguide_inline_11 (
-    inline_1 int(11) DEFAULT '0' NOT NULL
-);
-
 CREATE TABLE tx_styleguide_inline_11_child (
     input_1 text
 );
 
 CREATE TABLE tx_styleguide_inline_1n_inline_1_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text,
     input_3 text,
     select_tree_1 text
 );
 
 CREATE TABLE tx_styleguide_inline_1n_inline_2_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text,
     select_tree_1 text,
 );
 
-CREATE TABLE tx_styleguide_inline_1nnol10n (
-    inline_1 int(11) DEFAULT '0' NOT NULL
-);
-
-
 CREATE TABLE tx_styleguide_inline_1nnol10n_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text
 );
-
-
-CREATE TABLE tx_styleguide_inline_1n1n (
-    inline_1 int(11) DEFAULT '0' NOT NULL
-);
-
-
-CREATE TABLE tx_styleguide_inline_1n1n_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
-    inline_1 int(11) DEFAULT '0' NOT NULL
-);
-
 
 CREATE TABLE tx_styleguide_inline_1n1n_childchild (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text
 );
 
-
-CREATE TABLE tx_styleguide_inline_expand (
-    inline_1 text
-);
-
-
 CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     dummy_1 text,
     select_tree_1 text,
 );
 
-
-CREATE TABLE tx_styleguide_inline_expandsingle (
-    inline_1 int(11) DEFAULT '0' NOT NULL
-);
-
-
 CREATE TABLE tx_styleguide_inline_expandsingle_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text
 );
 
 CREATE TABLE tx_styleguide_file (
 );
 
-
-CREATE TABLE tx_styleguide_inline_foreignrecorddefaults (
-    inline_1 int(11) DEFAULT '0' NOT NULL
-);
-
-
 CREATE TABLE tx_styleguide_inline_foreignrecorddefaults_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text
 );
 
 
 CREATE TABLE tx_styleguide_inline_mm (
     title tinytext,
-    inline_1 int(11) DEFAULT '0' NOT NULL
 );
 
 
 CREATE TABLE tx_styleguide_inline_mm_child (
     title tinytext,
-    parents int(11) DEFAULT '0' NOT NULL,
-    inline_2 int(11) DEFAULT '0' NOT NULL
 );
 
 
 CREATE TABLE tx_styleguide_inline_mm_childchild (
     title tinytext,
-    parents int(11) DEFAULT '0' NOT NULL
 );
 
 
 CREATE TABLE tx_styleguide_inline_mn (
     input_1 tinytext,
-    inline_1 int(11) DEFAULT '0' NOT NULL
 );
 
 
@@ -379,13 +289,11 @@ CREATE TABLE tx_styleguide_inline_mn_mm (
 
 CREATE TABLE tx_styleguide_inline_mn_child (
     input_1 tinytext,
-    parents int(11) DEFAULT '0' NOT NULL
 );
 
 
 CREATE TABLE tx_styleguide_inline_mngroup (
     input_1 tinytext,
-    inline_1 int(11) DEFAULT '0' NOT NULL
 );
 
 
@@ -397,13 +305,11 @@ CREATE TABLE tx_styleguide_inline_mngroup_mm (
 
 CREATE TABLE tx_styleguide_inline_mngroup_child (
     input_1 tinytext,
-    parents int(11) DEFAULT '0' NOT NULL
 );
 
 
 CREATE TABLE tx_styleguide_inline_mnsymmetric (
     input_1 tinytext,
-    branches int(11) DEFAULT '0' NOT NULL
 );
 
 
@@ -416,7 +322,6 @@ CREATE TABLE tx_styleguide_inline_mnsymmetric_mm (
 
 CREATE TABLE tx_styleguide_inline_mnsymmetricgroup (
     input_1 tinytext,
-    branches int(11) DEFAULT '0' NOT NULL
 );
 
 
@@ -429,12 +334,6 @@ CREATE TABLE tx_styleguide_inline_mnsymmetricgroup_mm (
     branchsort int(10) DEFAULT '0' NOT NULL
 );
 
-
-CREATE TABLE tx_styleguide_inline_usecombination (
-    inline_1 int(11) DEFAULT '0' NOT NULL
-);
-
-
 CREATE TABLE tx_styleguide_inline_usecombination_mm (
     select_parent int(11) unsigned DEFAULT '0' NOT NULL,
     select_child int(11) unsigned DEFAULT '0' NOT NULL
@@ -444,12 +343,6 @@ CREATE TABLE tx_styleguide_inline_usecombination_mm (
 CREATE TABLE tx_styleguide_inline_usecombination_child (
     input_1 varchar(255) DEFAULT '' NOT NULL
 );
-
-
-CREATE TABLE tx_styleguide_inline_usecombinationbox (
-    inline_1 int(11) DEFAULT '0' NOT NULL
-);
-
 
 CREATE TABLE tx_styleguide_inline_usecombinationbox_mm (
     select_parent int(11) unsigned DEFAULT '0' NOT NULL,
@@ -489,11 +382,6 @@ CREATE TABLE tx_styleguide_required (
     select_5 text,
 
     rte_1 text,
-    rte_2 text,
-
-    inline_1 text,
-    inline_2 text,
-    inline_3 text,
 
     palette_input_1 text,
     palette_input_2 text
@@ -509,34 +397,18 @@ CREATE TABLE tx_styleguide_required_flex_2_inline_1_child (
 
 
 CREATE TABLE tx_styleguide_required_inline_1_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text
 );
 
 
 CREATE TABLE tx_styleguide_required_inline_2_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text
 );
 
 
 CREATE TABLE tx_styleguide_required_inline_3_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-
     input_1 text
 );
-
-
-CREATE TABLE tx_styleguide_required_rte_2_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
-);
-
 
 CREATE TABLE tx_styleguide_staticdata (
     value_1 tinytext
@@ -575,12 +447,9 @@ CREATE TABLE tx_styleguide_l10nreadonly (
     select_tree_mm text,
     select_multiplesidebyside text,
     select_multiplesidebyside_mm text,
-    inline text,
 );
 
 CREATE TABLE tx_styleguide_l10nreadonly_inline_child (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    parenttable text,
     input text,
 );
 
