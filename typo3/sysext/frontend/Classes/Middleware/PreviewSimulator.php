@@ -49,7 +49,11 @@ class PreviewSimulator implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
+        $isLoggedIn = $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
+        $isOfflineWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
+        // When previewing a workspace with the preview link, the PreviewUserAuthentication is NOT marked as
+        // "isLoggedIn" as it does not have a valid user ID. For this reason, we also check if the Workspace is offline. See WorkspacePreview middleware
+        if ($isLoggedIn || $isOfflineWorkspace) {
             $pageArguments = $request->getAttribute('routing', null);
             if (!$pageArguments instanceof PageArguments) {
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
@@ -69,7 +73,6 @@ class PreviewSimulator implements MiddlewareInterface
             $simulatingDate = $this->simulateDate($request);
             $simulatingGroup = $this->simulateUserGroup($request);
             $showHiddenRecords = $visibilityAspect->includeHidden();
-            $isOfflineWorkspace = $this->context->getPropertyFromAspect('workspace', 'id', 0) > 0;
             $isPreview = $simulatingDate || $simulatingGroup || $showHiddenRecords || $showHiddenPages || $isOfflineWorkspace || $rootlineRequiresPreviewFlag;
             if ($this->context->hasAspect('frontend.preview')) {
                 $previewAspect = $this->context->getAspect('frontend.preview');
