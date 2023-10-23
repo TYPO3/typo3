@@ -796,11 +796,6 @@ parameters:
 			path: ../Classes/UserFunctions/FormEngine/TypeCheckbox8ItemsProcFunc.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\UserFunctions\\\\FormEngine\\\\TypeInput21Eval\\:\\:deevaluateFieldValue\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../Classes/UserFunctions/FormEngine/TypeInput21Eval.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\UserFunctions\\\\FormEngine\\\\TypeRadio5ItemsProcFunc\\:\\:itemsProcFunc\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/UserFunctions/FormEngine/TypeRadio5ItemsProcFunc.php

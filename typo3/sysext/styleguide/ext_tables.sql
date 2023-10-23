@@ -76,7 +76,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_14 text,
     input_15 text,
     input_19 text,
-    input_20 text,
     input_21 text,
     input_22 text,
     input_23 text,
