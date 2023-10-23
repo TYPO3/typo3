@@ -34,8 +34,7 @@ class SqlLogging implements MiddlewareInterface
 {
     public function __construct(
         private readonly ConnectionPool $connectionPool
-    ) {
-    }
+    ) {}
 
     /**
      * Enable SQL Logging as early as possible to catch all queries if the admin panel is active

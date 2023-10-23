@@ -31,8 +31,7 @@ final class AfterHistoryRollbackFinishedEvent
         private readonly array $dataHandlerInput,
         private readonly RecordHistoryRollback $recordHistoryRollback,
         private readonly ?BackendUserAuthentication $backendUserAuthentication = null
-    ) {
-    }
+    ) {}
 
     public function getRecordHistoryRollback(): RecordHistoryRollback
     {

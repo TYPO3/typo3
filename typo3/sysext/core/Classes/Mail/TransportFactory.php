@@ -43,8 +43,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
     public function __construct(
         protected readonly EventDispatcherInterface $dispatcher,
         protected readonly LogManagerInterface $logManager,
-    ) {
-    }
+    ) {}
 
     /**
      * Gets a transport from settings.

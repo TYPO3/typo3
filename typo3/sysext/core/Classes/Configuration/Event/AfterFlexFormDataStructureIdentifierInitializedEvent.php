@@ -46,8 +46,7 @@ final class AfterFlexFormDataStructureIdentifierInitializedEvent
         private readonly string $fieldName,
         private readonly array $row,
         private array $identifier,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns the full TCA of the currently handled field, having

@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Backend\Form\Exception;
 /**
  * User access to record was denied by a ModifyRecordEditUserAccessEvent listener
  */
-class AccessDeniedListenerException extends AccessDeniedException
-{
-}
+class AccessDeniedListenerException extends AccessDeniedException {}

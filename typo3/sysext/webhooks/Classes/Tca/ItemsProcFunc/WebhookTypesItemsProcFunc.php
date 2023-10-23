@@ -30,8 +30,7 @@ class WebhookTypesItemsProcFunc
     public function __construct(
         private readonly WebhookTypesRegistry $webhookTypesRegistry,
         private readonly LanguageServiceFactory $languageServiceFactory
-    ) {
-    }
+    ) {}
 
     public function getWebhookTypes(&$fieldDefinition): void
     {

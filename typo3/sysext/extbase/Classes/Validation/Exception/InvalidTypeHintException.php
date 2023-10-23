@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Validation\Exception;
 /**
  * An "Invalid TypeHint" Exception
  */
-class InvalidTypeHintException extends Exception
-{
-}
+class InvalidTypeHintException extends Exception {}

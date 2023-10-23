@@ -71,9 +71,7 @@ class GlobalVariableProvider extends AbstractProvider
      */
     protected string $globalVariableKey;
 
-    public function __construct(protected readonly EventDispatcherInterface $eventDispatcher)
-    {
-    }
+    public function __construct(protected readonly EventDispatcherInterface $eventDispatcher) {}
 
     public function __invoke(array $attributes): self
     {

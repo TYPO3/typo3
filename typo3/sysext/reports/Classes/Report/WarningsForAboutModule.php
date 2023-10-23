@@ -36,8 +36,7 @@ final class WarningsForAboutModule
     public function __construct(
         private readonly Registry $registry,
         private readonly Context $context
-    ) {
-    }
+    ) {}
 
     /**
      * Tries to get the highest severity of the system's status first, if

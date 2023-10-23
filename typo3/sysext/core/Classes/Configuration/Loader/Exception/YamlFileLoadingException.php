@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration\Loader\Exception;
 
-class YamlFileLoadingException extends \RuntimeException
-{
-}
+class YamlFileLoadingException extends \RuntimeException {}

@@ -53,8 +53,7 @@ class BackendRouteInitialization implements MiddlewareInterface
         protected readonly Router $router,
         protected readonly UriBuilder $uriBuilder,
         protected readonly RequestContextFactory $requestContextFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Resolve the &route (or &M) GET/POST parameter, and also resolves a Route object

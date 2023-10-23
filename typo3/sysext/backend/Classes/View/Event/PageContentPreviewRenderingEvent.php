@@ -31,8 +31,7 @@ final class PageContentPreviewRenderingEvent implements StoppableEventInterface
         private readonly string $table,
         private array $record,
         private readonly PageLayoutContext $context
-    ) {
-    }
+    ) {}
 
     public function getTable(): string
     {

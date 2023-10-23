@@ -61,8 +61,7 @@ class NewContentElementController
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly DependencyOrderingService $dependencyOrderingService,
-    ) {
-    }
+    ) {}
 
     /**
      * Process incoming request and dispatch to the requested action
@@ -349,7 +348,7 @@ class NewContentElementController
     {
         if (isset($wizardGroup[$key])) {
             $wizardGroup[$key] = GeneralUtility::trimExplode(',', $wizardGroup[$key]);
-            $wizardGroup[$key] = array_map(static fn ($s) => $s . '.', $wizardGroup[$key]);
+            $wizardGroup[$key] = array_map(static fn($s) => $s . '.', $wizardGroup[$key]);
         }
         return $wizardGroup;
     }

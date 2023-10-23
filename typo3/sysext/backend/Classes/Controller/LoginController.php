@@ -118,8 +118,7 @@ class LoginController
         protected readonly BackendEntryPointResolver $backendEntryPointResolver,
         protected readonly FormProtectionFactory $formProtectionFactory,
         protected readonly Locales $locales,
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request and response objects for the current request or subrequest

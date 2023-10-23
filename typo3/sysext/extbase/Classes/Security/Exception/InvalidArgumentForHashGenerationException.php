@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Security\Exception;
 /**
  * An "InvalidArgumentForHashGeneration" exception
  */
-class InvalidArgumentForHashGenerationException extends Exception
-{
-}
+class InvalidArgumentForHashGenerationException extends Exception {}

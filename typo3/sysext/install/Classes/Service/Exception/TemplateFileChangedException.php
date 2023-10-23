@@ -22,6 +22,4 @@ use TYPO3\CMS\Install\Service\Exception;
 /**
  * An exception thrown if the silent template file updater changed file content
  */
-class TemplateFileChangedException extends Exception
-{
-}
+class TemplateFileChangedException extends Exception {}

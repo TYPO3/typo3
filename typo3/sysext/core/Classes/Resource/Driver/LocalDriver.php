@@ -116,9 +116,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Initializes this object. This is called by the storage after the driver
      * has been attached.
      */
-    public function initialize()
-    {
-    }
+    public function initialize() {}
 
     /**
      * Determines the base URL for this driver, from the configuration or

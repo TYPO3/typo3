@@ -42,13 +42,9 @@ class FrontendFixture implements FrontendInterface
         throw new \RuntimeException('testing', 1668942244);
     }
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
-    {
-    }
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void {}
 
-    public function get($entryIdentifier)
-    {
-    }
+    public function get($entryIdentifier) {}
 
     public function has($entryIdentifier)
     {
@@ -60,21 +56,13 @@ class FrontendFixture implements FrontendInterface
         return false;
     }
 
-    public function flush(): void
-    {
-    }
+    public function flush(): void {}
 
-    public function flushByTag($tag): void
-    {
-    }
+    public function flushByTag($tag): void {}
 
-    public function flushByTags(array $tags): void
-    {
-    }
+    public function flushByTags(array $tags): void {}
 
-    public function collectGarbage(): void
-    {
-    }
+    public function collectGarbage(): void {}
 
     public function isValidEntryIdentifier($identifier)
     {

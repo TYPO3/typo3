@@ -29,9 +29,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 #[Controller]
 class DummyController
 {
-    public function __construct(protected readonly ModuleTemplateFactory $moduleTemplateFactory)
-    {
-    }
+    public function __construct(protected readonly ModuleTemplateFactory $moduleTemplateFactory) {}
 
     /**
      * Return simple dummy content

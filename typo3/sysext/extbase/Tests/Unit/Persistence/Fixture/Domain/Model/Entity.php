@@ -19,6 +19,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-class Entity extends AbstractEntity
-{
-}
+class Entity extends AbstractEntity {}

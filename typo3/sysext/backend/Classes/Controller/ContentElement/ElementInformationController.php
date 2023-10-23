@@ -67,8 +67,7 @@ class ElementInformationController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ResourceFactory $resourceFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request or subrequest

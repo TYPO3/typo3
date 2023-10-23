@@ -29,6 +29,4 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * the value directly without serializing it to a string, and does
  * not attempt to unserialize the string on every get() request.
  */
-interface TransientBackendInterface extends BackendInterface
-{
-}
+interface TransientBackendInterface extends BackendInterface {}

@@ -42,8 +42,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
     public function __construct(
         protected readonly Context $context,
         protected readonly RateLimiterFactory $rateLimiterFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Creates a frontend user authentication object, tries to authenticate a user and stores

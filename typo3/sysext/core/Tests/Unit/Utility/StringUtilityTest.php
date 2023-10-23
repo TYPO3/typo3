@@ -55,7 +55,7 @@ final class StringUtilityTest extends UnitTestCase
         yield 'null' => [null];
         yield 'object' => [new \stdClass()];
         yield 'string backed enum' => [ApplicationType::BACKEND];
-        yield 'closure' => [static fn (): string => 'fn'];
+        yield 'closure' => [static fn(): string => 'fn'];
         // PHP interprets it as `lim(x→0) log(x) = -∞`
         yield 'infinite' => [log(0)];
         // acos only supports values in range [-1; +1]
@@ -94,7 +94,7 @@ final class StringUtilityTest extends UnitTestCase
         yield 'null' => [null];
         yield 'object' => [new \stdClass()];
         yield 'string backed enum' => [ApplicationType::BACKEND];
-        yield 'closure' => [static fn (): string => 'fn'];
+        yield 'closure' => [static fn(): string => 'fn'];
         // PHP interprets it as `lim(x→0) log(x) = -∞`
         yield 'infinite' => [log(0)];
         // acos only supports values in range [-1; +1]

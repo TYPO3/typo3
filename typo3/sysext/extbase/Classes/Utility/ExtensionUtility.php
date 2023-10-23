@@ -153,9 +153,7 @@ tt_content.' . $pluginSignature . ' {
      *
      * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
-    public static function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = [], array $moduleConfiguration = [])
-    {
-    }
+    public static function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = [], array $moduleConfiguration = []) {}
 
     /**
      * @internal only used for TYPO3 Core

@@ -27,9 +27,7 @@ use TYPO3\CMS\Core\Mail\FluidEmail;
  */
 final class SendRecoveryEmailEvent
 {
-    public function __construct(private readonly FluidEmail $email, private readonly array $user)
-    {
-    }
+    public function __construct(private readonly FluidEmail $email, private readonly array $user) {}
 
     public function getUserInformation(): array
     {

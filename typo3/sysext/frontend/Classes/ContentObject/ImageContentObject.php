@@ -29,8 +29,7 @@ class ImageContentObject extends AbstractContentObject
 {
     public function __construct(
         protected readonly MarkerBasedTemplateService $markerTemplateService,
-    ) {
-    }
+    ) {}
 
     /**
      * Rendering the cObject, IMAGE

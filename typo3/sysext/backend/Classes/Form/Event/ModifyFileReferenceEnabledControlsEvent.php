@@ -94,7 +94,7 @@ final class ModifyFileReferenceEnabledControlsEvent
      */
     public function getEnabledControls(): array
     {
-        return array_filter($this->controlsState, static fn ($control) => (bool)$control === true);
+        return array_filter($this->controlsState, static fn($control) => (bool)$control === true);
     }
 
     /**

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Validation\Exception;
 /**
  * A "InvalidValidationOptions" Exception
  */
-class InvalidValidationOptionsException extends Exception
-{
-}
+class InvalidValidationOptionsException extends Exception {}

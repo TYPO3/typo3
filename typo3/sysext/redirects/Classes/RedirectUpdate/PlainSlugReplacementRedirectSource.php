@@ -27,8 +27,7 @@ final class PlainSlugReplacementRedirectSource implements RedirectSourceInterfac
         private readonly string $host,
         private readonly string $path,
         private readonly array $targetLinkParameters,
-    ) {
-    }
+    ) {}
 
     public function getHost(): string
     {

@@ -48,8 +48,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
     public function __construct(
         protected readonly CacheHashCalculator $cacheHashCalculator,
         protected readonly TimeTracker $timeTracker
-    ) {
-    }
+    ) {}
 
     /**
      * Validates the &cHash parameter against the other $queryParameters / GET parameters

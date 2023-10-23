@@ -21,9 +21,7 @@ use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 
 class SoftReferenceParsersProvider extends AbstractProvider
 {
-    public function __construct(protected SoftReferenceParserFactory $softReferenceParserFactory)
-    {
-    }
+    public function __construct(protected SoftReferenceParserFactory $softReferenceParserFactory) {}
 
     public function getConfiguration(): array
     {

@@ -700,9 +700,7 @@ class ExtensionManagementUtility
      *
      * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
-    public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = [])
-    {
-    }
+    public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = []) {}
 
     /**
      * Adds a "Function menu module" ('third level module') to an existing function menu of some other backend module.
@@ -757,9 +755,7 @@ class ExtensionManagementUtility
      *
      * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
-    public static function addLLrefForTCAdescr($key, $file)
-    {
-    }
+    public static function addLLrefForTCAdescr($key, $file) {}
 
     /**
      * Registers a navigation component e.g. page tree

@@ -35,9 +35,7 @@ final class CollectionValidator extends AbstractGenericObjectValidator
         'elementType' => [null, 'The type of the elements in the collection', 'string'],
     ];
 
-    public function __construct(protected readonly ValidatorResolver $validatorResolver)
-    {
-    }
+    public function __construct(protected readonly ValidatorResolver $validatorResolver) {}
 
     /**
      * Checks if the given value is valid according to the validator, and returns

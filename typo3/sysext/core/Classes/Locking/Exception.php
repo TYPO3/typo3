@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Locking;
 /**
  * A locking exception
  */
-class Exception extends \TYPO3\CMS\Core\Exception
-{
-}
+class Exception extends \TYPO3\CMS\Core\Exception {}

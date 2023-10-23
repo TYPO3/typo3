@@ -43,8 +43,7 @@ class ExtensionComposerStatusController extends AbstractController
         protected readonly ComposerManifestProposalGenerator $composerManifestProposalGenerator,
         protected readonly PageRenderer $pageRenderer,
         protected readonly IconFactory $iconFactory
-    ) {
-    }
+    ) {}
 
     protected function initializeAction(): void
     {

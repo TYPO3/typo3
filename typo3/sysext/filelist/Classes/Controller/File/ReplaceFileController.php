@@ -67,8 +67,7 @@ class ReplaceFileController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ResourceFactory $resourceFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Processes the request, currently everything is handled and put together via "main()"

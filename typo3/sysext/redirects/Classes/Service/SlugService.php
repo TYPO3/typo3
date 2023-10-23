@@ -102,8 +102,7 @@ class SlugService implements LoggerAwareInterface
         protected readonly RedirectCacheService $redirectCacheService,
         protected readonly SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function rebuildSlugsForSlugChange(int $pageId, SlugRedirectChangeItem $changeItem, CorrelationId $correlationId): void
     {

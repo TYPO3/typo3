@@ -50,8 +50,7 @@ final class PageTsConfigRecordsOverviewController
         private readonly IconFactory $iconFactory,
         private readonly UriBuilder $uriBuilder,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {

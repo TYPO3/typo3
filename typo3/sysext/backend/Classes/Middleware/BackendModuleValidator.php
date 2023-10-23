@@ -43,8 +43,7 @@ class BackendModuleValidator implements MiddlewareInterface
     public function __construct(
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleProvider $moduleProvider
-    ) {
-    }
+    ) {}
 
     /**
      * In case the current route targets a TYPO3 backend module and the user

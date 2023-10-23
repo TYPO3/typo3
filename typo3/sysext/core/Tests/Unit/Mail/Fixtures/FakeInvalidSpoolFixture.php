@@ -36,7 +36,5 @@ class FakeInvalidSpoolFixture
         return $this->settings;
     }
 
-    public function queueMessage(RawMessage $message): void
-    {
-    }
+    public function queueMessage(RawMessage $message): void {}
 }

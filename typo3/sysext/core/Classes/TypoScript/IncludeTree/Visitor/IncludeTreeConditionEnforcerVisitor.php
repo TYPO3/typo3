@@ -55,7 +55,5 @@ final class IncludeTreeConditionEnforcerVisitor implements IncludeTreeVisitorInt
         }
     }
 
-    public function visit(IncludeInterface $include, int $currentDepth): void
-    {
-    }
+    public function visit(IncludeInterface $include, int $currentDepth): void {}
 }

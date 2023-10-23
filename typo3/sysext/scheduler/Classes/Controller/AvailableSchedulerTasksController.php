@@ -40,8 +40,7 @@ final class AvailableSchedulerTasksController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly CommandRegistry $commandRegistry,
         private readonly TaskService $taskService,
-    ) {
-    }
+    ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

@@ -36,8 +36,7 @@ class PasswordVerification
 {
     public function __construct(
         protected readonly PasswordHashFactory $passwordHashFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Verifies that provided password matches Install Tool password.

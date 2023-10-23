@@ -23,16 +23,12 @@ namespace TYPO3\CMS\Frontend\Service {
     /**
      * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
      */
-    class TypoLinkCodecService extends \TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService
-    {
-    }
+    class TypoLinkCodecService extends \TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService {}
 }
 
 namespace TYPO3\CMS\Frontend\Typolink {
     /**
      * @deprecated since TYPO3 v12, will be removed in TYPO3 v13
      */
-    class LinkResultFactory extends \TYPO3\CMS\Frontend\Typolink\LinkFactory
-    {
-    }
+    class LinkResultFactory extends \TYPO3\CMS\Frontend\Typolink\LinkFactory {}
 }

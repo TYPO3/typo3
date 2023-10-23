@@ -24,9 +24,7 @@ use TYPO3\CMS\Backend\Search\LiveSearch\ResultItem;
  */
 final class ModifyResultItemInLiveSearchEvent
 {
-    public function __construct(private readonly ResultItem $resultItem)
-    {
-    }
+    public function __construct(private readonly ResultItem $resultItem) {}
 
     public function getResultItem(): ResultItem
     {

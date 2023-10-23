@@ -49,7 +49,7 @@ final class ImportMapTest extends UnitTestCase
             Environment::getCurrentScript(),
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $this->backupPackageManager = \Closure::bind(fn (): PackageManager => ExtensionManagementUtility::$packageManager, null, ExtensionManagementUtility::class)();
+        $this->backupPackageManager = \Closure::bind(fn(): PackageManager => ExtensionManagementUtility::$packageManager, null, ExtensionManagementUtility::class)();
         ExtensionManagementUtility::setPackageManager($this->mockPackageManager());
     }
 
@@ -237,9 +237,9 @@ final class ImportMapTest extends UnitTestCase
         $test = $this;
         $packageManagerMock = $this->createMock(PackageManager::class);
         $packageManagerMock->method('resolvePackagePath')->willReturnCallback(
-            fn (string $path): string => str_replace(
-                array_map(fn (PackageInterface $package): string => 'EXT:' . $package->getPackageKey() . '/', $test->getPackages()),
-                array_map(fn (PackageInterface $package): string => $package->getPackagePath(), $test->getPackages()),
+            fn(string $path): string => str_replace(
+                array_map(fn(PackageInterface $package): string => 'EXT:' . $package->getPackageKey() . '/', $test->getPackages()),
+                array_map(fn(PackageInterface $package): string => $package->getPackagePath(), $test->getPackages()),
                 $path
             )
         );

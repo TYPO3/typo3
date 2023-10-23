@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Install\ViewHelpers;
 /**
  * A ViewHelper exception
  */
-class Exception extends \TYPO3\CMS\Install\Exception
-{
-}
+class Exception extends \TYPO3\CMS\Install\Exception {}

@@ -78,8 +78,7 @@ abstract class AbstractElementBrowser
         protected readonly UriBuilder $uriBuilder,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Main initialization

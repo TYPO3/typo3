@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 /**
  * Base interface for all aspects
  */
-interface AspectInterface
-{
-}
+interface AspectInterface {}

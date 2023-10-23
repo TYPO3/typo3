@@ -21,6 +21,4 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception;
  * A Parse Error exception
  * @internal
  */
-class ParseErrorException extends Exception
-{
-}
+class ParseErrorException extends Exception {}

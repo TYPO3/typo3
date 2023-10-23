@@ -237,7 +237,7 @@ class BackendController
             return $toolbarItem;
         }, array_filter(
             $this->toolbarItemsRegistry->getToolbarItems(),
-            static fn (ToolbarItemInterface $toolbarItem) => $toolbarItem->checkAccess()
+            static fn(ToolbarItemInterface $toolbarItem) => $toolbarItem->checkAccess()
         ));
     }
 

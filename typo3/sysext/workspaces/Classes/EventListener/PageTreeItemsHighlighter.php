@@ -29,8 +29,7 @@ final class PageTreeItemsHighlighter
 {
     public function __construct(
         private readonly WorkspaceService $workspaceService
-    ) {
-    }
+    ) {}
 
     public function __invoke(AfterPageTreeItemsPreparedEvent $event): void
     {

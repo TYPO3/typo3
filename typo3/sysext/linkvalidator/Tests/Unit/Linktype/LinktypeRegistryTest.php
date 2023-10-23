@@ -29,8 +29,7 @@ final class LinktypeRegistryTest extends UnitTestCase
     public function registrationRequiresInterface(): void
     {
         $linktypes = [
-            new class () {
-            },
+            new class () {},
             $this->getLinkType('valid-identifier'),
         ];
 
@@ -88,9 +87,7 @@ final class LinktypeRegistryTest extends UnitTestCase
             {
                 return true;
             }
-            public function setAdditionalConfig(array $config): void
-            {
-            }
+            public function setAdditionalConfig(array $config): void {}
             public function fetchType($value, $type, $key)
             {
                 return '';

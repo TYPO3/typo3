@@ -62,8 +62,7 @@ class RemoteServer
         protected readonly WorkspaceService $workspaceService,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly FlexFormValueFormatter $flexFormValueFormatter,
-    ) {
-    }
+    ) {}
 
     /**
      * Checks integrity of elements before performing actions on them.

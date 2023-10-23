@@ -21,9 +21,7 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
 
 class ToolbarItemsProvider extends AbstractProvider
 {
-    public function __construct(protected readonly ToolbarItemsRegistry $toolbarItemsRegistry)
-    {
-    }
+    public function __construct(protected readonly ToolbarItemsRegistry $toolbarItemsRegistry) {}
 
     public function getConfiguration(): array
     {

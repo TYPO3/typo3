@@ -35,8 +35,7 @@ class MessageListener
         protected readonly MessageBusInterface $bus,
         protected readonly WebhookMessageFactory $messageFactory,
         protected readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     public function __invoke(mixed $object): void
     {

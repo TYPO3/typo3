@@ -49,8 +49,7 @@ class DashboardController
         protected readonly DashboardInitializationService $dashboardInitializationService,
         protected readonly WidgetGroupInitializationService $widgetGroupInitializationService,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Main entry method: Dispatch to other actions - those method names that end with "Action".

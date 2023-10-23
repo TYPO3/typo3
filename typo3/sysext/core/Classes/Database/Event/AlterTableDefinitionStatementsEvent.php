@@ -23,9 +23,7 @@ namespace TYPO3\CMS\Core\Database\Event;
  */
 final class AlterTableDefinitionStatementsEvent
 {
-    public function __construct(private array $sqlData)
-    {
-    }
+    public function __construct(private array $sqlData) {}
 
     public function addSqlData($data): void
     {

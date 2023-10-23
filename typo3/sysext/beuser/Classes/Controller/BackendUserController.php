@@ -68,8 +68,7 @@ class BackendUserController extends ActionController
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly FileMountRepository $fileMountRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Override the default action if found in user uc

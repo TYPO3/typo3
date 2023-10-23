@@ -109,8 +109,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher
-    ) {
-    }
+    ) {}
 
     /**
      * Sanitize and streamline given options (usually from RichTextConfiguration results "proc."

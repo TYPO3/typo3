@@ -19,6 +19,4 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception;
 
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception;
 
-class NonExistentPropertyException extends Exception
-{
-}
+class NonExistentPropertyException extends Exception {}

@@ -89,8 +89,7 @@ final class SysTemplateTreeBuilder
         private readonly PackageManager $packageManager,
         private readonly Context $context,
         private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
-    ) {
-    }
+    ) {}
 
     /**
      * @param 'constants'|'setup' $type

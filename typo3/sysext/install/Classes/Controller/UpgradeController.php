@@ -96,8 +96,7 @@ class UpgradeController extends AbstractController
         private readonly LateBootService $lateBootService,
         private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
         private readonly FormProtectionFactory $formProtectionFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Matcher registry of extension scanner.

@@ -29,8 +29,7 @@ final class SortVersionedDataEvent
         private array $data,
         private string $sortColumn,
         private string $sortDirection
-    ) {
-    }
+    ) {}
 
     public function getGridService(): GridDataService
     {

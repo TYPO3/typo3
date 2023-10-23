@@ -23,9 +23,7 @@ namespace TYPO3\CMS\Core\Resource\Event;
  */
 final class AfterFileMetaDataDeletedEvent
 {
-    public function __construct(private readonly int $fileUid)
-    {
-    }
+    public function __construct(private readonly int $fileUid) {}
 
     public function getFileUid(): int
     {

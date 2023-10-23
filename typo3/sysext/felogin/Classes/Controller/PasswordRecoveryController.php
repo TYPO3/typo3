@@ -55,8 +55,7 @@ class PasswordRecoveryController extends ActionController
         protected RecoveryConfiguration $recoveryConfiguration,
         protected readonly Features $features,
         protected readonly PageRepository $pageRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * Shows the recovery form. If $userIdentifier is set, an email will be sent, if the corresponding user exists and

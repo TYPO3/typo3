@@ -61,8 +61,7 @@ class FormManagerController extends AbstractBackendController
         protected readonly IconFactory $iconFactory,
         // @todo: unit tests set next one, so no readonly. refactor them to functionals?!
         protected DatabaseService $databaseService,
-    ) {
-    }
+    ) {}
 
     /**
      * Display the Form Manager. The main showing available forms.
@@ -85,18 +84,18 @@ class FormManagerController extends AbstractBackendController
         }
 
         $javaScriptModules = array_map(
-            static fn (string $name) => JavaScriptModuleInstruction::create($name),
+            static fn(string $name) => JavaScriptModuleInstruction::create($name),
             array_filter(
                 $this->formSettings['formManager']['dynamicJavaScriptModules'] ?? [],
-                fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+                fn(string $name) => in_array($name, self::JS_MODULE_NAMES, true),
                 ARRAY_FILTER_USE_KEY
             )
         );
         $requireJsModules = array_map(
-            static fn (string $name) => JavaScriptModuleInstruction::forRequireJS($name),
+            static fn(string $name) => JavaScriptModuleInstruction::forRequireJS($name),
             array_filter(
                 $this->formSettings['formManager']['dynamicRequireJsModules'] ?? [],
-                fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+                fn(string $name) => in_array($name, self::JS_MODULE_NAMES, true),
                 ARRAY_FILTER_USE_KEY
             )
         );

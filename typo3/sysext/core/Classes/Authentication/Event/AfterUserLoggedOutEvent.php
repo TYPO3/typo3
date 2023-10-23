@@ -26,8 +26,7 @@ final class AfterUserLoggedOutEvent
 {
     public function __construct(
         private readonly AbstractUserAuthentication $user
-    ) {
-    }
+    ) {}
 
     public function getUser(): AbstractUserAuthentication
     {

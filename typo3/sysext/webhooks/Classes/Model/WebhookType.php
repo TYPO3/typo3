@@ -28,8 +28,7 @@ class WebhookType
         protected readonly string $serviceName,
         protected readonly string $factoryMethodName,
         protected readonly ?string $connectedEvent = null
-    ) {
-    }
+    ) {}
 
     public function getIdentifier(): string
     {

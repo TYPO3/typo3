@@ -34,9 +34,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 #[Controller]
 class ImageManipulationController
 {
-    public function __construct(protected readonly BackendViewFactory $backendViewFactory)
-    {
-    }
+    public function __construct(protected readonly BackendViewFactory $backendViewFactory) {}
 
     /**
      * Returns the HTML for the wizard inside the modal

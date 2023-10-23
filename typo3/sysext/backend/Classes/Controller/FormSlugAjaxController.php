@@ -38,8 +38,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
         private Context $context
-    ) {
-    }
+    ) {}
 
     /**
      * Validates a given slug against the site and give a suggestion when it's already in use

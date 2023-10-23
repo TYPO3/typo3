@@ -27,8 +27,7 @@ final class ModifyFileReferenceControlsEvent
         private array $controls,
         private readonly array $data,
         private readonly array $record,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns all controls with their markup

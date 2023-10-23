@@ -33,8 +33,7 @@ final class AfterFileCopiedEvent
         private readonly Folder $folder,
         private readonly string $newFileIdentifier,
         private readonly ?FileInterface $newFile
-    ) {
-    }
+    ) {}
 
     public function getFile(): FileInterface
     {

@@ -121,7 +121,7 @@ final class LossyTokenizer implements TokenizerInterface
     {
         $vanillaLines = explode(chr(10), $source);
         $this->lines = array_map(
-            fn (int $lineNumber, string $vanillaLine): array => [
+            fn(int $lineNumber, string $vanillaLine): array => [
                 'line' => rtrim($vanillaLine, "\r"),
             ],
             array_keys($vanillaLines),

@@ -78,9 +78,7 @@ class GeneralUtility
      */
     protected static array $indpEnvCache = [];
 
-    final private function __construct()
-    {
-    }
+    final private function __construct() {}
 
     /*************************
      *
@@ -932,7 +930,7 @@ class GeneralUtility
         $result = explode($delim, (string)$string);
         if ($removeEmptyValues) {
             // Remove items that are just whitespace, but leave whitespace intact for the rest.
-            $result = array_values(array_filter($result, static fn (string $item): bool => trim($item) !== ''));
+            $result = array_values(array_filter($result, static fn(string $item): bool => trim($item) !== ''));
         }
 
         if ($limit === 0) {
@@ -2588,7 +2586,7 @@ class GeneralUtility
         if ($fileName === '') {
             return '';
         }
-        $checkForBackPath = fn (string $fileName): string => $fileName !== '' && static::validPathStr($fileName) ? $fileName : '';
+        $checkForBackPath = fn(string $fileName): string => $fileName !== '' && static::validPathStr($fileName) ? $fileName : '';
 
         // Extension "EXT:" path resolving.
         if (PathUtility::isExtensionPath($fileName)) {

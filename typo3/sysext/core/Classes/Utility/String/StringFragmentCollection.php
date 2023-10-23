@@ -34,7 +34,7 @@ class StringFragmentCollection implements \Stringable, \Countable
 
     public function __construct(StringFragment ...$fragments)
     {
-        $lengths = array_map(static fn (StringFragment $fragment) => $fragment->length, $fragments);
+        $lengths = array_map(static fn(StringFragment $fragment) => $fragment->length, $fragments);
         $this->length = array_sum($lengths);
         $this->fragments = $fragments;
     }
@@ -63,7 +63,7 @@ class StringFragmentCollection implements \Stringable, \Countable
     {
         $fragments = array_filter(
             $this->fragments,
-            static fn (StringFragment $item) => $item->type === $type
+            static fn(StringFragment $item) => $item->type === $type
         );
         return new self(...$fragments);
     }
@@ -72,7 +72,7 @@ class StringFragmentCollection implements \Stringable, \Countable
     {
         $fragments = array_filter(
             $this->fragments,
-            static fn (StringFragment $item) => $item->type !== $type
+            static fn(StringFragment $item) => $item->type !== $type
         );
         return new self(...$fragments);
     }
@@ -95,7 +95,7 @@ class StringFragmentCollection implements \Stringable, \Countable
         $otherFragmentIdents = $other->getFragmentIdents();
         $differentFragments = array_filter(
             $this->fragments,
-            static fn (StringFragment $item) => !in_array($item->ident, $otherFragmentIdents, true)
+            static fn(StringFragment $item) => !in_array($item->ident, $otherFragmentIdents, true)
         );
         return new self(...$differentFragments);
     }
@@ -105,7 +105,7 @@ class StringFragmentCollection implements \Stringable, \Countable
         $otherFragmentIdents = $other->getFragmentIdents();
         $sameFragments = array_filter(
             $this->fragments,
-            static fn (StringFragment $item) => in_array($item->ident, $otherFragmentIdents, true)
+            static fn(StringFragment $item) => in_array($item->ident, $otherFragmentIdents, true)
         );
         return new self(...$sameFragments);
     }
@@ -115,6 +115,6 @@ class StringFragmentCollection implements \Stringable, \Countable
      */
     protected function getFragmentIdents(): array
     {
-        return array_map(static fn (StringFragment $item) => $item->ident, $this->fragments);
+        return array_map(static fn(StringFragment $item) => $item->ident, $this->fragments);
     }
 }

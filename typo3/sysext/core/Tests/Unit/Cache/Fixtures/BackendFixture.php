@@ -25,17 +25,11 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  */
 class BackendFixture implements BackendInterface
 {
-    public function setCache(FrontendInterface $cache): void
-    {
-    }
+    public function setCache(FrontendInterface $cache): void {}
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
-    {
-    }
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void {}
 
-    public function get($entryIdentifier)
-    {
-    }
+    public function get($entryIdentifier) {}
 
     public function has($entryIdentifier)
     {
@@ -47,11 +41,7 @@ class BackendFixture implements BackendInterface
         return false;
     }
 
-    public function flush(): void
-    {
-    }
+    public function flush(): void {}
 
-    public function collectGarbage(): void
-    {
-    }
+    public function collectGarbage(): void {}
 }

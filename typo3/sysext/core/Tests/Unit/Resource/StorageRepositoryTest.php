@@ -49,7 +49,7 @@ final class StorageRepositoryTest extends UnitTestCase
 
     public static function storageDetectionDataProvider(): array
     {
-        $asRelativePathClosure = fn ($value) => new LocalPath($value, LocalPath::TYPE_RELATIVE);
+        $asRelativePathClosure = fn($value) => new LocalPath($value, LocalPath::TYPE_RELATIVE);
         return [
             'NoLocalStoragesReturnDefaultStorage' => [
                 [],

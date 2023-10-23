@@ -32,8 +32,7 @@ final class SlugRedirectChangeItemFactory
     public function __construct(
         private readonly SiteFinder $siteFinder,
         private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function create(int $pageId, ?array $original = null, ?array $changed = null): ?SlugRedirectChangeItem
     {

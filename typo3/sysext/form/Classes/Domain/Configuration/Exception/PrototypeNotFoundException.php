@@ -22,6 +22,4 @@ use TYPO3\CMS\Form\Domain\Exception;
 /**
  * This exception is thrown if a form prototype for a given name was not found.
  */
-class PrototypeNotFoundException extends Exception
-{
-}
+class PrototypeNotFoundException extends Exception {}

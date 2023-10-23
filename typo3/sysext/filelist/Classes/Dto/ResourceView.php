@@ -44,8 +44,7 @@ class ResourceView
         public readonly ResourceInterface $resource,
         public readonly UserPermissions $userPermissions,
         public readonly Icon $icon
-    ) {
-    }
+    ) {}
 
     public function getUid(): ?int
     {

@@ -31,8 +31,7 @@ final class BeforeSearchInDatabaseRecordProviderEvent
     public function __construct(
         private array $searchPageIds,
         private SearchDemand $searchDemand
-    ) {
-    }
+    ) {}
 
     public function getSearchPageIds(): array
     {

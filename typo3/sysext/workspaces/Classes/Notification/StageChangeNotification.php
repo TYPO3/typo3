@@ -47,8 +47,7 @@ class StageChangeNotification implements LoggerAwareInterface
         private readonly StagesService $stagesService,
         private readonly PreviewUriBuilder $previewUriBuilder,
         private readonly MailerInterface $mailer
-    ) {
-    }
+    ) {}
 
     /**
      * Send an email notification to users in workspace in multiple languages, depending on each BE users' language

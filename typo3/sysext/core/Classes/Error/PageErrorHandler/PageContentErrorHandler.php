@@ -81,7 +81,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             }
             // Create a sub-request and do not take any special query parameters into account
             $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
-            $subResponse = $this->stashEnvironment(fn (): ResponseInterface => $this->sendSubRequest($subRequest, $urlParams['pageuid'], $request));
+            $subResponse = $this->stashEnvironment(fn(): ResponseInterface => $this->sendSubRequest($subRequest, $urlParams['pageuid'], $request));
 
             if ($subResponse->getStatusCode() >= 300) {
                 throw new \RuntimeException(sprintf('Error handler could not fetch error page "%s", status code: %s', $resolvedUrl, $subResponse->getStatusCode()), 1544172839);

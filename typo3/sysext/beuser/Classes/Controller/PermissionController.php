@@ -65,8 +65,7 @@ class PermissionController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {

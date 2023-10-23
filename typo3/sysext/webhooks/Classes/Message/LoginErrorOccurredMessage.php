@@ -35,8 +35,7 @@ final class LoginErrorOccurredMessage implements WebhookMessageInterface
         private readonly bool $isFrontend,
         private readonly UriInterface $url,
         private readonly array $loginData,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

@@ -24,9 +24,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
  */
 final class AfterObjectThawedEvent
 {
-    public function __construct(private readonly DomainObjectInterface $mappedObject, private readonly array $record)
-    {
-    }
+    public function __construct(private readonly DomainObjectInterface $mappedObject, private readonly array $record) {}
 
     public function getObject(): DomainObjectInterface
     {

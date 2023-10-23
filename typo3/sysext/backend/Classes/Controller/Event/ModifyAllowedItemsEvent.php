@@ -29,8 +29,7 @@ final class ModifyAllowedItemsEvent
     public function __construct(
         protected array $allowedItems,
         protected array $currentLinkParts,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string[]
@@ -48,7 +47,7 @@ final class ModifyAllowedItemsEvent
 
     public function removeAllowedItem(string $new): self
     {
-        $this->allowedItems = array_filter($this->allowedItems, static fn (string $item): bool => $item !== $new);
+        $this->allowedItems = array_filter($this->allowedItems, static fn(string $item): bool => $item !== $new);
         return $this;
     }
 

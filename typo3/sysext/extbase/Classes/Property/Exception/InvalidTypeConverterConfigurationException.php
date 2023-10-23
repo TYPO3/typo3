@@ -19,6 +19,4 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
 
 use TYPO3\CMS\Extbase\Property\Exception;
 
-class InvalidTypeConverterConfigurationException extends Exception
-{
-}
+class InvalidTypeConverterConfigurationException extends Exception {}

@@ -30,8 +30,7 @@ final class ModifyRecordListRecordActionsEvent
         private readonly string $table,
         private readonly array $record,
         private readonly DatabaseRecordList $recordList
-    ) {
-    }
+    ) {}
 
     /**
      * Add a new action or override an existing one. Latter is only possible,

@@ -442,7 +442,5 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     /**
      * Does nothing, as memcached does GC itself
      */
-    public function collectGarbage()
-    {
-    }
+    public function collectGarbage() {}
 }

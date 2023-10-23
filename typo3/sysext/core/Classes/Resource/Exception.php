@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Resource;
 /**
  * An exception when something is wrong with the file handling
  */
-class Exception extends \TYPO3\CMS\Core\Exception
-{
-}
+class Exception extends \TYPO3\CMS\Core\Exception {}

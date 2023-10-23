@@ -32,8 +32,7 @@ final class SlugRedirectChangeItemCreatedEvent
 {
     public function __construct(
         private SlugRedirectChangeItem $slugRedirectChangeItem
-    ) {
-    }
+    ) {}
 
     public function getSlugRedirectChangeItem(): SlugRedirectChangeItem
     {

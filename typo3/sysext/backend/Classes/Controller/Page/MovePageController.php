@@ -50,8 +50,7 @@ final class MovePageController
         private readonly IconFactory $iconFactory,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly UriBuilder $uriBuilder,
-    ) {
-    }
+    ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {

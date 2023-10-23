@@ -36,8 +36,7 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
     public function __construct(
         protected readonly ComposerDeficitDetector $composerDeficitDetector,
         protected readonly UriBuilder $uriBuilder
-    ) {
-    }
+    ) {}
 
     public function getStatus(ServerRequestInterface $request = null): array
     {

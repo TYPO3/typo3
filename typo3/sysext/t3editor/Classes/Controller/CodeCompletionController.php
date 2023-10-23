@@ -43,8 +43,7 @@ class CodeCompletionController
         private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly LossyTokenizer $lossyTokenizer,
         private readonly IncludeTreeTraverser $treeTraverser,
-    ) {
-    }
+    ) {}
 
     /**
      * Loads all templates up to a given page id (walking the rootline) and

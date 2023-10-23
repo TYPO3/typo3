@@ -28,8 +28,7 @@ final class AfterRequestDispatchedEvent
     public function __construct(
         private readonly RequestInterface $request,
         private readonly ResponseInterface $response
-    ) {
-    }
+    ) {}
 
     public function getRequest(): RequestInterface
     {

@@ -28,8 +28,7 @@ class RouteResult implements RouteResultInterface
     public function __construct(
         protected Route $route,
         protected array $arguments = [],
-    ) {
-    }
+    ) {}
 
     public function getRoute(): Route
     {

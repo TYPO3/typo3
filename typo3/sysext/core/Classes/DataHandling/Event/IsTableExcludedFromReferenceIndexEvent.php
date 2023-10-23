@@ -28,9 +28,7 @@ final class IsTableExcludedFromReferenceIndexEvent implements StoppableEventInte
 {
     private bool $isExcluded = false;
 
-    public function __construct(private readonly string $table)
-    {
-    }
+    public function __construct(private readonly string $table) {}
 
     public function getTable(): string
     {

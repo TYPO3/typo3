@@ -24,7 +24,5 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  */
 class CustomValidator extends AbstractValidator
 {
-    protected function isValid(mixed $value): void
-    {
-    }
+    protected function isValid(mixed $value): void {}
 }

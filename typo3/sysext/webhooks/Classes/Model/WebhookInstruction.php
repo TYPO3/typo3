@@ -37,8 +37,7 @@ class WebhookInstruction
         private readonly ?WebhookType $webhookType = null,
         private readonly ?string $identifier = null,
         private readonly ?int $uid = null,
-    ) {
-    }
+    ) {}
 
     public function getUid(): int
     {

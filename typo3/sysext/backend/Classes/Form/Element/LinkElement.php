@@ -496,13 +496,13 @@ class LinkElement extends AbstractFormElement
         return $this->getLinkHandlerIdentifiers(
             array_filter(
                 (array)($this->data['pageTsConfig']['TCEMAIN.']['linkHandler.'] ?? []),
-                static fn ($handler) => ($handler['handler'] ?? '') === RecordLinkHandler::class
+                static fn($handler) => ($handler['handler'] ?? '') === RecordLinkHandler::class
             )
         );
     }
 
     protected function getLinkHandlerIdentifiers(array $linkHandlers): array
     {
-        return array_map(static fn ($handler) => trim($handler, '.'), array_keys($linkHandlers));
+        return array_map(static fn($handler) => trim($handler, '.'), array_keys($linkHandlers));
     }
 }

@@ -44,8 +44,7 @@ class DashboardRepository
         protected readonly ConnectionPool $connectionPool,
         protected readonly WidgetRegistry $widgetRegistry,
         protected readonly ContainerInterface $container
-    ) {
-    }
+    ) {}
 
     public function getDashboardsForUser(int $userId): array
     {

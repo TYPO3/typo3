@@ -27,6 +27,4 @@ use TYPO3\CMS\Form\Domain\Exception;
  * This exception is thrown if the "identifier" for a Form, a Page or a Form Element
  * is invalid (i.e. empty or not a string)
  */
-class IdentifierNotValidException extends Exception
-{
-}
+class IdentifierNotValidException extends Exception {}

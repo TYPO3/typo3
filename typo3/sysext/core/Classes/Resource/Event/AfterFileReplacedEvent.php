@@ -26,9 +26,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  */
 final class AfterFileReplacedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly string $localFilePath)
-    {
-    }
+    public function __construct(private readonly FileInterface $file, private readonly string $localFilePath) {}
 
     public function getFile(): FileInterface
     {

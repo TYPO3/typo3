@@ -25,6 +25,4 @@ namespace TYPO3\CMS\Core\Messaging;
  * - POPOs like DTOs or custom message objects
  * - No services, events, requests, or models
  */
-interface WebhookMessageInterface extends \JsonSerializable
-{
-}
+interface WebhookMessageInterface extends \JsonSerializable {}

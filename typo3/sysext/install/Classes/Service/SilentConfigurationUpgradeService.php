@@ -178,9 +178,7 @@ class SilentConfigurationUpgradeService
         'SYS/caching/cacheConfigurations/pagesection',
     ];
 
-    public function __construct(private readonly ConfigurationManager $configurationManager)
-    {
-    }
+    public function __construct(private readonly ConfigurationManager $configurationManager) {}
 
     /**
      * Executed configuration upgrades. Single upgrade methods must throw a

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Exception;
 /**
  * An "Illegal Relation Type" exception
  */
-class IllegalRelationTypeException extends Exception
-{
-}
+class IllegalRelationTypeException extends Exception {}

@@ -32,9 +32,7 @@ final class FormData
     private array $withoutNoPrefix = [];
     private bool $withChash = true;
 
-    public function __construct(private array $formData)
-    {
-    }
+    public function __construct(private array $formData) {}
 
     public function with(string $identifier, string $value): FormData
     {
@@ -114,7 +112,7 @@ final class FormData
         return array_values(
             array_filter(
                 $this->formData['elementData'],
-                fn ($elementData) => $elementData['__isHoneypot']
+                fn($elementData) => $elementData['__isHoneypot']
             )
         )[0]['autocomplete'] ?? null;
     }
@@ -124,7 +122,7 @@ final class FormData
         return array_values(
             array_filter(
                 $this->formData['elementData'],
-                fn ($elementData) => str_ends_with($elementData['name'], '[__session]')
+                fn($elementData) => str_ends_with($elementData['name'], '[__session]')
             )
         )[0]['value'] ?? null;
     }

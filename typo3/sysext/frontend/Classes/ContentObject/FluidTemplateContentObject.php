@@ -33,9 +33,7 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected $view;
 
-    public function __construct(protected ContentDataProcessor $contentDataProcessor)
-    {
-    }
+    public function __construct(protected ContentDataProcessor $contentDataProcessor) {}
 
     /**
      * Rendering the cObject, FLUIDTEMPLATE

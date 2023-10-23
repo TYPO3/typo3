@@ -35,9 +35,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 class SiteResolver implements MiddlewareInterface
 {
-    public function __construct(protected readonly SiteMatcher $matcher)
-    {
-    }
+    public function __construct(protected readonly SiteMatcher $matcher) {}
 
     /**
      * Resolve the site/language information by checking the page ID or the URL.

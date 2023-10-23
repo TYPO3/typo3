@@ -48,8 +48,7 @@ class ManagementController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly WebhookTypesRegistry $webhookTypesRegistry,
         private readonly WebhookRepository $webhookRepository
-    ) {
-    }
+    ) {}
 
     public function overviewAction(ServerRequestInterface $request): ResponseInterface
     {

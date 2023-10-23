@@ -30,8 +30,7 @@ final class AppendLinkHandlerElementsEvent
         private array $elements,
         private readonly int $idx,
         private readonly string $tokenId
-    ) {
-    }
+    ) {}
 
     public function getLinkParts(): array
     {

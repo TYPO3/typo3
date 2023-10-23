@@ -37,8 +37,7 @@ class AjaxLoginController
 {
     public function __construct(
         protected readonly FormProtectionFactory $formProtectionFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Handles the actual login process, more specifically it defines the response.

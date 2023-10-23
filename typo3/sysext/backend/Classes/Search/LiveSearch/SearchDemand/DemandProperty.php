@@ -22,8 +22,7 @@ final class DemandProperty
     public function __construct(
         private readonly DemandPropertyName $name,
         private readonly mixed $value,
-    ) {
-    }
+    ) {}
 
     public function getName(): DemandPropertyName
     {

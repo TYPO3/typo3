@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Routing;
 /**
  * An object that is usually returned by a Router to contain all results.
  */
-interface RouteResultInterface extends \ArrayAccess
-{
-}
+interface RouteResultInterface extends \ArrayAccess {}

@@ -28,8 +28,7 @@ class MarkerBasedTemplateService
     public function __construct(
         protected readonly FrontendInterface $hashCache,
         protected readonly FrontendInterface $runtimeCache,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns the first subpart encapsulated in the marker, $marker

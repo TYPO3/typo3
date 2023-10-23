@@ -28,9 +28,7 @@ final class HandlersLocatorFactory
 {
     private array $handlers = [];
 
-    public function __construct(private readonly ContainerInterface $container)
-    {
-    }
+    public function __construct(private readonly ContainerInterface $container) {}
 
     public function createHandlersLocator(): HandlersLocator
     {

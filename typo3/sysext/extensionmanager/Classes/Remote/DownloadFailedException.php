@@ -22,6 +22,4 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 /**
  * Exception thrown when a file could not be downloaded
  */
-class DownloadFailedException extends ExtensionManagerException
-{
-}
+class DownloadFailedException extends ExtensionManagerException {}

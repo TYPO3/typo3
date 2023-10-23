@@ -28,9 +28,7 @@ class MatchedRoute
     protected array $hostMatches = [];
     protected array $pathMatches = [];
 
-    public function __construct(protected SymfonyRoute $route, protected array $routeResult)
-    {
-    }
+    public function __construct(protected SymfonyRoute $route, protected array $routeResult) {}
 
     public function withPathMatches(array $pathMatches): self
     {

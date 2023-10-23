@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Package\Exception;
 /**
  * "Unknown Package" Exception
  */
-class UnknownPackageException extends Exception
-{
-}
+class UnknownPackageException extends Exception {}

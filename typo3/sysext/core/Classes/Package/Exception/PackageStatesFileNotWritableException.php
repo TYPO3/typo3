@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Package\Exception;
 /**
  * "Package states file not writable" Exception
  */
-class PackageStatesFileNotWritableException extends Exception
-{
-}
+class PackageStatesFileNotWritableException extends Exception {}

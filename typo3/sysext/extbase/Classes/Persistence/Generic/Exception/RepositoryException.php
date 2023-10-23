@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  * Main exception thrown by classes in this package. May contain an error
  * message and/or another nested exception.
  */
-class RepositoryException extends \RuntimeException
-{
-}
+class RepositoryException extends \RuntimeException {}

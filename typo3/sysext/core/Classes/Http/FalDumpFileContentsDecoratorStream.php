@@ -37,8 +37,7 @@ class FalDumpFileContentsDecoratorStream implements StreamInterface, SelfEmittab
         protected readonly string $identifier,
         protected readonly DriverInterface $driver,
         protected readonly int $size
-    ) {
-    }
+    ) {}
 
     /**
      * Emit the response to stdout, as specified in SelfEmittableStreamInterface.

@@ -37,8 +37,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
 {
     public function __construct(
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -113,7 +112,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
             $pages[$currentRootlineElement['uid']]['_nodes'] = $this->setInPageArray($pages[$currentRootlineElement['uid']]['_nodes'], $rootline, $row);
         }
         // Tree node sorting by pages sorting field
-        uasort($pages, static fn ($a, $b) => $a['sorting'] - $b['sorting']);
+        uasort($pages, static fn($a, $b) => $a['sorting'] - $b['sorting']);
         return $pages;
     }
 

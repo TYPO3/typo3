@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Backend\Form\Exception;
 /**
  * User has no modify table access to a table record
  */
-class AccessDeniedTableModifyException extends AccessDeniedException
-{
-}
+class AccessDeniedTableModifyException extends AccessDeniedException {}

@@ -32,9 +32,7 @@ final class BrokenLinkAnalysisEvent implements StoppableEventInterface
      */
     private string $reason = '';
 
-    public function __construct(private readonly string $linkType, private readonly array $linkData)
-    {
-    }
+    public function __construct(private readonly string $linkType, private readonly array $linkData) {}
 
     public function isPropagationStopped(): bool
     {

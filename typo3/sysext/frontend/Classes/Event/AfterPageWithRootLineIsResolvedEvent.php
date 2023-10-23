@@ -34,8 +34,7 @@ final class AfterPageWithRootLineIsResolvedEvent
     public function __construct(
         private TypoScriptFrontendController $controller,
         private ServerRequestInterface $request
-    ) {
-    }
+    ) {}
 
     public function getController(): TypoScriptFrontendController
     {

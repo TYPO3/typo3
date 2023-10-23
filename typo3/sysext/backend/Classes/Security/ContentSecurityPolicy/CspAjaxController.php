@@ -53,8 +53,7 @@ class CspAjaxController
         protected readonly ReportRepository $reportRepository,
         protected readonly ResolutionRepository $resolutionRepository,
         protected readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -117,7 +116,7 @@ class CspAjaxController
                 $event = $this->dispatchInvestigateMutationsEvent($report);
                 if ($event->getMutationSuggestions() !== []) {
                     $mutationHashes = array_map(
-                        static fn (MutationSuggestion $suggestion): string => $suggestion->hash(),
+                        static fn(MutationSuggestion $suggestion): string => $suggestion->hash(),
                         $event->getMutationSuggestions()
                     );
                     $report = $report->withMutationHashes(...$mutationHashes)
@@ -133,7 +132,7 @@ class CspAjaxController
     protected function muteReportAction(string ...$summaries): ResponseInterface
     {
         $reports = $this->reportRepository->findBySummary(...$summaries);
-        $uuids = array_map(static fn (Report $report) => $report->uuid, $reports);
+        $uuids = array_map(static fn(Report $report) => $report->uuid, $reports);
         $this->reportRepository->updateStatus(ReportStatus::Muted, ...$uuids);
         return new JsonResponse(['uuids' => $uuids]);
     }
@@ -161,7 +160,7 @@ class CspAjaxController
         $event = $this->dispatchInvestigateMutationsEvent($report);
         $suggestions = $event->getMutationSuggestions();
         // reverse sort by priority (higher priorities take precedence)
-        usort($suggestions, static fn (MutationSuggestion $a, MutationSuggestion $b) => $b->priority <=> $a->priority);
+        usort($suggestions, static fn(MutationSuggestion $a, MutationSuggestion $b) => $b->priority <=> $a->priority);
         return new JsonResponse(array_values($suggestions));
     }
 
@@ -202,7 +201,7 @@ class CspAjaxController
 
     protected function resolveReportUuids(Report ...$reports): array
     {
-        return array_map(static fn (Report $report) => $report->uuid, $reports);
+        return array_map(static fn(Report $report) => $report->uuid, $reports);
     }
 
     protected function isSystemMaintainer(): bool

@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Error\Http;
 /**
  * HTTP Client Error Exception (Error 4xx)
  */
-abstract class AbstractClientErrorException extends StatusException
-{
-}
+abstract class AbstractClientErrorException extends StatusException {}

@@ -23,6 +23,4 @@ namespace TYPO3\CMS\Core\TypoScript\Tokenizer\Line;
  *
  * @internal: Internal tokenizer structure.
  */
-final class ConditionStopLine extends AbstractLine
-{
-}
+final class ConditionStopLine extends AbstractLine {}

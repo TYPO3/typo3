@@ -27,9 +27,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
  */
 final class AfterBackendPageRenderEventListener
 {
-    public function __construct(private readonly PageRenderer $pageRenderer)
-    {
-    }
+    public function __construct(private readonly PageRenderer $pageRenderer) {}
 
     public function __invoke(): void
     {

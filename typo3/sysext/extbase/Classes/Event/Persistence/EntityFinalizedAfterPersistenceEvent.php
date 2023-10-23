@@ -25,9 +25,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
  */
 final class EntityFinalizedAfterPersistenceEvent
 {
-    public function __construct(private readonly DomainObjectInterface $persistedObject)
-    {
-    }
+    public function __construct(private readonly DomainObjectInterface $persistedObject) {}
 
     public function getObject(): DomainObjectInterface
     {

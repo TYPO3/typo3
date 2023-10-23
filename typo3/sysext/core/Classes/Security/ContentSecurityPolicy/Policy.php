@@ -279,8 +279,8 @@ class Policy
 
     protected function asMergedSourceCollection(SourceCollection|SourceInterface ...$subjects): SourceCollection
     {
-        $collections = array_filter($subjects, static fn ($source) => $source instanceof SourceCollection);
-        $sources = array_filter($subjects, static fn ($source) => !$source instanceof SourceCollection);
+        $collections = array_filter($subjects, static fn($source) => $source instanceof SourceCollection);
+        $sources = array_filter($subjects, static fn($source) => !$source instanceof SourceCollection);
         if ($sources !== []) {
             $collections[] = new SourceCollection(...$sources);
         }
@@ -295,7 +295,7 @@ class Policy
     {
         $sources = array_filter(
             $collection->sources,
-            static fn (SourceInterface $source): bool => $source instanceof SourceKeyword ? $source->isApplicable($directive) : true
+            static fn(SourceInterface $source): bool => $source instanceof SourceKeyword ? $source->isApplicable($directive) : true
         );
         return new SourceCollection(...$sources);
     }

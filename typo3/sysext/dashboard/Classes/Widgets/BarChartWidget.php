@@ -45,8 +45,7 @@ class BarChartWidget implements WidgetInterface, RequestAwareWidgetInterface, Ev
         protected readonly ?StandaloneView $view = null,
         private readonly ?ButtonProviderInterface $buttonProvider = null,
         private readonly array $options = [],
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

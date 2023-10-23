@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when a resource was not found.
  */
-class ResourceNotFoundException extends Exception
-{
-}
+class ResourceNotFoundException extends Exception {}

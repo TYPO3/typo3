@@ -34,8 +34,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
     public function __construct(
         protected readonly LinkService $linkService,
         protected readonly TypoLinkCodecService $typoLinkCodecService,
-    ) {
-    }
+    ) {}
 
     public function getConfiguration(): array
     {

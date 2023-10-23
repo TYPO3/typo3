@@ -28,8 +28,7 @@ final class AfterExtensionFilesHaveBeenImportedEvent
         private readonly string $packageKey,
         private readonly string $destinationAbsolutePath,
         private readonly InstallUtility $emitter
-    ) {
-    }
+    ) {}
 
     public function getPackageKey(): string
     {

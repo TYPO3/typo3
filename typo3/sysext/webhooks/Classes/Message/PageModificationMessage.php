@@ -38,8 +38,7 @@ final class PageModificationMessage implements WebhookMessageInterface
         private readonly string $siteIdentifier,
         private readonly ?BackendUserAuthentication $author = null,
         private readonly ?array $modifiedFields = null
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

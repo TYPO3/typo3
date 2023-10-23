@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Property\Exception;
 /**
  * An "Invalid Target" Exception
  */
-class InvalidTargetException extends Exception
-{
-}
+class InvalidTargetException extends Exception {}

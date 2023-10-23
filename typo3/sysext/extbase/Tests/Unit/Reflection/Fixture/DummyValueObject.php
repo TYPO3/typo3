@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 /**
  * Dummy ValueObject
  */
-class DummyValueObject extends AbstractValueObject
-{
-}
+class DummyValueObject extends AbstractValueObject {}

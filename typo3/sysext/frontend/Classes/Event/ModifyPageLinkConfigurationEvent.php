@@ -33,8 +33,7 @@ final class ModifyPageLinkConfigurationEvent
         private array $page,
         private array $queryParameters,
         private string $fragment
-    ) {
-    }
+    ) {}
 
     public function getConfiguration(): array
     {

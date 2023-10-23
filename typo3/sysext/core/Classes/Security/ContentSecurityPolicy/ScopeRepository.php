@@ -25,9 +25,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  */
 class ScopeRepository
 {
-    public function __construct(protected readonly SiteFinder $siteFinder)
-    {
-    }
+    public function __construct(protected readonly SiteFinder $siteFinder) {}
 
     /**
      * @return list<Scope>
@@ -46,7 +44,7 @@ class ScopeRepository
     public function findAllFrontendSites(): array
     {
         return array_map(
-            static fn (SiteInterface $site) => Scope::frontendSiteIdentifier($site->getIdentifier()),
+            static fn(SiteInterface $site) => Scope::frontendSiteIdentifier($site->getIdentifier()),
             array_values($this->siteFinder->getAllSites())
         );
     }

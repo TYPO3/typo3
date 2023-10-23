@@ -30,8 +30,7 @@ class UpgradeWizardRegistry
 {
     public function __construct(
         private readonly ServiceLocator $upgradeWizards
-    ) {
-    }
+    ) {}
 
     /**
      * Whether a registered upgrade wizard exists for the given identifier

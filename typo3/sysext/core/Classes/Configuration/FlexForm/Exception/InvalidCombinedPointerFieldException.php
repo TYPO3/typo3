@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
 /**
  * Thrown if a combined ds_pointerField can not be resolved.
  */
-class InvalidCombinedPointerFieldException extends AbstractInvalidDataStructureException
-{
-}
+class InvalidCombinedPointerFieldException extends AbstractInvalidDataStructureException {}

@@ -29,8 +29,7 @@ class CacheWarmer
         protected readonly PackageManager $packageManager,
         protected readonly Locales $locales,
         protected readonly LocalizationFactory $localizationFactory
-    ) {
-    }
+    ) {}
 
     public function warmupCaches(CacheWarmupEvent $event): void
     {

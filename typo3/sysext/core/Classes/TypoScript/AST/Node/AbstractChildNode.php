@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Core\TypoScript\AST\Node;
  */
 abstract class AbstractChildNode extends AbstractNode implements ChildNodeInterface
 {
-    public function __construct(protected string $name)
-    {
-    }
+    public function __construct(protected string $name) {}
 
     /**
      * Dereference children on clone().

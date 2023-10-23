@@ -30,8 +30,7 @@ final class BeforeRequestTokenProcessedEvent
         private AbstractUserAuthentication $user,
         private ServerRequestInterface $request,
         private RequestToken|false|null $requestToken
-    ) {
-    }
+    ) {}
 
     public function getUser(): AbstractUserAuthentication
     {

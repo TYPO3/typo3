@@ -24,6 +24,4 @@ use TYPO3\CMS\Extbase\Exception as ExtbaseException;
  *
  * It will use some salt / encryption key in the future.
  */
-class Exception extends ExtbaseException
-{
-}
+class Exception extends ExtbaseException {}

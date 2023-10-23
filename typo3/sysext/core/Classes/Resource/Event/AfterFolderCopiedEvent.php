@@ -31,8 +31,7 @@ final class AfterFolderCopiedEvent
         private readonly Folder $folder,
         private readonly Folder $targetParentFolder,
         private readonly ?FolderInterface $targetFolder
-    ) {
-    }
+    ) {}
 
     public function getFolder(): Folder
     {

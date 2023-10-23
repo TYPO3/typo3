@@ -30,9 +30,7 @@ class SysNoteRepository
     public const SYS_NOTE_POSITION_BOTTOM = 0;
     public const SYS_NOTE_POSITION_TOP = 1;
 
-    public function __construct(protected readonly ConnectionPool $connectionPool)
-    {
-    }
+    public function __construct(protected readonly ConnectionPool $connectionPool) {}
 
     /**
      * Find notes by given pid and author

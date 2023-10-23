@@ -94,7 +94,7 @@ class Method
 
         $parameters = array_filter(
             $this->getParameters(),
-            static fn (MethodParameter $parameter): bool => $parameter->getPosition() === $position
+            static fn(MethodParameter $parameter): bool => $parameter->getPosition() === $position
         );
 
         $parameter = reset($parameters);

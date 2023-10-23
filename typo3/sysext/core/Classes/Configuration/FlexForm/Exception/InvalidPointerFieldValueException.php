@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
 /**
  * Exception thrown if ds_pointerField does not point to a valid value.
  */
-class InvalidPointerFieldValueException extends AbstractInvalidDataStructureException
-{
-}
+class InvalidPointerFieldValueException extends AbstractInvalidDataStructureException {}

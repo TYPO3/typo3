@@ -32,8 +32,7 @@ class DefaultUploadFolderResolver
     public function __construct(
         protected readonly ResourceFactory $resourceFactory,
         protected readonly EventDispatcher $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function resolve(BackendUserAuthentication $user, int $pid = null, string $table = null, string $field = null): Folder | bool
     {

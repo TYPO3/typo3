@@ -40,8 +40,7 @@ class UpdateFromTerController extends AbstractController
         protected readonly RemoteRegistry $remoteRegistry,
         protected readonly ListUtility $listUtility,
         protected readonly ExtensionRepository $extensionRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Update extension list from TER

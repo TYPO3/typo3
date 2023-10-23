@@ -241,7 +241,7 @@ class ClassSchema
             /** @var array<int, Validate> $validateAnnotations */
             $validateAnnotations = array_filter(
                 $annotations,
-                static fn (object $annotation): bool => $annotation instanceof Validate
+                static fn(object $annotation): bool => $annotation instanceof Validate
             );
 
             if (count($validateAnnotations) > 0) {
@@ -326,7 +326,7 @@ class ClassSchema
             /** @var array<int<0, max>, Validate> $validateAnnotations */
             $validateAnnotations = array_filter(
                 $annotations,
-                static fn (object $annotation): bool => $annotation instanceof Validate
+                static fn(object $annotation): bool => $annotation instanceof Validate
             );
 
             if ($this->methods[$methodName]['isAction']
@@ -369,12 +369,12 @@ class ClassSchema
 
                 $ignoreValidationParameters = array_filter(
                     $annotations,
-                    static fn (object $annotation): bool => $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName
+                    static fn(object $annotation): bool => $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName
                 );
 
                 $ignoreValidationParametersFromAttribute = array_filter(
                     $reflectionAttributes,
-                    static fn (\ReflectionAttribute $attribute): bool
+                    static fn(\ReflectionAttribute $attribute): bool
                         => $attribute->getName() === IgnoreValidation::class && $attribute->newInstance()->argumentName === $parameterName
                 );
 
@@ -559,7 +559,7 @@ MESSAGE;
     {
         return array_filter(
             $this->getProperties(),
-            static fn (Property $property): bool => !str_starts_with($property->getName(), '_')
+            static fn(Property $property): bool => !str_starts_with($property->getName(), '_')
         );
     }
 
@@ -676,7 +676,7 @@ MESSAGE;
      */
     public function getInjectMethods(): array
     {
-        return array_filter($this->buildMethodObjects(), static fn (Method $method): bool => $method->isInjectMethod());
+        return array_filter($this->buildMethodObjects(), static fn(Method $method): bool => $method->isInjectMethod());
     }
 
     /**

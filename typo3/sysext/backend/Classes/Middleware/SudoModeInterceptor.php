@@ -43,8 +43,7 @@ final class SudoModeInterceptor implements MiddlewareInterface, LoggerAwareInter
     public function __construct(
         private readonly AccessStorage $storage,
         private readonly SudoModeController $controller,
-    ) {
-    }
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

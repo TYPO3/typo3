@@ -101,8 +101,7 @@ class EditFileController
         protected readonly ResponseFactory $responseFactory,
         protected readonly StreamFactoryInterface $streamFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * Render the edit file content form using FormEngine.

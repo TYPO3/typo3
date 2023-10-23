@@ -25,8 +25,7 @@ class StringFragmentPattern
     public function __construct(
         public readonly string $type,
         public readonly string $pattern
-    ) {
-    }
+    ) {}
 
     /**
      * Compiles this string fragment pattern to a scoped PCRE pattern string.

@@ -30,9 +30,7 @@ class RecordSearchBoxComponent
     protected string $searchWord = '';
     protected int $searchLevel = 0;
 
-    public function __construct(protected readonly BackendViewFactory $backendViewFactory)
-    {
-    }
+    public function __construct(protected readonly BackendViewFactory $backendViewFactory) {}
 
     public function setSearchWord(string $searchWord): self
     {

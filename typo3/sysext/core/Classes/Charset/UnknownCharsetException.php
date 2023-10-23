@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception for unknown charsets
  */
-class UnknownCharsetException extends Exception
-{
-}
+class UnknownCharsetException extends Exception {}

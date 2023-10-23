@@ -34,8 +34,7 @@ final class ModifyAutoCreateRedirectRecordBeforePersistingEvent
         private readonly SlugRedirectChangeItem $slugRedirectChangeItem,
         private readonly RedirectSourceInterface $source,
         private array $redirectRecord,
-    ) {
-    }
+    ) {}
 
     public function getSlugRedirectChangeItem(): SlugRedirectChangeItem
     {

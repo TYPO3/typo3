@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Backend\Form\Exception;
 /**
  * User is not allowed to add a new page
  */
-class AccessDeniedPageNewException extends AccessDeniedException
-{
-}
+class AccessDeniedPageNewException extends AccessDeniedException {}

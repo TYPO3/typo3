@@ -28,8 +28,7 @@ final class BeforeFormEnginePageInitializedEvent
     public function __construct(
         private readonly EditDocumentController $controller,
         private readonly ServerRequestInterface $request
-    ) {
-    }
+    ) {}
 
     public function getController(): EditDocumentController
     {

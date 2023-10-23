@@ -22,6 +22,4 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 /**
  * Testing subclass of the abstract class.
  */
-final class TestingRenderable extends AbstractRenderable
-{
-}
+final class TestingRenderable extends AbstractRenderable {}

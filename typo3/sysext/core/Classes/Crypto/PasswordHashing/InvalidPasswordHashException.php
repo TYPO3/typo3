@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * InvalidPasswordHashException thrown if salting went wrong.
  */
-class InvalidPasswordHashException extends Exception
-{
-}
+class InvalidPasswordHashException extends Exception {}

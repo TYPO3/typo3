@@ -3392,7 +3392,7 @@ final class GeneralUtilityTest extends UnitTestCase
     {
         $inputData = ['foo' => 'bar'];
         $result = GeneralUtility::callUserFunction(
-            static fn (): string => 'Worked fine',
+            static fn(): string => 'Worked fine',
             $inputData,
             $this,
             ''

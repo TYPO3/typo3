@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when a route does not exist
  */
-class RouteNotFoundException extends Exception
-{
-}
+class RouteNotFoundException extends Exception {}

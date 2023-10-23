@@ -21,6 +21,4 @@ use TYPO3\CMS\Core\Error\Exception;
  * Class Exception
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
-class ContentRenderingException extends Exception
-{
-}
+class ContentRenderingException extends Exception {}

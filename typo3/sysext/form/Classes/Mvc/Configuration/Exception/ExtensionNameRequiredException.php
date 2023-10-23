@@ -25,6 +25,4 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception;
  *
  * @internal
  */
-class ExtensionNameRequiredException extends Exception
-{
-}
+class ExtensionNameRequiredException extends Exception {}

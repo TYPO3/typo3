@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * @internal
  */
-class RequestTokenException extends Exception
-{
-}
+class RequestTokenException extends Exception {}

@@ -40,8 +40,7 @@ final class SelectItem implements \ArrayAccess
         private ?string $iconIdentifierUnchecked = null,
         private ?string $labelChecked = null,
         private ?string $labelUnchecked = null,
-    ) {
-    }
+    ) {}
 
     public static function fromTcaItemArray(array $item, string $type = 'select'): SelectItem
     {

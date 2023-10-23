@@ -29,8 +29,7 @@ final class AfterFolderRenamedEvent
     public function __construct(
         private readonly Folder $folder,
         private readonly Folder $sourceFolder
-    ) {
-    }
+    ) {}
 
     public function getFolder(): Folder
     {

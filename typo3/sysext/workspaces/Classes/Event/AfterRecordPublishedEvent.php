@@ -26,8 +26,7 @@ final class AfterRecordPublishedEvent
         private readonly string $table,
         private readonly int $recordId,
         private readonly int $workspaceId,
-    ) {
-    }
+    ) {}
 
     /**
      * The table name of the record.

@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown if random password can not be generated due to invalid rules
  */
-class InvalidPasswordRulesException extends Exception
-{
-}
+class InvalidPasswordRulesException extends Exception {}

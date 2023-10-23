@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
 /**
  * Thrown if parseFlexFormDataStructureByIdentifier() is given an empty string
  */
-class InvalidIdentifierException extends AbstractInvalidDataStructureException
-{
-}
+class InvalidIdentifierException extends AbstractInvalidDataStructureException {}

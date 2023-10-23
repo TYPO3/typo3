@@ -47,8 +47,7 @@ class FormProtectionFactory
         protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly Registry $registry,
         protected readonly FrontendInterface $runtimeCache
-    ) {
-    }
+    ) {}
 
     /**
      * Method should be used whenever you do not have direct access to the request object.

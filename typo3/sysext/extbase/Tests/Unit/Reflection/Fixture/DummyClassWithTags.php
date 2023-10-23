@@ -27,6 +27,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  *
  * @see
  */
-class DummyClassWithTags
-{
-}
+class DummyClassWithTags {}

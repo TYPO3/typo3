@@ -118,8 +118,7 @@ final class ClientTest extends UnitTestCase
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
         $mock = new GuzzleMockHandler([
-            new class () extends \RuntimeException implements GuzzleExceptionInterface {
-            },
+            new class () extends \RuntimeException implements GuzzleExceptionInterface {},
         ]);
         $handler = GuzzleHandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);

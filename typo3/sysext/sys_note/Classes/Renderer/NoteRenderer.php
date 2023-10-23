@@ -36,8 +36,7 @@ class NoteRenderer
     public function __construct(
         protected readonly SysNoteRepository $sysNoteRepository,
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Render notes by single PID

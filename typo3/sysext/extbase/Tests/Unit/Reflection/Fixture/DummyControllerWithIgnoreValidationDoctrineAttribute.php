@@ -26,7 +26,5 @@ class DummyControllerWithIgnoreValidationDoctrineAttribute
 {
     #[IgnoreValidation(['argumentName' => 'foo'])]
     #[IgnoreValidation(['argumentName' => 'bar'])]
-    public function someAction($foo, $bar): void
-    {
-    }
+    public function someAction($foo, $bar): void {}
 }

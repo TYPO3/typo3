@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Package\Exception;
 /**
  * A package unavailable exception
  */
-class PackageStatesUnavailableException extends Exception
-{
-}
+class PackageStatesUnavailableException extends Exception {}

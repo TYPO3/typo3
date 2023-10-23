@@ -35,9 +35,7 @@ class ModelService
     /**
      * @param ?FrontendInterface $cache to be used for storing compiled CSP aspects (disabled in install tool)
      */
-    public function __construct(private readonly ?FrontendInterface $cache = null)
-    {
-    }
+    public function __construct(private readonly ?FrontendInterface $cache = null) {}
 
     public function buildMutationSuggestionFromArray(array $array): MutationSuggestion
     {

@@ -35,8 +35,7 @@ class AjaxController
     public function __construct(
         private readonly WorkspaceService $workspaceService,
         private readonly ModuleProvider $moduleProvider,
-    ) {
-    }
+    ) {}
 
     /**
      * Sets the TYPO3 Backend context to a certain workspace,

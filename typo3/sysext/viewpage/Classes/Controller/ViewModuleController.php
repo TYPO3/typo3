@@ -58,8 +58,7 @@ class ViewModuleController
         protected readonly PageRepository $pageRepository,
         protected readonly SiteFinder $siteFinder,
         protected readonly PolicyRegistry $policyRegistry,
-    ) {
-    }
+    ) {}
 
     /**
      * Show selected page.

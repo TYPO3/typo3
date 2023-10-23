@@ -30,9 +30,7 @@ class DummyValidator implements ValidatorInterface
         return new Result();
     }
 
-    public function setOptions(array $options): void
-    {
-    }
+    public function setOptions(array $options): void {}
 
     public function getOptions(): array
     {

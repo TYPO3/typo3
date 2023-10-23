@@ -38,8 +38,7 @@ class ShortcutController
         protected readonly ShortcutToolbarItem $shortcutToolbarItem,
         protected readonly ShortcutRepository $shortcutRepository,
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Renders the menu so that it can be returned as response to an AJAX call.

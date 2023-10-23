@@ -22,6 +22,4 @@ use TYPO3\CMS\Form\Domain\Exception;
 /**
  * @internal
  */
-class ArrayProcessorException extends Exception
-{
-}
+class ArrayProcessorException extends Exception {}

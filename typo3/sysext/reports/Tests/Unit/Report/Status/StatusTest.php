@@ -158,8 +158,7 @@ final class StatusTest extends UnitTestCase
             return new class ($label) implements RequestAwareStatusProviderInterface {
                 public function __construct(
                     private readonly string $label,
-                ) {
-                }
+                ) {}
 
                 public function getStatus(ServerRequestInterface $request = null): array
                 {
@@ -182,8 +181,7 @@ final class StatusTest extends UnitTestCase
                 public function __construct(
                     private readonly array $statuses,
                     private readonly string $label,
-                ) {
-                }
+                ) {}
 
                 public function getStatus(): array
                 {
@@ -206,8 +204,7 @@ final class StatusTest extends UnitTestCase
             public function __construct(
                 private readonly array $statuses,
                 private readonly string $label,
-            ) {
-            }
+            ) {}
 
             public function getStatus(): array
             {

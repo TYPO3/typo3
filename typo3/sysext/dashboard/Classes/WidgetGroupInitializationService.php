@@ -27,8 +27,7 @@ class WidgetGroupInitializationService
     public function __construct(
         private readonly WidgetGroupRegistry $widgetGroupRegistry,
         private readonly WidgetRegistry $widgetRegistry
-    ) {
-    }
+    ) {}
 
     /**
      * Define the different groups of widgets as shown in the modal when adding a widget to the current dashboard

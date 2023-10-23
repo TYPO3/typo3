@@ -36,9 +36,7 @@ class SysLogErrorsDataProvider implements ChartDataProviderInterface
     /**
      * @param int $days Number of days to gather information for.
      */
-    public function __construct(protected readonly int $days = 31)
-    {
-    }
+    public function __construct(protected readonly int $days = 31) {}
 
     public function getChartData(): array
     {

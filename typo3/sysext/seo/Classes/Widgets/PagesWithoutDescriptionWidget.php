@@ -36,8 +36,7 @@ final class PagesWithoutDescriptionWidget implements WidgetInterface, RequestAwa
         private readonly PagesWithoutDescriptionDataProvider $dataProvider,
         private readonly BackendViewFactory $backendViewFactory,
         private readonly array $options,
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Infinite Loop" exception
  */
-class InfiniteLoopException extends Exception
-{
-}
+class InfiniteLoopException extends Exception {}

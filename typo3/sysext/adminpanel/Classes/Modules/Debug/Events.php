@@ -35,9 +35,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class Events extends AbstractSubModule implements DataProviderInterface
 {
-    public function __construct(private readonly RequestId $requestId)
-    {
-    }
+    public function __construct(private readonly RequestId $requestId) {}
 
     public function getIdentifier(): string
     {

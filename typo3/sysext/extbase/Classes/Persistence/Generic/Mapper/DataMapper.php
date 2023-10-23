@@ -69,8 +69,7 @@ class DataMapper
         private readonly QueryFactoryInterface $queryFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InstantiatorInterface $instantiator,
-    ) {
-    }
+    ) {}
 
     public function setQuery(QueryInterface $query): void
     {

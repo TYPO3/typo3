@@ -34,8 +34,7 @@ final class SearchRepository
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly SearchProviderRegistry $searchProviderRegistry,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns a list of available search providers including a flag whether they are currently active.
@@ -63,7 +62,7 @@ final class SearchRepository
     {
         return array_filter(
             $this->searchProviderRegistry->getProviders(),
-            static fn (SearchProviderInterface $provider) => $searchDemand->getSearchProviders() === [] || in_array(get_class($provider), $searchDemand->getSearchProviders(), true)
+            static fn(SearchProviderInterface $provider) => $searchDemand->getSearchProviders() === [] || in_array(get_class($provider), $searchDemand->getSearchProviders(), true)
         );
     }
 

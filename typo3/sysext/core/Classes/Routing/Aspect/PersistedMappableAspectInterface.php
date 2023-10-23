@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  * Used for anything that invokes (more expensive) persistence invocations.
  * Basically used to improve performance by deferring their execution.
  */
-interface PersistedMappableAspectInterface extends MappableAspectInterface
-{
-}
+interface PersistedMappableAspectInterface extends MappableAspectInterface {}

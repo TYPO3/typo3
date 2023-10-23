@@ -62,9 +62,7 @@ class ResourceMutex
      */
     private array $workerLocks = [];
 
-    public function __construct(private readonly LockFactory $lockFactory)
-    {
-    }
+    public function __construct(private readonly LockFactory $lockFactory) {}
 
     /**
      * Acquire a specific lock for the given scope.

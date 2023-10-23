@@ -26,9 +26,7 @@ use TYPO3\CMS\Core\Schema\Struct\SelectItem;
  */
 final class CreateRecordReactionTable
 {
-    public function __construct(private readonly string $table)
-    {
-    }
+    public function __construct(private readonly string $table) {}
 
     public static function fromSelectItem(SelectItem $selectItem): CreateRecordReactionTable
     {

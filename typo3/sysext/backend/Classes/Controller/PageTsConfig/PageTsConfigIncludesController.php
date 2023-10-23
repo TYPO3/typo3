@@ -61,8 +61,7 @@ final class PageTsConfigIncludesController
         private readonly TsConfigTreeBuilder $tsConfigTreeBuilder,
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly StreamFactoryInterface $streamFactory,
-    ) {
-    }
+    ) {}
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -142,7 +141,7 @@ final class PageTsConfigIncludesController
         $treeTraverserVisitors[] = $syntaxScannerVisitor;
         $pageTsConfigConditions = $this->handleToggledPageTsConfigConditions($pageTsConfigTree, $moduleData, $parsedBody, $siteSettingsFlat);
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active']), 'value'));
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn($condition) => $condition['active']), 'value'));
         $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $treeTraverser->traverse($pageTsConfigTree, $treeTraverserVisitors);
 
@@ -157,7 +156,7 @@ final class PageTsConfigIncludesController
             'siteSettingsTree' => $siteSettingsTree,
             'pageTsConfigTree' => $pageTsConfigTree,
             'pageTsConfigConditions' => $pageTsConfigConditions,
-            'pageTsConfigConditionsActiveCount' => count(array_filter($pageTsConfigConditions, static fn ($condition) => $condition['active'])),
+            'pageTsConfigConditionsActiveCount' => count(array_filter($pageTsConfigConditions, static fn($condition) => $condition['active'])),
             'syntaxErrors' => $syntaxScannerVisitor->getErrors(),
             'syntaxErrorCount' => count($syntaxScannerVisitor->getErrors()),
         ]);

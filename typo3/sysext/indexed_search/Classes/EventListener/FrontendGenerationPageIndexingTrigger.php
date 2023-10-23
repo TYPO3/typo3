@@ -38,8 +38,7 @@ class FrontendGenerationPageIndexingTrigger
         protected TimeTracker $timeTracker,
         protected PageTitleProviderManager $pageTitleProviderManager,
         protected Indexer $indexer
-    ) {
-    }
+    ) {}
 
     /**
      * Trigger indexing of content, after evaluating if this page could / should be indexed.

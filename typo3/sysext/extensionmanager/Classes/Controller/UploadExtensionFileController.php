@@ -44,8 +44,7 @@ class UploadExtensionFileController extends AbstractController
         protected readonly FileHandlingUtility $fileHandlingUtility,
         protected readonly ExtensionManagementService $managementService,
         protected readonly ExtensionConfiguration $extensionConfiguration,
-    ) {
-    }
+    ) {}
 
     /**
      * Remove backup folder before destruction

@@ -29,8 +29,7 @@ final class AfterVideoPreviewFetchedEvent
         private readonly File $file,
         private readonly OnlineMediaHelperInterface $onlineMediaHelper,
         private string $previewImageFilename
-    ) {
-    }
+    ) {}
 
     public function getFile(): File
     {

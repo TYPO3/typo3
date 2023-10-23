@@ -56,8 +56,7 @@ class RedirectService implements LoggerAwareInterface
         private readonly LinkService $linkService,
         private readonly SiteFinder $siteFinder,
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {
-    }
+    ) {}
 
     /**
      * Checks against all available redirects "flat" or "regexp", and against starttime/endtime

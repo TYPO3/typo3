@@ -46,8 +46,7 @@ class Dashboard
         protected readonly array $widgetConfig,
         protected readonly WidgetRegistry $widgetRegistry,
         protected readonly ContainerInterface $container
-    ) {
-    }
+    ) {}
 
     public function getIdentifier(): string
     {

@@ -34,8 +34,7 @@ class LoginController extends AbstractController
     public function __construct(
         private readonly FormProtectionFactory $formProtectionFactory,
         private readonly ConfigurationManager $configurationManager,
-    ) {
-    }
+    ) {}
 
     /**
      * Render the "Create an "enable install tool file" action

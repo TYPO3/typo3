@@ -30,8 +30,7 @@ final class TcaSystemLanguageCollector
 {
     public function __construct(
         private readonly Locales $locales
-    ) {
-    }
+    ) {}
 
     /**
      * Populate languages and group by available languages of the Language packs

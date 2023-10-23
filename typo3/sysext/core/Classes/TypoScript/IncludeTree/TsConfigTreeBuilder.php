@@ -42,8 +42,7 @@ final class TsConfigTreeBuilder
         private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
         private readonly PackageManager $packageManager,
         private readonly EventDispatcher $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function getUserTsConfigTree(
         BackendUserAuthentication $backendUser,

@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Session\Backend\Exception;
 /**
  * Class SessionNotUpdatedException
  */
-class SessionNotUpdatedException extends AbstractBackendException
-{
-}
+class SessionNotUpdatedException extends AbstractBackendException {}

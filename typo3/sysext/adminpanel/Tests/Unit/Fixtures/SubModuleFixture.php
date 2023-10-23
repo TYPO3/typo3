@@ -65,9 +65,7 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
      * Can be used to react to changed settings
      * (for example: clearing a specific cache)
      */
-    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
-    {
-    }
+    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void {}
 
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {

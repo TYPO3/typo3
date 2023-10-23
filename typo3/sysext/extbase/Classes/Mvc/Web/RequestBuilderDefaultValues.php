@@ -38,8 +38,7 @@ final class RequestBuilderDefaultValues
         private readonly array $allowedControllerActions,
         private readonly array $controllerAliasToClassMapping,
         private readonly array $controllerClassToAliasMapping,
-    ) {
-    }
+    ) {}
 
     public static function fromConfiguration(array $configuration): self
     {

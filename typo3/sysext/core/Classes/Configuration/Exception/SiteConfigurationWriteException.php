@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
  *
  * @internal
  */
-class SiteConfigurationWriteException extends Exception
-{
-}
+class SiteConfigurationWriteException extends Exception {}

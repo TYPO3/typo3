@@ -138,7 +138,7 @@ class MetaTagManagerRegistry implements SingletonInterface
     {
         return [
             'instances' => array_map(
-                static fn (MetaTagManagerInterface $instance): array => $instance->getState(),
+                static fn(MetaTagManagerInterface $instance): array => $instance->getState(),
                 $this->instances,
             ),
         ];

@@ -27,8 +27,7 @@ final class BeforeActionCallEvent
         private readonly string $controllerClassName,
         private readonly string $actionMethodName,
         private readonly array $preparedArguments
-    ) {
-    }
+    ) {}
 
     public function getControllerClassName(): string
     {

@@ -73,9 +73,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param object $object The object to add
      * @phpstan-param T $object
      */
-    public function add($object)
-    {
-    }
+    public function add($object) {}
 
     /**
      * Removes an object from this repository.
@@ -83,9 +81,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param object $object The object to remove
      * @phpstan-param T $object
      */
-    public function remove($object)
-    {
-    }
+    public function remove($object) {}
 
     /**
      * Replaces an object by another.
@@ -95,9 +91,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @phpstan-param T $existingObject
      * @phpstan-param T $newObject
      */
-    public function replace($existingObject, $newObject)
-    {
-    }
+    public function replace($existingObject, $newObject) {}
 
     /**
      * Replaces an existing object with the same identifier by the given object
@@ -105,9 +99,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param object $modifiedObject The modified object
      * @phpstan-param T $modifiedObject
      */
-    public function update($modifiedObject)
-    {
-    }
+    public function update($modifiedObject) {}
 
     /**
      * Returns all objects of this repository add()ed but not yet persisted to
@@ -192,9 +184,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Removes all objects of this repository as if remove() was called for
      * all of them.
      */
-    public function removeAll()
-    {
-    }
+    public function removeAll() {}
 
     /**
      * Finds an object matching the given identifier.

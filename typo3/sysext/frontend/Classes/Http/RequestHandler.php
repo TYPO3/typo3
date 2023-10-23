@@ -73,8 +73,7 @@ class RequestHandler implements RequestHandlerInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ListenerProvider $listenerProvider,
         private readonly TimeTracker $timeTracker,
-    ) {
-    }
+    ) {}
 
     /**
      * Sets the global GET and POST to the values, so if people access $_GET and $_POST

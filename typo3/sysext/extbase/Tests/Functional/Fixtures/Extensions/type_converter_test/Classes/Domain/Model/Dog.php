@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TypeConverterTest\Domain\Model;
 
-class Dog extends Animal
-{
-}
+class Dog extends Animal {}

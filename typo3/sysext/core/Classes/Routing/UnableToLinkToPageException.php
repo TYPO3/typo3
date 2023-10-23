@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when a link to a page (or page in a specific translation) cannot be built.
  */
-class UnableToLinkToPageException extends Exception
-{
-}
+class UnableToLinkToPageException extends Exception {}

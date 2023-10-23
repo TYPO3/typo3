@@ -28,9 +28,7 @@ use TYPO3\CMS\SysNote\Renderer\NoteRenderer;
  */
 final class InfoModuleProvider
 {
-    public function __construct(protected readonly NoteRenderer $noteRenderer)
-    {
-    }
+    public function __construct(protected readonly NoteRenderer $noteRenderer) {}
 
     /**
      * Add sys_notes as additional content to the header and footer of the

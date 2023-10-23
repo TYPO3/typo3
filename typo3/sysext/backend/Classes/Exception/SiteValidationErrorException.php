@@ -22,6 +22,4 @@ use TYPO3\CMS\Backend\Exception;
 /**
  * Exception thrown if site configuration for a page is not found
  */
-class SiteValidationErrorException extends Exception
-{
-}
+class SiteValidationErrorException extends Exception {}

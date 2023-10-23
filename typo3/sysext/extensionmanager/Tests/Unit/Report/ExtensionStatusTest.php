@@ -142,9 +142,7 @@ final class ExtensionStatusTest extends UnitTestCase
             ->willReturn($this->createMock(LanguageService::class));
 
         $remote = new class () extends TerExtensionRemote {
-            public function __construct()
-            {
-            }
+            public function __construct() {}
 
             public function getLastUpdate(): \DateTimeInterface
             {
@@ -348,9 +346,7 @@ final class ExtensionStatusTest extends UnitTestCase
     private function getDefaultTerExtensionRemote(): TerExtensionRemote
     {
         return new class () extends TerExtensionRemote {
-            public function __construct()
-            {
-            }
+            public function __construct() {}
 
             public function getLastUpdate(): \DateTimeInterface
             {

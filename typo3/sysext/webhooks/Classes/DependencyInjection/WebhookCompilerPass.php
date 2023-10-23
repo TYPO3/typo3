@@ -41,8 +41,7 @@ final class WebhookCompilerPass implements CompilerPassInterface
     private ContainerBuilder $container;
     public function __construct(
         private readonly string $tagName
-    ) {
-    }
+    ) {}
 
     public function process(ContainerBuilder $container): void
     {

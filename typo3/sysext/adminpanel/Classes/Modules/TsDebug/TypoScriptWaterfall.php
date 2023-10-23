@@ -38,8 +38,7 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
 {
     public function __construct(
         private readonly ConfigurationService $configurationService,
-    ) {
-    }
+    ) {}
 
     public function getIdentifier(): string
     {

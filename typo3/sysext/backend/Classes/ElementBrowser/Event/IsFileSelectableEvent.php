@@ -28,8 +28,7 @@ final class IsFileSelectableEvent
 
     public function __construct(
         private readonly FileInterface $file,
-    ) {
-    }
+    ) {}
 
     public function getFile(): FileInterface
     {

@@ -26,8 +26,7 @@ final class AfterPackageDeactivationEvent
         private readonly string $packageKey,
         private readonly string $type,
         private readonly ?object $emitter = null
-    ) {
-    }
+    ) {}
 
     public function getPackageKey(): string
     {

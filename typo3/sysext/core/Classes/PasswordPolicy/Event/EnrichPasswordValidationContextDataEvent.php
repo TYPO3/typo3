@@ -32,8 +32,7 @@ final class EnrichPasswordValidationContextDataEvent
         protected readonly ContextData $contextData,
         protected readonly array $userData,
         protected readonly string $initiatingClass
-    ) {
-    }
+    ) {}
 
     public function getContextData(): ContextData
     {

@@ -44,8 +44,7 @@ class BackendLogController extends ActionController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly LogEntryRepository $logEntryRepository,
         protected readonly ConnectionPool $connectionPool,
-    ) {
-    }
+    ) {}
 
     /**
      * Initialize list action

@@ -22,6 +22,4 @@ namespace TYPO3\CMS\Install\Updates;
  *
  * Semantic/Marker interface only
  */
-interface RepeatableInterface
-{
-}
+interface RepeatableInterface {}

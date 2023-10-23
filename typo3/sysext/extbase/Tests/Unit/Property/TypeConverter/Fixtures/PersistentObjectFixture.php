@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures;
 /**
  * Fixture PersistentObjectFixture
  */
-class PersistentObjectFixture
-{
-}
+class PersistentObjectFixture {}

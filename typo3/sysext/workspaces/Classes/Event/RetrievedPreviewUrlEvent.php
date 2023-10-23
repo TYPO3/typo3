@@ -32,8 +32,7 @@ final class RetrievedPreviewUrlEvent implements StoppableEventInterface
         private readonly int $uid,
         private ?UriInterface $previewUri,
         private readonly array $contextData
-    ) {
-    }
+    ) {}
 
     public function stop(): void
     {

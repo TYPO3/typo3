@@ -26,9 +26,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  */
 final class BeforeFileContentsSetEvent
 {
-    public function __construct(private readonly FileInterface $file, private string $content)
-    {
-    }
+    public function __construct(private readonly FileInterface $file, private string $content) {}
 
     public function getFile(): FileInterface
     {

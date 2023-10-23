@@ -63,8 +63,7 @@ class MfaSetupController extends AbstractMfaController
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly LoggerInterface $logger,
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {

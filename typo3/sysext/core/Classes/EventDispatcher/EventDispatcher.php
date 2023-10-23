@@ -30,8 +30,7 @@ class EventDispatcher implements EventDispatcherInterface, SingletonInterface
 {
     public function __construct(
         protected readonly ListenerProviderInterface $listenerProvider
-    ) {
-    }
+    ) {}
 
     public function dispatch(object $event): object
     {

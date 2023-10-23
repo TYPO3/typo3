@@ -93,9 +93,7 @@ class MainModuleFixture implements
      * Can be used to react to changed settings
      * (for example: clearing a specific cache)
      */
-    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
-    {
-    }
+    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void {}
 
     /**
      * Returns a string array with javascript files that will be rendered after the module
@@ -118,9 +116,7 @@ class MainModuleFixture implements
      *
      * @param ModuleInterface[] $subModules
      */
-    public function setSubModules(array $subModules): void
-    {
-    }
+    public function setSubModules(array $subModules): void {}
 
     /**
      * Get SubModules for current module
@@ -140,9 +136,7 @@ class MainModuleFixture implements
     /**
      * Set data for usage in getShortinfo()
      */
-    public function setModuleData(ModuleDataStorageCollection $moduleData): void
-    {
-    }
+    public function setModuleData(ModuleDataStorageCollection $moduleData): void {}
 
     /**
      * Initialize the module - runs in the TYPO3 middleware stack at an early point

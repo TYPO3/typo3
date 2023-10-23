@@ -30,8 +30,7 @@ final class BusFactory
      */
     public function __construct(
         private readonly array $middlewares
-    ) {
-    }
+    ) {}
 
     public function createBus(string $bus = 'default'): MessageBusInterface
     {

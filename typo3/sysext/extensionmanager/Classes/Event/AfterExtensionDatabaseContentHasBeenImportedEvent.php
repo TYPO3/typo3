@@ -29,8 +29,7 @@ final class AfterExtensionDatabaseContentHasBeenImportedEvent
         private readonly string $importFileName,
         private readonly int $importResult,
         private readonly InstallUtility $emitter
-    ) {
-    }
+    ) {}
 
     public function getPackageKey(): string
     {

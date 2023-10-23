@@ -25,9 +25,7 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class BeforeFolderAddedEvent
 {
-    public function __construct(private readonly Folder $parentFolder, private readonly string $folderName)
-    {
-    }
+    public function __construct(private readonly Folder $parentFolder, private readonly string $folderName) {}
 
     public function getParentFolder(): Folder
     {

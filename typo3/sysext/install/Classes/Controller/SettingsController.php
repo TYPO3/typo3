@@ -59,8 +59,7 @@ class SettingsController extends AbstractController
         private readonly AstTraverser $astTraverser,
         private readonly FormProtectionFactory $formProtectionFactory,
         private readonly ConfigurationManager $configurationManager,
-    ) {
-    }
+    ) {}
 
     /**
      * Main "show the cards" view

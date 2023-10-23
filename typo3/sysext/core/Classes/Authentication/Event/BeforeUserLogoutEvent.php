@@ -32,8 +32,7 @@ final class BeforeUserLogoutEvent
     public function __construct(
         private readonly AbstractUserAuthentication $user,
         private readonly ?UserSession $userSession
-    ) {
-    }
+    ) {}
 
     public function getUser(): AbstractUserAuthentication
     {

@@ -72,7 +72,7 @@ final class OperatorTest extends FunctionalTestCase
             $query->between('uid', 3, 5)
         );
         $result = array_map(
-            static fn (array $row): int => $row['uid'],
+            static fn(array $row): int => $row['uid'],
             $query->execute(true)
         );
         self::assertEquals([3, 4, 5], $result);

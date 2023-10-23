@@ -29,8 +29,7 @@ final class BeforeFolderCopiedEvent
         private readonly Folder $folder,
         private readonly Folder $targetParentFolder,
         private readonly string $targetFolderName
-    ) {
-    }
+    ) {}
 
     public function getFolder(): Folder
     {

@@ -21,6 +21,4 @@ use TYPO3\CMS\Core\Exception as CoreException;
  * Generic Beuser exception
  * @internal
  */
-class Exception extends CoreException
-{
-}
+class Exception extends CoreException {}

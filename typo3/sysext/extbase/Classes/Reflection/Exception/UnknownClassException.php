@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Reflection\Exception;
 /**
  * An "Unknown Class" exception
  */
-class UnknownClassException extends Exception
-{
-}
+class UnknownClassException extends Exception {}

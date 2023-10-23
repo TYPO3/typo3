@@ -21,9 +21,7 @@ use TYPO3\CMS\Backend\Form\NodeInterface;
 
 class FooElement implements NodeInterface
 {
-    public function setData(array $data): void
-    {
-    }
+    public function setData(array $data): void {}
 
     public function render(): array
     {

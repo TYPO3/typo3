@@ -83,8 +83,7 @@ class RecordListDownloadController
     public function __construct(
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Handle record download request by evaluating the provided arguments,

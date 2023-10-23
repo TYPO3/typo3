@@ -20,6 +20,4 @@ use TYPO3\CMS\Install\FolderStructure\Exception;
 /**
  * A root node exception
  */
-class RootNodeException extends Exception
-{
-}
+class RootNodeException extends Exception {}

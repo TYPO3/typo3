@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Log\Channel;
 
 class ConstructorAttributeChannelTester
 {
-    public function __construct(#[Channel('beep')] protected LoggerInterface $logger)
-    {
-    }
+    public function __construct(#[Channel('beep')] protected LoggerInterface $logger) {}
 
     public function run(): void
     {

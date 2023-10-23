@@ -50,8 +50,7 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
     public function __construct(
         private readonly Context $context,
         private readonly PageLayoutResolver $pageLayoutResolver,
-    ) {
-    }
+    ) {}
 
     /**
      * Prepare the core expression language Resolver class - our API to symfony

@@ -22,7 +22,5 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures;
  */
 class DummyClass
 {
-    public function someMethod(): void
-    {
-    }
+    public function someMethod(): void {}
 }

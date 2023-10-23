@@ -43,8 +43,7 @@ class CacheLifetimeCalculator
         protected readonly FrontendInterface $runtimeCache,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ConnectionPool $connectionPool
-    ) {
-    }
+    ) {}
 
     /**
      * Get the cache lifetime in seconds for the given page.

@@ -40,8 +40,7 @@ class PageModificationListener
         protected readonly MessageBusInterface $bus,
         protected readonly LoggerInterface $logger,
         protected readonly SiteFinder $siteFinder,
-    ) {
-    }
+    ) {}
 
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler)
     {

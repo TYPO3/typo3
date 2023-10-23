@@ -29,8 +29,7 @@ final class BeforePageLanguageOverlayEvent
         private array $pageInput,
         private array $pageIds,
         private LanguageAspect $languageAspect
-    ) {
-    }
+    ) {}
 
     public function getPageInput(): array
     {

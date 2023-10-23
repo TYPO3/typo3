@@ -31,8 +31,7 @@ class ReactionRegistry
      */
     public function __construct(
         private readonly \IteratorAggregate $registeredReactions
-    ) {
-    }
+    ) {}
 
     /**
      * @return \IteratorAggregate<ReactionInterface>

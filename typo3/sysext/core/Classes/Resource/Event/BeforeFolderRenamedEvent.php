@@ -26,9 +26,7 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class BeforeFolderRenamedEvent
 {
-    public function __construct(private readonly Folder $folder, private readonly string $targetName)
-    {
-    }
+    public function __construct(private readonly Folder $folder, private readonly string $targetName) {}
 
     public function getFolder(): Folder
     {

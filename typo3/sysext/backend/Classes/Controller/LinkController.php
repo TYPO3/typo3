@@ -40,8 +40,7 @@ final class LinkController
     public function __construct(
         protected readonly LinkService $linkService,
         protected readonly ResourceFactory $resourceFactory
-    ) {
-    }
+    ) {}
 
     public function resourceAction(ServerRequestInterface $request): ResponseInterface
     {

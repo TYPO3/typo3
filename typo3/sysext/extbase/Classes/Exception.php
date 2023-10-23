@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception as CoreException;
 /**
  * A generic Extbase exception
  */
-class Exception extends CoreException
-{
-}
+class Exception extends CoreException {}

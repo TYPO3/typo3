@@ -19,6 +19,4 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Mocks;
 
 use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
 
-class InstantiatableAbstractRestrictionContainer extends AbstractRestrictionContainer
-{
-}
+class InstantiatableAbstractRestrictionContainer extends AbstractRestrictionContainer {}

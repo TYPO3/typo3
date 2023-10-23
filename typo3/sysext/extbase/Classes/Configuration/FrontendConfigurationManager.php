@@ -80,8 +80,7 @@ class FrontendConfigurationManager implements SingletonInterface
         protected FlexFormService $flexFormService,
         protected PageRepository $pageRepository,
         protected EventDispatcher $eventDispatcher
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

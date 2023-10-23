@@ -23,6 +23,4 @@ use TYPO3\CMS\Form\Domain\Model\Exception;
  * This exception is thrown if a Finisher Preset was not found,
  * or if the implementationClassName was not set.
  */
-class FinisherPresetNotFoundException extends Exception
-{
-}
+class FinisherPresetNotFoundException extends Exception {}

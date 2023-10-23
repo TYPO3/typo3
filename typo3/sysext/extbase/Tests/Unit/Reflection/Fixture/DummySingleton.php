@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\SingletonInterface;
 /**
  * Dummy Singleton
  */
-class DummySingleton implements SingletonInterface
-{
-}
+class DummySingleton implements SingletonInterface {}

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Exception;
 /**
  * An "Invalid Query" Exception
  */
-class InvalidQueryException extends Exception
-{
-}
+class InvalidQueryException extends Exception {}

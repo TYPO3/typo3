@@ -46,7 +46,7 @@ class AccessStorage implements LoggerAwareInterface
         $relevantItems = array_filter(
             $this->fetchGrants(),
             // either group matches (if given), or subject matches
-            fn (array $item) => $this->subjectMatchesItem($subject, $item)
+            fn(array $item) => $this->subjectMatchesItem($subject, $item)
         );
         return array_map($this->factory->buildGrantFromArray(...), $relevantItems);
     }
@@ -111,7 +111,7 @@ class AccessStorage implements LoggerAwareInterface
         $items = json_decode((string)$sessionData, true, 16) ?? [];
         $purgedItems = array_filter(
             $items,
-            fn (array $item) => ($item['expiration'] ?? 0) >= $this->currentTimestamp
+            fn(array $item) => ($item['expiration'] ?? 0) >= $this->currentTimestamp
         );
         if (count($purgedItems) < count($items)) {
             $this->commitItems($sessionKey, $purgedItems);

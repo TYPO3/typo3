@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Exception;
 /**
  * An Invalid Type Exception
  */
-class InvalidTypeException extends Exception
-{
-}
+class InvalidTypeException extends Exception {}

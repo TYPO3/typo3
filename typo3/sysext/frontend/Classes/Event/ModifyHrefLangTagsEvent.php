@@ -27,9 +27,7 @@ final class ModifyHrefLangTagsEvent
 {
     private array $hrefLangs = [];
 
-    public function __construct(private readonly ServerRequestInterface $request)
-    {
-    }
+    public function __construct(private readonly ServerRequestInterface $request) {}
 
     public function getHrefLangs(): array
     {

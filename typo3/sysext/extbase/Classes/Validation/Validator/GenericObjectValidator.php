@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  * A generic object validator which allows for specifying property validators.
  * This is used as default model validator.
  */
-final class GenericObjectValidator extends AbstractGenericObjectValidator
-{
-}
+final class GenericObjectValidator extends AbstractGenericObjectValidator {}

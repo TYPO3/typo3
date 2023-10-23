@@ -36,8 +36,7 @@ class MetaTagGenerator
     public function __construct(
         protected MetaTagManagerRegistry $metaTagManagerRegistry,
         protected ImageService $imageService
-    ) {
-    }
+    ) {}
 
     /**
      * Generate the meta tags that can be set in backend and add them to frontend by using the MetaTag API

@@ -61,9 +61,7 @@ abstract class AbstractLinkHandler
      */
     protected $pageRenderer;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
     {

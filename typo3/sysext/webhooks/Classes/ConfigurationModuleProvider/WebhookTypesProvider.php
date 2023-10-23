@@ -33,8 +33,7 @@ class WebhookTypesProvider extends AbstractProvider
     public function __construct(
         private readonly WebhookTypesRegistry $webhookTypesRegistry,
         private readonly ServiceLocator $sendersLocator,
-    ) {
-    }
+    ) {}
 
     public function getConfiguration(): array
     {

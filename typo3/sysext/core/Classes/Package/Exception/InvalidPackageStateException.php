@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Package\Exception;
 /**
  * An "Invalid Package State" exception
  */
-class InvalidPackageStateException extends Exception
-{
-}
+class InvalidPackageStateException extends Exception {}

@@ -31,8 +31,7 @@ final class PasswordChangeEvent implements StoppableEventInterface
         private readonly array $user,
         private string $passwordHash,
         private readonly string $rawPassword
-    ) {
-    }
+    ) {}
 
     public function getUser(): array
     {

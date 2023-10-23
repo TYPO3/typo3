@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "invalid action name" exception
  */
-class InvalidActionNameException extends Exception
-{
-}
+class InvalidActionNameException extends Exception {}

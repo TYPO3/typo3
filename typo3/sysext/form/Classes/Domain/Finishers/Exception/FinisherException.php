@@ -22,6 +22,4 @@ use TYPO3\CMS\Form\Domain\Exception;
 /**
  * This exception is thrown in Form Finishers
  */
-class FinisherException extends Exception
-{
-}
+class FinisherException extends Exception {}

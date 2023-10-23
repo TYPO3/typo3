@@ -36,7 +36,5 @@ class CustomValidator extends AbstractValidator
         $this->iconFactory = $iconFactory;
     }
 
-    protected function isValid(mixed $value): void
-    {
-    }
+    protected function isValid(mixed $value): void {}
 }

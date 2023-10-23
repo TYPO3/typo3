@@ -37,8 +37,7 @@ final class InvestigateMutationsEvent
     public function __construct(
         public readonly Policy $policy,
         public readonly Report $report,
-    ) {
-    }
+    ) {}
 
     public function isPropagationStopped(): bool
     {

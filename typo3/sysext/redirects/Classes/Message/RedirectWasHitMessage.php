@@ -33,8 +33,7 @@ final class RedirectWasHitMessage implements WebhookMessageInterface
         private readonly UriInterface $targetUrl,
         private readonly int $statusCode,
         private readonly array $matchedRedirect,
-    ) {
-    }
+    ) {}
 
     public static function createFromEvent(RedirectWasHitEvent $event): self
     {

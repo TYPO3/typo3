@@ -42,9 +42,7 @@ class ElementBrowserController
      */
     protected string $mode = '';
 
-    public function __construct(protected readonly ElementBrowserRegistry $elementBrowserRegistry)
-    {
-    }
+    public function __construct(protected readonly ElementBrowserRegistry $elementBrowserRegistry) {}
 
     /**
      * Injects the request object for the current request or sub-request

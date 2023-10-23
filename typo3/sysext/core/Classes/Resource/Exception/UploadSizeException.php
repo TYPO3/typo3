@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception when the size of the uploaded file has exceeded
  */
-class UploadSizeException extends AbstractFileOperationException
-{
-}
+class UploadSizeException extends AbstractFileOperationException {}

@@ -20,6 +20,4 @@ namespace TYPO3\CMS\FrontendLogin\Configuration;
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class IncompleteConfigurationException extends \Exception
-{
-}
+class IncompleteConfigurationException extends \Exception {}

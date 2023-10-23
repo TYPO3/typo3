@@ -691,7 +691,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
             $connectionMock = $this->createMock(Connection::class);
             $connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
             $connectionMock->method('quoteIdentifier')
-                ->willReturnCallback(fn (string $identifier): string => '`' . str_replace('.', '`.`', $identifier) . '`');
+                ->willReturnCallback(fn(string $identifier): string => '`' . str_replace('.', '`.`', $identifier) . '`');
 
             $queryBuilderMock = $this->createMock(QueryBuilder::class);
             $queryBuilderMock->method('expr')->willReturn(

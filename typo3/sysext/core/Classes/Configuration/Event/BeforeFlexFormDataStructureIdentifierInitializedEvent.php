@@ -55,8 +55,7 @@ final class BeforeFlexFormDataStructureIdentifierInitializedEvent implements Sto
         private readonly string $tableName,
         private readonly string $fieldName,
         private readonly array $row,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns the full TCA of the currently handled field, having

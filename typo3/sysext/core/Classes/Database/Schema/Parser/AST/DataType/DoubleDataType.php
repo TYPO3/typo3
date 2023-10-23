@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 /**
  * Node representing the DOUBLE SQL column type
  */
-class DoubleDataType extends FloatDataType
-{
-}
+class DoubleDataType extends FloatDataType {}

@@ -24,6 +24,5 @@ class UserPermissions
 {
     public function __construct(
         public readonly bool $editMetaData = false
-    ) {
-    }
+    ) {}
 }

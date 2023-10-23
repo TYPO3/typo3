@@ -60,7 +60,5 @@ class DisabledFormProtection extends AbstractFormProtection
     /**
      * Dummy implementation
      */
-    public function persistSessionToken()
-    {
-    }
+    public function persistSessionToken() {}
 }

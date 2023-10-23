@@ -205,7 +205,7 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
     {
         return array_filter(
             $attributes,
-            static fn (string $key) => !in_array($key, ['href', 'target', 'class', 'title'], true),
+            static fn(string $key) => !in_array($key, ['href', 'target', 'class', 'title'], true),
             ARRAY_FILTER_USE_KEY
         );
     }

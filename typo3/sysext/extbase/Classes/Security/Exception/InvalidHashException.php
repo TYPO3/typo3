@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Security\Exception;
 /**
  * A "InvalidHash" Exception, thrown when a HMAC validation failed.
  */
-class InvalidHashException extends Exception
-{
-}
+class InvalidHashException extends Exception {}

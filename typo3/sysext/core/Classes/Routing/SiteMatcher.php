@@ -53,8 +53,7 @@ class SiteMatcher implements SingletonInterface
         protected readonly Features $features,
         protected readonly SiteFinder $finder,
         protected readonly RequestContextFactory $requestContextFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Only used when a page is moved but the pseudo site caches has this information hard-coded, so the caches

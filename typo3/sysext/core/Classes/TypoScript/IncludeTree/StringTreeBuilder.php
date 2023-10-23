@@ -36,8 +36,7 @@ final class StringTreeBuilder
 {
     public function __construct(
         private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
-    ) {
-    }
+    ) {}
 
     /**
      * Create tree, ready to be traversed. Will cache if $cache is not null.

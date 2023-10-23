@@ -61,8 +61,7 @@ class InfoModuleController
         protected readonly PageRenderer $pageRenderer,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.

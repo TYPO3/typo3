@@ -31,9 +31,7 @@ class TraversableDomainObjectExample extends AbstractEntity implements \Iterator
         return [];
     }
 
-    public function next(): void
-    {
-    }
+    public function next(): void {}
 
     public function key(): mixed
     {
@@ -45,7 +43,5 @@ class TraversableDomainObjectExample extends AbstractEntity implements \Iterator
         return true;
     }
 
-    public function rewind(): void
-    {
-    }
+    public function rewind(): void {}
 }

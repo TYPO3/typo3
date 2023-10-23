@@ -24,6 +24,4 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
  *
  * @internal This implementation might still change
  */
-interface SourceInterface
-{
-}
+interface SourceInterface {}

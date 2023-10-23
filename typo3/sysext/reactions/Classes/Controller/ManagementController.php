@@ -48,8 +48,7 @@ class ManagementController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly ReactionRegistry $reactionRegistry,
         private readonly ReactionRepository $reactionRepository
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {

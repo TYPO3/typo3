@@ -48,8 +48,7 @@ final class PageTsConfigFactory
         private readonly TokenizerInterface $tokenizer,
         private readonly TsConfigTreeBuilder $tsConfigTreeBuilder,
         private readonly PhpFrontend $cache,
-    ) {
-    }
+    ) {}
 
     public function create(
         array $fullRootLine,

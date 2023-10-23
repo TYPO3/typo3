@@ -50,8 +50,7 @@ class NumberWithIconWidget implements WidgetInterface, RequestAwareWidgetInterfa
         // @deprecated since v12, will be removed in v13 together with services 'dashboard.views.widget' and Factory
         protected readonly ?StandaloneView $view = null,
         private readonly array $options = [],
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

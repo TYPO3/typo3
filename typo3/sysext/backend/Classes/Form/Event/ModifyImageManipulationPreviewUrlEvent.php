@@ -30,8 +30,7 @@ final class ModifyImageManipulationPreviewUrlEvent
         private readonly array $databaseRow,
         private readonly array $fieldConfiguration,
         private readonly File $file,
-    ) {
-    }
+    ) {}
 
     public function getDatabaseRow(): array
     {

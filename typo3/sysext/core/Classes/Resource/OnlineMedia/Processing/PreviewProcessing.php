@@ -32,8 +32,7 @@ final class PreviewProcessing implements ProcessorInterface
         protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly LocalImageProcessor $localImageProcessor,
-    ) {
-    }
+    ) {}
 
     public function canProcessTask(TaskInterface $task): bool
     {

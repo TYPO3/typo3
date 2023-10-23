@@ -90,8 +90,7 @@ class FileController
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly FlashMessageService $flashMessageService
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request or subrequest

@@ -19,6 +19,4 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
  * Exception thrown if lookup of a parent row in a tree does not return a valid result
  * during flex from structure lookup.
  */
-class InvalidParentRowException extends AbstractInvalidDataStructureException
-{
-}
+class InvalidParentRowException extends AbstractInvalidDataStructureException {}

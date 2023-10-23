@@ -25,9 +25,7 @@ use TYPO3\CMS\Workspaces\Notification\StageChangeNotification;
  */
 final class StageChangeNotificationHandler
 {
-    public function __construct(private readonly StageChangeNotification $notificationService)
-    {
-    }
+    public function __construct(private readonly StageChangeNotification $notificationService) {}
 
     public function __invoke(StageChangeMessage $message): void
     {

@@ -62,8 +62,7 @@ class SetupDatabaseService
         private readonly ConfigurationManager $configurationManager,
         private readonly PermissionsCheck $databasePermissionsCheck,
         private readonly Registry $registry,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array $values

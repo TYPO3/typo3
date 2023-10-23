@@ -27,8 +27,7 @@ final class AfterGroupsResolvedEvent
         private array $groups,
         private readonly array $originalGroupIds,
         private readonly array $userData
-    ) {
-    }
+    ) {}
 
     /**
      * @return string 'be_groups' or 'fe_groups' depending on context.

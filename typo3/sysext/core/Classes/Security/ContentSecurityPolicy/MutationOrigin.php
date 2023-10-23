@@ -26,6 +26,5 @@ class MutationOrigin
     public function __construct(
         public readonly MutationOriginType $type,
         public readonly string $value
-    ) {
-    }
+    ) {}
 }

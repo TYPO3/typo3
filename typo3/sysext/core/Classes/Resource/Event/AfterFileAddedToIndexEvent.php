@@ -24,9 +24,7 @@ namespace TYPO3\CMS\Core\Resource\Event;
  */
 final class AfterFileAddedToIndexEvent
 {
-    public function __construct(private readonly int $fileUid, private readonly array $record)
-    {
-    }
+    public function __construct(private readonly int $fileUid, private readonly array $record) {}
 
     public function getFileUid(): int
     {

@@ -47,8 +47,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
     public function __construct(
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly StreamFactoryInterface $streamFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new file reference via AJAX.

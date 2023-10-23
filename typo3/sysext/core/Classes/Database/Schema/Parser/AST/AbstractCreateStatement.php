@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
  * Base class for all create type statements like CREATE TABLE
  * or CREATE VIEW.
  */
-abstract class AbstractCreateStatement
-{
-}
+abstract class AbstractCreateStatement {}

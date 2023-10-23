@@ -53,8 +53,7 @@ class RecyclerAjaxController
         protected readonly FrontendInterface $runtimeCache,
         protected readonly IconFactory $iconFactory,
         protected readonly ConnectionPool $connectionPool
-    ) {
-    }
+    ) {}
 
     /**
      * The main dispatcher function. Collect data and prepare HTML output.

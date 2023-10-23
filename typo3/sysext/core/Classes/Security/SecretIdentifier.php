@@ -43,9 +43,7 @@ class SecretIdentifier implements \JsonSerializable
         return GeneralUtility::makeInstance(self::class, $type, $name);
     }
 
-    public function __construct(public readonly string $type, public readonly string $name)
-    {
-    }
+    public function __construct(public readonly string $type, public readonly string $name) {}
 
     /**
      * @return array{type: string, name: string}

@@ -47,8 +47,7 @@ class LinkFactory implements LoggerAwareInterface
         protected readonly TypoLinkCodecService $typoLinkCodecService,
         protected readonly FrontendInterface $runtimeCache,
         protected readonly SiteFinder $siteFinder,
-    ) {
-    }
+    ) {}
 
     /**
      * Main method to create links from typolink strings and configuration.

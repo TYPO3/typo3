@@ -117,8 +117,7 @@ class NewRecordController
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request or subrequest

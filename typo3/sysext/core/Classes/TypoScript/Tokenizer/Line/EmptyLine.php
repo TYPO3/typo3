@@ -29,6 +29,4 @@ namespace TYPO3\CMS\Core\TypoScript\Tokenizer\Line;
  *
  * @internal: Internal tokenizer structure.
  */
-final class EmptyLine extends AbstractLine
-{
-}
+final class EmptyLine extends AbstractLine {}

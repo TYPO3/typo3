@@ -24,6 +24,4 @@ use TYPO3\CMS\Form\Mvc\Persistence\Exception;
  *
  * @internal
  */
-class PersistenceManagerException extends Exception
-{
-}
+class PersistenceManagerException extends Exception {}

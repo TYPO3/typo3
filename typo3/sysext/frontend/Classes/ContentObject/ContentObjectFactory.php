@@ -27,9 +27,7 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
  */
 class ContentObjectFactory
 {
-    public function __construct(private ContainerInterface $contentObjectLocator)
-    {
-    }
+    public function __construct(private ContainerInterface $contentObjectLocator) {}
 
     public function getContentObject(string $name, ServerRequestInterface $request, ContentObjectRenderer $contentObjectRenderer): ?AbstractContentObject
     {

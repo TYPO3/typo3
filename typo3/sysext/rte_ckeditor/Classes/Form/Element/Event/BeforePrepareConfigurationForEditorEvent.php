@@ -22,9 +22,7 @@ namespace TYPO3\CMS\RteCKEditor\Form\Element\Event;
  */
 final class BeforePrepareConfigurationForEditorEvent
 {
-    public function __construct(private $configuration, private readonly array $data)
-    {
-    }
+    public function __construct(private $configuration, private readonly array $data) {}
 
     public function getData(): array
     {

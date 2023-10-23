@@ -44,8 +44,7 @@ class ListWidget implements WidgetInterface, RequestAwareWidgetInterface
         protected readonly ?StandaloneView $view = null,
         private readonly ?ButtonProviderInterface $buttonProvider = null,
         private readonly array $options = [],
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Argument Value" exception
  */
-class InvalidArgumentValueException extends Exception
-{
-}
+class InvalidArgumentValueException extends Exception {}

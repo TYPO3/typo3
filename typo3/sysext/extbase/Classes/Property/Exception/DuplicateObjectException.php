@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Property\Exception;
 /**
  * A "Duplicate Object" Exception
  */
-class DuplicateObjectException extends Exception
-{
-}
+class DuplicateObjectException extends Exception {}

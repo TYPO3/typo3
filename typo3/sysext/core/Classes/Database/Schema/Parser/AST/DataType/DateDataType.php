@@ -25,7 +25,5 @@ class DateDataType extends AbstractDataType
     /**
      * DateDataType constructor.
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 }

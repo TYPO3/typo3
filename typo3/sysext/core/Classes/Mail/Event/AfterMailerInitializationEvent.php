@@ -25,9 +25,7 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 final class AfterMailerInitializationEvent
 {
-    public function __construct(private readonly MailerInterface $mailer)
-    {
-    }
+    public function __construct(private readonly MailerInterface $mailer) {}
 
     public function getMailer(): MailerInterface
     {

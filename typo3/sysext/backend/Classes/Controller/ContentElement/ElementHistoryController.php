@@ -71,8 +71,7 @@ class ElementHistoryController
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request or sub request

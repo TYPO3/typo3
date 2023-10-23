@@ -22,8 +22,7 @@ final class AfterRecordSummaryForLocalizationEvent
     public function __construct(
         private array $records,
         private array $columns
-    ) {
-    }
+    ) {}
 
     public function getColumns(): array
     {

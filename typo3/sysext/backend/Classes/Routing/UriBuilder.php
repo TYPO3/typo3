@@ -68,8 +68,7 @@ class UriBuilder implements SingletonInterface
         protected readonly Router $router,
         protected readonly FormProtectionFactory $formProtectionFactory,
         protected readonly RequestContextFactory $requestContextFactory
-    ) {
-    }
+    ) {}
 
     /**
      * @internal

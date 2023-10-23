@@ -39,8 +39,7 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
     public function __construct(
         protected readonly PolicyProvider $policyProvider,
         protected readonly ReportRepository $reportRepository
-    ) {
-    }
+    ) {}
 
     protected function persistCspReport(Scope $scope, ServerRequestInterface $request): void
     {

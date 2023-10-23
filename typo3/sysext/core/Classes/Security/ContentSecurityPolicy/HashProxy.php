@@ -113,7 +113,7 @@ final class HashProxy implements \JsonSerializable, SourceValueInterface
             return null;
         }
         $hashes = array_map(
-            fn (string $hash): string => sprintf("'%s-%s'", $this->type->value, $hash),
+            fn(string $hash): string => sprintf("'%s-%s'", $this->type->value, $hash),
             $this->compileHashValues($cache)
         );
         return implode(' ', $hashes);
@@ -155,7 +155,7 @@ final class HashProxy implements \JsonSerializable, SourceValueInterface
             $pattern = GeneralUtility::getFileAbsFileName($this->glob);
             $files = array_filter(glob($pattern), 'is_file');
             return array_map(
-                fn (string $file): string => base64_encode(
+                fn(string $file): string => base64_encode(
                     hash_file($this->type->value, $file, true)
                 ),
                 $files

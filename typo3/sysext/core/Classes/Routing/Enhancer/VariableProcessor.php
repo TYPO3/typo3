@@ -36,9 +36,7 @@ class VariableProcessor
      */
     protected $nestedValues = [];
 
-    public function __construct(private readonly VariableProcessorCache $cache)
-    {
-    }
+    public function __construct(private readonly VariableProcessorCache $cache) {}
 
     protected function addHash(string $value): string
     {

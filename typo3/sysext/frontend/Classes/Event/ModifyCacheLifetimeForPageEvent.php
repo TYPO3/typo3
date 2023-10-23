@@ -31,8 +31,7 @@ final class ModifyCacheLifetimeForPageEvent
         private readonly array $pageRecord,
         private readonly array $renderingInstructions,
         private readonly Context $context
-    ) {
-    }
+    ) {}
 
     public function setCacheLifetime(int $cacheLifetime): void
     {

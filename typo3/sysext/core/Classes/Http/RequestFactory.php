@@ -30,8 +30,7 @@ class RequestFactory implements RequestFactoryInterface
 {
     public function __construct(
         private readonly GuzzleClientFactory $guzzleFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new request.

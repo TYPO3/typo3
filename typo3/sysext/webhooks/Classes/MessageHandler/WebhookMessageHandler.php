@@ -36,8 +36,7 @@ class WebhookMessageHandler
         private readonly WebhookRepository $repository,
         private readonly RequestFactory $requestFactory,
         private readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     public function __invoke(WebhookMessageInterface $message): void
     {

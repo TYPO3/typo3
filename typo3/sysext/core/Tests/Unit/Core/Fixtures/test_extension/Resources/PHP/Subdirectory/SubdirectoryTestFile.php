@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Resources\PHP\Subdirectory;
 
-class SubdirectoryTestFile
-{
-}
+class SubdirectoryTestFile {}

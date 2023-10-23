@@ -101,8 +101,7 @@ final class UrlValidatorTest extends FunctionalTestCase
                 'isValid' => false,
             ],
             'Invalid value is closure' => [
-                'value' => static function () {
-                },
+                'value' => static function () {},
                 'isValid' => false,
             ],
         ];

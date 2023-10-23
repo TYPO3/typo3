@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Extension Name" exception
  */
-class InvalidExtensionNameException extends Exception
-{
-}
+class InvalidExtensionNameException extends Exception {}

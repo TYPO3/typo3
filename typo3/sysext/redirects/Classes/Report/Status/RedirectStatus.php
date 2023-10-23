@@ -32,9 +32,7 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  */
 class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProviderInterface
 {
-    public function __construct(protected readonly BackendViewFactory $backendViewFactory)
-    {
-    }
+    public function __construct(protected readonly BackendViewFactory $backendViewFactory) {}
 
     /**
      * Determines the status of the FAL index.

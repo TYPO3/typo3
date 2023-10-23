@@ -22,6 +22,4 @@ use TYPO3\CMS\Scheduler\Exception;
 /**
  * Thrown if a submitted date can not be converted to timestamp using the backend module.
  */
-class InvalidDateException extends Exception
-{
-}
+class InvalidDateException extends Exception {}

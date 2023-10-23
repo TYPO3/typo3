@@ -44,7 +44,7 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     {
         return new ExpressionFunction(
             'getFormValue',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $field) {
                 return $arguments['formValues'][$field] ?? null;
             }
@@ -55,7 +55,7 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     {
         return new ExpressionFunction(
             'getRootFormProperty',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $property) {
                 $formDefinition = $arguments['formRuntime']->getFormDefinition();
                 try {

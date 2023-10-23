@@ -35,8 +35,7 @@ final class AfterPagePreviewUriGeneratedEvent
         private readonly array $additionalQueryParameters,
         private readonly Context $context,
         private readonly array $options
-    ) {
-    }
+    ) {}
 
     public function setPreviewUri(UriInterface $previewUri): void
     {

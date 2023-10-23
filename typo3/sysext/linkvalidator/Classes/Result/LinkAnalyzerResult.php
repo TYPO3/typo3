@@ -53,8 +53,7 @@ class LinkAnalyzerResult
         private readonly BrokenLinkRepository $brokenLinkRepository,
         private readonly ConnectionPool $connectionPool,
         private readonly PagesRepository $pagesRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Call LinkAnalyzer with provided task configuration and process result values

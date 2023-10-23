@@ -27,7 +27,5 @@ class DummyControllerWithValidateAttributeWithoutParam extends ActionController
 {
     #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'NotEmpty'])]
     #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'StringLength'])]
-    public function methodWithValidateAttributesAction(): void
-    {
-    }
+    public function methodWithValidateAttributesAction(): void {}
 }

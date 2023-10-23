@@ -39,8 +39,7 @@ final class ModuleTemplateFactory
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $viewFactory,
-    ) {
-    }
+    ) {}
 
     public function create(ServerRequestInterface $request): ModuleTemplate
     {

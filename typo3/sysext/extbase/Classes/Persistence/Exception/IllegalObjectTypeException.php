@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Exception;
 /**
  * An "Invalid Object Type" exception
  */
-class IllegalObjectTypeException extends Exception
-{
-}
+class IllegalObjectTypeException extends Exception {}

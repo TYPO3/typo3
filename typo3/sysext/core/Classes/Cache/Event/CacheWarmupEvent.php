@@ -24,9 +24,7 @@ final class CacheWarmupEvent
 {
     private array $errors = [];
 
-    public function __construct(private readonly array $groups)
-    {
-    }
+    public function __construct(private readonly array $groups) {}
 
     public function getGroups(): array
     {

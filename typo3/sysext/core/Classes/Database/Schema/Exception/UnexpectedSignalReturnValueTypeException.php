@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Database\Schema\Exception;
 /**
  * An exception thrown if the return value type of a signal is not the expected one.
  */
-class UnexpectedSignalReturnValueTypeException extends \Exception
-{
-}
+class UnexpectedSignalReturnValueTypeException extends \Exception {}

@@ -28,8 +28,7 @@ class FluidViewAdapter implements CoreViewInterface
 {
     public function __construct(
         protected readonly FluidViewInterface&FluidTemplateAwareViewInterface $view,
-    ) {
-    }
+    ) {}
 
     public function assign(string $key, mixed $value): self
     {

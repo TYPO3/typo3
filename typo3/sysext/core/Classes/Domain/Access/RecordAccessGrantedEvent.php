@@ -33,8 +33,7 @@ final class RecordAccessGrantedEvent implements StoppableEventInterface
         private readonly string $tableName,
         private array $record,
         private readonly Context $context
-    ) {
-    }
+    ) {}
 
     public function isPropagationStopped(): bool
     {

@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Exception;
  * This exception is thrown when an image is tasked to be processed with
  * dimensions of zero.
  */
-class ZeroImageDimensionException extends Exception
-{
-}
+class ZeroImageDimensionException extends Exception {}

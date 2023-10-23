@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Error\Http\AbstractClientErrorException;
 /**
  * Exception thrown when a rate limiter has disallowed further processing
  */
-class RequestRateLimitedException extends AbstractClientErrorException
-{
-}
+class RequestRateLimitedException extends AbstractClientErrorException {}

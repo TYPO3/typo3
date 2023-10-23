@@ -33,8 +33,7 @@ class SystemInformationController
 {
     public function __construct(
         private readonly SystemInformationToolbarItem $systemInformationToolbarItem,
-    ) {
-    }
+    ) {}
 
     /**
      * Renders the menu for AJAX calls

@@ -28,8 +28,7 @@ final class ModifyNewContentElementWizardItemsEvent
         private readonly int|null $colPos,
         private readonly int $sys_language,
         private readonly int $uid_pid,
-    ) {
-    }
+    ) {}
 
     public function getWizardItems(): array
     {

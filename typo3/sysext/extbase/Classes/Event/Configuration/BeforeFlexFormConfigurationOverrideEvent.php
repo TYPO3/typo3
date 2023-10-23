@@ -30,8 +30,7 @@ final class BeforeFlexFormConfigurationOverrideEvent
         protected readonly array $frameworkConfiguration,
         protected readonly array $originalFlexFormConfiguration,
         protected array $flexFormConfiguration
-    ) {
-    }
+    ) {}
 
     public function getFrameworkConfiguration(): array
     {

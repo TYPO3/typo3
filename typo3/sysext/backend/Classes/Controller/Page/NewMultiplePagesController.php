@@ -48,8 +48,7 @@ class NewMultiplePagesController
     public function __construct(
         protected readonly IconFactory $iconFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Main function Handling input variables and rendering main view.

@@ -61,8 +61,7 @@ final class SudoModeController implements LoggerAwareInterface
         private readonly PasswordVerification $passwordVerification,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly BackendEntryPointResolver $backendEntryPointResolver,
-    ) {
-    }
+    ) {}
 
     public function buildModuleActionUriForClaim(AccessClaim $claim): UriInterface
     {

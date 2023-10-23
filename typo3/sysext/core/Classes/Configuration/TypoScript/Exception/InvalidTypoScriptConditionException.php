@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Exception;
  *
  * @deprecated since TYPO3 v12. Remove together with AbstractConditionMatcher in v13.
  */
-class InvalidTypoScriptConditionException extends Exception
-{
-}
+class InvalidTypoScriptConditionException extends Exception {}

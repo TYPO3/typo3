@@ -28,9 +28,7 @@ use TYPO3\CMS\SysNote\Renderer\NoteRenderer;
  */
 class RecordListProvider
 {
-    public function __construct(protected readonly NoteRenderer $noteRenderer)
-    {
-    }
+    public function __construct(protected readonly NoteRenderer $noteRenderer) {}
 
     public function __invoke(RenderAdditionalContentToRecordListEvent $event): void
     {

@@ -79,9 +79,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected array $nodeSortValues = [];
 
-    public function __construct(protected EventDispatcherInterface $eventDispatcher)
-    {
-    }
+    public function __construct(protected EventDispatcherInterface $eventDispatcher) {}
 
     /**
      * Sets the label field
@@ -154,9 +152,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * Gets the nodes
      */
-    public function getNodes(TreeNode $node): void
-    {
-    }
+    public function getNodes(TreeNode $node): void {}
 
     /**
      * Gets the root node

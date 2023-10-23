@@ -48,8 +48,7 @@ class BackendLayoutRenderer
 {
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     public function getGridForPageLayoutContext(PageLayoutContext $context): Grid
     {

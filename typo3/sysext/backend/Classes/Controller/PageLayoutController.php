@@ -90,8 +90,7 @@ class PageLayoutController
         protected readonly ModuleProvider $moduleProvider,
         protected readonly BackendLayoutRenderer $backendLayoutRenderer,
         protected readonly BackendLayoutView $backendLayoutView,
-    ) {
-    }
+    ) {}
 
     protected function initialize(ServerRequestInterface $request): void
     {

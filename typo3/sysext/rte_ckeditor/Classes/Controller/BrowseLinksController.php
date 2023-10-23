@@ -52,8 +52,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         protected readonly LinkService $linkService,
         protected readonly Richtext $richtext,
         protected readonly LanguageServiceFactory $languageServiceFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * This is only used by RTE currently.

@@ -21,6 +21,4 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception;
  * A No Such File exception
  * @internal
  */
-class NoSuchFileException extends Exception
-{
-}
+class NoSuchFileException extends Exception {}

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Class TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\A
  */
-class A extends AbstractEntity
-{
-}
+class A extends AbstractEntity {}

@@ -24,9 +24,7 @@ use Psr\Http\Message\UriInterface;
  */
 final class ModifyLanguagePackRemoteBaseUrlEvent
 {
-    public function __construct(private UriInterface $baseUrl, private readonly string $packageKey)
-    {
-    }
+    public function __construct(private UriInterface $baseUrl, private readonly string $packageKey) {}
 
     public function getBaseUrl(): UriInterface
     {

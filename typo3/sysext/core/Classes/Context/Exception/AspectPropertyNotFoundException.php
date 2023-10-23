@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Used when an aspect property is requested but not found.
  */
-class AspectPropertyNotFoundException extends Exception
-{
-}
+class AspectPropertyNotFoundException extends Exception {}
