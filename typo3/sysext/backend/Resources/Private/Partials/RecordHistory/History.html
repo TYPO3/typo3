@@ -73,7 +73,7 @@
                         </td>
                     </f:if>
                     <td>
-                        <a href="{elementUrl}" title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:linkRecordHistory')}">{historyRow.title -> f:format.raw()}</a>
+                        <a href="{historyRow.elementUrl}" title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:linkRecordHistory')}">{historyRow.title -> f:format.raw()}</a>
                     </td>
                     <td>
                         <f:switch expression="{historyRow.actiontype}">
