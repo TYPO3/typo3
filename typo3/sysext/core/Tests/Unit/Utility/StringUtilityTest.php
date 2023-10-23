@@ -58,7 +58,7 @@ class StringUtilityTest extends UnitTestCase
         yield 'array' => [['1']];
         yield 'null' => [null];
         yield 'object' => [new \stdClass()];
-        yield 'closure' => [static fn (): string => 'fn'];
+        yield 'closure' => [static fn(): string => 'fn'];
         // PHP interprets it as `lim(x→0) log(x) = -∞`
         yield 'infinite' => [log(0)];
         // acos only supports values in range [-1; +1]
@@ -100,7 +100,7 @@ class StringUtilityTest extends UnitTestCase
         yield 'array' => [['1']];
         yield 'null' => [null];
         yield 'object' => [new \stdClass()];
-        yield 'closure' => [static fn (): string => 'fn'];
+        yield 'closure' => [static fn(): string => 'fn'];
         // PHP interprets it as `lim(x→0) log(x) = -∞`
         yield 'infinite' => [log(0)];
         // acos only supports values in range [-1; +1]

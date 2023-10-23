@@ -19,6 +19,4 @@ namespace ExtbaseTeam\A\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-class ARepository extends Repository
-{
-}
+class ARepository extends Repository {}

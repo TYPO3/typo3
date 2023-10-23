@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
 /**
  * Exception thrown if lookup of a parent row in a tree is root node and still nothing was found.
  */
-class InvalidParentRowRootException extends AbstractInvalidDataStructureException
-{
-}
+class InvalidParentRowRootException extends AbstractInvalidDataStructureException {}

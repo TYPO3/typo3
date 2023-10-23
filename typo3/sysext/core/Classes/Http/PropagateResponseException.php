@@ -44,6 +44,4 @@ namespace TYPO3\CMS\Core\Http;
  *
  * @internal
  */
-class PropagateResponseException extends ImmediateResponseException
-{
-}
+class PropagateResponseException extends ImmediateResponseException {}

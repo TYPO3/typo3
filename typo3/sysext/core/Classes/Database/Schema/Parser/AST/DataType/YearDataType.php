@@ -25,7 +25,5 @@ class YearDataType extends AbstractDataType
     /**
      * YearDataType constructor.
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 }

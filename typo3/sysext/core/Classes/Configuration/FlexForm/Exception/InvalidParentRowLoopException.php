@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
 /**
  * Exception thrown if lookup of a parent row in a tree results in a loop.
  */
-class InvalidParentRowLoopException extends AbstractInvalidDataStructureException
-{
-}
+class InvalidParentRowLoopException extends AbstractInvalidDataStructureException {}

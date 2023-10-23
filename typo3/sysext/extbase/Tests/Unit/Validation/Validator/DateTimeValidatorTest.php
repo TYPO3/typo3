@@ -47,15 +47,13 @@ class DateTimeValidatorTest extends UnitTestCase
                 new \DateTime(),
             ],
             'Extended ' . \DateTime::class => [
-                new class () extends \DateTime {
-                },
+                new class () extends \DateTime {},
             ],
             \DateTimeImmutable::class => [
                 new \DateTimeImmutable(),
             ],
             'Extended ' . \DateTimeImmutable::class => [
-                new class () extends \DateTimeImmutable {
-                },
+                new class () extends \DateTimeImmutable {},
             ],
         ];
     }

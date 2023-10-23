@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Install\FolderStructure;
 /**
  * Interface implemented by root node
  */
-interface RootNodeInterface extends NodeInterface
-{
-}
+interface RootNodeInterface extends NodeInterface {}

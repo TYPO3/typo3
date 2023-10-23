@@ -96,7 +96,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     public static function and($part = null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn ($value) => !is_null($value));
+        array_filter($mergedParts, static fn($value) => !is_null($value));
         return (new self(self::TYPE_AND, []))->with(...$mergedParts);
     }
 
@@ -107,7 +107,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     public static function or($part = null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn ($value) => !is_null($value));
+        array_filter($mergedParts, static fn($value) => !is_null($value));
         return (new self(self::TYPE_OR, []))->with(...$mergedParts);
     }
 

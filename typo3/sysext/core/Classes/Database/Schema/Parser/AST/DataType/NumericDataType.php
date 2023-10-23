@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 /**
  * Node representing the NUMERIC SQL column type
  */
-class NumericDataType extends DecimalDataType
-{
-}
+class NumericDataType extends DecimalDataType {}

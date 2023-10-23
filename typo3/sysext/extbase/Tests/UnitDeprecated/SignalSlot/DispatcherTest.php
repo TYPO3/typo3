@@ -106,8 +106,7 @@ class DispatcherTest extends UnitTestCase
         $mockSignal = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['emitSomeSignal'])
             ->getMock();
-        $mockSlot = static function () {
-        };
+        $mockSlot = static function () {};
         $this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'foo', true);
         $expectedSlots = [
             ['class' => null, 'method' => '__invoke', 'object' => $mockSlot, 'passSignalInformation' => true],

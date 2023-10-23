@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 /**
  * Node representing the MEDIUMINT SQL column type
  */
-class MediumIntDataType extends IntegerDataType
-{
-}
+class MediumIntDataType extends IntegerDataType {}

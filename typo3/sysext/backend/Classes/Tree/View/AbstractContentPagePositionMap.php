@@ -215,7 +215,7 @@ abstract class AbstractContentPagePositionMap
                         if (!empty($lines[$columnKey])) {
                             $cellContent .= '
                                 <ul class="list-unstyled">
-                                    ' . implode(LF, array_map(static fn (string $line): string => '<li>' . $line . '</li>', $lines[$columnKey])) . '
+                                    ' . implode(LF, array_map(static fn(string $line): string => '<li>' . $line . '</li>', $lines[$columnKey])) . '
                                 </ul>';
                         }
                     }
@@ -255,7 +255,7 @@ abstract class AbstractContentPagePositionMap
                     if (!empty($lines[$tcaColumnConfiguration['colPos']])) {
                         $cellContent .= '
                             <ul class="list-unstyled">
-                                ' . implode(LF, array_map(static fn (string $line): string => '<li>' . $line . '</li>', $lines[$tcaColumnConfiguration['colPos']])) . '
+                                ' . implode(LF, array_map(static fn(string $line): string => '<li>' . $line . '</li>', $lines[$tcaColumnConfiguration['colPos']])) . '
                             </ul>';
                     }
                 }

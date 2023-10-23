@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Error\Exception;
  * Is typically used, when a site configuration has no page-error handler configured
  * for a specific HTTP Status type that is requested.
  */
-class PageErrorHandlerNotConfiguredException extends Exception
-{
-}
+class PageErrorHandlerNotConfiguredException extends Exception {}

@@ -25,6 +25,4 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception;
  *
  * @internal
  */
-class CycleInheritancesException extends Exception
-{
-}
+class CycleInheritancesException extends Exception {}

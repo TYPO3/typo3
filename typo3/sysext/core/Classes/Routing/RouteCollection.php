@@ -24,6 +24,4 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
  *
  * @internal as this is tightly coupled to Symfony's Routing and we try to encapsulate this, please note that this might change
  */
-class RouteCollection extends SymfonyRouteCollection
-{
-}
+class RouteCollection extends SymfonyRouteCollection {}

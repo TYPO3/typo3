@@ -77,9 +77,7 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
      * @param array $configurationToSave
      * @param ServerRequestInterface $request
      */
-    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
-    {
-    }
+    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void {}
 
     /**
      * @param ServerRequestInterface $request

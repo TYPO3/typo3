@@ -137,7 +137,5 @@ class Comparison implements ComparisonInterface
      *
      * @param array $boundVariables
      */
-    public function collectBoundVariableNames(&$boundVariables)
-    {
-    }
+    public function collectBoundVariableNames(&$boundVariables) {}
 }

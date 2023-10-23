@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * An exception thrown when extracting an archive fails
  */
-class ExtractException extends Exception
-{
-}
+class ExtractException extends Exception {}

@@ -36,47 +36,25 @@ class FrontendFixture implements FrontendInterface
         return $this->identifier;
     }
 
-    public function getBackend()
-    {
-    }
+    public function getBackend() {}
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
-    {
-    }
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void {}
 
-    public function get($entryIdentifier)
-    {
-    }
+    public function get($entryIdentifier) {}
 
-    public function has($entryIdentifier)
-    {
-    }
+    public function has($entryIdentifier) {}
 
-    public function remove($entryIdentifier)
-    {
-    }
+    public function remove($entryIdentifier) {}
 
-    public function flush(): void
-    {
-    }
+    public function flush(): void {}
 
-    public function flushByTag($tag): void
-    {
-    }
+    public function flushByTag($tag): void {}
 
-    public function flushByTags(array $tags): void
-    {
-    }
+    public function flushByTags(array $tags): void {}
 
-    public function collectGarbage(): void
-    {
-    }
+    public function collectGarbage(): void {}
 
-    public function isValidEntryIdentifier($identifier)
-    {
-    }
+    public function isValidEntryIdentifier($identifier) {}
 
-    public function isValidTag($tag)
-    {
-    }
+    public function isValidTag($tag) {}
 }

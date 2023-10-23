@@ -245,9 +245,7 @@ class JsonView extends AbstractView implements ViewInterface
      * Override this method for initializing your concrete view implementation.
      * @deprecated since v11, will be removed with v12. Drop together with removal of extbase ViewInterface.
      */
-    public function initializeView()
-    {
-    }
+    public function initializeView() {}
 
     /**
      * Specifies which variables this JsonView should render

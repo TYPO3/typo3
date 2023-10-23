@@ -334,9 +334,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
     /**
      * Not necessary
      */
-    public function collectGarbage()
-    {
-    }
+    public function collectGarbage() {}
 
     /**
      * Tries to find the cache entry for the specified identifier.

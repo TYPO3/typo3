@@ -186,7 +186,7 @@ class ColumnSelectorController
         }
 
         // Sort standard columns by their resolved label
-        usort($columns, static fn ($a, $b) => $a['label'] <=> $b['label']);
+        usort($columns, static fn($a, $b) => $a['label'] <=> $b['label']);
 
         // Disabled columns go first, followed by standard columns
         // and special columns, which do not have a label.
@@ -204,7 +204,7 @@ class ColumnSelectorController
         // Get all sys_file fields expect excluded ones
         $fileFields = array_filter(
             BackendUtility::getAllowedFieldsForTable('sys_file'),
-            static fn (string $field): bool => !in_array($field, self::EXCLUDE_FILE_FIELDS, true)
+            static fn(string $field): bool => !in_array($field, self::EXCLUDE_FILE_FIELDS, true)
         );
 
         // Always add crdate and tstamp fields for files
@@ -216,13 +216,13 @@ class ColumnSelectorController
         // Get all sys_file_metadata fields expect excluded ones
         $fileMetaDataFields = array_filter(
             BackendUtility::getAllowedFieldsForTable('sys_file_metadata'),
-            static fn (string $field): bool => !in_array($field, $excludeFields, true)
+            static fn(string $field): bool => !in_array($field, $excludeFields, true)
         );
 
         // Merge sys_file and sys_file_metadata fields together, while adding the table name as prefix
         return array_merge(
-            array_map(static fn (string $value): string => 'sys_file|' . $value, $fileFields),
-            array_map(static fn (string $value): string => 'sys_file_metadata|' . $value, $fileMetaDataFields),
+            array_map(static fn(string $value): string => 'sys_file|' . $value, $fileFields),
+            array_map(static fn(string $value): string => 'sys_file_metadata|' . $value, $fileMetaDataFields),
         );
     }
 

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Fixture repository
  */
-class DummyModelRepository extends Repository
-{
-}
+class DummyModelRepository extends Repository {}

@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Backend\Routing\Exception;
 /**
  * Exception thrown when a route does not exist
  */
-class RouteNotFoundException extends \TYPO3\CMS\Core\Routing\RouteNotFoundException
-{
-}
+class RouteNotFoundException extends \TYPO3\CMS\Core\Routing\RouteNotFoundException {}

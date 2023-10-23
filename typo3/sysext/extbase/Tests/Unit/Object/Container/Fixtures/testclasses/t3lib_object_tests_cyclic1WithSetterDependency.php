@@ -20,7 +20,5 @@ class t3lib_object_tests_cyclic1WithSetterDependency
     /**
      * @param \t3lib_object_tests_cyclic2WithSetterDependency $c
      */
-    public function injectFoo(\t3lib_object_tests_cyclic2WithSetterDependency $c): void
-    {
-    }
+    public function injectFoo(\t3lib_object_tests_cyclic2WithSetterDependency $c): void {}
 }

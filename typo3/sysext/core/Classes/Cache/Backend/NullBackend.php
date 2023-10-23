@@ -28,18 +28,14 @@ class NullBackend extends AbstractBackend implements PhpCapableBackendInterface,
      * @param array $tags ignored
      * @param int $lifetime ignored
      */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
-    {
-    }
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null) {}
 
     /**
      * Acts as if it would enable data compression
      *
      * @param bool $compression ignored
      */
-    public function setCompression($compression)
-    {
-    }
+    public function setCompression($compression) {}
 
     /**
      * Returns False
@@ -88,25 +84,19 @@ class NullBackend extends AbstractBackend implements PhpCapableBackendInterface,
     /**
      * Does nothing
      */
-    public function flush()
-    {
-    }
+    public function flush() {}
 
     /**
      * Does nothing
      *
      * @param string $tag ignored
      */
-    public function flushByTag($tag)
-    {
-    }
+    public function flushByTag($tag) {}
 
     /**
      * Does nothing
      */
-    public function collectGarbage()
-    {
-    }
+    public function collectGarbage() {}
 
     /**
      * Does nothing

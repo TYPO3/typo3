@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Exception;
 
-class MissingTsfeException extends \RuntimeException
-{
-}
+class MissingTsfeException extends \RuntimeException {}

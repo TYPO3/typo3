@@ -2345,7 +2345,7 @@ class EditDocumentController
         // Fetch the current translations of this page, to only show the ones where there is a page translation
         $allLanguages = array_filter(
             GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages($pageId),
-            static fn ($language) => (int)$language['uid'] !== -1
+            static fn($language) => (int)$language['uid'] !== -1
         );
         if ($table !== 'pages' && $id > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');

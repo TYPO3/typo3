@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * An exception if something is wrong with the data to be encoded or decoded
  */
-class InvalidDataException extends Exception
-{
-}
+class InvalidDataException extends Exception {}

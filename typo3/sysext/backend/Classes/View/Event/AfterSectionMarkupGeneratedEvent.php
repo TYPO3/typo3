@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Backend\View\Event;
  * This event can be triggered to display content in any colpos after
  * the last content element.
  */
-final class AfterSectionMarkupGeneratedEvent extends AbstractSectionMarkupGeneratedEvent
-{
-}
+final class AfterSectionMarkupGeneratedEvent extends AbstractSectionMarkupGeneratedEvent {}

@@ -206,9 +206,7 @@ class PropertyType
     /**
      * Make instantiation impossible...
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Returns the name of the specified type, as used in serialization.

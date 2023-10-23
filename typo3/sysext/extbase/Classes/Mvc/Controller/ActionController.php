@@ -332,9 +332,7 @@ abstract class ActionController implements ControllerInterface
      * @param ViewInterface $view The view to be initialized
      * @deprecated since v11, will be removed in v12: Drop method along with extbase ViewInterface.
      */
-    protected function initializeView(ViewInterface $view)
-    {
-    }
+    protected function initializeView(ViewInterface $view) {}
 
     /**
      * Initializes the controller before invoking an action method.
@@ -342,9 +340,7 @@ abstract class ActionController implements ControllerInterface
      * Override this method to solve tasks which all actions have in
      * common.
      */
-    protected function initializeAction()
-    {
-    }
+    protected function initializeAction() {}
 
     /**
      * Implementation of the arguments initialization in the action controller:

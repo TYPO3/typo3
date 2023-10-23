@@ -85,9 +85,7 @@ class GeneralUtility
      */
     protected static $indpEnvCache = [];
 
-    final private function __construct()
-    {
-    }
+    final private function __construct() {}
 
     /*************************
      *
@@ -1008,7 +1006,7 @@ class GeneralUtility
         $result = explode($delim, (string)$string) ?: [];
         if ($removeEmptyValues) {
             // Remove items that are just whitespace, but leave whitespace intact for the rest.
-            $result = array_values(array_filter($result, static fn ($item) => trim($item) !== ''));
+            $result = array_values(array_filter($result, static fn($item) => trim($item) !== ''));
         }
 
         if ($limit === 0) {

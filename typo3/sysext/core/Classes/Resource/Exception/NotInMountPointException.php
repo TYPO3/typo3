@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception when something is wrong with the Mount Point
  */
-class NotInMountPointException extends Exception
-{
-}
+class NotInMountPointException extends Exception {}

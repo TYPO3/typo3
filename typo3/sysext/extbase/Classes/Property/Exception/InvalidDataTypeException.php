@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Property\Exception;
 /**
  * An "Invalid Data Type" Exception
  */
-class InvalidDataTypeException extends Exception
-{
-}
+class InvalidDataTypeException extends Exception {}

@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Cache\Exception;
 /**
  * An "Invalid Backend" exception
  */
-class InvalidBackendException extends Exception
-{
-}
+class InvalidBackendException extends Exception {}

@@ -142,9 +142,7 @@ class ExtensionStatusTest extends UnitTestCase
     {
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests();
         $remote = new class () extends TerExtensionRemote {
-            public function __construct()
-            {
-            }
+            public function __construct() {}
 
             public function getLastUpdate(): \DateTimeInterface
             {
@@ -321,9 +319,7 @@ class ExtensionStatusTest extends UnitTestCase
         $remoteRegistryProphecy = $this->prophesize(RemoteRegistry::class);
         if ($setupRepositoryStatusOk) {
             $remote = new class () extends TerExtensionRemote {
-                public function __construct()
-                {
-                }
+                public function __construct() {}
                 public function getLastUpdate(): \DateTimeInterface
                 {
                     return new \DateTimeImmutable('-4days');

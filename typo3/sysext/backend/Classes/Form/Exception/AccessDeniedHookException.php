@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Backend\Form\Exception;
 /**
  * User access to record was denied by a makeEditForm_accessCheck hook
  */
-class AccessDeniedHookException extends AccessDeniedException
-{
-}
+class AccessDeniedHookException extends AccessDeniedException {}

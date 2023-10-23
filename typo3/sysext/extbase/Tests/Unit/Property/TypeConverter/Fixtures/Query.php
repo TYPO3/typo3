@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures;
 /**
  * Fixture Query
  */
-class Query
-{
-}
+class Query {}

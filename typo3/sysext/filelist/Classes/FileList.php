@@ -1243,7 +1243,7 @@ class FileList
         // Fetch all system languages except "default (0)" and "all languages (-1)"
         $systemLanguages = array_filter(
             $this->translateTools->getSystemLanguages(),
-            static fn (array $languageRecord): bool => $languageRecord['uid'] > 0 && $backendUser->checkLanguageAccess($languageRecord['uid'])
+            static fn(array $languageRecord): bool => $languageRecord['uid'] > 0 && $backendUser->checkLanguageAccess($languageRecord['uid'])
         );
 
         if ($systemLanguages === []

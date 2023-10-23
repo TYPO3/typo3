@@ -92,9 +92,7 @@ class Section extends AbstractSection implements FormElementInterface
      *
      * @param mixed $defaultValue the default value for this Form Element
      */
-    public function setDefaultValue($defaultValue)
-    {
-    }
+    public function setDefaultValue($defaultValue) {}
 
     /**
      * Get all element-specific configuration properties

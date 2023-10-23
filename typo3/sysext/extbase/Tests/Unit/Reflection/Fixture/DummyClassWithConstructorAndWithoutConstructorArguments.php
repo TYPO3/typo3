@@ -22,7 +22,5 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class DummyClassWithConstructorAndWithoutConstructorArguments
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 }

@@ -462,9 +462,7 @@ abstract class AbstractMenuContentObject
      *
      * Subclasses should overwrite this method.
      */
-    public function generate()
-    {
-    }
+    public function generate() {}
 
     /**
      * @return string The HTML for the menu

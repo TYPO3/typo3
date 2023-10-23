@@ -41,7 +41,5 @@ class FormProtectionTesting extends AbstractFormProtection
      * Saves the tokens so that they can be used by a later incarnation of this
      * class.
      */
-    public function persistSessionToken(): void
-    {
-    }
+    public function persistSessionToken(): void {}
 }

@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Extbase\Annotation\ORM;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-class Transient
-{
-}
+class Transient {}

@@ -33,7 +33,5 @@ class t3lib_object_tests_serializable implements \Serializable
     {
         $this->__unserialize(unserialize($serialized));
     }
-    public function __unserialize(array $data): void
-    {
-    }
+    public function __unserialize(array $data): void {}
 }

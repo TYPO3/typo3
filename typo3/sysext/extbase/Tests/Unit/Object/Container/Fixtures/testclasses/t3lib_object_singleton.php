@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 use TYPO3\CMS\Core\SingletonInterface;
 
-class t3lib_object_singleton implements SingletonInterface
-{
-}
+class t3lib_object_singleton implements SingletonInterface {}

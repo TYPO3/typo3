@@ -1087,7 +1087,7 @@ class ExtendedFileUtility extends BasicFileUtility
             ];
         }
         $uploadedFileData['name'] = array_map(
-            static fn (string $name) => \Normalizer::normalize($name),
+            static fn(string $name) => \Normalizer::normalize($name),
             $uploadedFileData['name']
         );
         $resultObjects = [];

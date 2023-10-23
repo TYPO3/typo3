@@ -18,6 +18,4 @@ declare(strict_types=1);
 /**
  * test class B-Child that extends Class B (therefore depends also on Class C)
  */
-class t3lib_object_tests_b_child_someimplementation extends \t3lib_object_tests_b implements \t3lib_object_tests_someinterface
-{
-}
+class t3lib_object_tests_b_child_someimplementation extends \t3lib_object_tests_b implements \t3lib_object_tests_someinterface {}

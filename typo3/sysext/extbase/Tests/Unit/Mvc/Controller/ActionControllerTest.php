@@ -534,8 +534,7 @@ class ActionControllerTest extends UnitTestCase
             $pageRenderer->addFooterData(Argument::any())->shouldNotBeCalled();
         }
         $requestMock = $this->getMockBuilder(RequestInterface::class)->getMockForAbstractClass();
-        $subject = new class () extends ActionController {
-        };
+        $subject = new class () extends ActionController {};
         $viewProperty = new \ReflectionProperty($subject, 'view');
         $viewProperty->setAccessible(true);
         $viewProperty->setValue($subject, $viewMock);
@@ -680,8 +679,7 @@ class ActionControllerTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1243258395);
-        $controller = new class () extends ActionController {
-        };
+        $controller = new class () extends ActionController {};
         $controller->addFlashMessage(new \stdClass());
     }
 }

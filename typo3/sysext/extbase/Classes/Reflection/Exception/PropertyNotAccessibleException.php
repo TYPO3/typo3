@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Reflection\Exception;
 /**
  * An "Property not accessible" exception
  */
-class PropertyNotAccessibleException extends Exception
-{
-}
+class PropertyNotAccessibleException extends Exception {}

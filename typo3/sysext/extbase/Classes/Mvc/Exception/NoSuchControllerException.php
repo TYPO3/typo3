@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * A "No Such Controller" exception
  */
-class NoSuchControllerException extends Exception
-{
-}
+class NoSuchControllerException extends Exception {}

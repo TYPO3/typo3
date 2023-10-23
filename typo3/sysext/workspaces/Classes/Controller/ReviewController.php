@@ -422,6 +422,6 @@ class ReviewController
                 'uid' => -99,
                 'label' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_all'),
             ],
-        ], array_filter($stages, static fn (array $stage): bool => (int)($stage['uid'] ?? 0) !== -20));
+        ], array_filter($stages, static fn(array $stage): bool => (int)($stage['uid'] ?? 0) !== -20));
     }
 }

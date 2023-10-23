@@ -24,6 +24,4 @@ use TYPO3\CMS\Impexp\Exception;
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
-class LoadingFileFailedException extends Exception
-{
-}
+class LoadingFileFailedException extends Exception {}

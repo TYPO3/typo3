@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * An abstract session backend exception, specific exceptions extend this.
  */
-abstract class AbstractBackendException extends Exception
-{
-}
+abstract class AbstractBackendException extends Exception {}

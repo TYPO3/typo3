@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Package\Exception;
 /**
  * An "Invalid Package Manifest" exception
  */
-class InvalidPackageManifestException extends Exception
-{
-}
+class InvalidPackageManifestException extends Exception {}

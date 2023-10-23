@@ -24,6 +24,4 @@ use TYPO3\CMS\Extbase\Object\Exception;
  *
  * @deprecated since v11, will be removed in v12. Drop along with ObjectManager / Container.
  */
-class InvalidSlotException extends Exception
-{
-}
+class InvalidSlotException extends Exception {}

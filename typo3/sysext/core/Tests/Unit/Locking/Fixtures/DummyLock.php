@@ -43,9 +43,7 @@ class DummyLock implements LockingStrategyInterface
     /**
      * @param string $subject ID to identify this lock in the system
      */
-    public function __construct($subject)
-    {
-    }
+    public function __construct($subject) {}
 
     /**
      * Try to acquire a lock
@@ -81,7 +79,5 @@ class DummyLock implements LockingStrategyInterface
     /**
      * Destroys the resource associated with the lock
      */
-    public function destroy(): void
-    {
-    }
+    public function destroy(): void {}
 }

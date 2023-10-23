@@ -103,9 +103,7 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      * @param mixed $defaultValue the default value for this Form Element
      * @internal
      */
-    public function setDefaultValue($defaultValue)
-    {
-    }
+    public function setDefaultValue($defaultValue) {}
 
     /**
      * Not used in this implementation
@@ -114,9 +112,7 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      * @param mixed $value
      * @internal
      */
-    public function setProperty(string $key, $value)
-    {
-    }
+    public function setProperty(string $key, $value) {}
 
     /**
      * @return array

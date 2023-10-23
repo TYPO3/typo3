@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Property\Exception;
 /**
  * A "Type Converter" Exception
  */
-class TypeConverterException extends Exception
-{
-}
+class TypeConverterException extends Exception {}

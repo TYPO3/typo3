@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Locking\Exception;
 /**
  * An exception indicating that acquiring a lock would have blocked
  */
-class LockAcquireWouldBlockException extends LockAcquireException
-{
-}
+class LockAcquireWouldBlockException extends LockAcquireException {}

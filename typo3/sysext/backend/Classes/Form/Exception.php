@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Backend\Form;
 /**
  * Generic backend form exception
  */
-class Exception extends \TYPO3\CMS\Backend\Exception
-{
-}
+class Exception extends \TYPO3\CMS\Backend\Exception {}

@@ -94,7 +94,5 @@ abstract class AbstractView implements ViewInterface
      *
      * Override this method for initializing your concrete view implementation.
      */
-    public function initializeView()
-    {
-    }
+    public function initializeView() {}
 }

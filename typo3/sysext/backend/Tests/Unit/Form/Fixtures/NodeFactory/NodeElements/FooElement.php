@@ -9,9 +9,7 @@ use TYPO3\CMS\Backend\Form\NodeInterface;
 
 class FooElement implements NodeInterface
 {
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-    }
+    public function __construct(NodeFactory $nodeFactory, array $data) {}
 
     public function render(): array
     {

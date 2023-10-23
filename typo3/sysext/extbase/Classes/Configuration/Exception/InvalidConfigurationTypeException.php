@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Configuration\Exception;
 /**
  * An Invalid Configuration Type Exception
  */
-class InvalidConfigurationTypeException extends Exception
-{
-}
+class InvalidConfigurationTypeException extends Exception {}

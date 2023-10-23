@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "InvalidRelationConfigurationException" exception
  */
-class InvalidRelationConfigurationException extends Exception
-{
-}
+class InvalidRelationConfigurationException extends Exception {}

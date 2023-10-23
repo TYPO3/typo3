@@ -28,7 +28,5 @@ class DummyControllerWithValidateAnnotationWithoutParamTypeHint extends ActionCo
     /**
      * @Extbase\Validate(param="fooParam", validator="NotEmpty")
      */
-    public function methodWithValidateAnnotationsAction($fooParam): void
-    {
-    }
+    public function methodWithValidateAnnotationsAction($fooParam): void {}
 }

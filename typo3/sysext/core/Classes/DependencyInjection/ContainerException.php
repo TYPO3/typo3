@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * @internal
  */
-class ContainerException extends Exception implements ContainerExceptionInterface
-{
-}
+class ContainerException extends Exception implements ContainerExceptionInterface {}

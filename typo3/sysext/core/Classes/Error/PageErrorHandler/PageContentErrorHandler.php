@@ -111,13 +111,13 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             if ($this->useSubrequest) {
                 // Create a sub-request and do not take any special query parameters into account
                 $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
-                $subResponse = $this->stashEnvironment(fn (): ResponseInterface => $this->sendSubRequest($subRequest, $this->pageUid, $request));
+                $subResponse = $this->stashEnvironment(fn(): ResponseInterface => $this->sendSubRequest($subRequest, $this->pageUid, $request));
             } else {
                 $cacheIdentifier = 'errorPage_' . md5($resolvedUrl);
                 try {
                     $subResponse = $this->cachePageRequest(
                         $this->pageUid,
-                        fn () => $this->sendRawRequest($resolvedUrl),
+                        fn() => $this->sendRawRequest($resolvedUrl),
                         $cacheIdentifier
                     );
                 } catch (\Exception $e) {

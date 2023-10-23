@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures;
 
-interface ExtendedCountableInterface extends \Countable
-{
-}
+interface ExtendedCountableInterface extends \Countable {}

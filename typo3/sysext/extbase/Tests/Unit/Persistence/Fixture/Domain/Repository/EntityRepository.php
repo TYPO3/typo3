@@ -19,6 +19,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-class EntityRepository extends Repository
-{
-}
+class EntityRepository extends Repository {}

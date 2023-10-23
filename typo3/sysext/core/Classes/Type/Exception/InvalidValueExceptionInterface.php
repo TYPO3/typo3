@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Type\Exception;
 /**
  * Interface for Invalid value exception
  */
-interface InvalidValueExceptionInterface
-{
-}
+interface InvalidValueExceptionInterface {}

@@ -29,7 +29,5 @@ class DummyControllerWithValidateAnnotationWithoutParam extends ActionController
      * @Extbase\Validate(param="fooParam", validator="NotEmpty")
      * @Extbase\Validate(param="fooParam", validator="StringLength")
      */
-    public function methodWithValidateAnnotationsAction(): void
-    {
-    }
+    public function methodWithValidateAnnotationsAction(): void {}
 }

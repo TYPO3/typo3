@@ -24,6 +24,4 @@ use TYPO3\CMS\Extbase\Exception as ExtbaseException;
  *
  * @deprecated since v11, will be removed in v12. Drop along with ObjectManager / Container.
  */
-class Exception extends ExtbaseException
-{
-}
+class Exception extends ExtbaseException {}

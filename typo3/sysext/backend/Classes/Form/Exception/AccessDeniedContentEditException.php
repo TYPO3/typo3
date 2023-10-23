@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Backend\Form\Exception;
 /**
  * User is not allowed to edit this content elements
  */
-class AccessDeniedContentEditException extends AccessDeniedException
-{
-}
+class AccessDeniedContentEditException extends AccessDeniedException {}

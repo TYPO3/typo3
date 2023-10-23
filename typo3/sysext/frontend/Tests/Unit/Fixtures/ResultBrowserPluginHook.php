@@ -36,7 +36,5 @@ class ResultBrowserPluginHook
      * @param AbstractPlugin $pObj Instance of the calling object
      * @return mixed Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
      */
-    public function pi_list_browseresults($showResultCount, $tableParams, array $wrapArr, $pointerName, $hscText, $forceOutput, AbstractPlugin $pObj)
-    {
-    }
+    public function pi_list_browseresults($showResultCount, $tableParams, array $wrapArr, $pointerName, $hscText, $forceOutput, AbstractPlugin $pObj) {}
 }

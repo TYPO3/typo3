@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\SingletonInterface;
 /**
  * a  singleton class
  */
-class t3lib_object_tests_singleton implements SingletonInterface
-{
-}
+class t3lib_object_tests_singleton implements SingletonInterface {}

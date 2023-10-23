@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Adminpanel\Exceptions;
 /**
  * Exception class for invalid admin panel configuration
  */
-class InvalidConfigurationException extends \RuntimeException
-{
-}
+class InvalidConfigurationException extends \RuntimeException {}

@@ -26,6 +26,4 @@ namespace TYPO3\CMS\Core\Collection;
  * @template T
  * @@deprecated Drop \Serializable in v12
  */
-interface CollectionInterface extends \Iterator, \Serializable, \Countable
-{
-}
+interface CollectionInterface extends \Iterator, \Serializable, \Countable {}

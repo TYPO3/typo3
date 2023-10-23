@@ -68,7 +68,5 @@ class Statement implements ConstraintInterface
      *
      * @param array $boundVariables
      */
-    public function collectBoundVariableNames(&$boundVariables)
-    {
-    }
+    public function collectBoundVariableNames(&$boundVariables) {}
 }

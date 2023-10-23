@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when route requires referrer, which is missing.
  */
-class MissingReferrerException extends Exception
-{
-}
+class MissingReferrerException extends Exception {}

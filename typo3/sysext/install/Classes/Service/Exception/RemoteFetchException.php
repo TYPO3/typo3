@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Install\Service\Exception;
 /**
  * An exception thrown if fetching a resource from a remote server fails
  */
-class RemoteFetchException extends CoreVersionServiceException
-{
-}
+class RemoteFetchException extends CoreVersionServiceException {}

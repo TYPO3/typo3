@@ -22,6 +22,4 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 /**
  * Exception thrown when a downloaded file could not be extracted or was invalid
  */
-class VerificationFailedException extends ExtensionManagerException
-{
-}
+class VerificationFailedException extends ExtensionManagerException {}

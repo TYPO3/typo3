@@ -70,18 +70,14 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      *
      * @param object $object The object to add
      */
-    public function add($object)
-    {
-    }
+    public function add($object) {}
 
     /**
      * Removes an object from this repository.
      *
      * @param object $object The object to remove
      */
-    public function remove($object)
-    {
-    }
+    public function remove($object) {}
 
     /**
      * Replaces an object by another.
@@ -89,18 +85,14 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param object $existingObject The existing object
      * @param object $newObject The new object
      */
-    public function replace($existingObject, $newObject)
-    {
-    }
+    public function replace($existingObject, $newObject) {}
 
     /**
      * Replaces an existing object with the same identifier by the given object
      *
      * @param object $modifiedObject The modified object
      */
-    public function update($modifiedObject)
-    {
-    }
+    public function update($modifiedObject) {}
 
     /**
      * Returns all objects of this repository add()ed but not yet persisted to
@@ -182,9 +174,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Removes all objects of this repository as if remove() was called for
      * all of them.
      */
-    public function removeAll()
-    {
-    }
+    public function removeAll() {}
 
     /**
      * Finds an object matching the given identifier.

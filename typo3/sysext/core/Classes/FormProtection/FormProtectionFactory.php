@@ -56,9 +56,7 @@ class FormProtectionFactory
     /**
      * Private constructor to prevent instantiation.
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Gets a form protection instance for the requested type or class.

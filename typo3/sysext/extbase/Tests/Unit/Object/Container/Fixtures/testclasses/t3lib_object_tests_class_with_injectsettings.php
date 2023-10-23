@@ -20,21 +20,15 @@ class t3lib_object_tests_class_with_injectsettings
     /**
      * @param \t3lib_object_tests_resolveablecyclic1 $c1
      */
-    public function injectFoo(\t3lib_object_tests_resolveablecyclic1 $c1): void
-    {
-    }
+    public function injectFoo(\t3lib_object_tests_resolveablecyclic1 $c1): void {}
 
     /**
      * @param \t3lib_object_tests_resolveablecyclic1 $c1
      */
-    public function injectingFoo(\t3lib_object_tests_resolveablecyclic1 $c1): void
-    {
-    }
+    public function injectingFoo(\t3lib_object_tests_resolveablecyclic1 $c1): void {}
 
     /**
      * @param array $settings
      */
-    public function injectSettings(array $settings): void
-    {
-    }
+    public function injectSettings(array $settings): void {}
 }

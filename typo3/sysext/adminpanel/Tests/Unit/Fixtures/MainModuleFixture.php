@@ -108,9 +108,7 @@ class MainModuleFixture implements
      * @param array $configurationToSave
      * @param ServerRequestInterface $request
      */
-    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void
-    {
-    }
+    public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void {}
 
     /**
      * Returns a string array with javascript files that will be rendered after the module
@@ -137,9 +135,7 @@ class MainModuleFixture implements
      *
      * @param ModuleInterface[] $subModules
      */
-    public function setSubModules(array $subModules): void
-    {
-    }
+    public function setSubModules(array $subModules): void {}
 
     /**
      * Get SubModules for current module

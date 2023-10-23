@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures;
 /**
  * Test fixture
  */
-class RouteDispatcherClassWithoutInvokeFixture
-{
-}
+class RouteDispatcherClassWithoutInvokeFixture {}

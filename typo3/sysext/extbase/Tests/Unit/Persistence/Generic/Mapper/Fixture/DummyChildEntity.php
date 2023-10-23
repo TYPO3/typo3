@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Fixture
  */
-class DummyChildEntity extends AbstractEntity
-{
-}
+class DummyChildEntity extends AbstractEntity {}

@@ -32,12 +32,10 @@ class TargetPageIdViewHelperTest extends UnitTestCase
     public function nonTypo3TargetInRenderStaticReturnsEmptyString(): void
     {
         $renderingContext = new class () extends RenderingContext {
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
         $args = ['target' => 'nope'];
-        self::assertSame('', TargetPageIdViewHelper::renderStatic($args, static fn () => '', $renderingContext));
+        self::assertSame('', TargetPageIdViewHelper::renderStatic($args, static fn() => '', $renderingContext));
     }
 
     /**
@@ -46,11 +44,9 @@ class TargetPageIdViewHelperTest extends UnitTestCase
     public function emptyTargetInRenderStaticReturnsEmptyString(): void
     {
         $renderingContext = new class () extends RenderingContext {
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
         $args = [];
-        self::assertSame('', TargetPageIdViewHelper::renderStatic($args, static fn () => '', $renderingContext));
+        self::assertSame('', TargetPageIdViewHelper::renderStatic($args, static fn() => '', $renderingContext));
     }
 }

@@ -36,9 +36,7 @@ class CustomValidator extends AbstractValidator
         $this->iconFactory = $iconFactory;
     }
 
-    public function __construct(array $options = [])
-    {
-    }
+    public function __construct(array $options = []) {}
 
     /**
      * @todo: Will be merged into AbstractValidator in v12.
@@ -51,7 +49,5 @@ class CustomValidator extends AbstractValidator
     /**
      * @param mixed $value
      */
-    protected function isValid($value): void
-    {
-    }
+    protected function isValid($value): void {}
 }

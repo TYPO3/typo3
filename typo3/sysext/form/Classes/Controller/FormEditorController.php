@@ -153,7 +153,7 @@ class FormEditorController extends AbstractBackendController
 
         $requireJsModules = array_filter(
             $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules'],
-            fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+            fn(string $name) => in_array($name, self::JS_MODULE_NAMES, true),
             ARRAY_FILTER_USE_KEY
         );
         $pageRenderer = $this->pageRenderer;

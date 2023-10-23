@@ -28,9 +28,7 @@ class PublicPropertyInjectClass
     public $foo;
 }
 
-class ArgumentTestClassForPublicPropertyInjection
-{
-}
+class ArgumentTestClassForPublicPropertyInjection {}
 
 class ProtectedPropertyInjectClass
 {

@@ -21,6 +21,4 @@ use TYPO3\CMS\Core\Package\Exception;
  * An "Invalid Package Key" exception
  * @internal not in use anymore, can be removed in TYPO3 v12.0.
  */
-class MissingPackageManifestException extends Exception
-{
-}
+class MissingPackageManifestException extends Exception {}

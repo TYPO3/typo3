@@ -44,9 +44,7 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView imple
      *
      * @deprecated since v11, will be removed with v12. Drop together with removal of extbase ViewInterface.
      */
-    public function initializeView()
-    {
-    }
+    public function initializeView() {}
 
     /**
      * @param RenderingContextInterface $context

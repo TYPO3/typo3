@@ -23,6 +23,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
  * An "Invalid Request Method" exception
  * @deprecated since v11, will be removed in v12
  */
-class InvalidRequestMethodException extends Exception
-{
-}
+class InvalidRequestMethodException extends Exception {}

@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception raised if no matching link handler is found.
  */
-class UnknownLinkHandlerException extends Exception
-{
-}
+class UnknownLinkHandlerException extends Exception {}

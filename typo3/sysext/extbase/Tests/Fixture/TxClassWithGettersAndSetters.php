@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 use TYPO3\CMS\Extbase\Tests\Fixture\ClassWithGettersAndSetters;
 
-class Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters extends ClassWithGettersAndSetters
-{
-}
+class Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters extends ClassWithGettersAndSetters {}

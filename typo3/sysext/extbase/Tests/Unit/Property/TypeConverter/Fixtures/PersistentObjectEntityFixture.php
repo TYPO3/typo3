@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Fixture PersistentObjectEntityFixture
  */
-class PersistentObjectEntityFixture extends AbstractEntity
-{
-}
+class PersistentObjectEntityFixture extends AbstractEntity {}

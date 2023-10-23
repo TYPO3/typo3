@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * A repository for administrators
  */
-class AdministratorRepository extends Repository
-{
-}
+class AdministratorRepository extends Repository {}

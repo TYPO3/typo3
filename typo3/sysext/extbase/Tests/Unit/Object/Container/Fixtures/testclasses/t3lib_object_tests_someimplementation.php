@@ -18,6 +18,4 @@ declare(strict_types=1);
 /**
  * class which implements an Interface
  */
-class t3lib_object_tests_someimplementation implements \t3lib_object_tests_someinterface
-{
-}
+class t3lib_object_tests_someimplementation implements \t3lib_object_tests_someinterface {}

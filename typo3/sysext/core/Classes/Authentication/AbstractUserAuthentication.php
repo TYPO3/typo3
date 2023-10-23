@@ -1271,9 +1271,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param int|string $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
      * @param int|string $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
      */
-    public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid)
-    {
-    }
+    public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid) {}
 
     /**
      * Raw initialization of the be_user with uid=$uid

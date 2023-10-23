@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
 /**
  * Node representing the TINYINT SQL column type
  */
-class TinyIntDataType extends IntegerDataType
-{
-}
+class TinyIntDataType extends IntegerDataType {}

@@ -73,8 +73,7 @@ class ContainerTest extends UnitTestCase
 
         $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
 
-        $notFoundException = new class () extends \Exception implements NotFoundExceptionInterface {
-        };
+        $notFoundException = new class () extends \Exception implements NotFoundExceptionInterface {};
 
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)
             ->onlyMethods(['has', 'get'])

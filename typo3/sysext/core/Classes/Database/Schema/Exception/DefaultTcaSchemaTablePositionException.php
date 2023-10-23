@@ -24,6 +24,4 @@ use TYPO3\CMS\Core\Exception;
  *
  * @internal
  */
-class DefaultTcaSchemaTablePositionException extends Exception
-{
-}
+class DefaultTcaSchemaTablePositionException extends Exception {}

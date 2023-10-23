@@ -26,37 +26,21 @@ class ConcreteBackendFixture extends AbstractBackend
 {
     protected string $someOption;
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
-    {
-    }
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void {}
 
-    public function get($entryIdentifier)
-    {
-    }
+    public function get($entryIdentifier) {}
 
-    public function has($entryIdentifier)
-    {
-    }
+    public function has($entryIdentifier) {}
 
-    public function remove($entryIdentifier)
-    {
-    }
+    public function remove($entryIdentifier) {}
 
-    public function flush(): void
-    {
-    }
+    public function flush(): void {}
 
-    public function flushByTag($tag): void
-    {
-    }
+    public function flushByTag($tag): void {}
 
-    public function findIdentifiersByTag($tag): void
-    {
-    }
+    public function findIdentifiersByTag($tag): void {}
 
-    public function collectGarbage(): void
-    {
-    }
+    public function collectGarbage(): void {}
 
     public function setSomeOption($value): void
     {

@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Exception\Page;
 /**
  * Exception for root line traversal when a page within the root line traversal is missing / can not be resolved
  */
-class BrokenRootLineException extends RootLineException
-{
-}
+class BrokenRootLineException extends RootLineException {}

@@ -257,7 +257,5 @@ class WincacheBackend extends AbstractBackend implements TaggableBackendInterfac
     /**
      * Does nothing, as wincache does GC itself
      */
-    public function collectGarbage()
-    {
-    }
+    public function collectGarbage() {}
 }

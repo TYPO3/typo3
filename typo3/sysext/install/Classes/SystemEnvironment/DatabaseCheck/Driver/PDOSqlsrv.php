@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Driver;
 /**
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class PDOSqlsrv extends AbstractDriver
-{
-}
+class PDOSqlsrv extends AbstractDriver {}

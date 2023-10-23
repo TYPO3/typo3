@@ -15,6 +15,4 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-class TestClass
-{
-}
+class TestClass {}

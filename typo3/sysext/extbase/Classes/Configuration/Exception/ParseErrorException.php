@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Configuration\Exception;
 /**
  * A Parse Error exception
  */
-class ParseErrorException extends Exception
-{
-}
+class ParseErrorException extends Exception {}

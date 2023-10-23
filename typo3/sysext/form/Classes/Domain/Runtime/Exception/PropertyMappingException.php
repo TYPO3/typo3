@@ -24,6 +24,4 @@ use TYPO3\CMS\Form\Domain\Exception;
  * a \TYPO3\CMS\Extbase\Property\Exception. It adds some more Information to
  * better understand why the PropertyMapper failed to map the properties
  */
-class PropertyMappingException extends Exception
-{
-}
+class PropertyMappingException extends Exception {}

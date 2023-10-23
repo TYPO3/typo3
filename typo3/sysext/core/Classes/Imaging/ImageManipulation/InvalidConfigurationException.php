@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Imaging\ImageManipulation;
 /**
  * Thrown when an invalid TCA configuration for the image manipulation is detected
  */
-class InvalidConfigurationException extends \Exception
-{
-}
+class InvalidConfigurationException extends \Exception {}

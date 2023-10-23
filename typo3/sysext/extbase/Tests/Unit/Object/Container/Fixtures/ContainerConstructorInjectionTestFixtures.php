@@ -30,9 +30,7 @@ class SimpleTypeConstructorArgument
     }
 }
 
-class ArgumentTestClass
-{
-}
+class ArgumentTestClass {}
 
 class MandatoryConstructorArgument
 {

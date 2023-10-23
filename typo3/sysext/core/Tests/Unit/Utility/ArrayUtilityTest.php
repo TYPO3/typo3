@@ -3441,13 +3441,13 @@ class ArrayUtilityTest extends UnitTestCase
             'only keep2 key is kept' => [
                 $input,
                 ['keep2' => 'keep'],
-                static fn ($key): bool => $key === 'keep2',
+                static fn($key): bool => $key === 'keep2',
                 ARRAY_FILTER_USE_KEY,
             ],
             'keys baz, keep1 and empty arrays are removed' => [
                 $input,
                 ['foo' => 'remove', 'keep2' => 'keep'],
-                static fn ($value, $key): bool => $value !== [] && !in_array($key, ['baz', 'keep1'], true),
+                static fn($value, $key): bool => $value !== [] && !in_array($key, ['baz', 'keep1'], true),
                 ARRAY_FILTER_USE_BOTH,
             ],
         ];

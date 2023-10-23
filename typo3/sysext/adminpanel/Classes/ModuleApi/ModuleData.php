@@ -23,6 +23,4 @@ namespace TYPO3\CMS\Adminpanel\ModuleApi;
  *
  * It's a separate class to add semantic meaning to its' usage
  */
-class ModuleData extends \ArrayObject
-{
-}
+class ModuleData extends \ArrayObject {}

@@ -362,7 +362,7 @@ class RecordListController
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
         if ($cmd === 'copyMarked' || $cmd === 'removeMarked') {
             // Get CBC from request, and map the element values (true => copy, false => remove)
-            $CBC = array_map(static fn () => ($cmd === 'copyMarked'), (array)($request->getParsedBody()['CBC'] ?? []));
+            $CBC = array_map(static fn() => ($cmd === 'copyMarked'), (array)($request->getParsedBody()['CBC'] ?? []));
             $cmd_table = (string)($request->getParsedBody()['cmd_table'] ?? $request->getQueryParams()['cmd_table'] ?? '');
             // Cleanup CBC
             $CB['el'] = $clipboard->cleanUpCBC($CBC, $cmd_table);

@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when a resource was found but the methods did not match.
  */
-class MethodNotAllowedException extends Exception
-{
-}
+class MethodNotAllowedException extends Exception {}

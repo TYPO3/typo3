@@ -23,7 +23,5 @@ class t3lib_object_tests_cyclic1
     /**
      * @param \t3lib_object_tests_cyclic2 $c
      */
-    public function __construct(\t3lib_object_tests_cyclic2 $c)
-    {
-    }
+    public function __construct(\t3lib_object_tests_cyclic2 $c) {}
 }

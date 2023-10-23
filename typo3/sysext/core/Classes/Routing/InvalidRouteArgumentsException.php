@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when a route does not exist or does not match the Route Arguments
  */
-class InvalidRouteArgumentsException extends Exception
-{
-}
+class InvalidRouteArgumentsException extends Exception {}

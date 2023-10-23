@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when a resource was found but the type (e.g. AJAX routes) did not match.
  */
-class RouteTypeNotAllowedException extends Exception
-{
-}
+class RouteTypeNotAllowedException extends Exception {}

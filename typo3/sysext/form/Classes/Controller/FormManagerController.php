@@ -100,7 +100,7 @@ class FormManagerController extends AbstractBackendController
 
         $requireJsModules = array_filter(
             $this->formSettings['formManager']['dynamicRequireJsModules'],
-            fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+            fn(string $name) => in_array($name, self::JS_MODULE_NAMES, true),
             ARRAY_FILTER_USE_KEY
         );
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(

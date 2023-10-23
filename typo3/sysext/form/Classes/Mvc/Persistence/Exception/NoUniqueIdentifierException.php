@@ -22,6 +22,4 @@ use TYPO3\CMS\Form\Mvc\Persistence\Exception;
 /**
  * @internal
  */
-class NoUniqueIdentifierException extends Exception
-{
-}
+class NoUniqueIdentifierException extends Exception {}

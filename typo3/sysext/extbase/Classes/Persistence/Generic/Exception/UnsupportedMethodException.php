@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "Unsupported Method" exception
  */
-class UnsupportedMethodException extends Exception
-{
-}
+class UnsupportedMethodException extends Exception {}

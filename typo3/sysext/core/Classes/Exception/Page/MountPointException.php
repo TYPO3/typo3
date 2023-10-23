@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Exception\Page;
 /**
  * Exception thrown if a mount point is used
  */
-class MountPointException extends RootLineException
-{
-}
+class MountPointException extends RootLineException {}

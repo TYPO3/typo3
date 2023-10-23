@@ -533,7 +533,7 @@ class TreeController
             //watch out for deleted pages returned as webmount
             $mountPoints = array_map('intval', $backendUser->returnWebmounts());
             $mountPoints = array_unique($mountPoints);
-            $mountPoints = array_filter($mountPoints, fn ($id) => !in_array($id, $this->hiddenRecords, true));
+            $mountPoints = array_filter($mountPoints, fn($id) => !in_array($id, $this->hiddenRecords, true));
 
             // Switch to multiple-entryPoint-mode if the rootPage is to be mounted.
             // (other mounts would appear duplicated in the pid = 0 tree otherwise)
@@ -558,7 +558,7 @@ class TreeController
 
             $entryPointRecords[] = $rootRecord;
         } else {
-            $entryPointIds = array_filter($entryPointIds, fn ($id) => !in_array($id, $this->hiddenRecords, true));
+            $entryPointIds = array_filter($entryPointIds, fn($id) => !in_array($id, $this->hiddenRecords, true));
             $this->calculateBackgroundColors($entryPointIds);
             foreach ($entryPointIds as $k => $entryPointId) {
                 if ($entryPointId === 0) {

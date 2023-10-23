@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Package\Exception;
 /**
  * "Invalid Package Path" Exception
  */
-class InvalidPackagePathException extends Exception
-{
-}
+class InvalidPackagePathException extends Exception {}

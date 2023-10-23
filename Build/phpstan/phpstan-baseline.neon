@@ -2901,7 +2901,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
 
 		-
-			message: "#^Property class@anonymous/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest\\.php\\:344\\:\\:\\$name is unused\\.$#"
+			message: "#^Property class@anonymous/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest\\.php\\:337\\:\\:\\$name is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
 

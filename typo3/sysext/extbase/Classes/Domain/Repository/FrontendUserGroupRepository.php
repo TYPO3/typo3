@@ -24,6 +24,4 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  *
  * @deprecated since v11, will be removed in v12. Do not use or extend this model.
  */
-class FrontendUserGroupRepository extends Repository
-{
-}
+class FrontendUserGroupRepository extends Repository {}

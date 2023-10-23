@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\SingletonInterface;
 /**
  * test class C without dependencies
  */
-class t3lib_object_tests_c implements SingletonInterface
-{
-}
+class t3lib_object_tests_c implements SingletonInterface {}

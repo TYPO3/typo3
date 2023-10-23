@@ -67,9 +67,7 @@ abstract class AbstractLinkHandler
     /**
      * Constructor
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Initialize the handler

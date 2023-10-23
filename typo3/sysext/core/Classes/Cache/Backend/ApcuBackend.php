@@ -290,7 +290,5 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Does nothing, as APCu does GC itself
      */
-    public function collectGarbage()
-    {
-    }
+    public function collectGarbage() {}
 }

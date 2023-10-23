@@ -2015,8 +2015,8 @@ class DatabaseRecordList
         $possibleTranslations = $this->possibleTranslations;
         if ($table === 'pages') {
             // Calculate possible translations for pages
-            $possibleTranslations = array_map(static fn ($siteLanguage) => $siteLanguage->getLanguageId(), $this->languagesAllowedForUser);
-            $possibleTranslations = array_filter($possibleTranslations, static fn ($languageUid) => $languageUid > 0);
+            $possibleTranslations = array_map(static fn($siteLanguage) => $siteLanguage->getLanguageId(), $this->languagesAllowedForUser);
+            $possibleTranslations = array_filter($possibleTranslations, static fn($languageUid) => $languageUid > 0);
         }
 
         // Traverse page translations and add icon for each language that does NOT yet exist and is included in site configuration:
@@ -3398,7 +3398,7 @@ class DatabaseRecordList
             unset($actions['removeMarked']);
         }
 
-        return implode(LF, array_map(static fn (string $action): string => '<div class="col">' . $action . '</div>', $actions));
+        return implode(LF, array_map(static fn(string $action): string => '<div class="col">' . $action . '</div>', $actions));
     }
 
     /**

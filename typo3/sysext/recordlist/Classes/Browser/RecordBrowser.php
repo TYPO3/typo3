@@ -40,9 +40,7 @@ class RecordBrowser extends DatabaseBrowser
     /**
      * Avoid any initialization
      */
-    protected function initVariables()
-    {
-    }
+    protected function initVariables() {}
 
     /**
      * @param int $selectedPage Id of page

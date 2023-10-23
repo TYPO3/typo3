@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * A repository for tt_contents
  */
-class TtContentRepository extends Repository
-{
-}
+class TtContentRepository extends Repository {}

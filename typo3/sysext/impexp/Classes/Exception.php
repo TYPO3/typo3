@@ -23,6 +23,4 @@ namespace TYPO3\CMS\Impexp;
  *
  * @internal This class is not considered part of the public TYPO3 API. It is allowed to catch exceptions of this type.
  */
-class Exception extends \Exception
-{
-}
+class Exception extends \Exception {}

@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 /**
  * Fixture class with getters and setters
  */
-class DummyClassWithoutConstructor
-{
-}
+class DummyClassWithoutConstructor {}

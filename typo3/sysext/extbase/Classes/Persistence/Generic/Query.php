@@ -417,7 +417,7 @@ class Query implements QueryInterface, ForwardCompatibleQueryInterface
 
         $constraints[] = $constraint2;
         $constraints = array_merge($constraints, $furtherConstraints);
-        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
+        $constraints = array_filter($constraints, fn($constraint) => $constraint instanceof ConstraintInterface);
 
         // todo: remove this check as soon as first and second constraint are mandatory
         if (count($constraints) < 1) {
@@ -458,7 +458,7 @@ class Query implements QueryInterface, ForwardCompatibleQueryInterface
 
         $constraints[] = $constraint2;
         $constraints = array_merge($constraints, $furtherConstraints);
-        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
+        $constraints = array_filter($constraints, fn($constraint) => $constraint instanceof ConstraintInterface);
 
         // todo: remove this check as soon as first and second constraint are mandatory
         if (count($constraints) < 1) {

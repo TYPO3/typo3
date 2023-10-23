@@ -24,6 +24,4 @@ use TYPO3\CMS\Impexp\Exception;
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
-class MalformedPresetException extends Exception
-{
-}
+class MalformedPresetException extends Exception {}

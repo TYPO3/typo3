@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * This exception is thrown if a user is requesting something they should not do
  */
-class AccessDeniedException extends Exception
-{
-}
+class AccessDeniedException extends Exception {}

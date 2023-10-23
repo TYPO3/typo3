@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "Unexpected Type" exception.
  */
-class UnexpectedTypeException extends Exception
-{
-}
+class UnexpectedTypeException extends Exception {}

@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * @internal
  */
-class NotFoundException extends Exception implements NotFoundExceptionInterface
-{
-}
+class NotFoundException extends Exception implements NotFoundExceptionInterface {}

@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Core\Resource\Search\Result;
  * Representation of a result for a search for files performed by FileSearchQuery,
  * which is a collection of matching files.
  */
-interface FileSearchResultInterface extends \Countable, \Iterator
-{
-}
+interface FileSearchResultInterface extends \Countable, \Iterator {}

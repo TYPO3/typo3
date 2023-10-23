@@ -116,7 +116,7 @@ final class FormData
         return array_values(
             array_filter(
                 $this->formData['elementData'],
-                fn ($elementData) => $elementData['__isHoneypot']
+                fn($elementData) => $elementData['__isHoneypot']
             )
         )[0]['autocomplete'] ?? null;
     }
@@ -126,7 +126,7 @@ final class FormData
         return array_values(
             array_filter(
                 $this->formData['elementData'],
-                fn ($elementData) => str_ends_with($elementData['name'], '[__session]')
+                fn($elementData) => str_ends_with($elementData['name'], '[__session]')
             )
         )[0]['value'] ?? null;
     }

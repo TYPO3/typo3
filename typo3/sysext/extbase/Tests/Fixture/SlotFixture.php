@@ -27,7 +27,5 @@ class SlotFixture
      *
      * Do not define a return typehint here.
      */
-    public function slot()
-    {
-    }
+    public function slot() {}
 }

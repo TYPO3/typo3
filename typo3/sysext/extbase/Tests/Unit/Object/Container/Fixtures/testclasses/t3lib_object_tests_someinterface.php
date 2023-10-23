@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 use TYPO3\CMS\Core\SingletonInterface;
 
-interface t3lib_object_tests_someinterface extends SingletonInterface
-{
-}
+interface t3lib_object_tests_someinterface extends SingletonInterface {}

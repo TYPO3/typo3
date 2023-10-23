@@ -158,7 +158,7 @@ abstract class AbstractRequestHandlingTest extends FunctionalTestCase
         $rawParts = explode("\r\n\r\n", $rawMessage, 2);
         $rawLines = explode("\r\n", $rawParts[0]);
         $rawHeaders = array_map(
-            fn (string $rawLine) => array_map(
+            fn(string $rawLine) => array_map(
                 'trim',
                 explode(':', $rawLine, 2)
             ),

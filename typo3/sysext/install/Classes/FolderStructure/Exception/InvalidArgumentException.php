@@ -20,6 +20,4 @@ use TYPO3\CMS\Install\FolderStructure\Exception;
 /**
  * An invalid argument exception
  */
-class InvalidArgumentException extends Exception
-{
-}
+class InvalidArgumentException extends Exception {}

@@ -192,9 +192,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      *
      * @param TreeNode $node
      */
-    public function getNodes(TreeNode $node)
-    {
-    }
+    public function getNodes(TreeNode $node) {}
 
     /**
      * Gets the root node

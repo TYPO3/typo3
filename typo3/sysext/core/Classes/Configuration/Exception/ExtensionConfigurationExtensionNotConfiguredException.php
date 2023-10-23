@@ -21,6 +21,4 @@ use TYPO3\CMS\Core\Exception;
  * An exception thrown if ExtensionConfiguration->get() is called for
  * an extension that has no configuration.
  */
-class ExtensionConfigurationExtensionNotConfiguredException extends Exception
-{
-}
+class ExtensionConfigurationExtensionNotConfiguredException extends Exception {}

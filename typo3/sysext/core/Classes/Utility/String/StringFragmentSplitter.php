@@ -71,7 +71,7 @@ class StringFragmentSplitter
             // filters string keys (e.g. `expression_a1b2c3d4e5`) from matches, skips numeric indexes
             $types = array_filter(
                 array_keys($match),
-                static fn ($type) => is_string($type) && $type !== ''
+                static fn($type) => is_string($type) && $type !== ''
             );
             foreach ($types as $type) {
                 $matchOffset = $match[$type][1];
@@ -103,7 +103,7 @@ class StringFragmentSplitter
     protected function preparePatterns(): array
     {
         return array_map(
-            static fn (StringFragmentPattern $pattern) => $pattern->compilePattern(),
+            static fn(StringFragmentPattern $pattern) => $pattern->compilePattern(),
             $this->patterns
         );
     }

@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures;
 /**
  * Fixture DataProviderThree
  */
-class DataProviderThree extends DataProviderTwo implements DataProviderThreeInterface
-{
-}
+class DataProviderThree extends DataProviderTwo implements DataProviderThreeInterface {}

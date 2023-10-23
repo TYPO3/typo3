@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 /**
  * Used for anything that has a fixed list of values mapped against route arguments.
  */
-interface StaticMappableAspectInterface extends MappableAspectInterface
-{
-}
+interface StaticMappableAspectInterface extends MappableAspectInterface {}

@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Package\Event;
 /**
  * Marker event to ensure that Core is re-triggering the package ordering and package listings
  */
-final class PackagesMayHaveChangedEvent
-{
-}
+final class PackagesMayHaveChangedEvent {}

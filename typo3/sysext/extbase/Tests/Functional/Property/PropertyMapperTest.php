@@ -44,8 +44,7 @@ class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectExceptionCode(1297951378);
 
-        $class = new class () extends ArrayConverter {
-        };
+        $class = new class () extends ArrayConverter {};
         ExtensionUtility::registerTypeConverter(get_class($class));
         $this->getContainer()->set(get_class($class), $class);
         $this->get(PropertyMapper::class);

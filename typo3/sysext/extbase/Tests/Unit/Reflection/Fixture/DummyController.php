@@ -29,9 +29,7 @@ class DummyController extends ActionController
     /**
      * @param $fooParam
      */
-    public function methodWithoutValidateAnnotationsAction($fooParam): void
-    {
-    }
+    public function methodWithoutValidateAnnotationsAction($fooParam): void {}
 
     /**
      * @Extbase\Validate(param="fooParam", validator="StringLength", options={"minimum": 1, "maximum": 10})
@@ -41,7 +39,5 @@ class DummyController extends ActionController
      * @Extbase\Validate(param="fooParam", validator="\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
      * @Extbase\Validate(param="fooParam", validator="TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
      */
-    public function methodWithValidateAnnotationsAction(string $fooParam): void
-    {
-    }
+    public function methodWithValidateAnnotationsAction(string $fooParam): void {}
 }

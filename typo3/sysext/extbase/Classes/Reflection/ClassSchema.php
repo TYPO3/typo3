@@ -545,7 +545,7 @@ MESSAGE;
     {
         return array_filter(
             $this->getProperties(),
-            fn (Property $property) => !str_starts_with($property->getName(), '_')
+            fn(Property $property) => !str_starts_with($property->getName(), '_')
         );
     }
 
