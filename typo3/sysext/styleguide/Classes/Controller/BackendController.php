@@ -101,7 +101,6 @@ final class BackendController
 
     private function indexAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'index');
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/processing-indicator.js');
@@ -155,7 +154,6 @@ final class BackendController
 
     private function buttonsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'buttons');
         $moduleTemplate->assignMultiple([
@@ -167,7 +165,6 @@ final class BackendController
 
     private function typographyAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'typography');
         $moduleTemplate->assignMultiple([
@@ -179,7 +176,6 @@ final class BackendController
 
     private function colorsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'colors');
         $moduleTemplate->assignMultiple([
@@ -191,7 +187,6 @@ final class BackendController
 
     private function treesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'trees');
         $moduleTemplate->assignMultiple([
@@ -203,7 +198,6 @@ final class BackendController
 
     private function tablesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'tables');
         $moduleTemplate->assignMultiple([
@@ -215,7 +209,6 @@ final class BackendController
 
     private function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'cards');
         $moduleTemplate->assignMultiple([
@@ -260,7 +253,6 @@ final class BackendController
 
     private function iconsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/find-icons.js');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'icons');
@@ -284,7 +276,6 @@ final class BackendController
 
     private function infoboxAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'infobox');
         $moduleTemplate->assignMultiple([
@@ -296,7 +287,6 @@ final class BackendController
 
     private function flashMessagesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'flashMessages');
         $moduleTemplate->assignMultiple([
@@ -318,7 +308,6 @@ final class BackendController
 
     private function notificationsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/render-notifications.js');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'notifications');
@@ -331,7 +320,6 @@ final class BackendController
 
     private function avatarAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'avatar');
         $moduleTemplate->assignMultiple([
@@ -344,7 +332,6 @@ final class BackendController
 
     private function tabAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'tab');
         $moduleTemplate->assignMultiple([
@@ -356,7 +343,6 @@ final class BackendController
 
     private function modalAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'modal');
         $moduleTemplate->assignMultiple([
@@ -368,7 +354,6 @@ final class BackendController
 
     private function accordionAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'accordion');
         $moduleTemplate->assignMultiple([
@@ -380,7 +365,6 @@ final class BackendController
 
     private function paginationAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'pagination');
         $page = (int)($request->getQueryParams()['page'] ?? 1);
@@ -433,7 +417,6 @@ final class BackendController
 
     private function filterAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/filter.js');
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->addShortcutButton($moduleTemplate, 'filter');

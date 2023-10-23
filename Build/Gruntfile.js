@@ -117,6 +117,7 @@ module.exports = function (grunt) {
       install: '<%= paths.sysext %>install/Resources/',
       linkvalidator: '<%= paths.sysext %>linkvalidator/Resources/',
       backend: '<%= paths.sysext %>backend/Resources/',
+      styleguide: '<%= paths.sysext %>styleguide/Resources/',
       t3editor: '<%= paths.sysext %>t3editor/Resources/',
       workspaces: '<%= paths.sysext %>workspaces/Resources/',
       ckeditor: '<%= paths.sysext %>rte_ckeditor/Resources/',
@@ -197,6 +198,11 @@ module.exports = function (grunt) {
           '<%= paths.adminpanel %>Public/Css/adminpanel.css': '<%= paths.sass %>adminpanel.scss'
         }
       },
+      styleguide: {
+        files: {
+          '<%= paths.styleguide %>Public/Css/styleguide-frontend.css': '<%= paths.sass %>styleguide-frontend.scss'
+        }
+      },
       webfonts: {
         files: {
           '<%= paths.backend %>Public/Css/webfonts.css': '<%= paths.sass %>webfonts.scss'
@@ -258,6 +264,9 @@ module.exports = function (grunt) {
       },
       linkvalidator: {
         src: '<%= paths.linkvalidator %>Public/Css/*.css'
+      },
+      styleguide: {
+        src: '<%= paths.styleguide %>Public/Css/*.css'
       },
       t3editor: {
         src: '<%= paths.t3editor %>Public/Css/**/*.css'

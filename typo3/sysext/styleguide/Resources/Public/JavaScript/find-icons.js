@@ -10,41 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Javascript functions regarding the FindIcons module
- */
-import $ from 'jquery';
-
-$('.t3js-filter-buttons button').click(function(e) {
-	e.preventDefault();
-	$('#search-field').val($(this).data('filter')).trigger('keyup');
-});
-$('#search-field').keyup(function() {
-	var typedQuery = $(this).val();
-	if (typedQuery === '') {
-		$('#t3js-filter-container [data-icon-identifier]').show();
-	} else {
-		if (typedQuery.indexOf('type:') !== -1) {
-			var parts = typedQuery.split(':');
-			var type = parts[1];
-			switch (type.toLowerCase()) {
-				case 'bitmap':
-					$('#t3js-filter-container [data-icon-identifier]').hide();
-					$('#t3js-filter-container img:not([src$=".svg"])').closest('[data-icon-identifier]').show();
-					break;
-				case 'font':
-					$('#t3js-filter-container [data-icon-identifier]').hide();
-					$('#t3js-filter-container i.fa').closest('[data-icon-identifier]').show();
-					break;
-				case 'vector':
-					$('#t3js-filter-container [data-icon-identifier]').hide();
-					$('#t3js-filter-container img[src$=".svg"]').closest('[data-icon-identifier]').show();
-					break;
-			}
-		} else {
-			$('#t3js-filter-container [data-icon-identifier]').hide();
-			$('#t3js-filter-container [data-icon-identifier*="' + typedQuery + '"]').show();
-		}
-	}
-});
+import DocumentService from"@typo3/core/document-service.js";import RegularEvent from"@typo3/core/event/regular-event.js";import DebounceEvent from"@typo3/core/event/debounce-event.js";DocumentService.ready().then((()=>{const e=document.getElementById("search-field"),t=document.getElementById("t3js-filter-container");new RegularEvent("click",((n,o)=>{n.preventDefault(),e.value=o.dataset.filter,t.dispatchEvent(new CustomEvent("typo3:styleguide:update-icons",{detail:{searchValue:e.value}}))})).delegateTo(document,".t3js-filter-buttons button"),new DebounceEvent("input",(e=>{t.dispatchEvent(new CustomEvent("typo3:styleguide:update-icons",{detail:{searchValue:e.target.value}}))})).bindTo(e),new RegularEvent("typo3:styleguide:update-icons",(e=>{const n=e.detail.searchValue,o=Array.from(t.querySelectorAll("[data-icon-identifier]"));if(""===n)o.map((e=>e.hidden=!1));else if(n.includes("type:")){const[,e]=n.split(":");switch(e.toLowerCase()){case"bitmap":o.forEach((e=>{const t=null!==e.querySelector('img:not([src$=".svg"])');e.hidden=!t}));break;case"font":o.forEach((e=>{const t=null!==e.querySelector("i.fa");e.hidden=!t}));break;case"vector":o.forEach((e=>{const t=null!==e.querySelector('img[src$=".svg"]');e.hidden=!t}))}}else o.forEach((e=>{e.hidden=!e.matches('[data-icon-identifier*="'+n+'"]')}))})).bindTo(t)}));

@@ -70,9 +70,7 @@ final class ApplicationEnvironment extends BackendEnvironment
             'seo',
             'recycler',
             'viewpage',
-        ],
-        'testExtensionsToLoad' => [
-            'typo3conf/ext/styleguide',
+            'styleguide',
         ],
         'csvDatabaseFixtures' => [
             __DIR__ . '/../../Fixtures/BackendEnvironment.csv',

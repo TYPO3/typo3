@@ -81,6 +81,9 @@
             "@typo3/setup/*": [
                 "setup/*"
             ],
+            "@typo3/styleguide/*": [
+                "styleguide/*"
+            ],
             "@typo3/t3editor/*": [
                 "t3editor/*"
             ],

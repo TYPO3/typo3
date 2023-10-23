@@ -86,7 +86,6 @@ final class UpgradeCest extends AbstractCest
 
     public function seeCheckForBrokenExtensions(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->markTestSkipped('Skipped since there is currently no 3rd party extension.');
         $I->click('Check Extension Compatibility…');
         $modalDialog->canSeeDialog();
         $I->see('ext_localconf.php of all loaded extensions successfully loaded', ModalDialog::$openedModalSelector);
@@ -114,6 +113,7 @@ final class UpgradeCest extends AbstractCest
 
     public function seeScanExtensionFiles(ApplicationTester $I, ModalDialog $modalDialog): void
     {
+        $I->markTestSkipped('Skipped since there is currently no 3rd party extension.');
         $buttonText = 'Rescan';
 
         $I->click('Scan Extension Files…');
