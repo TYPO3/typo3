@@ -51,12 +51,6 @@ return [
                 'type' => 'passthrough',
             ],
         ],
-        'parenttable' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.parenttable',
-            'config' => [
-                'type' => 'passthrough',
-            ],
-        ],
         'notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'config' => [

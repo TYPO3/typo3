@@ -124,10 +124,6 @@ class WorkspaceRecord extends AbstractRecord
                         'parentid',
                         $queryBuilder->createNamedParameter($this->getUid(), Connection::PARAM_INT)
                     ),
-                    $queryBuilder->expr()->eq(
-                        'parenttable',
-                        $queryBuilder->createNamedParameter('sys_workspace')
-                    )
                 )
                 ->orderBy('sorting')
                 ->executeQuery();

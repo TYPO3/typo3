@@ -141,7 +141,6 @@ return [
                     'expandSingle' => true,
                 ],
                 'foreign_field' => 'parentid',
-                'foreign_table_field' => 'parenttable',
             ],
             'default' => 0,
         ],

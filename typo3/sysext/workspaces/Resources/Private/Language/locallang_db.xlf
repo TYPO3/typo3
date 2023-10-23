@@ -18,9 +18,6 @@
 			<trans-unit id="sys_workspace_stage.parentid" resname="sys_workspace_stage.parentid">
 				<source>UID of parent record</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace_stage.parenttable" resname="sys_workspace_stage.parenttable">
-				<source>Parent table</source>
-			</trans-unit>
 			<trans-unit id="sys_workspace_stage" resname="sys_workspace_stage">
 				<source>Workspace Stage</source>
 			</trans-unit>
