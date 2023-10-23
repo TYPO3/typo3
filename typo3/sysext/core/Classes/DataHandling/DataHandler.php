@@ -3531,7 +3531,7 @@ class DataHandler implements LoggerAwareInterface
                                 $this->resolveVersionedRecords(
                                     $table,
                                     implode(',', $fields),
-                                    $GLOBALS['TCA'][$table]['ctrl']['sortby'],
+                                    $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '',
                                     array_keys($rows)
                                 ),
                                 true
