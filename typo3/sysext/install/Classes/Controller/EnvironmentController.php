@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
@@ -602,8 +601,7 @@ class EnvironmentController extends AbstractController
         $imageService = $this->initializeGraphicalFunctions();
         $inputFile = $imageBasePath . 'TestInput/Transparent.gif';
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-jpg');
-        $jpegQuality = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['jpg_quality'], 10, 100, 85);
-        $imResult = $imageService->imageMagickConvert($inputFile, 'jpg', '300', '', '-quality ' . $jpegQuality . ' -opaque white -background white -flatten', '', [], true);
+        $imResult = $imageService->imageMagickConvert($inputFile, 'jpg', '300', '', '-opaque white -background white -flatten', '', [], true);
         if ($imResult !== null && file_exists($imResult[3])) {
             $result = [
                 'fileExists' => true,

@@ -164,8 +164,8 @@ class LocalCropScaleMaskHelper
             $localProcessedFile = $task->getSourceFile()->getForLocalProcessing(false);
             $imageDimensions = $imageOperations->getImageDimensions($localProcessedFile);
             $imageScaleInfo = ImageProcessingInstructions::fromCropScaleValues(
-                $imageDimensions,
-                $task->getSourceFile()->getExtension(),
+                $imageDimensions[0],
+                $imageDimensions[1],
                 $configuration['width'] ?? '',
                 $configuration['height'] ?? '',
                 $configuration

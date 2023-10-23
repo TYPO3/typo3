@@ -33,8 +33,8 @@ class ImageDimension
      * @param int<0, max> $height
      */
     public function __construct(
-        private int $width,
-        private int $height
+        private readonly int $width,
+        private readonly int $height
     ) {
     }
 
@@ -61,26 +61,18 @@ class ImageDimension
         $isCropped = false;
         if (($config['crop'] ?? null) instanceof Area) {
             $isCropped = true;
-            $imageDimension = new self(
-                (int)round($config['crop']->getWidth()),
-                (int)round($config['crop']->getHeight())
-            );
+            $imageWidth = (int)round($config['crop']->getWidth());
+            $imageHeight = (int)round($config['crop']->getHeight());
         } else {
-            $imageDimension = new self(
-                (int)$processedFile->getOriginalFile()->getProperty('width'),
-                (int)$processedFile->getOriginalFile()->getProperty('height')
-            );
+            $imageWidth = (int)$processedFile->getOriginalFile()->getProperty('width');
+            $imageHeight = (int)$processedFile->getOriginalFile()->getProperty('height');
         }
-        if ($imageDimension->width <= 0 || $imageDimension->height <= 0) {
+        if ($imageWidth <= 0 || $imageHeight <= 0) {
             throw new ZeroImageDimensionException('Width and height of the image must be greater than zero.', 1597310560);
         }
         $result = ImageProcessingInstructions::fromCropScaleValues(
-            [
-                $imageDimension->width,
-                $imageDimension->height,
-                $processedFile->getExtension(),
-            ],
-            $task->getTargetFileExtension(),
+            $imageWidth,
+            $imageHeight,
             $config['width'] ?? '',
             $config['height'] ?? '',
             $config
@@ -107,10 +99,8 @@ class ImageDimension
                 }
             }
         }
-        $imageDimension->width = $imageWidth;
-        $imageDimension->height = $imageHeight;
 
-        return $imageDimension;
+        return new self($imageWidth, $imageHeight);
     }
 
     /**

@@ -41,7 +41,6 @@ class ImageProcessingInstructions
     public int $width = 0;
     /** @var int<0, max> */
     public int $height = 0;
-    public string $fileExtension = '';
     public bool $useCropScaling = false;
     public ?Area $cropArea = null;
     public array $options = [];
@@ -59,7 +58,7 @@ class ImageProcessingInstructions
      * - or rather have a minimum or maximum width and/or height
      *
      * This method does a lot of magic:
-     * - $info contains [0] = width and [1] the width of an original image for example.
+     * - $incomingWidth/$incomingHeight contains the size of an original image for example.
      * - $w and $h are the width and height that are originally required the image to be like
      * when scaled. They could contain a "c" for cropping information or "m" for "Ensure that even though $w and $h are given, one containing an $m that we keep the aspect ratio."
      * "m" really allows to say $w="50c" that this might in a result with [0]=100 because $w would follow $h in order to keep aspect ratio.
@@ -69,7 +68,7 @@ class ImageProcessingInstructions
      * The return values are a bit tricky to understand, so I added a few tests:
      * - AFAICS "0" and "1" are always used as "these are the target width / height" which my image
      *   should be scaled to, or cropped down to.
-     *   Notes: If you hand in $info[0] and $info[1] a "0", you will get "0" as return value back!
+     *   Notes: If you hand in $info[0] and $incomingHeight a "0", you will get "0" as return value back!
      *          but
      * - "crs" if the image should be cropped (which is indicated by one of $w or $h contain the "c" at the end)
      * - "cropH" and "cropV" is also set when one of the incoming $w or $h contains a "c".
@@ -83,24 +82,21 @@ class ImageProcessingInstructions
      * - When such a rearranging calculation was made ("maxH" reduces the original $w due to constraints),
      *   then the return value "max" is set.
      * - When using the "c" argument, origH and origW seem to contain the values that you would expect when NOT doing a crop scenario
-     *   whereas [0] and [1] contain the target width and height that could be larger than originally requested.
-     *
-     * @todo in this method:
-     * - we might just replace $info[0] and $info[1] with "width" and "height" for the sake of having it in place for the future.
+     *   whereas $incomingWidth and $incomingHeight contain the target width and height that could be larger than originally requested.
      *
      * ----------------------------
-     * @param array $info Current image information: Width, Height etc.
+     * @param int<0, max> $incomingWidth the width of an original image for example, can be "0" if there is no original image (thus, it will remain "0" in the "originalWidth")
+     * @param int<0, max> $incomingHeight the height of an original image for example, can be "0" if there is no original image (thus, it will remain "0" in the "origHeight")
      * @param int<0, max>|string $width "required" width that is requested, can be "" or "0" or a number of a magic "m" or "c" appended
      * @param int<0, max>|string $height "required" height that is requested, can be "" or "0" or a number of a magic "m" or "c" appended
      * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH"
      */
-    public static function fromCropScaleValues(array $info, string $fileExtension, int|string $width, int|string $height, array $options): self
+    public static function fromCropScaleValues(int $incomingWidth, int $incomingHeight, int|string $width, int|string $height, array $options): self
     {
         $cropOffsetHorizontal = 0;
         $cropOffsetVertical = 0;
         $options = self::streamlineOptions($options);
         $obj = new self();
-        $obj->fileExtension = $fileExtension;
         // If both the width and the height are set and one of the numbers is appended by an m, the proportions will
         // be preserved and thus width and height are treated as maximum dimensions for the image. The image will be
         // scaled to fit into the rectangle of the dimensions width and height.
@@ -125,7 +121,7 @@ class ImageProcessingInstructions
                     $useWidthOrHeightAsMaximumLimits = true;
                 }
             } else {
-                if ($info[0] > $options['maxWidth']) {
+                if ($incomingWidth > $options['maxWidth']) {
                     $width = $options['maxWidth'];
                     // Height should follow
                     $useWidthOrHeightAsMaximumLimits = true;
@@ -142,7 +138,7 @@ class ImageProcessingInstructions
                 }
             } else {
                 // Changed [0] to [1] 290801
-                if ($info[1] > $options['maxHeight']) {
+                if ($incomingHeight > $options['maxHeight']) {
                     $height = $options['maxHeight'];
                     // Height should follow
                     $useWidthOrHeightAsMaximumLimits = true;
@@ -152,26 +148,26 @@ class ImageProcessingInstructions
         $obj->originalWidth = $width;
         $obj->originalHeight = $height;
         if (!($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] ?? false)) {
-            if ($width > $info[0]) {
-                $width = $info[0];
+            if ($width > $incomingWidth) {
+                $width = $incomingWidth;
             }
-            if ($height > $info[1]) {
-                $height = $info[1];
+            if ($height > $incomingHeight) {
+                $height = $incomingHeight;
             }
         }
         // If scaling should be performed. Check that input "info" array will not cause division-by-zero
-        if (($width > 0 || $height > 0) && $info[0] && $info[1]) {
+        if (($width > 0 || $height > 0) && $incomingWidth && $incomingHeight) {
             if ($width > 0 && $height === 0) {
-                $info[1] = (int)ceil($info[1] * ($width / $info[0]));
-                $info[0] = $width;
+                $incomingHeight = (int)ceil($incomingHeight * ($width / $incomingWidth));
+                $incomingWidth = $width;
             }
             if ((int)$width === 0 && $height > 0) {
-                $info[0] = (int)ceil($info[0] * ($height / $info[1]));
-                $info[1] = $height;
+                $incomingWidth = (int)ceil($incomingWidth * ($height / $incomingHeight));
+                $incomingHeight = $height;
             }
             if ($width !== 0 && $height !== 0) {
                 if ($useWidthOrHeightAsMaximumLimits) {
-                    $ratio = $info[0] / $info[1];
+                    $ratio = $incomingWidth / $incomingHeight;
                     if ($height * $ratio > $width) {
                         $height = (int)round($width / $ratio);
                     } else {
@@ -179,19 +175,19 @@ class ImageProcessingInstructions
                     }
                 }
                 if ($obj->useCropScaling) {
-                    $ratio = $info[0] / $info[1];
+                    $ratio = $incomingWidth / $incomingHeight;
                     if ($height * $ratio < $width) {
                         $height = (int)round($width / $ratio);
                     } else {
                         $width = (int)round($height * $ratio);
                     }
                 }
-                $info[0] = $width;
-                $info[1] = $height;
+                $incomingWidth = $width;
+                $incomingHeight = $height;
             }
         }
-        $resultWidth = $info[0];
-        $resultHeight = $info[1];
+        $resultWidth = $incomingWidth;
+        $resultHeight = $incomingHeight;
         // Set minimum-measures!
         if (isset($options['minWidth']) && $resultWidth < $options['minWidth']) {
             if (($useWidthOrHeightAsMaximumLimits || $obj->useCropScaling) && $resultWidth) {

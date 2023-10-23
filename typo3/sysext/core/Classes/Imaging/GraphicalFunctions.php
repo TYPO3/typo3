@@ -293,17 +293,16 @@ class GraphicalFunctions
             return null;
         }
 
+        $originalFileExtension = $info[2];
         // Determine the final target file extension
         $targetFileExtension = strtolower(trim($targetFileExtension));
         // If no extension is given the original extension is used
-        if (!$targetFileExtension) {
-            $targetFileExtension = $info[2];
-        }
+        $targetFileExtension = $targetFileExtension ?: $originalFileExtension;
         if ($targetFileExtension === 'web') {
-            if (in_array($info[2], $this->webImageExt, true)) {
-                $targetFileExtension = $info[2];
+            if (in_array($originalFileExtension, $this->webImageExt, true)) {
+                $targetFileExtension = $originalFileExtension;
             } else {
-                $targetFileExtension = $this->gif_or_jpg($info[2], $info[0], $info[1]);
+                $targetFileExtension = $this->gif_or_jpg($originalFileExtension, $info[0], $info[1]);
             }
         }
         if (!in_array($targetFileExtension, $this->imageFileExt, true)) {
@@ -312,15 +311,13 @@ class GraphicalFunctions
         // Clean up additional $params
         $params = trim($params);
 
-        $processingInstructions = ImageProcessingInstructions::fromCropScaleValues($info, $targetFileExtension, $w, $h, $options);
-        $w = $processingInstructions->originalWidth;
-        $h = $processingInstructions->originalHeight;
+        $processingInstructions = ImageProcessingInstructions::fromCropScaleValues((int)$info[0], (int)$info[1], $w, $h, $options);
         // Check if conversion should be performed ($noScale - no processing needed).
         // $noScale flag is TRUE if the width / height does NOT dictate the image to be scaled. That is if no
         // width / height is given or if the destination w/h matches the original image dimensions, or if
         // the option to not scale the image is set.
-        $noScale = !$w && !$h || $processingInstructions->width === (int)$info[0] && $processingInstructions->height === (int)$info[1] || !empty($options['noScale']);
-        if ($noScale && !$processingInstructions->cropArea && !$params && !$frame && $targetFileExtension === $info[2] && !$mustCreate) {
+        $noScale = !$processingInstructions->originalWidth && !$processingInstructions->originalHeight || $processingInstructions->width === (int)$info[0] && $processingInstructions->height === (int)$info[1] || !empty($options['noScale']);
+        if ($noScale && !$processingInstructions->cropArea && !$params && !$frame && $targetFileExtension === $originalFileExtension && !$mustCreate) {
             // Set the new width and height before returning,
             // if the noScale option is set, otherwise the incoming
             // values are calculated.
@@ -355,7 +352,8 @@ class GraphicalFunctions
         $params = $this->modifyImageMagickStripProfileParameters($params, $options);
         $command .= ($params ? ' ' . $params : $this->cmds[$targetFileExtension] ?? '');
 
-        if ($targetFileExtension === 'jpg' || $targetFileExtension === 'jpeg') {
+        // Add quality parameter for jpg, jpeg if not already set
+        if (!str_contains($command, '-quality') && ($targetFileExtension === 'jpg' || $targetFileExtension === 'jpeg')) {
             $command .= ' -quality ' . $this->jpegQuality;
         }
         // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
