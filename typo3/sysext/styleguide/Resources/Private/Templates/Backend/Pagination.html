@@ -54,10 +54,10 @@
                         <span class="page-link">
                             Page
                             <form style="display:inline;"
-                                  data-global-event="submit"
-                                  data-action-navigate="$form=~s/$value/"
-                                  data-navigate-value="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'pagination\', page: \'$[value]\'}')}"
-                                  data-value-selector="input[name='paginator-target-page']">
+                                data-global-event="submit"
+                                data-action-navigate="$form=~s/$value/"
+                                data-navigate-value="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'pagination\', page: \'$[value]\'}')}"
+                                data-value-selector="input[name='paginator-target-page']">
                                 <input
                                     min="{pagination.firstPageNumber}"
                                     max="{pagination.lastPageNumber}"
