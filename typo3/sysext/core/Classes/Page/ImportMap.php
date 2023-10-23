@@ -45,8 +45,7 @@ class ImportMap
         protected readonly string $cacheIdentifier = '',
         protected readonly ?EventDispatcherInterface $eventDispatcher = null,
         protected readonly bool $bustSuffix = true
-    ) {
-    }
+    ) {}
 
     /**
      * HEADS UP: Do only use in authenticated mode as this discloses as installed extensions
@@ -207,7 +206,7 @@ class ImportMap
             return [];
         }
         $exclude = array_map(
-            static fn (string $excludePath): string => GeneralUtility::getFileAbsFileName($excludePath),
+            static fn(string $excludePath): string => GeneralUtility::getFileAbsFileName($excludePath),
             $exclude
         );
 

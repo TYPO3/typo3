@@ -30,8 +30,7 @@ final class AfterPageTreeItemsPreparedEvent
     public function __construct(
         private readonly ServerRequestInterface $request,
         private array $items
-    ) {
-    }
+    ) {}
 
     public function getRequest(): ServerRequestInterface
     {

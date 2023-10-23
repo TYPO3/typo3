@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Core\Resource\Event;
  */
 final class AfterFileMarkedAsMissingEvent
 {
-    public function __construct(private readonly int $fileUid)
-    {
-    }
+    public function __construct(private readonly int $fileUid) {}
 
     public function getFileUid(): int
     {

@@ -37,8 +37,7 @@ class SiteResolver implements MiddlewareInterface
 {
     public function __construct(
         private readonly SiteMatcher $siteMatcher
-    ) {
-    }
+    ) {}
 
     /**
      * Resolve the site information by checking the page ID ("id" parameter) which is typically

@@ -51,8 +51,7 @@ class NewMultiplePagesController
         protected readonly IconFactory $iconFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly SelectItemProcessor $selectItemProcessor,
-    ) {
-    }
+    ) {}
 
     /**
      * Main function Handling input variables and rendering main view.
@@ -211,7 +210,7 @@ class NewMultiplePagesController
         $availablePageTypes = array_map($transformToSelectItem, $availablePageTypes);
 
         // Filter out unavailable types.
-        $filterPageTypes = fn (SelectItem $item): bool => $item->isDivider() || in_array($item->getValue(), $allowedPageTypes, true);
+        $filterPageTypes = fn(SelectItem $item): bool => $item->isDivider() || in_array($item->getValue(), $allowedPageTypes, true);
         $availablePageTypes = array_filter($availablePageTypes, $filterPageTypes);
 
         // Sort items.

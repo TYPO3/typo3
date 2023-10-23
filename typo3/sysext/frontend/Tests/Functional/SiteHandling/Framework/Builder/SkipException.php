@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
-class SkipException extends \RuntimeException
-{
-}
+class SkipException extends \RuntimeException {}

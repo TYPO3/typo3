@@ -33,8 +33,7 @@ class ColumnMapFactory
 {
     public function __construct(
         private readonly ReflectionService $reflectionService
-    ) {
-    }
+    ) {}
 
     public function create(string $columnName, array $columnDefinition, string $propertyName, string $className): ColumnMap
     {

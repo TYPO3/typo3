@@ -91,8 +91,7 @@ class FileListController implements LoggerAwareInterface
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly BackendViewFactory $viewFactory,
         protected readonly ResponseFactoryInterface $responseFactory,
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -308,7 +307,7 @@ class FileListController implements LoggerAwareInterface
         if (($this->cmd === 'copyMarked' || $this->cmd === 'removeMarked')) {
             // Get CBC from request, and map the element values, since they must either be the file identifier,
             // in case the element should be transferred to the clipboard, or false if it should be removed.
-            $CBC = array_map(fn ($item) => $this->cmd === 'copyMarked' ? $item : false, (array)($request->getParsedBody()['CBC'] ?? []));
+            $CBC = array_map(fn($item) => $this->cmd === 'copyMarked' ? $item : false, (array)($request->getParsedBody()['CBC'] ?? []));
             // Cleanup CBC
             $CB['el'] = $this->filelist->clipObj->cleanUpCBC($CBC, '_FILE');
         }

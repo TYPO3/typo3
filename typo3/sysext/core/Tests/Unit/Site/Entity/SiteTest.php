@@ -171,30 +171,22 @@ final class SiteTest extends UnitTestCase
 
         $app = new class () extends Application {
             // This is ugly but php-cs-fixer insists.
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
         $link = new class () extends LinkService {
             // This is ugly but php-cs-fixer insists.
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
         $siteFinder = new class () extends SiteFinder {
             // This is ugly but php-cs-fixer insists.
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
         $cacheManager = new class () extends CacheManager {
             public function getCache($identifier)
             {
                 return new class () extends PhpFrontend {
                     // This is ugly but php-cs-fixer insists.
-                    public function __construct()
-                    {
-                    }
+                    public function __construct() {}
                 };
             }
         };
@@ -273,21 +265,15 @@ final class SiteTest extends UnitTestCase
     {
         $app = new class () extends Application {
             // This is ugly but php-cs-fixer insists.
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
         $link = new class () extends LinkService {
             // This is ugly but php-cs-fixer insists.
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
         $siteFinder = new class () extends SiteFinder {
             // This is ugly but php-cs-fixer insists.
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
         $container = new Container();
         $container->set(Application::class, $app);

@@ -49,6 +49,5 @@ final class CreateColumnDefinitionItem extends AbstractCreateDefinitionItem
     public function __construct(
         public readonly Identifier $columnName,
         public readonly AbstractDataType $dataType,
-    ) {
-    }
+    ) {}
 }

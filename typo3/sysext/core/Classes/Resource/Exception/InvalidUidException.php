@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Resource\Exception;
 /**
  * Thrown if an invalid uid is handled.
  */
-class InvalidUidException extends Exception
-{
-}
+class InvalidUidException extends Exception {}

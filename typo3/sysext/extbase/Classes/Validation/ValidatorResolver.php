@@ -38,9 +38,7 @@ class ValidatorResolver implements SingletonInterface
 {
     protected array $baseValidatorConjunctions = [];
 
-    public function __construct(protected readonly ReflectionService $reflectionService)
-    {
-    }
+    public function __construct(protected readonly ReflectionService $reflectionService) {}
 
     /**
      * Get a validator for a given data type. Returns a validator implementing

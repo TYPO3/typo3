@@ -29,8 +29,7 @@ class FlexFormContainerContainer extends AbstractContainer
 {
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Entry method

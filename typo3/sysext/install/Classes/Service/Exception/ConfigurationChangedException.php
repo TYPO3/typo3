@@ -22,6 +22,4 @@ use TYPO3\CMS\Install\Service\Exception;
 /**
  * An exception thrown if the silent configuration updater changed configuration
  */
-class ConfigurationChangedException extends Exception
-{
-}
+class ConfigurationChangedException extends Exception {}

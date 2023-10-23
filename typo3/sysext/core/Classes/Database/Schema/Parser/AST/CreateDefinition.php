@@ -30,6 +30,5 @@ final class CreateDefinition
      */
     public function __construct(
         public readonly array $items
-    ) {
-    }
+    ) {}
 }

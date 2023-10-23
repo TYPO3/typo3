@@ -25,6 +25,4 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * @template T
  */
-interface CollectionInterface extends \Iterator, \Countable
-{
-}
+interface CollectionInterface extends \Iterator, \Countable {}

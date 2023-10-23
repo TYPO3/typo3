@@ -33,8 +33,7 @@ class DatabaseUpgradeWizardsService
 {
     public function __construct(
         private readonly SchemaMigrator $schemaMigrator,
-    ) {
-    }
+    ) {}
 
     /**
      * Get a list of tables, single columns and indexes to add.

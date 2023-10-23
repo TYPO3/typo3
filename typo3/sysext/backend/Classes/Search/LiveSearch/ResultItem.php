@@ -39,9 +39,7 @@ final class ResultItem implements \JsonSerializable
     /**
      * @param class-string $providerClassName
      */
-    public function __construct(private readonly string $providerClassName)
-    {
-    }
+    public function __construct(private readonly string $providerClassName) {}
 
     public function getProviderClassName(): string
     {

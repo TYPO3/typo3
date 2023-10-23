@@ -34,8 +34,7 @@ final class AfterPageColumnsSelectedForLocalizationEvent
         private readonly BackendLayout $backendLayout,
         private readonly array $records,
         private readonly array $parameters
-    ) {
-    }
+    ) {}
 
     /**
      * Returns list of columns, indexed by column position number, value is label (either LLL: or hardcoded).

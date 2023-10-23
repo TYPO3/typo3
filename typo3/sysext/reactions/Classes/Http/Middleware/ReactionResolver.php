@@ -46,8 +46,7 @@ class ReactionResolver implements MiddlewareInterface
         private readonly ReactionRepository $reactionRepository,
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly StreamFactoryInterface $streamFactory,
-    ) {
-    }
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

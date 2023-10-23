@@ -40,8 +40,7 @@ class MfaInfoElement extends AbstractFormElement
     public function __construct(
         private readonly IconFactory $iconFactory,
         private readonly MfaProviderRegistry $mfaProviderRegistry,
-    ) {
-    }
+    ) {}
 
     public function render(): array
     {

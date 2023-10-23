@@ -19,6 +19,4 @@ namespace TYPO3\CMS\Seo\XmlSitemap\Exception;
 
 use TYPO3\CMS\Core\Resource\Exception;
 
-class MissingConfigurationException extends Exception
-{
-}
+class MissingConfigurationException extends Exception {}

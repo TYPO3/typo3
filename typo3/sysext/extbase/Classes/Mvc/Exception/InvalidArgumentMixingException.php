@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Argument Name" exception
  */
-class InvalidArgumentMixingException extends Exception
-{
-}
+class InvalidArgumentMixingException extends Exception {}

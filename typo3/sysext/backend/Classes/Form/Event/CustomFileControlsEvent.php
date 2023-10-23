@@ -32,8 +32,7 @@ final class CustomFileControlsEvent
         private readonly array $fieldConfig,
         private readonly string $formFieldIdentifier,
         private readonly string $formFieldName,
-    ) {
-    }
+    ) {}
 
     public function getResultArray(): array
     {

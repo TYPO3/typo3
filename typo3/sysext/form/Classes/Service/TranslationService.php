@@ -55,8 +55,7 @@ class TranslationService implements SingletonInterface
         protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly FrontendInterface $runtimeCache,
         protected readonly Locales $locales
-    ) {
-    }
+    ) {}
 
     /**
      * Returns the localized label of the LOCAL_LANG key, $key.

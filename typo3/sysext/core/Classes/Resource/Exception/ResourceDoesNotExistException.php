@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception to throw if a resource (file/folder) does not exist
  */
-class ResourceDoesNotExistException extends Exception
-{
-}
+class ResourceDoesNotExistException extends Exception {}

@@ -34,8 +34,7 @@ class RecordsOverview extends AbstractNode
 {
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Render table with record details

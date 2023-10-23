@@ -46,8 +46,7 @@ class OnlineMediaController
         protected readonly DefaultUploadFolderResolver $uploadFolderResolver,
         protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
         protected readonly FlashMessageService $flashMessageService
-    ) {
-    }
+    ) {}
 
     /**
      * AJAX endpoint for storing the URL as a sys_file record

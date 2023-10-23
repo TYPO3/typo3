@@ -43,8 +43,7 @@ class BackendModuleController
 
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Initialize session and redirect to "maintenance"

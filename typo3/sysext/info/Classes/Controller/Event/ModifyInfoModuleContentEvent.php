@@ -34,8 +34,7 @@ final class ModifyInfoModuleContentEvent
         private readonly ServerRequestInterface $request,
         private readonly ModuleInterface $currentModule,
         private readonly ModuleTemplate $moduleTemplate,
-    ) {
-    }
+    ) {}
 
     /**
      * Whether the current user has access to the main content of the info module.

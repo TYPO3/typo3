@@ -32,8 +32,7 @@ final class AfterLinkIsGeneratedEvent
         private LinkResultInterface $linkResult,
         private readonly ContentObjectRenderer $contentObjectRenderer,
         private readonly array $linkInstructions,
-    ) {
-    }
+    ) {}
 
     /**
      * Update a link when a part was modified by an Event Listener.

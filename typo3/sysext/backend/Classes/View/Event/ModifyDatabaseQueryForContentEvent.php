@@ -28,8 +28,7 @@ final class ModifyDatabaseQueryForContentEvent
         private QueryBuilder $queryBuilder,
         private string $table,
         private int $pageId,
-    ) {
-    }
+    ) {}
 
     public function getQueryBuilder(): QueryBuilder
     {

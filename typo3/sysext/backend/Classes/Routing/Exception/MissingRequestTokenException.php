@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when request token was missing.
  */
-class MissingRequestTokenException extends Exception
-{
-}
+class MissingRequestTokenException extends Exception {}

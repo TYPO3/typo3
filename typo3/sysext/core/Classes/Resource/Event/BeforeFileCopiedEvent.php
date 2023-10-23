@@ -28,9 +28,7 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class BeforeFileCopiedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly Folder $folder)
-    {
-    }
+    public function __construct(private readonly FileInterface $file, private readonly Folder $folder) {}
 
     public function getFile(): FileInterface
     {

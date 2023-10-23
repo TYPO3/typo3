@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Property\Exception;
 /**
  * An "Invalid Source" Exception
  */
-class InvalidSourceException extends Exception
-{
-}
+class InvalidSourceException extends Exception {}

@@ -60,8 +60,7 @@ class EnvironmentController extends AbstractController
         private readonly LateBootService $lateBootService,
         private readonly FormProtectionFactory $formProtectionFactory,
         private readonly MailerInterface $mailer,
-    ) {
-    }
+    ) {}
 
     /**
      * Main "show the cards" view

@@ -31,9 +31,7 @@ use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
  */
 final class CheckBrokenRteLinkEventListener
 {
-    public function __construct(private readonly BrokenLinkRepository $brokenLinkRepository)
-    {
-    }
+    public function __construct(private readonly BrokenLinkRepository $brokenLinkRepository) {}
 
     #[AsEventListener('rte-check-link-external')]
     public function checkExternalLink(BrokenLinkAnalysisEvent $event): void

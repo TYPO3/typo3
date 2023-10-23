@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * A "No Such Action" exception
  */
-class NoSuchActionException extends Exception
-{
-}
+class NoSuchActionException extends Exception {}

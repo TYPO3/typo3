@@ -47,8 +47,7 @@ class NumberWithIconWidget implements WidgetInterface, RequestAwareWidgetInterfa
         private readonly NumberWithIconDataProviderInterface $dataProvider,
         private readonly BackendViewFactory $backendViewFactory,
         private readonly array $options = [],
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

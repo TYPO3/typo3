@@ -22,9 +22,7 @@ namespace TYPO3\CMS\Install\Service\Event;
  */
 final class ModifyLanguagePacksEvent
 {
-    public function __construct(private array $extensions)
-    {
-    }
+    public function __construct(private array $extensions) {}
 
     public function getExtensions(): array
     {

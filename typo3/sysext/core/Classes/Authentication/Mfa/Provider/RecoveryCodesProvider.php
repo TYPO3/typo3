@@ -47,8 +47,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
         protected readonly Context $context,
         protected readonly UriBuilder $uriBuilder,
         protected readonly FlashMessageService $flashMessageService
-    ) {
-    }
+    ) {}
 
     private const MAX_ATTEMPTS = 3;
 

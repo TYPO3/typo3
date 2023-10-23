@@ -98,7 +98,7 @@ class JavaScriptItems implements \JsonSerializable
         return [
             'globalAssignments' => $this->globalAssignments,
             'javaScriptModuleInstructions' => array_map(
-                static fn (JavaScriptModuleInstruction $instruction): array => $instruction->getState(),
+                static fn(JavaScriptModuleInstruction $instruction): array => $instruction->getState(),
                 $this->javaScriptModuleInstructions
             ),
         ];

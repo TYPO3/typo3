@@ -29,8 +29,7 @@ final class ModifyResolvedFrontendGroupsEvent
         private readonly FrontendUserAuthentication $user,
         private array $groups,
         private readonly ServerRequestInterface $request
-    ) {
-    }
+    ) {}
 
     public function getRequest(): ServerRequestInterface
     {

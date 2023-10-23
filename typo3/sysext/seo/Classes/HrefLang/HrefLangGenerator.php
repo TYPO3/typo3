@@ -40,8 +40,7 @@ class HrefLangGenerator
     public function __construct(
         protected ContentObjectRenderer $cObj,
         protected LanguageMenuProcessor $languageMenuProcessor,
-    ) {
-    }
+    ) {}
 
     #[AsEventListener('typo3-seo/hreflangGenerator')]
     public function __invoke(ModifyHrefLangTagsEvent $event): void

@@ -68,9 +68,7 @@ class PasswordReset implements LoggerAwareInterface
     protected const MAXIMUM_RESET_ATTEMPTS = 3;
     protected const MAXIMUM_RESET_ATTEMPTS_SINCE = '-30 minutes';
 
-    public function __construct(private readonly MailerInterface $mailer)
-    {
-    }
+    public function __construct(private readonly MailerInterface $mailer) {}
 
     /**
      * Check if there are at least one in the system that contains a non-empty password AND an email address set.

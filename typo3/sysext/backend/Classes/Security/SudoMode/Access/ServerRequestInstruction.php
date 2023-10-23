@@ -57,7 +57,7 @@ class ServerRequestInstruction implements \JsonSerializable
         $target->queryParams = $request->getQueryParams();
         $target->attributes = array_filter(
             $request->getAttributes(),
-            static fn (string $name) => in_array($name, self::KEEP_ATTRIBUTE_NAMES, true),
+            static fn(string $name) => in_array($name, self::KEEP_ATTRIBUTE_NAMES, true),
             ARRAY_FILTER_USE_KEY
         );
         return $target;

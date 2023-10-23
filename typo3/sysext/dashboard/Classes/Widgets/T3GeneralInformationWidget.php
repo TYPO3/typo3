@@ -37,8 +37,7 @@ class T3GeneralInformationWidget implements WidgetInterface, RequestAwareWidgetI
         private readonly WidgetConfigurationInterface $configuration,
         private readonly BackendViewFactory $backendViewFactory,
         private readonly array $options = [],
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

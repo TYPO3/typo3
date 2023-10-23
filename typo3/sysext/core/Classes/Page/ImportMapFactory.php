@@ -29,8 +29,7 @@ class ImportMapFactory implements SingletonInterface
         private readonly FrontendInterface $assetsCache,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly string $cacheIdentifier,
-    ) {
-    }
+    ) {}
 
     public function create(bool $bustSuffix = true): ImportMap
     {

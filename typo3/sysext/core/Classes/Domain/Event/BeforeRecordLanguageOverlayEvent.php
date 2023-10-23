@@ -29,8 +29,7 @@ final class BeforeRecordLanguageOverlayEvent
         private readonly string $table,
         private array $record,
         private LanguageAspect $languageAspect
-    ) {
-    }
+    ) {}
 
     public function getTable(): string
     {

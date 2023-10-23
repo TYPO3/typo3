@@ -27,9 +27,7 @@ final class ModifyButtonBarEvent
     /**
      * @param array<ButtonInterface> $buttons
      */
-    public function __construct(private array $buttons, private readonly ButtonBar $buttonBar)
-    {
-    }
+    public function __construct(private array $buttons, private readonly ButtonBar $buttonBar) {}
 
     public function getButtons(): array
     {

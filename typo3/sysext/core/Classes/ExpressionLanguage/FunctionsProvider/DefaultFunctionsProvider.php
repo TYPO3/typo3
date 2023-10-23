@@ -55,7 +55,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'ip',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
                 if ($str === 'devIP') {
                     $str = $arguments['typo3']->devIpMask;
@@ -76,7 +76,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'compatVersion',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, mixed $str) {
                 return VersionNumberUtility::convertVersionNumberToInteger($arguments['typo3']->branch) >=
                    VersionNumberUtility::convertVersionNumberToInteger((string)$str);
@@ -88,7 +88,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'like',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $haystack, $needle) {
                 return StringUtility::searchStringWildcard((string)$haystack, (string)$needle);
             }
@@ -104,7 +104,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'date',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $format) {
                 return $arguments['date']->getDateTime()->format($format);
             }
@@ -115,7 +115,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'feature',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $featureName) {
                 return $arguments['features']->isFeatureEnabled($featureName);
             }
@@ -126,7 +126,7 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'traverse',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $array, $path) {
                 if (!is_array($array) || !is_string($path) || $path === '') {
                     return '';

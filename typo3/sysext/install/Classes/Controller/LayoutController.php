@@ -51,8 +51,7 @@ class LayoutController extends AbstractController
         private readonly FailsafePackageManager $packageManager,
         private readonly SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
         private readonly SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService
-    ) {
-    }
+    ) {}
 
     /**
      * The init action renders an HTML response with HTML view having <head> section

@@ -40,8 +40,7 @@ class FlexFormTools
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * The method locates a specific data structure from given TCA and row combination

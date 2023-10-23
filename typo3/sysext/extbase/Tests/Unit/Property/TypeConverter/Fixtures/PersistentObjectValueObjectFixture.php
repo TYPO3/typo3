@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 /**
  * Fixture PersistentObjectValueObjectFixture
  */
-class PersistentObjectValueObjectFixture extends AbstractValueObject
-{
-}
+class PersistentObjectValueObjectFixture extends AbstractValueObject {}

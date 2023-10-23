@@ -23,6 +23,4 @@ use TYPO3\CMS\Form\Domain\Model\Exception;
  * This exception is thrown if the form definition would get an inconsistent state, like
  * adding a page to two different forms
  */
-class FormDefinitionConsistencyException extends Exception
-{
-}
+class FormDefinitionConsistencyException extends Exception {}

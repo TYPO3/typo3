@@ -33,7 +33,7 @@ class SigningSecretResolver
     {
         $this->providers = array_filter(
             $providers,
-            static fn ($provider) => $provider instanceof SigningProviderInterface
+            static fn($provider) => $provider instanceof SigningProviderInterface
         );
     }
 

@@ -24,6 +24,4 @@ use TYPO3Tests\BlogExample\Domain\Model\TtContent;
  * A repository for tt_contents
  * @extends Repository<TtContent>
  */
-class TtContentRepository extends Repository
-{
-}
+class TtContentRepository extends Repository {}

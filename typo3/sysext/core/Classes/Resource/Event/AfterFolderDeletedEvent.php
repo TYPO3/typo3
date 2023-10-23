@@ -25,9 +25,7 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class AfterFolderDeletedEvent
 {
-    public function __construct(private readonly Folder $folder, private readonly bool $wasDeleted)
-    {
-    }
+    public function __construct(private readonly Folder $folder, private readonly bool $wasDeleted) {}
 
     public function getFolder(): Folder
     {

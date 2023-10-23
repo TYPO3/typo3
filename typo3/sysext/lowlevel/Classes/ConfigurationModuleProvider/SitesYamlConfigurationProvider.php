@@ -27,8 +27,7 @@ class SitesYamlConfigurationProvider extends AbstractProvider
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly SiteFinder $siteFinder
-    ) {
-    }
+    ) {}
 
     public function getConfiguration(): array
     {

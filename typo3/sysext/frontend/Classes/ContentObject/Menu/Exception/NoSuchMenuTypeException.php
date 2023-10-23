@@ -20,6 +20,4 @@ use TYPO3\CMS\Frontend\Exception;
 /**
  * No such menu type exception
  */
-class NoSuchMenuTypeException extends Exception
-{
-}
+class NoSuchMenuTypeException extends Exception {}

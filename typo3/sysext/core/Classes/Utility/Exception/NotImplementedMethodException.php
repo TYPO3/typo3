@@ -23,6 +23,4 @@ namespace TYPO3\CMS\Core\Utility\Exception;
  * Note this extends from \RuntimeException to be backwards compatible with the
  * formerly thrown \RuntimeException in the methods.
  */
-class NotImplementedMethodException extends \RuntimeException
-{
-}
+class NotImplementedMethodException extends \RuntimeException {}

@@ -22,9 +22,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 
 final class EventDispatcherAdapter implements SymfonyEventDispatcherInterface
 {
-    public function __construct(private readonly EventDispatcherInterface $eventDispatcher)
-    {
-    }
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher) {}
 
     public function dispatch(object $event, string $eventName = null): object
     {

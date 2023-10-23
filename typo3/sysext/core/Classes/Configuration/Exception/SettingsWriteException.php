@@ -22,6 +22,4 @@ namespace TYPO3\CMS\Core\Configuration\Exception;
  *
  * @internal
  */
-class SettingsWriteException extends \RuntimeException
-{
-}
+class SettingsWriteException extends \RuntimeException {}

@@ -45,8 +45,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
         protected readonly Context $context,
         protected readonly RateLimiterFactory $rateLimiterFactory,
         protected readonly EventDispatcherInterface $eventDispatcher
-    ) {
-    }
+    ) {}
 
     /**
      * Creates a frontend user authentication object, tries to authenticate a user and stores

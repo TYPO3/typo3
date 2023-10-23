@@ -40,8 +40,7 @@ class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProvi
         protected readonly RedirectRepository $redirectRepository,
         protected readonly Registry $registry,
         protected readonly CheckIntegrityConfiguration $checkIntegrityConfiguration,
-    ) {
-    }
+    ) {}
 
     /**
      * Determines the status of redirect conflicts and shows an info status in some cases

@@ -94,8 +94,7 @@ class GridDataService implements LoggerAwareInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly WorkspaceService $workspaceService,
         private readonly ModuleProvider $moduleProvider,
-    ) {
-    }
+    ) {}
 
     /**
      * Generates grid list array from given versions.

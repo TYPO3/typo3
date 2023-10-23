@@ -64,8 +64,7 @@ class CreateFileController
         protected readonly ResourceFactory $resourceFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
-    ) {
-    }
+    ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {

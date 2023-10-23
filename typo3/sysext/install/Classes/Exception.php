@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception as CoreException;
 /**
  * A generic Install exception
  */
-class Exception extends CoreException
-{
-}
+class Exception extends CoreException {}

@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Type\Exception;
 /**
  * Exception for an invalid enumeration value
  */
-class InvalidEnumerationValueException extends Exception implements InvalidValueExceptionInterface
-{
-}
+class InvalidEnumerationValueException extends Exception implements InvalidValueExceptionInterface {}

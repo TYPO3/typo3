@@ -30,8 +30,7 @@ class ModuleFactory
     public function __construct(
         protected readonly IconRegistry $iconRegistry,
         protected readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function createModule(string $identifier, array $configuration): ModuleInterface
     {

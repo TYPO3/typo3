@@ -28,8 +28,7 @@ final class ModifyTreeDataEvent
     public function __construct(
         private TreeNode $treeData,
         private readonly AbstractTableConfigurationTreeDataProvider $provider
-    ) {
-    }
+    ) {}
 
     public function getTreeData(): TreeNode
     {

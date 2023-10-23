@@ -57,8 +57,7 @@ class ImportController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ExtendedFileUtility $fileProcessor,
         protected readonly ResourceFactory $resourceFactory
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {

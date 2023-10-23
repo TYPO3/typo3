@@ -30,6 +30,5 @@ final class IndexColumnName
         public readonly Identifier $columnName,
         public readonly int $length,
         public readonly ?string $direction = null
-    ) {
-    }
+    ) {}
 }

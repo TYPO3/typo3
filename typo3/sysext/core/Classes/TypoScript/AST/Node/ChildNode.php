@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\TypoScript\AST\Node;
 /**
  * A generic child node that is not the node root.
  */
-final class ChildNode extends AbstractChildNode
-{
-}
+final class ChildNode extends AbstractChildNode {}

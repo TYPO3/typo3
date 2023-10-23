@@ -26,8 +26,7 @@ final class ModifyBlindedConfigurationOptionsEvent
     public function __construct(
         private array $blindedConfigurationOptions,
         private readonly string $identifier
-    ) {
-    }
+    ) {}
 
     /**
      * Allows to define configuration options to be blinded

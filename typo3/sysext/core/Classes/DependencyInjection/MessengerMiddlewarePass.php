@@ -52,7 +52,7 @@ final class MessengerMiddlewarePass implements CompilerPassInterface
             }
         }
         $busFactory->setArgument('$middlewares', array_map(
-            fn (array $busMiddlewares): IteratorArgument => new IteratorArgument($busMiddlewares),
+            fn(array $busMiddlewares): IteratorArgument => new IteratorArgument($busMiddlewares),
             $middlewares
         ));
     }

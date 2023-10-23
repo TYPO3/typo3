@@ -54,6 +54,5 @@ class DummyModel extends AbstractEntity
         #[Extbase\Validate(['validator' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator'])]
         #[Extbase\Validate(['validator' => NotEmptyValidator::class])]
         public readonly string $dummyPromotedProperty
-    ) {
-    }
+    ) {}
 }

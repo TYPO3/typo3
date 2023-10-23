@@ -73,8 +73,7 @@ class FolderElement extends AbstractFormElement
 
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * This will render a selector box into which folder relations can be

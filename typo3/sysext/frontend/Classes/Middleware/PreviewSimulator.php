@@ -40,9 +40,7 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  */
 class PreviewSimulator implements MiddlewareInterface
 {
-    public function __construct(protected readonly Context $context)
-    {
-    }
+    public function __construct(protected readonly Context $context) {}
 
     /**
      * Evaluates preview settings if a backend user is logged in

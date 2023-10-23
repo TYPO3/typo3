@@ -27,8 +27,7 @@ class ReactionInstruction
 {
     public function __construct(
         protected array $record
-    ) {
-    }
+    ) {}
 
     public function getUid(): int
     {

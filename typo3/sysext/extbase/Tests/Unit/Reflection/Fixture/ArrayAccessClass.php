@@ -22,9 +22,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class ArrayAccessClass implements \ArrayAccess
 {
-    public function __construct(protected array $array)
-    {
-    }
+    public function __construct(protected array $array) {}
 
     public function offsetExists(mixed $offset): bool
     {

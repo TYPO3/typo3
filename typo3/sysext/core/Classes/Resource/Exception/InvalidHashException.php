@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Resource\Exception;
  * An exception when something is wrong with the Hash
  * Is thrown for example when the driver returns an unexpected (non-string) hash value
  */
-class InvalidHashException extends Exception
-{
-}
+class InvalidHashException extends Exception {}

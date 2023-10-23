@@ -314,9 +314,7 @@ class SuggestWizardDefaultReceiver
      *
      * @param array $row
      */
-    protected function manipulateRecord(&$row)
-    {
-    }
+    protected function manipulateRecord(&$row) {}
 
     /**
      * Selects whether the logged in Backend User is allowed to read a specific record

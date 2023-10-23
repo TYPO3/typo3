@@ -55,8 +55,7 @@ class MfaConfigurationController extends AbstractMfaController
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Main entry point, checking prerequisite, initializing and setting

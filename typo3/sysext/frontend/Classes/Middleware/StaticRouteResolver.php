@@ -38,8 +38,7 @@ class StaticRouteResolver implements MiddlewareInterface
     public function __construct(
         protected readonly RequestFactory $requestFactory,
         protected readonly LinkService $linkService
-    ) {
-    }
+    ) {}
 
     /**
      * Checks if there is a valid site with route configuration.

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Property\Exception;
 /**
  * A "TargetNotFound" Exception
  */
-class TargetNotFoundException extends Exception
-{
-}
+class TargetNotFoundException extends Exception {}

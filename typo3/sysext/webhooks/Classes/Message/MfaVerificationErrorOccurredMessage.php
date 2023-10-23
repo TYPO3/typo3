@@ -35,8 +35,7 @@ final class MfaVerificationErrorOccurredMessage implements WebhookMessageInterfa
         private readonly bool $isFrontend,
         private readonly UriInterface $url,
         private readonly array $details,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

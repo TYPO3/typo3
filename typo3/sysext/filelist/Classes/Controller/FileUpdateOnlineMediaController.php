@@ -42,8 +42,7 @@ class FileUpdateOnlineMediaController
         protected readonly PreviewService $previewService,
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly StreamFactoryInterface $streamFactory
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {

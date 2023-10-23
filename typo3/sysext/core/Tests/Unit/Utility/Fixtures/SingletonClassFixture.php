@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\SingletonInterface;
 /**
  * Fixture for a base singleton class
  */
-class SingletonClassFixture implements SingletonInterface
-{
-}
+class SingletonClassFixture implements SingletonInterface {}

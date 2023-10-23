@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * A Bad Constraint exception
  */
-class BadConstraintException extends Exception
-{
-}
+class BadConstraintException extends Exception {}

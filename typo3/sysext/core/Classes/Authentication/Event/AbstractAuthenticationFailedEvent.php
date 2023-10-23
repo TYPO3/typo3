@@ -28,8 +28,7 @@ abstract class AbstractAuthenticationFailedEvent
 {
     public function __construct(
         private readonly ServerRequestInterface $request
-    ) {
-    }
+    ) {}
 
     /**
      * Returns the user, who failed to authenticate successfully

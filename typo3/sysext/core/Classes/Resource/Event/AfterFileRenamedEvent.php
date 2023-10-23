@@ -25,9 +25,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  */
 final class AfterFileRenamedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly ?string $targetFileName)
-    {
-    }
+    public function __construct(private readonly FileInterface $file, private readonly ?string $targetFileName) {}
 
     public function getFile(): FileInterface
     {

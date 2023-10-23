@@ -48,8 +48,7 @@ class SiteLanguageContainer extends AbstractContainer
     public function __construct(
         private readonly InlineStackProcessor $inlineStackProcessor,
         private readonly SiteLanguagePresets $siteLanguagePresets,
-    ) {
-    }
+    ) {}
 
     public function render(): array
     {

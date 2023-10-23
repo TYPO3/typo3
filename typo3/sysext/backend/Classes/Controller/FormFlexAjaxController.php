@@ -40,8 +40,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
         private readonly FlexFormTools $flexFormTools,
-    ) {
-    }
+    ) {}
 
     /**
      * Render a single flex form section container to add it to the DOM

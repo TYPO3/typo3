@@ -31,8 +31,7 @@ class ProviderConfigurationLoader
         private readonly PackageManager $packageManager,
         private readonly PhpFrontend $coreCache,
         private readonly string $cacheIdentifier,
-    ) {
-    }
+    ) {}
 
     public function getExpressionLanguageProviders(): array
     {

@@ -36,8 +36,7 @@ final class FileAddedMessage implements WebhookMessageInterface
         private readonly int $storageUid,
         private readonly string $identifier,
         private readonly string $publicUrl
-    ) {
-    }
+    ) {}
 
     public static function createFromEvent(AfterFileAddedEvent $event): self
     {

@@ -31,8 +31,7 @@ final class BeforeRecordIsAnalyzedEvent
         private readonly array $fields,
         private readonly LinkAnalyzer $linkAnalyzer,
         private array $results
-    ) {
-    }
+    ) {}
 
     public function getTableName(): string
     {

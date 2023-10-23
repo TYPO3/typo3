@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 class SitesTcaConfigurationProvider extends AbstractProvider
 {
-    public function __construct(protected readonly SiteTcaConfiguration $siteTcaConfiguration)
-    {
-    }
+    public function __construct(protected readonly SiteTcaConfiguration $siteTcaConfiguration) {}
 
     public function getConfiguration(): array
     {

@@ -31,8 +31,7 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
 
     public function __construct(
         private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
-    ) {
-    }
+    ) {}
 
     public function getTitle(): string
     {

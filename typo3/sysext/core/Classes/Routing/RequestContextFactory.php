@@ -30,8 +30,7 @@ class RequestContextFactory
 {
     public function __construct(
         protected readonly BackendEntryPointResolver $backendEntryPointResolver
-    ) {
-    }
+    ) {}
 
     public function fromBackendRequest(ServerRequestInterface $request): RequestContext
     {

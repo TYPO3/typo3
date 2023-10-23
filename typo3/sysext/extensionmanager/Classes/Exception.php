@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception as CoreException;
 /**
  * A generic Extensionmanager exception
  */
-class Exception extends CoreException
-{
-}
+class Exception extends CoreException {}

@@ -41,8 +41,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
         private readonly OpenDocumentService $documentService,
         private readonly UriBuilder $uriBuilder,
         private readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

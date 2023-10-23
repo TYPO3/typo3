@@ -50,8 +50,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
      */
     public function addThrowsDuplicateTypeConverterException(): void
     {
-        $extendedBooleanConverter = new class () extends BooleanConverter {
-        };
+        $extendedBooleanConverter = new class () extends BooleanConverter {};
         $extendedBooleanConverterClassName = get_class($extendedBooleanConverter);
 
         $this->expectException(DuplicateTypeConverterException::class);
@@ -81,8 +80,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
      */
     public function findConverterFindsConverterForSimpleTargetTypesWithHighestPriority(): void
     {
-        $extendedBooleanConverter = new class () extends BooleanConverter {
-        };
+        $extendedBooleanConverter = new class () extends BooleanConverter {};
         $extendedBooleanConverterClassName = get_class($extendedBooleanConverter);
         $this->subject->add($extendedBooleanConverter, 20, ['boolean', 'integer'], 'boolean');
 
@@ -144,8 +142,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->subject->add(new FileReferenceConverter(), 10, ['integer'], FileReference::class);
 
-        $extendedFileReference = new class () extends FileReference {
-        };
+        $extendedFileReference = new class () extends FileReference {};
         $extendedFileReferenceClassName = get_class($extendedFileReference);
 
         $converter = $this->subject->findTypeConverter('integer', $extendedFileReferenceClassName);

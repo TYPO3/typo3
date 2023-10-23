@@ -63,8 +63,7 @@ class DataHandlerHook
     public function __construct(
         private readonly MessageBusInterface $messageBus,
         private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /****************************
      *****  Cmdmap  Hooks  ******

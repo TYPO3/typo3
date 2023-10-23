@@ -36,8 +36,7 @@ final class BackendViewFactory
     public function __construct(
         protected readonly RenderingContextFactory $renderingContextFactory,
         protected readonly PackageManager $packageManager,
-    ) {
-    }
+    ) {}
 
     /**
      * This backend view is capable of overriding templates, partials and layouts via TsConfig

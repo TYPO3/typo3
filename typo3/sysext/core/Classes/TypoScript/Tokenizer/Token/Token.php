@@ -26,6 +26,4 @@ namespace TYPO3\CMS\Core\TypoScript\Tokenizer\Token;
  *
  * @internal: Internal tokenizer structure.
  */
-final class Token extends AbstractToken
-{
-}
+final class Token extends AbstractToken {}

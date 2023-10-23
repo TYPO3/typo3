@@ -109,7 +109,7 @@ class ProcessingRule
      */
     public function removeAllValidators(): void
     {
-        $this->filterValidators(fn () => false);
+        $this->filterValidators(fn() => false);
     }
 
     /**

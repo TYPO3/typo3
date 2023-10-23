@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Property\Exception;
 /**
  * A "Duplicate Type Converter" Exception
  */
-class DuplicateTypeConverterException extends Exception
-{
-}
+class DuplicateTypeConverterException extends Exception {}

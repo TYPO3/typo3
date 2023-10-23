@@ -123,11 +123,11 @@ final class LosslessTokenizer implements TokenizerInterface
     {
         $vanillaLines = explode(chr(10), $source);
         $this->lines = array_map(
-            fn (int $lineNumber, string $vanillaLine): array => [
+            fn(int $lineNumber, string $vanillaLine): array => [
                 'line' => rtrim($vanillaLine, "\r"),
                 'linebreakCallback' => str_ends_with($vanillaLine, "\r")
-                    ? fn () => $this->tokenStream->append(new Token(TokenType::T_NEWLINE, "\r\n", $lineNumber, mb_strlen($vanillaLine) - 1))
-                    : fn () => $this->tokenStream->append(new Token(TokenType::T_NEWLINE, "\n", $lineNumber, mb_strlen($vanillaLine))),
+                    ? fn() => $this->tokenStream->append(new Token(TokenType::T_NEWLINE, "\r\n", $lineNumber, mb_strlen($vanillaLine) - 1))
+                    : fn() => $this->tokenStream->append(new Token(TokenType::T_NEWLINE, "\n", $lineNumber, mb_strlen($vanillaLine))),
             ],
             array_keys($vanillaLines),
             $vanillaLines

@@ -40,8 +40,7 @@ class CreateRecordReaction implements ReactionInterface
     public function __construct(
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly StreamFactoryInterface $streamFactory,
-    ) {
-    }
+    ) {}
 
     public static function getType(): string
     {

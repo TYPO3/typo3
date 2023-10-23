@@ -65,8 +65,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Render check boxes

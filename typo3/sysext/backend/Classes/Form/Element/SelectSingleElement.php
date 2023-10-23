@@ -68,8 +68,7 @@ class SelectSingleElement extends AbstractFormElement
 
     public function __construct(
         private readonly InlineStackProcessor $inlineStackProcessor,
-    ) {
-    }
+    ) {}
 
     /**
      * Render single element

@@ -29,8 +29,7 @@ final class AfterDefaultUploadFolderWasResolvedEvent
         private readonly ?int $pid,
         private readonly ?string $table,
         private readonly ?string $fieldName
-    ) {
-    }
+    ) {}
 
     public function getUploadFolder(): ?FolderInterface
     {

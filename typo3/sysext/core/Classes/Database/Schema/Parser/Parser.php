@@ -78,8 +78,7 @@ final class Parser
 
     public function __construct(
         private readonly Lexer $lexer,
-    ) {
-    }
+    ) {}
 
     /**
      * Parses a statement string.

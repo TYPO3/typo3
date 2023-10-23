@@ -48,8 +48,7 @@ class ManagementController
         protected RedirectRepository $redirectRepository,
         protected ModuleTemplateFactory $moduleTemplateFactory,
         private EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request, and renders the overview of all redirects

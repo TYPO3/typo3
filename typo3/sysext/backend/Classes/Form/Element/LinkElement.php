@@ -82,8 +82,7 @@ class LinkElement extends AbstractFormElement
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly TypoLinkCodecService $typoLinkCodecService,
         private readonly LinkService $linkService,
-    ) {
-    }
+    ) {}
 
     /**
      * This will render a single-line link form field, possibly with various control/validation features
@@ -501,13 +500,13 @@ class LinkElement extends AbstractFormElement
         return $this->getLinkHandlerIdentifiers(
             array_filter(
                 (array)($this->data['pageTsConfig']['TCEMAIN.']['linkHandler.'] ?? []),
-                static fn (array $handler): bool => ($handler['handler'] ?? '') === RecordLinkHandler::class
+                static fn(array $handler): bool => ($handler['handler'] ?? '') === RecordLinkHandler::class
             )
         );
     }
 
     protected function getLinkHandlerIdentifiers(array $linkHandlers): array
     {
-        return array_map(static fn (string $handler): string => trim($handler, '.'), array_keys($linkHandlers));
+        return array_map(static fn(string $handler): string => trim($handler, '.'), array_keys($linkHandlers));
     }
 }

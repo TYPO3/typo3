@@ -88,8 +88,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
 
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Merge field control configuration with default controls and render them.

@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Exception\Page;
 /**
  * Exception for root line traversal when a loop is detected
  */
-class CircularRootLineException extends RootLineException
-{
-}
+class CircularRootLineException extends RootLineException {}

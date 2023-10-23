@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Core\Configuration\Event;
  */
 final class BeforeTcaOverridesEvent
 {
-    public function __construct(private array $tca)
-    {
-    }
+    public function __construct(private array $tca) {}
 
     public function getTca(): array
     {

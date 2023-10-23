@@ -25,7 +25,5 @@ class MethodAnnotationMatcherFixture
     /**
      * @inject
      */
-    public function foo(): void
-    {
-    }
+    public function foo(): void {}
 }

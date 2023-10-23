@@ -28,8 +28,7 @@ final class AfterExtensionStaticDatabaseContentHasBeenImportedEvent
         private readonly string $packageKey,
         private readonly string $sqlFileName,
         private readonly InstallUtility $emitter
-    ) {
-    }
+    ) {}
 
     public function getPackageKey(): string
     {

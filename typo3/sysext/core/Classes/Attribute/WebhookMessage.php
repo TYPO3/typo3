@@ -29,6 +29,5 @@ class WebhookMessage
         public string $identifier,
         public string $description,
         public ?string $method = null,
-    ) {
-    }
+    ) {}
 }

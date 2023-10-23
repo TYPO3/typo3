@@ -157,13 +157,9 @@ final class ClassSchemaTest extends UnitTestCase
     public function classSchemaDetectsMethodParameterTypeViaReflection(): void
     {
         $class = new class () {
-            public function foo(string $foo): void
-            {
-            }
+            public function foo(string $foo): void {}
 
-            public function bar(ClassSchema $foo): void
-            {
-            }
+            public function bar(ClassSchema $foo): void {}
         };
 
         $classSchema = new ClassSchema(get_class($class));
@@ -180,9 +176,7 @@ final class ClassSchemaTest extends UnitTestCase
             /**
              * @param ClassSchema $foo
              */
-            public function foo(string $foo): void
-            {
-            }
+            public function foo(string $foo): void {}
         };
 
         $classSchema = new ClassSchema(get_class($class));
@@ -195,19 +189,13 @@ final class ClassSchemaTest extends UnitTestCase
     public function classSchemaCanHandleSelfMethodReturnTypes(): void
     {
         $class = new class () {
-            public function __construct(self $copy = null)
-            {
-            }
-            public function injectCopy(self $copy): void
-            {
-            }
+            public function __construct(self $copy = null) {}
+            public function injectCopy(self $copy): void {}
             public function foo($copy): self
             {
                 return $this;
             }
-            public function bar(self $copy): void
-            {
-            }
+            public function bar(self $copy): void {}
         };
 
         $classSchema = new ClassSchema(get_class($class));

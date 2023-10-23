@@ -28,9 +28,7 @@ use TYPO3\CMS\Dashboard\Widgets\ElementAttributesInterface;
  */
 class SysLogButtonProvider implements ButtonProviderInterface, ElementAttributesInterface
 {
-    public function __construct(private readonly string $title, private readonly string $target = '')
-    {
-    }
+    public function __construct(private readonly string $title, private readonly string $target = '') {}
 
     public function getTitle(): string
     {

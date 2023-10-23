@@ -123,8 +123,7 @@ class ImageManipulationElement extends AbstractFormElement
         private readonly UriBuilder $uriBuilder,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ResourceFactory $resourceFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * This will render an imageManipulation field

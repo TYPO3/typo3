@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Backend\Exception;
  * Exception thrown if a module without further submodules, which
  * could work as fallback, does not define a default route.
  */
-class NonRoutableModuleException extends \RuntimeException
-{
-}
+class NonRoutableModuleException extends \RuntimeException {}

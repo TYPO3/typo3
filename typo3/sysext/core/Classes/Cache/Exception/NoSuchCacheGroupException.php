@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Cache\Exception;
 /**
  * A "No Such Cache Group" exception
  */
-class NoSuchCacheGroupException extends Exception
-{
-}
+class NoSuchCacheGroupException extends Exception {}

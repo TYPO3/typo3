@@ -28,8 +28,7 @@ final class ResolveJavaScriptImportEvent implements StoppableEventInterface
         public readonly string $specifier,
         public readonly bool $loadImportConfiguration,
         public readonly ImportMap $importMap,
-    ) {
-    }
+    ) {}
 
     public function isPropagationStopped(): bool
     {

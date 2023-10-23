@@ -26,8 +26,7 @@ final class SiteConfigurationLoadedEvent
     public function __construct(
         protected string $siteIdentifier,
         protected array $configuration
-    ) {
-    }
+    ) {}
 
     public function getSiteIdentifier(): string
     {

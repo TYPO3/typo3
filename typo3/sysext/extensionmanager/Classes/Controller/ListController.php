@@ -55,8 +55,7 @@ class ListController extends AbstractController
         protected readonly IconFactory $iconFactory,
         protected readonly RemoteRegistry $remoteRegistry,
         protected readonly ExtensionConfiguration $extensionConfiguration,
-    ) {
-    }
+    ) {}
 
     /**
      * Add general things needed for all actions.

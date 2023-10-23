@@ -1436,7 +1436,7 @@ abstract class AbstractMenuContentObject
             $runtimeCache->set($cacheIdentifierPagesNextLevel, $cachePagesNextLevel);
         }
 
-        $recs = array_filter($cachePagesNextLevel, static fn (array $item) => (int)$item['pid'] === (int)$uid);
+        $recs = array_filter($cachePagesNextLevel, static fn(array $item) => (int)$item['pid'] === (int)$uid);
 
         $hasSubPages = false;
         $bannedUids = $this->getBannedUids();

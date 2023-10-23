@@ -95,12 +95,12 @@ abstract class AbstractItemProvider
 
         try {
             $items = array_map(
-                fn (array $item): SelectItem => SelectItem::fromTcaItemArray($item, $config['type']),
+                fn(array $item): SelectItem => SelectItem::fromTcaItemArray($item, $config['type']),
                 $items
             );
             GeneralUtility::callUserFunction($config['itemsProcFunc'], $processorParameters, $this);
             $items = array_map(
-                fn (SelectItem|array $item): SelectItem => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $config['type']),
+                fn(SelectItem|array $item): SelectItem => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $config['type']),
                 $processorParameters['items']
             );
         } catch (\Exception $exception) {

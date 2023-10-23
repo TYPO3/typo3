@@ -28,8 +28,7 @@ final class AfterFileCommandProcessedEvent
         private readonly array $command,
         private readonly mixed $result,
         private readonly string $conflictMode
-    ) {
-    }
+    ) {}
 
     /**
      * A single command, e.g.

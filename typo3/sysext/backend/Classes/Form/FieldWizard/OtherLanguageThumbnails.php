@@ -38,8 +38,7 @@ class OtherLanguageThumbnails extends AbstractNode
     public function __construct(
         private readonly IconFactory $iconFactory,
         private readonly ResourceFactory $resourceFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Render cropped thumbnails from other language rows

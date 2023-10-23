@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Exception as ExtbaseException;
 /**
  * A generic Persistence exception
  */
-class Exception extends ExtbaseException
-{
-}
+class Exception extends ExtbaseException {}

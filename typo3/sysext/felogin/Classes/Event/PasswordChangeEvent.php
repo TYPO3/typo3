@@ -26,8 +26,7 @@ final class PasswordChangeEvent
         private readonly array $user,
         private readonly string $passwordHash,
         private readonly string $rawPassword
-    ) {
-    }
+    ) {}
 
     public function getUser(): array
     {

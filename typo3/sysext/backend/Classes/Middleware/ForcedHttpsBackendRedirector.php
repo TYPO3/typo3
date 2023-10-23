@@ -37,8 +37,7 @@ class ForcedHttpsBackendRedirector implements MiddlewareInterface
 {
     public function __construct(
         protected readonly BackendEntryPointResolver $backendEntryPointResolver
-    ) {
-    }
+    ) {}
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !$request->getAttribute('normalizedParams')->isHttps()) {

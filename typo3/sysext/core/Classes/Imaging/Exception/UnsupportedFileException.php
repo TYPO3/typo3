@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Thrown when a file type is not supported.
  */
-class UnsupportedFileException extends Exception
-{
-}
+class UnsupportedFileException extends Exception {}

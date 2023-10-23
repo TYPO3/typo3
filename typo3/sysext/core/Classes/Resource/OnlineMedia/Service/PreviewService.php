@@ -29,8 +29,7 @@ class PreviewService
     public function __construct(
         protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
         protected readonly ProcessedFileRepository $processedFileRepository
-    ) {
-    }
+    ) {}
 
     public function updatePreviewImage(File $file): string
     {

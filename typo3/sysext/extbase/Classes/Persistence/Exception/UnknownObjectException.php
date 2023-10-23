@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Exception;
 /**
  * An "Unknown Object" exception
  */
-class UnknownObjectException extends Exception
-{
-}
+class UnknownObjectException extends Exception {}

@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * @internal
  */
-class NonceException extends Exception
-{
-}
+class NonceException extends Exception {}

@@ -31,8 +31,7 @@ final class AfterTemplatesHaveBeenDeterminedEvent
         private readonly array $rootline,
         private readonly ?ServerRequestInterface $request,
         private array $templateRows,
-    ) {
-    }
+    ) {}
 
     public function getRootline(): array
     {

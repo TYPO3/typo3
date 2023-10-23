@@ -43,8 +43,7 @@ class UuidElement extends AbstractFormElement
 
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     public function render(): array
     {

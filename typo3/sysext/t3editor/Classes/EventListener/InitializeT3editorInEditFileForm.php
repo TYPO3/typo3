@@ -30,9 +30,7 @@ use TYPO3\CMS\T3editor\T3editor;
  */
 final class InitializeT3editorInEditFileForm
 {
-    public function __construct(private readonly ModeRegistry $modeRegistry)
-    {
-    }
+    public function __construct(private readonly ModeRegistry $modeRegistry) {}
 
     #[AsEventListener('typo3-t3editor/initialize-t3editor-in-edit-file-form')]
     public function __invoke(ModifyEditFileFormDataEvent $event): void

@@ -41,9 +41,7 @@ abstract class AbstractPasswordValidator
      * Function must be overwritten by extending classes in order to add requirements.
      * Use `$this->addRequirement(string $identifier, string $message);` to add a requirement.
      */
-    public function initializeRequirements(): void
-    {
-    }
+    public function initializeRequirements(): void {}
 
     /**
      * Validates the given password. Function must be overwritten by extending classes.

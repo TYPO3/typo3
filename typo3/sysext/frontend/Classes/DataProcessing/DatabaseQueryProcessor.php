@@ -46,9 +46,7 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class DatabaseQueryProcessor implements DataProcessorInterface
 {
-    public function __construct(protected readonly ContentDataProcessor $contentDataProcessor)
-    {
-    }
+    public function __construct(protected readonly ContentDataProcessor $contentDataProcessor) {}
 
     /**
      * Fetches records from the database as an array

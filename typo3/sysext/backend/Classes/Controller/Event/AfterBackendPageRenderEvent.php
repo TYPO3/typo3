@@ -27,9 +27,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
  */
 final class AfterBackendPageRenderEvent
 {
-    public function __construct(private string $content, private readonly ViewInterface $view)
-    {
-    }
+    public function __construct(private string $content, private readonly ViewInterface $view) {}
 
     public function getContent(): string
     {

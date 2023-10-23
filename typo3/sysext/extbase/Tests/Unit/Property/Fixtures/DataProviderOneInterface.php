@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures;
 /**
  * Fixture DataProviderOneInterface
  */
-interface DataProviderOneInterface
-{
-}
+interface DataProviderOneInterface {}

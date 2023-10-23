@@ -75,8 +75,7 @@ class RequestHandler implements RequestHandlerInterface
         private readonly TimeTracker $timeTracker,
         private readonly FilePathSanitizer $filePathSanitizer,
         private readonly TypoScriptService $typoScriptService,
-    ) {
-    }
+    ) {}
 
     /**
      * Sets the global GET and POST to the values, so if people access $_GET and $_POST

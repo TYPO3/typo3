@@ -38,8 +38,7 @@ final class TypoScriptStringFactory
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly TokenizerInterface $tokenizer,
-    ) {
-    }
+    ) {}
 
     /**
      * Parse a single string and support imports and conditions, cache optionally.

@@ -27,6 +27,4 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  * Scope: frontend
  * **This class is NOT meant to be sub classed by developers.**
  */
-class GridRow extends Section implements GridRowInterface
-{
-}
+class GridRow extends Section implements GridRowInterface {}

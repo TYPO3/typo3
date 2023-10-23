@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Locking\Exception;
 /**
  * An exception indicating a lock creation error
  */
-class LockCreateException extends Exception
-{
-}
+class LockCreateException extends Exception {}

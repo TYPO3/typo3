@@ -70,8 +70,7 @@ class SiteConfigurationController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly FormDataCompiler $formDataCompiler,
         private readonly SiteConfiguration $siteConfiguration,
-    ) {
-    }
+    ) {}
 
     /**
      * List pages that have 'is_siteroot' flag set - those that have the globe icon in page tree.

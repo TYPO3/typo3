@@ -36,8 +36,7 @@ class DistributionController extends AbstractController
         protected readonly PackageManager $packageManager,
         protected readonly PageRenderer $pageRenderer,
         protected readonly IconFactory $iconFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Shows information about a single distribution. Reachable from 'Get preconfigured distribution'.

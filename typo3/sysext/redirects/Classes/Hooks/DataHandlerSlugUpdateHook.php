@@ -39,8 +39,7 @@ class DataHandlerSlugUpdateHook
     public function __construct(
         protected SlugService $slugService,
         protected SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Collects slugs of persisted records before having been updated.

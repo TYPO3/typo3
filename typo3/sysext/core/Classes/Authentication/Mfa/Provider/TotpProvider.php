@@ -40,9 +40,7 @@ class TotpProvider implements MfaProviderInterface
 {
     private const MAX_ATTEMPTS = 3;
 
-    public function __construct(protected readonly Context $context)
-    {
-    }
+    public function __construct(protected readonly Context $context) {}
 
     /**
      * Check if a TOTP is given in the current request

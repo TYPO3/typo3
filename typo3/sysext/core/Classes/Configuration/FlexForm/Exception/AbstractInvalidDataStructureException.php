@@ -21,6 +21,4 @@ use TYPO3\CMS\Core\Exception;
  * Abstract exception thrown if data structures can not be resolved,
  * found or parsed.
  */
-abstract class AbstractInvalidDataStructureException extends Exception
-{
-}
+abstract class AbstractInvalidDataStructureException extends Exception {}

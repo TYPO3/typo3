@@ -82,8 +82,7 @@ class RichTextElement extends AbstractFormElement
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly UriBuilder $uriBuilder,
         private readonly Locales $locales,
-    ) {
-    }
+    ) {}
 
     /**
      * Renders the ckeditor element

@@ -44,8 +44,7 @@ class AboutController
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly PackageManager $packageManager,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Main action: Show standard information

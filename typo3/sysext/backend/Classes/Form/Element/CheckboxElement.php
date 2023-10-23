@@ -64,8 +64,7 @@ class CheckboxElement extends AbstractFormElement
     public function __construct(
         private readonly IconFactory $iconFactory,
         private readonly IconRegistry $iconRegistry,
-    ) {
-    }
+    ) {}
 
     /**
      * This will render a checkbox or an array of checkboxes

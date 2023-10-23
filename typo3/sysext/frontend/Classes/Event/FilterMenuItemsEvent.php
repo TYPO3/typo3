@@ -35,8 +35,7 @@ final class FilterMenuItemsEvent
         private readonly Site $site,
         private readonly Context $context,
         private readonly array $currentPage
-    ) {
-    }
+    ) {}
 
     public function getAllMenuItems(): array
     {

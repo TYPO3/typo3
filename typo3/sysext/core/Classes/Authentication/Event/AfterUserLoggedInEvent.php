@@ -28,8 +28,7 @@ final class AfterUserLoggedInEvent
     public function __construct(
         private readonly AbstractUserAuthentication $user,
         private readonly ?ServerRequestInterface $request = null
-    ) {
-    }
+    ) {}
 
     public function getUser(): AbstractUserAuthentication
     {

@@ -78,8 +78,7 @@ class FilesControlContainer extends AbstractContainer
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
         private readonly DefaultUploadFolderResolver $defaultUploadFolderResolver,
-    ) {
-    }
+    ) {}
 
     /**
      * Entry method

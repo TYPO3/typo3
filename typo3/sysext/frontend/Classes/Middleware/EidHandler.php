@@ -35,8 +35,7 @@ class EidHandler implements MiddlewareInterface
 {
     public function __construct(
         protected readonly DispatcherInterface $dispatcher
-    ) {
-    }
+    ) {}
 
     /**
      * Dispatches the request to the corresponding eID class or eID script

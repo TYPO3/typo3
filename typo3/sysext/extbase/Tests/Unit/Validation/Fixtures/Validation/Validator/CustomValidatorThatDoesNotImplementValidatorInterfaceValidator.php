@@ -22,7 +22,5 @@ class CustomValidatorThatDoesNotImplementValidatorInterfaceValidator
     /**
      * @param mixed $value
      */
-    protected function isValid($value): void
-    {
-    }
+    protected function isValid($value): void {}
 }

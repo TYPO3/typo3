@@ -31,8 +31,7 @@ class ListModule extends AbstractNode
 {
     public function __construct(
         private readonly UriBuilder $uriBuilder,
-    ) {
-    }
+    ) {}
 
     /**
      * Add button control

@@ -125,9 +125,7 @@ class MockPlatform extends AbstractPlatform
     /**
      * Lazy load Doctrine Type Mappings.
      */
-    protected function initializeDoctrineTypeMappings(): void
-    {
-    }
+    protected function initializeDoctrineTypeMappings(): void {}
 
     /**
      * @param int $length

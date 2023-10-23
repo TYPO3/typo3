@@ -31,8 +31,7 @@ class ElementBrowser extends AbstractNode
 {
     public function __construct(
         private readonly InlineStackProcessor $inlineStackProcessor,
-    ) {
-    }
+    ) {}
 
     /**
      * Add button control

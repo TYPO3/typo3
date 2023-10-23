@@ -24,6 +24,4 @@ use TYPO3\CMS\Form\Exception as FormException;
  *
  * @internal
  */
-class Exception extends FormException
-{
-}
+class Exception extends FormException {}

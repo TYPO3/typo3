@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when an unregistered command is asked for
  */
-class UnknownCommandException extends Exception
-{
-}
+class UnknownCommandException extends Exception {}

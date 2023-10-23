@@ -32,8 +32,7 @@ final class ModifyIconForResourcePropertiesEvent
         private readonly array $options,
         private ?string $iconIdentifier,
         private ?string $overlayIdentifier
-    ) {
-    }
+    ) {}
 
     public function getResource(): ResourceInterface
     {

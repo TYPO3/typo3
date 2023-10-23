@@ -37,8 +37,7 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
 
     public function __construct(
         private readonly ReferenceIndex $referenceIndex,
-    ) {
-    }
+    ) {}
 
     public function getTitle(): string
     {

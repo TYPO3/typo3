@@ -33,8 +33,7 @@ class ImageProcessingService
         private readonly ProcessedFileRepository $processedFileRepository,
         private readonly Context $context,
         private readonly ResourceMutex $locker,
-    ) {
-    }
+    ) {}
 
     public function process(int $processedFileId): ProcessedFile
     {

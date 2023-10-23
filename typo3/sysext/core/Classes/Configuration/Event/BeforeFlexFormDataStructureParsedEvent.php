@@ -37,8 +37,7 @@ final class BeforeFlexFormDataStructureParsedEvent implements StoppableEventInte
 
     public function __construct(
         private readonly array $identifier,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns the current data structure, which will always be `null`

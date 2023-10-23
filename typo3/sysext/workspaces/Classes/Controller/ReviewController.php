@@ -50,8 +50,7 @@ class ReviewController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly TranslationConfigurationProvider $translationConfigurationProvider
-    ) {
-    }
+    ) {}
 
     /**
      * Renders the review module user dependent with all workspaces.
@@ -314,7 +313,7 @@ class ReviewController
                 'uid' => -99,
                 'label' => $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_all'),
             ],
-        ], array_filter($stages, static fn (array $stage): bool => (int)($stage['uid'] ?? 0) !== -20));
+        ], array_filter($stages, static fn(array $stage): bool => (int)($stage['uid'] ?? 0) !== -20));
     }
 
     protected function getLanguageService(): LanguageService

@@ -72,8 +72,7 @@ class Maintenance implements MiddlewareInterface
         protected readonly PasswordHashFactory $passwordHashFactory,
         protected readonly ContainerInterface $container,
         protected readonly FormProtectionFactory $formProtectionFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Handles an Install Tool request for normal operations

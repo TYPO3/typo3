@@ -39,8 +39,7 @@ final class ConfigurationController
         private readonly ProviderRegistry $configurationProviderRegistry,
         private readonly UriBuilder $uriBuilder,
         private readonly ModuleTemplateFactory $moduleTemplateFactory
-    ) {
-    }
+    ) {}
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface
     {

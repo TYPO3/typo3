@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception when something is wrong with the File name
  */
-class InvalidFileNameException extends Exception
-{
-}
+class InvalidFileNameException extends Exception {}

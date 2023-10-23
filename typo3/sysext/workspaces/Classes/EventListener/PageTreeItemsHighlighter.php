@@ -30,8 +30,7 @@ final class PageTreeItemsHighlighter
 {
     public function __construct(
         private readonly WorkspaceService $workspaceService
-    ) {
-    }
+    ) {}
 
     #[AsEventListener('typo3-workspaces/page-tree-items-highlighter')]
     public function __invoke(AfterPageTreeItemsPreparedEvent $event): void

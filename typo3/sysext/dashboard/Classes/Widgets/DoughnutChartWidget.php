@@ -42,8 +42,7 @@ class DoughnutChartWidget implements WidgetInterface, RequestAwareWidgetInterfac
         private readonly BackendViewFactory $backendViewFactory,
         private readonly ?ButtonProviderInterface $buttonProvider = null,
         private readonly array $options = [],
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

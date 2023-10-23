@@ -50,8 +50,7 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
     public function __construct(
         protected readonly ResourceFactory $factory,
         protected readonly TaskTypeRegistry $taskTypeRegistry
-    ) {
-    }
+    ) {}
 
     /**
      * Finds a processed file matching the given UID.

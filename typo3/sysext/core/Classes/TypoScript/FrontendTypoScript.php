@@ -33,8 +33,7 @@ final class FrontendTypoScript
     public function __construct(
         private readonly RootNode $settingsTree,
         private readonly array $flatSettings,
-    ) {
-    }
+    ) {}
 
     /**
      * @internal Internal for now until the AST API stabilized.

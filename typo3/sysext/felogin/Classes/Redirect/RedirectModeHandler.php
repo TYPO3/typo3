@@ -38,8 +38,7 @@ class RedirectModeHandler
         private UserService $userService,
         private FrontendUserRepository $frontendUserRepository,
         private FrontendUserGroupRepository $frontendUserGroupRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Handle redirect mode groupLogin

@@ -34,8 +34,7 @@ class UserInformationService
     public function __construct(
         protected readonly IconFactory $iconFactory,
         protected readonly ModuleProvider $moduleProvider,
-    ) {
-    }
+    ) {}
 
     /**
      * Get all relevant information for a backend usergroup

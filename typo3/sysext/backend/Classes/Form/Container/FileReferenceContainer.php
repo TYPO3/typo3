@@ -66,8 +66,7 @@ class FileReferenceContainer extends AbstractContainer
         private readonly ConnectionPool $connectionPool,
         private readonly UriBuilder $uriBuilder,
         private readonly MetaDataRepository $metaDataRepository,
-    ) {
-    }
+    ) {}
 
     public function render(): array
     {

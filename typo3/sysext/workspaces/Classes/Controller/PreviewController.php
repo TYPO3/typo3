@@ -50,8 +50,7 @@ class PreviewController
         protected readonly UriBuilder $uriBuilder,
         protected readonly SiteFinder $siteFinder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Basically makes sure that the workspace preview is rendered.

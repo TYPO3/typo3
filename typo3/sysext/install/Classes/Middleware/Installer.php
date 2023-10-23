@@ -38,8 +38,7 @@ class Installer implements MiddlewareInterface
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly FormProtectionFactory $formProtectionFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Handles an Install Tool request when nothing is there

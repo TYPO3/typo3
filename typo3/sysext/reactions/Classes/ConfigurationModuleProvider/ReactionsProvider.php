@@ -24,8 +24,7 @@ class ReactionsProvider extends AbstractProvider
 {
     public function __construct(
         private readonly ReactionRegistry $reactionRegistry
-    ) {
-    }
+    ) {}
 
     public function getConfiguration(): array
     {

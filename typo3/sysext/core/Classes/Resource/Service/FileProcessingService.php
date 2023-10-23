@@ -48,8 +48,7 @@ class FileProcessingService
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ProcessedFileRepository $processedFileRepository,
         protected readonly ProcessorRegistry $processorRegistry,
-    ) {
-    }
+    ) {}
 
     public function processFile(File|FileReference $fileObject, string $taskType, DriverInterface $driver, array $configuration): ProcessedFile
     {

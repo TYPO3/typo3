@@ -39,8 +39,7 @@ final class MfaProviderManifest implements MfaProviderManifestInterface
         private readonly bool $isDefaultProviderAllowed,
         private readonly string $serviceName,
         private readonly ContainerInterface $container
-    ) {
-    }
+    ) {}
 
     public function getIdentifier(): string
     {

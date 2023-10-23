@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
  */
 class RawValue implements \Stringable, SourceInterface
 {
-    public function __construct(public readonly string $value)
-    {
-    }
+    public function __construct(public readonly string $value) {}
 
     public function __toString(): string
     {

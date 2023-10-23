@@ -27,8 +27,7 @@ final class ModifyRecordOverlayIconIdentifierEvent
         private readonly string $table,
         private readonly array $row,
         private readonly array $status,
-    ) {
-    }
+    ) {}
 
     public function setOverlayIconIdentifier(string $overlayIconIdentifier): void
     {

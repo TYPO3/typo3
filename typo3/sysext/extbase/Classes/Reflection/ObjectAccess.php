@@ -289,12 +289,12 @@ class ObjectAccess
 
             $propertyNames = array_filter(
                 array_keys($classSchema->getProperties()),
-                static fn (string $propertyName): bool => $accessor->isWritable($object, $propertyName)
+                static fn(string $propertyName): bool => $accessor->isWritable($object, $propertyName)
             );
 
             $setters = array_filter(
                 array_keys($classSchema->getMethods()),
-                static fn (string $methodName): bool => str_starts_with($methodName, 'set') && is_callable([$object, $methodName])
+                static fn(string $methodName): bool => str_starts_with($methodName, 'set') && is_callable([$object, $methodName])
             );
 
             foreach ($setters as $setter) {
@@ -392,7 +392,7 @@ class ObjectAccess
 
     private static function convertToArrayPropertyPath(PropertyPath $propertyPath): PropertyPath
     {
-        $segments = array_map(static fn (string $segment): string => static::wrap($segment), $propertyPath->getElements());
+        $segments = array_map(static fn(string $segment): string => static::wrap($segment), $propertyPath->getElements());
 
         return new PropertyPath(implode('.', $segments));
     }

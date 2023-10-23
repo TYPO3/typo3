@@ -35,8 +35,7 @@ final class GeneratePublicUrlForResourceEvent
         private readonly ResourceInterface $resource,
         private readonly ResourceStorage $storage,
         private readonly DriverInterface $driver
-    ) {
-    }
+    ) {}
 
     public function getResource(): ResourceInterface
     {

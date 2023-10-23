@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Resource\Exception;
  *
  * Extending \RuntimeException for backwards compatibility.
  */
-class ResourcePermissionsUnavailableException extends Exception
-{
-}
+class ResourcePermissionsUnavailableException extends Exception {}

@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Exception;
  *
  * @todo: deprecate
  */
-class CommandNameAlreadyInUseException extends Exception
-{
-}
+class CommandNameAlreadyInUseException extends Exception {}

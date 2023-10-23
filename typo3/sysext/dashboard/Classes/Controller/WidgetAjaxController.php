@@ -36,8 +36,7 @@ class WidgetAjaxController
     public function __construct(
         protected readonly DashboardRepository $dashboardRepository,
         protected readonly WidgetRegistry $widgetRegistry,
-    ) {
-    }
+    ) {}
 
     public function getContent(ServerRequestInterface $request): ResponseInterface
     {

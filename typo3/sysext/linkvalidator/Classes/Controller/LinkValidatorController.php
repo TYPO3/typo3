@@ -94,8 +94,7 @@ class LinkValidatorController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly LinkAnalyzer $linkAnalyzer,
         protected readonly LinktypeRegistry $linktypeRegistry,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {

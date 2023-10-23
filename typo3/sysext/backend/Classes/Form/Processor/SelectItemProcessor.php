@@ -31,9 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class SelectItemProcessor
 {
-    public function __construct(protected readonly LanguageServiceFactory $languageServiceFactory)
-    {
-    }
+    public function __construct(protected readonly LanguageServiceFactory $languageServiceFactory) {}
 
     /**
      * Is used when --div-- elements in the item list are used, or if groups are defined via "groupItems" config array.

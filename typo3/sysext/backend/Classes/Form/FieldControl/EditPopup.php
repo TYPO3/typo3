@@ -34,8 +34,7 @@ class EditPopup extends AbstractNode
 
     public function __construct(
         private readonly UriBuilder $uriBuilder,
-    ) {
-    }
+    ) {}
 
     /**
      * Edit popup control

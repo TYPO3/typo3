@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Error\Exception;
  * Is typically used, when a site configuration has a page-error handler configured but this does not implement
  * the PageErrorHandlerInterface
  */
-class InvalidPageErrorHandlerException extends Exception
-{
-}
+class InvalidPageErrorHandlerException extends Exception {}

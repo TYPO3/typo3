@@ -33,8 +33,7 @@ class OuterWrapContainer extends AbstractContainer
 {
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Entry method

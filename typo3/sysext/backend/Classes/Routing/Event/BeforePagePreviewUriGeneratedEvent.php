@@ -37,8 +37,7 @@ final class BeforePagePreviewUriGeneratedEvent implements StoppableEventInterfac
         private array $additionalQueryParameters,
         private readonly Context $context,
         private readonly array $options
-    ) {
-    }
+    ) {}
 
     public function setPreviewUri(UriInterface $uri): void
     {

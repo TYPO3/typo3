@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 class BackendModuleProvider extends AbstractProvider
 {
-    public function __construct(protected readonly ModuleProvider $provider)
-    {
-    }
+    public function __construct(protected readonly ModuleProvider $provider) {}
 
     public function getConfiguration(): array
     {

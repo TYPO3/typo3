@@ -82,7 +82,7 @@ class RequestTokenMiddleware implements MiddlewareInterface, LoggerAwareInterfac
         $cookiePrefixLength = strlen($cookiePrefix);
         $cookies = array_filter(
             $request->getCookieParams(),
-            static fn ($name) => is_string($name) && str_starts_with($name, $cookiePrefix),
+            static fn($name) => is_string($name) && str_starts_with($name, $cookiePrefix),
             ARRAY_FILTER_USE_KEY
         );
         $items = [];
@@ -127,7 +127,7 @@ class RequestTokenMiddleware implements MiddlewareInterface, LoggerAwareInterfac
         $securePrefix = $secure ? self::SECURE_PREFIX : '';
         $cookiePrefix = $securePrefix . self::COOKIE_PREFIX;
 
-        $createCookie = static fn (string $name, string $value, int $expire): Cookie => new Cookie(
+        $createCookie = static fn(string $name, string $value, int $expire): Cookie => new Cookie(
             $name,
             $value,
             $expire,

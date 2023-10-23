@@ -36,8 +36,7 @@ final class FileUpdatedMessage implements WebhookMessageInterface
         private readonly string $publicUrl,
         private readonly array $relevantProperties,
         private readonly array $updatedFields
-    ) {
-    }
+    ) {}
 
     public static function createFromEvent(AfterFileUpdatedInIndexEvent $event): FileUpdatedMessage
     {

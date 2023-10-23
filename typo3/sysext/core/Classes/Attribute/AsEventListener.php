@@ -31,6 +31,5 @@ class AsEventListener
         public ?string $method = null,
         public ?string $before = null,
         public ?string $after = null,
-    ) {
-    }
+    ) {}
 }

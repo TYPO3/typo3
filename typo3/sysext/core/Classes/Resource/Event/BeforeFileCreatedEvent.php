@@ -27,9 +27,7 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class BeforeFileCreatedEvent
 {
-    public function __construct(private readonly string $fileName, private readonly Folder $folder)
-    {
-    }
+    public function __construct(private readonly string $fileName, private readonly Folder $folder) {}
 
     public function getFileName(): string
     {

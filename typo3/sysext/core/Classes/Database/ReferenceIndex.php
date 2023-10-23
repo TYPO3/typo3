@@ -88,8 +88,7 @@ class ReferenceIndex
         private readonly ConnectionPool $connectionPool,
         private readonly Registry $registry,
         private readonly FlexFormTools $flexFormTools,
-    ) {
-    }
+    ) {}
 
     /**
      * Update the sys_refindex table for a record, even one just deleted.

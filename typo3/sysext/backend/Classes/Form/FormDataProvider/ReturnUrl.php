@@ -32,9 +32,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
  */
 class ReturnUrl implements FormDataProviderInterface
 {
-    public function __construct(private readonly UriBuilder $uriBuilder)
-    {
-    }
+    public function __construct(private readonly UriBuilder $uriBuilder) {}
 
     public function addData(array $result): array
     {

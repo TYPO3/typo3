@@ -72,8 +72,7 @@ final class DebuggerUtilityTest extends UnitTestCase
      */
     public function varDumpHandlesVariadicArguments(): void
     {
-        $result = DebuggerUtility::var_dump(static function (...$args) {
-        }, null, 8, true, false, true);
+        $result = DebuggerUtility::var_dump(static function (...$args) {}, null, 8, true, false, true);
         self::assertStringContainsString('function (...$args)', $result);
     }
 

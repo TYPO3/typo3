@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Error\Exception as CoreException;
 /**
  * A generic Form Exception
  */
-class Exception extends CoreException
-{
-}
+class Exception extends CoreException {}

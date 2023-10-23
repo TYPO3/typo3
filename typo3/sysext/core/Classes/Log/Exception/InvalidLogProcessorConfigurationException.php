@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Log\Exception;
 /**
  * An exception when something is wrong with the configuration for a LogProcessor
  */
-class InvalidLogProcessorConfigurationException extends Exception
-{
-}
+class InvalidLogProcessorConfigurationException extends Exception {}

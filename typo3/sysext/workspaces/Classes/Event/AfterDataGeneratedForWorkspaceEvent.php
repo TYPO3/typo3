@@ -28,8 +28,7 @@ final class AfterDataGeneratedForWorkspaceEvent
         private readonly GridDataService $gridService,
         private array $data,
         private array $versions
-    ) {
-    }
+    ) {}
 
     public function getGridService(): GridDataService
     {

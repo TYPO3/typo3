@@ -35,9 +35,7 @@ final class ModifyFileDumpEvent implements StoppableEventInterface
 {
     private ?ResponseInterface $response = null;
 
-    public function __construct(private ResourceInterface $file, private ServerRequestInterface $request)
-    {
-    }
+    public function __construct(private ResourceInterface $file, private ServerRequestInterface $request) {}
 
     public function getFile(): ResourceInterface
     {

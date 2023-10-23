@@ -31,9 +31,7 @@ class Null_ implements Tag, StaticMethod
         return 'Null';
     }
 
-    public static function create($body): void
-    {
-    }
+    public static function create($body): void {}
 
     public function render(?Formatter $formatter = null): string
     {

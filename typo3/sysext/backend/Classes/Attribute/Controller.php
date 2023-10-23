@@ -25,7 +25,5 @@ class Controller
 {
     public const TAG_NAME = 'backend.controller';
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 }

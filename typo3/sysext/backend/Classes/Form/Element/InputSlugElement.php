@@ -66,8 +66,7 @@ class InputSlugElement extends AbstractFormElement
 
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * This will render a single-line input form field, possibly with various control/validation features

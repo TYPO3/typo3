@@ -27,9 +27,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  */
 final class AfterFileDeletedEvent
 {
-    public function __construct(private readonly FileInterface $file)
-    {
-    }
+    public function __construct(private readonly FileInterface $file) {}
 
     public function getFile(): FileInterface
     {

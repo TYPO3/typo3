@@ -68,8 +68,7 @@ class ElementInformationController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ResourceFactory $resourceFactory,
         private readonly FormDataCompiler $formDataCompiler,
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request or subrequest

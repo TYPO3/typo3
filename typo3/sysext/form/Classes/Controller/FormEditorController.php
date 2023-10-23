@@ -62,8 +62,7 @@ class FormEditorController extends AbstractBackendController
         protected readonly PageRenderer $pageRenderer,
         protected readonly IconFactory $iconFactory,
         protected readonly FormDefinitionConversionService $formDefinitionConversionService,
-    ) {
-    }
+    ) {}
 
     /**
      * Display the form editor.
@@ -104,7 +103,7 @@ class FormEditorController extends AbstractBackendController
         $formEditorDefinitions = $this->getFormEditorDefinitions();
 
         $additionalViewModelJavaScriptModules = array_map(
-            static fn (string $name) => JavaScriptModuleInstruction::create($name),
+            static fn(string $name) => JavaScriptModuleInstruction::create($name),
             $this->prototypeConfiguration['formEditor']['dynamicJavaScriptModules']['additionalViewModelModules'] ?? []
         );
         array_map($this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $additionalViewModelJavaScriptModules);
@@ -141,10 +140,10 @@ class FormEditorController extends AbstractBackendController
         }
 
         $javaScriptModules = array_map(
-            static fn (string $name) => JavaScriptModuleInstruction::create($name),
+            static fn(string $name) => JavaScriptModuleInstruction::create($name),
             array_filter(
                 $this->prototypeConfiguration['formEditor']['dynamicJavaScriptModules'] ?? [],
-                fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+                fn(string $name) => in_array($name, self::JS_MODULE_NAMES, true),
                 ARRAY_FILTER_USE_KEY
             )
         );

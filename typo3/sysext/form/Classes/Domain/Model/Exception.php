@@ -22,6 +22,4 @@ use TYPO3\CMS\Form\Domain\Exception as DomainException;
 /**
  * A generic Form model Exception
  */
-class Exception extends DomainException
-{
-}
+class Exception extends DomainException {}

@@ -25,9 +25,7 @@ namespace TYPO3\CMS\Core\Resource\Event;
  */
 final class BeforeResourceStorageInitializationEvent
 {
-    public function __construct(private $storageUid, private $record, private ?string $fileIdentifier)
-    {
-    }
+    public function __construct(private $storageUid, private $record, private ?string $fileIdentifier) {}
 
     public function getStorageUid(): int
     {

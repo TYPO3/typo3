@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception when something is wrong with the Folder
  */
-class InvalidFolderException extends Exception
-{
-}
+class InvalidFolderException extends Exception {}

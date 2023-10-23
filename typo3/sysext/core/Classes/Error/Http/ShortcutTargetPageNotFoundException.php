@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Error\Http;
 /**
  * Exception when a shortcut target page could not be resolved
  */
-class ShortcutTargetPageNotFoundException extends PageNotFoundException
-{
-}
+class ShortcutTargetPageNotFoundException extends PageNotFoundException {}

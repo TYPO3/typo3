@@ -24,6 +24,4 @@ namespace TYPO3\CMS\Core\Utility\Exception;
  * Note this extends from \RuntimeException to be backwards compatible with the
  * formerly thrown \RuntimeException in the method.
  */
-class MissingArrayPathException extends \RuntimeException
-{
-}
+class MissingArrayPathException extends \RuntimeException {}

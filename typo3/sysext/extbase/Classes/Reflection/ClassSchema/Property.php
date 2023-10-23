@@ -83,7 +83,7 @@ class Property
      */
     public function getPrimaryType(): ?Type
     {
-        return $this->getFilteredTypes(fn (Type $type) => $type->getClassName() !== LazyLoadingProxy::class)[0] ?? null;
+        return $this->getFilteredTypes(fn(Type $type) => $type->getClassName() !== LazyLoadingProxy::class)[0] ?? null;
     }
 
     public function getPrimaryCollectionValueType(): ?Type
@@ -111,7 +111,7 @@ class Property
     public function isObjectStorageType(): bool
     {
         $filteredTypes = $this->getFilteredTypes(
-            fn (Type $type) => in_array((string)$type->getClassName(), [ObjectStorage::class, LazyObjectStorage::class], true)
+            fn(Type $type) => in_array((string)$type->getClassName(), [ObjectStorage::class, LazyObjectStorage::class], true)
         );
 
         return $filteredTypes !== [];

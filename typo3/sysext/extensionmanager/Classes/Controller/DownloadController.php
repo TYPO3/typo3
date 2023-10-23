@@ -50,8 +50,7 @@ class DownloadController extends AbstractController
         protected readonly ExtensionRepository $extensionRepository,
         protected readonly ExtensionManagementService $managementService,
         protected readonly ExtensionConfiguration $extensionConfiguration,
-    ) {
-    }
+    ) {}
 
     /**
      * Check extension dependencies

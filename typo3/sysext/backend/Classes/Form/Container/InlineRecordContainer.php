@@ -50,8 +50,7 @@ class InlineRecordContainer extends AbstractContainer
         private readonly IconFactory $iconFactory,
         private readonly InlineStackProcessor $inlineStackProcessor,
         private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * Entry method

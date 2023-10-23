@@ -34,8 +34,7 @@ final class EvaluateModifierFunctionEvent
         private readonly string $functionName,
         private readonly ?string $functionArgument,
         private readonly ?string $originalValue,
-    ) {
-    }
+    ) {}
 
     /**
      * The function name, for example "extNewsSortFunction" when using "foo := extNewsSortFunction()"

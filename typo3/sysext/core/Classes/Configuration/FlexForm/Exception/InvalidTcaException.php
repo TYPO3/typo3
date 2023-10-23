@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
  * This may happen if a record is opened that points to a data structure of
  * a no longer loaded extension
  */
-class InvalidTcaException extends AbstractInvalidDataStructureException
-{
-}
+class InvalidTcaException extends AbstractInvalidDataStructureException {}

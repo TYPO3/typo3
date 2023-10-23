@@ -29,6 +29,5 @@ final class CreateTableClause
     public function __construct(
         public readonly Identifier $tableName,
         public bool $isTemporary = false
-    ) {
-    }
+    ) {}
 }

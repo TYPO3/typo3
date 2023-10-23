@@ -45,8 +45,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
     public function __construct(
         private readonly FlashMessageService $flashMessageService,
         private readonly StorageRepository $storageRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * There are some edge cases where "is_public" can never be marked as true in the BE,

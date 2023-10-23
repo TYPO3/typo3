@@ -71,8 +71,7 @@ class AddController
 
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request or subrequest

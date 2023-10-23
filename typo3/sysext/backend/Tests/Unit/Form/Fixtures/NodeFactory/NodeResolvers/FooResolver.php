@@ -22,9 +22,7 @@ use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeElements\FooEleme
 
 final class FooResolver implements NodeResolverInterface
 {
-    public function setData(array $data): void
-    {
-    }
+    public function setData(array $data): void {}
 
     public function resolve(): string
     {

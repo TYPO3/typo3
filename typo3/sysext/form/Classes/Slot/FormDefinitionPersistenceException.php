@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Form\Slot;
 /**
  * @internal
  */
-class FormDefinitionPersistenceException extends \RuntimeException
-{
-}
+class FormDefinitionPersistenceException extends \RuntimeException {}

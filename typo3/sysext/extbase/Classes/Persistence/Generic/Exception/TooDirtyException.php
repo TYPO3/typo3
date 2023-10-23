@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * A "Too Dirty" exception
  */
-class TooDirtyException extends Exception
-{
-}
+class TooDirtyException extends Exception {}

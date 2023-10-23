@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Type\Enumeration;
 /**
  * This is an invalid enumeration because no constants are defined
  */
-final class MissingConstantsEnumeration extends Enumeration
-{
-}
+final class MissingConstantsEnumeration extends Enumeration {}

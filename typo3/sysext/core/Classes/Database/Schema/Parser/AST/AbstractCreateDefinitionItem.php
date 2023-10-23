@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
  * Base class for all definition items that can occur in the definition
  * of a table, namely fields, indexes and foreign keys.
  */
-abstract class AbstractCreateDefinitionItem
-{
-}
+abstract class AbstractCreateDefinitionItem {}

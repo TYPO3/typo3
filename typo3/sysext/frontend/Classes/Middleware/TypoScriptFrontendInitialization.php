@@ -44,8 +44,7 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
 {
     public function __construct(
         private readonly Context $context
-    ) {
-    }
+    ) {}
 
     /**
      * Creates an instance of TSFE and sets it as a global variable.

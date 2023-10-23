@@ -29,9 +29,7 @@ class ResolutionRepository
 {
     protected const TABLE_NAME = 'sys_csp_resolution';
 
-    public function __construct(protected readonly ConnectionPool $pool)
-    {
-    }
+    public function __construct(protected readonly ConnectionPool $pool) {}
 
     /**
      * @return list<Resolution>
@@ -46,7 +44,7 @@ class ResolutionRepository
             ['created' => 'asc']
         );
         return array_map(
-            static fn (array $row) => Resolution::fromArray($row),
+            static fn(array $row) => Resolution::fromArray($row),
             $result->fetchAllAssociative()
         );
     }
@@ -72,7 +70,7 @@ class ResolutionRepository
             return [];
         }
         return array_map(
-            static fn (array $row) => Resolution::fromArray($row),
+            static fn(array $row) => Resolution::fromArray($row),
             $result->fetchAllAssociative()
         );
     }
@@ -120,7 +118,7 @@ class ResolutionRepository
             );
         }
         return array_map(
-            static fn (array $row) => Resolution::fromArray($row),
+            static fn(array $row) => Resolution::fromArray($row),
             $result->fetchAllAssociative()
         );
     }

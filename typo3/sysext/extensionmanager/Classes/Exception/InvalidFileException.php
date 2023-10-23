@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Extensionmanager\Exception;
 /**
  * An exception when an uploaded file is invalid
  */
-class InvalidFileException extends ExtensionManagerException
-{
-}
+class InvalidFileException extends ExtensionManagerException {}

@@ -848,7 +848,7 @@ class DefaultTcaSchema
                 }
 
                 // Use integer type.
-                $allValues = array_map(fn (array $item): int => (int)$item['value'], $items);
+                $allValues = array_map(fn(array $item): int => (int)$item['value'], $items);
                 $minValue = min($allValues);
                 $maxValue = max($allValues);
                 // Try to safe some bytes - can be reconsidered to simply use Types::INTEGER.

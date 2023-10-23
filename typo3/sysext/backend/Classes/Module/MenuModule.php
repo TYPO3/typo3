@@ -29,9 +29,7 @@ class MenuModule implements ModuleInterface
      */
     protected array $subModules = [];
 
-    public function __construct(protected readonly ModuleInterface $module, protected $isCollapsed = false)
-    {
-    }
+    public function __construct(protected readonly ModuleInterface $module, protected $isCollapsed = false) {}
 
     public function getIdentifier(): string
     {

@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Core\Exception\Page;
  * Base exception for root line traversal. This extends from RuntimeException for historical reasons
  * and bw compatibility
  */
-class RootLineException extends \RuntimeException
-{
-}
+class RootLineException extends \RuntimeException {}

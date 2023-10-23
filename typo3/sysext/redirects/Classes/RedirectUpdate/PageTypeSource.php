@@ -24,8 +24,7 @@ final class PageTypeSource implements RedirectSourceInterface
         private readonly string $path,
         private readonly int $pageType,
         private readonly array $targetLinkParameters,
-    ) {
-    }
+    ) {}
 
     public function getHost(): string
     {

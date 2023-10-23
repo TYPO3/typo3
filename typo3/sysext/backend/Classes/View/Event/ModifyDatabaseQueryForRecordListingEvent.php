@@ -34,8 +34,7 @@ final class ModifyDatabaseQueryForRecordListingEvent
         private int $firstResult,
         private int $maxResults,
         private DatabaseRecordList $recordList
-    ) {
-    }
+    ) {}
 
     public function getQueryBuilder(): QueryBuilder
     {

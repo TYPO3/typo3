@@ -254,8 +254,7 @@ class MenuProcessor implements DataProcessorInterface
     public function __construct(
         protected ContentDataProcessor $contentDataProcessor,
         protected ContentObjectFactory $contentObjectFactory
-    ) {
-    }
+    ) {}
 
     /**
      * This is called from UserContentObject via ContentObjectRenderer->callUserFunction()

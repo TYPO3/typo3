@@ -77,13 +77,9 @@ class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtili
         $GLOBALS['TCA'] = [];
     }
 
-    public static function dispatchBaseTcaIsBeingBuiltEvent(array $tca): void
-    {
-    }
+    public static function dispatchBaseTcaIsBeingBuiltEvent(array $tca): void {}
 
-    public static function dispatchTcaIsBeingBuiltEvent(array $tca): void
-    {
-    }
+    public static function dispatchTcaIsBeingBuiltEvent(array $tca): void {}
 
     public static function removeDuplicatesForInsertion($insertionList, $list = ''): string
     {

@@ -37,8 +37,7 @@ class SuggestWizardController
 {
     public function __construct(
         private readonly FlexFormTools $flexFormTools,
-    ) {
-    }
+    ) {}
 
     /**
      * Ajax handler for the "suggest" feature in FormEngine.

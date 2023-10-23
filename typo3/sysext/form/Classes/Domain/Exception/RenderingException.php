@@ -26,6 +26,4 @@ use TYPO3\CMS\Form\Domain\Exception;
 /**
  * This exception is thrown if a rendering error occurs
  */
-class RenderingException extends Exception
-{
-}
+class RenderingException extends Exception {}

@@ -44,8 +44,7 @@ class FieldControl extends AbstractNode
         private readonly NodeFactory $nodeFactory,
         private readonly IconFactory $iconFactory,
         private readonly DependencyOrderingService $dependencyOrderingService,
-    ) {
-    }
+    ) {}
 
     /**
      * Order the list of field wizards to be rendered with the ordering service,

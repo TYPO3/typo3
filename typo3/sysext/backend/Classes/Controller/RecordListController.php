@@ -81,8 +81,7 @@ class RecordListController
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -232,7 +231,7 @@ class RecordListController
         $clipboardCommandArray = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
         if ($cmd === 'copyMarked' || $cmd === 'removeMarked') {
             // Get CBC from request, and map the element values (true => copy, false => remove)
-            $CBC = array_map(static fn (): bool => ($cmd === 'copyMarked'), (array)($request->getParsedBody()['CBC'] ?? []));
+            $CBC = array_map(static fn(): bool => ($cmd === 'copyMarked'), (array)($request->getParsedBody()['CBC'] ?? []));
             $cmd_table = (string)($request->getParsedBody()['cmd_table'] ?? $request->getQueryParams()['cmd_table'] ?? '');
             // Cleanup CBC
             $clipboardCommandArray['el'] = $clipboard->cleanUpCBC($CBC, $cmd_table);

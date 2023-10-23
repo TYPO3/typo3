@@ -26,9 +26,7 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Event;
  */
 final class BeforeLoadedPageTsConfigEvent
 {
-    public function __construct(private array $tsConfig = [])
-    {
-    }
+    public function __construct(private array $tsConfig = []) {}
 
     public function getTsConfig(): array
     {

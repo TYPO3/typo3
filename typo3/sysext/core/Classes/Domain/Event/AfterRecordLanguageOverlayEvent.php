@@ -30,8 +30,7 @@ final class AfterRecordLanguageOverlayEvent
         private array|null $localizedRecord,
         private bool $overlayingWasAttempted,
         private readonly LanguageAspect $languageAspect
-    ) {
-    }
+    ) {}
 
     public function getTable(): string
     {

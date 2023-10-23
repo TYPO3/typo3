@@ -33,8 +33,7 @@ final class AfterFlexFormDataStructureParsedEvent
     public function __construct(
         private array $dataStructure,
         private readonly array $identifier,
-    ) {
-    }
+    ) {}
 
     public function getIdentifier(): array
     {

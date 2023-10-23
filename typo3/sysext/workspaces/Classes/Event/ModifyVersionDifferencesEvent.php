@@ -30,8 +30,7 @@ final class ModifyVersionDifferencesEvent
         private array $versionDifferences,
         private readonly array $liveRecordData,
         private readonly \stdClass $parameters,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the version differences.

@@ -37,8 +37,7 @@ final class XmlSitemapRenderer
     public function __construct(
         private readonly TypoScriptService $typoScriptService,
         private readonly RenderingContextFactory $renderingContextFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * @param string $_ unused, but needed as this is called via userfunc and passes a string as first parameter

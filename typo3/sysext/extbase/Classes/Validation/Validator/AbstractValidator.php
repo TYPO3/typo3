@@ -153,7 +153,7 @@ abstract class AbstractValidator implements ValidatorInterface
         // merge with default values
         $this->options = array_merge(
             array_map(
-                static fn (array $value): mixed => $value[0],
+                static fn(array $value): mixed => $value[0],
                 $this->supportedOptions
             ),
             $options

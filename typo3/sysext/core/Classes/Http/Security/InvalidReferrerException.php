@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown when route requires referrer, which does not match current base URL.
  */
-class InvalidReferrerException extends Exception
-{
-}
+class InvalidReferrerException extends Exception {}

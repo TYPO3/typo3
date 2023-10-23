@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Exception\Page;
 /**
  * Exception thrown if a page property relation can not be fetched from the DB
  */
-class PagePropertyRelationNotFoundException extends \RuntimeException
-{
-}
+class PagePropertyRelationNotFoundException extends \RuntimeException {}

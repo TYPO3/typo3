@@ -38,8 +38,7 @@ class WebhookRepository
     public function __construct(
         protected readonly ConnectionPool $connectionPool,
         protected readonly FrontendInterface $runtimeCache,
-    ) {
-    }
+    ) {}
 
     /**
      * @return WebhookInstruction[]
@@ -101,7 +100,7 @@ class WebhookRepository
     public function getConfiguredWebhooksByType(string $type): array
     {
         $webhooks = $this->getConfiguredWebhooks();
-        return array_filter($webhooks, static fn ($webhook) => $webhook->getWebhookType()?->getServiceName() === $type);
+        return array_filter($webhooks, static fn($webhook) => $webhook->getWebhookType()?->getServiceName() === $type);
     }
 
     protected function getQueryBuilderForDemand(WebhookDemand $demand): QueryBuilder

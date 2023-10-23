@@ -32,8 +32,7 @@ final class SanitizeFileNameEvent
         private readonly Folder $targetFolder,
         private readonly ResourceStorage $storage,
         private readonly DriverInterface $driver
-    ) {
-    }
+    ) {}
 
     public function getFileName(): string
     {

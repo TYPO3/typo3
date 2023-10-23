@@ -31,6 +31,5 @@ final class StageChangeMessage
         public readonly string $comment,
         public readonly array $recipients,
         public readonly array $currentUserRecord
-    ) {
-    }
+    ) {}
 }

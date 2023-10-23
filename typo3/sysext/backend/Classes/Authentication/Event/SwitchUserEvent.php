@@ -26,8 +26,7 @@ final class SwitchUserEvent
         private readonly string $sessionId,
         private readonly array $targetUser,
         private readonly array $currentUser
-    ) {
-    }
+    ) {}
 
     public function getSessionId(): string
     {

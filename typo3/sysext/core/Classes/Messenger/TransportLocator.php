@@ -31,9 +31,7 @@ use Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface;
  */
 class TransportLocator implements SendersLocatorInterface
 {
-    public function __construct(private readonly ServiceLocator $sendersLocator)
-    {
-    }
+    public function __construct(private readonly ServiceLocator $sendersLocator) {}
 
     public function getSenders(Envelope $envelope): iterable
     {

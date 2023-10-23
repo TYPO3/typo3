@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Cache;
 /**
  * A generic Cache exception
  */
-class Exception extends \Exception
-{
-}
+class Exception extends \Exception {}

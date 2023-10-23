@@ -40,8 +40,7 @@ class SetupService
     public function __construct(
         private readonly ConfigurationManager $configurationManager,
         private readonly SiteConfiguration $siteConfiguration,
-    ) {
-    }
+    ) {}
 
     public function setSiteName(string $name): bool
     {

@@ -53,8 +53,7 @@ final class RenderingContextFactory
         private readonly ContainerInterface $container,
         private readonly CacheManager $cacheManager,
         private readonly ViewHelperResolverFactoryInterface $viewHelperResolverFactory,
-    ) {
-    }
+    ) {}
 
     public function create(array $templatePathsArray = []): RenderingContext
     {

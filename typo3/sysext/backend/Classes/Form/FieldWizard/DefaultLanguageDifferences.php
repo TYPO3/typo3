@@ -33,8 +33,7 @@ class DefaultLanguageDifferences extends AbstractNode
 {
     public function __construct(
         private readonly DiffUtility $diffUtility,
-    ) {
-    }
+    ) {}
 
     /**
      * Render the diff view if enabled

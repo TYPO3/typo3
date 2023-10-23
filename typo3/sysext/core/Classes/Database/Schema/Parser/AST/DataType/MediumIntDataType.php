@@ -22,6 +22,4 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType;
  *
  * @internal
  */
-final class MediumIntDataType extends IntegerDataType
-{
-}
+final class MediumIntDataType extends IntegerDataType {}

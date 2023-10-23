@@ -33,9 +33,7 @@ final class ResultItemAction implements \JsonSerializable
     /**
      * @param non-empty-string $identifier
      */
-    public function __construct(private readonly string $identifier)
-    {
-    }
+    public function __construct(private readonly string $identifier) {}
 
     public function setLabel(string $label): self
     {

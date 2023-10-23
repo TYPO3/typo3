@@ -23,6 +23,4 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode;
  *
  * @internal: Internal tree structure.
  */
-final class StringInclude extends AbstractInclude
-{
-}
+final class StringInclude extends AbstractInclude {}

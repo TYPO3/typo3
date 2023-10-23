@@ -30,8 +30,7 @@ final class BeforeRedirectEvent
         private readonly string $loginType,
         private string $redirectUrl,
         private readonly ServerRequestInterface $request,
-    ) {
-    }
+    ) {}
 
     public function getLoginType(): string
     {

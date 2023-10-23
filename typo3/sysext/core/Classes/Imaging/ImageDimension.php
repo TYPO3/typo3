@@ -35,8 +35,7 @@ class ImageDimension
     public function __construct(
         private readonly int $width,
         private readonly int $height
-    ) {
-    }
+    ) {}
 
     /**
      * @return int<0, max>

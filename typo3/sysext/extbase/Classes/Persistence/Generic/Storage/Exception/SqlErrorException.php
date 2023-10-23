@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An SQL exception
  */
-class SqlErrorException extends Exception
-{
-}
+class SqlErrorException extends Exception {}

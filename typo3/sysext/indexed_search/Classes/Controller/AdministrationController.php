@@ -54,8 +54,7 @@ class AdministrationController extends ActionController
         protected readonly IconFactory $iconFactory,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly ConnectionPool $connectionPool,
-    ) {
-    }
+    ) {}
 
     /**
      * Generates the action menu

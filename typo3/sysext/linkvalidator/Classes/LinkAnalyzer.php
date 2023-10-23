@@ -73,8 +73,7 @@ class LinkAnalyzer
         protected readonly BrokenLinkRepository $brokenLinkRepository,
         protected readonly SoftReferenceParserFactory $softReferenceParserFactory,
         protected readonly LinktypeRegistry $linktypeRegistry,
-    ) {
-    }
+    ) {}
 
     /**
      * Store all the needed configuration values in class variables

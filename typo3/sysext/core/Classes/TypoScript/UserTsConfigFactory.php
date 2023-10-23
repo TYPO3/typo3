@@ -41,8 +41,7 @@ final class UserTsConfigFactory
         private readonly TokenizerInterface $tokenizer,
         private readonly TsConfigTreeBuilder $tsConfigTreeBuilder,
         private readonly PhpFrontend $cache,
-    ) {
-    }
+    ) {}
 
     public function create(BackendUserAuthentication $backendUser): UserTsConfig
     {

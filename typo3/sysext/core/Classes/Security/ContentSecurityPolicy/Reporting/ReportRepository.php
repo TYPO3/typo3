@@ -32,9 +32,7 @@ class ReportRepository
     protected const TABLE_NAME = 'sys_http_report';
     protected const TYPE = 'csp-report';
 
-    public function __construct(protected readonly ConnectionPool $pool)
-    {
-    }
+    public function __construct(protected readonly ConnectionPool $pool) {}
 
     /**
      * @return list<Report>
@@ -46,7 +44,7 @@ class ReportRepository
             ->select('*')
             ->executeQuery();
         return array_map(
-            static fn (array $row) => Report::fromArray($row),
+            static fn(array $row) => Report::fromArray($row),
             $result->fetchAllAssociative()
         );
     }
@@ -112,7 +110,7 @@ class ReportRepository
         $summaryCountMap = $this->fetchSummaryCountMap();
 
         return array_map(
-            static fn (array $row) => SummarizedReport::fromArray($row)
+            static fn(array $row) => SummarizedReport::fromArray($row)
                 ->withCount($summaryCountMap[$row['summary']] ?? 0),
             $result->fetchAllAssociative()
         );
@@ -145,7 +143,7 @@ class ReportRepository
             ->select('*')
             ->executeQuery();
         return array_map(
-            static fn (array $row) => SummarizedReport::fromArray($row),
+            static fn(array $row) => SummarizedReport::fromArray($row),
             $result->fetchAllAssociative()
         );
     }

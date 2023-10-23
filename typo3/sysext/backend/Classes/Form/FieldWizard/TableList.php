@@ -33,8 +33,7 @@ class TableList extends AbstractNode
 {
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Render table buttons

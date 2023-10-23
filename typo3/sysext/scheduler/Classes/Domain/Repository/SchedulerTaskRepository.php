@@ -38,8 +38,7 @@ class SchedulerTaskRepository
 
     public function __construct(
         protected readonly TaskSerializer $taskSerializer,
-    ) {
-    }
+    ) {}
 
     /**
      * Adds a task to the pool

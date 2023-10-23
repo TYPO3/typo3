@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 /**
  * Fixture for a class extending another singleton class
  */
-class ExtendedSingletonClassFixture extends SingletonClassFixture
-{
-}
+class ExtendedSingletonClassFixture extends SingletonClassFixture {}

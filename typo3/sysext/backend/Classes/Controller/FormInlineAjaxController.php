@@ -42,8 +42,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new inline child via AJAX.

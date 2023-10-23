@@ -27,7 +27,5 @@ use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 class DummyControllerWithValidateAttributeWithoutParamTypeHint extends ActionController
 {
     #[Extbase\Validate(['param' => 'fooParam', 'validator' => NotEmptyValidator::class])]
-    public function methodWithValidateAttributesAction($fooParam): void
-    {
-    }
+    public function methodWithValidateAttributesAction($fooParam): void {}
 }

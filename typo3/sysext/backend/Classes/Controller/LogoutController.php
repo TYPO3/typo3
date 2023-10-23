@@ -41,8 +41,7 @@ class LogoutController
     public function __construct(
         protected readonly UriBuilder $uriBuilder,
         protected readonly FormProtectionFactory $formProtectionFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request or subrequest

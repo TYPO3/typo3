@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Controller" exception
  */
-class InvalidControllerException extends Exception
-{
-}
+class InvalidControllerException extends Exception {}

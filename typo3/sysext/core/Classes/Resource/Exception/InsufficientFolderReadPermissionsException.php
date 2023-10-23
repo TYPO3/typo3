@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception when something is wrong with the file handling
  */
-class InsufficientFolderReadPermissionsException extends InsufficientFolderAccessPermissionsException
-{
-}
+class InsufficientFolderReadPermissionsException extends InsufficientFolderAccessPermissionsException {}

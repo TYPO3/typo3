@@ -541,7 +541,7 @@ class DatabaseIntegrityCheck
             }
         }
 
-        return $rows !== [] ? '<ul class="list-unstyled" role="list">' . implode(LF, array_map(static fn (string $row): string => '<li>' . $row . '</li>', $rows)) . '</ul>' : '';
+        return $rows !== [] ? '<ul class="list-unstyled" role="list">' . implode(LF, array_map(static fn(string $row): string => '<li>' . $row . '</li>', $rows)) . '</ul>' : '';
     }
 
     public function getPageIdArray(): array

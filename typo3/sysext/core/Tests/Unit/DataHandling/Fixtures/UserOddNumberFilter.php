@@ -27,9 +27,9 @@ class UserOddNumberFilter
             return null;
         }
         $values = $parameters['values'];
-        $values =  array_filter($values, static fn ($number) => $number % 2 !== 0);
+        $values =  array_filter($values, static fn($number) => $number % 2 !== 0);
         if (isset($parameters['exclude'])) {
-            $values = array_filter($values, static fn ($number) => $number !== $parameters['exclude']);
+            $values = array_filter($values, static fn($number) => $number !== $parameters['exclude']);
         }
         return $values;
     }

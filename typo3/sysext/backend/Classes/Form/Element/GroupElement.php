@@ -98,8 +98,7 @@ class GroupElement extends AbstractFormElement
 
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * This will render a selector box into which elements from the database

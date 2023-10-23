@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Cache\Exception;
 /**
  * An "Invalid Data" exception
  */
-class InvalidDataException extends Exception
-{
-}
+class InvalidDataException extends Exception {}

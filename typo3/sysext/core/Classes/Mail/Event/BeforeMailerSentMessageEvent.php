@@ -34,8 +34,7 @@ final class BeforeMailerSentMessageEvent
         private readonly MailerInterface $mailer,
         private RawMessage $message,
         private ?Envelope $envelope = null,
-    ) {
-    }
+    ) {}
 
     public function getMessage(): RawMessage
     {

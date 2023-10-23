@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Core\Exception\Page;
 /**
  * Exception thrown if a page can not be fetched from the DB
  */
-class PageNotFoundException extends RootLineException
-{
-}
+class PageNotFoundException extends RootLineException {}

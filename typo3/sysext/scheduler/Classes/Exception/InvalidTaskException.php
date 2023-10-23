@@ -23,6 +23,4 @@ use TYPO3\CMS\Scheduler\Exception;
  * Thrown if a Task could not be successfully unserialized or the unserialized
  * Task is not an instance of AbstractTask.
  */
-class InvalidTaskException extends Exception
-{
-}
+class InvalidTaskException extends Exception {}

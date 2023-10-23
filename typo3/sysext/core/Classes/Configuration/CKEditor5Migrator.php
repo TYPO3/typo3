@@ -363,7 +363,7 @@ class CKEditor5Migrator
                     $item['groups'] = self::TOOLBAR_MAIN_GROUPS_MAP[$item['name']];
                 }
                 // Flatten CKEditor4 arrays that only have strings assigned
-                if (count($item) === count(array_filter($item, static fn (mixed $value): bool => is_string($value)))) {
+                if (count($item) === count(array_filter($item, static fn(mixed $value): bool => is_string($value)))) {
                     $migratedToolbarItems = $item;
                     $migratedToolbarItems = $this->migrateToolbarButtons($migratedToolbarItems);
                     $migratedToolbarItems = $this->migrateToolbarSpacers($migratedToolbarItems);
@@ -382,7 +382,7 @@ class CKEditor5Migrator
                 }
                 // Expand CKEditor4 toolbar groups
                 if (is_string($item['name'] ?? null) && is_array($item['groups'] ?? null)) {
-                    $itemGroups = array_filter($item['groups'], static fn (mixed $itemGroup): bool => is_string($itemGroup));
+                    $itemGroups = array_filter($item['groups'], static fn(mixed $itemGroup): bool => is_string($itemGroup));
 
                     // Process Main CKEditor4 Groups
                     $unGroupedToolbarItems = [];
@@ -777,7 +777,7 @@ class CKEditor5Migrator
                     continue;
                 }
 
-                $wildcardToRegex = fn (string $v): string|array => str_contains($v, '*') ? [ 'pattern' => str_replace('*', '.+', $v) ] : $v;
+                $wildcardToRegex = fn(string $v): string|array => str_contains($v, '*') ? [ 'pattern' => str_replace('*', '.+', $v) ] : $v;
                 if (isset($options['classes'])) {
                     if ($options['classes'] === '*') {
                         $config['classes'] = true;

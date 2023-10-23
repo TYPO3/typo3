@@ -42,8 +42,7 @@ class ReactionHandler
         private readonly ReactionRegistry $reactionRegistry,
         private readonly LoggerInterface $logger,
         private readonly LanguageServiceFactory $languageServiceFactory
-    ) {
-    }
+    ) {}
 
     public function handleReaction(ServerRequestInterface $request, ?ReactionInstruction $reactionInstruction, ReactionUserAuthentication $user): ResponseInterface
     {

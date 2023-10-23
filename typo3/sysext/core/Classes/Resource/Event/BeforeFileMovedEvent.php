@@ -30,8 +30,7 @@ final class BeforeFileMovedEvent
         private readonly FileInterface $file,
         private readonly Folder $folder,
         private readonly string $targetFileName
-    ) {
-    }
+    ) {}
 
     public function getFile(): FileInterface
     {

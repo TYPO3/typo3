@@ -50,7 +50,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
         //        properties on this object is risky and becomes more and more problematic.
         return new ExpressionFunction(
             'getTSFE',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments) {
                 if (($arguments['tsfe'] ?? null) instanceof TypoScriptFrontendController) {
                     return $arguments['tsfe'];
@@ -65,7 +65,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'session',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
                 $retVal = null;
                 $keyParts = explode('|', $str);
@@ -93,7 +93,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'site',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
                 $site = $arguments['site'] ?? null;
                 if ($site instanceof SiteInterface) {
@@ -111,7 +111,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'siteLanguage',
-            static fn () => null, // Not implemented, we only use the evaluator
+            static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, $str) {
                 $siteLanguage = $arguments['siteLanguage'] ?? null;
                 if ($siteLanguage instanceof SiteLanguage) {

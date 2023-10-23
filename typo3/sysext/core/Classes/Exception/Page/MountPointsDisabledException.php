@@ -21,6 +21,4 @@ namespace TYPO3\CMS\Core\Exception\Page;
  * Exception thrown if a mount point is used but disabled via
  * "$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']"
  */
-class MountPointsDisabledException extends MountPointException
-{
-}
+class MountPointsDisabledException extends MountPointException {}

@@ -58,8 +58,7 @@ class MfaController extends AbstractMfaController
         protected readonly LoggerInterface $logger,
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * Main entry point, checking prerequisite, initializing and setting

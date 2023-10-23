@@ -78,8 +78,7 @@ class ExportController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly PresetRepository $presetRepository
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {

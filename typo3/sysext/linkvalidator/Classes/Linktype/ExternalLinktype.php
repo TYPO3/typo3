@@ -98,8 +98,7 @@ class ExternalLinktype extends AbstractLinktype
 
     public function __construct(
         protected readonly RequestFactory $requestFactory,
-    ) {
-    }
+    ) {}
 
     public function setAdditionalConfig(array $config): void
     {

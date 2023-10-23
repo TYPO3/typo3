@@ -43,8 +43,7 @@ final class PolicyProvider
         private readonly PolicyRegistry $policyRegistry,
         private readonly EventDispatcherInterface $eventDispatcher,
         protected readonly MutationRepository $mutationRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * Provides the complete, dynamically mutated policy to be used in HTTP responses.

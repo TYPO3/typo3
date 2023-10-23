@@ -33,9 +33,7 @@ class RedirectUrlValidator implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(protected SiteFinder $siteFinder)
-    {
-    }
+    public function __construct(protected SiteFinder $siteFinder) {}
 
     /**
      * Checks if a given URL is valid / properly sanitized and/or the domain is known to TYPO3.

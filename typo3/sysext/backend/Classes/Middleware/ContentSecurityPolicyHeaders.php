@@ -41,8 +41,7 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
         private readonly LoggerInterface $logger,
         private readonly FrontendInterface $cache,
         private readonly PolicyProvider $policyProvider,
-    ) {
-    }
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

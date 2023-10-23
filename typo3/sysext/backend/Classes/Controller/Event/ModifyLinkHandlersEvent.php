@@ -29,8 +29,7 @@ final class ModifyLinkHandlersEvent
     public function __construct(
         protected array $linkHandlers,
         protected array $currentLinkParts,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, array>

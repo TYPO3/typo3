@@ -26,8 +26,7 @@ class WebhookMessageFactory
 {
     public function __construct(
         protected readonly WebhookTypesRegistry $typesRegistry
-    ) {
-    }
+    ) {}
 
     public function createMessageFromEvent(object $eventObject): ?object
     {

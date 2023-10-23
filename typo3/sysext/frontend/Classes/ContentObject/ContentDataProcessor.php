@@ -28,8 +28,7 @@ class ContentDataProcessor
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly DataProcessorRegistry $dataProcessorRegistry,
-    ) {
-    }
+    ) {}
 
     /**
      * Check for the availability of processors, defined in TypoScript, and use them for data processing

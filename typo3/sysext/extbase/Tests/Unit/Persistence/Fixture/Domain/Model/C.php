@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model;
 /**
  * Class TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\C
  */
-class C extends B
-{
-}
+class C extends B {}

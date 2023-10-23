@@ -25,9 +25,7 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
  */
 final class ProcessFileListActionsEvent
 {
-    public function __construct(private readonly ResourceInterface $fileOrFolder, private array $actionItems)
-    {
-    }
+    public function __construct(private readonly ResourceInterface $fileOrFolder, private array $actionItems) {}
 
     public function getResource(): ResourceInterface
     {

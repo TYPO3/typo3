@@ -36,8 +36,7 @@ final class SlugRedirectChangeItem
         private readonly array $original,
         private readonly RedirectSourceCollection $sourcesCollection,
         private readonly ?array $changed = null,
-    ) {
-    }
+    ) {}
 
     public function getDefaultLanguagePageId(): int
     {

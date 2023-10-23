@@ -32,8 +32,7 @@ final class AfterCacheableContentIsGeneratedEvent
         private readonly TypoScriptFrontendController $controller,
         private readonly string $cacheIdentifier,
         private bool $usePageCache
-    ) {
-    }
+    ) {}
 
     public function getRequest(): ServerRequestInterface
     {

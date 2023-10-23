@@ -62,8 +62,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         private readonly FlashMessageService $flashMessageService,
         private readonly SysTemplateRepository $sysTemplateRepository,
         private readonly SysTemplateTreeBuilder $treeBuilder,
-    ) {
-    }
+    ) {}
 
     /**
      * Default view renders options, constant and setup conditions, constant and setup tree.
@@ -137,7 +136,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn($condition) => $condition['active']), 'value'));
         $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
         $treeTraverserVisitors = [];
         $treeTraverserVisitors[] = $conditionEnforcerVisitor;
@@ -158,7 +157,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn($condition) => $condition['active']), 'value'));
         $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
         $treeTraverserVisitors = [];
         $treeTraverserVisitors[] = $conditionEnforcerVisitor;
@@ -189,10 +188,10 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             'displayConstantSubstitutions' => $displayConstantSubstitutions,
             'displayComments' => $displayComments,
             'constantConditions' => $constantConditions,
-            'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn ($condition) => $condition['active'])),
+            'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn($condition) => $condition['active'])),
             'constantAst' => $constantAst,
             'setupConditions' => $setupConditions,
-            'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn ($condition) => $condition['active'])),
+            'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn($condition) => $condition['active'])),
             'setupAst' => $setupAst,
         ]);
 
@@ -253,7 +252,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, null);
         $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn($condition) => $condition['active']), 'value'));
         $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
         $treeTraverserVisitors = [];
         $treeTraverserVisitors[] = $conditionEnforcerVisitor;
@@ -275,7 +274,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             // Set enabled conditions in setup include tree
             $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, null, $flattenedConstants);
             $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
-            $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
+            $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn($condition) => $condition['active']), 'value'));
             $treeTraverser = new ConditionVerdictAwareIncludeTreeTraverser();
             $treeTraverserVisitors = [];
             $treeTraverserVisitors[] = $conditionEnforcerVisitor;

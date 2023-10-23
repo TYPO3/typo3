@@ -76,8 +76,7 @@ final class TreeFromLineStreamBuilder
 
     public function __construct(
         private readonly FileNameValidator $fileNameValidator,
-    ) {
-    }
+    ) {}
 
     public function buildTree(IncludeInterface $node, string $type, TokenizerInterface $tokenizer): void
     {

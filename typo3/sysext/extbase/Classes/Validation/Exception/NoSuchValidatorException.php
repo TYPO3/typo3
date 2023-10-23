@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Validation\Exception;
 /**
  * A "NoSuchValidator" Exception
  */
-class NoSuchValidatorException extends Exception
-{
-}
+class NoSuchValidatorException extends Exception {}

@@ -80,8 +80,7 @@ final class InstallerController
         private readonly FormProtectionFactory $formProtectionFactory,
         private readonly SetupService $setupService,
         private readonly SetupDatabaseService $setupDatabaseService,
-    ) {
-    }
+    ) {}
 
     /**
      * Init action loads <head> with JS initiating further stuff

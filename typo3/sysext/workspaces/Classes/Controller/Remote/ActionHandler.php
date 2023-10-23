@@ -40,8 +40,7 @@ class ActionHandler
         protected readonly StagesService $stagesService,
         protected readonly WorkspaceService $workspaceService,
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Generates a workspace preview link.

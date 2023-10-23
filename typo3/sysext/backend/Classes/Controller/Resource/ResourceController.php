@@ -41,8 +41,7 @@ final class ResourceController
     public function __construct(
         protected readonly ResourceFactory $resourceFactory,
         protected readonly FlashMessageService $flashMessageService
-    ) {
-    }
+    ) {}
 
     public function renameResourceAction(ServerRequestInterface $request): ResponseInterface
     {

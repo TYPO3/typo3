@@ -22,34 +22,20 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class DummyClassWithAllTypesOfMethods
 {
-    public function publicMethod(): void
-    {
-    }
+    public function publicMethod(): void {}
 
-    protected function protectedMethod(): void
-    {
-    }
+    protected function protectedMethod(): void {}
 
-    private function privateMethod(): void
-    {
-    }
+    private function privateMethod(): void {}
 
-    public function methodWithMandatoryParam($param): void
-    {
-    }
+    public function methodWithMandatoryParam($param): void {}
 
-    public function methodWithDefaultValueParam($param = 'foo'): void
-    {
-    }
+    public function methodWithDefaultValueParam($param = 'foo'): void {}
 
-    public function methodWithTypeHintedParam(string $param): void
-    {
-    }
+    public function methodWithTypeHintedParam(string $param): void {}
 
     /**
      * @param \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods $param
      */
-    public function methodWithDocBlockTypeHintOnly($param): void
-    {
-    }
+    public function methodWithDocBlockTypeHintOnly($param): void {}
 }

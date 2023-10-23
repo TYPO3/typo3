@@ -35,8 +35,7 @@ class FormSelectTreeAjaxController
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
         private readonly FlexFormTools $flexFormTools,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns json representing category tree

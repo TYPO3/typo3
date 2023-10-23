@@ -63,8 +63,7 @@ class SetupDatabaseService
         private readonly PermissionsCheck $databasePermissionsCheck,
         private readonly Registry $registry,
         private readonly SchemaMigrator $schemaMigrator,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array $values

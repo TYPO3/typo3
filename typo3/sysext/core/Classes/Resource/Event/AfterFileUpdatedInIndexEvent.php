@@ -29,8 +29,7 @@ final class AfterFileUpdatedInIndexEvent
         private readonly File $file,
         private readonly array $properties,
         private readonly array $updatedFields
-    ) {
-    }
+    ) {}
 
     public function getFile(): File
     {

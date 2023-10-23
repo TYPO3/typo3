@@ -49,8 +49,7 @@ class Bootstrap
         protected readonly CacheService $cacheService,
         protected readonly Dispatcher $dispatcher,
         protected readonly RequestBuilder $extbaseRequestBuilder
-    ) {
-    }
+    ) {}
 
     /**
      * The current (!) cObj.

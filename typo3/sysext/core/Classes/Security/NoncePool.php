@@ -65,7 +65,7 @@ class NoncePool implements SigningProviderInterface
         // filter valid items
         $this->items = array_filter(
             $nonces,
-            fn (?Nonce $item, string $name) => $item !== null
+            fn(?Nonce $item, string $name) => $item !== null
                 && $this->isValidNonceName($item, $name)
                 && $this->isNonceUpToDate($item),
             ARRAY_FILTER_USE_BOTH
@@ -105,7 +105,7 @@ class NoncePool implements SigningProviderInterface
         if (count($items) <= $size) {
             return $this;
         }
-        uasort($items, static fn (Nonce $a, Nonce $b) => $b->time <=> $a->time);
+        uasort($items, static fn(Nonce $a, Nonce $b) => $b->time <=> $a->time);
         $exceedingItems = array_splice($items, $size, null, []);
         foreach ($exceedingItems as $name => $_) {
             $this->changeItems[$name] = null;

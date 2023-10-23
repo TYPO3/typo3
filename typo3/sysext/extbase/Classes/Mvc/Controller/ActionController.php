@@ -269,9 +269,7 @@ abstract class ActionController implements ControllerInterface
      * Override this method to solve tasks which all actions have in
      * common.
      */
-    protected function initializeAction()
-    {
-    }
+    protected function initializeAction() {}
 
     /**
      * Implementation of the arguments initialization in the action controller:

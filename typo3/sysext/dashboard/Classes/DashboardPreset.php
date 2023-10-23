@@ -34,8 +34,7 @@ class DashboardPreset
         protected readonly string $iconIdentifier = 'content-dashboard',
         protected readonly array $defaultWidgets = [],
         protected readonly bool $showInWizard = true
-    ) {
-    }
+    ) {}
 
     public function getIdentifier(): string
     {

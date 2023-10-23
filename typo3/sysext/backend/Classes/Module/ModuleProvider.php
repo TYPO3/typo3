@@ -27,9 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ModuleProvider
 {
-    public function __construct(protected readonly ModuleRegistry $moduleRegistry)
-    {
-    }
+    public function __construct(protected readonly ModuleRegistry $moduleRegistry) {}
 
     /**
      * Simple wrapper for the registry, which just checks if a
@@ -79,11 +77,11 @@ class ModuleProvider
         if (!$grouped) {
             return array_filter(
                 $this->moduleRegistry->getModules(),
-                fn (ModuleInterface $module): bool => $user === null || $this->accessGranted($module->getIdentifier(), $user, $respectWorkspaceRestrictions)
+                fn(ModuleInterface $module): bool => $user === null || $this->accessGranted($module->getIdentifier(), $user, $respectWorkspaceRestrictions)
             );
         }
 
-        $availableModules = array_filter($this->moduleRegistry->getModules(), static fn (ModuleInterface $module): bool => !$module->hasParentModule());
+        $availableModules = array_filter($this->moduleRegistry->getModules(), static fn(ModuleInterface $module): bool => !$module->hasParentModule());
 
         foreach ($availableModules as $identifier => $module) {
             if ($user !== null && !$this->accessGranted($identifier, $user, $respectWorkspaceRestrictions)) {
@@ -261,6 +259,6 @@ class ModuleProvider
      */
     public function getUserModules(): array
     {
-        return array_filter($this->moduleRegistry->getModules(), static fn (ModuleInterface $module): bool => $module->getAccess() === 'user');
+        return array_filter($this->moduleRegistry->getModules(), static fn(ModuleInterface $module): bool => $module->getAccess() === 'user');
     }
 }

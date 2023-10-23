@@ -37,8 +37,7 @@ class LiveSearchController
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly SearchRepository $searchService,
-    ) {
-    }
+    ) {}
 
     /**
      * Processes all AJAX calls and sends back a JSON object
@@ -84,7 +83,7 @@ class LiveSearchController
 
         $activeOptions = 0;
         // `isActive` is the result of `in_array()`, which returns a `bool`.
-        $activeOptions += count(array_filter($searchProviders, fn (array $searchProviderOption): bool => $searchProviderOption['isActive']));
+        $activeOptions += count(array_filter($searchProviders, fn(array $searchProviderOption): bool => $searchProviderOption['isActive']));
 
         $view = $this->backendViewFactory->create($request, ['typo3/cms-backend']);
         $view->assignMultiple([

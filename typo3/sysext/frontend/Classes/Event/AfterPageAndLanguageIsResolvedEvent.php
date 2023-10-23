@@ -34,8 +34,7 @@ final class AfterPageAndLanguageIsResolvedEvent
         private TypoScriptFrontendController $controller,
         private ServerRequestInterface $request,
         private ?ResponseInterface $response
-    ) {
-    }
+    ) {}
 
     public function getController(): TypoScriptFrontendController
     {

@@ -72,7 +72,7 @@ final class SourceCollection
     {
         $sources = array_filter(
             $this->sources,
-            fn ($source) => !(in_array($source, $subjects, true)
+            fn($source) => !(in_array($source, $subjects, true)
                 || ($source instanceof EqualityInterface && $this->hasEqualSource($source, ...$subjects)))
         );
         if (count($this->sources) === count($sources)) {
@@ -88,7 +88,7 @@ final class SourceCollection
     {
         $sources = array_filter(
             $this->sources,
-            fn ($source) => !$this->isSourceOfTypes($source, ...$subjectTypes)
+            fn($source) => !$this->isSourceOfTypes($source, ...$subjectTypes)
         );
         if (count($this->sources) === count($sources)) {
             return $this;

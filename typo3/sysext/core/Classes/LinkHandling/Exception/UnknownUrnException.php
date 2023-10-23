@@ -20,6 +20,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception raised if urn is not known.
  */
-class UnknownUrnException extends Exception
-{
-}
+class UnknownUrnException extends Exception {}

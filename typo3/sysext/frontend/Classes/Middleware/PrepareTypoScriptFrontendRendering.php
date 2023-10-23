@@ -34,8 +34,7 @@ final class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 {
     public function __construct(
         private readonly TimeTracker $timeTracker
-    ) {
-    }
+    ) {}
 
     /**
      * Initialize TypoScriptFrontendController to the point right before rendering of the page is triggered

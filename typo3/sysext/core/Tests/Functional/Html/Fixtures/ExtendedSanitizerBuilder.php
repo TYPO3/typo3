@@ -23,6 +23,4 @@ use TYPO3\CMS\Core\Html\DefaultSanitizerBuilder;
  * Extends default builder, just to ensure internal behavior
  * is cached in-memory for corresponding class scope.
  */
-class ExtendedSanitizerBuilder extends DefaultSanitizerBuilder
-{
-}
+class ExtendedSanitizerBuilder extends DefaultSanitizerBuilder {}

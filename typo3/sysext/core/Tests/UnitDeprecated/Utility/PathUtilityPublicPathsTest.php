@@ -77,12 +77,12 @@ final class PathUtilityPublicPathsTest extends UnitTestCase
             'private assets are resolved to absolute url' => [
                 'EXT:core/Resources/Private/Font/nimbus.ttf',
                 '/typo3/sysext/core/Resources/Private/Font/nimbus.ttf',
-                fn () => self::simulateTraditionalWebRequest(),
+                fn() => self::simulateTraditionalWebRequest(),
             ],
             'private assets are resolved to absolute url with sub directory prefixed' => [
                 'EXT:core/Resources/Private/Font/nimbus.ttf',
                 '/cms/typo3/sysext/core/Resources/Private/Font/nimbus.ttf',
-                fn () => self::simulateTraditionalWebRequestInSubDirectory('/cms/'),
+                fn() => self::simulateTraditionalWebRequestInSubDirectory('/cms/'),
             ],
         ];
     }

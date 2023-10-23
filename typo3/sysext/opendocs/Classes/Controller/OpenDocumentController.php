@@ -36,8 +36,7 @@ class OpenDocumentController
     public function __construct(
         protected readonly OpenDocumentService $documents,
         protected readonly OpendocsToolbarItem $toolbarItem
-    ) {
-    }
+    ) {}
 
     /**
      * Renders the menu so that it can be returned as response to an AJAX call.

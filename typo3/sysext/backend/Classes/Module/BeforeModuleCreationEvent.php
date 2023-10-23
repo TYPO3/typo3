@@ -22,9 +22,7 @@ namespace TYPO3\CMS\Backend\Module;
  */
 final class BeforeModuleCreationEvent
 {
-    public function __construct(private readonly string $identifier, private array $configuration)
-    {
-    }
+    public function __construct(private readonly string $identifier, private array $configuration) {}
 
     public function getIdentifier(): string
     {

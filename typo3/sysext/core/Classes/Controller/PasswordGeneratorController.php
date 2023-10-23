@@ -34,8 +34,7 @@ class PasswordGeneratorController
         private readonly Random $random,
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly StreamFactoryInterface $streamFactory
-    ) {
-    }
+    ) {}
 
     public function generate(ServerRequestInterface $request): ResponseInterface
     {

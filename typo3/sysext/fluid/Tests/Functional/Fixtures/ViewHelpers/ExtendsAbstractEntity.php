@@ -19,6 +19,4 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-class ExtendsAbstractEntity extends AbstractEntity
-{
-}
+class ExtendsAbstractEntity extends AbstractEntity {}

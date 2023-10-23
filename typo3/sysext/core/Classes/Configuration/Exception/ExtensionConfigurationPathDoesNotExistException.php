@@ -21,6 +21,4 @@ use TYPO3\CMS\Core\Exception;
  * An exception thrown if ExtensionConfiguration->get() is called with
  * a path that does not exist within the extension configuration.
  */
-class ExtensionConfigurationPathDoesNotExistException extends Exception
-{
-}
+class ExtensionConfigurationPathDoesNotExistException extends Exception {}

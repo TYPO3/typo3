@@ -30,8 +30,7 @@ final class ShouldUseCachedPageDataIfAvailableEvent
         private readonly ServerRequestInterface $request,
         private readonly TypoScriptFrontendController $controller,
         private bool $shouldUseCachedPageData
-    ) {
-    }
+    ) {}
 
     public function getController(): TypoScriptFrontendController
     {

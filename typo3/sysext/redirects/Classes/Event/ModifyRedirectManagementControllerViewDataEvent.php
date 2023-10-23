@@ -38,8 +38,7 @@ final class ModifyRedirectManagementControllerViewDataEvent
         private bool $showHitCounter,
         private ViewInterface $view,
         private readonly ServerRequestInterface $request,
-    ) {
-    }
+    ) {}
 
     public function getDemand(): Demand
     {

@@ -37,6 +37,5 @@ final class CreateIndexDefinitionItem extends AbstractCreateDefinitionItem
         public readonly bool $isUnique = false,
         public readonly bool $isSpatial = false,
         public readonly bool $isFulltext = false
-    ) {
-    }
+    ) {}
 }

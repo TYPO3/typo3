@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Core\Error\Http;
 /**
  * HTTP Server Error Exception (Error 5xx)
  */
-abstract class AbstractServerErrorException extends StatusException
-{
-}
+abstract class AbstractServerErrorException extends StatusException {}

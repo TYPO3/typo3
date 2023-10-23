@@ -27,9 +27,7 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
  */
 final class DoctrineTransportFactory
 {
-    public function __construct(private SerializerInterface $serializer)
-    {
-    }
+    public function __construct(private SerializerInterface $serializer) {}
 
     public function createTransport(array $options = []): DoctrineTransport
     {

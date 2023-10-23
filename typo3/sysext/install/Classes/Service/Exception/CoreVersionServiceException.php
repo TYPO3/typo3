@@ -22,6 +22,4 @@ use TYPO3\CMS\Install\Service\Exception;
 /**
  * An exception thrown if version validation against official version matrix fails
  */
-class CoreVersionServiceException extends Exception
-{
-}
+class CoreVersionServiceException extends Exception {}

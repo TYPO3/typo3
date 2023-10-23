@@ -36,8 +36,7 @@ final class AfterCachedPageIsPersistedEvent
         private readonly string $cacheIdentifier,
         private readonly array $cacheData,
         private readonly int $cacheLifetime
-    ) {
-    }
+    ) {}
 
     public function getRequest(): ServerRequestInterface
     {

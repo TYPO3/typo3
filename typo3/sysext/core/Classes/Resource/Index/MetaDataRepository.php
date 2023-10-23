@@ -52,8 +52,7 @@ class MetaDataRepository implements SingletonInterface
 
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns array of meta-data properties

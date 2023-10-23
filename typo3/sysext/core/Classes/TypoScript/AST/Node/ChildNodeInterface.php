@@ -23,6 +23,4 @@ namespace TYPO3\CMS\Core\TypoScript\AST\Node;
  *
  * @internal: Internal AST structure.
  */
-interface ChildNodeInterface extends NodeInterface
-{
-}
+interface ChildNodeInterface extends NodeInterface {}

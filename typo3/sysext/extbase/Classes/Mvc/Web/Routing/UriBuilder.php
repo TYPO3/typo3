@@ -55,8 +55,7 @@ class UriBuilder
 
     public function __construct(
         protected readonly ExtensionService $extensionService,
-    ) {
-    }
+    ) {}
 
     /**
      * Sets the current request

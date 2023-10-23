@@ -69,7 +69,7 @@ final class HashValue implements \Stringable, SourceValueInterface
 
     private static function createParsingPattern(): string
     {
-        $types = array_map(static fn (HashType $type): string => $type->value, HashType::cases());
+        $types = array_map(static fn(HashType $type): string => $type->value, HashType::cases());
         return sprintf("/^'(?P<type>%s)-(?P<value>.+)'$/", implode('|', $types));
     }
 

@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
-class Exception extends \TYPO3\CMS\Extbase\Persistence\Exception
-{
-}
+class Exception extends \TYPO3\CMS\Extbase\Persistence\Exception {}

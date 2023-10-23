@@ -85,9 +85,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * @param string $className The class name of the repository to be registered
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function registerRepositoryClassName($className)
-    {
-    }
+    public function registerRepositoryClassName($className) {}
 
     /**
      * Returns the number of records matching the query.

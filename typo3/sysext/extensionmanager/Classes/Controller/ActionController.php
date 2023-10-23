@@ -45,8 +45,7 @@ class ActionController extends AbstractController
         protected readonly InstallUtility $installUtility,
         protected readonly ExtensionManagementService $managementService,
         protected readonly Registry $registry,
-    ) {
-    }
+    ) {}
 
     /**
      * Toggle extension installation state action

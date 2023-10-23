@@ -36,8 +36,7 @@ final class RedirectWasHitEvent
         private ResponseInterface $response,
         private array $matchedRedirect,
         private readonly UriInterface $targetUrl
-    ) {
-    }
+    ) {}
 
     public function getRequest(): ServerRequestInterface
     {

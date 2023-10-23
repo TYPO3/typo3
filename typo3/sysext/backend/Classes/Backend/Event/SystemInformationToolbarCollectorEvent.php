@@ -25,9 +25,7 @@ use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
  */
 final class SystemInformationToolbarCollectorEvent
 {
-    public function __construct(private readonly SystemInformationToolbarItem $toolbarItem)
-    {
-    }
+    public function __construct(private readonly SystemInformationToolbarItem $toolbarItem) {}
 
     public function getToolbarItem(): SystemInformationToolbarItem
     {

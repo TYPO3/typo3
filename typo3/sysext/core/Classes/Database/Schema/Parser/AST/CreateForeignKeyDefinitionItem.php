@@ -31,6 +31,5 @@ final class CreateForeignKeyDefinitionItem extends AbstractCreateDefinitionItem
         public readonly Identifier $indexName,
         public readonly array $columnNames,
         public readonly ReferenceDefinition $reference,
-    ) {
-    }
+    ) {}
 }

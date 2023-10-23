@@ -41,9 +41,7 @@ class WidgetRegistry implements SingletonInterface
      */
     private $widgetsPerWidgetGroup = [];
 
-    public function __construct(protected readonly ContainerInterface $container)
-    {
-    }
+    public function __construct(protected readonly ContainerInterface $container) {}
 
     /**
      * @return WidgetConfigurationInterface[]

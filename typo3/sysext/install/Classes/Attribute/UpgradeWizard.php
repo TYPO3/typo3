@@ -27,6 +27,5 @@ class UpgradeWizard
 
     public function __construct(
         public string $identifier
-    ) {
-    }
+    ) {}
 }

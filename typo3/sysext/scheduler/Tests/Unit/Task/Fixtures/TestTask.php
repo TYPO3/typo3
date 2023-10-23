@@ -23,9 +23,7 @@ class TestTask extends AbstractTask
 {
     public array $any = [];
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function execute()
     {

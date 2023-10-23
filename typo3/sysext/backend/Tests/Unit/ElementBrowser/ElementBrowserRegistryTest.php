@@ -29,8 +29,7 @@ final class ElementBrowserRegistryTest extends UnitTestCase
     public function registrationRequiresInterface(): void
     {
         $elementBrowser = [
-            new class () {
-            },
+            new class () {},
             $this->getElementBrowser('valid-identifier'),
         ];
 

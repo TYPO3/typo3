@@ -65,8 +65,7 @@ class ResetPasswordController
         protected readonly AuthenticationStyleInformation $authenticationStyleInformation,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Show a form to enter an email address to request a password reset email.

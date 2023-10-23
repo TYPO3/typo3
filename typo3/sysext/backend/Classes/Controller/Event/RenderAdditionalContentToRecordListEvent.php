@@ -27,9 +27,7 @@ final class RenderAdditionalContentToRecordListEvent
     private string $contentAbove = '';
     private string $contentBelow = '';
 
-    public function __construct(private readonly ServerRequestInterface $request)
-    {
-    }
+    public function __construct(private readonly ServerRequestInterface $request) {}
 
     public function getRequest(): ServerRequestInterface
     {

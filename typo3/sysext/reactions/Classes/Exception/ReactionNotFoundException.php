@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Exception;
 
-class ReactionNotFoundException extends \RuntimeException
-{
-}
+class ReactionNotFoundException extends \RuntimeException {}

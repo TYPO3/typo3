@@ -56,8 +56,7 @@ class ResourceFactory implements SingletonInterface
 
     public function __construct(
         protected readonly StorageRepository $storageRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns the Default Storage

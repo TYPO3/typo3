@@ -22,9 +22,7 @@ namespace TYPO3\CMS\Extensionmanager\Event;
  */
 final class AfterExtensionSiteFilesHaveBeenImportedEvent
 {
-    public function __construct(private readonly string $packageKey, private readonly array $siteIdentifierList)
-    {
-    }
+    public function __construct(private readonly string $packageKey, private readonly array $siteIdentifierList) {}
 
     /**
      * Returns the extension that imported the site configuration

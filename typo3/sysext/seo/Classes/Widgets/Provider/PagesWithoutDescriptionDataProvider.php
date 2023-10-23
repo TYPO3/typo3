@@ -36,8 +36,7 @@ final class PagesWithoutDescriptionDataProvider
         private readonly ConnectionPool $connectionPool,
         private readonly array $excludedDoktypes,
         private readonly int $limit
-    ) {
-    }
+    ) {}
 
     public function getPages(): array
     {

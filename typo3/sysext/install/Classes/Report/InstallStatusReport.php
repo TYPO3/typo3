@@ -36,9 +36,7 @@ final class InstallStatusReport implements StatusProviderInterface
     private const WRAP_FLAT = 1;
     private const WRAP_NESTED = 2;
 
-    public function __construct(private readonly UpgradeWizardsService $upgradeWizardsService)
-    {
-    }
+    public function __construct(private readonly UpgradeWizardsService $upgradeWizardsService) {}
 
     /**
      * Compiles a collection of system status checks as a status report.

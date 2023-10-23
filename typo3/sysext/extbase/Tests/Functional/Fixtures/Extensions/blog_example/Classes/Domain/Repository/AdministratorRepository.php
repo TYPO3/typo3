@@ -24,6 +24,4 @@ use TYPO3Tests\BlogExample\Domain\Model\Administrator;
  * A repository for administrators
  * @extends Repository<Administrator>
  */
-class AdministratorRepository extends Repository
-{
-}
+class AdministratorRepository extends Repository {}

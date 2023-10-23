@@ -32,8 +32,7 @@ final class GetVersionedDataEvent
         private readonly int $start,
         private readonly int $limit,
         private array $dataArrayPart
-    ) {
-    }
+    ) {}
 
     public function getGridService(): GridDataService
     {

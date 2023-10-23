@@ -30,8 +30,7 @@ final class ModifyEditFileFormDataEvent
         private array $formData,
         private readonly FileInterface $file,
         private readonly ServerRequestInterface $request
-    ) {
-    }
+    ) {}
 
     public function getFormData(): array
     {

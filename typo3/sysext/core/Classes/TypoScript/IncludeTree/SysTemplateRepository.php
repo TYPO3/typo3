@@ -41,8 +41,7 @@ final class SysTemplateRepository
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ConnectionPool $connectionPool,
         private readonly Context $context,
-    ) {
-    }
+    ) {}
 
     /**
      * To calculate the TS include tree, we have to find sys_template rows attached to all rootline pages.

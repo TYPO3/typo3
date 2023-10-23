@@ -32,8 +32,7 @@ class OtherLanguageContent extends AbstractNode
 {
     public function __construct(
         private readonly IconFactory $iconFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Render other language content if enabled.

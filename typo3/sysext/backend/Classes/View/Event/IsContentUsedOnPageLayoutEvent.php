@@ -28,8 +28,7 @@ final class IsContentUsedOnPageLayoutEvent
         private readonly array $record,
         private bool $used,
         private PageLayoutContext $context
-    ) {
-    }
+    ) {}
 
     public function getRecord(): array
     {

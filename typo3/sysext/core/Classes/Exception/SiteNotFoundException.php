@@ -22,6 +22,4 @@ use TYPO3\CMS\Core\Exception;
 /**
  * Exception thrown if site configuration or incoming data is invalid
  */
-class SiteNotFoundException extends Exception
-{
-}
+class SiteNotFoundException extends Exception {}

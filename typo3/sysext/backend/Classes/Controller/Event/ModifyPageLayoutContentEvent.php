@@ -31,8 +31,7 @@ final class ModifyPageLayoutContentEvent
     public function __construct(
         private readonly ServerRequestInterface $request,
         private readonly ModuleTemplate $moduleTemplate
-    ) {
-    }
+    ) {}
 
     public function getRequest(): ServerRequestInterface
     {

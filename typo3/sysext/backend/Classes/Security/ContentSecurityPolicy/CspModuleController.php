@@ -40,8 +40,7 @@ class CspModuleController
         protected readonly PageRenderer $pageRenderer,
         protected readonly ScopeRepository $scopeRepository,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {

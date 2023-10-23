@@ -71,9 +71,7 @@ class InterfaceMethodChangedMatcherFixture
      * @param $arg2
      * @param $arg3
      */
-    public static function like4($arg1, $arg2, $arg3): void
-    {
-    }
+    public static function like4($arg1, $arg2, $arg3): void {}
 
     /**
      * No match: Protected
@@ -82,7 +80,5 @@ class InterfaceMethodChangedMatcherFixture
      * @param $arg2
      * @param $arg3
      */
-    protected function like5($arg1, $arg2, $arg3): void
-    {
-    }
+    protected function like5($arg1, $arg2, $arg3): void {}
 }

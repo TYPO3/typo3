@@ -34,8 +34,7 @@ class LinkPopup extends AbstractNode
 
     public function __construct(
         private readonly UriBuilder $uriBuilder,
-    ) {
-    }
+    ) {}
 
     /**
      * Link popup control

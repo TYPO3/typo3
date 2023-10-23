@@ -58,8 +58,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
         protected readonly ResourceFactory $resourceFactory,
         protected readonly FileCollectionRepository $fileCollectionRepository,
         protected readonly FileRepository $fileRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * Add files by UID

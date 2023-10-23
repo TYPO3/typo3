@@ -34,8 +34,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
     public function __construct(
         private readonly ModuleProvider $moduleProvider,
         private readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

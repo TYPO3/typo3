@@ -85,8 +85,7 @@ class SiteConfiguration implements SingletonInterface
         protected string $configPath,
         protected EventDispatcherInterface $eventDispatcher,
         protected PhpFrontend $cache
-    ) {
-    }
+    ) {}
 
     /**
      * Return all site objects which have been found in the filesystem.

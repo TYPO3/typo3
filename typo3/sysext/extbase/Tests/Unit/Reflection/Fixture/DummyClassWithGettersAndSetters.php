@@ -129,9 +129,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @param mixed $value
      */
-    public function setWriteOnlyMagicProperty($value): void
-    {
-    }
+    public function setWriteOnlyMagicProperty($value): void {}
 
     /**
      * sets the AnotherBooleanProperty

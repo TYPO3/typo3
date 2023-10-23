@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Property\Exception;
 /**
  * An "Invalid Property Mapping Configuration" Exception
  */
-class InvalidPropertyMappingConfigurationException extends Exception
-{
-}
+class InvalidPropertyMappingConfigurationException extends Exception {}

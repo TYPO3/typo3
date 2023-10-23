@@ -33,8 +33,7 @@ final class BeforeRedirectMatchDomainEvent
         private readonly string $path,
         private readonly string $query,
         private readonly string $matchDomainName,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string Request domain name (host)

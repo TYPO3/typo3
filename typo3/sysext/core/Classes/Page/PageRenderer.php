@@ -1432,7 +1432,7 @@ class PageRenderer implements SingletonInterface
             // @internal
             'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
         ];
-        $markerArray = array_map(static fn ($item) => (trim((string)$item)), $markerArray);
+        $markerArray = array_map(static fn($item) => (trim((string)$item)), $markerArray);
         return $markerArray;
     }
 
@@ -1467,7 +1467,7 @@ class PageRenderer implements SingletonInterface
             // @internal
             'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
         ];
-        $markerArray = array_map(static fn ($item) => (trim((string)$item)), $markerArray);
+        $markerArray = array_map(static fn($item) => (trim((string)$item)), $markerArray);
         return $markerArray;
     }
 

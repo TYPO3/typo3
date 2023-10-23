@@ -72,7 +72,7 @@ final class AddPageTypeZeroSource
         $sources = $changeItem->getSourcesCollection()->all();
         // If page type zero source results in the same uri, plain slug replacement source is removed. This avoids
         // the creation of duplicated redirects. PageTypeSource is taken as stronger match and therefor used.
-        $sources = array_filter($sources, fn ($source) => !$this->sourceEqualsPageTypeZeroSource($source, $pageTypeZeroSource));
+        $sources = array_filter($sources, fn($source) => !$this->sourceEqualsPageTypeZeroSource($source, $pageTypeZeroSource));
         $sources[] = $pageTypeZeroSource;
         $changeItem = $changeItem->withSourcesCollection(new RedirectSourceCollection(...array_values($sources)));
         $event->setSlugRedirectChangeItem($changeItem);

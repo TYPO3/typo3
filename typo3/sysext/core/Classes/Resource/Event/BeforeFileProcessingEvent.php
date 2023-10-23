@@ -34,8 +34,7 @@ final class BeforeFileProcessingEvent
         private readonly FileInterface $file,
         private readonly string $taskType,
         private readonly array $configuration
-    ) {
-    }
+    ) {}
 
     public function getProcessedFile(): ProcessedFile
     {

@@ -42,8 +42,7 @@ class ReportController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly IconRegistry $iconRegistry,
         protected readonly ReportRegistry $reportRegistry
-    ) {
-    }
+    ) {}
 
     /**
      * Main dispatcher.

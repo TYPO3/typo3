@@ -32,8 +32,7 @@ class FileInfoElement extends AbstractFormElement
 {
     public function __construct(
         private readonly ResourceFactory $resourceFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Handler for single nodes

@@ -28,8 +28,7 @@ final class ModifyPageLayoutOnLoginProviderSelectionEvent
         private readonly LoginController $controller,
         private readonly StandaloneView $view,
         private readonly PageRenderer $pageRenderer
-    ) {
-    }
+    ) {}
 
     public function getController(): LoginController
     {

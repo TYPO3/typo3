@@ -28,8 +28,7 @@ final class PageIdListRestriction implements QueryRestrictionInterface
     public function __construct(
         private readonly array $tableNames,
         private readonly array $pageIds
-    ) {
-    }
+    ) {}
 
     /**
      * Main method to build expressions for given tables

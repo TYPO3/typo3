@@ -38,8 +38,7 @@ class FileRepository
 {
     public function __construct(
         protected readonly ResourceFactory $factory
-    ) {
-    }
+    ) {}
 
     /**
      * Finds a File matching the given uid, regardless of the storage.

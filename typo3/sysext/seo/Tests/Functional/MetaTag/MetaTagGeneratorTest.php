@@ -210,7 +210,7 @@ final class MetaTagGeneratorTest extends FunctionalTestCase
             // Filter allowed aspect ratios
             $cropVariant['allowedAspectRatios'] = array_filter(
                 $cropVariant['allowedAspectRatios'] ?? [],
-                static fn ($aspectRatio) => empty($aspectRatio['disabled'])
+                static fn($aspectRatio) => empty($aspectRatio['disabled'])
             );
             // Ignore disabled crop variants
             if (!empty($cropVariant['disabled'])) {

@@ -17,6 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestDataMapper\Domain\Model;
 
-class CustomDateTime extends \DateTime
-{
-}
+class CustomDateTime extends \DateTime {}

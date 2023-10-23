@@ -22,6 +22,4 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 /**
  * An exception when a requested remote does not exist
  */
-class RemoteNotRegisteredException extends ExtensionManagerException
-{
-}
+class RemoteNotRegisteredException extends ExtensionManagerException {}

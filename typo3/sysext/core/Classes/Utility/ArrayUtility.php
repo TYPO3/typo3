@@ -940,7 +940,7 @@ class ArrayUtility
      */
     public static function filterRecursive(array $array, callable $callback = null, int $mode = 0): array
     {
-        $callback ??= static fn ($value) => (bool)$value;
+        $callback ??= static fn($value) => (bool)$value;
 
         foreach ($array as $key => $value) {
             if (is_array($value)) {

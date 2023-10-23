@@ -29,8 +29,7 @@ final class ModifyValidatorTaskEmailEvent
         private readonly LinkAnalyzerResult $linkAnalyzerResult,
         private readonly FluidEmail $fluidEmail,
         private readonly array $modTSconfig
-    ) {
-    }
+    ) {}
 
     public function getLinkAnalyzerResult(): LinkAnalyzerResult
     {

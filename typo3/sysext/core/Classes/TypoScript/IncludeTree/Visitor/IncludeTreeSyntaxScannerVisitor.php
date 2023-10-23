@@ -51,9 +51,7 @@ final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterfa
         return $this->errors;
     }
 
-    public function visitBeforeChildren(IncludeInterface $include, int $currentDepth): void
-    {
-    }
+    public function visitBeforeChildren(IncludeInterface $include, int $currentDepth): void {}
 
     public function visit(IncludeInterface $include, int $currentDepth): void
     {
@@ -69,7 +67,7 @@ final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterfa
         }
 
         // Sort array by line number to list them top->bottom in view.
-        usort($this->errors, fn ($a, $b) => $a['lineNumber'] <=> $b['lineNumber']);
+        usort($this->errors, fn($a, $b) => $a['lineNumber'] <=> $b['lineNumber']);
     }
 
     /**

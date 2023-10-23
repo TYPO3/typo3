@@ -61,8 +61,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         private readonly LosslessTokenizer $losslessTokenizer,
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly StreamFactoryInterface $streamFactory,
-    ) {
-    }
+    ) {}
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -119,7 +118,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn ($condition) => $condition['active']), 'value'));
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn($condition) => $condition['active']), 'value'));
         $treeTraverserVisitors = [];
         $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $constantSyntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
@@ -137,7 +136,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
         $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
         $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn ($condition) => $condition['active']), 'value'));
+        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn($condition) => $condition['active']), 'value'));
         $treeTraverserVisitors = [];
         $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $setupSyntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
@@ -156,12 +155,12 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             'selectedTemplateUid' => $selectedTemplateUid,
             'templateTitle' => $templateTitle,
             'constantConditions' => $constantConditions,
-            'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn ($condition) => $condition['active'])),
+            'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn($condition) => $condition['active'])),
             'constantIncludeTree' => $constantIncludeTree,
             'constantErrors' => $constantSyntaxScannerVisitor->getErrors(),
             'constantErrorCount' => count($constantSyntaxScannerVisitor->getErrors()),
             'setupConditions' => $setupConditions,
-            'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn ($condition) => $condition['active'])),
+            'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn($condition) => $condition['active'])),
             'setupIncludeTree' => $setupIncludeTree,
             'setupErrors' => $setupSyntaxScannerVisitor->getErrors(),
             'setupErrorCount' => count($setupSyntaxScannerVisitor->getErrors()),

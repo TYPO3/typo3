@@ -48,8 +48,7 @@ class DashboardInitializationService
     public function __construct(
         private readonly DashboardRepository $dashboardRepository,
         private readonly DashboardPresetRegistry $dashboardPresetRegistry
-    ) {
-    }
+    ) {}
 
     public function initializeDashboards(ServerRequestInterface $request, BackendUserAuthentication $user): void
     {

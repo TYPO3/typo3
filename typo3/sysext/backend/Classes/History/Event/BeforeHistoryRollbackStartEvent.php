@@ -30,8 +30,7 @@ final class BeforeHistoryRollbackStartEvent
         private readonly array $diff,
         private readonly RecordHistoryRollback $recordHistoryRollback,
         private readonly ?BackendUserAuthentication $backendUserAuthentication = null
-    ) {
-    }
+    ) {}
 
     public function getRecordHistoryRollback(): RecordHistoryRollback
     {

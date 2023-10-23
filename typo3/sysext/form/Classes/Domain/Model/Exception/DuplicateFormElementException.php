@@ -23,6 +23,4 @@ use TYPO3\CMS\Form\Domain\Model\Exception;
  * This exception is thrown if two Form Elements with the same Identifier are added
  * to a form.
  */
-class DuplicateFormElementException extends Exception
-{
-}
+class DuplicateFormElementException extends Exception {}

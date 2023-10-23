@@ -38,8 +38,7 @@ final class SchedulerSetupCheckController
     public function __construct(
         private readonly Registry $registry,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

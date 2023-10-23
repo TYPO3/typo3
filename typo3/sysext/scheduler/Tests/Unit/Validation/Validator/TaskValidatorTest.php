@@ -40,9 +40,7 @@ final class TaskValidatorTest extends UnitTestCase
     {
         $subject = new TaskValidator();
         $input = new class () extends AbstractTask {
-            public function __construct()
-            {
-            }
+            public function __construct() {}
             public function execute()
             {
                 return false;
@@ -58,9 +56,7 @@ final class TaskValidatorTest extends UnitTestCase
     {
         $subject = new TaskValidator();
         $input = new class () extends AbstractTask {
-            public function __construct()
-            {
-            }
+            public function __construct() {}
             public function execute()
             {
                 return false;

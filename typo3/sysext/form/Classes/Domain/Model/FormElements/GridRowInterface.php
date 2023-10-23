@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 /**
  * Scope: frontend
  */
-interface GridRowInterface extends FormElementInterface
-{
-}
+interface GridRowInterface extends FormElementInterface {}

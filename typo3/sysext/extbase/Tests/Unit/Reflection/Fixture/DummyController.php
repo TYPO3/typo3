@@ -30,9 +30,7 @@ class DummyController extends ActionController
     /**
      * @param $fooParam
      */
-    public function methodWithoutValidateAnnotationsAction($fooParam): void
-    {
-    }
+    public function methodWithoutValidateAnnotationsAction($fooParam): void {}
 
     /**
      * @Extbase\Validate(param="fooParam", validator="StringLength", options={"minimum": 1, "maximum": 10})
@@ -42,9 +40,7 @@ class DummyController extends ActionController
      * @Extbase\Validate(param="fooParam", validator="\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
      * @Extbase\Validate(param="fooParam", validator="TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
      */
-    public function methodWithValidateAnnotationsAction(string $fooParam): void
-    {
-    }
+    public function methodWithValidateAnnotationsAction(string $fooParam): void {}
 
     #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 10]])]
     #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'NotEmpty'])]
@@ -52,7 +48,5 @@ class DummyController extends ActionController
     #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator'])]
     #[Extbase\Validate(['param' => 'fooParam', 'validator' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator'])]
     #[Extbase\Validate(['param' => 'fooParam', 'validator' => NotEmptyValidator::class])]
-    public function methodWithValidateAttributesAction(string $fooParam): void
-    {
-    }
+    public function methodWithValidateAttributesAction(string $fooParam): void {}
 }

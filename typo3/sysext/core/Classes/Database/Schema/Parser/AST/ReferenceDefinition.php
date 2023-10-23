@@ -39,6 +39,5 @@ final class ReferenceDefinition
     public function __construct(
         public readonly Identifier $tableName,
         public readonly array $columnNames,
-    ) {
-    }
+    ) {}
 }

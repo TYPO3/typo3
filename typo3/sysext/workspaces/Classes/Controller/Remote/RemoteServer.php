@@ -63,8 +63,7 @@ class RemoteServer
         protected readonly EventDispatcherInterface $eventDispatcher,
         private readonly FormDataCompiler $formDataCompiler,
         protected readonly FlexFormValueFormatter $flexFormValueFormatter,
-    ) {
-    }
+    ) {}
 
     /**
      * Checks integrity of elements before performing actions on them.

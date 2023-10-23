@@ -41,8 +41,7 @@ class SchemaMigrator
         private readonly ConnectionPool $connectionPool,
         private readonly Parser $parser,
         private readonly DefaultTcaSchema $defaultTcaSchema,
-    ) {
-    }
+    ) {}
 
     /**
      * Compare current and expected schema definitions and provide updates suggestions in the form

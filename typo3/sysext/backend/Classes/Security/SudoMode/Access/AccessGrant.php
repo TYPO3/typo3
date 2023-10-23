@@ -28,8 +28,7 @@ class AccessGrant implements \JsonSerializable
     public function __construct(
         public readonly AccessSubjectInterface $subject,
         public readonly int $expiration,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

@@ -29,8 +29,7 @@ final class Identifier
 
     public function __construct(
         public readonly string $schemaObjectName
-    ) {
-    }
+    ) {}
 
     /**
      * Quotes the schema object name.

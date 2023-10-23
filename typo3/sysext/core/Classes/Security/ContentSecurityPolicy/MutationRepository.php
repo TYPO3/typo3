@@ -110,7 +110,7 @@ final class MutationRepository
             return null;
         }
         $mutations = array_map(
-            fn (array $array) => $this->modelService->buildMutationFromArray($array),
+            fn(array $array) => $this->modelService->buildMutationFromArray($array),
             $mutationConfigurations
         );
         return new MutationCollection(...$mutations);

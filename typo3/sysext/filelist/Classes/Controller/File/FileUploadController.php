@@ -44,8 +44,7 @@ class FileUploadController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ResourceFactory $resourceFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * Render upload form.

@@ -202,7 +202,7 @@ class ClassSchema
             /** @var array<int, Validate> $validateAnnotations */
             $validateAnnotations = array_filter(
                 $annotations,
-                static fn (object $annotation): bool => $annotation instanceof Validate
+                static fn(object $annotation): bool => $annotation instanceof Validate
             );
 
             if (count($validateAnnotations) > 0) {
@@ -282,7 +282,7 @@ class ClassSchema
             /** @var array<int<0, max>, Validate> $validateAnnotations */
             $validateAnnotations = array_filter(
                 $annotations,
-                static fn (object $annotation): bool => $annotation instanceof Validate
+                static fn(object $annotation): bool => $annotation instanceof Validate
             );
 
             if ($isAction && (count($validateAnnotations) > 0 || $validateAttributes !== [])) {
@@ -316,12 +316,12 @@ class ClassSchema
 
                 $ignoreValidationParameters = array_filter(
                     $annotations,
-                    static fn (object $annotation): bool => $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName
+                    static fn(object $annotation): bool => $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName
                 );
 
                 $ignoreValidationParametersFromAttribute = array_filter(
                     $reflectionAttributes,
-                    static fn (\ReflectionAttribute $attribute): bool
+                    static fn(\ReflectionAttribute $attribute): bool
                         => $attribute->getName() === IgnoreValidation::class && $attribute->newInstance()->argumentName === $parameterName
                 );
 
@@ -456,7 +456,7 @@ MESSAGE;
     {
         return array_filter(
             $this->getProperties(),
-            static fn (Property $property): bool => !str_starts_with($property->getName(), '_')
+            static fn(Property $property): bool => !str_starts_with($property->getName(), '_')
         );
     }
 

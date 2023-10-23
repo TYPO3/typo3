@@ -20,6 +20,4 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 /**
  * Second Dummy Class
  */
-class SecondDummyClass
-{
-}
+class SecondDummyClass {}

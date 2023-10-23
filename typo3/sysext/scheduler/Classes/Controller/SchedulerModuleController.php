@@ -69,8 +69,7 @@ final class SchedulerModuleController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly Context $context,
         protected readonly TaskService $taskService,
-    ) {
-    }
+    ) {}
 
     /**
      * Entry dispatcher method.
@@ -569,7 +568,7 @@ final class SchedulerModuleController
 
         $groups = $data['taskGroupsWithTasks'] ?? [];
         $groups = array_map(
-            static fn (int $key, array $group): array => array_merge($group, ['taskGroupCollapsed' => (bool)($moduleData->get('task-group-' . $key, false))]),
+            static fn(int $key, array $group): array => array_merge($group, ['taskGroupCollapsed' => (bool)($moduleData->get('task-group-' . $key, false))]),
             array_keys($groups),
             $groups
         );

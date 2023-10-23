@@ -36,9 +36,7 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
  */
 class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
 {
-    public function __construct(protected readonly ValidatorResolver $validatorResolver)
-    {
-    }
+    public function __construct(protected readonly ValidatorResolver $validatorResolver) {}
 
     /**
      * This hook is called for each form element after the class

@@ -22,6 +22,4 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * A "No Such Argument" exception
  */
-class NoSuchArgumentException extends Exception
-{
-}
+class NoSuchArgumentException extends Exception {}

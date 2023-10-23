@@ -93,7 +93,7 @@ final class PreviewModuleTest extends UnitTestCase
         $context = $this->getMockBuilder(Context::class)->getMock();
         $context->method('hasAspect')->with('frontend.preview')->willReturn(false);
         $context->expects(self::any())->method('setAspect')
-            ->willReturnCallback(fn (string $name): bool => match (true) {
+            ->willReturnCallback(fn(string $name): bool => match (true) {
                 $name === 'date',
                 $name === 'visibility',
                 $name === 'frontend.user',

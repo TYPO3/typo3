@@ -28,8 +28,7 @@ class ButtonProvider implements ButtonProviderInterface
         private readonly string $title,
         private readonly string $link,
         private readonly string $target = ''
-    ) {
-    }
+    ) {}
 
     public function getTitle(): string
     {

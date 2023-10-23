@@ -32,8 +32,7 @@ class BackendLayoutFromParentPage extends AbstractNode
 {
     public function __construct(
         private readonly BackendLayoutView $backendLayoutView,
-    ) {
-    }
+    ) {}
 
     /**
      * Handler for single nodes

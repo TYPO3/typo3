@@ -51,8 +51,7 @@ class HtmlWorker
     public function __construct(
         protected readonly LinkFactory $linkFactory,
         protected readonly HTML5 $parser
-    ) {
-    }
+    ) {}
 
     public function __toString(): string
     {

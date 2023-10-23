@@ -22,7 +22,5 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class DummyClassWithInvalidTypeHint
 {
-    public function __construct(\Foo\Bar\Not\Found $invalid)
-    {
-    }
+    public function __construct(\Foo\Bar\Not\Found $invalid) {}
 }

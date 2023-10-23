@@ -29,8 +29,7 @@ class RecordAccessVoter
 {
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher
-    ) {
-    }
+    ) {}
 
     /**
      * Checks page record for enableFields

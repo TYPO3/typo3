@@ -18,6 +18,4 @@ namespace TYPO3\CMS\Backend\Form\Exception;
 /**
  * User is not allowed to edit this page
  */
-class AccessDeniedPageEditException extends AccessDeniedException
-{
-}
+class AccessDeniedPageEditException extends AccessDeniedException {}

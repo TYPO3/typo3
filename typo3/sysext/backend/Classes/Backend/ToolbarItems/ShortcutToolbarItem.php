@@ -36,8 +36,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
     public function __construct(
         private readonly ShortcutRepository $shortcutRepository,
         private readonly BackendViewFactory $backendViewFactory,
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

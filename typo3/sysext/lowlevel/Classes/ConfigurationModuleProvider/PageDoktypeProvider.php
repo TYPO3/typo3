@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 class PageDoktypeProvider extends AbstractProvider
 {
-    public function __construct(protected readonly PageDoktypeRegistry $doktypeRegistry)
-    {
-    }
+    public function __construct(protected readonly PageDoktypeRegistry $doktypeRegistry) {}
 
     public function getConfiguration(): array
     {

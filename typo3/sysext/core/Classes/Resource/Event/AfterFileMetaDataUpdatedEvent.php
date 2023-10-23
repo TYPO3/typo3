@@ -26,8 +26,7 @@ final class AfterFileMetaDataUpdatedEvent
         private readonly int $fileUid,
         private readonly int $metaDataUid,
         private readonly array $record
-    ) {
-    }
+    ) {}
 
     public function getFileUid(): int
     {

@@ -22,9 +22,7 @@ namespace TYPO3\CMS\Backend\Backend\Event;
  */
 final class ModifyClearCacheActionsEvent
 {
-    public function __construct(private array $cacheActions, private array $cacheActionIdentifiers)
-    {
-    }
+    public function __construct(private array $cacheActions, private array $cacheActionIdentifiers) {}
 
     public function addCacheAction(array $cacheAction): void
     {

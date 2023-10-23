@@ -142,7 +142,7 @@ final class ModuleRegistry
             }
             $subModules = array_filter(
                 $modules,
-                static fn (ModuleInterface $mod): bool => $mod->getParentIdentifier() === $identifier
+                static fn(ModuleInterface $mod): bool => $mod->getParentIdentifier() === $identifier
             );
             if ($subModules === []) {
                 continue;
