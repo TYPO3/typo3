@@ -49,7 +49,8 @@ return (new \PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@DoctrineAnnotation' => true,
-        '@PER' => true,
+        // @todo: Switch to @PER-CS2.0 once php-cs-fixer's todo list is done: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/7247
+        '@PER-CS1.0' => true,
         'array_syntax' => ['syntax' => 'short'],
         'blank_line_after_opening_tag' => true,
         'braces' => ['allow_single_line_closure' => true],
@@ -95,6 +96,8 @@ return (new \PhpCsFixer\Config())
         'return_type_declaration' => ['space_before' => 'none'],
         'single_quote' => true,
         'single_line_comment_style' => ['comment_types' => ['hash']],
+        // @todo: Can be dropped once we enable @PER-CS2.0
+        'single_line_empty_body' => true,
         'single_trait_insert_per_statement' => true,
         'trailing_comma_in_multiline' => ['elements' => ['arrays']],
         'whitespace_after_comma_in_array' => ['ensure_single_space' => true],
