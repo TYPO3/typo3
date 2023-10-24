@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
@@ -24,7 +26,10 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DefaultTcaSchemaTest extends UnitTestCase
@@ -724,6 +729,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsSimpleMmForSelect(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
             'type' => 'select',
             'MM' => 'tx_myext_atable_afield_mm',
@@ -790,6 +796,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsMmWithUidWhenMultipleIsSet(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
             'type' => 'select',
             'MM' => 'tx_myext_atable_afield_mm',
@@ -866,6 +873,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsMmWithTablenamesAndFieldname(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
             'type' => 'select',
             'MM' => 'tx_myext_atable_afield_mm',
@@ -953,6 +961,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsSlug(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['slug'] = [
             'label' => 'aLabel',
             'config' => [
@@ -977,6 +986,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsFile(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['file'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1001,6 +1011,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsEmail(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['email'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1025,6 +1036,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsNullableEmail(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['email'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1050,6 +1062,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsCheck(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['check'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1074,6 +1087,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsFolder(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['folder'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1096,6 +1110,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsImageManipulation(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['imageManipulation'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1118,6 +1133,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsLanguage(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['language'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1142,6 +1158,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsGroup(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['group'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1164,6 +1181,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsGroupWithMM(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['groupWithMM'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1189,6 +1207,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsFlex(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['flex'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1211,6 +1230,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsText(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['text'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1233,6 +1253,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsPassword(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['password'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1256,6 +1277,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsPasswordNullable(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['password'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1280,6 +1302,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsColor(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['color'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1304,6 +1327,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsColorNullable(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['color'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1329,6 +1353,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsRadioString(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['radio'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1363,6 +1388,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsRadioStringVerifyThatCorrectLoopIsContinued(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['radio1'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1423,6 +1449,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsRadioStringWhenNoItemsOrUserFuncAreSet(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['radio'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1448,6 +1475,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsRadioStringWhenItemsProcFuncSet(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['radio'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1483,6 +1511,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsRadioSmallInt(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['radio'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1520,6 +1549,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsRadioInt(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['radio'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1557,6 +1587,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsLink(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['link'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1580,6 +1611,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsLinkNullable(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['link'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1605,6 +1637,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsInlineWithMMSet(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['inline_MM'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1631,6 +1664,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsInlineWithForeignFieldSet(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['inline_ff'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1657,6 +1691,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsInlineWithForeignFieldAndChildRelationSet(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['inline_ff'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1706,6 +1741,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsInlineWithoutRelationTableSet(): void
     {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['inline'] = [
             'label' => 'aLabel',
             'config' => [
@@ -1724,5 +1760,199 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ]
         );
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsNumberAsDecimalForNonSqlite(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'format' => 'decimal',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('decimal'),
+            [
+                'default' => 0.00,
+                'notnull' => true,
+                'precision' => 10,
+                'scale' => 2,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsNumberAsDecimalForSqlite(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool(SqlitePlatform::class);
+        $GLOBALS['TCA']['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'format' => 'decimal',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('string'),
+            [
+                'default' => '0.00',
+                'notnull' => true,
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsNumberAsInteger(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'format' => 'integer',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsNumberWithoutFormatAsInteger(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsNumberWithoutFormatAsIntegerWithNullable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'nullable' => true,
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('integer'),
+            [
+                'default' => null,
+                'notnull' => false,
+                'unsigned' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsNumberWithoutFormatAsIntegerWithLowerRangePositive(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'range' => [
+                    'lower' => 0,
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsNumberWithoutFormatAsIntegerWithLowerRangeNegative(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'range' => [
+                    'lower' => -1,
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('integer'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+    }
+
+    private function mockDefaultConnectionPlatformInConnectionPool(string $databasePlatformClass = MariaDBPlatform::class): void
+    {
+        $connectionPool = $this->getMockBuilder(ConnectionPool::class)->onlyMethods(['getConnectionForTable'])->getMock();
+        $mariaDbConnection = $this->getMockBuilder($databasePlatformClass)->getMock();
+        $connection = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
+        $connection->expects(self::any())->method('getDatabasePlatform')->willReturn($mariaDbConnection);
+        $connectionPool->expects(self::any())->method('getConnectionForTable')->willReturn($connection);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool);
     }
 }

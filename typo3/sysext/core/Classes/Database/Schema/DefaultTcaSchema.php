@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema;
 
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Schema\Exception\DefaultTcaSchemaTablePositionException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -957,6 +959,65 @@ class DefaultTcaSchema
                     }
                 }
             }
+
+            // Add fields for all tables, defining number columns (TCA type=number)
+            $tableConnectionPlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'number'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $type = ($fieldConfig['config']['format'] ?? '') === 'decimal' ? Types::DECIMAL : Types::INTEGER;
+                $nullable = $fieldConfig['config']['nullable'] ?? false;
+                $lowerRange = $fieldConfig['config']['range']['lower'] ?? -1;
+                // Integer type for all database platforms.
+                if ($type === Types::INTEGER) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::INTEGER,
+                        [
+                            'default' => $nullable === true ? null : 0,
+                            'notnull' => !$nullable,
+                            'unsigned' => $lowerRange >= 0,
+                        ]
+                    );
+                    continue;
+                }
+                // SQLite internally defines NUMERIC() fields as real, and therefore as floating numbers. pdo_sqlite
+                // then returns PHP float which can lead to rounding issues. See https://bugs.php.net/bug.php?id=81397
+                // for more details. We create a 'string' field on SQLite as workaround.
+                // @todo Database schema should be created with MySQL in mind and not mixed. Transforming to the
+                //       concrete database platform is handled in the database compare area. Sadly, this is not
+                //       possible right now but upcoming preparation towards doctrine/dbal 4 makes it possible to
+                //       move this "hack" to a different place.
+                if ($tableConnectionPlatform instanceof SqlitePlatform) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                            'default' => $nullable === true ? null : '0.00',
+                            'notnull' => !$nullable,
+                            'length' => 255,
+                        ]
+                    );
+                    continue;
+                }
+                // Decimal for all supported platforms except SQLite
+                $tables[$tablePosition]->addColumn(
+                    $this->quote($fieldName),
+                    Types::DECIMAL,
+                    [
+                        'default' => $nullable === true ? null : 0.00,
+                        'notnull' => !$nullable,
+                        'unsigned' => $lowerRange >= 0,
+                        'precision' => 10,
+                        'scale' => 2,
+                    ]
+                );
+            }
+            // Cleanup
+            unset($tableConnectionPlatform, $type, $nullable, $lowerRange);
         }
 
         return $tables;

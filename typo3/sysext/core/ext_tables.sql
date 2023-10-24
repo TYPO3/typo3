@@ -159,7 +159,6 @@ CREATE TABLE sys_file (
 	mime_type varchar(255) DEFAULT '' NOT NULL,
 	name tinytext,
 	sha1 char(40) DEFAULT '' NOT NULL,
-	size bigint(20) unsigned DEFAULT '0' NOT NULL,
 	creation_date int(11) DEFAULT '0' NOT NULL,
 	modification_date int(11) DEFAULT '0' NOT NULL,
 
@@ -176,8 +175,6 @@ CREATE TABLE sys_file (
 CREATE TABLE sys_file_metadata (
 	file int(11) DEFAULT '0' NOT NULL,
 	title tinytext,
-	width int(11) DEFAULT '0' NOT NULL,
-	height int(11) DEFAULT '0' NOT NULL,
 	alternative text,
 
 	KEY file (file),
@@ -220,10 +217,8 @@ CREATE TABLE sys_file_processedfile (
 #
 CREATE TABLE sys_file_reference (
 	# Reference fields (basically same as MM table)
-	uid_foreign int(11) DEFAULT '0' NOT NULL,
 	tablenames varchar(64) DEFAULT '' NOT NULL,
 	fieldname varchar(64) DEFAULT '' NOT NULL,
-	sorting_foreign int(11) DEFAULT '0' NOT NULL,
 
 	# group fields, but rely on the integer format, so default format (text) gets overridden here
 	uid_local int(11) DEFAULT '0' NOT NULL,

@@ -18,9 +18,6 @@ CREATE TABLE sys_file_metadata (
 	# px,mm,cm,m,p, ...
 	unit char(3) DEFAULT '',
 
-	# AUDIO + VIDEO
-	duration float unsigned DEFAULT '0',
-
 	# RGB,sRGB,YUV, ...
 	color_space varchar(4) DEFAULT '',
 

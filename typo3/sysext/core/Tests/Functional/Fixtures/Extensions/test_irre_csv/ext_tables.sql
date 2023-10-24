@@ -24,5 +24,4 @@ CREATE TABLE tx_testirrecsv_offer
 CREATE TABLE tx_testirrecsv_price
 (
     title tinytext                    NOT NULL,
-    price varchar(255) DEFAULT '0.00' NOT NULL
 );

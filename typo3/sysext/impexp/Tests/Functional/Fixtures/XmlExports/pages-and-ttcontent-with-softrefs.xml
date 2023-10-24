@@ -226,10 +226,10 @@
                 <field index="mime_type">image/jpeg</field>
                 <field index="name">typo3_image2.jpg</field>
                 <field index="sha1">da9acdf1e105784a57bbffec9520969578287797</field>
-                <field index="size">7958</field>
                 <field index="creation_date">1389878273</field>
                 <field index="modification_date">1389878273</field>
                 <field index="metadata">0</field>
+                <field index="size">7958</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">

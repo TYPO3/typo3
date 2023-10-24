@@ -197,10 +197,10 @@
                 <field index="mime_type">text/plain</field>
                 <field index="name">flexFormWithSoftReference.form.yaml</field>
                 <field index="sha1">4acd754cee5861bb543870fae76df5d35c0a0e5b</field>
-                <field index="size">501</field>
                 <field index="creation_date">1628060459</field>
                 <field index="modification_date">1628060459</field>
                 <field index="metadata">0</field>
+                <field index="size">501</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">

@@ -41,5 +41,4 @@ CREATE TABLE tx_testirremnattributeinline_offer
 CREATE TABLE tx_testirremnattributeinline_price
 (
 	title tinytext NOT NULL,
-	price varchar(255) DEFAULT '0.00' NOT NULL
 );

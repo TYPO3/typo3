@@ -204,15 +204,15 @@
             <fieldlist index="data" type="array">
                 <field index="uid" type="integer">1</field>
                 <field index="pid" type="integer">1</field>
-                <field index="uid_foreign" type="integer">1</field>
                 <field index="tablenames">tt_content</field>
                 <field index="fieldname">image</field>
-                <field index="sorting_foreign" type="integer">0</field>
                 <field index="uid_local" type="integer">1</field>
                 <field index="title" type="NULL"></field>
                 <field index="alternative" type="NULL"></field>
                 <field index="description" type="NULL"></field>
                 <field index="link"></field>
+                <field index="uid_foreign" type="integer">1</field>
+                <field index="sorting_foreign" type="integer">0</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="uid_local" type="array">
@@ -304,10 +304,10 @@
                 <field index="mime_type">image/jpeg</field>
                 <field index="name">typo3_image2.jpg</field>
                 <field index="sha1">da9acdf1e105784a57bbffec9520969578287797</field>
-                <field index="size">7958</field>
                 <field index="creation_date">1389878273</field>
                 <field index="modification_date">1389878273</field>
                 <field index="metadata">0</field>
+                <field index="size">7958</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">
@@ -375,10 +375,10 @@
                 <field index="l10n_parent">0</field>
                 <field index="file">1</field>
                 <field index="title">Dummy image</field>
-                <field index="width">400</field>
-                <field index="height">300</field>
                 <field index="alternative">Photo of program code</field>
                 <field index="description">This is a dummy image.</field>
+                <field index="width">400</field>
+                <field index="height">300</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="file" type="array">
@@ -400,10 +400,10 @@
                 <field index="l10n_parent">1</field>
                 <field index="file">1</field>
                 <field index="title">Beispiel Bild</field>
-                <field index="width">400</field>
-                <field index="height">300</field>
                 <field index="alternative">Foto von Programmcode</field>
                 <field index="description">Nur ein Beispielbild.</field>
+                <field index="width">400</field>
+                <field index="height">300</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="l10n_parent" type="array">

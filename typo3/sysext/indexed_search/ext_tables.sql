@@ -127,7 +127,6 @@ CREATE TABLE index_config (
   extensions varchar(255) DEFAULT '' NOT NULL,
 
   timer_frequency int(11) DEFAULT '0' NOT NULL,
-  recordsbatch int(11) DEFAULT '0' NOT NULL,
 
   # group fields, but rely on the integer format, so default format (text) gets overridden here
   alternative_source_pid int(11) unsigned DEFAULT '0' NOT NULL,
