@@ -86,15 +86,6 @@ final class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '3',
                 'comment' => '',
             ],
-            [
-                'label' => 'input_20',
-                'inputValue' => 'test',
-                'expectedValue' => 'JSfootestJSfoo',
-                'expectedInternalValue' => 'JSfootestJSfoo',
-                'expectedValueAfterSave' => 'JSfootestJSfooPHPfoo-evaluatePHPfoo-deevaluate',
-                'expectedInternalValueAfterSave' => 'JSfootestJSfooPHPfoo-evaluatePHPfoo-deevaluate',
-                'comment' => '',
-            ],
         ];
     }
 
