@@ -102,6 +102,54 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 ],
             ],
 
+            // Remove Plugins, preserving array-list structure
+            'Remove plugins mapping preserves array-list structure' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [
+                                'image',
+                                'foobar',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => [
+                                'foobar',
+                            ],
+                            'removeImportModules' => [
+                                [
+                                    'module' => '@ckeditor/ckeditor5-image',
+                                    'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],
+                                ],
+                            ],
+                            'toolbar' => [
+                                'items' => [
+                                    'softhyphen',
+                                ],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
             // Remove Buttons. Configured as array
             'Remove buttons mapping (array)' => [
                 [

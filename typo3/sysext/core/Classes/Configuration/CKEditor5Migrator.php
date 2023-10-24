@@ -301,6 +301,8 @@ class CKEditor5Migrator
         }
         if (count($this->configuration['editor']['config']['removePlugins']) === 0) {
             unset($this->configuration['editor']['config']['removePlugins']);
+        } else {
+            $this->configuration['editor']['config']['removePlugins'] = $this->getUniqueArrayValues($this->configuration['editor']['config']['removePlugins']);
         }
     }
 
