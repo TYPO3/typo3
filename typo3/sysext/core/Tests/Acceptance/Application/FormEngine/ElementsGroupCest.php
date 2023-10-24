@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
+use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -85,6 +86,69 @@ final class ElementsGroupCest
         $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > a.t3js-btn-moveoption-down');
         $I->see($multiselect[0], $select . ' > option:nth-child(2)');
         $I->see($multiselect[1], $select . ' > option:nth-child(3)');
+    }
+
+    public function sortElementsInGroupWithArrowAndAltKeys(ApplicationTester $I): void
+    {
+        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(2)';
+        $select = $formWizardsWrap . ' > div:nth-of-type(2) > select';
+
+        $selectOption1 = 'styleguide demo user 1';
+        $multiselect = ['styleguide demo user 1', 'styleguide demo user 2'];
+
+        $I->amGoingTo('put "' . $selectOption1 . '" on first position');
+        $I->selectOption($select, $selectOption1);
+        $I->pressKey($select, [WebDriverKeys::ALT, WebDriverKeys::SHIFT, WebDriverKeys::UP]);
+        $I->see($selectOption1, $select . ' > option:nth-child(1)');
+
+        $I->amGoingTo('put "' . $selectOption1 . '" one position down / on the second position');
+        $I->selectOption($select, $selectOption1);
+        $I->pressKey($select, [WebDriverKeys::ALT, WebDriverKeys::DOWN]);
+        $I->see($selectOption1, $select . ' > option:nth-child(2)');
+
+        $I->amGoingTo('put "' . $selectOption1 . '" on the last position');
+        $I->selectOption($select, $selectOption1);
+        $I->pressKey($select, [WebDriverKeys::ALT, WebDriverKeys::SHIFT, WebDriverKeys::DOWN]);
+        $I->see($selectOption1, $select . ' > option:nth-last-child(1)');
+
+        $I->amGoingTo('put "' . $selectOption1 . '" one position up / on second last position');
+        $I->selectOption($select, $selectOption1);
+        $I->pressKey($select, [WebDriverKeys::ALT, WebDriverKeys::UP]);
+        $I->see($selectOption1, $select . ' > option:nth-last-child(2)');
+
+        $I->amGoingTo('put ' . print_r($multiselect, true) . ' on first position');
+        $I->selectOption($select, $multiselect);
+        $I->pressKey($select, [WebDriverKeys::ALT, WebDriverKeys::SHIFT, WebDriverKeys::UP]);
+        $I->see($multiselect[0], $select . ' > option:nth-child(1)');
+        $I->see($multiselect[1], $select . ' > option:nth-child(2)');
+
+        $I->amGoingTo('put ' . print_r($multiselect, true) . ' one position down');
+        $I->selectOption($select, $multiselect);
+        $I->pressKey($select, [WebDriverKeys::ALT, WebDriverKeys::DOWN]);
+        $I->see($multiselect[0], $select . ' > option:nth-child(2)');
+        $I->see($multiselect[1], $select . ' > option:nth-child(3)');
+    }
+
+    public function removeElementInGroupWithDeleteKey(ApplicationTester $I): void
+    {
+        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(2)';
+        $select = $formWizardsWrap . ' > div:nth-of-type(2) > select';
+
+        $selectOption1 = 'styleguide demo user 1';
+        $multiselect = ['styleguide demo user 1', 'styleguide demo user 2'];
+
+        $I->amGoingTo('remove "' . $selectOption1);
+        $I->selectOption($select, $selectOption1);
+        $I->pressKey($select, WebDriverKeys::DELETE);
+        $I->dontSee($selectOption1, $select . ' > option:nth-child(1)');
+
+        $I->amGoingTo('remove ' . print_r($multiselect, true));
+        $I->selectOption($select, $multiselect);
+        $I->pressKey($select, WebDriverKeys::DELETE);
+        $I->dontSee($multiselect[0], $select . ' > option:nth-child(1)');
+        $I->dontSee($multiselect[1], $select . ' > option:nth-child(2)');
     }
 
     public function addARecordWithRecordBrowserGroup(ApplicationTester $I): void
