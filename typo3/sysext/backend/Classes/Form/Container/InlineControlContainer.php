@@ -530,7 +530,7 @@ class InlineControlContainer extends AbstractContainer
         $opt = [];
         foreach ($possibleRecords as $possibleRecord) {
             if (!in_array($possibleRecord['value'], $uniqueIds)) {
-                $opt[] = '<option value="' . htmlspecialchars($possibleRecord['value']) . '">' . htmlspecialchars($possibleRecord['value']) . '</option>';
+                $opt[] = '<option value="' . htmlspecialchars($possibleRecord['value']) . '">' . htmlspecialchars($possibleRecord['label']) . '</option>';
             }
         }
         // Put together the selector box:
