@@ -53,14 +53,21 @@ return (new \PhpCsFixer\Config())
         '@PER-CS1.0' => true,
         'array_syntax' => ['syntax' => 'short'],
         'cast_spaces' => ['space' => 'none'],
+        // @todo: Can be dropped once we enable @PER-CS2.0
         'concat_space' => ['spacing' => 'one'],
         'declare_equal_normalize' => ['space' => 'none'],
         'declare_parentheses' => true,
         'dir_constant' => true,
+        // @todo: Can be dropped once we enable @PER-CS2.0
+        'function_declaration' => [
+            'closure_fn_spacing' => 'none',
+        ],
         'function_to_constant' => ['functions' => ['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']],
         'type_declaration_spaces' => true,
         'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
         'list_syntax' => ['syntax' => 'short'],
+        // @todo: Can be dropped once we enable @PER-CS2.0
+        'method_argument_space' => true,
         'modernize_strpos' => true,
         'modernize_types_casting' => true,
         'native_function_casing' => true,
