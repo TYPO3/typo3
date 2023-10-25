@@ -56,9 +56,14 @@ return (new \PhpCsFixer\Config())
         'braces' => ['allow_single_line_closure' => true],
         'cast_spaces' => ['space' => 'none'],
         'compact_nullable_typehint' => true,
+        // @todo: Can be dropped once we enable @PER-CS2.0
         'concat_space' => ['spacing' => 'one'],
         'declare_equal_normalize' => ['space' => 'none'],
         'dir_constant' => true,
+        // @todo: Can be dropped once we enable @PER-CS2.0
+        'function_declaration' => [
+            'closure_fn_spacing' => 'none',
+        ],
         'function_typehint_space' => true,
         'lowercase_cast' => true,
         'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
