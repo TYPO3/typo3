@@ -526,7 +526,7 @@ class Export extends ImportExport
                 $this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']] = 1;
                 // Initialize reference index object:
                 $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-                $relations = $refIndexObj->getRelations($table, $row);
+                $relations = $refIndexObj->getRelations($table, $row, 0);
                 $relations = $this->removeRedundantSoftRefsInRelations($relations);
                 // Data:
                 $this->dat['records'][$table . ':' . $row['uid']] = [];

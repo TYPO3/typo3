@@ -471,21 +471,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Database\\\\ReferenceIndex\\:\\:setReferenceValue_dbRels\\(\\) should return string but returns false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Database\\\\ReferenceIndex\\:\\:setReferenceValue_softreferences\\(\\) should return string but returns false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
-
-		-
-			message: "#^Variable \\$chunk in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/RelationHandler.php

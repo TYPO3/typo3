@@ -21,66 +21,43 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ProgressListenerInterface;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Reference index processing and relation extraction
+ * Reference index processing and relation extraction.
  *
  * @internal Extensions shouldn't fiddle with the reference index themselves, it's task of DataHandler to do this.
  */
 class ReferenceIndex
 {
+    /** Increase if a change in the code means we will have to force a re-generation of the index. */
+    private const HASH_VERSION = 1;
+
     /**
-     * Definition of tables to exclude from the ReferenceIndex
-     *
-     * Only tables which do not contain any relations and never did so far since references also won't be deleted for
-     * these. Since only tables with an entry in $GLOBALS['TCA] are handled by ReferenceIndex there is no need to add
-     * *_mm-tables.
-     *
-     * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array()
+     * Key list of tables to exclude from ReferenceIndex. Only $GLOBALS['TCA'] need to be listed here, if at all.
+     * This is a performance improvement to skip tables "irrelevant" in refindex scope, for instance sys_log.
+     * An event may alter this.
+     * The list depends on TCA and an event, entries are managed once per class instance.
+     * Array with fields as keys and booleans as values for fast isset() lookup instead of slower in_array().
      */
-    protected array $excludedTables = [
+    private array $excludedTables = [
         'sys_log' => true,
         'tx_extensionmanager_domain_model_extension' => true,
     ];
 
     /**
-     * Definition of fields to exclude from ReferenceIndex in *every* table.
-     * Implemented as array with fields as keys and booleans as values for fast isset() lookup instead of slow in_array().
-     */
-    protected array $excludedColumns = [
-        'uid' => true,
-        'perms_userid' => true,
-        'perms_groupid' => true,
-        'perms_user' => true,
-        'perms_group' => true,
-        'perms_everybody' => true,
-        'pid' => true,
-    ];
-
-    /** An index of all found references of a single record */
-    protected array $relations = [];
-    /** Number which we can increase if a change in the code means we will have to force a re-generation of the index. */
-    protected int $hashVersion = 1;
-    /** Current workspace id */
-    protected int $workspaceId = 0;
-
-    /**
      * A list of fields that may contain relations per TCA table.
      * The list depends on TCA, entries are created once per table, per class instance.
      */
-    protected array $tableRelationFieldCache = [];
+    private array $tableRelationFieldCache = [];
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -89,80 +66,6 @@ class ReferenceIndex
         private readonly Registry $registry,
         private readonly FlexFormTools $flexFormTools,
     ) {}
-
-    /**
-     * Update the sys_refindex table for a record, even one just deleted.
-     * This is used by DataHandler ReferenceIndexUpdater as entry method to take care of single records.
-     * It is also used internally via updateIndex() by CLI "referenceindex:update" and lowlevel BE module.
-     *
-     * @param array|null $currentRecord Current full (select *) record from DB. Optimization for updateIndex().
-     * @return array Statistics about how many index records were added, deleted and not altered.
-     */
-    public function updateRefIndexTable(string $tableName, int $uid, bool $testOnly = false, int $workspaceUid = 0, array $currentRecord = null): array
-    {
-        $this->workspaceId = $workspaceUid;
-        $result = [
-            'keptNodes' => 0,
-            'deletedNodes' => 0,
-            'addedNodes' => 0,
-        ];
-        if ($uid < 1 || $this->shouldExcludeTableFromReferenceIndex($tableName) || empty($this->getTableRelationFields($tableName))) {
-            // Not a valid uid, the table is excluded, or can not contain relations.
-            return $result;
-        }
-        if ($currentRecord === null) {
-            // Fetch record if not provided.
-            $currentRecord = BackendUtility::getRecord($tableName, $uid);
-        }
-        if ($currentRecord === null) {
-            // If there is no record because it was hard or soft-deleted, remove any existing sys_refindex rows of it.
-            $currentRelationHashes = $this->getCurrentRelationHashes($tableName, $uid, $workspaceUid);
-            $numberOfLeftOverRelationHashes = count($currentRelationHashes);
-            $result['deletedNodes'] = $numberOfLeftOverRelationHashes;
-            if ($numberOfLeftOverRelationHashes > 0 && !$testOnly) {
-                $this->removeRelationHashes($currentRelationHashes);
-            }
-            return $result;
-        }
-
-        $currentRelationHashes = $this->getCurrentRelationHashes($tableName, $uid, $workspaceUid);
-        $this->relations = [];
-        $relations = $this->generateDataUsingRecord($tableName, $currentRecord);
-        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
-        foreach ($relations as &$relation) {
-            if (!is_array($relation)) {
-                continue;
-            }
-            // Exclude any relations TO a specific table
-            if (($relation['ref_table'] ?? '') && $this->shouldExcludeTableFromReferenceIndex($relation['ref_table'])) {
-                continue;
-            }
-            $relation['hash'] = md5(implode('///', $relation) . '///' . $this->hashVersion);
-            // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
-            if (isset($currentRelationHashes[$relation['hash']])) {
-                unset($currentRelationHashes[$relation['hash']]);
-                $result['keptNodes']++;
-                $relation['_ACTION'] = 'KEPT';
-            } else {
-                // If new, add it:
-                if (!$testOnly) {
-                    $connection->insert('sys_refindex', $relation);
-                }
-                $result['addedNodes']++;
-                $relation['_ACTION'] = 'ADDED';
-            }
-        }
-        $result['relations'] = $relations;
-
-        // If any existing are left, they are not in the current set anymore. Remove them.
-        $numberOfLeftOverRelationHashes = count($currentRelationHashes);
-        $result['deletedNodes'] = $numberOfLeftOverRelationHashes;
-        if ($numberOfLeftOverRelationHashes > 0 && !$testOnly) {
-            $this->removeRelationHashes($currentRelationHashes);
-        }
-
-        return $result;
-    }
 
     /**
      * Returns the amount of references for the given record.
@@ -182,695 +85,6 @@ class ReferenceIndex
                     $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             )->executeQuery()->fetchOne();
-    }
-
-    /**
-     * Get current sys_refindex rows of table:uid from database with hash as index.
-     *
-     * @return array<string, true>
-     */
-    private function getCurrentRelationHashes(string $tableName, int $uid, int $workspaceUid): array
-    {
-        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
-        $queryBuilder = $connection->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll();
-        $queryResult = $queryBuilder->select('hash')->from('sys_refindex')->where(
-            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
-            $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspaceUid, Connection::PARAM_INT))
-        )->executeQuery();
-        $currentRelationHashes = [];
-        while ($relation = $queryResult->fetchAssociative()) {
-            $currentRelationHashes[$relation['hash']] = true;
-        }
-        return $currentRelationHashes;
-    }
-
-    /**
-     * Remove sys_refindex rows by hash.
-     *
-     * @param array<string, true> $currentRelationHashes
-     */
-    private function removeRelationHashes(array $currentRelationHashes): void
-    {
-        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
-        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
-        $chunks = array_chunk(array_keys($currentRelationHashes), $maxBindParameters - 10, true);
-        foreach ($chunks as $chunk) {
-            if (empty($chunk)) {
-                continue;
-            }
-            $queryBuilder = $connection->createQueryBuilder();
-            $queryBuilder
-                ->delete('sys_refindex')
-                ->where(
-                    $queryBuilder->expr()->in('hash', $queryBuilder->createNamedParameter($chunk, Connection::PARAM_STR_ARRAY))
-                )
-                ->executeStatement();
-        }
-    }
-
-    /**
-     * Calculate the relations for a record of a given table
-     *
-     * @param string $tableName Table being processed
-     * @param array $record Record from $tableName
-     */
-    protected function generateDataUsingRecord(string $tableName, array $record): array
-    {
-        $this->relations = [];
-        // Get all relations from record:
-        $recordRelations = $this->getRelations($tableName, $record);
-        // Traverse those relations, compile records to insert in table:
-        foreach ($recordRelations as $fieldName => $fieldRelations) {
-            // Based on type
-            switch ($fieldRelations['type'] ?? '') {
-                case 'db':
-                    $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, '', $fieldRelations['itemArray']);
-                    break;
-                case 'flex':
-                    // DB references in FlexForms
-                    if (is_array($fieldRelations['flexFormRels']['db'] ?? false)) {
-                        foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
-                            $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, $flexPointer, $subList);
-                        }
-                    }
-                    // Soft references in FlexForms
-                    if (is_array($fieldRelations['flexFormRels']['softrefs'] ?? false)) {
-                        foreach ($fieldRelations['flexFormRels']['softrefs'] as $flexPointer => $subList) {
-                            $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, $flexPointer, $subList['keys']);
-                        }
-                    }
-                    break;
-            }
-            // Soft references in the field
-            if (is_array($fieldRelations['softrefs']['keys'] ?? false)) {
-                $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, '', $fieldRelations['softrefs']['keys']);
-            }
-        }
-
-        return array_filter($this->relations);
-    }
-
-    /**
-     * Create array with field/value pairs ready to insert in database
-     *
-     * @param string $tableName Tablename of source record (where reference is located)
-     * @param array $record Record from $table
-     * @param string $fieldName Fieldname of source record (where reference is located)
-     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [$field]
-     * @param string $referencedTable In database references the tablename the reference points to. Keyword "_STRING" indicates special usage (typ. SoftReference) in $referenceString
-     * @param int $referencedUid In database references the UID of the record (zero $referencedTable is "_STRING")
-     * @param string $referenceString For "_STRING" references: The string.
-     * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
-     * @param string $softReferenceKey If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
-     * @param string $softReferenceId Soft reference ID for key. Might be useful for replace operations.
-     * @return array|bool Array to insert in DB or false if record should not be processed
-     */
-    protected function createEntryDataUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, string $referencedTable, int $referencedUid, string $referenceString = '', int $sort = -1, string $softReferenceKey = '', string $softReferenceId = '')
-    {
-        $currentWorkspace = $this->workspaceId;
-        if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-            $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-            if (isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $currentWorkspace && empty($fieldConfig['MM'])) {
-                // The given record is workspace-enabled but doesn't live in the selected workspace. Don't add index, it's not actually there.
-                // We still add those rows if the record is a local side live record of an MM relation and can be a target of a workspace record.
-                // See workspaces ManyToMany Modify addCategoryRelation for details on this case.
-                return false;
-            }
-        }
-        return [
-            'tablename' => $tableName,
-            'recuid' => $record['uid'],
-            'field' => $fieldName,
-            'flexpointer' => $flexPointer,
-            'softref_key' => $softReferenceKey,
-            'softref_id' => $softReferenceId,
-            'sorting' => $sort,
-            'workspace' => $currentWorkspace,
-            'ref_table' => $referencedTable,
-            'ref_uid' => $referencedUid,
-            'ref_string' => mb_substr($referenceString, 0, 1024),
-        ];
-    }
-
-    /**
-     * Add database references to ->relations array based on fetched record
-     *
-     * @param string $tableName Tablename of source record (where reference is located)
-     * @param array $record Record from $tableName
-     * @param string $fieldName Fieldname of source record (where reference is located)
-     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in $fieldName
-     * @param array $items Data array with database relations (table/id)
-     */
-    protected function createEntryDataForDatabaseRelationsUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, array $items)
-    {
-        foreach ($items as $sort => $i) {
-            $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $i['table'], (int)$i['id'], '', $sort);
-        }
-    }
-
-    /**
-     * Add SoftReference references to ->relations array based on fetched record
-     *
-     * @param string $tableName Tablename of source record (where reference is located)
-     * @param array $record Record from $tableName
-     * @param string $fieldName Fieldname of source record (where reference is located)
-     * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in $fieldName
-     * @param array $keys Data array with soft reference keys
-     */
-    protected function createEntryDataForSoftReferencesUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, array $keys)
-    {
-        foreach ($keys as $spKey => $elements) {
-            if (is_array($elements)) {
-                foreach ($elements as $subKey => $el) {
-                    if (is_array($el['subst'] ?? false)) {
-                        switch ((string)$el['subst']['type']) {
-                            case 'db':
-                                [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
-                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $referencedTable, (int)$referencedUid, '', -1, $spKey, (string)$subKey);
-                                break;
-                            case 'string':
-                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, (string)$subKey);
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Returns relation information for a $table/$row-array
-     * Traverses all fields in input row which are configured in TCA/columns
-     * It looks for hard relations to records in the TCA types "select" and "group"
-     *
-     * @param string $table Table name
-     * @param array $row Row from table
-     * @param string $onlyField Specific field to fetch for.
-     * @return array Array with information about relations
-     * @see export_addRecord()
-     * @internal
-     */
-    public function getRelations($table, $row, $onlyField = '')
-    {
-        // Initialize:
-        $uid = $row['uid'];
-        $outRow = [];
-        $relationFields = $this->getTableRelationFields($table);
-        foreach ($relationFields as $field) {
-            $value = $row[$field] ?? null;
-            if ($this->shouldExcludeTableColumnFromReferenceIndex($table, $field, $onlyField) === false) {
-                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                // Add a softref definition for link fields if the TCA does not specify one already
-                if ($conf['type'] === 'link' && empty($conf['softref'])) {
-                    $conf['softref'] = 'typolink';
-                }
-                // Add a softref definition for email fields
-                if ($conf['type'] === 'email') {
-                    $conf['softref'] = 'email[subst]';
-                }
-                // Add DB:
-                $resultsFromDatabase = $this->getRelations_procDB($value, $conf, $uid, $table, $row);
-                if (!empty($resultsFromDatabase)) {
-                    // Create an entry for the field with all DB relations:
-                    $outRow[$field] = [
-                        'type' => 'db',
-                        'itemArray' => $resultsFromDatabase,
-                    ];
-                }
-                // For "flex" fieldtypes we need to traverse the structure looking for db references of course!
-                if ($conf['type'] === 'flex' && is_string($value) && $value !== '') {
-                    $flexFormRelations = $this->getRelationsFromFlexData($table, $field, $row);
-                    if (!empty($flexFormRelations)) {
-                        $outRow[$field] = [
-                            'type' => 'flex',
-                            'flexFormRels' => $flexFormRelations,
-                        ];
-                    }
-                }
-                // Soft References:
-                if ((string)$value !== '') {
-                    $softRefValue = $value;
-                    if (!empty($conf['softref'])) {
-                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($conf['softref']) as $softReferenceParser) {
-                            $parserResult = $softReferenceParser->parse($table, $field, $uid, $softRefValue);
-                            if ($parserResult->hasMatched()) {
-                                $outRow[$field]['softrefs']['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
-                                if ($parserResult->hasContent()) {
-                                    $softRefValue = $parserResult->getContent();
-                                }
-                            }
-                        }
-                    }
-                    if (!empty($outRow[$field]['softrefs']) && (string)$value !== (string)$softRefValue && str_contains($softRefValue, '{softref:')) {
-                        $outRow[$field]['softrefs']['tokenizedContent'] = $softRefValue;
-                    }
-                }
-            }
-        }
-        return $outRow;
-    }
-
-    private function getRelationsFromFlexData(string $tableName, string $fieldName, array $row): array
-    {
-        $valueArray = GeneralUtility::xml2array($row[$fieldName] ?? '');
-        if (!is_array($valueArray)) {
-            // Current flex form values can not be parsed to an array. No relations.
-            return [];
-        }
-        try {
-            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier(
-                $this->flexFormTools->getDataStructureIdentifier($GLOBALS['TCA'][$tableName]['columns'][$fieldName], $tableName, $fieldName, $row)
-            );
-        } catch (InvalidIdentifierException) {
-            // Data structure can not be resolved or parsed. No relations.
-            return [];
-        }
-        if (!is_array($dataStructureArray['sheets'] ?? false)) {
-            // No sheet in DS. Shouldn't happen, though.
-            return [];
-        }
-        $flexRelations = [];
-        foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
-            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
-                // For all elements allowed in Data Structure.
-                if (($sheetElementTca['type'] ?? '') === 'array') {
-                    // This is a section.
-                    if (!is_array($sheetElementTca['el'] ?? false) || !is_array($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
-                        // No possible containers defined for this section in DS, or no values set for this section.
-                        continue;
-                    }
-                    foreach ($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
-                        // We have containers for this section in values.
-                        if (!is_array($valueSectionContainers ?? false)) {
-                            // Values don't validate to an array, skip.
-                            continue;
-                        }
-                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
-                            // For all value containers in this section.
-                            if (!is_array($sheetElementTca['el'][$valueContainerType]['el'] ?? false)) {
-                                // There is no DS for this container type, skip.
-                                continue;
-                            }
-                            foreach ($sheetElementTca['el'][$valueContainerType]['el'] as $containerElement => $containerElementTca) {
-                                // Container type of this value container exists in DS. Iterate DS container to find value relations.
-                                if (isset($valueContainerElements['el'][$containerElement]['vDEF'])) {
-                                    $fieldValue = $valueContainerElements['el'][$containerElement]['vDEF'];
-                                    $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/el/' . $valueSectionContainerKey . '/' . $valueContainerType . '/el/' . $containerElement . '/vDEF/';
-                                    // Flex form container section elements can not have DB relations, those are not checked.
-                                    // Add a softref definition for link and email fields if the TCA does not specify one already
-                                    if (($containerElementTca['config']['type'] ?? '') === 'link' && empty($containerElementTca['config']['softref'])) {
-                                        $containerElementTca['config']['softref'] = 'typolink';
-                                    }
-                                    if (($containerElementTca['config']['type'] ?? '') === 'email') {
-                                        $containerElementTca['config']['softref'] = 'email[subst]';
-                                    }
-                                    if ($fieldValue !== '' && ($containerElementTca['config']['softref'] ?? '') !== '') {
-                                        $tokenizedContent = $fieldValue;
-                                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($containerElementTca['config']['softref']) as $softReferenceParser) {
-                                            $parserResult = $softReferenceParser->parse($tableName, $fieldName, (int)$row['uid'], $fieldValue, $structurePath);
-                                            if ($parserResult->hasMatched()) {
-                                                $flexRelations['softrefs'][$structurePath]['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
-                                                if ($parserResult->hasContent()) {
-                                                    $tokenizedContent = $parserResult->getContent();
-                                                }
-                                            }
-                                        }
-                                        if (!empty($flexRelations['softrefs'][$structurePath]) && $fieldValue !== $tokenizedContent) {
-                                            $flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $tokenizedContent;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } elseif (isset($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
-                    // Not a section but a simple field. Get its relations.
-                    $fieldValue = $valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
-                    $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/vDEF/';
-                    $databaseRelations = $this->getRelations_procDB($fieldValue, $sheetElementTca['config'] ?? [], (int)$row['uid'], $tableName);
-                    if (!empty($databaseRelations)) {
-                        $flexRelations['db'][$structurePath] = $databaseRelations;
-                    }
-                    // Add a softref definition for link and email fields if the TCA does not specify one already
-                    if (($sheetElementTca['config']['type'] ?? '') === 'link' && empty($sheetElementTca['config']['softref'])) {
-                        $sheetElementTca['config']['softref'] = 'typolink';
-                    }
-                    if (($sheetElementTca['config']['type'] ?? '') === 'email') {
-                        $sheetElementTca['config']['softref'] = 'email[subst]';
-                    }
-                    if ($fieldValue !== '' && ($sheetElementTca['config']['softref'] ?? '') !== '') {
-                        $tokenizedContent = $fieldValue;
-                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($sheetElementTca['config']['softref']) as $softReferenceParser) {
-                            $parserResult = $softReferenceParser->parse($tableName, $fieldName, (int)$row['uid'], $fieldValue, $structurePath);
-                            if ($parserResult->hasMatched()) {
-                                $flexRelations['softrefs'][$structurePath]['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
-                                if ($parserResult->hasContent()) {
-                                    $tokenizedContent = $parserResult->getContent();
-                                }
-                            }
-                        }
-                        if (!empty($flexRelations['softrefs'][$structurePath]) && $fieldValue !== $tokenizedContent) {
-                            $flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $tokenizedContent;
-                        }
-                    }
-                }
-            }
-        }
-        return $flexRelations;
-    }
-
-    /**
-     * Check field configuration if it is a DB relation field and extract DB relations if any
-     *
-     * @param string $value Field value
-     * @param array $conf Field configuration array of type "TCA/columns
-     * @param int $uid Field uid
-     * @param string $table Table name
-     * @return array|bool If field type is OK it will return an array with the database relations. Else FALSE
-     */
-    protected function getRelations_procDB($value, $conf, $uid, $table = '', array $row = [])
-    {
-        // Get IRRE relations
-        if (empty($conf)) {
-            return false;
-        }
-        if (($conf['type'] === 'inline' || $conf['type'] === 'file') && !empty($conf['foreign_table']) && empty($conf['MM'])) {
-            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-            $dbAnalysis->setUseLiveReferenceIds(false);
-            $dbAnalysis->setWorkspaceId($this->workspaceId);
-            $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
-            return $dbAnalysis->itemArray;
-            // DB record lists:
-        }
-        if ($this->isDbReferenceField($conf)) {
-            $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
-            if ($conf['MM_opposite_field'] ?? false) {
-                // Never handle sys_refindex when looking at MM from foreign side
-                return [];
-            }
-
-            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-            $dbAnalysis->setWorkspaceId($this->workspaceId);
-            $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $uid, $table, $conf);
-            $itemArray = $dbAnalysis->itemArray;
-
-            if (ExtensionManagementUtility::isLoaded('workspaces')
-                && $this->workspaceId > 0
-                && !empty($conf['MM'] ?? '')
-                && !empty($conf['allowed'] ?? '')
-                && empty($conf['MM_opposite_field'] ?? '')
-                && (int)($row['t3ver_wsid'] ?? 0) === 0
-            ) {
-                // When dealing with local side mm relations in workspace 0, there may be workspace records on the foreign
-                // side, for instance when those got an additional category. See ManyToMany Modify addCategoryRelations test.
-                // In those cases, the full set of relations must be written to sys_refindex as workspace rows.
-                // But, if the relations in this workspace and live are identical, no sys_refindex workspace rows
-                // have to be added.
-                $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-                $dbAnalysis->setWorkspaceId(0);
-                $dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
-                $itemArrayLive = $dbAnalysis->itemArray;
-                if ($itemArrayLive === $itemArray) {
-                    $itemArray = false;
-                }
-            }
-            return $itemArray;
-        }
-        return false;
-    }
-
-    /**
-     * Setting the value of a reference or removing it completely.
-     * Usage: For lowlevel clean up operations!
-     * WARNING: With this you can set values that are not allowed in the database since it will bypass all checks for validity!
-     * Hence it is targeted at clean-up operations. Please use DataHandler in the usual ways if you wish to manipulate references.
-     * Since this interface allows updates to soft reference values (which DataHandler does not directly) you may like to use it
-     * for that as an exception to the warning above.
-     * Notice; If you want to remove multiple references from the same field, you MUST start with the one having the highest
-     * sorting number. If you don't the removal of a reference with a lower number will recreate an index in which the remaining
-     * references in that field has new hash-keys due to new sorting numbers - and you will get errors for the remaining operations
-     * which cannot find the hash you feed it!
-     * To ensure proper working only admin-BE_USERS in live workspace should use this function
-     *
-     * @param string $hash 32-byte hash string identifying the record from sys_refindex which you wish to change the value for
-     * @param mixed $newValue Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can
-     *                        only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]".
-     *                        Any other case, the input value is set as-is
-     * @param bool $returnDataArray Return $dataArray only, do not submit it to database.
-     * @param bool $bypassWorkspaceAdminCheck If set, it will bypass check for workspace-zero and admin user
-     * @return string|bool|array FALSE (=OK), error message string or array (if $returnDataArray is set!)
-     * @internal
-     */
-    public function setReferenceValue($hash, $newValue, $returnDataArray = false, $bypassWorkspaceAdminCheck = false)
-    {
-        $backendUser = $this->getBackendUser();
-        if ($backendUser->workspace === 0 && $backendUser->isAdmin() || $bypassWorkspaceAdminCheck) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
-            $queryBuilder->getRestrictions()->removeAll();
-
-            // Get current index from Database
-            $referenceRecord = $queryBuilder
-                ->select('*')
-                ->from('sys_refindex')
-                ->where(
-                    $queryBuilder->expr()->eq('hash', $queryBuilder->createNamedParameter($hash))
-                )
-                ->setMaxResults(1)
-                ->executeQuery()
-                ->fetchAssociative();
-
-            // Check if reference existed.
-            if (!is_array($referenceRecord)) {
-                return 'ERROR: No reference record with hash="' . $hash . '" was found!';
-            }
-
-            if (empty($GLOBALS['TCA'][$referenceRecord['tablename']])) {
-                return 'ERROR: Table "' . $referenceRecord['tablename'] . '" was not in TCA!';
-            }
-
-            // Get that record from database
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($referenceRecord['tablename']);
-            $queryBuilder->getRestrictions()->removeAll();
-            $record = $queryBuilder
-                ->select('*')
-                ->from($referenceRecord['tablename'])
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT)
-                    )
-                )
-                ->setMaxResults(1)
-                ->executeQuery()
-                ->fetchAssociative();
-
-            if (is_array($record)) {
-                // Get relation for single field from record
-                $recordRelations = $this->getRelations($referenceRecord['tablename'], $record, $referenceRecord['field']);
-                if ($fieldRelation = $recordRelations[$referenceRecord['field']]) {
-                    // Initialize data array that is to be sent to DataHandler afterwards:
-                    $dataArray = [];
-                    // Based on type
-                    switch ((string)$fieldRelation['type']) {
-                        case 'db':
-                            $error = $this->setReferenceValue_dbRels($referenceRecord, $fieldRelation['itemArray'], $newValue, $dataArray);
-                            if ($error) {
-                                return $error;
-                            }
-                            break;
-                        case 'flex':
-                            // DB references in FlexForms
-                            if (is_array($fieldRelation['flexFormRels']['db'][$referenceRecord['flexpointer']])) {
-                                $error = $this->setReferenceValue_dbRels($referenceRecord, $fieldRelation['flexFormRels']['db'][$referenceRecord['flexpointer']], $newValue, $dataArray, $referenceRecord['flexpointer']);
-                                if ($error) {
-                                    return $error;
-                                }
-                            }
-                            // Soft references in FlexForms
-                            if ($referenceRecord['softref_key'] && is_array($fieldRelation['flexFormRels']['softrefs'][$referenceRecord['flexpointer']]['keys'][$referenceRecord['softref_key']])) {
-                                $error = $this->setReferenceValue_softreferences($referenceRecord, $fieldRelation['flexFormRels']['softrefs'][$referenceRecord['flexpointer']], $newValue, $dataArray, $referenceRecord['flexpointer']);
-                                if ($error) {
-                                    return $error;
-                                }
-                            }
-                            break;
-                    }
-                    // Soft references in the field:
-                    if ($referenceRecord['softref_key'] && is_array($fieldRelation['softrefs']['keys'][$referenceRecord['softref_key']])) {
-                        $error = $this->setReferenceValue_softreferences($referenceRecord, $fieldRelation['softrefs'], $newValue, $dataArray);
-                        if ($error) {
-                            return $error;
-                        }
-                    }
-                    // Data Array, now ready to be sent to DataHandler
-                    if ($returnDataArray) {
-                        return $dataArray;
-                    }
-                    // Execute CMD array:
-                    $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                    $dataHandler->dontProcessTransformations = true;
-                    $dataHandler->bypassWorkspaceRestrictions = true;
-                    // Otherwise this may lead to permission issues if user is not admin
-                    $dataHandler->bypassAccessCheckForRecords = true;
-                    // Check has been done previously that there is a backend user which is Admin and also in live workspace
-                    $dataHandler->start($dataArray, []);
-                    $dataHandler->process_datamap();
-                    // Return errors if any:
-                    if (!empty($dataHandler->errorLog)) {
-                        return LF . 'DataHandler:' . implode(LF . 'DataHandler:', $dataHandler->errorLog);
-                    }
-                }
-            }
-        } else {
-            return 'ERROR: BE_USER object is not admin OR not in workspace 0 (Live)';
-        }
-
-        return false;
-    }
-
-    /**
-     * Setting a value for a reference for a DB field:
-     *
-     * @param array $refRec sys_refindex record
-     * @param array $itemArray Array of references from that field
-     * @param string|null $newValue Value to substitute current value with (or NULL to unset it)
-     * @param array $dataArray Data array in which the new value is set (passed by reference)
-     * @param string $flexPointer Flexform pointer, if in a flex form field.
-     * @return string Error message if any, otherwise FALSE = OK
-     */
-    protected function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexPointer = '')
-    {
-        if ((int)$itemArray[$refRec['sorting']]['id'] === (int)$refRec['ref_uid'] && (string)$itemArray[$refRec['sorting']]['table'] === (string)$refRec['ref_table']) {
-            // Setting or removing value:
-            // Remove value:
-            if ($newValue === null) {
-                unset($itemArray[$refRec['sorting']]);
-            } else {
-                [$itemArray[$refRec['sorting']]['table'], $itemArray[$refRec['sorting']]['id']] = explode(':', $newValue);
-            }
-            // Traverse and compile new list of records:
-            $saveValue = [];
-            foreach ($itemArray as $pair) {
-                $saveValue[] = $pair['table'] . '_' . $pair['id'];
-            }
-            // Set in data array:
-            if ($flexPointer) {
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
-                    [],
-                    substr($flexPointer, 0, -1),
-                    implode(',', $saveValue)
-                );
-            } else {
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
-            }
-        } else {
-            return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['table'] . ':' . $itemArray[$refRec['sorting']]['id'] . '") in sorting index "' . $refRec['sorting'] . '"';
-        }
-
-        return false;
-    }
-
-    /**
-     * Setting a value for a soft reference token
-     *
-     * @param array $refRec sys_refindex record
-     * @param array $softref Array of soft reference occurrences
-     * @param string $newValue Value to substitute current value with
-     * @param array $dataArray Data array in which the new value is set (passed by reference)
-     * @param string $flexPointer Flexform pointer, if in a flex form field.
-     * @return string Error message if any, otherwise FALSE = OK
-     */
-    protected function setReferenceValue_softreferences($refRec, $softref, $newValue, &$dataArray, $flexPointer = '')
-    {
-        if (!is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']])) {
-            return 'ERROR: Soft reference parser key "' . $refRec['softref_key'] . '" or the index "' . $refRec['softref_id'] . '" was not found.';
-        }
-
-        // Set new value:
-        $softref['keys'][$refRec['softref_key']][$refRec['softref_id']]['subst']['tokenValue'] = '' . $newValue;
-        // Traverse softreferences and replace in tokenized content to rebuild it with new value inside:
-        foreach ($softref['keys'] as $sfIndexes) {
-            foreach ($sfIndexes as $data) {
-                $softref['tokenizedContent'] = str_replace('{softref:' . $data['subst']['tokenID'] . '}', $data['subst']['tokenValue'], $softref['tokenizedContent']);
-            }
-        }
-        // Set in data array:
-        if (!str_contains($softref['tokenizedContent'], '{softref:')) {
-            if ($flexPointer) {
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
-                    [],
-                    substr($flexPointer, 0, -1),
-                    $softref['tokenizedContent']
-                );
-            } else {
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = $softref['tokenizedContent'];
-            }
-        } else {
-            return 'ERROR: After substituting all found soft references there were still soft reference tokens in the text. (theoretically this does not have to be an error if the string "{softref:" happens to be in the field for another reason.)';
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns true if the TCA/columns field type is a DB reference field
-     *
-     * @param array $configuration Config array for TCA/columns field
-     * @return bool TRUE if DB reference field (group/db or select with foreign-table)
-     */
-    protected function isDbReferenceField(array $configuration): bool
-    {
-        return
-            $configuration['type'] === 'group'
-            || (
-                in_array($configuration['type'], ['select', 'category', 'inline', 'file'], true)
-                && !empty($configuration['foreign_table'])
-            );
-    }
-
-    /**
-     * Returns true if the TCA/columns field may carry references. True for
-     * group, inline and friends, for flex, and if there is a 'softref' definition.
-     */
-    protected function isReferenceField(array $configuration): bool
-    {
-        return
-            $this->isDbReferenceField($configuration)
-            || $configuration['type'] === 'link'
-            || $configuration['type'] === 'email'
-            || $configuration['type'] === 'flex'
-            || isset($configuration['softref'])
-        ;
-    }
-
-    /**
-     * List of TCA columns that can have relations. Typically inline, group
-     * and friends, as well as flex fields and fields with 'softref' config.
-     * If empty, the table can not have relations.
-     * Uses a class cache to be quick for multiple calls on same table.
-     */
-    private function getTableRelationFields(string $tableName): array
-    {
-        if (isset($this->tableRelationFieldCache[$tableName])) {
-            return $this->tableRelationFieldCache[$tableName];
-        }
-        if (!is_array($GLOBALS['TCA'][$tableName]['columns'] ?? false)) {
-            $this->tableRelationFieldCache[$tableName] = [];
-            return [];
-        }
-        $relationFields = [];
-        foreach ($GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $fieldDefinition) {
-            if (!is_array($fieldDefinition['config'] ?? false)) {
-                continue;
-            }
-            if ($this->isReferenceField($fieldDefinition['config'])) {
-                $relationFields[] = $fieldName;
-            }
-        }
-        $this->tableRelationFieldCache[$tableName] = $relationFields;
-        return $relationFields;
     }
 
     /**
@@ -1154,6 +368,527 @@ class ReferenceIndex
     }
 
     /**
+     * Update the sys_refindex table for a record, even one just deleted.
+     * This is used by DataHandler ReferenceIndexUpdater as entry method to take care of single records.
+     * It is also used internally via updateIndex() by CLI "referenceindex:update" and lowlevel BE module.
+     *
+     * @param array|null $currentRecord Current full (select *) record from DB. Optimization for updateIndex().
+     * @return array Statistics about how many index records were added, deleted and not altered.
+     * @internal
+     */
+    public function updateRefIndexTable(string $tableName, int $uid, bool $testOnly = false, int $workspaceUid = 0, array $currentRecord = null): array
+    {
+        $result = [
+            'keptNodes' => 0,
+            'deletedNodes' => 0,
+            'addedNodes' => 0,
+        ];
+        if ($uid < 1 || $this->shouldExcludeTableFromReferenceIndex($tableName) || empty($this->getTableRelationFields($tableName))) {
+            // Not a valid uid, the table is excluded, or can not contain relations.
+            return $result;
+        }
+        if ($currentRecord === null) {
+            // Fetch record if not provided.
+            $currentRecord = BackendUtility::getRecord($tableName, $uid);
+        }
+        $currentRelationHashes = $this->getCurrentRelationHashes($tableName, $uid, $workspaceUid);
+        if ($currentRecord === null) {
+            // If there is no record because it was hard or soft-deleted, remove any existing sys_refindex rows of it.
+            $numberOfLeftOverRelationHashes = count($currentRelationHashes);
+            $result['deletedNodes'] = $numberOfLeftOverRelationHashes;
+            if ($numberOfLeftOverRelationHashes > 0 && !$testOnly) {
+                $this->removeRelationHashes($currentRelationHashes);
+            }
+            return $result;
+        }
+
+        $relations = $this->compileReferenceIndexRowsForRecord($tableName, $currentRecord, $workspaceUid);
+        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
+        foreach ($relations as &$relation) {
+            if (!is_array($relation)) {
+                continue;
+            }
+            // Exclude any relations TO a specific table
+            if (($relation['ref_table'] ?? '') && $this->shouldExcludeTableFromReferenceIndex($relation['ref_table'])) {
+                continue;
+            }
+            $relation['hash'] = md5(implode('///', $relation) . '///' . self::HASH_VERSION);
+            // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
+            if (isset($currentRelationHashes[$relation['hash']])) {
+                unset($currentRelationHashes[$relation['hash']]);
+                $result['keptNodes']++;
+                $relation['_ACTION'] = 'KEPT';
+            } else {
+                // If new, add it:
+                if (!$testOnly) {
+                    $connection->insert('sys_refindex', $relation);
+                }
+                $result['addedNodes']++;
+                $relation['_ACTION'] = 'ADDED';
+            }
+        }
+
+        // If any existing are left, they are not in the current set anymore. Remove them.
+        $numberOfLeftOverRelationHashes = count($currentRelationHashes);
+        $result['deletedNodes'] = $numberOfLeftOverRelationHashes;
+        if ($numberOfLeftOverRelationHashes > 0 && !$testOnly) {
+            $this->removeRelationHashes($currentRelationHashes);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns relation information for a record from a TCA table.
+     *
+     * @return array Array with information about relations
+     * @internal
+     */
+    public function getRelations(string $tableName, array $record, int $workspaceUid): array
+    {
+        $result = [];
+        $relationFields = $this->getTableRelationFields($tableName);
+        foreach ($relationFields as $field) {
+            $value = $record[$field] ?? null;
+            if (is_array($GLOBALS['TCA'][$tableName]['columns'][$field] ?? false)) {
+                $conf = $GLOBALS['TCA'][$tableName]['columns'][$field]['config'];
+                // Add a softref definition for link fields if the TCA does not specify one already
+                if ($conf['type'] === 'link' && empty($conf['softref'])) {
+                    $conf['softref'] = 'typolink';
+                }
+                // Add a softref definition for email fields
+                if ($conf['type'] === 'email') {
+                    $conf['softref'] = 'email[subst]';
+                }
+                $resultsFromDatabase = $this->getRelationsFromRelationField($tableName, $value, $conf, (int)$record['uid'], $workspaceUid, $record);
+                if (!empty($resultsFromDatabase)) {
+                    // Create an entry for the field with all DB relations:
+                    $result[$field] = [
+                        'type' => 'db',
+                        'itemArray' => $resultsFromDatabase,
+                    ];
+                }
+                if ($conf['type'] === 'flex' && is_string($value) && $value !== '') {
+                    // Traverse the flex data structure looking for db references for flex fields.
+                    $flexFormRelations = $this->getRelationsFromFlexData($tableName, $field, $record, $workspaceUid);
+                    if (!empty($flexFormRelations)) {
+                        $result[$field] = [
+                            'type' => 'flex',
+                            'flexFormRels' => $flexFormRelations,
+                        ];
+                    }
+                }
+                if ((string)$value !== '') {
+                    // Soft References
+                    $softRefValue = $value;
+                    if (!empty($conf['softref'])) {
+                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($conf['softref']) as $softReferenceParser) {
+                            $parserResult = $softReferenceParser->parse($tableName, $field, (int)$record['uid'], $softRefValue);
+                            if ($parserResult->hasMatched()) {
+                                $result[$field]['softrefs']['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
+                                if ($parserResult->hasContent()) {
+                                    $softRefValue = $parserResult->getContent();
+                                }
+                            }
+                        }
+                    }
+                    if (!empty($result[$field]['softrefs']) && (string)$value !== (string)$softRefValue && str_contains($softRefValue, '{softref:')) {
+                        $result[$field]['softrefs']['tokenizedContent'] = $softRefValue;
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Get current sys_refindex rows of table:uid from database with hash as index.
+     *
+     * @return array<string, true>
+     */
+    private function getCurrentRelationHashes(string $tableName, int $uid, int $workspaceUid): array
+    {
+        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryResult = $queryBuilder->select('hash')->from('sys_refindex')->where(
+            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)),
+            $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
+            $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspaceUid, Connection::PARAM_INT))
+        )->executeQuery();
+        $currentRelationHashes = [];
+        while ($relation = $queryResult->fetchAssociative()) {
+            $currentRelationHashes[$relation['hash']] = true;
+        }
+        return $currentRelationHashes;
+    }
+
+    /**
+     * Remove sys_refindex rows by hash.
+     *
+     * @param array<string, true> $currentRelationHashes
+     */
+    private function removeRelationHashes(array $currentRelationHashes): void
+    {
+        $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        $chunks = array_chunk(array_keys($currentRelationHashes), $maxBindParameters - 10, true);
+        foreach ($chunks as $chunk) {
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder
+                ->delete('sys_refindex')
+                ->where(
+                    $queryBuilder->expr()->in('hash', $queryBuilder->createNamedParameter($chunk, Connection::PARAM_STR_ARRAY))
+                )
+                ->executeStatement();
+        }
+    }
+
+    private function compileReferenceIndexRowsForRecord(string $tableName, array $record, int $workspaceUid): array
+    {
+        $relations = [];
+        $recordRelations = $this->getRelations($tableName, $record, $workspaceUid);
+        foreach ($recordRelations as $fieldName => $fieldRelations) {
+            if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
+                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+                if (isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $workspaceUid && empty($fieldConfig['MM'])) {
+                    // The given record is workspace-enabled but doesn't live in the selected workspace. Don't add index, it's not actually there.
+                    // We still add those rows if the record is a local side live record of an MM relation and can be a target of a workspace record.
+                    // See workspaces ManyToMany Modify addCategoryRelation for details on this case.
+                    continue;
+                }
+            }
+            if (is_array($fieldRelations['itemArray'] ?? false)) {
+                // DB relations in a db field
+                foreach ($fieldRelations['itemArray'] as $sorting => $item) {
+                    $relations[] = [
+                        'tablename' => $tableName,
+                        'recuid' => $record['uid'],
+                        'field' => $fieldName,
+                        'flexpointer' => '',
+                        'softref_key' => '',
+                        'softref_id' => '',
+                        'sorting' => $sorting,
+                        'workspace' => $workspaceUid,
+                        'ref_table' => $item['table'],
+                        'ref_uid' => (int)$item['id'],
+                        'ref_string' => '',
+                    ];
+                }
+            }
+            if (is_array($fieldRelations['softrefs']['keys'] ?? false)) {
+                // Soft reference relations in a db field
+                foreach ($fieldRelations['softrefs']['keys'] as $softrefKey => $elements) {
+                    if (!is_array($elements)) {
+                        continue;
+                    }
+                    foreach ($elements as $softrefId => $element) {
+                        if (!in_array($element['subst']['type'] ?? '', ['db', 'string'], true)) {
+                            continue;
+                        }
+                        $referencedTable = '_STRING';
+                        $referencedUid = 0;
+                        $referencedString = '';
+                        if ($element['subst']['type'] === 'db') {
+                            [$referencedTable, $referencedUid] = explode(':', $element['subst']['recordRef']);
+                        } else {
+                            $referencedString = mb_substr($element['subst']['tokenValue'], 0, 1024);
+                        }
+                        $relations[] = [
+                            'tablename' => $tableName,
+                            'recuid' => $record['uid'],
+                            'field' => $fieldName,
+                            'flexpointer' => '',
+                            'softref_key' => $softrefKey,
+                            'softref_id' => (string)$softrefId,
+                            'sorting' => -1,
+                            'workspace' => $workspaceUid,
+                            'ref_table' => $referencedTable,
+                            'ref_uid' => (int)$referencedUid,
+                            'ref_string' => $referencedString,
+                        ];
+                    }
+                }
+            }
+            if (is_array($fieldRelations['flexFormRels']['db'] ?? false)) {
+                // DB relations in a flex field
+                foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
+                    foreach ($subList as $sorting => $item) {
+                        $relations[] = [
+                            'tablename' => $tableName,
+                            'recuid' => $record['uid'],
+                            'field' => $fieldName,
+                            'flexpointer' => $flexPointer,
+                            'softref_key' => '',
+                            'softref_id' => '',
+                            'sorting' => $sorting,
+                            'workspace' => $workspaceUid,
+                            'ref_table' => $item['table'],
+                            'ref_uid' => (int)$item['id'],
+                            'ref_string' => '',
+                        ];
+                    }
+                }
+            }
+            if (is_array($fieldRelations['flexFormRels']['softrefs'] ?? false)) {
+                // Soft reference relations in a flex field
+                foreach ($fieldRelations['flexFormRels']['softrefs'] as $flexPointer => $subList) {
+                    foreach ($subList['keys'] as $softrefKey => $elements) {
+                        if (!is_array($elements)) {
+                            continue;
+                        }
+                        foreach ($elements as $softrefId => $element) {
+                            if (!in_array($element['subst']['type'] ?? '', ['db', 'string'], true)) {
+                                continue;
+                            }
+                            $referencedTable = '_STRING';
+                            $referencedUid = 0;
+                            $referencedString = '';
+                            if ($element['subst']['type'] === 'db') {
+                                [$referencedTable, $referencedUid] = explode(':', $element['subst']['recordRef']);
+                            } else {
+                                $referencedString = mb_substr($element['subst']['tokenValue'], 0, 1024);
+                            }
+                            $relations[] = [
+                                'tablename' => $tableName,
+                                'recuid' => $record['uid'],
+                                'field' => $fieldName,
+                                'flexpointer' => $flexPointer,
+                                'softref_key' => $softrefKey,
+                                'softref_id' => (string)$softrefId,
+                                'sorting' => -1,
+                                'workspace' => $workspaceUid,
+                                'ref_table' => $referencedTable,
+                                'ref_uid' => (int)$referencedUid,
+                                'ref_string' => $referencedString,
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+        return $relations;
+    }
+
+    private function getRelationsFromFlexData(string $tableName, string $fieldName, array $row, int $workspaceUid): array
+    {
+        $valueArray = GeneralUtility::xml2array($row[$fieldName] ?? '');
+        if (!is_array($valueArray)) {
+            // Current flex form values can not be parsed to an array. No relations.
+            return [];
+        }
+        try {
+            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier(
+                $this->flexFormTools->getDataStructureIdentifier($GLOBALS['TCA'][$tableName]['columns'][$fieldName], $tableName, $fieldName, $row)
+            );
+        } catch (InvalidIdentifierException) {
+            // Data structure can not be resolved or parsed. No relations.
+            return [];
+        }
+        if (!is_array($dataStructureArray['sheets'] ?? false)) {
+            // No sheet in DS. Shouldn't happen, though.
+            return [];
+        }
+        $flexRelations = [];
+        foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
+                // For all elements allowed in Data Structure.
+                if (($sheetElementTca['type'] ?? '') === 'array') {
+                    // This is a section.
+                    if (!is_array($sheetElementTca['el'] ?? false) || !is_array($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        // No possible containers defined for this section in DS, or no values set for this section.
+                        continue;
+                    }
+                    foreach ($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        // We have containers for this section in values.
+                        if (!is_array($valueSectionContainers ?? false)) {
+                            // Values don't validate to an array, skip.
+                            continue;
+                        }
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            // For all value containers in this section.
+                            if (!is_array($sheetElementTca['el'][$valueContainerType]['el'] ?? false)) {
+                                // There is no DS for this container type, skip.
+                                continue;
+                            }
+                            foreach ($sheetElementTca['el'][$valueContainerType]['el'] as $containerElement => $containerElementTca) {
+                                // Container type of this value container exists in DS. Iterate DS container to find value relations.
+                                if (isset($valueContainerElements['el'][$containerElement]['vDEF'])) {
+                                    $fieldValue = $valueContainerElements['el'][$containerElement]['vDEF'];
+                                    $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/el/' . $valueSectionContainerKey . '/' . $valueContainerType . '/el/' . $containerElement . '/vDEF/';
+                                    // Flex form container section elements can not have DB relations, those are not checked.
+                                    // Add a softref definition for link and email fields if the TCA does not specify one already
+                                    if (($containerElementTca['config']['type'] ?? '') === 'link' && empty($containerElementTca['config']['softref'])) {
+                                        $containerElementTca['config']['softref'] = 'typolink';
+                                    }
+                                    if (($containerElementTca['config']['type'] ?? '') === 'email') {
+                                        $containerElementTca['config']['softref'] = 'email[subst]';
+                                    }
+                                    if ($fieldValue !== '' && ($containerElementTca['config']['softref'] ?? '') !== '') {
+                                        $tokenizedContent = $fieldValue;
+                                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($containerElementTca['config']['softref']) as $softReferenceParser) {
+                                            $parserResult = $softReferenceParser->parse($tableName, $fieldName, (int)$row['uid'], $fieldValue, $structurePath);
+                                            if ($parserResult->hasMatched()) {
+                                                $flexRelations['softrefs'][$structurePath]['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
+                                                if ($parserResult->hasContent()) {
+                                                    $tokenizedContent = $parserResult->getContent();
+                                                }
+                                            }
+                                        }
+                                        if (!empty($flexRelations['softrefs'][$structurePath]) && $fieldValue !== $tokenizedContent) {
+                                            $flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $tokenizedContent;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } elseif (isset($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
+                    // Not a section but a simple field. Get its relations.
+                    $fieldValue = $valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
+                    $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/vDEF/';
+                    $databaseRelations = $this->getRelationsFromRelationField($tableName, $fieldValue, $sheetElementTca['config'] ?? [], (int)$row['uid'], $workspaceUid);
+                    if (!empty($databaseRelations)) {
+                        $flexRelations['db'][$structurePath] = $databaseRelations;
+                    }
+                    // Add a softref definition for link and email fields if the TCA does not specify one already
+                    if (($sheetElementTca['config']['type'] ?? '') === 'link' && empty($sheetElementTca['config']['softref'])) {
+                        $sheetElementTca['config']['softref'] = 'typolink';
+                    }
+                    if (($sheetElementTca['config']['type'] ?? '') === 'email') {
+                        $sheetElementTca['config']['softref'] = 'email[subst]';
+                    }
+                    if ($fieldValue !== '' && ($sheetElementTca['config']['softref'] ?? '') !== '') {
+                        $tokenizedContent = $fieldValue;
+                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($sheetElementTca['config']['softref']) as $softReferenceParser) {
+                            $parserResult = $softReferenceParser->parse($tableName, $fieldName, (int)$row['uid'], $fieldValue, $structurePath);
+                            if ($parserResult->hasMatched()) {
+                                $flexRelations['softrefs'][$structurePath]['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
+                                if ($parserResult->hasContent()) {
+                                    $tokenizedContent = $parserResult->getContent();
+                                }
+                            }
+                        }
+                        if (!empty($flexRelations['softrefs'][$structurePath]) && $fieldValue !== $tokenizedContent) {
+                            $flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $tokenizedContent;
+                        }
+                    }
+                }
+            }
+        }
+        return $flexRelations;
+    }
+
+    /**
+     * Check field configuration if it is a DB relation field and extract DB relations if any
+     */
+    private function getRelationsFromRelationField(string $tableName, mixed $fieldValue, array $conf, int $uid, int $workspaceUid, array $row = []): array
+    {
+        if (empty($conf)) {
+            return [];
+        }
+        if (($conf['type'] === 'inline' || $conf['type'] === 'file') && !empty($conf['foreign_table']) && empty($conf['MM'])) {
+            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+            $dbAnalysis->setUseLiveReferenceIds(false);
+            $dbAnalysis->setWorkspaceId($workspaceUid);
+            $dbAnalysis->start($fieldValue, $conf['foreign_table'], '', $uid, $tableName, $conf);
+            return $dbAnalysis->itemArray;
+        }
+        if ($this->isDbReferenceField($conf)) {
+            $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
+            if ($conf['MM_opposite_field'] ?? false) {
+                // Never handle sys_refindex when looking at MM from foreign side
+                return [];
+            }
+            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+            $dbAnalysis->setWorkspaceId($workspaceUid);
+            $dbAnalysis->start($fieldValue, $allowedTables, $conf['MM'] ?? '', $uid, $tableName, $conf);
+            $itemArray = $dbAnalysis->itemArray;
+            if (ExtensionManagementUtility::isLoaded('workspaces')
+                && $workspaceUid > 0
+                && !empty($conf['MM'] ?? '')
+                && !empty($conf['allowed'] ?? '')
+                && empty($conf['MM_opposite_field'] ?? '')
+                && (int)($row['t3ver_wsid'] ?? 0) === 0
+            ) {
+                // When dealing with local side mm relations in workspace 0, there may be workspace records on the foreign
+                // side, for instance when those got an additional category. See ManyToMany Modify addCategoryRelations test.
+                // In those cases, the full set of relations must be written to sys_refindex as workspace rows.
+                // But, if the relations in this workspace and live are identical, no sys_refindex workspace rows
+                // have to be added.
+                $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+                $dbAnalysis->setWorkspaceId(0);
+                $dbAnalysis->start($fieldValue, $allowedTables, $conf['MM'], $uid, $tableName, $conf);
+                $itemArrayLive = $dbAnalysis->itemArray;
+                if ($itemArrayLive === $itemArray) {
+                    $itemArray = [];
+                }
+            }
+            return $itemArray;
+        }
+        return [];
+    }
+
+    /**
+     * Returns true if the TCA/columns field type is a DB reference field
+     *
+     * @param array $configuration Config array for TCA/columns field
+     * @return bool TRUE if DB reference field (group/db or select with foreign-table)
+     */
+    private function isDbReferenceField(array $configuration): bool
+    {
+        return
+            $configuration['type'] === 'group'
+            || (
+                in_array($configuration['type'], ['select', 'category', 'inline', 'file'], true)
+                && !empty($configuration['foreign_table'])
+            );
+    }
+
+    /**
+     * Returns true if the TCA/columns field may carry references. True for
+     * group, inline and friends, for flex, and if there is a 'softref' definition.
+     */
+    private function isReferenceField(array $configuration): bool
+    {
+        return
+            $this->isDbReferenceField($configuration)
+            || $configuration['type'] === 'link'
+            || $configuration['type'] === 'email'
+            || $configuration['type'] === 'flex'
+            || isset($configuration['softref'])
+        ;
+    }
+
+    /**
+     * List of TCA columns that can have relations. Typically inline, group
+     * and friends, as well as flex fields and fields with 'softref' config.
+     * If empty, the table can not have relations.
+     * Uses a class cache to be quick for multiple calls on same table.
+     */
+    private function getTableRelationFields(string $tableName): array
+    {
+        if (isset($this->tableRelationFieldCache[$tableName])) {
+            return $this->tableRelationFieldCache[$tableName];
+        }
+        if (!is_array($GLOBALS['TCA'][$tableName]['columns'] ?? false)) {
+            $this->tableRelationFieldCache[$tableName] = [];
+            return [];
+        }
+        $relationFields = [];
+        foreach ($GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $fieldDefinition) {
+            if (!is_array($fieldDefinition['config'] ?? false)) {
+                continue;
+            }
+            if ($this->isReferenceField($fieldDefinition['config'])) {
+                $relationFields[] = $fieldName;
+            }
+        }
+        $this->tableRelationFieldCache[$tableName] = $relationFields;
+        return $relationFields;
+    }
+
+    /**
      * Create list of non-deleted "active" workspace uids. This contains at least 0 "live workspace".
      *
      * @return int[]
@@ -1216,7 +951,7 @@ class ReferenceIndex
      * When a TCA table with references has been removed, there may be old sys_refindex
      * rows for it. The query finds the number of affected rows.
      */
-    protected function getNumberOfUnusedTablesInReferenceIndex(array $tableNames): int
+    private function getNumberOfUnusedTablesInReferenceIndex(array $tableNames): int
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
         $queryBuilder->getRestrictions()->removeAll();
@@ -1235,7 +970,7 @@ class ReferenceIndex
      * When a TCA table with references has been removed, there may be old sys_refindex
      * rows for it. The query deletes those.
      */
-    protected function removeReferenceIndexDataFromUnusedDatabaseTables(array $tableNames): int
+    private function removeReferenceIndexDataFromUnusedDatabaseTables(array $tableNames): int
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
         $queryBuilder->getRestrictions()->removeAll();
@@ -1250,7 +985,7 @@ class ReferenceIndex
     /**
      * Checks if a given table should be excluded from ReferenceIndex
      */
-    protected function shouldExcludeTableFromReferenceIndex(string $tableName): bool
+    private function shouldExcludeTableFromReferenceIndex(string $tableName): bool
     {
         if (isset($this->excludedTables[$tableName])) {
             return $this->excludedTables[$tableName];
@@ -1259,31 +994,5 @@ class ReferenceIndex
         $event = $this->eventDispatcher->dispatch($event);
         $this->excludedTables[$tableName] = $event->isTableExcluded();
         return $this->excludedTables[$tableName];
-    }
-
-    /**
-     * Checks if a given column in a given table should be excluded in the ReferenceIndex process
-     *
-     * @param string $tableName Name of the table
-     * @param string $column Name of the column
-     * @param string $onlyColumn Name of a specific column to fetch
-     * @return bool true if it should be excluded
-     */
-    protected function shouldExcludeTableColumnFromReferenceIndex(string $tableName, string $column, string $onlyColumn): bool
-    {
-        if (isset($this->excludedColumns[$column])) {
-            return true;
-        }
-        if (is_array($GLOBALS['TCA'][$tableName]['columns'][$column] ?? false)
-            && (!$onlyColumn || $onlyColumn === $column)
-        ) {
-            return false;
-        }
-        return true;
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

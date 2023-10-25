@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,11 +41,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * The later (non-soft-reference variants) can be automatically fixed by simply removing
  * the references from the refindex.
+ *
+ * @todo: The entire logic smells fishy and needs a major overhaul.
  */
 class MissingRelationsCommand extends Command
 {
-    public function __construct(private readonly ConnectionPool $connectionPool)
-    {
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly ReferenceIndex $referenceIndex,
+    ) {
         parent::__construct();
     }
 
@@ -203,8 +207,7 @@ If you want to get more detailed information, use the --verbose option.')
         if ($updateReferenceIndex) {
             $progressListener = GeneralUtility::makeInstance(ReferenceIndexProgressListener::class);
             $progressListener->initialize($io);
-            $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
-            $referenceIndex->updateIndex(false, $progressListener);
+            $this->referenceIndex->updateIndex(false, $progressListener);
         } else {
             $io->writeln('Reference index is assumed to be up to date, continuing.');
         }
@@ -361,15 +364,9 @@ If you want to get more detailed information, use the --verbose option.')
         if ($dryRun) {
             return;
         }
-
-        $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-        try {
-            $error = $sysRefObj->setReferenceValue($hash, null);
-            if ($error) {
-                $io->error('ReferenceIndex::setReferenceValue() reported "' . $error . '"');
-            }
-        } catch (FileDoesNotExistException $e) {
-            $io->error('Unexpected exception thrown: ' . $e->getMessage());
+        $error = $this->setReferenceValue($hash);
+        if ($error) {
+            $io->error('ReferenceIndex::setReferenceValue() reported "' . $error . '"');
         }
     }
 
@@ -383,5 +380,188 @@ If you want to get more detailed information, use the --verbose option.')
             . ':' . $record['field']
             . ($record['flexpointer'] ? ':' . $record['flexpointer'] : '')
             . ($record['softref_key'] ? ':' . $record['softref_key'] . ' (Soft Reference) ' : '');
+    }
+
+    /**
+     * Setting the value of a reference or removing it completely.
+     * Usage: For lowlevel clean up operations!
+     * WARNING: With this you can set values that are not allowed in the database since it will bypass all checks for validity!
+     * Hence it is targeted at clean-up operations. Please use DataHandler in the usual ways if you wish to manipulate references.
+     * Since this interface allows updates to soft reference values (which DataHandler does not directly) you may like to use it
+     * for that as an exception to the warning above.
+     * Notice; If you want to remove multiple references from the same field, you MUST start with the one having the highest
+     * sorting number. If you don't the removal of a reference with a lower number will recreate an index in which the remaining
+     * references in that field has new hash-keys due to new sorting numbers - and you will get errors for the remaining operations
+     * which cannot find the hash you feed it!
+     * To ensure proper working only admin-BE_USERS in live workspace should use this function
+     *
+     * @internal
+     */
+    protected function setReferenceValue(string $hash): string|bool
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        // Get current index from Database
+        $referenceRecord = $queryBuilder
+            ->select('*')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('hash', $queryBuilder->createNamedParameter($hash))
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        // Check if reference existed.
+        if (!is_array($referenceRecord)) {
+            return 'ERROR: No reference record with hash="' . $hash . '" was found!';
+        }
+        if (empty($GLOBALS['TCA'][$referenceRecord['tablename']])) {
+            return 'ERROR: Table "' . $referenceRecord['tablename'] . '" was not in TCA!';
+        }
+
+        // Get that record from database
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($referenceRecord['tablename']);
+        $queryBuilder->getRestrictions()->removeAll();
+        $record = $queryBuilder
+            ->select('*')
+            ->from($referenceRecord['tablename'])
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($referenceRecord['recuid'], Connection::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (is_array($record)) {
+            // Get relation for single field from record
+            $recordRelations = $this->referenceIndex->getRelations((string)$referenceRecord['tablename'], $record, 0);
+            $fieldRelation = $recordRelations[$referenceRecord['field']] ?? null;
+            if ($fieldRelation) {
+                // Initialize data array that is to be sent to DataHandler afterwards:
+                $dataArray = [];
+                // Based on type
+                switch ((string)($fieldRelation['type'] ?? '')) {
+                    case 'db':
+                        $error = $this->setReferenceValue_dbRels($referenceRecord, $fieldRelation['itemArray'], $dataArray);
+                        if ($error) {
+                            return $error;
+                        }
+                        break;
+                    case 'flex':
+                        // DB references in FlexForms
+                        if (is_array($fieldRelation['flexFormRels']['db'][$referenceRecord['flexpointer']])) {
+                            $error = $this->setReferenceValue_dbRels($referenceRecord, $fieldRelation['flexFormRels']['db'][$referenceRecord['flexpointer']], $dataArray, $referenceRecord['flexpointer']);
+                            if ($error) {
+                                return $error;
+                            }
+                        }
+                        // Soft references in FlexForms
+                        if ($referenceRecord['softref_key'] && is_array($fieldRelation['flexFormRels']['softrefs'][$referenceRecord['flexpointer']]['keys'][$referenceRecord['softref_key']])) {
+                            $error = $this->setReferenceValue_softreferences($referenceRecord, $fieldRelation['flexFormRels']['softrefs'][$referenceRecord['flexpointer']], $dataArray, $referenceRecord['flexpointer']);
+                            if ($error) {
+                                return $error;
+                            }
+                        }
+                        break;
+                }
+                // Soft references in the field:
+                if ($referenceRecord['softref_key'] && is_array($fieldRelation['softrefs']['keys'][$referenceRecord['softref_key']])) {
+                    $error = $this->setReferenceValue_softreferences($referenceRecord, $fieldRelation['softrefs'], $dataArray);
+                    if ($error) {
+                        return $error;
+                    }
+                }
+                // Data Array, now ready to be sent to DataHandler, execute CMD array:
+                $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+                $dataHandler->dontProcessTransformations = true;
+                $dataHandler->bypassWorkspaceRestrictions = true;
+                // Otherwise this may lead to permission issues if user is not admin
+                $dataHandler->bypassAccessCheckForRecords = true;
+                // Check has been done previously that there is a backend user which is Admin and also in live workspace
+                $dataHandler->start($dataArray, []);
+                $dataHandler->process_datamap();
+                // Return errors if any:
+                if (!empty($dataHandler->errorLog)) {
+                    return LF . 'DataHandler:' . implode(LF . 'DataHandler:', $dataHandler->errorLog);
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Setting a value for a reference for a DB field:
+     *
+     * @param array $itemArray Array of references from that field
+     * @param array $dataArray Data array in which the new value is set (passed by reference)
+     * @param string $flexPointer Flexform pointer, if in a flex form field.
+     */
+    protected function setReferenceValue_dbRels(array $refRec, array $itemArray, array &$dataArray, string $flexPointer = ''): string|bool
+    {
+        if ((int)$itemArray[$refRec['sorting']]['id'] === (int)$refRec['ref_uid'] && (string)$itemArray[$refRec['sorting']]['table'] === (string)$refRec['ref_table']) {
+            // Setting or removing value:
+            // Remove value:
+            unset($itemArray[$refRec['sorting']]);
+            // Traverse and compile new list of records:
+            $saveValue = [];
+            foreach ($itemArray as $pair) {
+                $saveValue[] = $pair['table'] . '_' . $pair['id'];
+            }
+            // Set in data array:
+            if ($flexPointer) {
+                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
+                    [],
+                    substr($flexPointer, 0, -1),
+                    implode(',', $saveValue)
+                );
+            } else {
+                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
+            }
+        } else {
+            return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['table'] . ':' . $itemArray[$refRec['sorting']]['id'] . '") in sorting index "' . $refRec['sorting'] . '"';
+        }
+        return false;
+    }
+
+    /**
+     * Setting a value for a soft reference token
+     *
+     * @param array $softref Array of soft reference occurrences
+     * @param array $dataArray Data array in which the new value is set (passed by reference)
+     * @param string $flexPointer Flexform pointer, if in a flex form field.
+     */
+    protected function setReferenceValue_softreferences(array $refRec, array $softref, array &$dataArray, string $flexPointer = ''): string|bool
+    {
+        if (!is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']])) {
+            return 'ERROR: Soft reference parser key "' . $refRec['softref_key'] . '" or the index "' . $refRec['softref_id'] . '" was not found.';
+        }
+        // Set new value:
+        $softref['keys'][$refRec['softref_key']][$refRec['softref_id']]['subst']['tokenValue'] = '';
+        // Traverse softreferences and replace in tokenized content to rebuild it with new value inside:
+        foreach ($softref['keys'] as $sfIndexes) {
+            foreach ($sfIndexes as $data) {
+                $softref['tokenizedContent'] = str_replace('{softref:' . $data['subst']['tokenID'] . '}', $data['subst']['tokenValue'], $softref['tokenizedContent']);
+            }
+        }
+        // Set in data array:
+        if (!str_contains($softref['tokenizedContent'], '{softref:')) {
+            if ($flexPointer) {
+                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
+                    [],
+                    substr($flexPointer, 0, -1),
+                    $softref['tokenizedContent']
+                );
+            } else {
+                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = $softref['tokenizedContent'];
+            }
+        } else {
+            return 'ERROR: After substituting all found soft references there were still soft reference tokens in the text. (theoretically this does not have to be an error if the string "{softref:" happens to be in the field for another reason.)';
+        }
+        return false;
     }
 }
