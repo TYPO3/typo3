@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
@@ -528,8 +527,7 @@ class Export extends ImportExport
                 // Initialize reference index object:
                 $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                 $relations = $refIndexObj->getRelations($table, $row);
-                $this->fixFileIdInRelations($relations);
-                $this->removeRedundantSoftRefsInRelations($relations);
+                $relations = $this->removeRedundantSoftRefsInRelations($relations);
                 // Data:
                 $this->dat['records'][$table . ':' . $row['uid']] = [];
                 $this->dat['records'][$table . ':' . $row['uid']]['data'] = $row;
@@ -589,63 +587,20 @@ class Export extends ImportExport
     }
 
     /**
-     * This changes the file reference ID from a hash based on the absolute file path
-     * (coming from ReferenceIndex) to a hash based on the relative file path.
-     *
-     * Public access for testing purpose only.
-     *
-     * @param array $relations
-     */
-    public function fixFileIdInRelations(array &$relations): void
-    {
-        // @todo: Remove by-reference and return final array
-        foreach ($relations as &$relation) {
-            if (isset($relation['type']) && $relation['type'] === 'file') {
-                foreach ($relation['newValueFiles'] as &$fileRelationData) {
-                    $absoluteFilePath = (string)$fileRelationData['ID_absFile'];
-                    if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
-                        $relatedFilePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
-                        $fileRelationData['ID'] = md5($relatedFilePath);
-                    }
-                }
-                unset($fileRelationData);
-            }
-            if (isset($relation['type']) && $relation['type'] === 'flex') {
-                if (is_array($relation['flexFormRels']['file'] ?? null)) {
-                    foreach ($relation['flexFormRels']['file'] as &$subList) {
-                        foreach ($subList as &$fileRelationData) {
-                            $absoluteFilePath = (string)$fileRelationData['ID_absFile'];
-                            if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
-                                $relatedFilePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
-                                $fileRelationData['ID'] = md5($relatedFilePath);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Relations could contain db relations to sys_file records. Some configuration combinations of TCA and
      * SoftReferenceIndex create also soft reference relation entries for the identical file. This results
      * in double included files, one in array "files" and one in array "file_fal".
      * This function checks the relations for this double inclusions and removes the redundant soft reference
      * relation.
-     *
-     * Public access for testing purpose only.
-     *
-     * @param array $relations
      */
-    public function removeRedundantSoftRefsInRelations(array &$relations): void
+    protected function removeRedundantSoftRefsInRelations(array $relations): array
     {
-        // @todo: Remove by-reference and return final array
         foreach ($relations as &$relation) {
             if (isset($relation['type']) && $relation['type'] === 'db') {
                 foreach ($relation['itemArray'] as $dbRelationData) {
                     if ($dbRelationData['table'] === 'sys_file') {
                         if (isset($relation['softrefs']['keys']['typolink'])) {
-                            foreach ($relation['softrefs']['keys']['typolink'] as $tokenID => &$softref) {
+                            foreach ($relation['softrefs']['keys']['typolink'] as $tokenID => $softref) {
                                 if ($softref['subst']['type'] === 'file') {
                                     $file = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($softref['subst']['relFileName']);
                                     if ($file instanceof File) {
@@ -663,6 +618,7 @@ class Export extends ImportExport
                 }
             }
         }
+        return $relations;
     }
 
     /**
@@ -904,27 +860,8 @@ class Export extends ImportExport
                 continue;
             }
             foreach ($record['rels'] as $field => &$relation) {
-                // For all file type relations:
-                if (isset($relation['type']) && $relation['type'] === 'file') {
-                    foreach ($relation['newValueFiles'] as &$fileRelationData) {
-                        $this->exportAddFile($fileRelationData, $recordRef, $field);
-                        // Remove the absolute reference to the file so it doesn't expose absolute paths from source server:
-                        unset($fileRelationData['ID_absFile']);
-                    }
-                    unset($fileRelationData);
-                }
                 // For all flex type relations:
                 if (isset($relation['type']) && $relation['type'] === 'flex') {
-                    if (isset($relation['flexFormRels']['file'])) {
-                        foreach ($relation['flexFormRels']['file'] as &$subList) {
-                            foreach ($subList as $subKey => &$fileRelationData) {
-                                $this->exportAddFile($fileRelationData, $recordRef, $field);
-                                // Remove the absolute reference to the file so it doesn't expose absolute paths from source server:
-                                unset($fileRelationData['ID_absFile']);
-                            }
-                        }
-                        unset($subList, $fileRelationData);
-                    }
                     // Database oriented soft references in flex form fields:
                     if (isset($relation['flexFormRels']['softrefs'])) {
                         foreach ($relation['flexFormRels']['softrefs'] as &$subList) {
@@ -1250,7 +1187,6 @@ class Export extends ImportExport
                         'tablerow:rels' => 'related',
                         'related' => 'field',
                         'field:itemArray' => 'relations',
-                        'field:newValueFiles' => 'filerefs',
                         'field:flexFormRels' => 'flexform',
                         'relations' => 'element',
                         'filerefs' => 'file',

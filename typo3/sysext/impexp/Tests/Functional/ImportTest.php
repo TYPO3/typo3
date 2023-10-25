@@ -301,42 +301,4 @@ final class ImportTest extends AbstractImportExportTestCase
         );
         self::assertTrue(true);
     }
-
-    /**
-     * @test
-     */
-    public function importDataCleansUpTemporaryFolder(): void
-    {
-        $fileDirectory = Environment::getVarPath() . '/transient';
-        $numTemporaryFilesAndFoldersBeforeImport = iterator_count(new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
-
-        $importMock = $this->getAccessibleMock(Import::class, null);
-        $importMock->setPid(0);
-        // Simulation of import of TCA field type=group with internal_type=file
-        // which is not supported anymore since TYPO3 v10 but there are still remains in EXT:impexp.
-        // Remove as soon as support of internal_type "file" has been completely removed from EXT:impexp.
-        $dat = [
-            'files' => [
-                '123456789' => [
-                    'content' => 'dummy content',
-                    'content_md5' => md5('dummy content'),
-                ],
-            ],
-        ];
-        $fileInfo = [
-            'ID' => '123456789',
-        ];
-        $files = [$fileInfo];
-        $importMock->_set('dat', $dat);
-        $importMock->writeFilesToTemporaryFolder($files);
-        // End of simulation
-        $importMock->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml',
-            true
-        );
-        $importMock->importData();
-
-        self::assertCount($numTemporaryFilesAndFoldersBeforeImport, new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
-        self::assertEmpty($importMock->_get('temporaryFolderName'));
-    }
 }

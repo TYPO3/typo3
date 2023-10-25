@@ -1189,24 +1189,13 @@ class Import extends ImportExport
                 if (is_array($this->dat['records'][$table . ':' . $uid]['rels'] ?? null)) {
                     $actualUid = BackendUtility::wsMapId($table, $this->importMapId[$table][$uid]);
                     foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $relation) {
-                        // Field "uid_local" of sys_file_reference needs no update because the correct reference uid
-                        // was already written.
+                        // Field "uid_local" of sys_file_reference needs no update because the correct reference uid was already written.
                         // @see ImportExport::fixUidLocalInSysFileReferenceRecords()
-                        if (isset($relation['type']) && !($table === 'sys_file_reference' && $field === 'uid_local')) {
-                            switch ($relation['type']) {
-                                case 'db':
-                                    if (is_array($relation['itemArray'] ?? null) && !empty($relation['itemArray'])) {
-                                        $fieldTca = &$GLOBALS['TCA'][$table]['columns'][$field];
-                                        $actualRelations = $this->remapRelationsOfField($relation['itemArray'], $fieldTca['config']);
-                                        $updateData[$table][$actualUid][$field] = implode(',', $actualRelations);
-                                    }
-                                    break;
-                                case 'file':
-                                    if (is_array($relation['newValueFiles'] ?? null) && !empty($relation['newValueFiles'])) {
-                                        $temporaryFiles = $this->writeFilesToTemporaryFolder($relation['newValueFiles']);
-                                        $updateData[$table][$actualUid][$field] = implode(',', $temporaryFiles);
-                                    }
-                                    break;
+                        if (isset($relation['type']) && !($table === 'sys_file_reference' && $field === 'uid_local') && $relation['type'] === 'db') {
+                            if (is_array($relation['itemArray'] ?? null) && !empty($relation['itemArray'])) {
+                                $fieldTca = $GLOBALS['TCA'][$table]['columns'][$field];
+                                $actualRelations = $this->remapRelationsOfField($relation['itemArray'], $fieldTca['config']);
+                                $updateData[$table][$actualUid][$field] = implode(',', $actualRelations);
                             }
                         }
                     }
@@ -1243,7 +1232,7 @@ class Import extends ImportExport
      * @param array $fieldConfig TCA configuration of the record field the relations belong to
      * @return array Array of relation strings with actual record UIDs
      */
-    protected function remapRelationsOfField(array &$fieldRelations, array $fieldConfig): array
+    protected function remapRelationsOfField(array $fieldRelations, array $fieldConfig): array
     {
         $actualRelations = [];
 
@@ -1275,47 +1264,6 @@ class Import extends ImportExport
     }
 
     /**
-     * Writes the files from the import array to the temporary folder and returns the actual filenames.
-     *
-     * @param array $files Files of file information with three keys:
-     *                          "filename" = filename without path,
-     *                          "ID_absFile" = absolute filepath to the file (including the filename),
-     *                          "ID" = md5 hash of "ID_absFile
-     * @return array Absolute file paths of the temporary files.
-     */
-    public function writeFilesToTemporaryFolder(array $files): array
-    {
-        $temporaryFiles = [];
-
-        foreach ($files as $fileInfo) {
-            if (is_array($this->dat['files'][$fileInfo['ID']] ?? null)) {
-                $fileRecord = &$this->dat['files'][$fileInfo['ID']];
-
-                $temporaryFolder = $this->getOrCreateTemporaryFolderName();
-                $temporaryFilePath = $temporaryFolder . '/' . $fileRecord['content_md5'];
-
-                if (is_file($temporaryFilePath) && md5_file($temporaryFilePath) === $fileRecord['content_md5']) {
-                    $temporaryFiles[] = $temporaryFilePath;
-                } else {
-                    if (GeneralUtility::writeFile($temporaryFilePath, $fileRecord['content'])) {
-                        clearstatcache();
-                        $temporaryFiles[] = $temporaryFilePath;
-                    } else {
-                        $this->addError(sprintf(
-                            'Error: Temporary file %s was not written as it should have been!',
-                            $temporaryFilePath
-                        ));
-                    }
-                }
-            } else {
-                $this->addError(sprintf('Error: No file found for ID %s', $fileInfo['ID']));
-            }
-        }
-
-        return $temporaryFiles;
-    }
-
-    /**
      * After all database relations have been set in the end of the import (see setRelations()) then it is time to
      * correct all relations inside of FlexForm fields. The reason for doing this after is that the setting of relations
      * may affect (quite often!) which data structure is used for the FlexForm field!
@@ -1344,7 +1292,7 @@ class Import extends ImportExport
                                     // @see Import::addSingle()
                                     $updateData[$table][$actualUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
 
-                                    if (!empty($relation['flexFormRels']['db']) || !empty($relation['flexFormRels']['file'])) {
+                                    if (!empty($relation['flexFormRels']['db'])) {
                                         $actualRecord = BackendUtility::getRecord($table, $actualUid, '*');
                                         $fieldTca = &$GLOBALS['TCA'][$table]['columns'][$field];
                                         if (is_array($actualRecord) && is_array($fieldTca['config'] ?? null) && $fieldTca['config']['type'] === 'flex') {
@@ -1427,10 +1375,6 @@ class Import extends ImportExport
         if (is_array($relation['flexFormRels']['db'][$path] ?? null)) {
             $actualRelations = $this->remapRelationsOfField($relation['flexFormRels']['db'][$path], $dsConf);
             $dataValue = implode(',', $actualRelations);
-        }
-        if (is_array($relation['flexFormRels']['file'][$path] ?? null)) {
-            $temporaryFiles = $this->writeFilesToTemporaryFolder($relation['flexFormRels']['file'][$path]);
-            $dataValue = implode(',', $temporaryFiles);
         }
         return ['value' => $dataValue];
     }

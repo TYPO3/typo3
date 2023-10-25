@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Impexp\Tests\Unit;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -118,35 +117,6 @@ final class ExportTest extends UnitTestCase
         $this->exportMock->setExportFileType('json');
     }
 
-    /**
-     * @test
-     */
-    public function fixFileIdInRelationsProcessesOriginalRelationsArray(): void
-    {
-        $relations = [
-            ['type' => 'file', 'newValueFiles' => [[
-                'ID_absFile' => Environment::getPublicPath() . '/fileRelation.png',
-            ]]],
-            ['type' => 'flex', 'flexFormRels' => ['file' => [[[
-                'ID_absFile' => Environment::getPublicPath() . '/fileRelationInFlexForm.png',
-            ]]]]],
-        ];
-
-        $expected = [
-            ['type' => 'file', 'newValueFiles' => [[
-                'ID_absFile' => Environment::getPublicPath() . '/fileRelation.png',
-                'ID' => '987eaa6ab0a50497101d373cfc983400',
-            ]]],
-            ['type' => 'flex', 'flexFormRels' => ['file' => [[[
-                'ID_absFile' => Environment::getPublicPath() . '/fileRelationInFlexForm.png',
-                'ID' => '4cd9d9637e042ebff3568ad4e0266e77',
-            ]]]]],
-        ];
-
-        $this->exportMock->fixFileIdInRelations($relations);
-        self::assertEquals($expected, $relations);
-    }
-
     public static function removeRedundantSoftRefsInRelationsProcessesOriginalRelationsArrayDataProvider(): array
     {
         return [
@@ -215,9 +185,7 @@ final class ExportTest extends UnitTestCase
                 return $fileMock;
             });
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
-
-        $this->exportMock->removeRedundantSoftRefsInRelations($relations);
-        self::assertEquals($expected, $relations);
+        self::assertEquals($expected, $this->exportMock->_call('removeRedundantSoftRefsInRelations', $relations));
     }
 
     public static function exportAddFilesFromRelationsSucceedsDataProvider(): array
@@ -233,24 +201,12 @@ final class ExportTest extends UnitTestCase
                         'pi_flexform' => [
                             'type' => 'flex',
                             'flexFormRels' => [
-                                'file' => [
-                                    [
-                                        [
-                                            'filename' => 'filenameFlex',
-                                            'ID_absFile' => 'ID_absFileFlex',
-                                            'ID' => 'IDFlex',
-                                            'relFileName' => 'relFileNameFlex',
-                                        ],
-                                    ],
-                                ],
                             ],
                         ],
                     ],
                 ],
             ],
         ];
-        $oneExpected = $oneDat;
-        unset($oneExpected['records']['tt_content:8']['rels']['pi_flexform']['flexFormRels']['file'][0][0]['ID_absFile']);
 
         $fullDat = [
             'files' => [
@@ -263,16 +219,6 @@ final class ExportTest extends UnitTestCase
                         'pi_flexform' => [
                             'type' => 'flex',
                             'flexFormRels' => [
-                                'file' => [
-                                    [
-                                        [
-                                            'filename' => 'filenameFlex',
-                                            'ID_absFile' => 'ID_absFileFlex',
-                                            'ID' => 'IDFlex',
-                                            'relFileName' => 'relFileNameFlex',
-                                        ],
-                                    ],
-                                ],
                                 'softrefs' => [
                                     [
                                         'keys' => [
@@ -312,32 +258,17 @@ final class ExportTest extends UnitTestCase
                                 ],
                             ],
                         ],
-                        'background_image_options' => [
-                            'type' => 'file',
-                            'newValueFiles' => [
-                                [
-                                    'filename' => 'filenameFile',
-                                    'ID_absFile' => 'ID_absFileFile',
-                                    'ID' => 'IDFile',
-                                    'relFileName' => 'relFileNameFile',
-                                ],
-                            ],
-                        ],
                     ],
                 ],
             ],
         ];
         $fullExpected = $fullDat;
         $fullExpected['records']['tt_content:8']['rels']['pi_flexform']['flexFormRels']['softrefs'][0]['keys'][0][0]['file_ID'] = 'e580c5887dcea669332e96e25900b20b';
-        unset(
-            $fullExpected['records']['tt_content:8']['rels']['pi_flexform']['flexFormRels']['file'][0][0]['ID_absFile'],
-            $fullExpected['records']['tt_content:8']['rels']['background_image_options']['newValueFiles'][0]['ID_absFile']
-        );
 
         return [
             'Empty $this->dat' => ['dat' => [], 'expected' => []],
             'Empty $this->dat[\'records\']' => ['dat' => ['records' => []], 'expected' => ['records' => []]],
-            'One record example' => ['dat' => $oneDat, 'expected' => $oneExpected],
+            'One record example' => ['dat' => $oneDat, 'expected' => $oneDat],
             'Full example' => ['dat' => $fullDat, 'expected' => $fullExpected],
         ];
     }
