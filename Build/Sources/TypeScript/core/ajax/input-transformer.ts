@@ -72,7 +72,7 @@ export class InputTransformer {
     return Object.keys(obj).reduce((accumulator: GenericKeyValue, currentValue: any) => {
       const objPrefix = prefix.length ? prefix + '[' : '';
       const objSuffix = prefix.length ? ']' : '';
-      if (typeof obj[currentValue] === 'object') {
+      if (typeof obj[currentValue] === 'object' && obj[currentValue] !== null) {
         Object.assign(accumulator, InputTransformer.flattenObject(obj[currentValue], objPrefix + currentValue + objSuffix));
       } else {
         accumulator[objPrefix + currentValue + objSuffix] = obj[currentValue];
