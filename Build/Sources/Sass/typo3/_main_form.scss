@@ -127,8 +127,10 @@ fieldset[disabled] .form-control {
 // Form group validation states
 //
 .form-group.has-error {
+    > .formengine-field-item > .form-label:before,
     > .form-label:before,
-    > fieldset > .form-legend:before {
+    > fieldset > .form-legend:before,
+    > fieldset > .formengine-field-item > .form-legend:before {
         @include icon-background($icon-actions-exclamation-circle, $danger);
         border-radius: 50%;
         width: 14px;
