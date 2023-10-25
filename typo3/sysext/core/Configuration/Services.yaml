@@ -140,11 +140,6 @@ services:
       - name: softreference.parser
         parserKey: substitute
 
-  TYPO3\CMS\Core\DataHandling\SoftReference\NotifySoftReferenceParser:
-    tags:
-      - name: softreference.parser
-        parserKey: notify
-
   TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser:
     tags:
       - name: softreference.parser

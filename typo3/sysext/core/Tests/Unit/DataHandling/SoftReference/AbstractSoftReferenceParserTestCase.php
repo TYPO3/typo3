@@ -21,7 +21,6 @@ use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\DataHandling\SoftReference\EmailSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\ExtensionPathSoftReferenceParser;
-use TYPO3\CMS\Core\DataHandling\SoftReference\NotifySoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserInterface;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser;
@@ -41,7 +40,6 @@ abstract class AbstractSoftReferenceParserTestCase extends UnitTestCase
 
         $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache, new NullLogger());
         $softReferenceParserFactory->addParser(new SubstituteSoftReferenceParser(), 'substitute');
-        $softReferenceParserFactory->addParser(new NotifySoftReferenceParser(), 'notify');
         $softReferenceParserFactory->addParser(new TypolinkSoftReferenceParser(new NoopEventDispatcher()), 'typolink');
         $softReferenceParserFactory->addParser(new TypolinkTagSoftReferenceParser(), 'typolink_tag');
         $softReferenceParserFactory->addParser(new ExtensionPathSoftReferenceParser(), 'ext_fileref');
