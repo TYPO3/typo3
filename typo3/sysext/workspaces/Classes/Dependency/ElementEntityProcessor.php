@@ -140,7 +140,7 @@ class ElementEntityProcessor
         $response = $this->createNewDependentElementChildReferenceCallback($callerArguments, $targetArgument, $caller, $eventName);
         if (empty($response)) {
             $record = BackendUtility::getRecord($callerArguments['table'], $callerArguments['id']);
-            if (!VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+            if (!VersionState::cast($record['t3ver_state'] ?? 0)->equals(VersionState::DELETE_PLACEHOLDER)) {
                 $response = ElementEntity::RESPONSE_Skip;
             }
         }
@@ -162,7 +162,7 @@ class ElementEntityProcessor
         $response = $this->createNewDependentElementParentReferenceCallback($callerArguments, $targetArgument, $caller, $eventName);
         if (empty($response)) {
             $record = BackendUtility::getRecord($callerArguments['table'], $callerArguments['id']);
-            if (!VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+            if (!VersionState::cast($record['t3ver_state'] ?? 0)->equals(VersionState::DELETE_PLACEHOLDER)) {
                 $response = ElementEntity::RESPONSE_Skip;
             }
         }
