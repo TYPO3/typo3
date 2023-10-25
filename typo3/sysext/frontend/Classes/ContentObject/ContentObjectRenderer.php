@@ -711,10 +711,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // Content rendering Exceptions indicate a critical problem which should not be
             // caught e.g. when something went wrong with Exception handling itself
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $exceptionHandler = $this->createExceptionHandler($configuration);
             if ($exceptionHandler === null) {
                 throw $exception;
+            }
+            // Ensure that the exception handler receives an \Exception instance,
+            // which is required by the \ExceptionHandlerInterface.
+            if (!$exception instanceof \Exception) {
+                $exception = new \Exception($exception->getMessage(), 1698347363, $exception);
             }
             $content = $exceptionHandler->handle($exception, $contentObject, $configuration);
         }
