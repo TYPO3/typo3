@@ -184,6 +184,17 @@ final class AssetRendererTest extends FunctionalTestCase
                     'js_prio' => '',
                 ],
             ],
+            '1 file with external option' => [
+                'files' => [
+                    ['file1', 'EXT:core/Resource/Public/foo.ext', [], ['external' => true]],
+                ],
+                'expectedMarkup' => [
+                    'css_no_prio' => '<link href="EXT:core/Resource/Public/foo.ext" rel="stylesheet" >',
+                    'css_prio' => '',
+                    'js_no_prio' => '<script src="EXT:core/Resource/Public/foo.ext"></script>',
+                    'js_prio' => '',
+                ],
+            ],
         ];
     }
 
