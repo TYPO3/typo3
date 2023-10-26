@@ -162,6 +162,12 @@
 			<trans-unit id="search.no_records_found" resname="search.no_records_found">
 				<source>No records found</source>
 			</trans-unit>
+			<trans-unit id="flexform.section.delete.title" resname="flexform.section.delete.title">
+				<source>Delete this container?</source>
+			</trans-unit>
+			<trans-unit id="flexform.section.delete.message" resname="flexform.section.delete.message">
+				<source>Are you sure you want to delete this container?</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
