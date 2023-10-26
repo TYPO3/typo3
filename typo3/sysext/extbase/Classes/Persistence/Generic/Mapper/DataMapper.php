@@ -881,7 +881,7 @@ class DataMapper
             }
             $parameter = implode(',', $plainValueArray);
         } elseif (is_object($input)) {
-            if (TypeHandlingUtility::isCoreType($input)) {
+            if (TypeHandlingUtility::isCoreType($input) || $input instanceof \Stringable) {
                 $parameter = (string)$input;
             } else {
                 throw new UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
