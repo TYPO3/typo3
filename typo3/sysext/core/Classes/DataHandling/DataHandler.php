@@ -4130,7 +4130,7 @@ class DataHandler implements LoggerAwareInterface
             $currentValue = is_string($value) ? GeneralUtility::xml2array($value) : null;
             // Traversing the XML structure, processing files:
             if (is_array($currentValue)) {
-                $currentValue['data'] = $this->checkValue_flex_procInData($currentValue['data'], [], $dataStructureArray, [$table, $uid, $field, $realDestPid], 'copyRecord_flexFormCallBack', $workspaceOptions);
+                $currentValue['data'] = $this->checkValue_flex_procInData($currentValue['data'] ?? [], [], $dataStructureArray, [$table, $uid, $field, $realDestPid], 'copyRecord_flexFormCallBack', $workspaceOptions);
                 // Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
                 $value = $currentValue;
             }
