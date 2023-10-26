@@ -22,6 +22,8 @@ use Doctrine\DBAL\Types\Type;
 
 /**
  * Type that maps a TYPE field.
+ *
+ * @internal not part of public core API.
  */
 class SetType extends Type
 {

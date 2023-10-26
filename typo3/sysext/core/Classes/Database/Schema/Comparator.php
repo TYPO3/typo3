@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 /**
  * Compares two Schemas and returns an instance of SchemaDiff.
  *
- * @internal
+ * @internal not part of public core API.
  */
 class Comparator extends \Doctrine\DBAL\Schema\Comparator
 {

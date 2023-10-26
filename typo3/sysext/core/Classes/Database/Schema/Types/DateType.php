@@ -23,6 +23,8 @@ use Doctrine\DBAL\Types\ConversionException;
 /**
  * This custom type extends doctrine native DateType to allow a
  * formatted string (in "Y-m-d") directly, in addition to a DateTimeInterface.
+ *
+ * @internal not part of public core API.
  */
 class DateType extends \Doctrine\DBAL\Types\DateType
 {

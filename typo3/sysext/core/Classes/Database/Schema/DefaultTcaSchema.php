@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -991,7 +991,7 @@ class DefaultTcaSchema
                 //       concrete database platform is handled in the database compare area. Sadly, this is not
                 //       possible right now but upcoming preparation towards doctrine/dbal 4 makes it possible to
                 //       move this "hack" to a different place.
-                if ($tableConnectionPlatform instanceof SqlitePlatform) {
+                if ($tableConnectionPlatform instanceof DoctrineSQLitePlatform) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,

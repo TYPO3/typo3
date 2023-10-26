@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query\Expression;
 
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\TrimMode;
 use TYPO3\CMS\Core\Database\Connection;
 
@@ -189,7 +189,7 @@ class ExpressionBuilder
     public function like(string $fieldName, $value): string
     {
         $platform = $this->connection->getDatabasePlatform();
-        if ($platform instanceof PostgreSQLPlatform) {
+        if ($platform instanceof DoctrinePostgreSQLPlatform) {
             // Use ILIKE to mimic case-insensitive search like most people are trained from MySQL/MariaDB.
             return $this->comparison($this->connection->quoteIdentifier($fieldName), 'ILIKE', $value);
         }
@@ -209,7 +209,7 @@ class ExpressionBuilder
     public function notLike(string $fieldName, $value): string
     {
         $platform = $this->connection->getDatabasePlatform();
-        if ($platform instanceof PostgreSQLPlatform) {
+        if ($platform instanceof DoctrinePostgreSQLPlatform) {
             // Use ILIKE to mimic case-insensitive search like most people are trained from MySQL/MariaDB.
             return $this->comparison($this->connection->quoteIdentifier($fieldName), 'NOT ILIKE', $value);
         }

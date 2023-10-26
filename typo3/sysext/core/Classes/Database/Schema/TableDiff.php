@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Core\Database\Schema;
  * Helper methods to handle raw SQL input and transform it into individual statements
  * for further processing.
  *
- * @internal
+ * @internal not part of public core API.
  */
 class TableDiff extends \Doctrine\DBAL\Schema\TableDiff
 {

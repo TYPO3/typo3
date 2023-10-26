@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Database\Driver\PDOSqlite;
 use Doctrine\DBAL\Driver\AbstractSQLiteDriver;
 use Doctrine\DBAL\Driver\Connection as DriverConnectionInterface;
 use Doctrine\DBAL\Driver\PDO\Exception;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use TYPO3\CMS\Core\Database\Driver\DriverConnection as TYPO3DriverConnection;
 
 /**
@@ -32,9 +32,9 @@ use TYPO3\CMS\Core\Database\Driver\DriverConnection as TYPO3DriverConnection;
 final class Driver extends AbstractSQLiteDriver
 {
     private array $userDefinedFunctions = [
-        'sqrt' => ['callback' => [SqlitePlatform::class, 'udfSqrt'], 'numArgs' => 1],
-        'mod' => ['callback' => [SqlitePlatform::class, 'udfMod'], 'numArgs' => 2],
-        'locate' => ['callback' => [SqlitePlatform::class, 'udfLocate'], 'numArgs' => -1],
+        'sqrt' => ['callback' => [DoctrineSQLitePlatform::class, 'udfSqrt'], 'numArgs' => 1],
+        'mod' => ['callback' => [DoctrineSQLitePlatform::class, 'udfMod'], 'numArgs' => 2],
+        'locate' => ['callback' => [DoctrineSQLitePlatform::class, 'udfLocate'], 'numArgs' => -1],
     ];
 
     public function connect(array $params): DriverConnectionInterface

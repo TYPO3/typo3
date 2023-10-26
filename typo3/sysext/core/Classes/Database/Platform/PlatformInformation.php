@@ -18,10 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Platform;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 
 /**
  * Helper to handle platform specific details
@@ -68,7 +69,7 @@ class PlatformInformation
     /**
      * Return the encoding of the given platform
      */
-    public static function getCharset(AbstractPlatform $platform): string
+    public static function getCharset(DoctrineAbstractPlatform $platform): string
     {
         $platformName = static::getPlatformIdentifier($platform);
 
@@ -78,7 +79,7 @@ class PlatformInformation
     /**
      * Return the statement to create a database with the desired encoding for the given platform
      */
-    public static function getDatabaseCreateStatementWithCharset(AbstractPlatform $platform, string $databaseName): string
+    public static function getDatabaseCreateStatementWithCharset(DoctrineAbstractPlatform $platform, string $databaseName): string
     {
         try {
             $createStatement = $platform->getCreateDatabaseSQL($databaseName);
@@ -98,7 +99,7 @@ class PlatformInformation
      *
      * @internal
      */
-    public static function getMaxIdentifierLength(AbstractPlatform $platform): int
+    public static function getMaxIdentifierLength(DoctrineAbstractPlatform $platform): int
     {
         $platformName = static::getPlatformIdentifier($platform);
 
@@ -110,7 +111,7 @@ class PlatformInformation
      *
      * @internal
      */
-    public static function getMaxBindParameters(AbstractPlatform $platform): int
+    public static function getMaxBindParameters(DoctrineAbstractPlatform $platform): int
     {
         $platformName = static::getPlatformIdentifier($platform);
 
@@ -123,15 +124,21 @@ class PlatformInformation
      * @throws \RuntimeException
      * @internal
      */
-    protected static function getPlatformIdentifier(AbstractPlatform $platform): string
+    protected static function getPlatformIdentifier(DoctrineAbstractPlatform $platform): string
     {
-        if ($platform instanceof MySQLPlatform) {
+        // doctrine/dbal 4.0 MariaDBPlatform extends AbstractMySQLPlatform instead of MySQLPlatform. We return the
+        // 'mysql' for the meanwhile.
+        // @todo Change this to 'mariadb' after usage have been verified and properly addressed.
+        if ($platform instanceof DoctrineMariaDBPlatform) {
             return 'mysql';
         }
-        if ($platform instanceof PostgreSqlPlatform) {
+        if ($platform instanceof DoctrineMySQLPlatform) {
+            return 'mysql';
+        }
+        if ($platform instanceof DoctrinePostgreSqlPlatform) {
             return 'postgresql';
         }
-        if ($platform instanceof SqlitePlatform) {
+        if ($platform instanceof DoctrineSQlitePlatform) {
             return 'sqlite';
         }
         throw new \RuntimeException(

@@ -15,62 +15,49 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Database\Schema\EventListener;
+namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
-use Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
 /**
- * Event listener to handle additional processing for custom
- * doctrine types.
+ * Provide shared custom doctrine types processing to all extended SchemaManager classes:
+ *
+ *  - MySQLSchemaManager
+ *  - SQLiteSchemaManager
+ *  - PostgreSQLSchemaManager
+ *
+ * @internal only for use in extended SchemaManager classes and not part of public core API.
  */
-class SchemaColumnDefinitionListener
+trait CustomDoctrineTypesColumnDefinitionTrait
 {
     /**
-     * Listener for column definition events. This intercepts definitions
-     * for custom doctrine types and builds the appropriate Column Object.
+     * This method is used to handle additional processing for custom doctrine types.
      *
-     * @throws \Doctrine\DBAL\Exception
+     * Note: `doctrine/dbal` dropped the event listener system, and this replaces the
+     *        used `onSchemaColumnDefinition()` event lower than `doctrine/dbal 4.x`.
      */
-    public function onSchemaColumnDefinition(SchemaColumnDefinitionEventArgs $event)
-    {
-        $tableColumn = $event->getTableColumn();
+    protected function processCustomDoctrineTypesColumnDefinition(
+        array $tableColumn,
+        AbstractPlatform $platform,
+    ): Column|null {
         $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
-
         $dbType = $this->getDatabaseType($tableColumn['type']);
         if ($dbType !== 'enum' && $dbType !== 'set') {
-            return;
+            return null;
         }
 
-        $column = $this->getEnumerationTableColumnDefinition(
-            $tableColumn,
-            $event->getConnection()->getDatabasePlatform()
-        );
-
-        $event->setColumn($column);
-        $event->preventDefault();
-    }
-
-    /**
-     * Build a Doctrine column object for TYPE/TYPE columns.
-     *
-     * @throws \Doctrine\DBAL\Exception
-     * @todo: The $tableColumn source currently only support MySQL definition style.
-     */
-    protected function getEnumerationTableColumnDefinition(array $tableColumn, AbstractPlatform $platform): Column
-    {
         $options = [
             'length' => $tableColumn['length'] ?? null,
             'unsigned' => false,
             'fixed' => false,
             'default' => $tableColumn['default'] ?? null,
             'notnull' => ($tableColumn['null'] ?? '') !== 'YES',
-            'scale' => null,
+            'scale' => 0,
             'precision' => null,
             'autoincrement' => false,
-            'comment' => $tableColumn['comment'] ?? null,
+            'comment' => (string)($tableColumn['comment'] ?? ''),
         ];
 
         $dbType = $this->getDatabaseType($tableColumn['type']);

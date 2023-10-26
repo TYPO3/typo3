@@ -23,6 +23,8 @@ use Doctrine\DBAL\Types\ConversionException;
 /**
  * This custom type extends doctrine native TimeType to allow a
  * formatted string (in "H:i:s") directly, in addition to a DateTimeInterface.
+ *
+ * @internal not part of public core API.
  */
 class TimeType extends \Doctrine\DBAL\Types\TimeType
 {

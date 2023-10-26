@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
 
-use Doctrine\DBAL\Platforms\MariaDBPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
@@ -28,6 +26,8 @@ use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform;
+use TYPO3\CMS\Core\Database\Platform\SQLitePlatform;
 use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -1794,7 +1794,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
      */
     public function enrichAddsNumberAsDecimalForSqlite(): void
     {
-        $this->mockDefaultConnectionPlatformInConnectionPool(SqlitePlatform::class);
+        $this->mockDefaultConnectionPlatformInConnectionPool(SQLitePlatform::class);
         $GLOBALS['TCA']['aTable']['columns']['number'] = [
             'label' => 'aLabel',
             'config' => [

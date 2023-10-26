@@ -18,9 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
@@ -37,7 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Handling schema migrations per connection.
  *
- * @internal
+ * @internal not part of public core API.
  */
 class ConnectionMigrator
 {
@@ -679,7 +680,7 @@ class ConnectionMigrator
                 continue;
             }
 
-            $databasePlatform = $this->getDatabasePlatform($index);
+            $databasePlatform = $this->getDatabasePlatformName($index);
 
             // Treat each changed column with a new diff to get a dedicated suggestions
             // just for this single column.
@@ -739,7 +740,7 @@ class ConnectionMigrator
         foreach ($schemaDiff->changedTables as $index => $changedTable) {
             $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
 
-            $isSqlite = $this->getDatabasePlatform($index) === 'sqlite';
+            $isSqlite = $this->getDatabasePlatformName($index) === 'sqlite';
             $addMoreOperations = true;
 
             if (count($changedTable->removedColumns) !== 0) {
@@ -1075,16 +1076,16 @@ class ConnectionMigrator
             foreach ($table->getIndexes() as $key => $index) {
                 $indexName = $index->getName();
                 // PostgreSQL and sqlite require index names to be unique per database/schema.
-                if ($connection->getDatabasePlatform() instanceof PostgreSqlPlatform
-                    || $connection->getDatabasePlatform() instanceof SqlitePlatform
-                ) {
+                $platform = $connection->getDatabasePlatform();
+                if ($platform instanceof DoctrinePostgreSQLPlatform || $platform instanceof DoctrineSQLitePlatform) {
                     $indexName = $indexName . '_' . hash('crc32b', $table->getName() . '_' . $indexName);
                 }
 
                 // Remove the length information from column names for indexes if required.
                 $cleanedColumnNames = array_map(
                     static function (string $columnName) use ($connection): string {
-                        if ($connection->getDatabasePlatform() instanceof MySQLPlatform) {
+                        $platform = $connection->getDatabasePlatform();
+                        if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
                             // Returning the unquoted, unmodified version of the column name since
                             // it can include the length information for BLOB/TEXT columns which
                             // may not be quoted.
@@ -1129,7 +1130,8 @@ class ConnectionMigrator
     protected function getTableOptions(array $tableNames): array
     {
         $tableOptions = [];
-        if (!$this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        $platform = $this->connection->getDatabasePlatform();
+        if (!($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform)) {
             foreach ($tableNames as $tableName) {
                 $tableOptions[$tableName] = [];
             }
@@ -1277,15 +1279,19 @@ class ConnectionMigrator
         return $options;
     }
 
-    protected function getDatabasePlatform(string $tableName): string
+    /**
+     * @todo Adopt usages to directly use platform instanceof checks and remove this method.
+     */
+    protected function getDatabasePlatformName(string $tableName): string
     {
         $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
-        if ($databasePlatform instanceof PostgreSqlPlatform) {
+        if ($databasePlatform instanceof DoctrinePostgreSQLPlatform) {
             return 'postgresql';
         }
-        if ($databasePlatform instanceof SqlitePlatform) {
+        if ($databasePlatform instanceof DoctrineSQLitePlatform) {
             return 'sqlite';
         }
+        // @todo report MariaDB as mariadb if all usages are adopted for the split.
 
         return 'mysql';
     }

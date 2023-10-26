@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
  * Helper methods to handle SQL files and transform them into individual statements
  * for further processing.
  *
- * @internal
+ * @internal not part of public core API.
  */
 class SchemaMigrator
 {
@@ -382,7 +382,7 @@ class SchemaMigrator
      */
     protected function adoptDoctrineAutoincrementDetectionForSqlite(array $tables, Connection $connection): void
     {
-        if (!($connection->getDatabasePlatform() instanceof SqlitePlatform)) {
+        if (!($connection->getDatabasePlatform() instanceof DoctrineSQLitePlatform)) {
             return;
         }
         array_walk($tables, static function (Table $table): void {

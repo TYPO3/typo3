@@ -17,11 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\OraclePlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -1024,19 +1025,31 @@ final class QueryBuilderTest extends UnitTestCase
     {
         return [
             'mysql' => [
-                'platform' => MySQLPlatform::class,
+                'platform' => DoctrineMySQLPlatform::class,
                 'quoteChar' => '`',
                 'input' => '`anIdentifier`',
                 'expected' => 'anIdentifier',
             ],
             'mysql with spaces' => [
-                'platform' => MySQLPlatform::class,
+                'platform' => DoctrineMySQLPlatform::class,
+                'quoteChar' => '`',
+                'input' => ' `anIdentifier` ',
+                'expected' => 'anIdentifier',
+            ],
+            'mariadb' => [
+                'platform' => DoctrineMariaDBPlatform::class,
+                'quoteChar' => '`',
+                'input' => '`anIdentifier`',
+                'expected' => 'anIdentifier',
+            ],
+            'mariadb with spaces' => [
+                'platform' => DoctrineMariaDBPlatform::class,
                 'quoteChar' => '`',
                 'input' => ' `anIdentifier` ',
                 'expected' => 'anIdentifier',
             ],
             'postgres' => [
-                'platform' => PostgreSqlPlatform::class,
+                'platform' => DoctrinePostgreSQLPlatform::class,
                 'quoteChar' => '"',
                 'input' => '"anIdentifier"',
                 'expected' => 'anIdentifier',
@@ -1251,19 +1264,23 @@ final class QueryBuilderTest extends UnitTestCase
     {
         return [
             'Test cast for MySQLPlatform' => [
-                new MySQLPlatform(),
+                new DoctrineMySQLPlatform(),
+                'CONVERT(aField, CHAR)',
+            ],
+            'Test cast for MariaDBPlatform' => [
+                new DoctrineMySQLPlatform(),
                 'CONVERT(aField, CHAR)',
             ],
             'Test cast for PostgreSqlPlatform' => [
-                new PostgreSqlPlatform(),
+                new DoctrinePostgreSQLPlatform(),
                 'aField::text',
             ],
             'Test cast for SqlitePlatform' => [
-                new SqlitePlatform(),
+                new DoctrineSQLitePlatform(),
                 'CAST(aField as TEXT)',
             ],
             'Test cast for OraclePlatform' => [
-                new OraclePlatform(),
+                new DoctrineOraclePlatform(),
                 'CAST(aField as VARCHAR)',
             ],
         ];
@@ -1273,7 +1290,7 @@ final class QueryBuilderTest extends UnitTestCase
      * @test
      * @dataProvider castFieldToTextTypeDataProvider
      */
-    public function castFieldToTextType(AbstractPlatform $platform, string $expectation): void
+    public function castFieldToTextType(DoctrineAbstractPlatform $platform, string $expectation): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
             ->willReturnArgument(0);

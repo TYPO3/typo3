@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema\Exception;
 
+/**
+ * @internal not part of public core API.
+ */
 class StatementException extends \Exception
 {
     /**

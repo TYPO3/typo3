@@ -17,30 +17,32 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Platform;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PlatformInformationTest extends UnitTestCase
 {
     /**
-     * @return array<string, array{0: class-string<AbstractPlatform>}>
+     * @return array<string, array{0: class-string<DoctrineAbstractPlatform>}>
      */
     public static function platformDataProvider(): array
     {
         return [
-            'mysql' => [MySQLPlatform::class],
-            'postgresql' => [PostgreSQLPlatform::class],
-            'sqlite' => [SqlitePlatform::class],
+            'mysql' => [DoctrineMySQLPlatform::class],
+            'mariadb' => [DoctrineMariaDBPlatform::class],
+            'postgresql' => [DoctrinePostgreSQLPlatform::class],
+            'sqlite' => [DoctrineSQLitePlatform::class],
         ];
     }
 
     /**
      * @test
-     * @param class-string<AbstractPlatform> $platform
+     * @param class-string<DoctrineAbstractPlatform> $platform
      * @dataProvider platformDataProvider
      */
     public function maxBindParameters(string $platform): void
@@ -51,7 +53,7 @@ final class PlatformInformationTest extends UnitTestCase
 
     /**
      * @test
-     * @param class-string<AbstractPlatform> $platform
+     * @param class-string<DoctrineAbstractPlatform> $platform
      * @dataProvider platformDataProvider
      */
     public function maxIdentifierLength(string $platform): void
@@ -67,7 +69,7 @@ final class PlatformInformationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
-        $platformMock = $this->createMock(AbstractPlatform::class);
+        $platformMock = $this->createMock(DoctrineAbstractPlatform::class);
         self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platformMock));
     }
 
@@ -78,7 +80,7 @@ final class PlatformInformationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
-        $platformMock = $this->createMock(AbstractPlatform::class);
+        $platformMock = $this->createMock(DoctrineAbstractPlatform::class);
         self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platformMock));
     }
 }

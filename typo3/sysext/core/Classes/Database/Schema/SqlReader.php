@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * Helper methods to handle raw SQL input and transform it into individual statements
  * for further processing.
  *
- * @internal
+ * @internal not part of public core API.
  */
 class SqlReader
 {

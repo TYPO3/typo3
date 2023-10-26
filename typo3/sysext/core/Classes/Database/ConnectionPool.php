@@ -20,16 +20,13 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\Middleware as DriverMiddleware;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as PDOMySqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as PDOPgSqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as PDOSqliteDriver;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaAlterTableListener;
-use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
-use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaIndexDefinitionListener;
+use TYPO3\CMS\Core\Database\Schema\SchemaManager\CoreSchemaManagerFactory;
 use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType;
 use TYPO3\CMS\Core\Database\Schema\Types\DateType;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
@@ -85,9 +82,6 @@ class ConnectionPool
         'pdo_mysql' => PDOMySqlDriver::class,
         'pdo_sqlite' => PDOSqliteDriver::class,
         'pdo_pgsql' => PDOPgSqlDriver::class,
-        // TODO: not supported yet, need to be checked later
-//        'pdo_oci' => PDOOCIDriver::class,
-//        'drizzle_pdo_mysql' => DrizzlePDOMySQLDriver::class,
     ];
 
     /**
@@ -191,15 +185,36 @@ class ConnectionPool
 
     /**
      * Return any doctrine driver middlewares, that may have been set up in:
-     * $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverMiddlewares']
+     * - $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverMiddlewares'] for a specific connection
      */
     protected function getDriverMiddlewares(array $connectionParams): array
     {
+        /** @var array<int|string, string> $driverMiddlewares */
+        $driverMiddlewares = array_replace(
+            // @todo Make global connection driver middlewares configurable by moving this to
+            //       $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares'] as a dedicated
+            //       feature change.
+            [
+                'typo3/core/custom-platform-driver-middleware' => \TYPO3\CMS\Core\Database\Middleware\CustomPlatformDriverMiddleware::class,
+            ],
+            $connectionParams['driverMiddlewares'] ?? []
+        );
         $middlewares = [];
 
-        foreach ($connectionParams['driverMiddlewares'] ?? [] as $className) {
+        foreach ($driverMiddlewares as $identifier => $className) {
+            // Using a empty classname for an identifier disables the middleware. This can be used to disable a
+            // global driver middleware for a specific connection.
+            if ($className === '') {
+                continue;
+            }
             if (!in_array(DriverMiddleware::class, class_implements($className) ?: [], true)) {
-                throw new \UnexpectedValueException('Doctrine Driver Middleware must implement \Doctrine\DBAL\Driver\Middleware', 1677958727);
+                throw new \UnexpectedValueException(
+                    sprintf(
+                        'Doctrine Driver Middleware "%s" must implement \Doctrine\DBAL\Driver\Middleware',
+                        $className
+                    ),
+                    1677958727
+                );
             }
             $middlewares[] = GeneralUtility::makeInstance($className);
         }
@@ -221,7 +236,10 @@ class ConnectionPool
 
         $connectionParams = $this->mapCustomDriver($connectionParams);
         $middlewares = $this->getDriverMiddlewares($connectionParams);
-        $configuration = $middlewares ? (new Configuration())->setMiddlewares($middlewares) : null;
+        $configuration = (new Configuration())
+            ->setMiddlewares($middlewares)
+            // @link https://github.com/doctrine/dbal/blob/3.7.x/UPGRADE.md#deprecated-not-setting-a-schema-manager-factory
+            ->setSchemaManagerFactory(GeneralUtility::makeInstance(CoreSchemaManagerFactory::class));
 
         /** @var Connection $conn */
         $conn = DriverManager::getConnection($connectionParams, $configuration);
@@ -236,26 +254,6 @@ class ConnectionPool
         foreach ($this->overrideDoctrineTypes as $type => $className) {
             $conn->getDatabasePlatform()->registerDoctrineTypeMapping($type, $type);
         }
-
-        // Handler for building custom data type column definitions
-        // in the SchemaManager
-        $conn->getDatabasePlatform()->getEventManager()->addEventListener(
-            Events::onSchemaColumnDefinition,
-            GeneralUtility::makeInstance(SchemaColumnDefinitionListener::class)
-        );
-
-        // Handler for enhanced index definitions in the SchemaManager
-        $conn->getDatabasePlatform()->getEventManager()->addEventListener(
-            Events::onSchemaIndexDefinition,
-            GeneralUtility::makeInstance(SchemaIndexDefinitionListener::class)
-        );
-
-        // Handler for adding custom database platform options to ALTER TABLE
-        // requests in the SchemaManager
-        $conn->getDatabasePlatform()->getEventManager()->addEventListener(
-            Events::onSchemaAlterTable,
-            GeneralUtility::makeInstance(SchemaAlterTableListener::class)
-        );
 
         return $conn;
     }

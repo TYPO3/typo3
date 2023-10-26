@@ -15,13 +15,19 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Database\Schema\Exception;
+namespace TYPO3\CMS\Core\Database\Middleware;
 
-use TYPO3\CMS\Core\Exception;
+use Doctrine\DBAL\Driver;
+use Doctrine\DBAL\Driver\Middleware;
+use TYPO3\CMS\Core\Database\Driver\CustomPlatformDriverDecorator;
 
 /**
- * A detail exception thrown within DefaultTcaSchema.
- *
- * @internal not part of public core API.
+ * Wraps the driver to ensure extended *Platform classes are used for connections.
  */
-class DefaultTcaSchemaTablePositionException extends Exception {}
+final class CustomPlatformDriverMiddleware implements Middleware
+{
+    public function wrap(Driver $driver): Driver
+    {
+        return new CustomPlatformDriverDecorator($driver);
+    }
+}

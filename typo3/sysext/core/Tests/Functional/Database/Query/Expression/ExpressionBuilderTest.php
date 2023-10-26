@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Expression;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -686,7 +686,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
             ],
             'excludePlatforms' => [
                 // Exclude sqlite due to german umlauts.
-                SqlitePlatform::class,
+                DoctrineSQLitePlatform::class,
             ],
         ];
 
@@ -700,7 +700,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
             ],
             'excludePlatforms' => [
                 // Exclude sqlite due to german umlauts.
-                SqlitePlatform::class,
+                DoctrineSQLitePlatform::class,
             ],
         ];
 
@@ -714,7 +714,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
             ],
             'excludePlatforms' => [
                 // Exclude sqlite due to german umlauts.
-                SqlitePlatform::class,
+                DoctrineSQLitePlatform::class,
             ],
         ];
 
@@ -786,7 +786,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
             ],
             'excludePlatforms' => [
                 // Exclude sqlite due to german umlauts.
-                SqlitePlatform::class,
+                DoctrineSQLitePlatform::class,
             ],
         ];
 
@@ -800,7 +800,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
             ],
             'excludePlatforms' => [
                 // Exclude sqlite due to german umlauts.
-                SqlitePlatform::class,
+                DoctrineSQLitePlatform::class,
             ],
         ];
 
