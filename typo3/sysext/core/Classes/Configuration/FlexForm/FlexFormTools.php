@@ -250,7 +250,7 @@ class FlexFormTools
      *
      * @internal
      */
-    public function migrateFlexFormTcaRecursive(array $structure): array
+    protected function migrateFlexFormTcaRecursive(array $structure): array
     {
         $newStructure = [];
         foreach ($structure as $key => $value) {
