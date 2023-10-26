@@ -907,7 +907,7 @@ class DataMapper
         }
 
         if (is_object($input)) {
-            if (TypeHandlingUtility::isCoreType($input)) {
+            if (TypeHandlingUtility::isCoreType($input) || $input instanceof \Stringable) {
                 return (string)$input;
             }
 
