@@ -52,10 +52,6 @@ CREATE TABLE tx_styleguide_displaycond (
     input_19 text,
     input_20 text,
 
-    number_1 int(11) DEFAULT '0' NOT NULL,
-    number_2 int(11) DEFAULT '0' NOT NULL,
-    number_3 int(11) DEFAULT '0' NOT NULL,
-
     select_1 text,
     select_2 text,
     select_3 text,
@@ -90,13 +86,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_41 text,
     input_42 text,
     input_43 text,
-
-    number_1 text,
-    number_2 int(11) DEFAULT '0' NOT NULL,
-    number_3 int(11) DEFAULT '0' NOT NULL,
-    number_4 int(11) DEFAULT '0' NOT NULL,
-    number_5 text,
-    number_7 int(11) DEFAULT '0' NOT NULL,
 
     text_12 text,
 
@@ -432,8 +421,6 @@ CREATE TABLE tx_styleguide_typeforeign (
 
 CREATE TABLE tx_styleguide_valuesdefault (
     input_1 text,
-
-    number_1 int(11) DEFAULT '0' NOT NULL,
 
     select_1 text,
     select_2 text
