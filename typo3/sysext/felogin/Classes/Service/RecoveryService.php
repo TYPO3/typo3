@@ -138,7 +138,9 @@ class RecoveryService implements RecoveryServiceInterface
      */
     protected function prepareMail(Address $receiver, string $hash): Email
     {
-        $url = $this->uriBuilder->setCreateAbsoluteUri(true)
+        $url = $this->uriBuilder
+            ->reset()
+            ->setCreateAbsoluteUri(true)
             ->uriFor(
                 'showChangePassword',
                 ['hash' => $hash],

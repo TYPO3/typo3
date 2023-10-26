@@ -94,6 +94,7 @@ class RecoveryServiceTest extends UnitTestCase
         $languageService->sL(Argument::containingString('password_recovery_mail_header'))->willReturn('translation');
 
         $uriBuilder = $this->prophesize(UriBuilder::class);
+        $uriBuilder->reset()->willReturn($uriBuilder->reveal());
         $uriBuilder->setCreateAbsoluteUri(true)->willReturn($uriBuilder->reveal());
         $uriBuilder->uriFor(
             'showChangePassword',
