@@ -187,6 +187,9 @@ prototypes:
                     label: formEditor.elements.Form.finisher.EmailToSender.editor.language.label
                     propertyPath: options.translation.language
                     selectOptions:
+                      5:
+                        value: ''
+                        label: formEditor.elements.Form.finisher.EmailToSender.editor.language.0
                       10:
                         value: default
                         label: formEditor.elements.Form.finisher.EmailToSender.editor.language.1
@@ -322,6 +325,9 @@ prototypes:
                     label: formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label
                     propertyPath: options.translation.language
                     selectOptions:
+                      5:
+                        value: ''
+                        label: formEditor.elements.Form.finisher.EmailToReceiver.editor.language.0
                       10:
                         value: default
                         label: formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1
