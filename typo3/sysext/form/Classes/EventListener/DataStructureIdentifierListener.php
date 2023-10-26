@@ -237,14 +237,24 @@ class DataStructureIdentifierListener
                 $formFinisherDefinition
             );
 
+            // Remove all container elements "el" from sections beforehand.
+            // These should not be matched by the regex below.
+            // This greatly reduces headaches.
+            $elements = $prototypeFinisherDefinition['FormEngine']['elements'];
+            foreach ($elements as $key => $element) {
+                if ($element['section'] ?? false) {
+                    unset($elements[$key]['el']);
+                }
+            }
+
             // Iterate over all `prototypes.<prototypeName>.finishersDefinition.<finisherIdentifier>.FormEngine.elements` values
             // and convert them to FlexForm elements
-            GeneralUtility::makeInstance(ArrayProcessor::class, $prototypeFinisherDefinition['FormEngine']['elements'])->forEach(
+            GeneralUtility::makeInstance(ArrayProcessor::class, $elements)->forEach(
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
                     'convertToFlexFormSheets',
-                    // Parse section container single elements, top level elements and section containers.
-                    '^([^\.]*)(?:el\._arrayContainer\.el\..*\.config\.type|\.config\.type|\.section)$',
+                    // Parse top level elements and section containers.
+                    '^(.*)(?:\.config\.type|\.section)$',
                     GeneralUtility::makeInstance(FinisherOptionGenerator::class, $converterDto)
                 )
             );
