@@ -89,6 +89,8 @@ final class RecoveryServiceTest extends UnitTestCase
             ->willReturn($settings);
 
         $uriBuilder = $this->getMockBuilder(UriBuilder::class)->disableOriginalConstructor()->getMock();
+        $uriBuilder->expects(self::once())->method('reset')->willReturn($uriBuilder);
+        $uriBuilder->expects(self::once())->method('setRequest')->with($this->extbaseRequest)->willReturn($uriBuilder);
         $uriBuilder->expects(self::once())->method('setCreateAbsoluteUri')->with(true)->willReturn($uriBuilder);
         $uriBuilder->expects(self::once())->method('uriFor')->with(
             'showChangePassword',
