@@ -22,7 +22,7 @@ prototypes:
               addHtmlPart: true
               attachUploads: true
               translation:
-                language: 'default'
+                language: ''
               title: ''
         FormEngine:
           label: tt_content.finishersDefinition.EmailToReceiver.label
@@ -136,6 +136,9 @@ prototypes:
                   maxitems: 1
                   size: 1
                   items:
+                    5:
+                      label: tt_content.finishersDefinition.EmailToReceiver.language.0
+                      value: ''
                     10:
                       label: tt_content.finishersDefinition.EmailToReceiver.language.1
                       value: default

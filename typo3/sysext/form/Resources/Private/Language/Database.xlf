@@ -110,8 +110,11 @@
 			<trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label" xml:space="preserve">
 				<source>Translation language</source>
 			</trans-unit>
+			<trans-unit id="tt_content.finishersDefinition.EmailToSender.language.0" xml:space="preserve">
+				<source>Auto</source>
+			</trans-unit>
 			<trans-unit id="tt_content.finishersDefinition.EmailToSender.language.1" xml:space="preserve">
-				<source>Default</source>
+				<source>EN</source>
 			</trans-unit>
 			<trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label" xml:space="preserve">
 				<source>Title</source>
@@ -147,8 +150,11 @@
 			<trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.label" xml:space="preserve">
 				<source>Translation language</source>
 			</trans-unit>
+			<trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.0" xml:space="preserve">
+				<source>Auto</source>
+			</trans-unit>
 			<trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.1" xml:space="preserve">
-				<source>Default</source>
+				<source>EN</source>
 			</trans-unit>
 			<trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label" xml:space="preserve">
 				<source>Title</source>
@@ -674,6 +680,9 @@
 			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" xml:space="preserve">
 				<source>Translation language</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.0" xml:space="preserve">
+				<source>Auto</source>
+			</trans-unit>
 			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" xml:space="preserve">
 				<source>EN</source>
 			</trans-unit>
@@ -728,6 +737,9 @@
 			</trans-unit>
 			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label" xml:space="preserve">
 				<source>Translation language</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.0" xml:space="preserve">
+				<source>Auto</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" xml:space="preserve">
 				<source>EN</source>
