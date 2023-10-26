@@ -55,8 +55,6 @@ class RecoveryService
      */
     public function sendRecoveryEmail(RequestInterface $request, array $userData, string $hash): void
     {
-        $this->uriBuilder->setRequest($request);
-
         $receiver = new Address($userData['email'], $this->getReceiverName($userData));
         $email = $this->prepareMail($request, $receiver, $hash);
 
@@ -87,7 +85,10 @@ class RecoveryService
      */
     protected function prepareMail(RequestInterface $request, Address $receiver, string $hash): FluidEmail
     {
-        $url = $this->uriBuilder->setCreateAbsoluteUri(true)
+        $url = $this->uriBuilder
+            ->reset()
+            ->setRequest($request)
+            ->setCreateAbsoluteUri(true)
             ->uriFor(
                 'showChangePassword',
                 ['hash' => $hash],
