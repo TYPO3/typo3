@@ -142,6 +142,7 @@ class FlexFormTools
         $dataStructure = $this->convertDataStructureToArray($dataStructure);
         $dataStructure = $this->ensureDefaultSheet($dataStructure);
         $dataStructure = $this->resolveFileDirectives($dataStructure);
+        $dataStructure = $this->migrateAndPrepareFlexTca($dataStructure);
         return $this->eventDispatcher
             ->dispatch(new AfterFlexFormDataStructureParsedEvent($dataStructure, $parsedIdentifier))
             ->getDataStructure();
@@ -574,7 +575,18 @@ class FlexFormTools
                     }
                 }
                 $dataStructure['sheets'][$sheetName] = $sheetStructure;
+            }
+        }
+        return $dataStructure;
+    }
 
+    /**
+     * Call TCA migration and TCA preparation on flex elements.
+     */
+    protected function migrateAndPrepareFlexTca(array $dataStructure): array
+    {
+        if (isset($dataStructure['sheets']) && is_array($dataStructure['sheets'])) {
+            foreach ($dataStructure['sheets'] as $sheetName => $sheetStructure) {
                 if (is_array($dataStructure['sheets'][$sheetName])) {
                     // @todo Use TcaPreparation instead of duplicating the code.
                     // @todo Actually, the type category preparation is different for FlexForm as is doesn't support manyToMany.
