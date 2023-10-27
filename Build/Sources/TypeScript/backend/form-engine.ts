@@ -32,6 +32,7 @@ import InteractionRequest from '@typo3/backend/event/interaction-request';
 import TriggerRequest from '@typo3/backend/event/trigger-request';
 import Utility from '@typo3/backend/utility';
 import { selector } from '@typo3/core/literals';
+import '@typo3/backend/form-engine/element/extra/char-counter';
 
 interface OnFieldChangeItem {
   name: string;
@@ -555,60 +556,15 @@ export default (function() {
    */
   FormEngine.initializeRemainingCharacterViews = function() {
     // all fields with a "maxlength" attribute
-    const $maxlengthElements = $('[maxlength]').not('.t3js-datetimepicker').not('.t3js-color-picker').not('.t3js-charcounter-initialized');
-    $maxlengthElements.on('focus', (event: JQueryEventObject) => {
-      const $field = $(event.currentTarget),
-        $parent = $field.parents('.t3js-formengine-field-item:first'),
-        maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
-
-      // append the counter only at focus to avoid cluttering the DOM
-      let $wrapper = $parent.find('.t3js-charcounter-wrapper');
-      if (!$wrapper.length) {
-        $wrapper = $('<div>');
-        $wrapper.addClass('t3js-charcounter-wrapper');
-        $parent.append($wrapper);
+    const elementsWithMaxLengths: NodeListOf<HTMLInputElement|HTMLTextAreaElement> = document.querySelectorAll('[maxlength]:not(.t3js-datetimepicker):not(.t3js-color-picker)');
+    elementsWithMaxLengths.forEach((element): void => {
+      const fieldItem = element.closest('.t3js-formengine-field-item');
+      if (fieldItem !== null && fieldItem.querySelector('typo3-backend-formengine-char-counter') === null) {
+        const charCounterElement = document.createElement('typo3-backend-formengine-char-counter');
+        charCounterElement.setAttribute('target', `[data-formengine-input-name="${selector`${element.dataset.formengineInputName}`}"]`);
+        fieldItem.append(charCounterElement);
       }
-      $wrapper.append($('<div />', { 'class': 't3js-charcounter' }).append(
-        $('<span />', { 'class': maxlengthProperties.labelClass }).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
-      ));
-    }).on('blur', (event: JQueryEventObject) => {
-      const $field = $(event.currentTarget),
-        $parent = $field.parents('.t3js-formengine-field-item:first');
-      $parent.find('.t3js-charcounter').remove();
-    }).on('keyup', (event: JQueryEventObject) => {
-      const $field = $(event.currentTarget),
-        $parent = $field.parents('.t3js-formengine-field-item:first'),
-        maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
-
-      // change class and value
-      $parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters));
     });
-    $maxlengthElements.addClass('t3js-charcounter-initialized');
-  };
-
-  /**
-   * Get the properties required for proper rendering of the character counter
-   *
-   * @returns {{remainingCharacters: number, labelClass: string}}
-   */
-  FormEngine.getCharacterCounterProperties = function($field: JQuery): {remainingCharacters: number, labelClass: string} {
-    const fieldText = $field.val(),
-      maxlength = parseInt($field.attr('maxlength'), 10),
-      currentFieldLength = fieldText.length,
-      numberOfLineBreaks = (fieldText.match(/\n/g) || []).length, // count line breaks
-      remainingCharacters = maxlength - currentFieldLength - numberOfLineBreaks,
-      threshold = 15; // hard limit of remaining characters when the label class changes
-    let labelClass = 'badge-info';
-    if (remainingCharacters < threshold) {
-      labelClass = 'badge-danger';
-    } else if (remainingCharacters < threshold * 2) {
-      labelClass = 'badge-warning';
-    }
-
-    return {
-      remainingCharacters: remainingCharacters,
-      labelClass: 'badge ' + labelClass
-    };
   };
 
   /**

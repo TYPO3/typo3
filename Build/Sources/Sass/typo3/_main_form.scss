@@ -92,22 +92,6 @@ label {
 .formengine-field-item {
     display: block;
     position: relative;
-
-    > .t3js-charcounter-wrapper {
-        inset-inline-start: 0;
-        position: absolute;
-        top: 100%;
-        display: flex;
-        margin: 0 -2px;
-
-        .t3js-charcounter {
-            margin: 0 2px;
-        }
-
-        .t3js-charcounter-min {
-            margin: 0 2px;
-        }
-    }
 }
 
 .form-group {
