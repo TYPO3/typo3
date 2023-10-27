@@ -194,7 +194,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     #[Test]
     public function untangleFilesArrayDetectsASingleUploadedFileInBackend(): void
     {
-        $_FILES['dummy'] = [
+        $_FILES['tx_blogexample_blog'] = [
             'name' => 'name.pdf',
             'type' => 'application/pdf',
             'tmp_name' => '/tmp/php/php1h4j1o',
@@ -202,8 +202,8 @@ final class RequestBuilderTest extends FunctionalTestCase
             'size' => 98174,
         ];
 
-        $extensionName = 'blog_example';
-        $pluginName = 'blog';
+        $extensionName = 'BlogExample';
+        $pluginName = 'Blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
             'packageName' => 'typo3/cms-blog-example',
@@ -249,7 +249,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     #[Test]
     public function untangleFilesArrayDetectsMultipleUploadedFileInBackend(): void
     {
-        $_FILES['dummy'] = [
+        $_FILES['tx_blogexample_blog'] = [
             'error' => [
                 'pdf' => UPLOAD_ERR_OK,
                 'jpg' => UPLOAD_ERR_OK,
@@ -271,8 +271,8 @@ final class RequestBuilderTest extends FunctionalTestCase
             ],
         ];
 
-        $extensionName = 'blog_example';
-        $pluginName = 'blog';
+        $extensionName = 'BlogExample';
+        $pluginName = 'Blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
             'packageName' => 'typo3/cms-blog-example',

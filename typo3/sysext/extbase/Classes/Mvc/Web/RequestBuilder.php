@@ -139,7 +139,7 @@ class RequestBuilder implements SingletonInterface
 
         // backwards compatibility
         $fileParameters = $this->mapUploadedFilesToParameters($files, []);
-        if (count($fileParameters) === 1) {
+        if ($useArgumentsWithoutNamespace && count($fileParameters) === 1) {
             $fileParameters = reset($fileParameters);
         }
         $parameters = array_replace_recursive($parameters, $fileParameters);
