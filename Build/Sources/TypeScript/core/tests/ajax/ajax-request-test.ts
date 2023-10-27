@@ -267,4 +267,22 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       });
     }
   });
+
+  describe('Aborts requests', (): void => {
+    it('via abort() method', (): void => {
+      const request = new AjaxRequest('https://example.com');
+      request.get();
+      request.abort();
+      expect((fetchStub.firstCall.args[1].signal as AbortSignal).aborted).to.be.true;
+    });
+
+    it('via signal option', (): void => {
+      const abortController = new AbortController();
+      const request = new AjaxRequest('https://example.com');
+      request.get({ signal: abortController.signal });
+      abortController.abort();
+      expect(abortController.signal.aborted).to.be.true;
+      expect((fetchStub.firstCall.args[1].signal as AbortSignal).aborted).to.be.true;
+    });
+  });
 });

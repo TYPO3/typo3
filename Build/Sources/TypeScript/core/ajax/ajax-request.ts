@@ -182,7 +182,9 @@ class AjaxRequest {
    * @return {RequestInit}
    */
   private getMergedOptions(init: RequestInit): RequestInit {
-    return { ...AjaxRequest.defaultOptions, ...init, signal: this.abortController.signal };
+    const { signal, ...initOptions } = init;
+    signal?.addEventListener('abort', () => this.abortController.abort());
+    return { ...AjaxRequest.defaultOptions, ...initOptions, signal: this.abortController.signal };
   }
 }
 
