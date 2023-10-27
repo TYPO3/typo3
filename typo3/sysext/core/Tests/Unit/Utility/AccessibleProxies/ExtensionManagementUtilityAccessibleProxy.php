@@ -47,11 +47,6 @@ class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtili
         parent::loadSingleExtLocalconfFiles();
     }
 
-    public static function getBaseTcaCacheIdentifier(): string
-    {
-        return parent::getBaseTcaCacheIdentifier();
-    }
-
     public static function resetExtTablesWasReadFromCacheOnceBoolean(): void
     {
         self::$extTablesWasReadFromCacheOnce = false;
@@ -71,15 +66,6 @@ class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtili
     {
         return parent::getExtTablesCacheIdentifier();
     }
-
-    public static function buildBaseTcaFromSingleFiles(): void
-    {
-        $GLOBALS['TCA'] = [];
-    }
-
-    public static function dispatchBaseTcaIsBeingBuiltEvent(array $tca): void {}
-
-    public static function dispatchTcaIsBeingBuiltEvent(array $tca): void {}
 
     public static function removeDuplicatesForInsertion($insertionList, $list = ''): string
     {

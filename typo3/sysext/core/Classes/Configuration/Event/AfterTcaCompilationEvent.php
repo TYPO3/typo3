@@ -18,10 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration\Event;
 
 /**
- * Event after $GLOBALS['TCA'] is built to allow to further manipulate $tca.
- *
- * Side note: It is possible to check against the original TCA as this is stored within $GLOBALS['TCA']
- * before this event is fired.
+ * Event after $tca which later becomes $GLOBALS['TCA'] has been built.
+ * Allows to further manipulate $tca before it is cached and set as $GLOBALS['TCA'].
  */
 final class AfterTcaCompilationEvent
 {

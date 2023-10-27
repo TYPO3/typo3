@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
@@ -92,7 +93,8 @@ class InstallUtility implements LoggerAwareInterface
         // Reload cache files and Typo3LoadedExtensions
         $this->opcodeCacheService->clearAllActive();
         ExtensionManagementUtility::loadExtLocalconf(false);
-        Bootstrap::loadBaseTca(false);
+        $tcaFactory = $container->get(TcaFactory::class);
+        $GLOBALS['TCA'] = $tcaFactory->create();
         Bootstrap::loadExtTables(false);
         $this->updateDatabase();
         foreach ($extensionKeys as $extensionKey) {

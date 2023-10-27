@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Core\Environment;
@@ -1265,111 +1264,6 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $prefix = 'ext_localconf_';
         $identifier = ExtensionManagementUtilityAccessibleProxy::getExtLocalconfCacheIdentifier();
-        self::assertStringStartsWith($prefix, $identifier);
-        $sha1 = str_replace($prefix, '', $identifier);
-        self::assertEquals(40, strlen($sha1));
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning loadBaseTca
-    /////////////////////////////////////////
-
-    /**
-     * @test
-     */
-    public function loadBaseTcaDoesNotReadFromCacheIfCachingIsDenied(): void
-    {
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->expects(self::never())->method('getCache');
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        ExtensionManagementUtilityAccessibleProxy::loadBaseTca(false);
-    }
-
-    /**
-     * @test
-     */
-    public function loadBaseTcaRequiresCacheFileIfExistsAndCachingIsAllowed(): void
-    {
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockCache->expects(self::once())->method('require')->willReturn(['tca' => []]);
-        ExtensionManagementUtilityAccessibleProxy::loadBaseTca(true, $mockCache);
-    }
-
-    /**
-     * @test
-     */
-    public function loadBaseTcaCreatesCacheFileWithContentOfAnExtensionsConfigurationTcaPhpFile(): void
-    {
-        $extensionName = StringUtility::getUniqueId('test_baseTca_');
-        $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
-        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
-        $packagePath = $packageManager->getPackage($extensionName)->getPackagePath();
-        GeneralUtility::mkdir($packagePath);
-        GeneralUtility::mkdir($packagePath . 'Configuration/');
-        GeneralUtility::mkdir($packagePath . 'Configuration/TCA/');
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        $uniqueTableName = StringUtility::getUniqueId('table_name_');
-        $uniqueStringInTableConfiguration = StringUtility::getUniqueId('table_configuration_');
-        $tableConfiguration = '<?php return array(\'foo\' => \'' . $uniqueStringInTableConfiguration . '\'); ?>';
-        file_put_contents($packagePath . 'Configuration/TCA/' . $uniqueTableName . '.php', $tableConfiguration);
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->method('getCache')->willReturn($mockCache);
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects(self::once())->method('require')->willReturn(false);
-        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInTableConfiguration), self::anything());
-
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcherMock->expects(self::atLeastOnce())->method('dispatch')->with(self::anything())->willReturnArgument(0);
-        ExtensionManagementUtility::setEventDispatcher($eventDispatcherMock);
-
-        ExtensionManagementUtility::loadBaseTca(true);
-    }
-
-    /**
-     * @test
-     */
-    public function loadBaseTcaWritesCacheEntryWithNoTags(): void
-    {
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->method('getCache')->willReturn($mockCache);
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects(self::once())->method('require')->willReturn(false);
-        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
-        ExtensionManagementUtilityAccessibleProxy::loadBaseTca();
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning getBaseTcaCacheIdentifier
-    /////////////////////////////////////////
-
-    /**
-     * @test
-     */
-    public function getBaseTcaCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix(): void
-    {
-        $prefix = 'tca_base_';
-        $identifier = ExtensionManagementUtilityAccessibleProxy::getBaseTcaCacheIdentifier();
         self::assertStringStartsWith($prefix, $identifier);
         $sha1 = str_replace($prefix, '', $identifier);
         self::assertEquals(40, strlen($sha1));

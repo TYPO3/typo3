@@ -867,7 +867,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:require\\(\\)\\.$#"
-			count: 3
+			count: 2
 			path: ../../typo3/sysext/core/Classes/Utility/ExtensionManagementUtility.php
 
 		-

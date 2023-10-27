@@ -49,6 +49,10 @@ base TCA. This is especially useful for "TCA generator" extensions, which add
 TCA based on another resource, while still enabling users to override TCA via
 the known TCA overrides API.
 
+Note :php:`$GLOBALS['TCA']` is *not* set at this point. Event listeners can
+only work on the TCA coming from :php:`$event->getTca()` and must not access
+:php:`$GLOBALS['TCA']`.
+
 .. note::
 
     Please note that TCA is always "runtime cached". This means that dynamic

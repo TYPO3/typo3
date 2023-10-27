@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -94,6 +95,7 @@ class Bootstrap
         static::initializeErrorHandling();
 
         $disableCaching = $failsafe ? true : false;
+        /** @var PhpFrontend $coreCache */
         $coreCache = static::createCache('core', $disableCaching);
         $packageCache = static::createPackageCache($coreCache);
         $packageManager = static::createPackageManager(
@@ -145,10 +147,11 @@ class Bootstrap
         }
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
+        $tcaFactory = $container->get(TcaFactory::class);
         ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
         static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
         static::unsetReservedGlobalVariables();
-        static::loadBaseTca(true, $coreCache);
+        $GLOBALS['TCA'] = $tcaFactory->get();
         static::checkEncryptionKey();
         $bootState->complete = true;
         $eventDispatcher->dispatch(new BootCompletedEvent($disableCaching));
@@ -478,23 +481,6 @@ class Bootstrap
     {
         unset($GLOBALS['TCA']);
         unset($GLOBALS['BE_USER']);
-    }
-
-    /**
-     * Load $TCA
-     *
-     * This will mainly set up $TCA through extMgm API.
-     *
-     * @param bool $allowCaching True, if loading TCA from cache is allowed
-     * @param FrontendInterface $coreCache
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public static function loadBaseTca(bool $allowCaching = true, FrontendInterface $coreCache = null)
-    {
-        if ($allowCaching) {
-            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
-        }
-        ExtensionManagementUtility::loadBaseTca($allowCaching, $coreCache);
     }
 
     /**

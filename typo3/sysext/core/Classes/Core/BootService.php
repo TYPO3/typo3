@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -112,7 +113,7 @@ class BootService
      * @param bool $resetContainer
      * @param bool $allowCaching
      */
-    public function loadExtLocalconfDatabaseAndExtTables(bool $resetContainer = false, bool $allowCaching = true): ContainerInterface
+    public function loadExtLocalconfDatabaseAndExtTables(bool $resetContainer = false, bool $allowCaching = true, bool $loadExtTables = true): ContainerInterface
     {
         $container = $this->getContainer($allowCaching);
 
@@ -121,14 +122,22 @@ class BootService
 
         $container->get('boot.state')->complete = false;
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
+        $cacheCore = $container->get('cache.core');
+        $tcaFactory = $container->get(TcaFactory::class);
         ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
-        Bootstrap::loadTypo3LoadedExtAndExtLocalconf($allowCaching, $container->get('cache.core'));
+        Bootstrap::loadTypo3LoadedExtAndExtLocalconf($allowCaching, $cacheCore);
         Bootstrap::unsetReservedGlobalVariables();
         $GLOBALS['BE_USER'] = $beUserBackup;
-        Bootstrap::loadBaseTca($allowCaching, $container->get('cache.core'));
+        if ($allowCaching) {
+            $GLOBALS['TCA'] = $tcaFactory->get();
+        } else {
+            $GLOBALS['TCA'] = $tcaFactory->create();
+        }
         $container->get('boot.state')->complete = true;
         $eventDispatcher->dispatch(new BootCompletedEvent($allowCaching));
-        Bootstrap::loadExtTables($allowCaching, $container->get('cache.core'));
+        if ($loadExtTables) {
+            Bootstrap::loadExtTables($allowCaching, $cacheCore);
+        }
 
         if ($resetContainer) {
             $this->makeCurrent(null, $backup);

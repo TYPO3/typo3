@@ -170,10 +170,10 @@ services:
     arguments:
       $runtimeCache: '@cache.runtime'
 
-  TYPO3\CMS\Core\Core\Event\WarmupBaseTcaCache:
+  TYPO3\CMS\Core\Configuration\Tca\TcaFactory:
     public: true
     arguments:
-      $coreCache: '@cache.core'
+      $codeCache: '@cache.core'
 
   TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider:
     public: true

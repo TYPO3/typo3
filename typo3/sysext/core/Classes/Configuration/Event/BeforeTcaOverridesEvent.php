@@ -18,10 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration\Event;
 
 /**
- * Event before $GLOBALS['TCA'] is overridden by TCA/Overrides to allow to manipulate $tca, before overrides are merged.
- *
- * Side note: It is possible to check against the original TCA as this is stored within $GLOBALS['TCA']
- * before this event is fired.
+ * Event before $tca which later becomes $GLOBALS['TCA'] is overridden by TCA/Overrides.
+ * Allows to manipulate $tca, before overrides are merged.
  */
 final class BeforeTcaOverridesEvent
 {

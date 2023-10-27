@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Install\Service;
 
+use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -24,15 +25,9 @@ use TYPO3\CMS\Core\Package\PackageManager;
  */
 class LoadTcaService
 {
-    /**
-     * @var LateBootService
-     */
-    private $lateBootService;
-
-    public function __construct(LateBootService $lateBootService)
-    {
-        $this->lateBootService = $lateBootService;
-    }
+    public function __construct(
+        private readonly LateBootService $lateBootService
+    ) {}
 
     /**
      * Load TCA
@@ -40,57 +35,13 @@ class LoadTcaService
      * To be used in install tool only.
      *
      * This will set up $GLOBALS['TCA']
-     *
-     * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::buildBaseTcaFromSingleFiles
      */
-    public function loadExtensionTablesWithoutMigration()
+    public function loadExtensionTablesWithoutMigration(): void
     {
         $container = $this->lateBootService->getContainer();
         $backup = $this->lateBootService->makeCurrent($container);
-
-        $GLOBALS['TCA'] = [];
-
-        $activePackages = $container->get(PackageManager::class)->getActivePackages();
-
-        // First load "full table" files from Configuration/TCA
-        foreach ($activePackages as $package) {
-            $tcaConfigurationDirectory = $package->getPackagePath() . 'Configuration/TCA';
-            if (is_dir($tcaConfigurationDirectory)) {
-                $files = scandir($tcaConfigurationDirectory);
-                foreach ($files as $file) {
-                    if (is_file($tcaConfigurationDirectory . '/' . $file)
-                        && ($file !== '.')
-                        && ($file !== '..')
-                        && (substr($file, -4, 4) === '.php')
-                    ) {
-                        $tcaOfTable = require $tcaConfigurationDirectory . '/' . $file;
-                        if (is_array($tcaOfTable)) {
-                            // TCA table name is filename without .php suffix, eg 'sys_notes', not 'sys_notes.php'
-                            $tcaTableName = substr($file, 0, -4);
-                            $GLOBALS['TCA'][$tcaTableName] = $tcaOfTable;
-                        }
-                    }
-                }
-            }
-        }
-
-        // Execute override files from Configuration/TCA/Overrides
-        foreach ($activePackages as $package) {
-            $tcaOverridesPathForPackage = $package->getPackagePath() . 'Configuration/TCA/Overrides';
-            if (is_dir($tcaOverridesPathForPackage)) {
-                $files = scandir($tcaOverridesPathForPackage);
-                foreach ($files as $file) {
-                    if (is_file($tcaOverridesPathForPackage . '/' . $file)
-                        && ($file !== '.')
-                        && ($file !== '..')
-                        && (substr($file, -4, 4) === '.php')
-                    ) {
-                        require $tcaOverridesPathForPackage . '/' . $file;
-                    }
-                }
-            }
-        }
-
+        $tcaFactory = $container->get(TcaFactory::class);
+        $GLOBALS['TCA'] = $tcaFactory->createNotMigrated();
         $this->lateBootService->makeCurrent(null, $backup);
     }
 
@@ -107,11 +58,8 @@ class LoadTcaService
         $packageManager = $container->get(PackageManager::class);
         try {
             $package = $packageManager->getPackage($extensionKey);
-        } catch (UnknownPackageException $e) {
-            throw new \RuntimeException(
-                'Extension ' . $extensionKey . ' is not active',
-                1477217619
-            );
+        } catch (UnknownPackageException) {
+            throw new \RuntimeException('Extension ' . $extensionKey . ' is not active', 1477217619);
         }
 
         $extTablesPath = $package->getPackagePath() . 'ext_tables.php';

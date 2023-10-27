@@ -25,11 +25,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
+use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\BootService;
-use TYPO3\CMS\Core\Core\Event\WarmupBaseTcaCache;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
-use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -72,22 +70,20 @@ class CacheWarmupCommand extends Command
 
         $container = $this->bootService->getContainer();
 
+        $coreCache = $container->get('cache.core');
         $allowExtFileCaches = true;
         if ($group === 'system' || $group === 'all') {
-            $coreCache = $container->get('cache.core');
+            $allowExtFileCaches = false;
             ExtensionManagementUtility::createExtLocalconfCacheEntry($coreCache);
             ExtensionManagementUtility::createExtTablesCacheEntry($coreCache);
-
-            // Load TCA uncached…
-            $allowExtFileCaches = false;
-            // …but store the fresh base TCA to cache
-            $listenerProvider = $container->get(ListenerProvider::class);
-            $listenerProvider->addListener(AfterTcaCompilationEvent::class, WarmupBaseTcaCache::class, 'storeBaseTcaCache');
         }
-
-        // Perform a full boot to load localconf as requirement extensions and for TCA loading.
-        // TCA will be cached during dispatch of AfterTcaCompilationEvent.
-        $this->bootService->loadExtLocalconfDatabaseAndExtTables(false, $allowExtFileCaches);
+        // Perform a full boot to load localconf (requirement for extensions and for TCA loading).
+        $this->bootService->loadExtLocalconfDatabaseAndExtTables(false, $allowExtFileCaches, false);
+        if ($group === 'system' || $group === 'all') {
+            $tcaFactory = $container->get(TcaFactory::class);
+            $tcaFactory->createBaseTcaCacheFile($GLOBALS['TCA']);
+        }
+        ExtensionManagementUtility::loadExtTables($allowExtFileCaches, $coreCache);
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
 
