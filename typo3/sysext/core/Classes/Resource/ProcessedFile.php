@@ -436,6 +436,32 @@ class ProcessedFile extends AbstractFile
     }
 
     /**
+     * Get the MIME type of this file
+     *
+     * @throws \RuntimeException
+     * @return non-empty-string mime type
+     */
+    public function getMimeType(): string
+    {
+        if ($this->usesOriginalFile()) {
+            return $this->getOriginalFile()->getMimeType();
+        }
+        return parent::getMimeType();
+    }
+
+    /**
+     * @throws \RuntimeException
+     * @return int<0, max>
+     */
+    public function getSize(): int
+    {
+        if ($this->usesOriginalFile()) {
+            return $this->getOriginalFile()->getSize();
+        }
+        return parent::getSize();
+    }
+
+    /**
      * Returns the uid of this file
      */
     public function getUid(): int
