@@ -23,13 +23,13 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent;
+use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
+use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
-use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Preparations\TcaPreparation;
 
 /**
  * Extension Management functions

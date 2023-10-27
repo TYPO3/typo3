@@ -26,8 +26,8 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldE
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
-use TYPO3\CMS\Core\Migrations\TcaMigration;
-use TYPO3\CMS\Core\Preparations\TcaPreparation;
+use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
+use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

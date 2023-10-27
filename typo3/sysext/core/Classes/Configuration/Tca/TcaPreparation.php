@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Preparations;
+namespace TYPO3\CMS\Core\Configuration\Tca;
 
 use TYPO3\CMS\Core\Utility\StringUtility;
 

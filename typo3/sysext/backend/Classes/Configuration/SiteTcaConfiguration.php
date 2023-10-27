@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Configuration;
 
 use Symfony\Component\Finder\Finder;
-use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

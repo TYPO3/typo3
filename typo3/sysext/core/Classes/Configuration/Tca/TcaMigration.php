@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Migrations;
+namespace TYPO3\CMS\Core\Configuration\Tca;
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;

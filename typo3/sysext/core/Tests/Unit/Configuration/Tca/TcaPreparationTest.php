@@ -15,9 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Preparations;
+namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Tca;
 
-use TYPO3\CMS\Core\Preparations\TcaPreparation;
+use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaPreparationTest extends UnitTestCase

@@ -302,7 +302,7 @@ final class ActionTest extends AbstractActionTestCase
     /**
      * @test
      * See DataSet/localizeContentWithEmptyTcaIntegrityColumns.csv
-     * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
+     * @see \TYPO3\CMS\Core\Configuration\Tca\TcaMigration::sanitizeControlSectionIntegrity()
      */
     public function localizeContentWithEmptyTcaIntegrityColumns(): void
     {
