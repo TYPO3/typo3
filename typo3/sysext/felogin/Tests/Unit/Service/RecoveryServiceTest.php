@@ -79,6 +79,7 @@ final class RecoveryServiceTest extends UnitTestCase
 
         $expectedViewVariables = [
             'receiverName' => $receiver->getName(),
+            'userData'     => $userData,
             'url'          => 'some uri',
             'validUntil'   => date($settings['dateFormat'], $recoveryConfiguration['lifeTimeTimestamp']),
         ];

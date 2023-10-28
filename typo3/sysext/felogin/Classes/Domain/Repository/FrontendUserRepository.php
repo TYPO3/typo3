@@ -105,8 +105,8 @@ class FrontendUserRepository
     }
 
     /**
-     * Fetches array containing uid, username, email, first_name, middle_name & last_name by email or username.
-     * Returns null, if user was not found or if user has no email address set.
+     * Fetches an array with all columns (except the password) from the fe_users table for the given username or
+     * email on the given pages. Returns null, if user was not found or if user has no email address set.
      */
     public function findUserByUsernameOrEmailOnPages(string $usernameOrEmail, array $pages = []): ?array
     {
@@ -116,7 +116,7 @@ class FrontendUserRepository
 
         $queryBuilder = $this->connection->createQueryBuilder();
         $query = $queryBuilder
-            ->select('uid', 'username', 'email', 'first_name', 'middle_name', 'last_name')
+            ->select('*')
             ->from($this->getTable())
             ->where(
                 $queryBuilder->expr()->or(
@@ -131,7 +131,12 @@ class FrontendUserRepository
             $query->andWhere($queryBuilder->expr()->in('pid', $pages));
         }
 
-        return $query->executeQuery()->fetchAssociative() ?: null;
+        $result = $query->executeQuery()->fetchAssociative() ?: null;
+        if ($result) {
+            unset($result['password']);
+        }
+
+        return $result;
     }
 
     public function findOneByForgotPasswordHash(string $hash): ?array

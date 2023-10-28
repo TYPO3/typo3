@@ -56,7 +56,7 @@ class RecoveryService
     public function sendRecoveryEmail(RequestInterface $request, array $userData, string $hash): void
     {
         $receiver = new Address($userData['email'], $this->getReceiverName($userData));
-        $email = $this->prepareMail($request, $receiver, $hash);
+        $email = $this->prepareMail($request, $receiver, $hash, $userData);
 
         $event = new SendRecoveryEmailEvent($email, $userData);
         $this->eventDispatcher->dispatch($event);
@@ -83,7 +83,7 @@ class RecoveryService
     /**
      * Create email object from configuration.
      */
-    protected function prepareMail(RequestInterface $request, Address $receiver, string $hash): FluidEmail
+    protected function prepareMail(RequestInterface $request, Address $receiver, string $hash, array $userData): FluidEmail
     {
         $url = $this->uriBuilder
             ->reset()
@@ -99,6 +99,7 @@ class RecoveryService
 
         $variables = [
             'receiverName' => $receiver->getName(),
+            'userData' => $userData,
             'url' => $url,
             'validUntil' => date($this->settings['dateFormat'], $this->recoveryConfiguration->getLifeTimeTimestamp()),
         ];
