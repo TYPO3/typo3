@@ -150,8 +150,7 @@ class FrontendUserRepository
                     $queryBuilder->createNamedParameter($hash)
                 )
             )
-            ->setMaxResults(1)
-        ;
+            ->setMaxResults(1);
 
         $row = $query->executeQuery()->fetchAssociative();
         return is_array($row) ? $row : null;
