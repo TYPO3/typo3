@@ -22,22 +22,13 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 final class QueryResultPaginator extends AbstractPaginator
 {
-    /**
-     * @var QueryResultInterface
-     */
-    private $queryResult;
-
-    /**
-     * @var QueryResultInterface
-     */
-    private $paginatedQueryResult;
+    private QueryResultInterface $paginatedQueryResult;
 
     public function __construct(
-        QueryResultInterface $queryResult,
+        private readonly QueryResultInterface $queryResult,
         int $currentPageNumber = 1,
         int $itemsPerPage = 10
     ) {
-        $this->queryResult = $queryResult;
         $this->setCurrentPageNumber($currentPageNumber);
         $this->setItemsPerPage($itemsPerPage);
 
