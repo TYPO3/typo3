@@ -31,23 +31,10 @@ class ClearCacheService
         'cache_treelist',
     ];
 
-    /**
-     * @var LateBootService
-     */
-    private $lateBootService;
-
-    /**
-     * @var FrontendInterface
-     */
-    private $dependencyInjectionCache;
-
     public function __construct(
-        LateBootService $lateBootService,
-        FrontendInterface $dependencyInjectionCache
-    ) {
-        $this->lateBootService = $lateBootService;
-        $this->dependencyInjectionCache = $dependencyInjectionCache;
-    }
+        private readonly LateBootService $lateBootService,
+        private readonly FrontendInterface $dependencyInjectionCache
+    ) {}
 
     /**
      * This clear cache implementation follows a pretty brutal approach.

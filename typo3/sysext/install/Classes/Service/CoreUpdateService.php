@@ -41,11 +41,6 @@ use TYPO3\CMS\Install\WebserverType;
 class CoreUpdateService
 {
     /**
-     * @var CoreVersionService
-     */
-    protected $coreVersionService;
-
-    /**
      * @var FlashMessageQueue
      */
     protected $messages;
@@ -71,9 +66,8 @@ class CoreUpdateService
      */
     protected $downloadBaseUri;
 
-    public function __construct(CoreVersionService $coreVersionService)
+    public function __construct(protected readonly CoreVersionService $coreVersionService)
     {
-        $this->coreVersionService = $coreVersionService;
         $this->setDownloadTargetPath(Environment::getVarPath() . '/transient/');
         $this->symlinkToCoreFiles = $this->discoverCurrentCoreSymlink();
         $this->downloadBaseUri = 'https://get.typo3.org';

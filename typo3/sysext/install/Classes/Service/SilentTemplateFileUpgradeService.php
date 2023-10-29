@@ -33,12 +33,7 @@ use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
  */
 class SilentTemplateFileUpgradeService
 {
-    protected WebServerConfigurationFileService $webServerConfigurationFileService;
-
-    public function __construct(WebServerConfigurationFileService $webServerConfigurationFileService)
-    {
-        $this->webServerConfigurationFileService = $webServerConfigurationFileService;
-    }
+    public function __construct(protected readonly WebServerConfigurationFileService $webServerConfigurationFileService) {}
 
     /**
      * Executed content changes. Single upgrade methods must throw a

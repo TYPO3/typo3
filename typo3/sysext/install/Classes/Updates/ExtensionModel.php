@@ -24,44 +24,13 @@ namespace TYPO3\CMS\Install\Updates;
  */
 class ExtensionModel
 {
-    /**
-     * @var string
-     */
-    protected $key = '';
-
-    /**
-     * @var string
-     */
-    protected $title = '';
-
-    /**
-     * @var string
-     */
-    protected $versionString = '';
-
-    /**
-     * @var string
-     */
-    protected $composerName = '';
-
-    /**
-     * @var string
-     */
-    protected $description = '';
-
     public function __construct(
-        string $key,
-        string $title,
-        string $versionString,
-        string $composerName,
-        string $description
-    ) {
-        $this->key = $key;
-        $this->title = $title;
-        $this->versionString = $versionString;
-        $this->composerName = $composerName;
-        $this->description = $description;
-    }
+        protected readonly string $key,
+        protected readonly string $title,
+        protected readonly string $versionString,
+        protected readonly string $composerName,
+        protected readonly string $description
+    ) {}
 
     public function getDescription(): string
     {

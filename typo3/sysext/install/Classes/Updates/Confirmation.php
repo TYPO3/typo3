@@ -19,51 +19,14 @@ namespace TYPO3\CMS\Install\Updates;
 
 class Confirmation
 {
-    /**
-     * @var bool
-     */
-    protected $defaultValue = false;
-
-    /**
-     * @var string
-     */
-    protected $title = '';
-
-    /**
-     * @var string
-     */
-    protected $message = '';
-
-    /**
-     * @var string
-     */
-    protected $confirm;
-
-    /**
-     * @var string
-     */
-    protected $deny;
-
-    /**
-     * @var bool
-     */
-    protected $required;
-
     public function __construct(
-        string $title,
-        string $message,
-        bool $defaultValue = false,
-        string $confirm = 'Yes, execute',
-        string $deny = 'No, do not execute',
-        bool $required = false
-    ) {
-        $this->title = $title;
-        $this->message = $message;
-        $this->defaultValue = $defaultValue;
-        $this->confirm = $confirm;
-        $this->deny = $deny;
-        $this->required = $required;
-    }
+        protected readonly string $title,
+        protected readonly string $message,
+        protected readonly bool $defaultValue = false,
+        protected readonly string $confirm = 'Yes, execute',
+        protected readonly string $deny = 'No, do not execute',
+        protected readonly bool $required = false
+    ) {}
 
     public function getConfirm(): string
     {

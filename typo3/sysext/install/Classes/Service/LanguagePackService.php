@@ -52,33 +52,15 @@ class LanguagePackService
      */
     protected $registry;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var RequestFactory
-     */
-    protected $requestFactory;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
     private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        RequestFactory $requestFactory,
-        LoggerInterface $logger
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly RequestFactory $requestFactory,
+        protected readonly LoggerInterface $logger
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->locales = GeneralUtility::makeInstance(Locales::class);
         $this->registry = GeneralUtility::makeInstance(Registry::class);
-        $this->requestFactory = $requestFactory;
-        $this->logger = $logger;
     }
 
     /**

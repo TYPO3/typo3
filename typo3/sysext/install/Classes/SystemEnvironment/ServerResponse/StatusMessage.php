@@ -23,18 +23,12 @@ namespace TYPO3\CMS\Install\SystemEnvironment\ServerResponse;
 class StatusMessage
 {
     /**
-     * @var string
-     */
-    protected $message;
-
-    /**
      * @var string[]
      */
     protected $values;
 
-    public function __construct(string $message, string ...$values)
+    public function __construct(protected readonly string $message, string ...$values)
     {
-        $this->message = $message;
         $this->values = $values;
     }
 

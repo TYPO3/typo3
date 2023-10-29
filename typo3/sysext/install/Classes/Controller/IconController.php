@@ -30,21 +30,10 @@ use TYPO3\CMS\Core\Imaging\IconState;
  */
 class IconController extends AbstractController
 {
-    /**
-     * @var IconRegistry
-     */
-    protected $iconRegistry;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    public function __construct(IconRegistry $iconRegistry, IconFactory $iconFactory)
-    {
-        $this->iconRegistry = $iconRegistry;
-        $this->iconFactory = $iconFactory;
-    }
+    public function __construct(
+        protected readonly IconRegistry $iconRegistry,
+        protected readonly IconFactory $iconFactory
+    ) {}
 
     /**
      * @internal
