@@ -309,6 +309,7 @@
 			"TYPO3Tests\\TestValidators\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_validators/Classes/",
 			"TYPO3Tests\\TestDatahandler\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler/Classes/",
 			"TYPO3Tests\\TestDataMapper\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_data_mapper/Classes/",
+			"TYPO3Tests\\TestDi\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_di/Classes/",
 			"TYPO3Tests\\TestFluidTemplate\\": "typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Classes/",
 			"TYPO3Tests\\TestIrreForeignfield\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/",
 			"TYPO3Tests\\TestLogger\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger/Classes/",

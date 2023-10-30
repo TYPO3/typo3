@@ -43,11 +43,11 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
             $definition->addTag(
                 'console.command',
                 [
-                    'command' => $attribute->name,
+                    'command' => ltrim($attribute->name, '|'),
                     'description' => $attribute->description,
-                    // `schedulable` and `hidden` flags are not configurable via symfony attribute parameters, use sane defaults
+                    'hidden' => str_starts_with($attribute->name, '|'),
+                    // The `schedulable` flag is not configurable via symfony attribute parameters, use sane defaults
                     'schedulable' => true,
-                    'hidden' => false,
                 ]
             );
         }
