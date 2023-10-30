@@ -25,12 +25,14 @@ In addition, the GIFBUILDER option "reduceColors" has been removed, along with
 the option to additionally compress GIF files via ImageMagick or GDLib.
 
 The following PHP code has been removed:
-* :php:`TYPO3\CMS\Core\Imaging\GraphicalFunctions->dontCompress`
-* :php:`TYPO3\CMS\Core\Imaging\GraphicalFunctions->IMreduceColors()`
-* :php:`TYPO3\CMS\Core\Imaging\GraphicalFunctions::gifCompress()`
+
+* :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->dontCompress`
+* :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->IMreduceColors()`
+* :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions::gifCompress()`
 
 The following global settings have no effect anymore and are automatically removed
 if still in use:
+
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']` (removed)
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png']` (always active)
 
