@@ -35,7 +35,7 @@ final class CurrentObjectPathStack
     public function push(CurrentObjectPath $path): void
     {
         $this->stack[] = $path;
-        $this->stackSize ++;
+        $this->stackSize++;
     }
 
     public function pop(): CurrentObjectPath
@@ -47,7 +47,7 @@ final class CurrentObjectPathStack
             return $this->getCurrent();
         }
         array_pop($this->stack);
-        $this->stackSize --;
+        $this->stackSize--;
         return $this->getCurrent();
     }
 

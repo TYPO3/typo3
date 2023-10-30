@@ -179,7 +179,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
 
         foreach ($toSchema->getTables() as $table) {
             $tableName = $table->getShortestName($toSchema->getName());
-            if (! $fromSchema->hasTable($tableName)) {
+            if (!$fromSchema->hasTable($tableName)) {
                 $diff->newTables[$tableName] = $toSchema->getTable($tableName);
             } else {
                 $tableDifferences = $comparator->diffTable(
@@ -198,14 +198,14 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
             $tableName = $table->getShortestName($fromSchema->getName());
 
             $table = $fromSchema->getTable($tableName);
-            if (! $toSchema->hasTable($tableName)) {
+            if (!$toSchema->hasTable($tableName)) {
                 $diff->removedTables[$tableName] = $table;
             }
 
             // also remember all foreign keys that point to a specific table
             foreach ($table->getForeignKeys() as $foreignKey) {
                 $foreignTable = strtolower($foreignKey->getForeignTableName());
-                if (! isset($foreignKeysToTable[$foreignTable])) {
+                if (!isset($foreignKeysToTable[$foreignTable])) {
                     $foreignKeysToTable[$foreignTable] = [];
                 }
 
@@ -214,7 +214,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
         }
 
         foreach ($diff->removedTables as $tableName => $table) {
-            if (! isset($foreignKeysToTable[$tableName])) {
+            if (!isset($foreignKeysToTable[$tableName])) {
                 continue;
             }
 
@@ -225,7 +225,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
             foreach ($foreignKeysToTable[$tableName] as $foreignKey) {
                 // strtolower the table name to make if compatible with getShortestName
                 $localTableName = strtolower($foreignKey->getLocalTableName());
-                if (! isset($diff->changedTables[$localTableName])) {
+                if (!isset($diff->changedTables[$localTableName])) {
                     continue;
                 }
 
@@ -244,8 +244,8 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
 
         foreach ($toSchema->getSequences() as $sequence) {
             $sequenceName = $sequence->getShortestName($toSchema->getName());
-            if (! $fromSchema->hasSequence($sequenceName)) {
-                if (! $comparator->isAutoIncrementSequenceInSchema($fromSchema, $sequence)) {
+            if (!$fromSchema->hasSequence($sequenceName)) {
+                if (!$comparator->isAutoIncrementSequenceInSchema($fromSchema, $sequence)) {
                     $diff->newSequences[] = $sequence;
                 }
             } else {

@@ -324,7 +324,7 @@ final class LosslessTokenizer implements TokenizerInterface
     private function createBlockStopLine(): void
     {
         $this->tokenStream->append(new Token(TokenType::T_BLOCK_STOP, $this->currentLineString, $this->currentLineNumber, $this->currentColumnInLine));
-        $this->currentColumnInLine ++;
+        $this->currentColumnInLine++;
         $this->currentLineString = substr($this->currentLineString, 1);
         $this->makeComment();
         $this->lineStream->append((new BlockCloseLine())->setTokenStream($this->tokenStream));
@@ -333,7 +333,7 @@ final class LosslessTokenizer implements TokenizerInterface
     private function parseBlockStart(): void
     {
         $this->tokenStream->append(new Token(TokenType::T_BLOCK_START, '{', $this->currentLineNumber, $this->currentColumnInLine));
-        $this->currentColumnInLine ++;
+        $this->currentColumnInLine++;
         $this->currentLineString = substr($this->currentLineString, 1);
         $this->parseTabsAndWhitespaces();
         if (str_starts_with($this->currentLineString, '}')) {
@@ -531,7 +531,7 @@ final class LosslessTokenizer implements TokenizerInterface
     private function parseOperatorAssignment(): void
     {
         $this->tokenStream->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', $this->currentLineNumber, $this->currentColumnInLine));
-        $this->currentColumnInLine ++;
+        $this->currentColumnInLine++;
         $this->currentLineString = substr($this->currentLineString, 1);
         $this->parseTabsAndWhitespaces();
         $this->valueStream = new TokenStream();
@@ -544,7 +544,7 @@ final class LosslessTokenizer implements TokenizerInterface
     {
         $this->valueStream = new TokenStream();
         $this->tokenStream->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT_MULTILINE_START, '(', $this->currentLineNumber, $this->currentColumnInLine));
-        $this->currentColumnInLine ++;
+        $this->currentColumnInLine++;
         $this->currentLineString = substr($this->currentLineString, 1);
         // True if we're currently in the line with the opening '('
         $isFirstLine = true;
@@ -627,7 +627,7 @@ final class LosslessTokenizer implements TokenizerInterface
     private function parseOperatorUnset(): void
     {
         $this->tokenStream->append(new Token(TokenType::T_OPERATOR_UNSET, '>', $this->currentLineNumber, $this->currentColumnInLine));
-        $this->currentColumnInLine ++;
+        $this->currentColumnInLine++;
         $this->currentLineString = substr($this->currentLineString, 1);
         $this->parseTabsAndWhitespaces();
         $this->makeComment();
@@ -637,7 +637,7 @@ final class LosslessTokenizer implements TokenizerInterface
     private function parseOperatorCopy(): void
     {
         $this->tokenStream->append(new Token(TokenType::T_OPERATOR_COPY, '<', $this->currentLineNumber, $this->currentColumnInLine));
-        $this->currentColumnInLine ++;
+        $this->currentColumnInLine++;
         $this->currentLineString = substr($this->currentLineString, 1);
         $this->parseTabsAndWhitespaces();
         $identifierStream = $this->identifierStream;

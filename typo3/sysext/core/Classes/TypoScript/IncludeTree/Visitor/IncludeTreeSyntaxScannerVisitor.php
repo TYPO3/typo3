@@ -97,10 +97,10 @@ final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterfa
                 ];
             }
             if ($line instanceof IdentifierBlockOpenLine) {
-                $braceCount ++;
+                $braceCount++;
             }
             if ($line instanceof BlockCloseLine) {
-                $braceCount --;
+                $braceCount--;
                 if ($braceCount < 0) {
                     $braceCount = 0;
                     $this->errors[] = [

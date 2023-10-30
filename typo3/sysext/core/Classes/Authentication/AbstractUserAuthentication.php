@@ -540,7 +540,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                         if ($ret < 100) {
                             $authenticated = true;
                         }
-                        // $ret is between 100 and 199 which means "I'm not responsible, ask others"
+                    // $ret is between 100 and 199 which means "I'm not responsible, ask others"
                     } else {
                         // $ret is < 0
                         $authenticated = false;
@@ -553,8 +553,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                     break;
                 }
             }
-            // mimic user authentication to mitigate observable timing discrepancies
-            // @link https://cwe.mitre.org/data/definitions/208.html
+        // mimic user authentication to mitigate observable timing discrepancies
+        // @link https://cwe.mitre.org/data/definitions/208.html
         } elseif ($activeLogin) {
             $subType = 'authUser' . $this->loginType;
             foreach ($this->getAuthServices($subType, $loginData, $authenticatedUserFromSession, $request) as $serviceObj) {

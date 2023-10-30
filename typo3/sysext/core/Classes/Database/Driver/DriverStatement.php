@@ -131,7 +131,7 @@ class DriverStatement implements StatementInterface
      */
     private function convertParamType(int $type): int
     {
-        if (! isset(self::PARAM_TYPE_MAP[$type])) {
+        if (!isset(self::PARAM_TYPE_MAP[$type])) {
             throw UnknownParameterType::new($type);
         }
 

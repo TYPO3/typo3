@@ -110,7 +110,7 @@ final class LineStream
      */
     public function getNext(): ?LineInterface
     {
-        $this->currentIndex ++;
+        $this->currentIndex++;
         return $this->lines[$this->currentIndex] ?? null;
     }
 

@@ -285,7 +285,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
                 $queryBuilder->expr()->eq('uid', $idParameter),
                 $queryBuilder->expr()->eq($this->languageParentFieldName, $idParameter)
             );
-            // otherwise - basically uid is not in pattern - restrict to languages and apply fallbacks
+        // otherwise - basically uid is not in pattern - restrict to languages and apply fallbacks
         } elseif ($languageAware) {
             $languageIds = $this->resolveAllRelevantLanguageIds();
             $constraints[] = $queryBuilder->expr()->in(

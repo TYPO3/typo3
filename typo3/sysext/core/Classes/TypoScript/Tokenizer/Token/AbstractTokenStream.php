@@ -91,7 +91,7 @@ abstract class AbstractTokenStream implements TokenStreamInterface
      */
     public function getNext(): ?TokenInterface
     {
-        $this->currentIndex ++;
+        $this->currentIndex++;
         return $this->tokens[$this->currentIndex] ?? null;
     }
 
