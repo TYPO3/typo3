@@ -25,7 +25,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 /**
  * Generate data for type=inline fields
  */
-class TypeInline1n extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeInline1n extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input

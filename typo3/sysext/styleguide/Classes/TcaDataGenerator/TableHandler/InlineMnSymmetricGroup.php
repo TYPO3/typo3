@@ -27,7 +27,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 /**
  * Generate data for table tx_styleguide_inline_mnsymmetricgroup
  */
-class InlineMnSymmetricGroup extends AbstractTableHandler implements TableHandlerInterface
+final class InlineMnSymmetricGroup extends AbstractTableHandler implements TableHandlerInterface
 {
     /**
      * @var string Table name to match

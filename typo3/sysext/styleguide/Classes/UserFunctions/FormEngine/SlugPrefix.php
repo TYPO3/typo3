@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
  */
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSlug;
 
-class SlugPrefix
+final class SlugPrefix
 {
     public function getPrefix(array $parameters, TcaSlug $reference): string
     {

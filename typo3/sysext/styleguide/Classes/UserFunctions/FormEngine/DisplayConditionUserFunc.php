@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function to compare two fields
  */
-class DisplayConditionUserFunc
+final class DisplayConditionUserFunc
 {
     /**
      * compare two fields

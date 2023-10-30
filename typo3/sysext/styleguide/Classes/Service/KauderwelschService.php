@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Styleguide\Service;
 /**
  * Get test strings
  */
-class KauderwelschService
+final class KauderwelschService
 {
     /**
      * Lorem ipsum test with fixed length.

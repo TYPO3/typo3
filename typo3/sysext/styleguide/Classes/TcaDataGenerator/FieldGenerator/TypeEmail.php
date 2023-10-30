@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=email fields
  */
-class TypeEmail extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeEmail extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=email

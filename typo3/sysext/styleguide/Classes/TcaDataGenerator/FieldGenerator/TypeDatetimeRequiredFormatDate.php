@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for mandatory type=datetime fields with format=date
  */
-class TypeDatetimeRequiredFormatDate extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeDatetimeRequiredFormatDate extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * General match if type=datetime, format=date and required=true

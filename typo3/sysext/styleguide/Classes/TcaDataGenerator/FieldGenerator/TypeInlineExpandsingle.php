@@ -27,7 +27,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  * Special implementation for inline_1 of tx_styleguide_inline_expandsingle creates
  * multiple child rows.
  */
-class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input

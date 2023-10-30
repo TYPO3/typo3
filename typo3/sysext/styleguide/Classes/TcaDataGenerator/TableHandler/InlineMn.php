@@ -27,7 +27,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 /**
  * Generate data for table tx_styleguide_inline_mn
  */
-class InlineMn extends AbstractTableHandler implements TableHandlerInterface
+final class InlineMn extends AbstractTableHandler implements TableHandlerInterface
 {
     /**
      * @var string Table name to match

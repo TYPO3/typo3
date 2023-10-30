@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class contains helper methods to locate uids or pids of specific records
  * in the system.
  */
-class RecordFinder
+final class RecordFinder
 {
     /**
      * Returns a uid list of existing styleguide demo top level pages.

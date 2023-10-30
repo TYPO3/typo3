@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function to sort ites
  */
-class SelectItemSorter
+final class SelectItemSorter
 {
     /**
      * Sort items by their reverse titles

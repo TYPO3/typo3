@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Manage a page tree with all test / demo styleguide data
  */
-class Generator extends AbstractGenerator
+final class Generator extends AbstractGenerator
 {
     /**
      * List of handlers to create full table data. There is a

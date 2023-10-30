@@ -23,7 +23,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  * Generate data for type=input fields
  * "lipsum 23" for some special children
  */
-class TypeInputDynamicTextWithRecordUid extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeInputDynamicTextWithRecordUid extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input

@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=password fields that should not be hashed.
  */
-class TypePasswordHashedFalse extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypePasswordHashedFalse extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * General match if type=password

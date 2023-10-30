@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=number fields with format=decimal
  */
-class TypeNumberFormatDecimal extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeNumberFormatDecimal extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * General match if type=number and format=decimal

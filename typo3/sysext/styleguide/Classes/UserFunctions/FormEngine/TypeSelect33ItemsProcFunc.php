@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function used in select_33
  */
-class TypeSelect33ItemsProcFunc
+final class TypeSelect33ItemsProcFunc
 {
     /**
      * Add two items to existing ones

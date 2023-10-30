@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=color fields
  */
-class TypeColor extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeColor extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * General match if type=color

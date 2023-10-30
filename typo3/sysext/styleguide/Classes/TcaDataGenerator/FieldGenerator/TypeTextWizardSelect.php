@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=text fields
  */
-class TypeTextWizardSelect extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeTextWizardSelect extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=text

@@ -24,7 +24,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 /**
  * Generate data for type=group fields
  */
-class TypeGroupAllowedPages extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeGroupAllowedPages extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array Match if type=group and allowed=pages

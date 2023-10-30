@@ -23,7 +23,7 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 /**
  * Implement some standard stuff
  */
-class AbstractFieldGenerator
+abstract class AbstractFieldGenerator
 {
     /**
      * @var KauderwelschService

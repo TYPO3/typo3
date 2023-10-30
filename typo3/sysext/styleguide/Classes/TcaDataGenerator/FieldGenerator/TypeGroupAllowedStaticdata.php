@@ -24,7 +24,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 /**
  * Generate data for type=group fields
  */
-class TypeGroupAllowedStaticdata extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeGroupAllowedStaticdata extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=group

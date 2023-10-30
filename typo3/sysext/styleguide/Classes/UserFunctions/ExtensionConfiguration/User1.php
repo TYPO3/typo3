@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration;
 /**
  * User function 1
  */
-class User1
+final class User1
 {
     /**
      * Simple user function returning a var_dump of input parameters

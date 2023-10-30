@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function used in radio_5
  */
-class TypeRadio5ItemsProcFunc
+final class TypeRadio5ItemsProcFunc
 {
     /**
      * Add two items to existing ones

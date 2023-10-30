@@ -24,7 +24,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for hashed type=password fields
  */
-class TypePassword extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypePassword extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * General match if type=password

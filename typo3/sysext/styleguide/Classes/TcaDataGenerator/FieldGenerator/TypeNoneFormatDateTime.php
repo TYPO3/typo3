@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=none fields with format='datetime'
  */
-class TypeNoneFormatDateTime extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeNoneFormatDateTime extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input

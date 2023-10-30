@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function rendering a type=user TCA type used in palette_1_1
  */
-class TypeUserPalette
+final class TypeUserPalette
 {
     /**
      * @param array $parameters

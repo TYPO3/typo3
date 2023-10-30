@@ -27,7 +27,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 /**
  * General table handler
  */
-class General extends AbstractTableHandler implements TableHandlerInterface
+final class General extends AbstractTableHandler implements TableHandlerInterface
 {
     /**
      * Match always

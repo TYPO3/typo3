@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function used in checkbox_8
  */
-class TypeCheckbox8ItemsProcFunc
+final class TypeCheckbox8ItemsProcFunc
 {
     /**
      * Add two items to existing ones

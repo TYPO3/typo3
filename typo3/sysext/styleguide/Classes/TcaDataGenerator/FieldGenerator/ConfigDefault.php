@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Use "default" value if set in config
  */
-class ConfigDefault extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class ConfigDefault extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * Match if ['config']['default'] is set.

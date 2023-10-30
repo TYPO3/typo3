@@ -26,7 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 /**
  * Generate data for type=file fields
  */
-class TypeFile extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeFile extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=file

@@ -41,7 +41,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  * Styleguide main backend module in the help toolbar
  */
 #[Controller]
-class BackendController
+final class BackendController
 {
     /**
      * @var non-empty-array<int, string>

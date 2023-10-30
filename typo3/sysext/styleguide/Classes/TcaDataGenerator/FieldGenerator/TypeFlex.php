@@ -26,7 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorNotFoundException;
 /**
  * Generate data for type=flex fields
  */
-class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input

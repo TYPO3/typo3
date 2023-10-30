@@ -27,7 +27,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  * Special implementation for inline_1 of
  * tx_styleguide_inline_usecombination and tx_styleguide_inline_usecombinationbox
  */
-class TypeInlineUsecombination extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeInlineUsecombination extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input

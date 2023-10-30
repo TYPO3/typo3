@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=check fields
  */
-class TypeCheck extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeCheck extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=check

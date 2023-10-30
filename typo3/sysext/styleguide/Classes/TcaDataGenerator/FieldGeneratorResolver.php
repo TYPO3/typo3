@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Find matching field generator class instance
  */
-class FieldGeneratorResolver
+final class FieldGeneratorResolver
 {
     /**
      * List of field generators to be called for values.

@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=datetime fields
  */
-class TypeDatetime extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeDatetime extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * General match if type=datetime

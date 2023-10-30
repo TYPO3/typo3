@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Create data for a specific table and its child tables
  */
-class RecordData
+final class RecordData
 {
     /**
      * Generate data for a given table and insert into database

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A user function rendering a type=user TCA type used in user_1
  */
-class User1Element extends AbstractFormElement
+final class User1Element extends AbstractFormElement
 {
     use OnFieldChangeTrait;
 

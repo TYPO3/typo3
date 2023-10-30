@@ -26,7 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  * Generate data for type=select fields.
  * Special field for select_single_12
  */
-class TypeSelectRenderTypeSingleForeignTable extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeSelectRenderTypeSingleForeignTable extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=select

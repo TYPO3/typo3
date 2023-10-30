@@ -27,7 +27,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  * Generate data for fal_1 field of
  * tx_styleguide_elements_select_single_12_foreign
  */
-class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * Well ... this one is called twice and we want one image for the first image

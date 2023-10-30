@@ -22,7 +22,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=radio fields
  */
-class TypeRadio extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeRadio extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=check
