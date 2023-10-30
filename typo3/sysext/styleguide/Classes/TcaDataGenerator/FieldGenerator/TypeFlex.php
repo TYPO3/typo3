@@ -76,7 +76,7 @@ class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
                                 if (!isset($containerElementArray['el']) || !is_array($containerElementArray['el'])) {
                                     continue;
                                 }
-                                $containerCounter ++;
+                                $containerCounter++;
                                 foreach ($containerElementArray['el'] as $containerSingleElementName => $containerSingleElementArray) {
                                     $aFlexFieldData['fieldName'] = $containerSingleElementName;
                                     $aFlexFieldData['fieldConfig'] = $containerSingleElementArray;

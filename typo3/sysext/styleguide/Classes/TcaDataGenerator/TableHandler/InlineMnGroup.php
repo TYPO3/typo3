@@ -51,7 +51,7 @@ class InlineMnGroup extends AbstractTableHandler implements TableHandlerInterfac
         $numberOfChildRelationsToCreate = 2;
         $numberOfChildRows = 4;
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        for ($i = 0; $i < $numberOfChildRows; $i ++) {
+        for ($i = 0; $i < $numberOfChildRows; $i++) {
             $fieldValues = [
                 'pid' => $pidOfMainTable,
                 'tstamp' => $context->getAspect('date')->get('timestamp'),
