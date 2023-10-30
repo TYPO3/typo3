@@ -15,7 +15,7 @@ GIFBUILDER, the image manipulation library for TypoScript based on GDlib, a PHP
 extension bundled into PHP, now also supports generating resulting files of
 type "webp".
 
-WebP is an image format, that is supported my all moderns browsers, and usually
+WebP is an image format, that is supported by all moderns browsers, and usually
 has a better compression (= smaller file size) than jpg files.
 
 
@@ -27,7 +27,8 @@ now webp instead of png (the default).
 
 It is possible to define the quality of a webp image similar to jpg images
 globally via :php:`$TYPO3_CONF_VARS['GFX']['webp_quality']` or via TypoScript's
-"quality" property on a per-image basis.
+"quality" property on a per-image basis. Setting the quality to "101" equivalents
+to "lossless" compression.
 
 Example
 -------

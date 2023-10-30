@@ -37,18 +37,20 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 /**
  * GIFBUILDER
  *
- * Generating gif/png-files from TypoScript
- * Used by the menu-objects and imgResource in TypoScript.
+ * Generating image files from TypoScript
+ * Used by imgResource in TypoScript.
  *
  * This class allows for advanced rendering of images with various layers of images, text and graphical primitives.
- * The concept is known from TypoScript as "GIFBUILDER" where you can define a "numerical array" (TypoScript term as well) of "GIFBUILDER OBJECTS" (like "TEXT", "IMAGE", etc.) and they will be rendered onto an image one by one.
- * The name "GIFBUILDER" comes from the time when GIF was the only file format supported. PNG is just as well to create today (configured with TYPO3_CONF_VARS[GFX])
+ * The concept is known from TypoScript as "GIFBUILDER" where you can define a "numerical array" (TypoScript term as well)
+ * of "GIFBUILDER OBJECTS" (like "TEXT", "IMAGE", etc.) and they will be rendered onto an image one by one.
+ * The name "GIFBUILDER" comes from the time when GIF was the only file format supported.
+ * .png, .jpg and .webp files are just as well to create today (configured with TYPO3_CONF_VARS[GFX])
  *
  * Here is an example of how to use this class:
  *
- * $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
- * $gifCreator->start($fileArray, $this->data);
- * $theImage = $gifCreator->gifBuild();
+ * $imageCreator = GeneralUtility::makeInstance(GifBuilder::class);
+ * $imageCreator->start($fileArray, $this->data);
+ * $theImage = $imageCreator->gifBuild();
  * return GeneralUtility::makeInstance(GraphicalFunctions::class)->getImageDimensions($theImage);
  */
 class GifBuilder
@@ -164,7 +166,7 @@ class GifBuilder
      */
     protected int $jpegQuality = 85;
     /**
-     * @var int<10, 100>
+     * @var int<10, 101>
      */
     protected int $webpQuality = 85;
 
@@ -174,8 +176,15 @@ class GifBuilder
         if ($gfxConf['processor_effects'] ?? false) {
             $this->processorEffectsEnabled = true;
         }
-        $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
-        $this->webpQuality = MathUtility::forceIntegerInRange($gfxConf['webp_quality'], 10, 100, 85);
+        $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, $this->jpegQuality);
+        if (isset($gfxConf['webp_quality'])) {
+            // see IMG_WEBP_LOSSLESS // https://www.php.net/manual/en/image.constants.php
+            if ($gfxConf['webp_quality'] === 'lossless') {
+                $this->webpQuality = 101;
+            } else {
+                $this->webpQuality = MathUtility::forceIntegerInRange($gfxConf['webp_quality'], 10, 101, $this->webpQuality);
+            }
+        }
         if (function_exists('imagecreatefromjpeg') && function_exists('imagejpeg')) {
             $this->gdlibExtensions[] = 'jpg';
             $this->gdlibExtensions[] = 'jpeg';
@@ -463,9 +472,13 @@ class GifBuilder
                 break;
             case 'jpg':
             case 'jpeg':
-            case 'webp':
                 // Use the default
                 $quality = isset($this->setup['quality']) ? MathUtility::forceIntegerInRange((int)$this->setup['quality'], 10, 100) : 0;
+                $this->ImageWrite($gdImage, $file, $quality);
+                break;
+            case 'webp':
+                // Quality can also be set to IMG_WEBP_LOSSLESS = 101
+                $quality = isset($this->setup['quality']) ? MathUtility::forceIntegerInRange((int)$this->setup['quality'], 10, 101) : 0;
                 $this->ImageWrite($gdImage, $file, $quality);
                 break;
         }
