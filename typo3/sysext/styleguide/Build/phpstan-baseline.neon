@@ -1,7 +1,2 @@
 parameters:
-	ignoreErrors:
-		-
-			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
-			count: 1
-			path: ../Classes/TcaDataGenerator/Generator.php
-
+	ignoreErrors: []

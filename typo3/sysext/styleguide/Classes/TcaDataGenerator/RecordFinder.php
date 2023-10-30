@@ -37,14 +37,12 @@ class RecordFinder
      * Returns a uid list of existing styleguide demo top level pages.
      * These are pages with pid=0 and tx_styleguide_containsdemo set to 'tx_styleguide'.
      * This can be multiple pages if "create" button was clicked multiple times without "delete" in between.
-     *
-     * @return array
      */
     public function findUidsOfStyleguideEntryPages(): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $rows = $queryBuilder->select('uid')
+        $result = $queryBuilder->select('uid')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -56,15 +54,12 @@ class RecordFinder
                     $queryBuilder->createNamedParameter('tx_styleguide', \PDO::PARAM_STR)
                 )
             )
-            ->executeQuery()
-            ->fetchAllAssociative();
-        $uids = [];
-        if (is_array($rows)) {
-            foreach ($rows as $row) {
-                $uids[] = (int)$row['uid'];
-            }
+            ->executeQuery();
+        $uidList = [];
+        while ($row = $result->fetchAssociative()) {
+            $uidList[] = (int)$row['uid'];
         }
-        return $uids;
+        return $uidList;
     }
 
     /**

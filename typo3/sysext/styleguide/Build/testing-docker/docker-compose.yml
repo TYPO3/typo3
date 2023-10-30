@@ -448,7 +448,7 @@ services:
         fi
         mkdir -p .Build/.cache
         php -v | grep '^PHP';
-        php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon --no-progress --no-interaction --generate-baseline=Build/phpstan-baseline.neon
+        php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon --no-progress --no-interaction --allow-empty-baseline --generate-baseline=Build/phpstan-baseline.neon
       "
 
   unit:

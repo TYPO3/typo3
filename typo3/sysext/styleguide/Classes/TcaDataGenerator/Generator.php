@@ -123,7 +123,10 @@ class Generator extends AbstractGenerator
         $this->executeDataHandler($data);
 
         // Create a site configuration on root page
-        $topPageUid = $recordFinder->findUidsOfStyleguideEntryPages()[0];
+        /** @var non-empty-array $topPageUidList */
+        $topPageUidList = $recordFinder->findUidsOfStyleguideEntryPages();
+        $topPageUid = $topPageUidList[0];
+
         $this->createSiteConfiguration($topPageUid);
 
         // Create data for each main table
