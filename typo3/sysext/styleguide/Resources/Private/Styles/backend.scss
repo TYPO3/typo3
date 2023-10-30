@@ -1,9 +1,77 @@
-/** Styles only for EXT: styleguide */
+// Navigation scaffold
+@media (min-width: 769px) {
+    #container-navigation {
+        position: fixed;
+        width: 260px;
+    }
+    #container-content {
+        margin-left: 300px;
+    }
+    @media (max-height: 660px) {
+        #container-navigation {
+            position: absolute;
+        }
+    }
+}
 
-// Include prism default styles
-@import "vendor/prism";
+// Example
+.example {
+    background-color: var(--typo3-component-bg);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    padding: var(--typo3-spacing);
+    margin-bottom: var(--typo3-spacing);
+    & + *:not(.example) {
+        margin-top: var(--typo3-component-spacing);
+    }
+    &:before {
+        content: 'EXAMPLE';
+        display: block;
+        font-weight: normal;
+        font-size: 0.9em;
+        margin-bottom: var(--typo3-spacing);
+    }
+    &.code {
+        font-family: var(--typo3-font-family-code);
+        &:before {
+            content: 'EXAMPLE CODE';
+        }
+    }
+    pre {
+        font-size: var(--typo3-component-font-size);
+        margin: 0;
+    }
+    pre[class*="language-"] {
+        border-radius: calc(var(--typo3-component-border-radius) / 2);
+        color: var(--typo3-component-color);
+        margin: 0;
+    }
+    pre code {
+        overflow: auto;
+        width: 100%;
+        display: block;
+    }
+}
 
-// Custom components
-@import "_components/_navigation";
-@import "_components/_example";
-@import "_components/_icon";
+// Icon module
+div.icon-container {
+    border: 1px solid transparent;
+    margin-bottom: 20px;
+    height: 100px;
+
+    &.icon-deprecated-container {
+        height: 175px;
+    }
+
+    span.icon-container-icon,
+    span.icon-container-label {
+        display: block;
+        text-align: center;
+        background-color: #eee;
+        min-height: 50px;
+        padding: 5px;
+    }
+    &:hover span.icon-container-icon,
+    &:hover span.icon-container-label {
+        background-color: #e1e1e1;
+    }
+}
