@@ -2387,4 +2387,9 @@ return [
             'Deprecation-101151-DuplicationBehaviorClass.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Processing\AbstractGraphicalTask' => [
+        'restFiles' => [
+            'Breaking-102165-FileAbstractionLayerProcessingAPIsAndInterfaceChanged.rst',
+        ],
+    ],
 ];

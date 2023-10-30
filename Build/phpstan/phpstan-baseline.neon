@@ -776,11 +776,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Security/FileMetadataPermissionsAspect.php
 
 		-
-			message: "#^Right side of && is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Service/FileProcessingService.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\MappableProcessor\\:\\:fetchMappers\\(\\) should return array\\<TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\MappableAspectInterface\\> but returns array\\<TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\AspectInterface\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/Aspect/MappableProcessor.php

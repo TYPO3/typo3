@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,75 +18,32 @@
 namespace TYPO3\CMS\Core\Resource\Processing;
 
 use TYPO3\CMS\Core\Resource;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Abstract base implementation of a task.
- *
- * If you extend this class, make sure that you redefine the member variables $type and $name
- * or set them in the constructor. Otherwise your task won't be recognized by the system and several
- * things will fail.
+ * Abstract base implementation of a processing task.
  */
 abstract class AbstractTask implements TaskInterface
 {
-    /**
-     * @var array
-     */
-    protected $checksumData = [];
+    protected Resource\File $sourceFile;
+    protected bool $executed = false;
+    protected bool $successful;
 
-    /**
-     * @var Resource\ProcessedFile
-     */
-    protected $targetFile;
-
-    /**
-     * @var Resource\File
-     */
-    protected $sourceFile;
-
-    /**
-     * @var array
-     */
-    protected $configuration;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var bool
-     */
-    protected $executed = false;
-
-    /**
-     * @var bool
-     */
-    protected $successful;
-
-    public function __construct(ProcessedFile $targetFile, array $configuration)
-    {
-        $this->targetFile = $targetFile;
+    public function __construct(
+        protected ProcessedFile $targetFile,
+        protected array $configuration
+    ) {
         $this->sourceFile = $targetFile->getOriginalFile();
-        $this->configuration = $configuration;
     }
 
     /**
      * Sets parameters needed in the checksum. Can be overridden to add additional parameters to the checksum.
      * This should include all parameters that could possibly vary between different task instances, e.g. the
      * TYPO3 image configuration in TYPO3_CONF_VARS[GFX] for graphic processing tasks.
-     *
-     * @return array
      */
-    protected function getChecksumData()
+    protected function getChecksumData(): array
     {
         return [
             $this->getSourceFile()->getUid(),
@@ -95,20 +54,16 @@ abstract class AbstractTask implements TaskInterface
 
     /**
      * Returns the checksum for this task's configuration, also taking the file and task type into account.
-     *
-     * @return string
      */
-    public function getConfigurationChecksum()
+    public function getConfigurationChecksum(): string
     {
         return substr((string)md5(implode('|', $this->getChecksumData())), 0, 10);
     }
 
     /**
      * Returns the filename
-     *
-     * @return string
      */
-    public function getTargetFilename()
+    public function getTargetFilename(): string
     {
         return $this->targetFile->getNameWithoutExtension()
             . '_' . $this->getConfigurationChecksum()
@@ -118,82 +73,41 @@ abstract class AbstractTask implements TaskInterface
     /**
      * Gets the file extension the processed file should
      * have in the filesystem.
-     *
-     * @return string
      */
-    public function getTargetFileExtension()
+    public function getTargetFileExtension(): string
     {
         return $this->targetFile->getExtension();
     }
 
     /**
      * Returns the name of this task
-     *
-     * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+    abstract public function getName(): string;
 
     /**
      * Returns the type of this task
-     *
-     * @return string
      */
-    public function getType()
-    {
-        return $this->type;
-    }
+    abstract public function getType(): string;
 
-    /**
-     * @return Resource\ProcessedFile
-     */
-    public function getTargetFile()
+    public function getTargetFile(): Resource\ProcessedFile
     {
         return $this->targetFile;
     }
 
-    public function setTargetFile(ProcessedFile $targetFile)
-    {
-        $this->targetFile = $targetFile;
-    }
-
-    /**
-     * @return Resource\File
-     */
-    public function getSourceFile()
+    public function getSourceFile(): Resource\File
     {
         return $this->sourceFile;
     }
 
-    public function setSourceFile(File $sourceFile)
-    {
-        $this->sourceFile = $sourceFile;
-    }
-
-    /**
-     * @return array
-     */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         return $this->configuration;
     }
 
     /**
-     * Checks if the given configuration is sensible for this task, i.e. if all required parameters
-     * are given, within the boundaries and don't conflict with each other.
-     *
-     * @return bool
-     */
-    abstract protected function isValidConfiguration(array $configuration);
-
-    /**
      * Returns TRUE if this task has been executed, no matter if the execution was successful.
-     *
-     * @return bool
      */
-    public function isExecuted()
+    public function isExecuted(): bool
     {
         return $this->executed;
     }
@@ -204,7 +118,7 @@ abstract class AbstractTask implements TaskInterface
      *
      * @param bool $successful Set this to FALSE if executing the task failed
      */
-    public function setExecuted($successful)
+    public function setExecuted(bool $successful): void
     {
         $this->executed = true;
         $this->successful = $successful;
@@ -213,16 +127,29 @@ abstract class AbstractTask implements TaskInterface
     /**
      * Returns TRUE if this task has been successfully executed. Only call this method if the task has been processed
      * at all.
-     * @return bool
+     *
      * @throws \LogicException If the task has not been executed already
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         if (!$this->executed) {
             throw new \LogicException('Task has not been executed; cannot determine success.', 1352549235);
         }
-
         return $this->successful;
+    }
+
+    /**
+     * We only have to trigger the file processing if the file either is new, does not exist or the
+     * original file has changed since the last processing run (the last case has to trigger a reprocessing
+     * even if the original file was used until now).
+     */
+    public function fileNeedsProcessing(): bool
+    {
+        $processedFile = $this->getTargetFile();
+        if (!$processedFile->isProcessed()) {
+            return true;
+        }
+        return $processedFile->isNew() || (!$processedFile->usesOriginalFile() && !$processedFile->exists()) || $processedFile->isOutdated();
     }
 
     /**

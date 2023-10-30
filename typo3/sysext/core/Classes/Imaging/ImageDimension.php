@@ -121,10 +121,9 @@ class ImageDimension
         $configuration = $task->getConfiguration();
 
         if ($task->getTargetFile()->getTaskIdentifier() === ProcessedFile::CONTEXT_IMAGEPREVIEW) {
-            // @todo: this ideally should not be necessary anymore with #102165
-            if (method_exists($task, 'sanitizeConfiguration')) {
-                $task->sanitizeConfiguration();
-            }
+            $task->sanitizeConfiguration();
+            // @todo: this transformation needs to happen in the PreviewTask, but if we do this,
+            // all preview images would be re-created, so we should be careful when to do this.
             $configuration = $task->getConfiguration();
             $configuration['maxWidth'] = $configuration['width'];
             unset($configuration['width']);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,57 +22,63 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * A task for generating an image preview.
  */
-class ImagePreviewTask extends AbstractGraphicalTask
+class ImagePreviewTask extends AbstractTask
 {
-    /**
-     * @var string
-     */
-    protected $type = 'Image';
+    protected string|null $targetFileExtension;
 
-    /**
-     * @var string
-     */
-    protected $name = 'Preview';
-
-    /**
-     * Returns the target filename for this task.
-     *
-     * @return string
-     */
-    public function getTargetFileName()
+    public function getType(): string
     {
-        return 'preview_' . parent::getTargetFilename();
+        return 'Image';
+    }
+
+    public function getName(): string
+    {
+        return 'Preview';
     }
 
     /**
-     * Checks if the given configuration is sensible for this task, i.e. if all required parameters
-     * are given, within the boundaries and don't conflict with each other.
+     * Returns the name the processed file should have
+     * in the filesystem.
      */
-    protected function isValidConfiguration(array $configuration): bool
+    public function getTargetFilename(): string
     {
-        /**
-         * Checks to perform:
-         * - width and/or height given, integer values?
-         */
-        return true;
+        return 'preview_'
+            . $this->getSourceFile()->getNameWithoutExtension()
+            . '_' . $this->getConfigurationChecksum()
+            . '.' . $this->getTargetFileExtension();
     }
 
     /**
-     * Returns TRUE if the file has to be processed at all, such as e.g. the original file does.
-     *
-     * Note: This does not indicate if the concrete ProcessedFile attached to this task has to be (re)processed.
-     * This check is done in ProcessedFile::isOutdated().
-     * @todo isOutdated()/needsReprocessing()?
+     * Determines the file extension the processed file
+     * should have in the filesystem.
      */
-    public function fileNeedsProcessing(): bool
+    public function getTargetFileExtension(): string
     {
-        // @todo Implement fileNeedsProcessing() method.
+        if (!isset($this->targetFileExtension)) {
+            $this->targetFileExtension = $this->determineTargetFileExtension();
+        }
+        return $this->targetFileExtension;
+    }
 
-        /**
-         * Checks to perform:
-         * - width/height smaller than image, keeping aspect ratio?
-         */
-        return false;
+    /**
+     * Gets the file extension the processed file should
+     * have in the filesystem by either using the configuration
+     * setting, or the extension of the original file.
+     */
+    protected function determineTargetFileExtension(): string
+    {
+        if (!empty($this->configuration['fileExtension'])) {
+            $targetFileExtension = $this->configuration['fileExtension'];
+        } elseif (in_array($this->getSourceFile()->getExtension(), ['jpg', 'jpeg', 'png', 'gif'], true)) {
+            $targetFileExtension = $this->getSourceFile()->getExtension();
+        } elseif (empty($this->configuration['crop']) && $this->getSourceFile()->getExtension() === 'svg'
+        ) {
+            $targetFileExtension = 'svg';
+        } else {
+            // Thumbnails from non-processable files will be converted to 'png'
+            $targetFileExtension = 'png';
+        }
+        return $targetFileExtension;
     }
 
     /**

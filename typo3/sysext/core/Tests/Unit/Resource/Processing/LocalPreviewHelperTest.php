@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Processing;
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\Processing\ImagePreviewTask;
 use TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -39,12 +41,11 @@ final class LocalPreviewHelperTest extends UnitTestCase
             ['height', 65],
         ]);
 
-        $task = $this->createMock(TaskInterface::class);
-        $task->expects(self::once())->method('getSourceFile')->willReturn($file);
-        $task->expects(self::once())->method('getConfiguration')->willReturn([]);
+        $processedFile = $this->createMock(ProcessedFile::class);
+        $processedFile->method('getOriginalFile')->willReturn($file);
+        $task = new ImagePreviewTask($processedFile, []);
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
-            ->disableOriginalConstructor()
             ->onlyMethods(['getTemporaryFilePath', 'generatePreviewFromFile'])
             ->getMock();
         $localPreviewHelper->expects(self::once())->method('getTemporaryFilePath')->willReturn('test/file');

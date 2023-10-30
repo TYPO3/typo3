@@ -62,67 +62,46 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Processing context, i.e. the type of processing done
-     *
-     * @var string
      */
-    protected $taskType;
+    protected string $taskType;
 
-    /**
-     * @var Processing\TaskInterface
-     */
-    protected $task;
-
-    /**
-     * @var Processing\TaskTypeRegistry
-     */
-    protected $taskTypeRegistry;
+    protected ?Processing\TaskInterface $task = null;
+    protected Processing\TaskTypeRegistry $taskTypeRegistry;
 
     /**
      * Processing configuration
-     *
-     * @var array
      */
-    protected $processingConfiguration;
+    protected ?array $processingConfiguration;
 
     /**
      * Reference to the original file this processed file has been created from.
-     *
-     * @var File
      */
-    protected $originalFile;
+    protected File $originalFile;
 
     /**
      * The SHA1 hash of the original file this processed version has been created for.
      * Is used for detecting changes if the original file has been changed and thus
      * we have to recreate this processed file.
-     *
-     * @var string
      */
-    protected $originalFileSha1;
+    protected ?string $originalFileSha1;
 
     /**
      * A flag that shows if this object has been updated during its lifetime, i.e. the file has been
      * replaced with a new one.
-     *
-     * @var bool
      */
-    protected $updated = false;
+    protected bool $updated = false;
 
     /**
      * If this is set, this URL is used as public URL
      * This MUST be a fully qualified URL including host
-     *
-     * @var string
      */
-    protected $processingUrl = '';
+    protected string $processingUrl;
 
     /**
      * Constructor for a processed file object. Should normally not be used
      * directly, use the corresponding factory methods instead.
-     *
-     * @param string $taskType
      */
-    public function __construct(File $originalFile, $taskType, array $processingConfiguration, array $databaseRow = null)
+    public function __construct(File $originalFile, string $taskType, array $processingConfiguration, array $databaseRow = null)
     {
         $this->originalFile = $originalFile;
         $this->originalFileSha1 = $this->originalFile->getSha1();
@@ -138,11 +117,11 @@ class ProcessedFile extends AbstractFile
     /**
      * Creates a ProcessedFile object from a database record.
      */
-    protected function reconstituteFromDatabaseRecord(array $databaseRow)
+    protected function reconstituteFromDatabaseRecord(array $databaseRow): void
     {
         $this->taskType = $this->taskType ?: $databaseRow['task_type'];
         // @todo In case the original configuration contained file objects the reconstitution fails. See ConfigurationService->serialize()
-        $this->processingConfiguration = $this->processingConfiguration ?: unserialize($databaseRow['configuration'] ?? '');
+        $this->processingConfiguration = $this->processingConfiguration ?: (array)unserialize($databaseRow['configuration'] ?? '');
 
         $this->originalFileSha1 = $databaseRow['originalfilesha1'];
         $this->identifier = $databaseRow['identifier'];
@@ -161,11 +140,8 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Returns a unique checksum for this file's processing configuration and original file.
-     *
-     * @return string
      */
-    // @todo replace these usages with direct calls to the task object
-    public function calculateChecksum()
+    protected function calculateChecksum(): string
     {
         return $this->getTask()->getConfigurationChecksum();
     }
@@ -189,7 +165,7 @@ class ProcessedFile extends AbstractFile
      * @param string $filePath
      * @throws \RuntimeException
      */
-    public function updateWithLocalFile($filePath)
+    public function updateWithLocalFile(string $filePath): void
     {
         if (empty($this->identifier)) {
             throw new \RuntimeException('Cannot update original file!', 1350582054);
@@ -223,20 +199,16 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Checks whether the ProcessedFile already has an entry in sys_file_processedfile table
-     *
-     * @return bool
      */
-    public function isPersisted()
+    public function isPersisted(): bool
     {
-        return is_array($this->properties) && array_key_exists('uid', $this->properties) && $this->properties['uid'] > 0;
+        return array_key_exists('uid', $this->properties) && $this->properties['uid'] > 0;
     }
 
     /**
      * Checks whether the ProcessedFile Object is newly created
-     *
-     * @return bool
      */
-    public function isNew()
+    public function isNew(): bool
     {
         return !$this->isPersisted();
     }
@@ -244,20 +216,16 @@ class ProcessedFile extends AbstractFile
     /**
      * Checks whether the object since last reconstitution, and therefore
      * needs persistence again
-     *
-     * @return bool
      */
-    public function isUpdated()
+    public function isUpdated(): bool
     {
         return $this->updated;
     }
 
     /**
      * Sets a new file name
-     *
-     * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         // Remove the existing file, but only we actually have a name or the name has changed
         if (!empty($this->name) && $this->name !== $name && $this->exists()) {
@@ -278,7 +246,7 @@ class ProcessedFile extends AbstractFile
      *
      * @return bool TRUE if this file physically exists
      */
-    public function exists()
+    public function exists(): bool
     {
         if ($this->usesOriginalFile()) {
             return $this->originalFile->exists();
@@ -293,20 +261,16 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Returns TRUE if this file is already processed.
-     *
-     * @return bool
      */
-    public function isProcessed()
+    public function isProcessed(): bool
     {
         return $this->updated || ($this->isPersisted() && !$this->needsReprocessing());
     }
 
     /**
      * Getter for the Original, unprocessed File
-     *
-     * @return File
      */
-    public function getOriginalFile()
+    public function getOriginalFile(): File
     {
         return $this->originalFile;
     }
@@ -346,12 +310,8 @@ class ProcessedFile extends AbstractFile
      * Updates properties of this object. Do not use this to reconstitute an object from the database; use
      * reconstituteFromDatabaseRecord() instead!
      */
-    public function updateProperties(array $properties)
+    public function updateProperties(array $properties): void
     {
-        if (!is_array($this->properties)) {
-            $this->properties = [];
-        }
-
         if (array_key_exists('uid', $properties) && MathUtility::canBeInterpretedAsInteger($properties['uid'])) {
             $this->properties['uid'] = $properties['uid'];
         }
@@ -409,10 +369,8 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Returns TRUE if this file has not been changed during processing (i.e., we just deliver the original file)
-     *
-     * @return bool
      */
-    protected function isUnchanged()
+    protected function isUnchanged(): bool
     {
         return !($this->properties['width'] ?? false) && $this->usesOriginalFile();
     }
@@ -420,7 +378,7 @@ class ProcessedFile extends AbstractFile
     /**
      * Defines that the original file should be used.
      */
-    public function setUsesOriginalFile()
+    public function setUsesOriginalFile(): void
     {
         // @todo check if some of these properties can/should be set in a generic update method
         $this->identifier = $this->originalFile->getIdentifier();
@@ -435,20 +393,15 @@ class ProcessedFile extends AbstractFile
         $this->processingUrl = $url;
     }
 
-    /**
-     * @return bool
-     */
-    public function usesOriginalFile()
+    public function usesOriginalFile(): bool
     {
         return empty($this->identifier) || $this->identifier === $this->originalFile->getIdentifier();
     }
 
     /**
      * Returns TRUE if the original file of this file changed and the file should be processed again.
-     *
-     * @return bool
      */
-    public function isOutdated()
+    public function isOutdated(): bool
     {
         return $this->needsReprocessing();
     }
@@ -484,20 +437,16 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Returns the uid of this file
-     *
-     * @return int
      */
-    public function getUid()
+    public function getUid(): int
     {
-        return $this->properties['uid'] ?? 0;
+        return (int)($this->properties['uid'] ?? 0);
     }
 
     /**
      * Checks if the ProcessedFile needs reprocessing
-     *
-     * @return bool
      */
-    public function needsReprocessing()
+    public function needsReprocessing(): bool
     {
         $fileMustBeRecreated = false;
 
@@ -534,28 +483,22 @@ class ProcessedFile extends AbstractFile
 
     /**
      * Returns the processing information
-     *
-     * @return array
      */
-    public function getProcessingConfiguration()
+    public function getProcessingConfiguration(): array
     {
         return $this->processingConfiguration;
     }
 
     /**
      * Getter for the task identifier.
-     *
-     * @return string
      */
-    public function getTaskIdentifier()
+    public function getTaskIdentifier(): string
     {
         return $this->taskType;
     }
 
     /**
      * Returns the task object associated with this processed file.
-     *
-     * @throws \RuntimeException
      */
     public function getTask(): Processing\TaskInterface
     {
@@ -567,11 +510,9 @@ class ProcessedFile extends AbstractFile
     }
 
     /**
-     * Generate the name of of the new File
-     *
-     * @return string
+     * Generate the name of the new File
      */
-    public function generateProcessedFileNameWithoutExtension()
+    public function generateProcessedFileNameWithoutExtension(): string
     {
         $name = $this->originalFile->getNameWithoutExtension();
         $name .= '_' . $this->originalFile->getUid();
@@ -587,7 +528,7 @@ class ProcessedFile extends AbstractFile
      */
     public function getPublicUrl(): ?string
     {
-        if ($this->processingUrl) {
+        if (isset($this->processingUrl) && $this->processingUrl !== '') {
             return $this->processingUrl;
         }
         if ($this->deleted) {

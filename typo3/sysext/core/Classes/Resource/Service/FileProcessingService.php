@@ -63,22 +63,15 @@ class FileProcessingService
             new BeforeFileProcessingEvent($driver, $processedFile, $fileObject, $taskType, $configuration)
         );
         $processedFile = $event->getProcessedFile();
+        $task = $processedFile->getTask();
 
         // Only handle the file if it is not processed yet
         // (maybe modified or already processed by an event)
         // or (in case of preview images) already in the DB/in the processing folder
-        if (!$processedFile->isProcessed()) {
-            // We only have to trigger the file processing if the file either is new, does not exist or the
-            // original file has changed since the last processing run (the last case has to trigger a reprocessing
-            // even if the original file was used until now)
-            if ($processedFile->isNew() || (!$processedFile->usesOriginalFile() && !$processedFile->exists()) || $processedFile->isOutdated()) {
-                $task = $processedFile->getTask();
-                $processor = $this->getProcessorByTask($task);
-                $processor->processTask($task);
-
-                if ($task->isExecuted() && $task->isSuccessful() && $processedFile->isProcessed()) {
-                    $this->processedFileRepository->add($processedFile);
-                }
+        if ($task->fileNeedsProcessing()) {
+            $this->getProcessorByTask($task)->processTask($task);
+            if ($task->isExecuted() && $task->isSuccessful() && $processedFile->isProcessed()) {
+                $this->processedFileRepository->add($processedFile);
             }
         }
 

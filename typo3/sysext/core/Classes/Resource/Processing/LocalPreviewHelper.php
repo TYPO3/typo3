@@ -79,13 +79,8 @@ class LocalPreviewHelper
     public function process(TaskInterface $task)
     {
         $sourceFile = $task->getSourceFile();
-        // @todo see #102165 to remove this check
-        if (method_exists($task, 'sanitizeConfiguration')) {
-            $task->sanitizeConfiguration();
-            $configuration = $task->getConfiguration();
-        } else {
-            $configuration = static::preProcessConfiguration($task->getConfiguration());
-        }
+        $task->sanitizeConfiguration();
+        $configuration = $task->getConfiguration();
 
         // Do not scale up if the source file has a size and the target size is larger
         if ($sourceFile->getProperty('width') > 0 && $sourceFile->getProperty('height') > 0

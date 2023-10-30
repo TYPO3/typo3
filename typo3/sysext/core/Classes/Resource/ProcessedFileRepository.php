@@ -359,10 +359,7 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
     {
         $temporaryProcessedFile = $this->createNewProcessedFileObject($fileObject, $taskType, $configuration);
         $taskObject = $this->taskTypeRegistry->getTaskForType($taskType, $temporaryProcessedFile, $configuration);
-        // @todo see #102165 to remove this check
-        if (method_exists($taskObject, 'sanitizeConfiguration')) {
-            $taskObject->sanitizeConfiguration();
-        }
+        $taskObject->sanitizeConfiguration();
         return $taskObject;
     }
 }
