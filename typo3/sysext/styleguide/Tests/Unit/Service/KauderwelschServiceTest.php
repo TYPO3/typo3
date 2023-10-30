@@ -18,10 +18,7 @@ namespace TYPO3\CMS\Styleguide\Tests\Unit\Service;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
-class KauderwelschServiceTest extends UnitTestCase
+final class KauderwelschServiceTest extends UnitTestCase
 {
     /**
      * @test

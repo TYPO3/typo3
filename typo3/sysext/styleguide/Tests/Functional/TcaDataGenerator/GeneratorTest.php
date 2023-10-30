@@ -23,10 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class GeneratorTest extends FunctionalTestCase
+final class GeneratorTest extends FunctionalTestCase
 {
     /**
      * @var non-empty-string[] Have styleguide loaded
@@ -72,7 +69,7 @@ class GeneratorTest extends FunctionalTestCase
         self::assertGreaterThan(0, $count);
     }
 
-    protected function getPageUidFor(string $dataTable): ?int
+    private function getPageUidFor(string $dataTable): ?int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages')
