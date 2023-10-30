@@ -6,6 +6,14 @@
 
 <f:layout name="Module" />
 
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            1: '@typo3/backend/tree/tree-node-toggle.js'
+        }"
+    />
+</f:section>
+
 <f:section name="Content">
 
     <div id="container-navigation">
@@ -60,20 +68,24 @@
         <sg:code language="html">
             <ul class="treelist">
                 <li>
-                    <a class="treelist-control" data-bs-toggle="collapse" data-bs-target="#collapse-list-1686230946" aria-expanded="true">
-                        <typo3-backend-icon size="small" identifier="actions-chevron-right"></typo3-backend-icon>
-                        <typo3-backend-icon size="small" identifier="actions-chevron-down"></typo3-backend-icon>
-                    </a>
+                    <typo3-backend-tree-node-toggle
+                        class="treelist-control collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse-list-1686230946"
+                        aria-expanded="true">
+                    </typo3-backend-tree-node-toggle>
                     <span class="treelist-group treelist-group-monospace">
                         <span class="treelist-label">items</span>
                     </span>
                     <div class="treelist-collapse collapse show" id="collapse-list-1686230946">
                         <ul class="treelist">
                             <li>
-                                <a class="treelist-control" data-bs-toggle="collapse" data-bs-target="#collapse-list-2511c918639b1bd8" aria-expanded="true">
-                                    <typo3-backend-icon size="small" identifier="actions-chevron-right"></typo3-backend-icon>
-                                    <typo3-backend-icon size="small" identifier="actions-chevron-down"></typo3-backend-icon>
-                                </a>
+                                <typo3-backend-tree-node-toggle
+                                    class="treelist-control collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-list-2511c918639b1bd8"
+                                    aria-expanded="true">
+                                </typo3-backend-tree-node-toggle>
                                 <span class="treelist-group treelist-group-monospace">
                                     <span class="treelist-label">key1</span>
                                 </span>
@@ -98,10 +110,12 @@
                                 </div>
                             </li>
                             <li>
-                                <a class="treelist-control" data-bs-toggle="collapse" data-bs-target="#collapse-list-032f17e98235ecae" aria-expanded="true">
-                                    <typo3-backend-icon size="small" identifier="actions-chevron-right"></typo3-backend-icon>
-                                    <typo3-backend-icon size="small" identifier="actions-chevron-down"></typo3-backend-icon>
-                                </a>
+                                <typo3-backend-tree-node-toggle
+                                    class="treelist-control collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-list-032f17e98235ecae"
+                                    aria-expanded="true">
+                                </typo3-backend-tree-node-toggle>
                                 <span class="treelist-group treelist-group-monospace">
                                     <span class="treelist-label">key2</span>
                                 </span>
@@ -124,10 +138,12 @@
                     </span>
                 </li>
                 <li>
-                    <a class="treelist-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-68d1352020c51580" aria-expanded="false">
-                        <typo3-backend-icon size="small" identifier="actions-chevron-right"></typo3-backend-icon>
-                        <typo3-backend-icon size="small" identifier="actions-chevron-down"></typo3-backend-icon>
-                    </a>
+                    <typo3-backend-tree-node-toggle
+                        class="treelist-control collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse-list-68d1352020c51580"
+                        aria-expanded="true">
+                    </typo3-backend-tree-node-toggle>
                     <span class="treelist-group treelist-group-monospace">
                         <span class="treelist-label">EXT</span>
                     </span>
