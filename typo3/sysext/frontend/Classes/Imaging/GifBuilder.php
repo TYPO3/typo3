@@ -770,82 +770,80 @@ class GifBuilder
         // Position
         $txtPos = $this->txtPosition($conf, $workArea, $conf['BBOX']);
         $theText = $conf['text'] ?? '';
-        if (!($conf['hideButCreateMap'] ?? false)) {
-            // Font Color:
-            $cols = $this->convertColor($conf['fontColor']);
-            // NiceText is calculated
-            if (!($conf['niceText'] ?? false)) {
-                $Fcolor = imagecolorallocate($im, $cols[0], $cols[1], $cols[2]);
-                // antiAliasing is setup:
-                $Fcolor = $conf['antiAlias'] ? $Fcolor : -$Fcolor;
-                for ($a = 0; $a < $conf['iterations']; $a++) {
-                    // If any kind of spacing applies, we use this function:
-                    if ($spacing || $wordSpacing) {
-                        $this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
-                    } else {
-                        $this->renderTTFText($im, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf);
-                    }
-                }
-            } else {
-                // NICETEXT::
-                // options anti_aliased and iterations is NOT available when doing this!!
-                $w = imagesx($im);
-                $h = imagesy($im);
-                $tmpStr = $this->imageService->randomName();
-                $fileMenu = $tmpStr . '_menuNT.png';
-                $fileColor = $tmpStr . '_colorNT.png';
-                $fileMask = $tmpStr . '_maskNT.png';
-                // Scalefactor
-                $sF = MathUtility::forceIntegerInRange(($conf['niceText.']['scaleFactor'] ?? 2), 2, 5);
-                $newW = (int)ceil($sF * imagesx($im));
-                $newH = (int)ceil($sF * imagesy($im));
-                // Make mask
-                $maskImg = imagecreatetruecolor($newW, $newH);
-                $Bcolor = imagecolorallocate($maskImg, 255, 255, 255);
-                imagefilledrectangle($maskImg, 0, 0, $newW, $newH, $Bcolor);
-                $Fcolor = imagecolorallocate($maskImg, 0, 0, 0);
+        // Font Color:
+        $cols = $this->convertColor($conf['fontColor']);
+        // NiceText is calculated
+        if (!($conf['niceText'] ?? false)) {
+            $Fcolor = imagecolorallocate($im, $cols[0], $cols[1], $cols[2]);
+            // antiAliasing is setup:
+            $Fcolor = $conf['antiAlias'] ? $Fcolor : -$Fcolor;
+            for ($a = 0; $a < $conf['iterations']; $a++) {
                 // If any kind of spacing applies, we use this function:
                 if ($spacing || $wordSpacing) {
-                    $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
+                    $this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
                 } else {
-                    $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf, $sF);
+                    $this->renderTTFText($im, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf);
                 }
-                $this->ImageWrite($maskImg, $fileMask);
-                imagedestroy($maskImg);
-                // Downscales the mask
-                if (!$this->processorEffectsEnabled) {
-                    $command = trim($this->imageService->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
-                } else {
-                    $command = trim(($conf['niceText.']['before'] ?? '') . ' ' . $this->imageService->scalecmd . ' ' . $w . 'x' . $h . '! ' . ($conf['niceText.']['after'] ?? '') . ' -negate');
-                    if (isset($conf['niceText.']['sharpen'])) {
-                        $command .= $this->imageService->v5_sharpen($conf['niceText.']['sharpen']);
-                    }
-                }
-                $this->imageService->imageMagickExec($fileMask, $fileMask, $command);
-                // Make the color-file
-                $colorImg = imagecreatetruecolor($w, $h);
-                $Ccolor = imagecolorallocate($colorImg, $cols[0], $cols[1], $cols[2]);
-                imagefilledrectangle($colorImg, 0, 0, $w, $h, $Ccolor);
-                $this->ImageWrite($colorImg, $fileColor);
-                imagedestroy($colorImg);
-                // The mask is applied
-                // The main pictures is saved temporarily
-                $this->ImageWrite($im, $fileMenu);
-                $this->imageService->combineExec($fileMenu, $fileColor, $fileMask, $fileMenu);
-                // The main image is loaded again...
-                $backIm = $this->imageCreateFromFile($fileMenu);
-                // ... and if nothing went wrong we load it onto the old one.
-                if ($backIm) {
-                    if (!$this->saveAlphaLayer) {
-                        imagecolortransparent($backIm, -1);
-                    }
-                    $im = $backIm;
-                }
-                // Deleting temporary files;
-                unlink($fileMenu);
-                unlink($fileColor);
-                unlink($fileMask);
             }
+        } else {
+            // NICETEXT::
+            // options anti_aliased and iterations is NOT available when doing this!!
+            $w = imagesx($im);
+            $h = imagesy($im);
+            $tmpStr = $this->imageService->randomName();
+            $fileMenu = $tmpStr . '_menuNT.png';
+            $fileColor = $tmpStr . '_colorNT.png';
+            $fileMask = $tmpStr . '_maskNT.png';
+            // Scalefactor
+            $sF = MathUtility::forceIntegerInRange(($conf['niceText.']['scaleFactor'] ?? 2), 2, 5);
+            $newW = (int)ceil($sF * imagesx($im));
+            $newH = (int)ceil($sF * imagesy($im));
+            // Make mask
+            $maskImg = imagecreatetruecolor($newW, $newH);
+            $Bcolor = imagecolorallocate($maskImg, 255, 255, 255);
+            imagefilledrectangle($maskImg, 0, 0, $newW, $newH, $Bcolor);
+            $Fcolor = imagecolorallocate($maskImg, 0, 0, 0);
+            // If any kind of spacing applies, we use this function:
+            if ($spacing || $wordSpacing) {
+                $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
+            } else {
+                $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf, $sF);
+            }
+            $this->ImageWrite($maskImg, $fileMask);
+            imagedestroy($maskImg);
+            // Downscales the mask
+            if (!$this->processorEffectsEnabled) {
+                $command = trim($this->imageService->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
+            } else {
+                $command = trim(($conf['niceText.']['before'] ?? '') . ' ' . $this->imageService->scalecmd . ' ' . $w . 'x' . $h . '! ' . ($conf['niceText.']['after'] ?? '') . ' -negate');
+                if (isset($conf['niceText.']['sharpen'])) {
+                    $command .= $this->imageService->v5_sharpen($conf['niceText.']['sharpen']);
+                }
+            }
+            $this->imageService->imageMagickExec($fileMask, $fileMask, $command);
+            // Make the color-file
+            $colorImg = imagecreatetruecolor($w, $h);
+            $Ccolor = imagecolorallocate($colorImg, $cols[0], $cols[1], $cols[2]);
+            imagefilledrectangle($colorImg, 0, 0, $w, $h, $Ccolor);
+            $this->ImageWrite($colorImg, $fileColor);
+            imagedestroy($colorImg);
+            // The mask is applied
+            // The main pictures is saved temporarily
+            $this->ImageWrite($im, $fileMenu);
+            $this->imageService->combineExec($fileMenu, $fileColor, $fileMask, $fileMenu);
+            // The main image is loaded again...
+            $backIm = $this->imageCreateFromFile($fileMenu);
+            // ... and if nothing went wrong we load it onto the old one.
+            if ($backIm) {
+                if (!$this->saveAlphaLayer) {
+                    imagecolortransparent($backIm, -1);
+                }
+                $im = $backIm;
+            }
+            // Deleting temporary files;
+            unlink($fileMenu);
+            unlink($fileColor);
+            unlink($fileMask);
         }
     }
 

@@ -444,7 +444,6 @@ export class TypoScriptStreamParserFactory {
         'hidden': kw('hidden'),
         'hiddenFields': kw('hiddenFields'),
         'hide': kw('hide'),
-        'hideButCreateMap': kw('hideButCreateMap'),
         'hidePStyleItems': kw('hidePStyleItems'),
         'hideRecords': kw('hideRecords'),
         'highColor': kw('highColor'),

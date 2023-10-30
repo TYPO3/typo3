@@ -1729,11 +1729,6 @@ Note: This option is not available if .niceText is enabled]]></description>
 This feature may be used if you need a shadow-object to base a shadow on the text, but do not want the text to print.]]></description>
             <default><![CDATA[0]]></default>
         </property>
-        <property name="hideButCreateMap" type="boolean">
-            <description><![CDATA[If this option is set, the text will not be rendered. Shadows and emboss will, though, so don't apply these!! But this feature is also meant only to enable a text to generate the imageMap coordinates without rendering itself.]]></description>
-            <default><![CDATA[
-]]></default>
-        </property>
         <property name="iterations" type="int">
             <description><![CDATA[posint
             How many times the text should be "printed" onto it self. This will add the effect of bold text.
