@@ -132,53 +132,53 @@ class SimpleParser
                 $this->next(SimpleNode::TYPE_CDATA);
                 $this->append('<![CDATA[');
                 $skip = 8;
-                // comment start
+            // comment start
             } elseif ($character === '<'
                 && $this->isType(SimpleNode::TYPE_TEXT) && substr($string, $i, 4) === '<!--'
             ) {
                 $this->next(SimpleNode::TYPE_COMMENT);
                 $this->append('<!--');
                 $skip = 3;
-                // element start
+            // element start
             } elseif ($character === '<'
                 && $this->isType(SimpleNode::TYPE_TEXT)
                 && preg_match('#^</?[a-z]#i', substr($string, $i, 3))
             ) {
                 $this->next(SimpleNode::TYPE_ELEMENT);
                 $this->append($character);
-                // CDATA end
+            // CDATA end
             } elseif ($character === ']'
                 && $this->isType(SimpleNode::TYPE_CDATA) && substr($string, $i, 3) === ']]>'
             ) {
                 $this->append(']]>');
                 $this->next(SimpleNode::TYPE_TEXT);
                 $skip = 2;
-                // comment end
+            // comment end
             } elseif ($character === '-'
                 && $this->isType(SimpleNode::TYPE_COMMENT) && substr($string, $i, 3) === '-->'
             ) {
                 $this->append('-->');
                 $this->next(SimpleNode::TYPE_TEXT);
                 $skip = 2;
-                // element end
+            // element end
             } elseif ($character === '>'
                 && $this->isType(SimpleNode::TYPE_ELEMENT) && !$this->inAttribute()
             ) {
                 $this->append($character);
                 $this->next(SimpleNode::TYPE_TEXT);
-                // element attribute start
+            // element attribute start
             } elseif (($character === '"' || $character === "'")
                 && $this->isType(SimpleNode::TYPE_ELEMENT) && !$this->inAttribute()
             ) {
                 $this->attribute = $character;
                 $this->append($character);
-                // element attribute end
+            // element attribute end
             } elseif (($character === '"' || $character === "'")
                 && $this->isType(SimpleNode::TYPE_ELEMENT) && $this->attribute === $character
             ) {
                 $this->append($character);
                 $this->attribute = null;
-                // anything else (put to current type)
+            // anything else (put to current type)
             } else {
                 $this->append($character);
             }

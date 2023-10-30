@@ -591,8 +591,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                     break;
                 }
             }
-            // mimic user authentication to mitigate observable timing discrepancies
-            // @link https://cwe.mitre.org/data/definitions/208.html
+        // mimic user authentication to mitigate observable timing discrepancies
+        // @link https://cwe.mitre.org/data/definitions/208.html
         } elseif ($activeLogin) {
             $subType = 'authUser' . $this->loginType;
             foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {

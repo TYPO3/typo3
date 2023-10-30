@@ -714,7 +714,7 @@ class FileList
                             $theData[$field] .= '<span class="label label-danger label-space-left">'
                                 . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                                 . '</span>';
-                            // Thumbnails?
+                        // Thumbnails?
                         } elseif ($this->thumbs && ($fileObject->isImage() || $fileObject->isMediaFile())) {
                             $processedFile = $fileObject->process(
                                 ProcessedFile::CONTEXT_IMAGEPREVIEW,
@@ -1031,7 +1031,7 @@ class FileList
                 if ($fileUrl) {
                     $cells['download'] = '<a href="' . htmlspecialchars($fileUrl) . '" download="' . htmlspecialchars($fileOrFolderObject->getName()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</a>';
                 }
-                // Folder download
+            // Folder download
             } elseif ($fileOrFolderObject instanceof Folder) {
                 $cells['download'] = '<button type="button" data-folder-download="' . htmlspecialchars($this->uriBuilder->buildUriFromRoute('file_download')) . '" data-folder-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</button>';
             }

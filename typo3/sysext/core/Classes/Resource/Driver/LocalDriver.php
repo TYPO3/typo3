@@ -376,7 +376,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         }
 
         // $c is the counter for how many items we still have to fetch (-1 is unlimited)
-        $c = $numberOfItems > 0 ? $numberOfItems : - 1;
+        $c = $numberOfItems > 0 ? $numberOfItems : -1;
         $items = [];
         while ($iterator->valid() && ($numberOfItems === 0 || $c > 0)) {
             // $iteratorItem is the file or folder name

@@ -184,7 +184,7 @@ class BackendModuleRepository implements SingletonInterface
         // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
         if (!empty($module['navigationFrameScript']) && is_string($module['navigationFrameScript'])) {
             $entry->setNavigationFrameScript($module['navigationFrameScript']);
-            // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
+        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
         } elseif (!empty($module['parentNavigationFrameScript']) && is_string($module['parentNavigationFrameScript'])) {
             $entry->setNavigationFrameScript($module['parentNavigationFrameScript']);
         }

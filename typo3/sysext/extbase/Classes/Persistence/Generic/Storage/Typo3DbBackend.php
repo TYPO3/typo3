@@ -278,7 +278,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064721, $e);
             }
             $rows = $result->fetchAllAssociative();
-            // Prepared Doctrine DBAL statement
+        // Prepared Doctrine DBAL statement
         } elseif ($realStatement instanceof \Doctrine\DBAL\Statement) {
             try {
                 $result = $realStatement->executeQuery($parameters);
