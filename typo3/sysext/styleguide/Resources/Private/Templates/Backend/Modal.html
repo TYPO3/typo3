@@ -15,126 +15,55 @@
 
         <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:modal" /></h1>
 
-        <script>
-            function openModal(title, message, type, btns){
-                title = title || 'Modal title';
-                message = message || 'Modal message';
-                type = type || 1;
-                btnClass = ['', 'btn-warning', 'btn-danger', 'btn-primary'];
-                btns = btns || [{
-                    text: 'Cancel',
-                    active: true,
-                    btnClass: 'btn-default',
-                    name: 'cancel'
-                },
-                {
-                    text: 'OK',
-                    btnClass: btnClass[type],
-                    name: 'ok'
-                }];
-                top.TYPO3.Modal.confirm(
-                    title,
-                    message,
-                    type,
-                    btns
-                );
-            }
-        </script>
+        <p>Modals on buttons can be triggered using t3js-modal-trigger class. There are various
+        data attributes to customize text and behavior. Not all of them are shown here.</p>
 
         <h2>Simple Modal</h2>
 
         <div class="example">
-            <a href="javascript:openModal();" class="btn btn-primary">
+            <a class="btn btn-primary t3js-modal-trigger">
                 Open simple modal
             </a>
         </div>
 
         <sg:code language="html" codeonly="true">
-            <script>
-                top.TYPO3.Modal.confirm();
-            </script>
+            <a class="btn btn-primary t3js-modal-trigger">
+                Open simple modal
+            </a>
         </sg:code>
 
         <h2>Customize title and message</h2>
 
         <div class="example">
-            <a href="javascript:openModal('Modal with custom title', 'Modal with custom message');" class="btn btn-primary">
+            <a class="btn btn-primary t3js-modal-trigger" data-title="Modal with custom title" data-content="Modal with custom message">
                 Open modal
             </a>
         </div>
 
         <sg:code language="html" codeonly="true">
-            <script>
-                top.TYPO3.Modal.confirm(
-                    'Modal with custom title',
-                    'Modal with custom message'
-                ]);
-            </script>
+            <a class="btn btn-primary t3js-modal-trigger" data-title="Modal with custom title" data-content="Modal with custom message">
+                Open modal
+            </a>
         </sg:code>
 
         <h2>Change modal type</h2>
 
         <div class="example">
-            <a href="javascript:openModal('Modal title', 'Modal message', 1);" class="btn btn-warning">
+            <a class="btn btn-warning t3js-modal-trigger" data-severity="warning">
                 Open warning modal
             </a>
-            <a href="javascript:openModal('Modal title', 'Modal message', 2);" class="btn btn-danger">
+            <a class="btn btn-danger t3js-modal-trigger" data-severity="error">
                 Open danger modal
             </a>
-            <a href="javascript:openModal('Modal title', 'Modal message', 3);" class="btn btn-primary">
-                Open primary modal
-            </a>
         </div>
 
         <sg:code language="html" codeonly="true">
-            <script>
-                top.TYPO3.Modal.confirm(
-                    'Modal title',
-                    'Modal message',
-                    1 // warning
-                ]);
-                top.TYPO3.Modal.confirm(
-                    'Modal title',
-                    'Modal message',
-                    2 // danger
-                ]);
-                top.TYPO3.Modal.confirm(
-                    'Modal title',
-                    'Modal message',
-                    3 // primary
-                ]);
-            </script>
-        </sg:code>
-
-        <h2>Customize submit buttons</h2>
-
-        <div class="example">
-            <a href="javascript:openModal('Modal title', 'Modal message', 2, [{text: 'Custom Cancel',active: true,btnClass: 'btn-default',name: 'cancel'},{text: 'May be',btnClass: 'btn-warning',name: 'may-be'},{text: 'OK',btnClass: 'btn-danger',name: 'ok'}]);" class="btn btn-primary">
-                Open modal
+            <a class="btn btn-warning t3js-modal-trigger" data-severity="warning">
+                Open warning modal
             </a>
-        </div>
-
-        <sg:code language="html" codeonly="true">
-            <script>
-                top.TYPO3.Modal.confirm(
-                    'Modal title',
-                    'Modal message',
-                    2, [{
-                        text: 'Custom Cancel',
-                        active: true,
-                        btnClass: 'btn-default',
-                        name: 'cancel'
-                    },{
-                        text: 'May be',
-                        btnClass: 'btn-warning',
-                        name: 'may-be'
-                    },{
-                        text: 'OK',
-                        btnClass: 'btn-danger',
-                        name: 'ok'
-                    }]
-                ]);
-            </script>
+            <a class="btn btn-danger t3js-modal-trigger" data-severity="error">
+                Open danger modal
+            </a>
         </sg:code>
 
     </div>
