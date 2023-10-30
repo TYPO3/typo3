@@ -65,7 +65,8 @@ available:
 
 Table
     Select one of the tables from the list. The corresponding fields displayed
-    below change depending on the selected table.
+    below change depending on the selected table. See also
+    :ref:`create-database-record-extend-tables-list` on how to extend this list.
 
 Storage PID
     Select the page on which a new record should be stored.
@@ -137,3 +138,32 @@ The content is now available on the configured page:
 
     The created page content record on the configured page
 
+
+..  _create-database-record-extend-tables-list:
+
+Extend list of tables
+=====================
+
+By default, only a few tables can be selected for external creation in the
+create record reaction. In case you want to allow your own tables to be
+available in the reaction's table selection, add the table in a corresponding
+:ref:`TCA override file <t3coreapi:storing-changes-extension-overrides>`:
+
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/TCA/Overrides/sys_reaction.php
+
+    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reactions')) {
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+            'sys_reaction',
+            'tx_myextension_domain_model_mytable',
+            [
+                'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:tx_myextension_domain_model_mytable',
+                'tx_myextension_domain_model_mytable',
+                'myextension-tx_myextension_domain_model_mytable-icon',
+            ]
+        );
+    }
+
+In case your extension depends on EXT:reactions the :php:`isLoaded()` check
+might be skipped. Please note that tables which configured
+:ref:`adminOnly <t3tca:ctrl-reference-adminonly>` to true are not allowed.
