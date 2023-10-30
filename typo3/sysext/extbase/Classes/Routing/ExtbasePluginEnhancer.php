@@ -230,10 +230,10 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         // use default action name if controller matches
         if ($tryUpdate && empty($target['action']) && $controllerName === ($target['controller'] ?? null)) {
             $target['action'] = $actionName;
-            // use default controller name if action is defined (implies: non-default-controllers must be given)
+        // use default controller name if action is defined (implies: non-default-controllers must be given)
         } elseif ($tryUpdate && empty($target['controller']) && !empty($target['action'])) {
             $target['controller'] = $controllerName;
-            // fallback and override
+        // fallback and override
         } else {
             $target['controller'] = $controllerName;
             $target['action'] = $actionName;

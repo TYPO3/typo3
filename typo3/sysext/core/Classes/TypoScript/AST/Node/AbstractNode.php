@@ -67,7 +67,7 @@ abstract class AbstractNode implements NodeInterface
         $childCounter = 0;
         foreach ($this->getNextChild() as $child) {
             $child->setIdentifier($this->identifier . $childCounter);
-            $childCounter ++;
+            $childCounter++;
         }
     }
 

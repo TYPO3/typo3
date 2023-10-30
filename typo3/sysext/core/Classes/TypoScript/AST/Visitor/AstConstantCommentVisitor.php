@@ -386,7 +386,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
                     return [];
                 }
                 if (isset($this->categories[$mainCategory])) {
-                    $this->categories[$mainCategory]['usageCount'] ++;
+                    $this->categories[$mainCategory]['usageCount']++;
                 } else {
                     $this->categories[$mainCategory] = [
                         'usageCount' => 1,
