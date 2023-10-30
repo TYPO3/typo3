@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/test-di",
+	"type": "typo3-cms-extension",
+	"description": "This extension contains dependency injection fixtures.",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_di"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestDi\\": "Classes/"
+		}
+	}
+}
