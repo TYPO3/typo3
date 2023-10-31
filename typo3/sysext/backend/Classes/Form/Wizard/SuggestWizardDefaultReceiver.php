@@ -154,7 +154,7 @@ class SuggestWizardDefaultReceiver
 
         $selectQueryBuilder = clone $this->queryBuilder;
         $selectQueryBuilder = $this->prepareOrderByStatement($selectQueryBuilder);
-        $result = $selectQueryBuilder->select('*')
+        $result = $selectQueryBuilder->select($this->table . '.*')
             ->from($this->table)
             ->setFirstResult($start)
             ->setMaxResults($maxQueryResults)
@@ -162,7 +162,7 @@ class SuggestWizardDefaultReceiver
 
         $countQueryBuilder = clone $this->queryBuilder;
         $allRowsCount = $countQueryBuilder
-            ->count('uid')
+            ->count($this->table . '.uid')
             ->from($this->table)
             ->executeQuery()
             ->fetchOne();
