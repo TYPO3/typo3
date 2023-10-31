@@ -288,7 +288,8 @@ final class ResourceCompressorTest extends UnitTestCase
                 'section' => 'top',
             ],
         ];
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory', 'getJavaScriptFileType']);
+        $subject->method('getJavaScriptFileType')->willReturn('');
         $subject->expects(self::once())
             ->method('createMergedJsFile')
             ->willReturn($concatenatedFileName);
@@ -413,7 +414,8 @@ final class ResourceCompressorTest extends UnitTestCase
     public function concatenateJsFileAddsAsyncPropertyIfAllFilesAreAsync(array $input, bool $expected): void
     {
         $concatenatedFileName = 'merged_foo.js';
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory', 'getJavaScriptFileType']);
+        $subject->method('getJavaScriptFileType')->willReturn('');
         $subject->expects(self::once())
             ->method('createMergedJsFile')
             ->willReturn($concatenatedFileName);

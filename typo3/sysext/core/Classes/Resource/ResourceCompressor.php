@@ -17,10 +17,11 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This class merges and compresses CSS and JavaScript files of the TYPO3 Frontend.
@@ -668,21 +669,12 @@ class ResourceCompressor
     }
 
     /**
-     * Determines the JavaScript mime type
-     *
-     * The <script> tag only needs the type if the page is not rendered as HTML5.
-     * For TYPO3 Frontend the configured config.doctype is evaluated.
+     * Whenever HTML5 is used, do not use the "text/javascript" type attribute.
      */
     protected function getJavaScriptFileType(): string
     {
-        if (!isset($GLOBALS['TSFE'])
-            || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)
-            || ($GLOBALS['TSFE']->config['config']['doctype'] ?? 'html5') === 'html5'
-        ) {
-            // no TSFE, or doctype set to html5
-            return '';
-        }
-        return 'text/javascript';
+        $docType = GeneralUtility::makeInstance(PageRenderer::class)->getDocType();
+        return $docType === DocType::html5 ? '' : 'text/javascript';
     }
 
     protected function getPathFixer(): RelativeCssPathFixer
