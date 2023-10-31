@@ -1,70 +1,53 @@
-@media (min-width: 769px) {
-  #container-navigation {
-    position: fixed;
-    width: 260px;
-  }
-  #container-content {
-    margin-left: 300px;
-  }
+#tx-styleguide-navigation {
+  position: fixed;
+  width: 260px;
 }
-@media (min-width: 769px) and (max-height: 660px) {
-  #container-navigation {
-    position: absolute;
-  }
+
+#tx-styleguide-content {
+  margin-left: 300px;
 }
-.example {
+
+#tx-styleguide-content .example {
   background-color: var(--typo3-component-bg);
   border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
   padding: var(--typo3-spacing);
   margin-bottom: var(--typo3-spacing);
 }
-.example + *:not(.example) {
+#tx-styleguide-content .example + *:not(.example) {
   margin-top: var(--typo3-component-spacing);
 }
-.example:before {
+#tx-styleguide-content .example:before {
   content: "EXAMPLE";
   display: block;
   font-weight: normal;
   font-size: 0.9em;
   margin-bottom: var(--typo3-spacing);
 }
-.example.code {
-  font-family: var(--typo3-font-family-code);
-}
-.example.code:before {
+#tx-styleguide-content .example.code:before {
   content: "EXAMPLE CODE";
 }
-.example pre {
-  font-size: var(--typo3-component-font-size);
-  margin: 0;
-}
-.example pre[class*=language-] {
-  border-radius: calc(var(--typo3-component-border-radius) / 2);
-  color: var(--typo3-component-color);
-  margin: 0;
-}
-.example pre code {
+#tx-styleguide-content .example pre code {
   overflow: auto;
   width: 100%;
   display: block;
 }
 
-div.icon-container {
+#tx-styleguide-content .icon-container {
   border: 1px solid transparent;
   margin-bottom: 20px;
   height: 100px;
 }
-div.icon-container.icon-deprecated-container {
+#tx-styleguide-content .icon-container.icon-deprecated-container {
   height: 175px;
 }
-div.icon-container span.icon-container-icon,
-div.icon-container span.icon-container-label {
+#tx-styleguide-content .icon-container span.icon-container-icon,
+#tx-styleguide-content .icon-container span.icon-container-label {
   display: block;
   text-align: center;
   background-color: #eee;
   min-height: 50px;
   padding: 5px;
 }
-div.icon-container:hover span.icon-container-icon, div.icon-container:hover span.icon-container-label {
+#tx-styleguide-content .icon-container:hover span.icon-container-icon, #tx-styleguide-content .icon-container:hover span.icon-container-label {
   background-color: #e1e1e1;
 }

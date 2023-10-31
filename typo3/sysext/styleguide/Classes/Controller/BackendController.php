@@ -91,7 +91,7 @@ final class BackendController
         if (!in_array($currentAction, $this->allowedActions, true)
             && !in_array($currentAction, $this->allowedAjaxActions, true)
         ) {
-            throw new \RuntimeException('Not allowed action', 1672751508);
+            throw new \RuntimeException('Action not allowed', 1672751508);
         }
         $actionMethodName = $currentAction . 'Action';
         return $this->$actionMethodName($request);
@@ -304,7 +304,7 @@ final class BackendController
         $loremIpsum = GeneralUtility::makeInstance(KauderwelschService::class)->getLoremIpsum();
         // We're writing to an own queue here to position the messages within the body.
         // Normal modules wouldn't usually do this and would let ModuleTemplate layout take care of rendering
-        // at some appropriate positions.
+        // at some appropriate position.
         $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.demo');
         $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info - Title for Info message', ContextualFeedbackSeverity::INFO, true));
         $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice - Title for Notice message', ContextualFeedbackSeverity::NOTICE, true));

@@ -1,21 +1,14 @@
 // Navigation scaffold
-@media (min-width: 769px) {
-    #container-navigation {
-        position: fixed;
-        width: 260px;
-    }
-    #container-content {
-        margin-left: 300px;
-    }
-    @media (max-height: 660px) {
-        #container-navigation {
-            position: absolute;
-        }
-    }
+#tx-styleguide-navigation {
+    position: fixed;
+    width: 260px;
+}
+#tx-styleguide-content {
+    margin-left: 300px;
 }
 
-// Example
-.example {
+// Code and example rendering
+#tx-styleguide-content .example {
     background-color: var(--typo3-component-bg);
     border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     padding: var(--typo3-spacing);
@@ -31,19 +24,9 @@
         margin-bottom: var(--typo3-spacing);
     }
     &.code {
-        font-family: var(--typo3-font-family-code);
         &:before {
             content: 'EXAMPLE CODE';
         }
-    }
-    pre {
-        font-size: var(--typo3-component-font-size);
-        margin: 0;
-    }
-    pre[class*="language-"] {
-        border-radius: calc(var(--typo3-component-border-radius) / 2);
-        color: var(--typo3-component-color);
-        margin: 0;
     }
     pre code {
         overflow: auto;
@@ -53,15 +36,13 @@
 }
 
 // Icon module
-div.icon-container {
+#tx-styleguide-content .icon-container {
     border: 1px solid transparent;
     margin-bottom: 20px;
     height: 100px;
-
     &.icon-deprecated-container {
         height: 175px;
     }
-
     span.icon-container-icon,
     span.icon-container-label {
         display: block;
