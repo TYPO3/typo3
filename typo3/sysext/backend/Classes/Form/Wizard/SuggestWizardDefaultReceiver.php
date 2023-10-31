@@ -152,13 +152,13 @@ class SuggestWizardDefaultReceiver
         $start = $recursionCounter * $maxQueryResults;
         $this->prepareSelectStatement();
         $this->prepareOrderByStatement();
-        $result = $this->queryBuilder->select('*')
+        $result = $this->queryBuilder->select($this->table . '.*')
             ->from($this->table)
             ->setFirstResult($start)
             ->setMaxResults($maxQueryResults)
             ->executeQuery();
         $allRowsCount = $this->queryBuilder
-            ->count('uid')
+            ->count($this->table . '.uid')
             ->resetQueryPart('orderBy')
             ->executeQuery()
             ->fetchOne();
