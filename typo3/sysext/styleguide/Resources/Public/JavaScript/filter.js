@@ -21,14 +21,10 @@ import DateTimePicker from '@typo3/backend/date-time-picker.js';
 class Filter {
   constructor() {
     DocumentService.ready().then(() => {
-      this.initializeDateTimePickers();
+      document.querySelectorAll('.t3js-datetimepicker')?.forEach((element) => {
+        DateTimePicker.initialize(element);
+      })
     });
-  }
-
-  initializeDateTimePickers() {
-    document.querySelectorAll('.t3js-datetimepicker')?.forEach((element) => {
-      DateTimePicker.initialize(element);
-    })
   }
 }
 

@@ -16,7 +16,7 @@ import ImmediateAction from '@typo3/backend/action-button/immediate-action.js';
 import DeferredAction from '@typo3/backend/action-button/deferred-action.js';
 
 /**
- * Action used when an operation execution time is unkown.
+ * Action used when an operation execution time is unknown.
  */
 class RenderNotifications {
   constructor() {
@@ -44,7 +44,6 @@ class RenderNotifications {
     if (!includeActions) {
       return [];
     }
-
     return [
       {
         label: 'Immediate action',
