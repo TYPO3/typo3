@@ -546,21 +546,16 @@ class FileList
             return '';
         }
 
-        $iconIdentifier = null;
-        switch ($direction) {
-            case NavigationDirection::BACKWARD:
-                $iconIdentifier = 'actions-move-up';
-                break;
-            case NavigationDirection::FORWARD:
-                $iconIdentifier = 'actions-move-down';
-                break;
-        }
+        $iconIdentifier = match ($direction) {
+            NavigationDirection::BACKWARD => 'actions-move-up',
+            NavigationDirection::FORWARD => 'actions-move-down',
+        };
 
         $markup = [];
         $markup[] = '<tr>';
         $markup[] = '  <td colspan="' . count($this->fieldArray) . '">';
         $markup[] = '    <a href="' . htmlspecialchars($link->uri) . '">';
-        $markup[] = '      ' . ($iconIdentifier !== null ? $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() : '');
+        $markup[] = '      ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render();
         $markup[] = '      <i>[' . $link->label . ']</i>';
         $markup[] = '    </a>';
         $markup[] = '  </td>';
