@@ -115,7 +115,15 @@ class ShortcutController
      */
     public function removeAction(ServerRequestInterface $request): ResponseInterface
     {
-        $success = $this->shortcutRepository->removeShortcut((int)($request->getParsedBody()['shortcutId'] ?? 0));
-        return new JsonResponse(['success' => $success]);
+        $shortcut = $this->shortcutRepository->getShortcutById((int)($request->getParsedBody()['shortcutId'] ?? 0));
+        $success = $this->shortcutRepository->removeShortcut($shortcut['raw']['uid'] ?? 0);
+
+        return new JsonResponse([
+            'success' => $success,
+            'data' => [
+                'route' => $shortcut['route'] ?? null,
+                'args' => $shortcut['raw']['arguments'] ?? null,
+            ],
+        ]);
     }
 }

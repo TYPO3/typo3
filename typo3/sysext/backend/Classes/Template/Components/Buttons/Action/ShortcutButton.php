@@ -224,13 +224,15 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         // Shortcut Button
         $shortcutItem = GeneralUtility::makeInstance(DropDownItem::class);
         $shortcutItem->setTag('button');
+        $attributes = $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText);
         if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
             $shortcutItem->setLabel($alreadyBookmarkedText);
             $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL));
+            $shortcutItem->setAttributes($attributes + ['data-dispatch-disabled' => 'disabled', 'disabled' => 'disabled']);
         } else {
             $shortcutItem->setLabel($confirmationText);
             $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL));
-            $shortcutItem->setAttributes($this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText));
+            $shortcutItem->setAttributes($attributes);
         }
         $dropdownItems[] = $shortcutItem;
 
