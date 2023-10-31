@@ -34,6 +34,13 @@ enum Identifiers {
   shortcutEditSelector = '.t3js-shortcut-edit',
 
   shortcutFormSelector = '.t3js-shortcut-form',
+
+  createShortcutSelector = '[data-dispatch-action="TYPO3.ShortcutMenu.createShortcut"]',
+}
+
+interface BookmarkData {
+  route: string;
+  args: string;
 }
 
 /**
@@ -89,9 +96,13 @@ class ShortcutMenu {
       Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).then((icon: string): void => {
         shortcutButton.innerHTML = icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']) : '');
       });
-      shortcutButton.classList.add(isDropdownItem ? 'disabled' : 'active');
-      // @todo using plain `disabled` HTML attr would have been better, since it disables events, mouse cursor, etc.
-      //       (however, it might make things more complicated in Bootstrap's `button-variant` mixin)
+
+      if (isDropdownItem) {
+        shortcutButton.setAttribute('disabled', 'disabled');
+      } else {
+        shortcutButton.classList.add('active');
+      }
+
       shortcutButton.dataset.dispatchDisabled = 'disabled';
       shortcutButton.title = securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']);
     }).catch((): void => {
@@ -154,11 +165,15 @@ class ShortcutMenu {
     modal.addEventListener('confirm.button.ok', (): void => {
       (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_remove)).post({
         shortcutId,
-      }).then((): void => {
+      }).then(async (response: AjaxResponse): Promise<void> => {
+        const data = await response.resolve();
         // a reload is used in order to restore the original behaviour
         // e.g. remove groups that are now empty because the last one in the group
         // was removed
         this.refreshMenu();
+        // if we remove bookmark entry for current page, we want to enable the bookmark link
+        // again in the dropdown menu
+        this.checkIfEnableBookmarkLink(data.data);
       });
       modal.hideModal();
     });
@@ -206,6 +221,33 @@ class ShortcutMenu {
     }).finally((): void => {
       document.querySelector(Identifiers.containerSelector + ' typo3-backend-spinner').replaceWith(existingIcon);
     });
+  }
+
+  private checkIfEnableBookmarkLink(bookmarkData: BookmarkData): void {
+    const shortcutButton: HTMLElement|null = top.list_frame?.document.querySelector(Identifiers.createShortcutSelector);
+    if (!shortcutButton) {
+      return;
+    }
+
+    const dispatchArgs = JSON.parse(shortcutButton.dataset.dispatchArgs.replace(/&quot;/g, '"'));
+    if (dispatchArgs[0] !== bookmarkData.route || dispatchArgs[1] !== bookmarkData.args) {
+      return;
+    }
+
+    const securityUtility = new SecurityUtility();
+    const isDropdownItem = shortcutButton.classList.contains('dropdown-item');
+
+    Icons.getIcon('actions-system-shortcut-new', Icons.sizes.small).then((icon: string): void => {
+      shortcutButton.innerHTML = icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.makeBookmark']) : '');
+    });
+    shortcutButton.title = securityUtility.encodeHtml(TYPO3.lang['labels.makeBookmark']);
+    delete shortcutButton.dataset.dispatchDisabled;
+
+    if (isDropdownItem) {
+      shortcutButton.removeAttribute('disabled');
+    } else {
+      shortcutButton.classList.remove('active');
+    }
   }
 }
 
