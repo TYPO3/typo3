@@ -30,7 +30,7 @@ module.exports = function(grunt) {
       styleguide: {
         files: {
           "<%= paths.public %>/backend.css": "<%= paths.private %>/backend.scss",
-          "<%= paths.public %>/frontend.css": "<%= paths.private %>/frontend.scss"
+          "<%= paths.public %>/styleguide-frontend.css": "<%= paths.private %>/styleguide-frontend.scss"
         }
       }
     },
