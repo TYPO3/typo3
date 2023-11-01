@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 /**
  * Interface for table handlers
+ *
+ * @internal
  */
 interface TableHandlerInterface
 {

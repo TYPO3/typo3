@@ -19,5 +19,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 /**
  * TcaDataGenerator exception
+ *
+ * @internal
  */
 class Exception extends \TYPO3\CMS\Styleguide\Exception {}

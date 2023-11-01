@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration;
 
 /**
  * User function 1
+ *
+ * @internal
  */
 final class User1
 {

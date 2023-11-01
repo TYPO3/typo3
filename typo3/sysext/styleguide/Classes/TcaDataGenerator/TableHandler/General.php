@@ -26,6 +26,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 
 /**
  * General table handler
+ *
+ * @internal
  */
 final class General extends AbstractTableHandler implements TableHandlerInterface
 {

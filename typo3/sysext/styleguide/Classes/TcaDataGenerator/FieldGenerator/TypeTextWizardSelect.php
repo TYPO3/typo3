@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=text fields
+ *
+ * @internal
  */
 final class TypeTextWizardSelect extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

@@ -23,6 +23,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for hashed type=password fields
+ *
+ * @internal
  */
 final class TypePassword extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

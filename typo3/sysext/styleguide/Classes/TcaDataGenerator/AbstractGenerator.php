@@ -32,6 +32,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Manage a page tree with all test / demo styleguide data.
+ *
+ * @internal
  */
 abstract class AbstractGenerator
 {

@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=input fields
+ *
+ * @internal
  */
 final class TypeInputForceL10nParent extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

@@ -26,6 +26,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 /**
  * Generate data for fal_1 field of
  * tx_styleguide_elements_select_single_12_foreign
+ *
+ * @internal
  */
 final class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

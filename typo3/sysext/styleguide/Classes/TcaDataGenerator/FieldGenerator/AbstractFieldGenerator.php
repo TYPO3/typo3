@@ -22,6 +22,8 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
 /**
  * Implement some standard stuff
+ *
+ * @internal
  */
 abstract class AbstractFieldGenerator
 {

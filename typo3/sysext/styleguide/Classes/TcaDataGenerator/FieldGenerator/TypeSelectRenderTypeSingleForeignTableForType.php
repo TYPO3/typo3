@@ -24,6 +24,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=select fields.
  * Special field for 'foreign_table' of table typeforeign
+ *
+ * @internal
  */
 final class TypeSelectRenderTypeSingleForeignTableForType extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

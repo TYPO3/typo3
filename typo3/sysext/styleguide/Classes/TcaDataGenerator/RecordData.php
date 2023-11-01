@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Create data for a specific table and its child tables
+ *
+ * @internal
  */
 final class RecordData
 {

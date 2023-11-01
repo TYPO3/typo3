@@ -24,6 +24,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 
 /**
  * Generate data for table tx_styleguide_staticdata
+ *
+ * @internal
  */
 final class StaticData extends AbstractTableHandler implements TableHandlerInterface
 {

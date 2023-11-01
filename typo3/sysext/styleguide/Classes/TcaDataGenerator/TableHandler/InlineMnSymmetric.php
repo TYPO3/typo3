@@ -26,6 +26,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 
 /**
  * Generate data for table tx_styleguide_inline_mnsymmetric
+ *
+ * @internal
  */
 final class InlineMnSymmetric extends AbstractTableHandler implements TableHandlerInterface
 {

@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=link fields
+ *
+ * @internal
  */
 final class TypeLink extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

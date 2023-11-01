@@ -23,6 +23,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Generate data for type=group fields
+ *
+ * @internal
  */
 final class TypeGroupAllowedBeUsersBeGroups extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

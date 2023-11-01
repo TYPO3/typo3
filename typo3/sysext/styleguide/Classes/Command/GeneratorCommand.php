@@ -30,6 +30,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Generate TCA for Styleguide backend (create / delete)
+ *
+ * @internal
  */
 final class GeneratorCommand extends Command
 {

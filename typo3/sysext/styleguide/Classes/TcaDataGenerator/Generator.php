@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Manage a page tree with all test / demo styleguide data
+ *
+ * @internal
  */
 final class Generator extends AbstractGenerator
 {

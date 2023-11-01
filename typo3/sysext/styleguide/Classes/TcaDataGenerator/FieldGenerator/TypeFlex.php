@@ -25,6 +25,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorNotFoundException;
 
 /**
  * Generate data for type=flex fields
+ *
+ * @internal
  */
 final class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

@@ -23,6 +23,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Generate data for type=select fields
+ *
+ * @internal
  */
 final class TypeSelectRenderTypeMultipleForeignTableStaticData extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

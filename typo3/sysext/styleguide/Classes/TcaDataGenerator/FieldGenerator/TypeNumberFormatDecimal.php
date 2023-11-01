@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=number fields with format=decimal
+ *
+ * @internal
  */
 final class TypeNumberFormatDecimal extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

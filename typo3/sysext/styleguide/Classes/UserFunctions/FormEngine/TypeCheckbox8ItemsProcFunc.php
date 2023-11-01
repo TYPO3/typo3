@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * A user function used in checkbox_8
+ *
+ * @internal
  */
 final class TypeCheckbox8ItemsProcFunc
 {

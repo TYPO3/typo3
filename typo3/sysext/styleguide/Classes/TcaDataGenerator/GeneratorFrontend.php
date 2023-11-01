@@ -26,6 +26,8 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
 /**
  * Manage a page tree with all test / demo styleguide data
+ *
+ * @internal
  */
 final class GeneratorFrontend extends AbstractGenerator
 {

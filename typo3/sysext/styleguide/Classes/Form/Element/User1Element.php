@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A user function rendering a type=user TCA type used in user_1
+ *
+ * @internal
  */
 final class User1Element extends AbstractFormElement
 {

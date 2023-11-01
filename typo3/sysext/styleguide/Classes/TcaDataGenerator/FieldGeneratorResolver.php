@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Find matching field generator class instance
+ *
+ * @internal
  */
 final class FieldGeneratorResolver
 {

@@ -26,6 +26,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 
 /**
  * Generate data for table tx_styleguide_inline_mngroup
+ *
+ * @internal
  */
 final class InlineMnGroup extends AbstractTableHandler implements TableHandlerInterface
 {

@@ -30,6 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class contains helper methods to locate uids or pids of specific records
  * in the system.
+ *
+ * @internal
  */
 final class RecordFinder
 {

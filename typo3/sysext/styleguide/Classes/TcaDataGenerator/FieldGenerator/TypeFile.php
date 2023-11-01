@@ -25,6 +25,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Generate data for type=file fields
+ *
+ * @internal
  */
 final class TypeFile extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

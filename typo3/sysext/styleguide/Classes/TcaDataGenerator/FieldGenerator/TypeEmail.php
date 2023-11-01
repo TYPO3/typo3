@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=email fields
+ *
+ * @internal
  */
 final class TypeEmail extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

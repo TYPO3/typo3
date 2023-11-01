@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * A user function to sort ites
+ *
+ * @internal
  */
 final class SelectItemSorter
 {

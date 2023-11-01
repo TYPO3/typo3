@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * A user function used in select_33
+ *
+ * @internal
  */
 final class TypeSelect33ItemsProcFunc
 {

@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=color fields
+ *
+ * @internal
  */
 final class TypeColor extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

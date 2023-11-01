@@ -25,6 +25,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Abstract table handler implements general methods
+ *
+ * @internal
  */
 abstract class AbstractTableHandler
 {

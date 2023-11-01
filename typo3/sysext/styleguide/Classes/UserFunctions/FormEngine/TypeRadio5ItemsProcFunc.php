@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * A user function used in radio_5
+ *
+ * @internal
  */
 final class TypeRadio5ItemsProcFunc
 {

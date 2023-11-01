@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * A user function to compare two fields
+ *
+ * @internal
  */
 final class DisplayConditionUserFunc
 {

@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=radio fields
+ *
+ * @internal
  */
 final class TypeRadio extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

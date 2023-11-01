@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=check fields
+ *
+ * @internal
  */
 final class TypeCheck extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

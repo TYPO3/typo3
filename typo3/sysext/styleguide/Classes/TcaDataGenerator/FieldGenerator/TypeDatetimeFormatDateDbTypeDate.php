@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=datetime fields with format=date and dbType=date
+ *
+ * @internal
  */
 final class TypeDatetimeFormatDateDbTypeDate extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

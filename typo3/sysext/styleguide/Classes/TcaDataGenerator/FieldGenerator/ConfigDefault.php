@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Use "default" value if set in config
+ *
+ * @internal
  */
 final class ConfigDefault extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\Service;
 
 /**
  * Get test strings
+ *
+ * @internal
  */
 final class KauderwelschService
 {

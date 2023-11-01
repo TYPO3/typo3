@@ -26,6 +26,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  * Generate data for type=inline fields.
  * Special implementation for inline_1 of
  * tx_styleguide_inline_usecombination and tx_styleguide_inline_usecombinationbox
+ *
+ * @internal
  */
 final class TypeInlineUsecombination extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

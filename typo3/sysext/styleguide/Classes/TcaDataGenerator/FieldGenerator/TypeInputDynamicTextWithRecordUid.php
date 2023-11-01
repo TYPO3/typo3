@@ -22,6 +22,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=input fields
  * "lipsum 23" for some special children
+ *
+ * @internal
  */
 final class TypeInputDynamicTextWithRecordUid extends AbstractFieldGenerator implements FieldGeneratorInterface
 {

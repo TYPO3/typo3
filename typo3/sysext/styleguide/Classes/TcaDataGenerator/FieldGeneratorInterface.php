@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 /**
  * Interface for field value generators
+ *
+ * @internal
  */
 interface FieldGeneratorInterface
 {

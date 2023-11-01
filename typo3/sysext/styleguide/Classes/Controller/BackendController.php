@@ -39,6 +39,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Styleguide main backend module in the help toolbar
+ *
+ * @internal
  */
 #[Controller]
 final class BackendController

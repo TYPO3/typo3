@@ -21,6 +21,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Render code snippets in a usable way
+ *
+ * @internal
  */
 final class CodeViewHelper extends AbstractViewHelper
 {

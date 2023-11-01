@@ -21,6 +21,8 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=none fields
+ *
+ * @internal
  */
 final class TypeImageManipulation extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
