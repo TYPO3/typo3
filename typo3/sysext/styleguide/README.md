@@ -6,9 +6,8 @@ TYPO3 CMS Backend Styleguide
 
 # What is it?
 
-Styleguide is a TYPO3 extension. It provides a backend module that hooks
-into the 'Help' menu of the top toolbar of the TYPO3 Backend. It can also create a
-page tree to show examples.
+Styleguide is a TYPO3 extension. It provides a backend module in the
+"System" section of the backend. It can create a page tree to show examples.
 
 When TYPO3 core adds or deprecates features  covered by this extension, core developers
 strive to keep it updated, reflecting  these changes.
@@ -45,9 +44,8 @@ for own extensions:
 
 # Installation
 
-Styleguide comes as a TYPO3 extension for the TYPO3 backend. It appears as backend module
-within the "Help" section of the top toolbar. After initial installation, it is advisable
-to let styleguide create an example page tree with records by clicking the
+Styleguide comes as a TYPO3 extension for the TYPO3 backend. After initial installation, it is
+advisable  to let styleguide create an example page tree with records by clicking the
 "TCA / records -> Create styleguide page tree with data", and waiting for a couple of
 seconds for the system to crunch the data.
 

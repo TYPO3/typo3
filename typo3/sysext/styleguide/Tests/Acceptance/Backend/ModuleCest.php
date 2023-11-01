@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Styleguide\Tests\Acceptance\Backend;
  */
 
 use TYPO3\CMS\Styleguide\Tests\Acceptance\Support\BackendTester;
-use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
  * Tests the styleguide backend module can be loaded
@@ -26,21 +25,13 @@ use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 class ModuleCest
 {
     /**
-     * Selector for the module container in the topbar
-     *
-     * @var string
-     */
-    public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
-
-    /**
      * @param BackendTester $I
      */
     public function _before(BackendTester $I)
     {
         $I->useExistingSession('admin', 1);
-        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('Styleguide', self::$topBarModuleSelector);
-        $I->click('Styleguide', self::$topBarModuleSelector);
+        $I->canSee('Styleguide');
+        $I->click('Styleguide');
         $I->switchToContentFrame();
     }
 
