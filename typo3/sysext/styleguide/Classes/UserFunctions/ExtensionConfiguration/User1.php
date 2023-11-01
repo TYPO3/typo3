@@ -1,8 +1,8 @@
 <?php
 
-namespace TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration;
+declare(strict_types=1);
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration;
 
 /**
  * User function 1

@@ -1,8 +1,8 @@
 <?php
 
-namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
+declare(strict_types=1);
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * A user function rendering a type=user TCA type used in palette_1_1

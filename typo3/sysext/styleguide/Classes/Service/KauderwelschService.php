@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Styleguide\Service;
-
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -16,6 +14,8 @@ namespace TYPO3\CMS\Styleguide\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Styleguide\Service;
 
 /**
  * Get test strings
