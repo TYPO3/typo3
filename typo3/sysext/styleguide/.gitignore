@@ -1,9 +1,0 @@
-node_modules
-package-lock.json
-.Build/
-.idea/
-Build/testing-docker/.env
-composer.lock
-Tests/Acceptance/Support/_generated/
-.sass-cache/
-/var

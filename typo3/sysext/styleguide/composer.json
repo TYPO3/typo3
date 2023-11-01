@@ -26,38 +26,11 @@
         }
     },
     "config": {
-        "vendor-dir": ".Build/vendor",
-        "bin-dir": ".Build/bin",
-        "sort-packages": true,
-        "allow-plugins": {
-            "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true,
-            "composer/package-versions-deprecated": true
-        }
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "3.37.1",
-        "phpstan/phpstan": "^1.10.14",
-        "typo3/cms-core": "~13.0@dev",
-        "typo3/cms-frontend": "~13.0@dev",
-        "typo3/cms-install": "~13.0@dev",
-        "typo3/testing-framework": "dev-main"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "autoload-dev": {
-        "psr-4": {
-            "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests"
-        }
+        "sort-packages": true
     },
     "extra": {
-        "typo3/cms": {
-            "app-dir": ".Build",
-            "web-dir": ".Build/Web",
-            "extension-key": "styleguide"
-        },
         "branch-alias": {
-            "dev-main": "13.x.x-dev"
+            "dev-main": "13.0.x-dev"
         }
     }
 }
