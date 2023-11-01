@@ -8845,20 +8845,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "682049f48e028d37683aafbda817ebe29c37d35a"
+                "reference": "6b1dcf5f2a499bae9dbe64e676ed797ea9fdc945"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/682049f48e028d37683aafbda817ebe29c37d35a",
-                "reference": "682049f48e028d37683aafbda817ebe29c37d35a",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/6b1dcf5f2a499bae9dbe64e676ed797ea9fdc945",
+                "reference": "6b1dcf5f2a499bae9dbe64e676ed797ea9fdc945",
                 "shasum": ""
             },
             "require-dev": {
-                "codeception/codeception": "^5.0",
-                "codeception/module-asserts": "^3.0",
-                "codeception/module-cli": "^2.0",
-                "codeception/module-webdriver": "^4.0",
-                "friendsofphp/php-cs-fixer": "^3.16.0",
+                "friendsofphp/php-cs-fixer": "3.37.1",
                 "phpstan/phpstan": "^1.10.14",
                 "typo3/cms-core": "~13.0@dev",
                 "typo3/cms-frontend": "~13.0@dev",
@@ -8888,28 +8884,25 @@
             ],
             "authors": [
                 {
-                    "name": "TYPO3 CMS Core Team",
-                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
+                    "name": "TYPO3 Core Team",
+                    "email": "typo3cms@typo3.org",
                     "role": "Developer"
-                },
-                {
-                    "name": "The TYPO3 Community",
-                    "homepage": "https://typo3.org/community/",
-                    "role": "Contributor"
                 }
             ],
             "description": "TYPO3 extension to showcase TYPO3 Backend capabilities",
-            "homepage": "https://github.com/TYPO3/styleguide",
+            "homepage": "https://typo3.org",
             "keywords": [
                 "style guide",
                 "typo3",
                 "typo3 backend"
             ],
             "support": {
-                "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/main"
+                "chat": "https://typo3.org/help",
+                "docs": "https://docs.typo3.org",
+                "issues": "https://forge.typo3.org",
+                "source": "https://github.com/typo3/typo3"
             },
-            "time": "2023-07-28T09:14:29+00:00"
+            "time": "2023-11-01T08:28:25+00:00"
         },
         {
             "name": "typo3/testing-framework",

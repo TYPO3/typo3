@@ -40,18 +40,6 @@ final class HelpCest
         $I->canSeeElement(self::$topBarModuleSelector);
     }
 
-    /**
-     * @depends canSeeModuleInTopbar
-     */
-    public function seeStyleguideInHelpModule(ApplicationTester $I): void
-    {
-        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('Styleguide', self::$topBarModuleSelector);
-        $I->click('Styleguide', self::$topBarModuleSelector);
-        $I->switchToContentFrame();
-        $I->see('TYPO3 CMS Backend Styleguide', 'h1');
-    }
-
     public function seeAboutInHelpModule(ApplicationTester $I): void
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
