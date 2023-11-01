@@ -28,34 +28,8 @@ setUpDockerComposeDotEnv() {
         echo "EXTRA_TEST_OPTIONS=${EXTRA_TEST_OPTIONS}"
         echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}"
         echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}"
-        echo "DATABASE_DRIVER=${DATABASE_DRIVER}"
-        echo "DOCKER_SELENIUM_IMAGE=${DOCKER_SELENIUM_IMAGE}"
         echo "IMAGE_PREFIX=${IMAGE_PREFIX}"
     } > .env
-}
-
-# Options -a and -d depend on each other. The function
-# validates input combinations and sets defaults.
-handleDbmsAndDriverOptions() {
-    case ${DBMS} in
-        mysql|mariadb)
-            [ -z "${DATABASE_DRIVER}" ] && DATABASE_DRIVER="mysqli"
-            if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
-                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-            fi
-            ;;
-        postgres|sqlite)
-            if [ -n "${DATABASE_DRIVER}" ]; then
-                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-            fi
-            ;;
-    esac
 }
 
 # Load help text into $HELP
@@ -70,50 +44,26 @@ No arguments: Run all unit tests with PHP 8.1
 Options:
     -s <...>
         Specifies which test suite to run
-            - acceptance: backend acceptance tests
             - buildCss: compile CSS from SCSS
             - cgl: cgl test and fix all php files
             - clean: clean up test related build files
             - composerUpdate: "composer update", handy if host has no PHP
             - composerValidate: "composer validate"
-            - functional: functional tests
             - lint: PHP linting
             - phpstan: phpstan analyze
             - phpstanGenerateBaseline: regenerate phpstan baseline, handy after phpstan updates
             - unit (default): PHP unit tests
-
-    -a <mysqli|pdo_mysql>
-        Only with -s acceptance,functional
-        Specifies to use another driver, following combinations are available:
-            - mysql
-                - mysqli (default)
-                - pdo_mysql
-            - mariadb
-                - mysqli (default)
-                - pdo_mysql
-
-    -d <mariadb|mysql|postgres|sqlite>
-        Only with -s acceptance,functional
-        Specifies on which DBMS tests are performed
-            - mariadb (default): use mariadb
-            - mysql: use mysql
-            - postgres: use postgres
-            - sqlite: use sqlite (not for -s acceptance)
 
     -p <8.1|8.2>
         Specifies the PHP minor version to be used
             - 8.1 (default): use PHP 8.1
             - 8.2: use PHP 8.2
 
-    -e "<phpunit, codeception or additional phpstan scan options>"
-        Only with -s acceptance|functional|unit
-        Additional options to send to phpunit (unit & functional tests) or codeception (acceptance
-        tests). For phpunit, options starting with "--" must be added after options starting with "-".
-        Example -e "-v --filter canRetrieveValueWithGP" to enable verbose output AND filter tests
-        named "canRetrieveValueWithGP"
+    -e "<phpunit or additional phpstan scan options>"
+        Additional options to send to phpunit (unit).
 
     -x
-        Only with -s functional|unit|acceptance
+        Only with -s unit
         Send information to host instance for test or system under test break points. This is especially
         useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
@@ -125,12 +75,6 @@ Options:
     -n
         Only with -s cgl
         Activate dry-run in CGL check that does not actively change files and only prints broken ones.
-
-    -u
-        Update existing typo3/core-testing-*:latest docker images. Maintenance call to docker pull latest
-        versions of the main php images. The images are updated once in a while and only the youngest
-        ones are supported by core testing. Use this if weird test errors occur. Also removes obsolete
-        image versions of typo3/core-testing-*.
 
     -v
         Enable verbose script output. Shows variables and docker commands.
@@ -165,25 +109,13 @@ else
   ROOT_DIR=`realpath ${PWD}/../../`
 fi
 TEST_SUITE="unit"
-DBMS="mariadb"
 PHP_VERSION="8.1"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
 SCRIPT_VERBOSE=0
 CGLCHECK_DRY_RUN=""
-DATABASE_DRIVER=""
-DOCKER_SELENIUM_IMAGE="selenium/standalone-chrome:3.141.59-20210713"
 IMAGE_PREFIX="ghcr.io/typo3/"
-
-# Detect arm64 and use a seleniarm image.
-# In a perfect world selenium would have a arm64 integrated, but that is not on the horizon.
-# So for the time being we have to use seleniarm image.
-ARCH=$(uname -m)
-if [ $ARCH = "arm64" ]; then
-    DOCKER_SELENIUM_IMAGE="seleniarm/standalone-chromium:4.1.2-20220227"
-    echo "Architecture" $ARCH "requires" $DOCKER_SELENIUM_IMAGE "to run acceptance tests."
-fi
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
@@ -195,12 +127,6 @@ while getopts ":s:a:d:p:e:xy:nhuv" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
-            ;;
-        a)
-            DATABASE_DRIVER=${OPTARG}
-            ;;
-        d)
-            DBMS=${OPTARG}
             ;;
         p)
             PHP_VERSION=${OPTARG}
@@ -220,9 +146,6 @@ while getopts ":s:a:d:p:e:xy:nhuv" OPT; do
             ;;
         n)
             CGLCHECK_DRY_RUN="-n"
-            ;;
-        u)
-            TEST_SUITE=update
             ;;
         v)
             SCRIPT_VERBOSE=1
@@ -260,32 +183,6 @@ fi
 
 # Suite execution
 case ${TEST_SUITE} in
-    acceptance)
-        handleDbmsAndDriverOptions
-        setUpDockerComposeDotEnv
-        case ${DBMS} in
-            mysql)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run acceptance_backend_mysql80
-                SUITE_EXIT_CODE=$?
-                ;;
-            mariadb)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run acceptance_backend_mariadb10
-                SUITE_EXIT_CODE=$?
-                ;;
-            postgres)
-                docker-compose run acceptance_backend_postgres10
-                SUITE_EXIT_CODE=$?
-                ;;
-            *)
-                echo "Acceptance tests don't run with DBMS ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-        esac
-        docker-compose down
-        ;;
     buildCss)
         setUpDockerComposeDotEnv
         docker-compose run build_css
@@ -322,41 +219,6 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
-    functional)
-        handleDbmsAndDriverOptions
-        setUpDockerComposeDotEnv
-        case ${DBMS} in
-            mariadb)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run functional_mariadb10
-                SUITE_EXIT_CODE=$?
-                ;;
-            mysql)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run functional_mysql80
-                SUITE_EXIT_CODE=$?
-                ;;
-            postgres)
-                docker-compose run functional_postgres10
-                SUITE_EXIT_CODE=$?
-                ;;
-            sqlite)
-                # sqlite has a tmpfs as .Build/Web/typo3temp/var/tests/functional-sqlite-dbs/
-                # Since docker is executed as root (yay!), the path to this dir is owned by
-                # root if docker creates it. Thank you, docker. We create the path beforehand
-                # to avoid permission issues.
-                mkdir -p ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/functional-sqlite-dbs/
-                docker-compose run functional_sqlite
-                SUITE_EXIT_CODE=$?
-                ;;
-            *)
-                echo "Invalid -d option argument ${DBMS}" >&2
-                echo >&2
-                echo "${HELP}" >&2
-                exit 1
-        esac
-        docker-compose down
-        ;;
     lint)
         setUpDockerComposeDotEnv
         docker-compose run lint
@@ -380,12 +242,6 @@ case ${TEST_SUITE} in
         docker-compose run unit
         SUITE_EXIT_CODE=$?
         docker-compose down
-        ;;
-    update)
-        # pull typo3/core-testing-*:latest versions of those ones that exist locally
-        docker images ${IMAGE_PREFIX}core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} docker pull {}
-        # remove "dangling" typo3/core-testing-* images (those tagged as <none>)
-        docker images ${IMAGE_PREFIX}core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} docker rmi {}
         ;;
     *)
         echo "Invalid -s option argument ${TEST_SUITE}" >&2
