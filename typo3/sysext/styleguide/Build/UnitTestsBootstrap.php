@@ -31,9 +31,8 @@ call_user_func(function () {
 
     $testbase->defineSitePath();
 
-    $composerMode = defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE === true;
     $requestType = \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_BE | \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_CLI;
-    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(0, $requestType, $composerMode);
+    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(0, $requestType);
 
     $testbase->createDirectory(\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf/ext');
     $testbase->createDirectory(\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3temp/assets');
