@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import NProgress from 'nprogress';
 import Notification from '@typo3/backend/notification';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -49,15 +48,18 @@ class ExtensionManagerUpdate {
     }
 
     // Hide triggers for TER update
-    $(ExtensionManagerUpdateIdentifier.terUpdateAction).addClass('extensionmanager-is-hidden');
+    document.querySelector(ExtensionManagerUpdateIdentifier.terUpdateAction)?.classList.add('extensionmanager-is-hidden');
 
     // Hide extension table
-    $(ExtensionManagerUpdateIdentifier.extensionTable).hide();
+    const extensionTable: HTMLTableElement = document.querySelector(ExtensionManagerUpdateIdentifier.extensionTable);
+    if (extensionTable) {
+      extensionTable.style.display = 'none';
+    }
 
     // Show loaders
-    $(ExtensionManagerUpdateIdentifier.splashscreen).addClass('extensionmanager-is-shown');
-    $(ExtensionManagerUpdateIdentifier.terTableWrapper).addClass('extensionmanager-is-loading');
-    $(ExtensionManagerUpdateIdentifier.pagination).addClass('extensionmanager-is-loading');
+    document.querySelector(ExtensionManagerUpdateIdentifier.splashscreen)?.classList.add('extensionmanager-is-shown');
+    document.querySelector(ExtensionManagerUpdateIdentifier.terTableWrapper)?.classList.add('extensionmanager-is-loading');
+    document.querySelector(ExtensionManagerUpdateIdentifier.pagination)?.classList.add('extensionmanager-is-loading');
 
     let reload = false;
 
@@ -70,9 +72,9 @@ class ExtensionManagerUpdate {
       }
 
       // Message with latest updates
-      const $lastUpdate = $(ExtensionManagerUpdateIdentifier.terUpdateAction + ' .extension-list-last-updated');
-      $lastUpdate.text(data.timeSinceLastUpdate);
-      $lastUpdate.attr(
+      const lastUpdate: HTMLElement = document.querySelector(ExtensionManagerUpdateIdentifier.terUpdateAction + ' .extension-list-last-updated');
+      lastUpdate.innerText = data.timeSinceLastUpdate;
+      lastUpdate.setAttribute(
         'title',
         TYPO3.lang['extensionList.updateFromTer.lastUpdate.timeOfLastUpdate'] + data.lastUpdateTime,
       );
@@ -96,15 +98,18 @@ class ExtensionManagerUpdate {
 
       if (!reload) {
         // Hide loaders
-        $(ExtensionManagerUpdateIdentifier.splashscreen).removeClass('extensionmanager-is-shown');
-        $(ExtensionManagerUpdateIdentifier.terTableWrapper).removeClass('extensionmanager-is-loading');
-        $(ExtensionManagerUpdateIdentifier.pagination).removeClass('extensionmanager-is-loading');
+        document.querySelector(ExtensionManagerUpdateIdentifier.splashscreen)?.classList.remove('extensionmanager-is-shown');
+        document.querySelector(ExtensionManagerUpdateIdentifier.terTableWrapper)?.classList.remove('extensionmanager-is-loading');
+        document.querySelector(ExtensionManagerUpdateIdentifier.pagination)?.classList.remove('extensionmanager-is-loading');
 
         // Show triggers for TER-update
-        $(ExtensionManagerUpdateIdentifier.terUpdateAction).removeClass('extensionmanager-is-hidden');
+        document.querySelector(ExtensionManagerUpdateIdentifier.terUpdateAction)?.classList.remove('extensionmanager-is-hidden');
 
         // Show extension table
-        $(ExtensionManagerUpdateIdentifier.extensionTable).show();
+        const extensionTable: HTMLTableElement = document.querySelector(ExtensionManagerUpdateIdentifier.extensionTable);
+        if (extensionTable) {
+          extensionTable.style.display = 'block';
+        }
       }
     });
   }
