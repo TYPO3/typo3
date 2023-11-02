@@ -13,8 +13,6 @@
 
 import InteractionRequest from './interaction-request';
 
-interface Consumable {
-  consume(interactionRequest: InteractionRequest): any;
+export interface Consumable {
+  consume(interactionRequest: InteractionRequest): Promise<void> | null;
 }
-
-export default Consumable;

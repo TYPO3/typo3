@@ -12,15 +12,15 @@
  */
 
 import InteractionRequest from './interaction-request';
-import InteractionRequestAssignment from './interaction-request-assignment';
+import { InteractionRequestAssignment, PromiseControls } from './interaction-request-assignment';
 
 class InteractionRequestMap {
   private assignments: InteractionRequestAssignment[] = [];
 
-  public attachFor(request: InteractionRequest, deferred: any): void {
-    let targetAssignment = this.getFor(request);
+  public attachFor(request: InteractionRequest, deferred: PromiseControls<unknown>): void {
+    let targetAssignment: InteractionRequestAssignment = this.getFor(request);
     if (targetAssignment === null) {
-      targetAssignment = { request, deferreds: [] } as InteractionRequestAssignment;
+      targetAssignment = { request, deferreds: [] };
       this.assignments.push(targetAssignment);
     }
     targetAssignment.deferreds.push(deferred);
@@ -33,7 +33,7 @@ class InteractionRequestMap {
     );
   }
 
-  public getFor(triggerEvent: InteractionRequest): InteractionRequestAssignment {
+  public getFor(triggerEvent: InteractionRequest): InteractionRequestAssignment | null {
     let targetAssignment: InteractionRequestAssignment = null;
     this.assignments.some(
       (assignment: InteractionRequestAssignment) => {
@@ -53,7 +53,7 @@ class InteractionRequestMap {
       return false;
     }
     targetAssignment.deferreds.forEach(
-      (deferred: any) => deferred.resolve(),
+      deferred => deferred.resolve(),
     );
     this.detachFor(triggerEvent);
     return true;
@@ -65,7 +65,7 @@ class InteractionRequestMap {
       return false;
     }
     targetAssignment.deferreds.forEach(
-      (deferred: any) => deferred.reject(),
+      deferred => deferred.reject(),
     );
     this.detachFor(triggerEvent);
     return true;

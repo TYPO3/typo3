@@ -11,9 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-import Consumable from './consumable';
 import InteractionRequest from './interaction-request';
+import type { Consumable } from './consumable';
 
 class ConsumerScope {
   private consumers: Consumable[] = [];
@@ -38,17 +37,17 @@ class ConsumerScope {
     );
   }
 
-  public invoke(request: InteractionRequest): any {
-    const deferreds: any[] = [];
+  public async invoke(request: InteractionRequest): Promise<void> {
+    const promises: Promise<void>[] = [];
     this.consumers.forEach(
       (consumer: Consumable) => {
-        const deferred: any = consumer.consume.call(consumer, request);
-        if (deferred) {
-          deferreds.push(deferred);
+        const promise: Promise<void> = consumer.consume.call(consumer, request);
+        if (promise) {
+          promises.push(promise);
         }
       },
     );
-    return ($ as any).when.apply($, deferreds);
+    await Promise.all(promises);
   }
 }
 

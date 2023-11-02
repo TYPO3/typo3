@@ -24,44 +24,31 @@ class ContentContainer extends AbstractContainer {
     return (<HTMLIFrameElement>$(ScaffoldIdentifierEnum.contentModuleIframe)[0]).contentWindow;
   }
 
-  /**
-   * @param {InteractionRequest} interactionRequest
-   * @returns {JQueryDeferred<TriggerRequest>}
-   */
-  public beforeSetUrl(interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
+  public beforeSetUrl(interactionRequest: InteractionRequest): Promise<void> {
     return this.consumerScope.invoke(
       new TriggerRequest('typo3.beforeSetUrl', interactionRequest),
     );
   }
 
-  /**
-   * @param {string} urlToLoad
-   * @param {InteractionRequest} [interactionRequest]
-   * @param {string|null} module
-   * @returns {JQueryDeferred<TriggerRequest>}
-   */
-  public setUrl(urlToLoad: string, interactionRequest?: InteractionRequest, module?: string): JQueryDeferred<TriggerRequest> {
-    let deferred: JQueryDeferred<TriggerRequest>;
+  public setUrl(urlToLoad: string, interactionRequest?: InteractionRequest, module?: string): Promise<void> {
     const router = this.resolveRouterElement();
     // abort, if router can not be found
     if (router === null) {
-      deferred = $.Deferred();
-      deferred.reject();
-      return deferred;
+      return Promise.reject();
     }
     if (!(interactionRequest instanceof InteractionRequest)) {
       interactionRequest = new ClientRequest('typo3.setUrl', null);
     }
-    deferred = this.consumerScope.invoke(
+    const promise: Promise<void> = this.consumerScope.invoke(
       new TriggerRequest('typo3.setUrl', interactionRequest),
     );
-    deferred.then((): void => {
+    promise.then((): void => {
       Loader.start();
       router.setAttribute('endpoint', urlToLoad);
       router.setAttribute('module', module ? module : null);
       router.parentElement.addEventListener('typo3-module-loaded', (): void => Loader.finish(), { once: true });
     });
-    return deferred;
+    return promise;
   }
 
   /**
@@ -71,26 +58,19 @@ class ContentContainer extends AbstractContainer {
     return this.resolveRouterElement().getAttribute('endpoint');
   }
 
-  /**
-   * @param {InteractionRequest} interactionRequest
-   * @returns {JQueryDeferred<unknown>}
-   */
-  public refresh(interactionRequest?: InteractionRequest): JQueryDeferred<unknown> {
-    let deferred;
+  public refresh(interactionRequest?: InteractionRequest): Promise<void> {
     const iFrame = <HTMLIFrameElement>this.resolveIFrameElement();
     // abort, if no IFRAME can be found
     if (iFrame === null) {
-      deferred = $.Deferred();
-      deferred.reject();
-      return deferred;
+      return Promise.reject();
     }
-    deferred = this.consumerScope.invoke(
+    const promise: Promise<void> = this.consumerScope.invoke(
       new TriggerRequest('typo3.refresh', interactionRequest),
     );
-    deferred.then((): void => {
+    promise.then((): void => {
       iFrame.contentWindow.location.reload();
     });
-    return deferred;
+    return promise;
   }
 
   public getIdFromUrl(): number {

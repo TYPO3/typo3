@@ -13,10 +13,12 @@
 
 import InteractionRequest from './interaction-request';
 
-interface InteractionRequestAssignment {
-  request: InteractionRequest;
-  // @todo Add type for jQuery.Deferred[]
-  deferreds: any[];
+export interface PromiseControls<T> {
+  resolve: (v?: T) => void;
+  reject: (e?: unknown) => void;
 }
 
-export default InteractionRequestAssignment;
+export interface InteractionRequestAssignment {
+  request: InteractionRequest;
+  deferreds: PromiseControls<unknown>[];
+}

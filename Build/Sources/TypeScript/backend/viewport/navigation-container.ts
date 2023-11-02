@@ -107,19 +107,14 @@ class NavigationContainer extends AbstractContainer {
     }
   }
 
-  /**
-   * @param {string} urlToLoad
-   * @param {InteractionRequest} interactionRequest
-   * @returns {JQueryDeferred<TriggerRequest>}
-   */
-  public setUrl(urlToLoad: string, interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
-    const deferred = this.consumerScope.invoke(
+  public setUrl(urlToLoad: string, interactionRequest: InteractionRequest): Promise<void> {
+    const promise = this.consumerScope.invoke(
       new TriggerRequest('typo3.setUrl', interactionRequest),
     );
-    deferred.then((): void => {
+    promise.then((): void => {
       this.parent.classList.add('scaffold-content-navigation-expanded');
     });
-    return deferred;
+    return promise;
   }
 }
 

@@ -292,13 +292,8 @@ class ModuleMenu {
 
   /**
    * Event handler called after clicking on the module menu item
-   *
-   * @param {string} name
-   * @param {string} params
-   * @param {Event} event
-   * @returns {JQueryDeferred<TriggerRequest>}
    */
-  public showModule(name: string, params?: string, event: Event = null): JQueryDeferred<TriggerRequest> {
+  public showModule(name: string, params?: string, event: Event = null): Promise<void> {
     params = params || '';
     const moduleData = ModuleUtility.getFromName(name);
     return this.loadModuleComponents(
@@ -460,23 +455,18 @@ class ModuleMenu {
 
   /**
    * Shows requested module (e.g. list/page)
-   *
-   * @param {Object} moduleData
-   * @param {string} params
-   * @param {InteractionRequest} [interactionRequest]
-   * @return {jQuery.Deferred}
    */
   private loadModuleComponents(
     moduleData: Module,
     params: string,
     interactionRequest: InteractionRequest,
-  ): JQueryDeferred<TriggerRequest> {
+  ): Promise<void> {
     const moduleName = moduleData.name;
 
     // Allow other components e.g. Formengine to cancel switching between modules
     // (e.g. you have unsaved changes in the form)
-    const deferred = Viewport.ContentContainer.beforeSetUrl(interactionRequest);
-    deferred.then((): void => {
+    const promise = Viewport.ContentContainer.beforeSetUrl(interactionRequest);
+    promise.then((): void => {
       if (moduleData.navigationComponentId) {
         Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
       } else {
@@ -496,17 +486,15 @@ class ModuleMenu {
         ),
       );
     });
-    return deferred;
+    return promise;
   }
 
-  /**
-   * @param {string} module
-   * @param {string} url
-   * @param {string} params
-   * @param {InteractionRequest} interactionRequest
-   * @returns {JQueryDeferred<TriggerRequest>}
-   */
-  private openInContentContainer(module: string, url: string, params: string, interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
+  private openInContentContainer(
+    module: string,
+    url: string,
+    params: string,
+    interactionRequest: InteractionRequest
+  ): Promise<void> {
     const urlToLoad = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
     return Viewport.ContentContainer.setUrl(
       urlToLoad,

@@ -33,6 +33,7 @@ import TriggerRequest from '@typo3/backend/event/trigger-request';
 import Utility from '@typo3/backend/utility';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/form-engine/element/extra/char-counter';
+import type { PromiseControls } from '@typo3/backend/event/interaction-request-assignment';
 
 interface OnFieldChangeItem {
   name: string;
@@ -492,29 +493,31 @@ export default (function() {
     window.addEventListener('message', FormEngine.handlePostMessage);
   };
 
-  /**
-   * @param {InteractionRequest} interactionRequest
-   * @return {jQuery.Deferred}
-   */
-  FormEngine.consume = function(interactionRequest: TriggerRequest) {
+  FormEngine.consume = function(interactionRequest: TriggerRequest): Promise<void> {
     if (!interactionRequest) {
+      // @todo better return a rejected promise
       throw new BackendExceptionModule.BackendException('No interaction request given', 1496589980);
     }
-    const deferred = $.Deferred();
+
+    let promiseControls: PromiseControls<void>;
+    const promise = new Promise<void>((resolve, reject) => {
+      promiseControls = { resolve, reject };
+    });
+
     if (interactionRequest.concernsTypes(FormEngine.consumeTypes)) {
       const outerMostRequest = interactionRequest.outerMostRequest;
 
       FormEngine.interactionRequestMap.attachFor(
         outerMostRequest,
-        deferred
+        promiseControls
       );
-      // resolve or reject deferreds with previous user choice
+      // resolve or reject with previous user choice
       if (outerMostRequest.isProcessed()) {
         handleConsumeResponse(
           outerMostRequest,
           outerMostRequest.getProcessedData().response
         );
-        // show confirmation dialog
+      // show confirmation dialog
       } else if (FormEngine.hasChange()) {
         FormEngine.preventExitIfNotSaved(function(response: boolean) {
           outerMostRequest.setProcessedData(
@@ -522,12 +525,13 @@ export default (function() {
           );
           handleConsumeResponse(outerMostRequest, response);
         });
-        // resolve directly
+      // resolve directly
       } else {
         FormEngine.interactionRequestMap.resolveFor(outerMostRequest);
       }
     }
-    return deferred;
+
+    return promise;
   };
 
   FormEngine.handlePostMessage = function (e: MessageEvent) {
