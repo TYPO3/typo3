@@ -1,0 +1,9 @@
+<nav>
+    <div class="sidebar list-group">
+        <f:for each="{mainNavigation}" as="item">
+            <a class="list-group-item {f:if(condition: '{item.active}', then: 'active')}" href="{item.link}">
+                {item.title}
+            </a>
+        </f:for>
+    </div>
+</nav>

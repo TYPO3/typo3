@@ -1,0 +1,14 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:if condition="{cookieWarning}">
+    <f:render partial="CookieWarning"/>
+</f:if>
+
+<f:if condition="{showLoginMessage}">
+    <h3>
+        <f:render partial="RenderLabelOrMessage" arguments="{key: 'success_header'}"/>
+    </h3>
+</f:if>
+
+<f:translate key="login_user_info" arguments="{0: '{user.username}'}"/>
+</html>

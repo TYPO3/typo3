@@ -1,0 +1,73 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <div id="tx-styleguide-navigation">
+        <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="tx-styleguide-content">
+
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:modal" /></h1>
+
+        <p>Modals on buttons can be triggered using t3js-modal-trigger class. There are various
+        data attributes to customize text and behavior. Not all of them are shown here.</p>
+
+        <h2>Simple Modal</h2>
+
+        <div class="example">
+            <a class="btn btn-primary t3js-modal-trigger">
+                Open simple modal
+            </a>
+        </div>
+
+        <sg:code language="html" codeonly="true">
+            <a class="btn btn-primary t3js-modal-trigger">
+                Open simple modal
+            </a>
+        </sg:code>
+
+        <h2>Customize title and message</h2>
+
+        <div class="example">
+            <a class="btn btn-primary t3js-modal-trigger" data-title="Modal with custom title" data-content="Modal with custom message">
+                Open modal
+            </a>
+        </div>
+
+        <sg:code language="html" codeonly="true">
+            <a class="btn btn-primary t3js-modal-trigger" data-title="Modal with custom title" data-content="Modal with custom message">
+                Open modal
+            </a>
+        </sg:code>
+
+        <h2>Change modal type</h2>
+
+        <div class="example">
+            <a class="btn btn-warning t3js-modal-trigger" data-severity="warning">
+                Open warning modal
+            </a>
+            <a class="btn btn-danger t3js-modal-trigger" data-severity="error">
+                Open danger modal
+            </a>
+        </div>
+
+        <sg:code language="html" codeonly="true">
+            <a class="btn btn-warning t3js-modal-trigger" data-severity="warning">
+                Open warning modal
+            </a>
+            <a class="btn btn-danger t3js-modal-trigger" data-severity="error">
+                Open danger modal
+            </a>
+        </sg:code>
+
+    </div>
+
+</f:section>
+
+</html>

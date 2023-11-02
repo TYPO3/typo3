@@ -1,0 +1,31 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <div id="tx-styleguide-navigation">
+        <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="tx-styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:colors" /></h1>
+        <p>CI color from the TYPO3 logo and contrast primary color.</p>
+
+        <sg:code language="html">
+            <div class="p-3 mb-2 bg-primary text-white">Primary color</div>
+            <div class="p-3 mb-2 bg-notice text-white">Notice color</div>
+            <div class="p-3 mb-2 bg-info text-white">Info color</div>
+            <div class="p-3 mb-2 bg-warning">Warning color</div>
+            <div class="p-3 mb-2 bg-danger text-white">Danger color</div>
+            <div class="p-3 mb-2 bg-success text-white">Success color</div>
+            <div class="p-3 mb-2 bg-default">Default color</div>
+        </sg:code>
+    </div>
+
+</f:section>
+
+</html>

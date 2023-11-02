@@ -1,0 +1,169 @@
+
+renderingOptions:
+  submitButtonLabel: Submit
+type: Form
+identifier: allfields
+label: 'All fields'
+prototypeName: standard
+renderables:
+  -
+    renderingOptions:
+      previousButtonLabel: 'Previous step'
+      nextButtonLabel: 'Next step'
+    type: Page
+    identifier: page-1
+    label: 'Basic elements'
+    renderables:
+      -
+        defaultValue: ''
+        type: Text
+        identifier: text-1
+        label: Text
+      -
+        defaultValue: ''
+        type: Textarea
+        identifier: textarea-1
+        label: Textarea
+      -
+        defaultValue: ''
+        type: Password
+        identifier: password-1
+        label: Password
+      -
+        defaultValue: ''
+        type: Email
+        identifier: email-1
+        label: 'Email address'
+        validators:
+          -
+            identifier: EmailAddress
+      -
+        defaultValue: ''
+        type: Telephone
+        identifier: telephone-1
+        label: 'Telephone number'
+      -
+        defaultValue: ''
+        type: Url
+        identifier: url-1
+        label: URL
+      -
+        defaultValue: ''
+        properties:
+          fluidAdditionalAttributes:
+            step: 1
+        type: Number
+        identifier: number-1
+        label: Number
+        validators:
+          -
+            identifier: Number
+      -
+        defaultValue: ''
+        properties:
+          fluidAdditionalAttributes:
+            min: ''
+            max: ''
+            step: 1
+        type: Date
+        identifier: date-1
+        label: Date
+  -
+    renderingOptions:
+      previousButtonLabel: 'Previous step'
+      nextButtonLabel: 'Next step'
+    type: Page
+    identifier: page-2
+    label: 'Select elements'
+    renderables:
+      -
+        type: Checkbox
+        identifier: checkbox-1
+        label: Checkbox
+      -
+        properties:
+          options:
+            'Single Select 1': 'Single Select 1'
+        type: SingleSelect
+        identifier: singleselect-1
+        label: 'Single select'
+      -
+        properties:
+          options:
+            'Radio 1': 'Radio 1'
+            'Radio 2': 'Radio 2'
+            'Radio 3': 'Radio 3'
+        type: RadioButton
+        identifier: radiobutton-1
+        label: 'Radio button'
+      -
+        properties:
+          options:
+            'Multi Check 1': 'Multi Check 1'
+            'Multi Check 2': 'Multi Check 2'
+        type: MultiCheckbox
+        identifier: multicheckbox-1
+        label: 'Multi checkbox'
+      -
+        properties:
+          options:
+            'Select 1': 'Select 1'
+            'Select 2': 'Select 2'
+        type: MultiSelect
+        identifier: multiselect-1
+        label: 'Multi select'
+  -
+    renderingOptions:
+      previousButtonLabel: 'Previous step'
+      nextButtonLabel: 'Next step'
+    type: Page
+    identifier: page-3
+    label: 'Advanced elements'
+    renderables:
+      -
+        properties:
+          saveToFileMount: '1:/user_upload/'
+          allowedMimeTypes:
+            - application/pdf
+        type: FileUpload
+        identifier: fileupload-1
+        label: 'File upload'
+      -
+        properties:
+          dateFormat: Y-m-d
+          enableDatePicker: true
+          displayTimeSelector: true
+        type: DatePicker
+        identifier: datepicker-1
+        label: 'Date picker (jQuery)'
+      -
+        defaultValue: hiddenValue
+        type: Hidden
+        identifier: hidden-1
+        label: Hidden
+      -
+        type: GridRow
+        identifier: gridrow-1
+        label: 'Grid: Row'
+        renderables:
+          -
+            properties:
+              saveToFileMount: '1:/user_upload/'
+              allowedMimeTypes:
+                - image/jpeg
+                - image/png
+            type: ImageUpload
+            identifier: imageupload-1
+            label: 'Image upload'
+          -
+            properties:
+              confirmationLabel: Confirmation
+            type: AdvancedPassword
+            identifier: advancedpassword-1
+            label: 'Advanced password'
+          -
+            properties:
+              text: 'Some static text'
+            type: StaticText
+            identifier: statictext-1
+            label: 'Static text'

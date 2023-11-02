@@ -1,0 +1,53 @@
+#tx-styleguide-navigation {
+  position: fixed;
+  width: 260px;
+}
+
+#tx-styleguide-content {
+  margin-left: 300px;
+}
+
+#tx-styleguide-content .example {
+  background-color: var(--typo3-component-bg);
+  border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+  padding: var(--typo3-spacing);
+  margin-bottom: var(--typo3-spacing);
+}
+#tx-styleguide-content .example + *:not(.example) {
+  margin-top: var(--typo3-component-spacing);
+}
+#tx-styleguide-content .example:before {
+  content: "EXAMPLE";
+  display: block;
+  font-weight: normal;
+  font-size: 0.9em;
+  margin-bottom: var(--typo3-spacing);
+}
+#tx-styleguide-content .example.code:before {
+  content: "EXAMPLE CODE";
+}
+#tx-styleguide-content .example pre code {
+  overflow: auto;
+  width: 100%;
+  display: block;
+}
+
+#tx-styleguide-content .icon-container {
+  border: 1px solid transparent;
+  margin-bottom: 20px;
+  height: 100px;
+}
+#tx-styleguide-content .icon-container.icon-deprecated-container {
+  height: 175px;
+}
+#tx-styleguide-content .icon-container span.icon-container-icon,
+#tx-styleguide-content .icon-container span.icon-container-label {
+  display: block;
+  text-align: center;
+  background-color: #eee;
+  min-height: 50px;
+  padding: 5px;
+}
+#tx-styleguide-content .icon-container:hover span.icon-container-icon, #tx-styleguide-content .icon-container:hover span.icon-container-label {
+  background-color: #e1e1e1;
+}

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-01T00:00:000" product-name="styleguide">
+		<header/>
+		<body>
+			<trans-unit id="module.configuration.title" resname="module.configuration.title">
+				<source>Styleguide</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.shortDescription" resname="module.configuration.shortDescription">
+				<source>Styleguide of the TYPO3 CMS</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.description" resname="module.configuration.description">
+				<source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+			</trans-unit>
+			<trans-unit id="styleguide" xml:space="preserve">
+				<source>Styleguide</source>
+			</trans-unit>
+			<trans-unit id="backendStyleguide" xml:space="preserve">
+				<source>TYPO3 CMS Backend Styleguide</source>
+			</trans-unit>
+			<trans-unit id="welcome" xml:space="preserve">
+				<source>Welcome</source>
+			</trans-unit>
+			<trans-unit id="index" xml:space="preserve">
+				<source>Index</source>
+			</trans-unit>
+			<trans-unit id="icons" xml:space="preserve">
+				<source>Icons</source>
+			</trans-unit>
+			<trans-unit id="infobox" xml:space="preserve">
+				<source>Infobox</source>
+			</trans-unit>
+			<trans-unit id="avatar" xml:space="preserve">
+				<source>Avatar</source>
+			</trans-unit>
+			<trans-unit id="typography" xml:space="preserve">
+				<source>Typography</source>
+			</trans-unit>
+			<trans-unit id="cards" xml:space="preserve">
+				<source>Cards</source>
+			</trans-unit>
+			<trans-unit id="colors" xml:space="preserve">
+				<source>Colors</source>
+			</trans-unit>
+			<trans-unit id="tab" xml:space="preserve">
+				<source>Tabs</source>
+			</trans-unit>
+			<trans-unit id="modal" xml:space="preserve">
+				<source>Modal</source>
+			</trans-unit>
+			<trans-unit id="trees" xml:space="preserve">
+				<source>Trees</source>
+			</trans-unit>
+			<trans-unit id="buttons" xml:space="preserve">
+				<source>Buttons</source>
+			</trans-unit>
+			<trans-unit id="bootstrap" xml:space="preserve">
+				<source>Bootstrap</source>
+			</trans-unit>
+			<trans-unit id="tables" xml:space="preserve">
+				<source>Tables</source>
+			</trans-unit>
+			<trans-unit id="flashMessages" xml:space="preserve">
+				<source>Flash Messages</source>
+			</trans-unit>
+			<trans-unit id="notifications" xml:space="preserve">
+				<source>Notifications</source>
+			</trans-unit>
+			<trans-unit id="tcaCreateButton" xml:space="preserve">
+				<source>Create page tree</source>
+			</trans-unit>
+			<trans-unit id="tcaDeleteButton" xml:space="preserve">
+				<source>Delete page tree and all related records</source>
+			</trans-unit>
+			<trans-unit id="tcaCreateActionOkTitle" xml:space="preserve">
+				<source>Data created</source>
+			</trans-unit>
+			<trans-unit id="tcaCreateActionOkBody" xml:space="preserve">
+				<source>A page tree with TCA demo records was created.</source>
+			</trans-unit>
+			<trans-unit id="tcaCreateActionFailedTitle" xml:space="preserve">
+				<source>No data created</source>
+			</trans-unit>
+			<trans-unit id="tcaCreateActionFailedBody" xml:space="preserve">
+				<source>A page tree with TCA demo records exists already. Please delete that first.</source>
+			</trans-unit>
+			<trans-unit id="tcaDeleteActionOkTitle" xml:space="preserve">
+				<source>Data deleted</source>
+			</trans-unit>
+			<trans-unit id="tcaDeleteActionOkBody" xml:space="preserve">
+				<source>The page tree and all related records were deleted.</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplateLocalizedLabel" xml:space="preserve">
+				<source>A localized label</source>
+			</trans-unit>
+			<trans-unit id="translatedHelpTextForSelectCheckBox3" xml:space="preserve">
+				<source>A localized help text</source>
+			</trans-unit>
+			<trans-unit id="minimalTableTitle" xml:space="preserve">
+				<source>Form engine - Minimal table configuration</source>
+			</trans-unit>
+			<trans-unit id="minimalTableTitleField" xml:space="preserve">
+				<source>Title field</source>
+			</trans-unit>
+			<trans-unit id="accordion" xml:space="preserve">
+				<source>Accordion</source>
+			</trans-unit>
+			<trans-unit id="pagination" xml:space="preserve">
+				<source>Pagination</source>
+			</trans-unit>
+			<trans-unit id="filter" xml:space="preserve">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateButton" xml:space="preserve">
+				<source>Create page tree</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteButton" xml:space="preserve">
+				<source>Delete page tree and all related records</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionOkTitle" xml:space="preserve">
+				<source>Data created</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionOkBody" xml:space="preserve">
+				<source>A page tree with content elements was created.</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionFailedTitle" xml:space="preserve">
+				<source>No data created</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionFailedBody" xml:space="preserve">
+				<source>A page tree with content elements exists already. Please delete that first.</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteActionOkTitle" xml:space="preserve">
+				<source>Data deleted</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteActionOkBody" xml:space="preserve">
+				<source>The page tree and all related records were deleted.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

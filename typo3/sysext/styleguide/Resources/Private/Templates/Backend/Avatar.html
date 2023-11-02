@@ -1,0 +1,43 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    xmlns:b="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <div id="tx-styleguide-navigation">
+        <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="tx-styleguide-content">
+
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:avatar" /></h1>
+
+        <p>Make the backend your backend and upload your personal profile picture.<br>
+            Backend users can change their profile pictures within setup module.</p>
+
+        <h2>Simple</h2>
+
+        <p>Displays backend user avatar picture or static image fall-back for users without pictures.</p>
+
+        <sg:code language="html">
+            <b:avatar />
+        </sg:code>
+
+        <h2>Icon overlay and click menu</h2>
+
+        <p>When icon overlay is used always bind click menu on the avatar icon. Please consider backend users can only be modified by administrator users.
+            Please use icon overlay only in views that are available for administrators only and bind click menu.</p>
+
+        <sg:code language="html">
+            <b:avatar showIcon="true" />
+        </sg:code>
+
+    </div>
+
+</f:section>
+
+</html>

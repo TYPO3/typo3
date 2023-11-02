@@ -1,0 +1,5 @@
+persistenceManager:
+  allowedExtensionPaths:
+    10: 'EXT:styleguide/Resources/Private/Forms/'
+  allowSaveToExtensionPaths: false
+  allowDeleteFromExtensionPaths: false
