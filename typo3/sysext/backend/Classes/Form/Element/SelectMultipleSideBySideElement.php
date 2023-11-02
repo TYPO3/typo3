@@ -213,7 +213,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
 
             foreach ($selectableItemGroup['items'] as $item) {
                 $selectableItemsHtml[] = '
-                    <option ' . GeneralUtility::implodeAttributes($item['attributes'], true) . '>
+                    <option ' . GeneralUtility::implodeAttributes($item['attributes'], true, true) . '>
                         ' . htmlspecialchars($item['label']) . '
                     </option>';
             }

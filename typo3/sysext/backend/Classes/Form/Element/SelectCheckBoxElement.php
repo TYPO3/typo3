@@ -204,7 +204,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                     $tableRows[] = '<tr>';
                     $tableRows[] =    '<td class="col-checkbox">';
-                    $tableRows[] =        '<input ' . GeneralUtility::implodeAttributes($inputElementAttrs, true) . '>';
+                    $tableRows[] =        '<input ' . GeneralUtility::implodeAttributes($inputElementAttrs, true, true) . '>';
                     $tableRows[] =    '</td>';
                     $tableRows[] =    '<td class="col-title">';
                     $tableRows[] =        '<label class="label-block nowrap-disabled" for="' . $item['id'] . '">';
