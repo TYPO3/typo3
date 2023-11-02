@@ -12,12 +12,15 @@
 */
 
 import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
-import $ from 'jquery';
+import DocumentService from '@typo3/core/document-service';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 class Toolbar {
-  public registerEvent(callback: (eventHandler: JQueryEventObject) => any): void {
-    $(callback);
-    $(ScaffoldIdentifierEnum.header).on('t3-topbar-update', callback);
+  public registerEvent(callback: () => void): void {
+    DocumentService.ready().then(() => {
+      callback();
+    });
+    new RegularEvent('t3-topbar-update', callback).bindTo(document.querySelector(ScaffoldIdentifierEnum.header));
   }
 }
 

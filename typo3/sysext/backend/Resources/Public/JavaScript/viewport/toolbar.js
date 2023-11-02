@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{ScaffoldIdentifierEnum}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import $ from"jquery";class Toolbar{registerEvent(e){$(e),$(ScaffoldIdentifierEnum.header).on("t3-topbar-update",e)}}export default Toolbar;
+import{ScaffoldIdentifierEnum}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import DocumentService from"@typo3/core/document-service.js";import RegularEvent from"@typo3/core/event/regular-event.js";class Toolbar{registerEvent(e){DocumentService.ready().then((()=>{e()})),new RegularEvent("t3-topbar-update",e).bindTo(document.querySelector(ScaffoldIdentifierEnum.header))}}export default Toolbar;
