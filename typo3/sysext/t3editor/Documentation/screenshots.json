@@ -18,7 +18,7 @@
 					},
 					{
 						"action": "setCodeSnippetsSourcePath",
-						"path": "typo3conf/ext/styleguide"
+						"path": "typo3/sysext/styleguide"
 					},
 					{
 						"action": "makeScreenshotOfField",

@@ -2,7 +2,7 @@
 .. Automatically generated code snippet
 .. ====================================
 ..
-.. Extracted from typo3conf/ext/styleguide/Configuration/TCA/tx_styleguide_elements_t3editor.php
+.. Extracted from typo3/sysext/styleguide/Configuration/TCA/tx_styleguide_elements_t3editor.php
 
 
 .. code-block:: php
