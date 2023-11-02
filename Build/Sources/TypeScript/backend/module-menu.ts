@@ -14,7 +14,6 @@
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { ScaffoldIdentifierEnum } from './enum/viewport/scaffold-identifier';
 import { flushModuleCache, Module, ModuleSelector, ModuleState, ModuleUtility } from '@typo3/backend/module';
-import $ from 'jquery';
 import PersistentStorage from './storage/persistent';
 import Viewport from './viewport';
 import ClientRequest from './event/client-request';
@@ -24,6 +23,8 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ModuleStateStorage } from './storage/module-state-storage';
 import { selector } from '@typo3/core/literals';
+import DocumentService from '@typo3/core/document-service';
+import { Collapse } from 'bootstrap';
 
 enum ModuleMenuSelector {
   menu = '[data-modulemenu]',
@@ -47,9 +48,9 @@ class ModuleMenu {
   private loadedModule: string = null;
 
   constructor() {
-    // @todo: DocumentService.ready() doesn't work here as it apparently is too fast or whatever.
-    //        It keeps breaking acceptance tests. Bonkers.
-    $((): void => this.initialize());
+    DocumentService.ready().then((): void => {
+      this.initialize();
+    });
   }
 
   private static getModuleMenuItemFromElement(element: HTMLElement): ModuleMenuItem {
@@ -150,19 +151,20 @@ class ModuleMenu {
     const menuItem = ModuleMenu.getModuleMenuItemFromElement(element);
     const moduleGroup = menuItem.element.closest('.modulemenu-group');
     const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
+    const collapseInstance = Collapse.getOrCreateInstance(moduleGroupContainer);
 
     if (menuItem.expanded) {
       ModuleMenu.addCollapsedMainMenuItem(menuItem.identifier);
+      collapseInstance.hide();
     } else {
       ModuleMenu.removeCollapseMainMenuItem(menuItem.identifier);
+      collapseInstance.show();
     }
 
     moduleGroup.classList.toggle('modulemenu-group-collapsed', menuItem.expanded);
     moduleGroup.classList.toggle('modulemenu-group-expanded', !menuItem.expanded);
 
     element.setAttribute('aria-expanded', (!menuItem.expanded).toString());
-
-    $(moduleGroupContainer).stop().slideToggle();
   }
 
   private static highlightModule(identifier: string): void {
@@ -311,18 +313,13 @@ class ModuleMenu {
       return;
     }
 
-    const deferred = $.Deferred();
-    deferred.resolve();
-
-    deferred.then((): void => {
-      this.initializeModuleMenuEvents();
-      Viewport.Topbar.Toolbar.registerEvent(() => {
-        // Only initialize top bar events when top bar exists.
-        // E.g. install tool has no top bar
-        if (document.querySelector('.t3js-scaffold-toolbar')) {
-          this.initializeTopBarEvents();
-        }
-      });
+    this.initializeModuleMenuEvents();
+    Viewport.Topbar.Toolbar.registerEvent(() => {
+      // Only initialize top bar events when top bar exists.
+      // E.g. install tool has no top bar
+      if (document.querySelector('.t3js-scaffold-toolbar')) {
+        this.initializeTopBarEvents();
+      }
     });
   }
 

@@ -42,8 +42,7 @@
     <ul
         role="menu"
         aria-orientation="vertical"
-        class="modulemenu-group-container"
-        {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, then: \'style="display: none"\')}')}
+        class="modulemenu-group-container collapse {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, else: \'show\')}')}"
     >
         <f:for each="{modules}" as="module">
             <li role="presentation" data-modulemenu-level="2">
