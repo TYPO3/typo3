@@ -41,7 +41,7 @@ Custom FAL Processing Tasks will result in a fatal error if not adapted to the
 new interface.
 
 If an extension was depending on :php:`AbstractGraphicalTask`, calling this
-code will now result in a PHP Fatal error.
+code will now result in a PHP fatal error.
 
 
 Affected installations
