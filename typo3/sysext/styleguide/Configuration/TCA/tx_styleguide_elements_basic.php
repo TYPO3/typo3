@@ -1475,6 +1475,7 @@ backend_layout {
             'config' => [
                 'type' => 'radio',
                 'items' => [
+                    ['label' => 'nofoo (empty)', 'value' => ''],
                     ['label' => 'foo', 'value' => 'foo'],
                     ['label' => 'bar', 'value' => 'bar'],
                 ],
@@ -1795,6 +1796,27 @@ backend_layout {
                                                     </items>
                                                 </config>
                                             </radio_1>
+                                            <radio_2>
+                                                <label>radio_2 description</label>
+                                                <description>field description</description>
+                                                <config>
+                                                    <type>radio</type>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <label>NoFoo (empty)</label>
+                                                            <value></value>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <label>Foo</label>
+                                                            <value>fooValue</value>
+                                                        </numIndex>
+                                                        <numIndex index="2">
+                                                            <label>Bar</label>
+                                                            <value>barValue</value>
+                                                        </numIndex>
+                                                    </items>
+                                                </config>
+                                            </radio_2>
                                         </el>
                                     </ROOT>
                                 </sRadio>

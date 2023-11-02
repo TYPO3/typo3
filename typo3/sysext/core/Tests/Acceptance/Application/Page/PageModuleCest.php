@@ -45,42 +45,36 @@ final class PageModuleCest
 
     public function editPageTitle(ApplicationTester $I, PageTree $pageTree): void
     {
-        $currentPageTitle = 'styleguide TCA demo';
+        $oldPageTitle = 'styleguide TCA demo';
         $newPageTitle = 'styleguide TCA demo page';
 
         $I->switchToMainFrame();
         $I->click('Page');
         $I->waitForElement('#typo3-pagetree-tree .nodes .node');
-        $pageTree->openPath([$currentPageTitle]);
+        $pageTree->openPath([$oldPageTitle]);
         $I->switchToContentFrame();
 
-        // Rename the page
-        $this->renamePage($I, $currentPageTitle, $newPageTitle);
-
-        // Now recover the old page title
-        $this->renamePage($I, $newPageTitle, $currentPageTitle);
-    }
-
-    private function renamePage(ApplicationTester $I, string $oldTitle, string $newTitle): void
-    {
         $I->canSeeElement('typo3-backend-editable-page-title');
         $I->wait(1);
-        $currentPageTitle = $I->executeJS("return document.querySelector('typo3-backend-editable-page-title').pageTitle");
-        if ($currentPageTitle !== $oldTitle) {
-            $I->fail('The current page title "' . $currentPageTitle . '" does not match "' . $oldTitle . '"');
+
+        // Rename
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"edit\"]').click()");
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('input').value = '" . $newPageTitle . "'");
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"save\"]').click()");
+        $I->wait(1);
+        $changedPageTitle = $I->executeJS("return document.querySelector('typo3-backend-editable-page-title').pageTitle");
+        if ($changedPageTitle !== 'styleguide TCA demo page') {
+            $I->fail('The current page title "' . $changedPageTitle . '" does not match "styleguide TCA demo page"');
         }
 
-        $I->comment('Activate inline edit of page title');
+        // Rename back
         $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"edit\"]').click()");
-
-        $I->comment('Set new value and save');
-        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('input').value = '" . $newTitle . "'");
+        $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('input').value = '" . $oldPageTitle . "'");
         $I->executeJS("document.querySelector('typo3-backend-editable-page-title').shadowRoot.querySelector('[data-action=\"save\"]').click()");
-
-        $I->comment('See the new page title');
-        $currentPageTitle = $I->executeJS("return document.querySelector('typo3-backend-editable-page-title').pageTitle");
-        if ($currentPageTitle !== $newTitle) {
-            $I->fail('The current page title "' . $currentPageTitle . '" does not match "' . $newTitle . '"');
+        $I->wait(1);
+        $changedPageTitle = $I->executeJS("return document.querySelector('typo3-backend-editable-page-title').pageTitle");
+        if ($changedPageTitle !== 'styleguide TCA demo') {
+            $I->fail('The current page title "' . $changedPageTitle . '" does not match "styleguide TCA demo"');
         }
     }
 }

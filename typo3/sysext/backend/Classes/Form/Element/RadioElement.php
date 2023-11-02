@@ -101,7 +101,7 @@ class RadioElement extends AbstractFormElement
                 $radioElementAttrs['checked'] = 'checked';
             }
             $html[] = '<div class="form-check' . $disabled . '">';
-            $html[] =     '<input ' . GeneralUtility::implodeAttributes($radioElementAttrs, true) . $disabled . '>';
+            $html[] =     '<input ' . GeneralUtility::implodeAttributes($radioElementAttrs, true, true) . $disabled . '>';
             $html[] =     '<label class="form-check-label" for="' . $radioId . '">';
             $html[] =         htmlspecialchars($this->appendValueToLabelInDebugMode($label, $value));
             $html[] =     '</label>';

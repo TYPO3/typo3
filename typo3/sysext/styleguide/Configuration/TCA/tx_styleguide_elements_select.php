@@ -408,6 +408,7 @@ return [
                     ['label' => 'foo 1', 'value' => 1],
                     ['label' => 'foo 2', 'value' => 2],
                     ['label' => 'foo 3', 'value' => 3],
+                    ['label' => 'foo 4 (empty)', 'value' => ''],
                 ],
             ],
         ],
