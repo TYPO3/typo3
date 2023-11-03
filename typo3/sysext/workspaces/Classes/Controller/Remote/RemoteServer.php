@@ -124,8 +124,8 @@ class RemoteServer
         $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
         $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon_Live = $iconFactory->getIconForRecord($parameter->table, $liveRecord, IconSize::SMALL)->getIdentifier();
-        $icon_Workspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, IconSize::SMALL)->getIdentifier();
+        $iconLive = $iconFactory->getIconForRecord($parameter->table, $liveRecord, IconSize::SMALL);
+        $iconWorkspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, IconSize::SMALL);
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         $isNewOrDeletePlaceholder = $versionState === VersionState::NEW_PLACEHOLDER || $versionState === VersionState::DELETE_PLACEHOLDER;
@@ -273,8 +273,10 @@ class RemoteServer
                 [
                     // these parts contain HTML (don't escape)
                     'diff' => $versionDifferencesEvent->getVersionDifferences(),
-                    'icon_Live' => $icon_Live,
-                    'icon_Workspace' => $icon_Workspace,
+                    'icon_Live' => $iconLive->getIdentifier(),
+                    'icon_Live_Overlay' => $iconLive->getOverlayIcon()?->getIdentifier() ?? '',
+                    'icon_Workspace' => $iconWorkspace->getIdentifier(),
+                    'icon_Workspace_Overlay' => $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '',
                     // this part is already escaped in getCommentsForRecord()
                     'comments' => $commentsForRecord,
                     // escape/sanitize the others

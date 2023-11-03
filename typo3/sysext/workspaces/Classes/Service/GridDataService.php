@@ -179,6 +179,8 @@ class GridDataService implements LoggerAwareInterface
                     $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, (int)$record['uid'], $origRecord, $versionRecord);
                     $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
                     $liveRecordLabel = BackendUtility::getRecordTitle($table, $origRecord);
+                    $iconLive = $iconFactory->getIconForRecord($table, $origRecord, IconSize::SMALL);
+                    $iconWorkspace = $iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
                     [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
                     $calculatedT3verOid = $record['t3ver_oid'];
                     if (VersionState::tryFrom($record['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
@@ -214,8 +216,10 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['t3ver_oid'] = $calculatedT3verOid;
                     $versionArray['livepid'] = $record['livepid'];
                     $versionArray['stage'] = $versionRecord['t3ver_stage'];
-                    $versionArray['icon_Live'] = $iconFactory->getIconForRecord($table, $origRecord, IconSize::SMALL)->getIdentifier();
-                    $versionArray['icon_Workspace'] = $iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL)->getIdentifier();
+                    $versionArray['icon_Live'] = $iconLive->getIdentifier();
+                    $versionArray['icon_Live_Overlay'] = $iconLive->getOverlayIcon()?->getIdentifier() ?? '';
+                    $versionArray['icon_Workspace'] = $iconWorkspace->getIdentifier();
+                    $versionArray['icon_Workspace_Overlay'] = $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '';
                     $languageValue = $this->getLanguageValue($table, $versionRecord);
                     $versionArray['languageValue'] = $languageValue;
                     $versionArray['language'] = [
