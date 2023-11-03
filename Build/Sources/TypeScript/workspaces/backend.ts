@@ -719,14 +719,14 @@ class Backend extends Workspaces {
               ? 'padding-left: ' + this.indentationPadding * item.Workspaces_CollectionLevel + 'px'
               : '',
           }).html(
-            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Workspace) + '</span>'
+            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Workspace, item.icon_Workspace_Overlay) + '</span>'
             + '&nbsp;'
             + '<a href="#" data-action="changes">'
             + '<span class="workspace-state-' + item.state_Workspace + '" title="' + item.label_Workspace + '">' + item.label_Workspace_crop + '</span>'
             + '</a>',
           ),
           $('<td />', { class: 't3js-title-live' }).html(
-            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Live) + '</span>'
+            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Live, item.icon_Live_Overlay) + '</span>'
             + '&nbsp;'
             + '<span class"workspace-live-title title="' + item.label_Live + '">' + item.label_Live_crop + '</span>'
           ),
@@ -1301,7 +1301,7 @@ class Backend extends Workspaces {
    * Gets a specific icon. A specific "switch" is added due to the integrity
    * flags that are added in the IntegrityService.
    */
-  private getIcon(identifier: string): string {
+  private getIcon(identifier: string, overlay: string = ''): string {
     switch (identifier) {
       case 'language':
         identifier = 'flags-multiple';
@@ -1321,7 +1321,14 @@ class Backend extends Workspaces {
         break;
       default:
     }
-    return '<typo3-backend-icon identifier="' + identifier + '" size="small"></typo3-backend-icon>';
+    return '<typo3-backend-icon ' + Object.entries({
+      'identifier': identifier,
+      'overlay': overlay,
+      'size': 'small'
+    })
+      .filter(([key, value]) => key && value !== '')
+      .map(([key, value]) => `${key}="${value}"`)
+      .join(' ') + '></typo3-backend-icon>';
   }
 
   /**
