@@ -100,4 +100,23 @@ final class IconViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" overlay="overlayString" />');
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
+
+    /**
+     * @test
+     */
+    public function titleIsPassedFromViewhelperToIconClass(): void
+    {
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
+        $iconMock = $this->createMock(Icon::class);
+        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+            ->with('myIdentifier', self::anything(), null, IconState::STATE_DEFAULT)
+            ->willReturn($iconMock);
+        $iconMock->expects(self::atLeastOnce())->method('setTitle')->with('myTitle')->willReturn($iconMock);
+        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" title="myTitle" />');
+        self::assertSame('htmlFoo', (new TemplateView($context))->render());
+    }
 }
