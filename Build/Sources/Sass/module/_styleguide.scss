@@ -10,6 +10,8 @@
 
 // Code and example rendering
 #tx-styleguide-content .example {
+    // @todo: enforce light mode until everything is compatible with dark mode
+    @include lightmode;
     background-color: var(--typo3-component-bg);
     border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     padding: var(--typo3-spacing);
