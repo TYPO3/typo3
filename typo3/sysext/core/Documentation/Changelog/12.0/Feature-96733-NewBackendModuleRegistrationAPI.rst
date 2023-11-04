@@ -204,13 +204,13 @@ Default:
 +============================+=====================================================================+
 | routes (:php:`array`)      | Define the routes to this module. Each route requires at least the  |
 |                            | `target`. The `_default` route is mandatory, except for modules,    |
-|                            | which can fall back to a sub module. The `_default` routes' `path`  |
+|                            | which can fall back to a sub module. The `_default` routes `path`   |
 |                            | is taken from the top-level configuration. For all other routes     |
 |                            | is the route identifier taken as `path`, if not explicitly defined. |
 |                            | Each route can define any controller / action pair and can restrict |
 |                            | the allowed HTTP methods::                                          |
 |                            |                                                                     |
-|                            |     routes' => [                                                    |
+|                            |     'routes' => [                                                   |
 |                            |         '_default' => [                                             |
 |                            |             'target' => ControllerA::class . '::handleRequest',     |
 |                            |         ],                                                          |
@@ -272,7 +272,7 @@ The corresponding event listener class:
         {
             // Change module icon of page module
             if ($event->getIdentifier() === 'web_layout') {
-                $event->setConfigurationValue('iconIdentifider', 'my-custom-icon-identifier');
+                $event->setConfigurationValue('iconIdentifier', 'my-custom-icon-identifier');
             }
         }
     }
