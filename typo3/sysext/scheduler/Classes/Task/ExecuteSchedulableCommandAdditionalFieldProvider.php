@@ -313,7 +313,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     protected function getArgumentLabel(InputArgument $argument): string
     {
-        return 'Argument: ' . $argument->getName() . '. ' . htmlspecialchars($argument->getDescription());
+        return 'Argument: ' . $argument->getName() . '. ' . $argument->getDescription();
     }
 
     /**
@@ -321,7 +321,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     protected function getOptionLabel(InputOption $option): string
     {
-        return 'Option: ' . htmlspecialchars($option->getName()) . '. ' . htmlspecialchars($option->getDescription());
+        return 'Option: ' . $option->getName() . '. ' . $option->getDescription();
     }
 
     protected function renderSelectField(array $options, string $selectedOptionValue): string
