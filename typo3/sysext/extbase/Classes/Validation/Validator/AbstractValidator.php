@@ -97,8 +97,8 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected function addErrorForProperty(string|array $propertyPath, string $message, int $code, array $arguments = [], string $title = ''): void
     {
-        $propertyPath = is_array($propertyPath) ? implode('.', $propertyPath) : (string)$propertyPath;
-        $error = new Error((string)$message, (int)$code, $arguments, (string)$title);
+        $propertyPath = is_array($propertyPath) ? implode('.', $propertyPath) : $propertyPath;
+        $error = new Error($message, $code, $arguments, $title);
         $this->result->forProperty($propertyPath)->addError($error);
     }
 
