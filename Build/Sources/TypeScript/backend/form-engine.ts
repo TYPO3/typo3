@@ -227,6 +227,7 @@ export default (function() {
 
     if (isMultiple || isList) {
       const $availableFieldEl = FormEngine.getFieldElement(fieldName, '_avail');
+      const availableFieldEl = $availableFieldEl.get(0);
 
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
@@ -307,8 +308,8 @@ export default (function() {
         // execute the phpcode from $FormEngine->TBE_EDITOR_fieldChanged_func
         FormEngine.legacyFieldChangedCb();
         FormEngine.Validation.markFieldAsChanged(originalFieldEl);
-        FormEngine.Validation.validateField($fieldEl);
-        FormEngine.Validation.validateField($availableFieldEl);
+        FormEngine.Validation.validateField(fieldEl);
+        FormEngine.Validation.validateField(availableFieldEl);
       }
 
     } else {
@@ -325,7 +326,7 @@ export default (function() {
 
       // Change the selected value
       $fieldEl.val(value);
-      FormEngine.Validation.validateField($fieldEl);
+      FormEngine.Validation.validateField(fieldEl);
     }
   };
 
