@@ -277,6 +277,11 @@ EOT
                 return Command::FAILURE;
             }
 
+            if ($databaseList === []) {
+                $this->writeError($output, 'No databases are available to the specified user. At least one usable database needs to be accessible.');
+                return Command::FAILURE;
+            }
+
             $dbChoices = [];
             foreach ($databaseList as $database) {
                 $usable = $database['tables'] > 0 ? '<fg=red>☓</>' : '<fg=green>✓</>';
