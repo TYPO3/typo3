@@ -149,7 +149,13 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
     public function remove(string $sessionId): bool
     {
         $this->initializeConnection();
-        return $this->redis->del($this->getSessionKeyName($this->hash($sessionId))) >= 1;
+
+        $deleteResult = $this->redis->del($this->getSessionKeyName($this->hash($sessionId)));
+
+        // Redis delete result is either `int`, `false` or a `\Redis` multi mode object, where delete state cannot get
+        // determined. Multi mode is not even supported by this session backend at all, therefore we handle this case as
+        // "not successful".
+        return is_int($deleteResult) && $deleteResult >= 1;
     }
 
     /**
