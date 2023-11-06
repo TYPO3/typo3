@@ -53,13 +53,13 @@ This class has to implement the :php:class:`WidgetInterface` and could look like
         public function renderWidgetContent(): string
         {
             $view = $this->backendViewFactory->create($this->request);
-            $this->view->assignMultiple([
+            $view->assignMultiple([
                 'items' => $this->getRssItems(),
                 'options' => $this->options,
                 'button' => $this->getButton(),
                 'configuration' => $this->configuration,
             ]);
-            return $this->view->render('Widget/RssWidget');
+            return $view->render('Widget/RssWidget');
         }
 
         protected function getRssItems(): array
