@@ -29,7 +29,7 @@ registration. Below is an example of a RSS widget with the refresh option enable
      tags:
        - name: dashboard.widget
          identifier: 'myOwnRSSWidget'
-         groupNames: â€˜generalâ€™
+         groupNames: 'general'
          title: 'LLL:EXT:extension/Resources/Private/Language/locallang.xlf:widgets.myOwnRSSWidget.title'
          description: 'LLL:EXT:extension/Resources/Private/Language/locallang.xlf:widgets.myOwnRSSWidget.description'
          iconIdentifier: 'content-widget-rss'
