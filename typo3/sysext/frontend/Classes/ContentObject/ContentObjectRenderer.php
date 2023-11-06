@@ -568,6 +568,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function cObjGet($setup, $addKey = '')
     {
+        if (!is_array($setup)) {
+            return '';
+        }
         return implode('', $this->cObjGetSeparated($setup, $addKey));
     }
 
@@ -579,7 +582,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function cObjGetSeparated(?array $setup, string $addKey = ''): array
     {
-        if (!is_array($setup) || $setup === []) {
+        if ($setup === null || $setup === []) {
             return [];
         }
         $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($setup);
