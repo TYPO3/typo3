@@ -24,19 +24,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class EmailAddressValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.emailaddress.notvalid';
+
+    protected $supportedOptions = [
+        'message' => [null, 'Translation key or message for invalid value', 'string'],
+    ];
+
     /**
      * Checks if the given value is a valid email address.
      */
     public function isValid(mixed $value): void
     {
         if (!is_string($value) || !$this->validEmail($value)) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.emailaddress.notvalid',
-                    'extbase'
-                ),
-                1221559976
-            );
+            $this->addError($this->translateErrorMessage($this->message), 1221559976);
         }
     }
 

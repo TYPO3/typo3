@@ -22,6 +22,12 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 final class DateTimeValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.datetime.notvalid';
+
+    protected $supportedOptions = [
+        'message' => [null, 'Translation key or message for invalid value', 'string'],
+    ];
+
     /**
      * Checks if the given value is a valid DateTime object. If this is not
      * the case, the function adds an error.
@@ -34,8 +40,8 @@ final class DateTimeValidator extends AbstractValidator
         }
         $this->addError(
             $this->translateErrorMessage(
-                'validator.datetime.notvalid',
-                'extbase',
+                $this->message,
+                '',
                 [
                     gettype($value),
                 ]

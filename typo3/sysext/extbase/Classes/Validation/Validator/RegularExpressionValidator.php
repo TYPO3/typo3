@@ -24,12 +24,15 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
  */
 final class RegularExpressionValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.regularexpression.nomatch';
+
     /**
      * @var array
      */
     protected $supportedOptions = [
         'regularExpression' => ['', 'The regular expression to use for validation, used as given', 'string', true],
         'errorMessage' => ['', 'Error Message to show when validation fails', 'string', false],
+        'message' => [null, 'Translation key or message when regular expression results in a no match', 'string'],
     ];
 
     /**
@@ -41,9 +44,8 @@ final class RegularExpressionValidator extends AbstractValidator
     {
         $result = preg_match($this->options['regularExpression'], $value);
         if ($result === 0) {
-            $errorMessage = $this->getErrorMessage();
             $this->addError(
-                $errorMessage,
+                $this->getErrorMessage(),
                 1221565130
             );
         }
@@ -55,17 +57,22 @@ final class RegularExpressionValidator extends AbstractValidator
     protected function getErrorMessage(): string
     {
         $errorMessage = (string)($this->options['errorMessage'] ?? '');
+        if ($errorMessage !== '') {
+            trigger_error(
+                'Validator option "errorMessage" is deprecated and will be removed in TYPO3 v14.0, use "message" option instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
         // if custom message is no locallang reference
         if ($errorMessage !== '' && !str_starts_with($errorMessage, 'LLL')) {
             return $errorMessage;
         }
         if ($errorMessage === '') {
             // fallback to default message
-            $errorMessage = 'validator.regularexpression.nomatch';
+            $errorMessage = $this->message;
         }
-        return $this->translateErrorMessage(
-            $errorMessage,
-            'extbase'
-        );
+
+        return $this->translateErrorMessage($errorMessage);
     }
 }

@@ -24,12 +24,21 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
  */
 final class StringLengthValidator extends AbstractValidator
 {
+    protected string $betweenMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.stringlength.between';
+    protected string $lessMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.stringlength.less';
+    protected string $exceedMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.stringlength.exceed';
+
+    protected array $translationOptions = ['betweenMessage', 'lessMessage', 'exceedMessage'];
+
     /**
      * @var array
      */
     protected $supportedOptions = [
         'minimum' => [0, 'Minimum length for a valid string', 'integer'],
         'maximum' => [PHP_INT_MAX, 'Maximum length for a valid string', 'integer'],
+        'betweenMessage' => [null, 'Translation key or message for value not between minimum and maximum', 'string'],
+        'lessMessage' => [null, 'Translation key or message for value less than minimum', 'string'],
+        'exceedMessage' => [null, 'Translation key or message for value exceeds maximum', 'string'],
     ];
 
     /**
@@ -69,8 +78,8 @@ final class StringLengthValidator extends AbstractValidator
             if ($this->options['minimum'] > 0 && $this->options['maximum'] < PHP_INT_MAX) {
                 $this->addError(
                     $this->translateErrorMessage(
-                        'validator.stringlength.between',
-                        'extbase',
+                        $this->betweenMessage,
+                        '',
                         [
                             $this->options['minimum'],
                             $this->options['maximum'],
@@ -82,8 +91,8 @@ final class StringLengthValidator extends AbstractValidator
             } elseif ($this->options['minimum'] > 0) {
                 $this->addError(
                     $this->translateErrorMessage(
-                        'validator.stringlength.less',
-                        'extbase',
+                        $this->lessMessage,
+                        '',
                         [
                             $this->options['minimum'],
                         ]
@@ -94,8 +103,8 @@ final class StringLengthValidator extends AbstractValidator
             } else {
                 $this->addError(
                     $this->translateErrorMessage(
-                        'validator.stringlength.exceed',
-                        'extbase',
+                        $this->exceedMessage,
+                        '',
                         [
                             $this->options['maximum'],
                         ]

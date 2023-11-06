@@ -24,19 +24,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class UrlValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.url.notvalid';
+
+    protected $supportedOptions = [
+        'message' => [null, 'Translation key or message for invalid value', 'string'],
+    ];
+
     /**
      * Checks if the given value is a valid url.
      */
     public function isValid(mixed $value): void
     {
         if (!is_string($value) || !GeneralUtility::isValidUrl($value)) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.url.notvalid',
-                    'extbase'
-                ),
-                1238108078
-            );
+            $this->addError($this->translateErrorMessage($this->message), 1238108078);
         }
     }
 }

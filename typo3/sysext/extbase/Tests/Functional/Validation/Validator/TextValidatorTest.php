@@ -104,7 +104,6 @@ final class TextValidatorTest extends FunctionalTestCase
     {
         $validator = new TextValidator();
         $validator->setOptions([]);
-        // we only test for the error code, after the translation Method for message is mocked anyway
         $expected = [new Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786)];
         self::assertEquals($expected, $validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
     }

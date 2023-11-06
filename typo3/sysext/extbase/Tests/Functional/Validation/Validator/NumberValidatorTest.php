@@ -50,7 +50,6 @@ final class NumberValidatorTest extends FunctionalTestCase
         $subject = new NumberValidator();
         $subject->setOptions([]);
         $expectedResult = new Result();
-        // we only test for the error code, after the message translation method is mocked
         $expectedResult->addError(new Error('The given subject was not a valid number.', 1221563685));
         self::assertEquals($expectedResult, $subject->validate('not a number'));
     }

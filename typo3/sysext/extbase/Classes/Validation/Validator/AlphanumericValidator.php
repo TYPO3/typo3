@@ -22,13 +22,19 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 final class AlphanumericValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.alphanumeric.notvalid';
+
+    protected $supportedOptions = [
+        'message' => [null, 'Translation key or message for invalid value', 'string'],
+    ];
+
     /**
      * The given $value is valid if it is an alphanumeric string, which is defined as [\pL\d]*.
      */
     public function isValid(mixed $value): void
     {
         if (!is_string($value) || preg_match('/^[\pL\d]*$/u', $value) !== 1) {
-            $this->addError($this->translateErrorMessage('validator.alphanumeric.notvalid', 'extbase'), 1221551320);
+            $this->addError($this->translateErrorMessage($this->message), 1221551320);
         }
     }
 }

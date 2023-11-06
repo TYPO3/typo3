@@ -22,6 +22,11 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 final class BooleanValidator extends AbstractValidator
 {
+    protected string $notTrueMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.boolean.nottrue';
+    protected string $notFalseMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.boolean.notfalse';
+
+    protected array $translationOptions = ['notTrueMessage', 'notFalseMessage'];
+
     /**
      * @var array
      */
@@ -32,6 +37,8 @@ final class BooleanValidator extends AbstractValidator
         // @todo with next patches: deprecate this BooleanValidator and introduce a BooleanValueValidator, like
         // in Flow, which won't be called on boolean action arguments.
         'is' => [null, 'Boolean value', 'boolean|string|integer'],
+        'notTrueMessage' => [null, 'Translation key or message for not true value', 'string'],
+        'notFalseMessage' => [null, 'Translation key or message for not false value', 'string'],
     ];
 
     /**
@@ -64,21 +71,12 @@ final class BooleanValidator extends AbstractValidator
 
         if ($value !== $expectation) {
             if (!is_bool($value)) {
-                $this->addError($this->translateErrorMessage(
-                    'validator.boolean.nottrue',
-                    'extbase'
-                ), 1361959230);
+                $this->addError($this->translateErrorMessage($this->notTrueMessage), 1361959230);
             } else {
                 if ($expectation) {
-                    $this->addError($this->translateErrorMessage(
-                        'validator.boolean.nottrue',
-                        'extbase'
-                    ), 1361959228);
+                    $this->addError($this->translateErrorMessage($this->notTrueMessage), 1361959228);
                 } else {
-                    $this->addError($this->translateErrorMessage(
-                        'validator.boolean.notfalse',
-                        'extbase'
-                    ), 1361959229);
+                    $this->addError($this->translateErrorMessage($this->notFalseMessage), 1361959229);
                 }
             }
         }

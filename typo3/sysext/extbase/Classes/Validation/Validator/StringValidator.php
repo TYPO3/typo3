@@ -22,19 +22,19 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 final class StringValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.string.notvalid';
+
+    protected $supportedOptions = [
+        'message' => [null, 'Translation key or message for invalid value', 'string'],
+    ];
+
     /**
      * Checks if the given value is a string.
      */
     public function isValid(mixed $value): void
     {
         if (!is_string($value)) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.string.notvalid',
-                    'extbase'
-                ),
-                1238108067
-            );
+            $this->addError($this->translateErrorMessage($this->message), 1238108067);
         }
     }
 }

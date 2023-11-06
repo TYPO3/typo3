@@ -22,6 +22,12 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 final class TextValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.text.notvalid';
+
+    protected $supportedOptions = [
+        'message' => [null, 'Translation key or message for invalid value', 'string'],
+    ];
+
     /**
      * Checks if the given value is a valid text (contains no XML tags).
      *
@@ -32,13 +38,7 @@ final class TextValidator extends AbstractValidator
     public function isValid(mixed $value): void
     {
         if ($value !== strip_tags((string)$value)) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.text.notvalid',
-                    'extbase'
-                ),
-                1221565786
-            );
+            $this->addError($this->translateErrorMessage($this->message), 1221565786);
         }
     }
 }

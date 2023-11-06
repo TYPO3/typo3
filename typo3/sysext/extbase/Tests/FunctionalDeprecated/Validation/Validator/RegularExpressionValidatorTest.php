@@ -15,9 +15,8 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\FunctionalDeprecated\Validation\Validator;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -37,31 +36,26 @@ final class RegularExpressionValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function regularExpressionValidatorMatchesABasicExpressionCorrectly(): void
-    {
-        $options = ['regularExpression' => '/^simple[0-9]expression$/'];
-        $validator = new RegularExpressionValidator();
-        $validator->setOptions($options);
-        self::assertFalse($validator->validate('simple1expression')->hasErrors());
-        self::assertTrue($validator->validate('simple1expressions')->hasErrors());
-    }
-
-    #[Test]
-    public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch(): void
-    {
-        $options = ['regularExpression' => '/^simple[0-9]expression$/'];
-        $validator = new RegularExpressionValidator();
-        $validator->setOptions($options);
-        $errors = $validator->validate('some subject that will not match')->getErrors();
-        self::assertEquals([new Error('The given subject did not match the pattern.', 1221565130)], $errors);
-    }
-
-    #[Test]
     public function customErrorMessageIsRespected(): void
     {
         $options = [
             'regularExpression' => '/^simple[0-9]expression$/',
-            'message' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:onlineDocumentation',
+            'errorMessage' => 'custom message',
+        ];
+        $validator = new RegularExpressionValidator();
+        $validator->setOptions($options);
+        $result = $validator->validate('some subject that will not match');
+        self::assertTrue($result->hasErrors());
+        $errors = $result->getErrors();
+        self::assertEquals([new Error('custom message', 1221565130)], $errors);
+    }
+
+    #[Test]
+    public function emptyErrorMessageFallsBackToDefaultValue(): void
+    {
+        $options = [
+            'regularExpression' => '/^simple[0-9]expression$/',
+            'errorMessage' => '',
         ];
 
         $subject = new RegularExpressionValidator();
@@ -69,34 +63,15 @@ final class RegularExpressionValidatorTest extends FunctionalTestCase
         $result = $subject->validate('some subject that will not match');
         self::assertTrue($result->hasErrors());
         $errors = $result->getErrors();
-        self::assertEquals([new Error('TYPO3 Online Documentation', 1221565130)], $errors);
+        self::assertEquals([new Error('The given subject did not match the pattern.', 1221565130)], $errors);
     }
 
-    public static function customErrorMessagesDataProvider(): array
-    {
-        return [
-            'no message' => [
-                '',
-                'The given subject did not match the pattern.',
-            ],
-            'translation key' => [
-                'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordInformation',
-                'Record information',
-            ],
-            'static message' => [
-                'some static custom message',
-                'some static custom message',
-            ],
-        ];
-    }
-
-    #[DataProvider('customErrorMessagesDataProvider')]
     #[Test]
-    public function translatableErrorMessageContainsDefaultValue(string $input, string $expected): void
+    public function lllLanguageKeyIsTranslated(): void
     {
         $options = [
             'regularExpression' => '/^simple[0-9]expression$/',
-            'message' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordInformation',
+            'errorMessage' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordInformation',
         ];
 
         $subject = new RegularExpressionValidator();

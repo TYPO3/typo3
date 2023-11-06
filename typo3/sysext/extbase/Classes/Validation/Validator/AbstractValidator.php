@@ -39,6 +39,11 @@ abstract class AbstractValidator implements ValidatorInterface
     protected $acceptsEmptyValues = true;
 
     /**
+     * Contains an array of property names used for translation handling of error messages.
+     */
+    protected array $translationOptions = ['message'];
+
+    /**
      * This contains the supported options, their default values, types and descriptions.
      *
      * @var array
@@ -51,6 +56,7 @@ abstract class AbstractValidator implements ValidatorInterface
     public function setOptions(array $options): void
     {
         $this->initializeDefaultOptions($options);
+        $this->initializeTranslationOptions($options);
     }
 
     /**
@@ -119,10 +125,18 @@ abstract class AbstractValidator implements ValidatorInterface
     }
 
     /**
-     * Wrap static call to LocalizationUtility to simplify unit testing.
+     * Translates an error message using LocalizationUtility::translate() method. If the translate key does not
+     * start with 'LLL:', the original translate key is returned.
      */
-    protected function translateErrorMessage(string $translateKey, string $extensionName, array $arguments = []): string
-    {
+    protected function translateErrorMessage(
+        string $translateKey,
+        string $extensionName = '',
+        array $arguments = []
+    ): string {
+        if (!str_starts_with($translateKey, 'LLL:')) {
+            return $translateKey;
+        }
+
         return LocalizationUtility::translate(
             $translateKey,
             $extensionName,
@@ -158,5 +172,17 @@ abstract class AbstractValidator implements ValidatorInterface
             ),
             $options
         );
+    }
+
+    /**
+     * Initializes all registered translation options with custom translation options from the given options array
+     */
+    protected function initializeTranslationOptions(array $options): void
+    {
+        foreach ($this->translationOptions as $translationOption) {
+            if (property_exists($this, $translationOption)) {
+                $this->$translationOption = $options[$translationOption] ?? $this->$translationOption;
+            }
+        }
     }
 }

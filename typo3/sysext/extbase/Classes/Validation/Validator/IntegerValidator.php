@@ -22,19 +22,19 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 final class IntegerValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.integer.notvalid';
+
+    protected $supportedOptions = [
+        'message' => [null, 'Translation key or message for invalid value', 'string'],
+    ];
+
     /**
      * Checks if the given value is a valid integer.
      */
     public function isValid(mixed $value): void
     {
         if (filter_var($value, FILTER_VALIDATE_INT) === false) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.integer.notvalid',
-                    'extbase'
-                ),
-                1221560494
-            );
+            $this->addError($this->translateErrorMessage($this->message), 1221560494);
         }
     }
 }

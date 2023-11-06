@@ -22,6 +22,12 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 final class FloatValidator extends AbstractValidator
 {
+    protected string $message = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.float.notvalid';
+
+    protected $supportedOptions = [
+        'message' => [null, 'Translation key or message for invalid value', 'string'],
+    ];
+
     /**
      * The given value is valid if it is of type float or a string matching the regular expression [0-9.e+-]
      *
@@ -34,13 +40,7 @@ final class FloatValidator extends AbstractValidator
         }
 
         if (!is_string($value) || !str_contains($value, '.') || preg_match('/^[0-9.e+-]+$/', $value) !== 1) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.float.notvalid',
-                    'extbase'
-                ),
-                1221560288
-            );
+            $this->addError($this->translateErrorMessage($this->message), 1221560288);
         }
     }
 }

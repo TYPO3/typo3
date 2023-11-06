@@ -22,12 +22,19 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 final class NumberRangeValidator extends AbstractValidator
 {
+    protected string $notValidMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.numberrange.notvalid';
+    protected string $notInRangeMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.numberrange.range';
+
+    protected array $translationOptions = ['notValidMessage', 'notInRangeMessage'];
+
     /**
      * @var array
      */
     protected $supportedOptions = [
         'minimum' => [0, 'The minimum value to accept', 'integer'],
         'maximum' => [PHP_INT_MAX, 'The maximum value to accept', 'integer'],
+        'notValidMessage' => [null, 'Translation key or message for non valid value', 'string'],
+        'notInRangeMessage' => [null, 'Translation key or message for value not in range', 'string'],
     ];
 
     /**
@@ -36,13 +43,7 @@ final class NumberRangeValidator extends AbstractValidator
     public function isValid(mixed $value): void
     {
         if (!is_numeric($value)) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.numberrange.notvalid',
-                    'extbase'
-                ),
-                1221563685
-            );
+            $this->addError($this->translateErrorMessage($this->notValidMessage), 1221563685);
             return;
         }
 
@@ -56,8 +57,8 @@ final class NumberRangeValidator extends AbstractValidator
         }
         if ($value < $minimum || $value > $maximum) {
             $this->addError($this->translateErrorMessage(
-                'validator.numberrange.range',
-                'extbase',
+                $this->notInRangeMessage,
+                '',
                 [
                     $minimum,
                     $maximum,

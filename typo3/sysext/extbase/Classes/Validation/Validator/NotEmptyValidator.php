@@ -30,46 +30,32 @@ final class NotEmptyValidator extends AbstractValidator
      */
     protected $acceptsEmptyValues = false;
 
+    protected string $nullMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.notempty.null';
+    protected string $emptyMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validator.notempty.empty';
+
+    protected array $translationOptions = ['nullMessage', 'emptyMessage'];
+
+    protected $supportedOptions = [
+        'nullMessage' => [null, 'Translation key or message for null value', 'string'],
+        'emptyMessage' => [null, 'Translation key or message for empty value', 'string'],
+    ];
+
     /**
      * Checks if the given value ($propertyValue) is not empty (NULL, empty string, empty array or empty object).
      */
     public function isValid(mixed $value): void
     {
         if ($value === null) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.notempty.null',
-                    'extbase'
-                ),
-                1221560910
-            );
+            $this->addError($this->translateErrorMessage($this->nullMessage), 1221560910);
         }
         if ($value === '') {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.notempty.empty',
-                    'extbase'
-                ),
-                1221560718
-            );
+            $this->addError($this->translateErrorMessage($this->emptyMessage), 1221560718);
         }
         if (is_array($value) && empty($value)) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.notempty.empty',
-                    'extbase'
-                ),
-                1347992400
-            );
+            $this->addError($this->translateErrorMessage($this->emptyMessage), 1347992400);
         }
         if ($value instanceof \Countable && $value->count() === 0) {
-            $this->addError(
-                $this->translateErrorMessage(
-                    'validator.notempty.empty',
-                    'extbase'
-                ),
-                1347992453
-            );
+            $this->addError($this->translateErrorMessage($this->emptyMessage), 1347992453);
         }
     }
 }

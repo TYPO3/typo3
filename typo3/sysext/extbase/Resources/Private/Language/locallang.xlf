@@ -27,23 +27,14 @@
 			<trans-unit id="validator.datetime.notvalid" resname="validator.datetime.notvalid">
 				<source>The given subject was not a valid DateTime. Got: '%s'</source>
 			</trans-unit>
-			<trans-unit id="validator.genericobject.noobject" resname="validator.genericobject.noobject">
-				<source>Value is no object.</source>
-			</trans-unit>
 			<trans-unit id="validator.float.notvalid" resname="validator.float.notvalid">
 				<source>The given subject was not a valid float.</source>
 			</trans-unit>
 			<trans-unit id="validator.text.notvalid" resname="validator.text.notvalid">
 				<source>The given subject was not a valid text (e.g. contained XML tags).</source>
 			</trans-unit>
-			<trans-unit id="validator.regularexpression.empty" resname="validator.regularexpression.empty">
-				<source>The regular expression was empty.</source>
-			</trans-unit>
 			<trans-unit id="validator.regularexpression.nomatch" resname="validator.regularexpression.nomatch">
 				<source>The given subject did not match the pattern.</source>
-			</trans-unit>
-			<trans-unit id="validator.regularexpression.error" resname="validator.regularexpression.error">
-				<source>The regular expression '%s' contained an error.</source>
 			</trans-unit>
 			<trans-unit id="validator.numberrange.notvalid" resname="validator.numberrange.notvalid">
 				<source>The given subject was not a valid number.</source>

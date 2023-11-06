@@ -96,13 +96,31 @@ final class ValidatorResolverTest extends FunctionalTestCase
         /** @var StringLengthValidator $propertyValidator */
         $propertyValidator = $fooPropertyValidators->current();
         self::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
-        self::assertSame(['minimum' => 1, 'maximum' => PHP_INT_MAX], $propertyValidator->getOptions());
+        self::assertSame(
+            [
+                'minimum' => 1,
+                'maximum' => PHP_INT_MAX,
+                'betweenMessage' => null,
+                'lessMessage' => null,
+                'exceedMessage' => null,
+            ],
+            $propertyValidator->getOptions()
+        );
 
         $fooPropertyValidators->next();
         /** @var StringLengthValidator $propertyValidator */
         $propertyValidator = $fooPropertyValidators->current();
         self::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
-        self::assertSame(['minimum' => 0, 'maximum' => 10], $propertyValidator->getOptions());
+        self::assertSame(
+            [
+                'minimum' => 0,
+                'maximum' => 10,
+                'betweenMessage' => null,
+                'lessMessage' => null,
+                'exceedMessage' => null,
+            ],
+            $propertyValidator->getOptions()
+        );
 
         $fooPropertyValidators->next();
         $propertyValidator = $fooPropertyValidators->current();
