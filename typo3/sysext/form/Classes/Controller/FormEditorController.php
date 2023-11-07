@@ -571,7 +571,7 @@ class FormEditorController extends AbstractBackendController
         foreach ($formDefinition as $key => $value) {
             $identifier = $value[$identifierProperty] ?? null;
 
-            if (array_key_exists($identifier, $multiValueProperties)) {
+            if (is_string($identifier) && array_key_exists($identifier, $multiValueProperties)) {
                 $multiValuePropertiesForIdentifier = $multiValueProperties[$identifier];
 
                 foreach ($multiValuePropertiesForIdentifier as $multiValueProperty) {
