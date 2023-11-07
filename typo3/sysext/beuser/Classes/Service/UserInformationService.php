@@ -231,7 +231,7 @@ class UserInformationService
                 continue;
             }
             $label = $specialItem['label'];
-            $icon = $this->iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $specialItem['icon']]);
+            $icon = $specialItem['icon'] ?? 'apps-pagetree-page-default';
             $data['pageTypes'][] = ['label' => $label, 'value' => $value, 'icon' => $icon];
         }
 
