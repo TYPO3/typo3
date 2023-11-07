@@ -484,7 +484,9 @@ class FormEditorController extends AbstractBackendController
      */
     protected function transformFormDefinitionForFormEditor(array $formDefinition): array
     {
+        /** @var array<string, list<string>> $multiValueFormElementProperties */
         $multiValueFormElementProperties = [];
+        /** @var array<string, list<string>> $multiValueFinisherProperties */
         $multiValueFinisherProperties = [];
 
         foreach ($this->prototypeConfiguration['formElementsDefinition'] as $type => $configuration) {
@@ -561,6 +563,8 @@ class FormEditorController extends AbstractBackendController
      *     _value => 3
      *   ],
      * ]
+     *
+     * @param array<string, list<string>> $multiValueProperties
      */
     protected function transformMultiValuePropertiesForFormEditor(
         array $formDefinition,
@@ -571,7 +575,7 @@ class FormEditorController extends AbstractBackendController
         foreach ($formDefinition as $key => $value) {
             $identifier = $value[$identifierProperty] ?? null;
 
-            if (array_key_exists($identifier, $multiValueProperties)) {
+            if (is_string($identifier) && array_key_exists($identifier, $multiValueProperties)) {
                 $multiValuePropertiesForIdentifier = $multiValueProperties[$identifier];
 
                 foreach ($multiValuePropertiesForIdentifier as $multiValueProperty) {
