@@ -144,7 +144,7 @@
     "autosize": "^6.0.1",
     "bootstrap": "^5.3.2",
     "chart.js": "^4.2.1",
-    "cropperjs": "^1.5.13",
+    "cropperjs": "^1.6.1",
     "css-tree": "^2.3.1",
     "d3-dispatch": "^3.0.1",
     "d3-drag": "^3.0.0",
