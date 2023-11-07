@@ -90,6 +90,7 @@ class GifBuilder
      * @var list<int>
      */
     protected array $workArea = [];
+
     /**
      * @var list<int>
      */
@@ -144,7 +145,7 @@ class GifBuilder
     /**
      * @var list<int>
      */
-    protected array $OFFSET;
+    protected array $offset;
 
     /**
      * File formats supported by gdlib. This variable gets filled in the constructor
@@ -245,10 +246,7 @@ class GifBuilder
         // Getting sorted list of TypoScript keys from setup.
         $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
         // Setting the background color, passing it through stdWrap
-        $this->setup['backColor'] = $this->cObj->stdWrapValue('backColor', $this->setup);
-        if (!$this->setup['backColor']) {
-            $this->setup['backColor'] = 'white';
-        }
+        $this->setup['backColor'] = $this->cObj->stdWrapValue('backColor', $this->setup, 'white');
         $this->setup['transparentColor_array'] = explode('|', trim((string)$this->cObj->stdWrapValue('transparentColor', $this->setup)));
         $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup);
         // Set default dimensions
@@ -411,7 +409,7 @@ class GifBuilder
         $this->XY = $XY;
         $this->w = $XY[0];
         $this->h = $XY[1];
-        $this->OFFSET = GeneralUtility::intExplode(',', $this->setup['offset']);
+        $this->offset = GeneralUtility::intExplode(',', $this->setup['offset']);
         // this sets the workArea
         $this->setWorkArea($this->setup['workArea']);
         // this sets the default to the current
@@ -528,115 +526,113 @@ class GifBuilder
             imagefilledrectangle($im, 0, 0, $XY[0], $XY[1], $Bcolor);
         }
         // Traverse the GIFBUILDER objects and render each one:
-        if (is_array($this->setup)) {
-            $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
-            foreach ($sKeyArray as $theKey) {
-                $theValue = $this->setup[$theKey];
-                if ((int)$theKey && ($conf = $this->setup[$theKey . '.'] ?? [])) {
-                    // apply stdWrap to all properties, except for TEXT objects
-                    // all properties of the TEXT sub-object have already been stdWrap-ped
-                    // before in ->checkTextObj()
-                    if ($theValue !== 'TEXT') {
-                        $isStdWrapped = [];
-                        foreach ($conf as $key => $value) {
-                            $parameter = rtrim($key, '.');
-                            if (!($isStdWrapped[$parameter] ?? false) && isset($conf[$parameter . '.'])) {
-                                $conf[$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
-                                $isStdWrapped[$parameter] = 1;
-                            }
+        $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
+        foreach ($sKeyArray as $theKey) {
+            $theValue = $this->setup[$theKey];
+            if ((int)$theKey && ($conf = $this->setup[$theKey . '.'] ?? [])) {
+                // apply stdWrap to all properties, except for TEXT objects
+                // all properties of the TEXT sub-object have already been stdWrap-ped
+                // before in ->checkTextObj()
+                if ($theValue !== 'TEXT') {
+                    $isStdWrapped = [];
+                    foreach ($conf as $key => $value) {
+                        $parameter = rtrim($key, '.');
+                        if (!($isStdWrapped[$parameter] ?? false) && isset($conf[$parameter . '.'])) {
+                            $conf[$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
+                            $isStdWrapped[$parameter] = 1;
                         }
                     }
+                }
 
-                    switch ($theValue) {
-                        case 'IMAGE':
-                            if ($conf['mask'] ?? false) {
-                                $this->maskImageOntoImage($im, $conf, $this->workArea);
-                            } else {
-                                $this->copyImageOntoImage($im, $conf, $this->workArea);
-                            }
-                            break;
-                        case 'TEXT':
-                            if (!($conf['hide'] ?? false)) {
-                                if (is_array($conf['shadow.'] ?? null)) {
-                                    $isStdWrapped = [];
-                                    foreach ($conf['shadow.'] as $key => $value) {
-                                        $parameter = rtrim($key, '.');
-                                        if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                                            $conf['shadow.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
-                                            $isStdWrapped[$parameter] = 1;
-                                        }
+                switch ($theValue) {
+                    case 'IMAGE':
+                        if ($conf['mask'] ?? false) {
+                            $this->maskImageOntoImage($im, $conf, $this->workArea);
+                        } else {
+                            $this->copyImageOntoImage($im, $conf, $this->workArea);
+                        }
+                        break;
+                    case 'TEXT':
+                        if (!($conf['hide'] ?? false)) {
+                            if (is_array($conf['shadow.'] ?? null)) {
+                                $isStdWrapped = [];
+                                foreach ($conf['shadow.'] as $key => $value) {
+                                    $parameter = rtrim($key, '.');
+                                    if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+                                        $conf['shadow.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
+                                        $isStdWrapped[$parameter] = 1;
                                     }
-                                    $this->makeShadow($im, $conf['shadow.'], $this->workArea, $conf);
                                 }
-                                if (is_array($conf['emboss.'] ?? null)) {
-                                    $isStdWrapped = [];
-                                    foreach ($conf['emboss.'] as $key => $value) {
-                                        $parameter = rtrim($key, '.');
-                                        if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                                            $conf['emboss.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
-                                            $isStdWrapped[$parameter] = 1;
-                                        }
+                                $this->makeShadow($im, $conf['shadow.'], $this->workArea, $conf);
+                            }
+                            if (is_array($conf['emboss.'] ?? null)) {
+                                $isStdWrapped = [];
+                                foreach ($conf['emboss.'] as $key => $value) {
+                                    $parameter = rtrim($key, '.');
+                                    if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+                                        $conf['emboss.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
+                                        $isStdWrapped[$parameter] = 1;
                                     }
-                                    $this->makeEmboss($im, $conf['emboss.'], $this->workArea, $conf);
                                 }
-                                if (is_array($conf['outline.'] ?? null)) {
-                                    $isStdWrapped = [];
-                                    foreach ($conf['outline.'] as $key => $value) {
-                                        $parameter = rtrim($key, '.');
-                                        if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                                            $conf['outline.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
-                                            $isStdWrapped[$parameter] = 1;
-                                        }
+                                $this->makeEmboss($im, $conf['emboss.'], $this->workArea, $conf);
+                            }
+                            if (is_array($conf['outline.'] ?? null)) {
+                                $isStdWrapped = [];
+                                foreach ($conf['outline.'] as $key => $value) {
+                                    $parameter = rtrim($key, '.');
+                                    if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+                                        $conf['outline.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
+                                        $isStdWrapped[$parameter] = 1;
                                     }
-                                    $this->makeOutline($im, $conf['outline.'], $this->workArea, $conf);
                                 }
-                                $this->makeText($im, $conf, $this->workArea);
+                                $this->makeOutline($im, $conf['outline.'], $this->workArea, $conf);
                             }
-                            break;
-                        case 'OUTLINE':
-                            if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-                                $this->makeOutline($im, $conf, $this->workArea, $txtConf);
-                            }
-                            break;
-                        case 'EMBOSS':
-                            if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-                                $this->makeEmboss($im, $conf, $this->workArea, $txtConf);
-                            }
-                            break;
-                        case 'SHADOW':
-                            if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
-                                $this->makeShadow($im, $conf, $this->workArea, $txtConf);
-                            }
-                            break;
-                        case 'BOX':
-                            $this->makeBox($im, $conf, $this->workArea);
-                            break;
-                        case 'EFFECT':
-                            $this->makeEffect($im, $conf);
-                            break;
-                        case 'ADJUST':
-                            $this->adjust($im, $conf);
-                            break;
-                        case 'CROP':
-                            $this->crop($im, $conf);
-                            break;
-                        case 'SCALE':
-                            $this->scale($im, $conf);
-                            break;
-                        case 'WORKAREA':
-                            if ($conf['set']) {
-                                // this sets the workArea
-                                $this->setWorkArea($conf['set']);
-                            }
-                            if (isset($conf['clear'])) {
-                                // This sets the current to the default;
-                                $this->workArea = $this->defaultWorkArea;
-                            }
-                            break;
-                        case 'ELLIPSE':
-                            $this->makeEllipse($im, $conf, $this->workArea);
-                            break;
-                    }
+                            $this->makeText($im, $conf, $this->workArea);
+                        }
+                        break;
+                    case 'OUTLINE':
+                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                            $this->makeOutline($im, $conf, $this->workArea, $txtConf);
+                        }
+                        break;
+                    case 'EMBOSS':
+                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                            $this->makeEmboss($im, $conf, $this->workArea, $txtConf);
+                        }
+                        break;
+                    case 'SHADOW':
+                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                            $this->makeShadow($im, $conf, $this->workArea, $txtConf);
+                        }
+                        break;
+                    case 'BOX':
+                        $this->makeBox($im, $conf, $this->workArea);
+                        break;
+                    case 'EFFECT':
+                        $this->makeEffect($im, $conf);
+                        break;
+                    case 'ADJUST':
+                        $this->adjust($im, $conf);
+                        break;
+                    case 'CROP':
+                        $this->crop($im, $conf);
+                        break;
+                    case 'SCALE':
+                        $this->scale($im, $conf);
+                        break;
+                    case 'WORKAREA':
+                        if ($conf['set']) {
+                            // this sets the workArea
+                            $this->setWorkArea($conf['set']);
+                        }
+                        if (isset($conf['clear'])) {
+                            // This sets the current to the default;
+                            $this->workArea = $this->defaultWorkArea;
+                        }
+                        break;
+                    case 'ELLIPSE':
+                        $this->makeEllipse($im, $conf, $this->workArea);
+                        break;
                 }
             }
         }
@@ -669,7 +665,7 @@ class GifBuilder
      * @param array $workArea The current working area coordinates.
      * @see make()
      */
-    protected function maskImageOntoImage(\GdImage &$im, $conf, $workArea)
+    protected function maskImageOntoImage(\GdImage &$im, array $conf, array $workArea): void
     {
         if ($conf['file'] && $conf['mask']) {
             $imgInf = pathinfo($conf['file']);
@@ -754,7 +750,7 @@ class GifBuilder
      * @see make()
      * @see maskImageOntoImage()
      */
-    protected function copyImageOntoImage(\GdImage &$im, $conf, $workArea)
+    protected function copyImageOntoImage(\GdImage &$im, array $conf, array $workArea): void
     {
         if ($conf['file']) {
             if (!in_array($conf['BBOX'][2], $this->gdlibExtensions, true)) {
@@ -776,7 +772,7 @@ class GifBuilder
      * @see make()
      * @internal
      */
-    public function makeText(\GdImage &$im, $conf, $workArea)
+    public function makeText(\GdImage &$im, array $conf, array $workArea): void
     {
         // Spacing
         [$spacing, $wordSpacing] = $this->calcWordSpacing($conf);
@@ -870,7 +866,7 @@ class GifBuilder
      * @see make()
      * @see makeText()
      */
-    protected function makeOutline(\GdImage &$im, $conf, $workArea, $txtConf)
+    protected function makeOutline(\GdImage &$im, array $conf, array $workArea, array $txtConf): void
     {
         $thickness = (int)$conf['thickness'];
         if ($thickness) {
@@ -900,7 +896,7 @@ class GifBuilder
      * @see make()
      * @see makeShadow()
      */
-    protected function makeEmboss(\GdImage &$im, $conf, $workArea, $txtConf)
+    protected function makeEmboss(\GdImage &$im, array $conf, array $workArea, array $txtConf): void
     {
         $conf['color'] = $conf['highColor'];
         $this->makeShadow($im, $conf, $workArea, $txtConf);
@@ -925,7 +921,7 @@ class GifBuilder
      * @see makeEmboss()
      * @internal
      */
-    public function makeShadow(\GdImage &$im, $conf, $workArea, $txtConf)
+    public function makeShadow(\GdImage &$im, array $conf, array $workArea, array $txtConf): void
     {
         $workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', (string)($conf['offset'])));
         $blurRate = MathUtility::forceIntegerInRange((int)$conf['blur'], 0, 99);
@@ -1019,7 +1015,7 @@ class GifBuilder
      * @see make()
      * @internal
      */
-    public function makeBox(\GdImage &$im, $conf, $workArea)
+    public function makeBox(\GdImage &$im, array $conf, array $workArea): void
     {
         $cords = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
         $conf['offset'] = $cords[0] . ',' . $cords[1];
@@ -1058,7 +1054,7 @@ class GifBuilder
      * @param array $workArea The current working area coordinates.
      * @see make()
      */
-    public function makeEllipse(\GdImage &$im, array $conf, array $workArea)
+    public function makeEllipse(\GdImage &$im, array $conf, array $workArea): void
     {
         $ellipseConfiguration = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
         // Ellipse offset inside workArea (x/y)
@@ -1079,7 +1075,7 @@ class GifBuilder
      * @see make()
      * @see applyImageMagickToPHPGif()
      */
-    protected function makeEffect(\GdImage &$im, $conf)
+    protected function makeEffect(\GdImage &$im, array $conf): void
     {
         $commands = $this->IMparams($conf['value']);
         if ($commands) {
@@ -1097,7 +1093,7 @@ class GifBuilder
      * @see outputLevels()
      * @see inputLevels()
      */
-    protected function adjust(\GdImage &$im, $conf)
+    protected function adjust(\GdImage &$im, array $conf): void
     {
         $setup = $conf['value'];
         if (!trim($setup)) {
@@ -1132,7 +1128,7 @@ class GifBuilder
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
      */
-    protected function crop(\GdImage &$im, $conf)
+    protected function crop(\GdImage &$im, array $conf): void
     {
         // Clears workArea to total image
         $this->setWorkArea('');
@@ -1170,7 +1166,7 @@ class GifBuilder
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
      */
-    protected function scale(\GdImage &$im, $conf)
+    protected function scale(\GdImage &$im, array $conf): void
     {
         if ($conf['width'] || $conf['height'] || $conf['params']) {
             $tmpStr = $this->imageService->randomName();
@@ -1201,10 +1197,10 @@ class GifBuilder
      * @internal
      * @see make()
      */
-    protected function setWorkArea($workArea)
+    protected function setWorkArea(string $workArea): void
     {
         $this->workArea = GeneralUtility::intExplode(',', $workArea);
-        $this->workArea = $this->applyOffset($this->workArea, $this->OFFSET);
+        $this->workArea = $this->applyOffset($this->workArea, $this->offset);
         if (!($this->workArea[2] ?? false)) {
             $this->workArea[2] = $this->w;
         }
@@ -1228,7 +1224,7 @@ class GifBuilder
      * @param array $conf GIFBUILDER object TypoScript properties
      * @return array|null Modified $conf array IF the "text" property is not blank
      */
-    protected function checkTextObj($conf)
+    protected function checkTextObj(array $conf): ?array
     {
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $cObj->start($this->data);
@@ -1325,7 +1321,7 @@ class GifBuilder
      * @return string The resolved string with each part (separated by comma) returned separated by comma
      * @internal
      */
-    public function calcOffset($string)
+    public function calcOffset(string $string): string
     {
         $value = [];
         $numbers = GeneralUtility::trimExplode(',', $this->calculateFunctions($string));
@@ -1343,12 +1339,12 @@ class GifBuilder
     /**
      * Returns an "imgResource" creating an instance of the ContentObjectRenderer class and calling ContentObjectRenderer::getImgResource
      *
-     * @param string $file Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource
+     * @param string|File $file Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource" - can also be a FAL file
      * @param array $fileArray TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
      * @return array|null Returns an array with file information from ContentObjectRenderer::getImgResource()
      * @see ContentObjectRenderer::getImgResource()
      */
-    protected function getResource($file, $fileArray)
+    protected function getResource(string|File $file, array $fileArray): ?array
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $deferProcessing = !$context->hasAspect('fileProcessing') || $context->getPropertyFromAspect('fileProcessing', 'deferProcessing');
@@ -1371,7 +1367,7 @@ class GifBuilder
      * @param string $file The resource value.
      * @return string|null Returns the relative filepath or null if it's invalid
      */
-    protected function checkFile($file)
+    protected function checkFile(string $file): ?string
     {
         try {
             return GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file, true);
@@ -1405,7 +1401,7 @@ class GifBuilder
             $this->XY,
             $this->w,
             $this->h,
-            $this->OFFSET,
+            $this->offset,
             $this->workArea,
             $this->combinedTextStrings,
             $this->combinedFileNames,
@@ -1434,7 +1430,7 @@ class GifBuilder
      * @return int The calculated value (e.g. "23")
      * @see calcOffset()
      */
-    protected function calculateValue($string)
+    protected function calculateValue(string $string): int
     {
         $calculatedValue = 0;
         $parts = GeneralUtility::splitCalc($string, '+-*/%');
@@ -1483,7 +1479,7 @@ class GifBuilder
      * @param string $string The raw string with functions to be calculated
      * @return string The calculated values
      */
-    protected function calculateFunctions($string)
+    protected function calculateFunctions(string $string): string
     {
         if (preg_match_all('#max\\(([^)]+)\\)#', $string, $matches)) {
             foreach ($matches[1] as $index => $maxExpression) {
@@ -1496,14 +1492,13 @@ class GifBuilder
     /**
      * Calculates the maximum of a set of values defined like "[10.h],[20.h],1000"
      *
-     * @param string $string The string to be used to calculate the maximum (e.g. "[10.h],[20.h],1000")
+     * @param string $value The string to be used to calculate the maximum (e.g. "[10.h],[20.h],1000")
      * @return int The maximum value of the given comma separated and calculated values
      */
-    protected function calculateMaximum($string)
+    protected function calculateMaximum(string $value): int
     {
-        $parts = GeneralUtility::trimExplode(',', $this->calcOffset($string), true);
-        $maximum = !empty($parts) ? max($parts) : 0;
-        return $maximum;
+        $parts = GeneralUtility::trimExplode(',', $this->calcOffset($value), true);
+        return $parts !== [] ? (int)max($parts) : 0;
     }
 
     /**
@@ -1518,7 +1513,7 @@ class GifBuilder
      * @see makeBox()
      * @see crop()
      */
-    protected function objPosition($conf, $workArea, $BB)
+    protected function objPosition(array $conf, array $workArea, array $BB): array
     {
         // offset, align, valign, workarea
         $result = [];
@@ -1560,13 +1555,13 @@ class GifBuilder
      * Basically the value of key 0/1 of $OFFSET is added to keys 0/1 of $cords
      *
      * @param array $cords Integer coordinates in key 0/1
-     * @param array $OFFSET Offset values in key 0/1
+     * @param array $offset Offset values in key 0/1
      * @return array Modified $cords array
      */
-    protected function applyOffset($cords, $OFFSET)
+    protected function applyOffset(array $cords, array $offset): array
     {
-        $cords[0] = (int)$cords[0] + (int)$OFFSET[0];
-        $cords[1] = (int)($cords[1] ?? 0) + (int)($OFFSET[1] ?? 0);
+        $cords[0] = (int)$cords[0] + (int)$offset[0];
+        $cords[1] = (int)($cords[1] ?? 0) + (int)($offset[1] ?? 0);
         return $cords;
     }
 
@@ -1578,7 +1573,7 @@ class GifBuilder
      * @param array $conf TypoScript array with the properties for the IMAGE GIFBUILDER object. Only used for the "tile" property value.
      * @param array $workArea Work area
      */
-    protected function copyGifOntoGif(\GdImage &$im, \GdImage &$cpImg, $conf, $workArea)
+    protected function copyGifOntoGif(\GdImage &$im, \GdImage &$cpImg, array $conf, array $workArea): void
     {
         $cpW = imagesx($cpImg);
         $cpH = imagesy($cpImg);
@@ -1656,7 +1651,7 @@ class GifBuilder
      * @param int $srcWidth Source width
      * @param int $srcHeight Source height
      */
-    protected function imagecopyresized(\GdImage &$dstImg, \GdImage &$srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight)
+    protected function imagecopyresized(\GdImage &$dstImg, \GdImage &$srcImg, int $dstX, int $dstY, int $srcX, int $srcY, int $dstWidth, int $dstHeight, int $srcWidth, int $srcHeight): void
     {
         if (!$this->saveAlphaLayer) {
             // Make true color image
@@ -1677,10 +1672,9 @@ class GifBuilder
      *
      * @param int $distance Distance
      * @param int $iterations Iterations.
-     * @return array
      * @see makeOutline()
      */
-    protected function circleOffset($distance, $iterations)
+    protected function circleOffset(int $distance, int $iterations): array
     {
         $res = [];
         if ($distance && $iterations) {
@@ -1706,7 +1700,7 @@ class GifBuilder
      * @return string ImageMagick prepared parameters.
      * @see makeEffect()
      */
-    protected function IMparams($setup)
+    protected function IMparams(string $setup): string
     {
         if (!trim($setup)) {
             return '';
@@ -1782,7 +1776,7 @@ class GifBuilder
      * @param array $color RGB color array
      * @return string HEX color value
      */
-    protected function hexColor($color)
+    protected function hexColor(array $color): string
     {
         $r = dechex($color[0]);
         if (strlen($r) < 2) {
@@ -1804,13 +1798,12 @@ class GifBuilder
      *
      * @param \GdImage $img Image resource
      * @param array $colArr Array containing RGB color arrays
-     * @param bool $closest
      * @return int The index of the unified color
      */
-    protected function unifyColors(\GdImage &$img, $colArr, $closest = false)
+    protected function unifyColors(\GdImage &$img, array $colArr, bool $closest): int
     {
         $retCol = -1;
-        if (is_array($colArr) && !empty($colArr) && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
+        if ($colArr !== [] && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
             $firstCol = array_shift($colArr);
             $firstColArr = $this->convertColor($firstCol);
             $origName = $preName = $this->imageService->randomName() . '.png';
@@ -1859,7 +1852,7 @@ class GifBuilder
      * @param string $string "HTML-color" data type string, eg. 'red', '#ffeedd' or '255,0,255'. You can also add a modifying operator afterwards. There are two options: "255,0,255 : 20" - will add 20 to values, result is "255,20,255". Or "255,0,255 : *1.23" which will multiply all RGB values with 1.23
      * @return array RGB values in key 0/1/2 of the array
      */
-    protected function convertColor($string)
+    protected function convertColor(string $string): array
     {
         $col = [];
         $cParts = explode(':', $string, 2);
@@ -1911,7 +1904,7 @@ class GifBuilder
      * @return array [0]=x, [1]=y, [2]=w, [3]=h
      * @see makeText()
      */
-    protected function txtPosition($conf, $workArea, $BB)
+    protected function txtPosition(array $conf, array $workArea, array $BB): array
     {
         $angle = (int)($conf['angle'] ?? 0) / 180 * M_PI;
         $conf['angle'] = 0;
@@ -1964,7 +1957,7 @@ class GifBuilder
      * @see txtPosition()
      * @see start()
      */
-    public function calcBBox($conf)
+    public function calcBBox(array $conf): array
     {
         $sF = $this->getTextScalFactor($conf);
         [$spacing, $wordSpacing] = $this->calcWordSpacing($conf, $sF);
@@ -2054,9 +2047,8 @@ class GifBuilder
      * @param int $wordSpacing The spacing of words in pixels
      * @param array $splitRenderingConf Array
      * @param int $sF Scale factor
-     * @internal
      */
-    protected function SpacedImageTTFText(\GdImage &$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF = 1)
+    protected function SpacedImageTTFText(\GdImage &$im, int $fontSize, int $angle, int $x, int $y, int $Fcolor, string $fontFile, string $text, int $spacing, int $wordSpacing, array $splitRenderingConf, int $sF = 1): void
     {
         $spacing *= $sF;
         $wordSpacing *= $sF;
@@ -2088,7 +2080,7 @@ class GifBuilder
      * @return int The new fontSize
      * @see start()
      */
-    protected function fontResize($conf)
+    protected function fontResize(array $conf): int
     {
         // You have to use +calc options like [10.h] in 'offset' to get the right position of your text-image, if you use +calc in XY height!!!!
         $maxWidth = (int)$conf['maxWidth'];
@@ -2129,7 +2121,7 @@ class GifBuilder
      * @param int $sF Scale factor
      * @return array Information array.
      */
-    protected function ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $string, $splitRendering, $sF = 1)
+    protected function ImageTTFBBoxWrapper(int $fontSize, int $angle, string $fontFile, string $string, array $splitRendering, int $sF = 1): array
     {
         // Initialize:
         $offsetInfo = [];
@@ -2171,7 +2163,7 @@ class GifBuilder
      * @param array $splitRendering Split-rendering configuration
      * @param int $sF Scale factor
      */
-    protected function ImageTTFTextWrapper(\GdImage &$im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $sF = 1)
+    protected function ImageTTFTextWrapper(\GdImage &$im, int $fontSize, int $angle, int $x, int $y, int $color, string $fontFile, string $string, array $splitRendering, int $sF = 1): void
     {
         // Initialize:
         $stringParts = $this->splitString($string, $splitRendering, $fontSize, $fontFile);
@@ -2215,7 +2207,7 @@ class GifBuilder
      * @param string $fontFile Current font file
      * @return array Array with input string splitted according to configuration
      */
-    protected function splitString($string, $splitRendering, $fontSize, $fontFile)
+    protected function splitString(string $string, array $splitRendering, int $fontSize, string $fontFile): array
     {
         // Initialize by setting the whole string and default configuration as the first entry.
         $result = [];
@@ -2226,119 +2218,117 @@ class GifBuilder
         ];
         // Traverse the split-rendering configuration:
         // Splitting will create more entries in $result with individual configurations.
-        if (is_array($splitRendering)) {
-            $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($splitRendering);
-            // Traverse configured options:
-            foreach ($sKeyArray as $key) {
-                $cfg = $splitRendering[$key . '.'];
-                // Process each type of split rendering keyword:
-                switch ((string)$splitRendering[$key]) {
-                    case 'highlightWord':
-                        if ((string)$cfg['value'] !== '') {
-                            $newResult = [];
-                            // Traverse the current parts of the result array:
-                            foreach ($result as $part) {
-                                // Explode the string value by the word value to highlight:
-                                $explodedParts = explode($cfg['value'], $part['str']);
-                                foreach ($explodedParts as $c => $expValue) {
-                                    if ((string)$expValue !== '') {
-                                        $newResult[] = array_merge($part, ['str' => $expValue]);
-                                    }
-                                    if ($c + 1 < count($explodedParts)) {
-                                        $newResult[] = [
-                                            'str' => $cfg['value'],
-                                            'fontSize' => $cfg['fontSize'] ?: $part['fontSize'],
-                                            'fontFile' => $cfg['fontFile'] ?: $part['fontFile'],
-                                            'color' => $cfg['color'],
-                                            'xSpaceBefore' => $cfg['xSpaceBefore'],
-                                            'xSpaceAfter' => $cfg['xSpaceAfter'],
-                                            'ySpaceBefore' => $cfg['ySpaceBefore'],
-                                            'ySpaceAfter' => $cfg['ySpaceAfter'],
-                                        ];
-                                    }
+        $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($splitRendering);
+        // Traverse configured options:
+        foreach ($sKeyArray as $key) {
+            $cfg = $splitRendering[$key . '.'];
+            // Process each type of split rendering keyword:
+            switch ((string)$splitRendering[$key]) {
+                case 'highlightWord':
+                    if ((string)$cfg['value'] !== '') {
+                        $newResult = [];
+                        // Traverse the current parts of the result array:
+                        foreach ($result as $part) {
+                            // Explode the string value by the word value to highlight:
+                            $explodedParts = explode($cfg['value'], $part['str']);
+                            foreach ($explodedParts as $c => $expValue) {
+                                if ((string)$expValue !== '') {
+                                    $newResult[] = array_merge($part, ['str' => $expValue]);
                                 }
-                            }
-                            // Set the new result as result array:
-                            if (!empty($newResult)) {
-                                $result = $newResult;
-                            }
-                        }
-                        break;
-                    case 'charRange':
-                        if ((string)$cfg['value'] !== '') {
-                            // Initialize range:
-                            $ranges = GeneralUtility::trimExplode(',', $cfg['value'], true);
-                            foreach ($ranges as $i => $rangeDef) {
-                                $ranges[$i] = GeneralUtility::intExplode('-', $rangeDef);
-                                if (!isset($ranges[$i][1])) {
-                                    $ranges[$i][1] = $ranges[$i][0];
-                                }
-                            }
-                            $newResult = [];
-                            // Traverse the current parts of the result array:
-                            foreach ($result as $part) {
-                                // Initialize:
-                                $currentState = -1;
-                                $bankAccum = '';
-                                // Explode the string value by the word value to highlight:
-                                $utf8Chars = $this->csConvObj->utf8_to_numberarray($part['str']);
-                                foreach ($utf8Chars as $utfChar) {
-                                    // Find number and evaluate position:
-                                    $uNumber = (int)$this->csConvObj->utf8CharToUnumber($utfChar);
-                                    $inRange = 0;
-                                    foreach ($ranges as $rangeDef) {
-                                        if ($uNumber >= $rangeDef[0] && (!$rangeDef[1] || $uNumber <= $rangeDef[1])) {
-                                            $inRange = 1;
-                                            break;
-                                        }
-                                    }
-                                    if ($currentState == -1) {
-                                        $currentState = $inRange;
-                                    }
-                                    // Initialize first char
-                                    // Switch bank:
-                                    if ($inRange != $currentState && $uNumber !== 9 && $uNumber !== 10 && $uNumber !== 13 && $uNumber !== 32) {
-                                        // Set result:
-                                        if ($bankAccum !== '') {
-                                            $newResult[] = [
-                                                'str' => $bankAccum,
-                                                'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
-                                                'fontFile' => $currentState && $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
-                                                'color' => $currentState ? $cfg['color'] : '',
-                                                'xSpaceBefore' => $currentState ? $cfg['xSpaceBefore'] : '',
-                                                'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
-                                                'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
-                                                'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : '',
-                                            ];
-                                        }
-                                        // Initialize new settings:
-                                        $currentState = $inRange;
-                                        $bankAccum = '';
-                                    }
-                                    // Add char to bank:
-                                    $bankAccum .= $utfChar;
-                                }
-                                // Set result for FINAL part:
-                                if ($bankAccum !== '') {
+                                if ($c + 1 < count($explodedParts)) {
                                     $newResult[] = [
-                                        'str' => $bankAccum,
-                                        'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
-                                        'fontFile' => $currentState && $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
-                                        'color' => $currentState ? $cfg['color'] : '',
-                                        'xSpaceBefore' => $currentState ? $cfg['xSpaceBefore'] : '',
-                                        'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
-                                        'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
-                                        'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : '',
+                                        'str' => $cfg['value'],
+                                        'fontSize' => $cfg['fontSize'] ?: $part['fontSize'],
+                                        'fontFile' => $cfg['fontFile'] ?: $part['fontFile'],
+                                        'color' => $cfg['color'],
+                                        'xSpaceBefore' => $cfg['xSpaceBefore'],
+                                        'xSpaceAfter' => $cfg['xSpaceAfter'],
+                                        'ySpaceBefore' => $cfg['ySpaceBefore'],
+                                        'ySpaceAfter' => $cfg['ySpaceAfter'],
                                     ];
                                 }
                             }
-                            // Set the new result as result array:
-                            if (!empty($newResult)) {
-                                $result = $newResult;
+                        }
+                        // Set the new result as result array:
+                        if (!empty($newResult)) {
+                            $result = $newResult;
+                        }
+                    }
+                    break;
+                case 'charRange':
+                    if ((string)$cfg['value'] !== '') {
+                        // Initialize range:
+                        $ranges = GeneralUtility::trimExplode(',', $cfg['value'], true);
+                        foreach ($ranges as $i => $rangeDef) {
+                            $ranges[$i] = GeneralUtility::intExplode('-', $rangeDef);
+                            if (!isset($ranges[$i][1])) {
+                                $ranges[$i][1] = $ranges[$i][0];
                             }
                         }
-                        break;
-                }
+                        $newResult = [];
+                        // Traverse the current parts of the result array:
+                        foreach ($result as $part) {
+                            // Initialize:
+                            $currentState = -1;
+                            $bankAccum = '';
+                            // Explode the string value by the word value to highlight:
+                            $utf8Chars = $this->csConvObj->utf8_to_numberarray($part['str']);
+                            foreach ($utf8Chars as $utfChar) {
+                                // Find number and evaluate position:
+                                $uNumber = (int)$this->csConvObj->utf8CharToUnumber($utfChar);
+                                $inRange = 0;
+                                foreach ($ranges as $rangeDef) {
+                                    if ($uNumber >= $rangeDef[0] && (!$rangeDef[1] || $uNumber <= $rangeDef[1])) {
+                                        $inRange = 1;
+                                        break;
+                                    }
+                                }
+                                if ($currentState == -1) {
+                                    $currentState = $inRange;
+                                }
+                                // Initialize first char
+                                // Switch bank:
+                                if ($inRange != $currentState && $uNumber !== 9 && $uNumber !== 10 && $uNumber !== 13 && $uNumber !== 32) {
+                                    // Set result:
+                                    if ($bankAccum !== '') {
+                                        $newResult[] = [
+                                            'str' => $bankAccum,
+                                            'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
+                                            'fontFile' => $currentState && $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
+                                            'color' => $currentState ? $cfg['color'] : '',
+                                            'xSpaceBefore' => $currentState ? $cfg['xSpaceBefore'] : '',
+                                            'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
+                                            'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
+                                            'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : '',
+                                        ];
+                                    }
+                                    // Initialize new settings:
+                                    $currentState = $inRange;
+                                    $bankAccum = '';
+                                }
+                                // Add char to bank:
+                                $bankAccum .= $utfChar;
+                            }
+                            // Set result for FINAL part:
+                            if ($bankAccum !== '') {
+                                $newResult[] = [
+                                    'str' => $bankAccum,
+                                    'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
+                                    'fontFile' => $currentState && $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
+                                    'color' => $currentState ? $cfg['color'] : '',
+                                    'xSpaceBefore' => $currentState ? $cfg['xSpaceBefore'] : '',
+                                    'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
+                                    'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
+                                    'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : '',
+                                ];
+                            }
+                        }
+                        // Set the new result as result array:
+                        if (!empty($newResult)) {
+                            $result = $newResult;
+                        }
+                    }
+                    break;
             }
         }
         return $result;
@@ -2352,7 +2342,7 @@ class GifBuilder
      * @return array Array with two keys [0]/[1] being array($spacing,$wordSpacing)
      * @see calcBBox()
      */
-    protected function calcWordSpacing($conf, $scaleFactor = 1)
+    protected function calcWordSpacing(array $conf, int $scaleFactor = 1): array
     {
         $spacing = (int)($conf['spacing'] ?? 0);
         $wordSpacing = (int)($conf['wordSpacing'] ?? 0);
@@ -2368,12 +2358,11 @@ class GifBuilder
      * @param array $conf TypoScript array for the TEXT GIFBUILDER object
      * @return int TypoScript value from eg $conf['niceText.']['scaleFactor']
      */
-    protected function getTextScalFactor($conf)
+    protected function getTextScalFactor(array $conf): int
     {
         if (!($conf['niceText'] ?? false)) {
             $sF = 1;
         } else {
-            // NICETEXT::
             $sF = MathUtility::forceIntegerInRange(($conf['niceText.']['scaleFactor'] ?? 2), 2, 5);
         }
         return $sF;
@@ -2394,7 +2383,7 @@ class GifBuilder
      * @param array $conf The configuration
      * @param int $sF Scale factor
      */
-    protected function renderTTFText(\GdImage &$im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $conf, $sF = 1)
+    protected function renderTTFText(\GdImage &$im, int $fontSize, int $angle, int $x, int $y, int $color, string $fontFile, string $string, array $splitRendering, array $conf, int $sF = 1): void
     {
         if (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($string, $conf) > $conf['breakWidth']) {
             $phrase = '';
@@ -2429,11 +2418,8 @@ class GifBuilder
 
     /**
      * Gets the word pairs used for automatic line breaks.
-     *
-     * @param string $string
-     * @return array
      */
-    protected function getWordPairsForLineBreak($string)
+    protected function getWordPairsForLineBreak(string $string): array
     {
         $wordPairs = [];
         $wordsArray = preg_split('#([- .,!:]+)#', $string, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -2447,12 +2433,8 @@ class GifBuilder
 
     /**
      * Gets the rendered text width
-     *
-     * @param string $text
-     * @param array $conf
-     * @return int
      */
-    protected function getRenderedTextWidth($text, $conf)
+    protected function getRenderedTextWidth(string $text, array $conf): int
     {
         $bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $text, $conf['splitRendering.']);
         if ($conf['angle'] < 0) {
@@ -2462,19 +2444,19 @@ class GifBuilder
         } else {
             $pixelWidth = abs($bounds[4] - $bounds[6]);
         }
-        return $pixelWidth;
+        return (int)$pixelWidth;
     }
 
     /**
      * Gets the break space for each new line.
      *
      * @param array $conf TypoScript configuration for the currently rendered object
-     * @param array $boundingBox The bounding box the the currently rendered object
+     * @param array $boundingBox The bounding box for the currently rendered object
      * @return int The break space
      */
-    protected function getBreakSpace($conf, array $boundingBox = null)
+    protected function getBreakSpace(array $conf, array $boundingBox = []): int
     {
-        if (!isset($boundingBox)) {
+        if ($boundingBox === []) {
             $boundingBox = $this->calcBBox($conf);
             $boundingBox = $boundingBox[2];
         }
@@ -2483,7 +2465,7 @@ class GifBuilder
         } else {
             $breakSpace = $boundingBox['lineHeight'];
         }
-        return $breakSpace;
+        return (int)$breakSpace;
     }
 
     /**
@@ -2493,7 +2475,7 @@ class GifBuilder
      * @param float $fontSize font size for freetype function call
      * @return float compensated font size based on 96 dpi
      */
-    protected function compensateFontSizeiBasedOnFreetypeDpi($fontSize)
+    protected function compensateFontSizeiBasedOnFreetypeDpi(float $fontSize): float
     {
         return $fontSize / 96.0 * 72;
     }
@@ -2508,7 +2490,7 @@ class GifBuilder
      *
      * @param \GdImage $im GDlib Image Pointer
      */
-    protected function autolevels(\GdImage &$im)
+    protected function autolevels(\GdImage &$im): void
     {
         $totalCols = imagecolorstotal($im);
         $grayArr = [];
@@ -2536,18 +2518,12 @@ class GifBuilder
      * @param \GdImage $im GDlib Image Pointer
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
-     * @param bool $swap If swap, then low and high are swapped. (Useful for negated masks...)
      */
-    protected function outputLevels(\GdImage &$im, $low, $high, $swap = false)
+    protected function outputLevels(\GdImage &$im, int $low, int $high): void
     {
         if ($low < $high) {
             $low = MathUtility::forceIntegerInRange($low, 0, 255);
             $high = MathUtility::forceIntegerInRange($high, 0, 255);
-            if ($swap) {
-                $temp = $low;
-                $low = 255 - $high;
-                $high = 255 - $temp;
-            }
             $delta = $high - $low;
             $totalCols = imagecolorstotal($im);
             for ($c = 0; $c < $totalCols; $c++) {
@@ -2567,7 +2543,7 @@ class GifBuilder
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
      */
-    protected function inputLevels(\GdImage &$im, $low, $high)
+    protected function inputLevels(\GdImage &$im, int $low, int $high): void
     {
         if ($low < $high) {
             $low = MathUtility::forceIntegerInRange($low, 0, 255);
@@ -2591,7 +2567,7 @@ class GifBuilder
      * @param \GdImage $im The image pointer (reference)
      * @param string $command The ImageMagick parameters. Like effects, scaling etc.
      */
-    protected function applyImageMagickToPHPGif(\GdImage &$im, $command)
+    protected function applyImageMagickToPHPGif(\GdImage &$im, string $command): void
     {
         $tmpStr = $this->imageService->randomName();
         $theFile = $tmpStr . '.png';
@@ -2711,7 +2687,7 @@ class GifBuilder
      * @throws \RuntimeException
      * @internal will soon be renamed
      */
-    public function getTemporaryImageWithText($filename, $textline1, $textline2 = '', $textline3 = '')
+    public function getTemporaryImageWithText(string $filename, string $textline1, string $textline2 = '', string $textline3 = ''): void
     {
         if (!class_exists(\GdImage::class)) {
             throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $textline1 . ' ' . $textline2 . ' ' . $textline3, 1270853952);
