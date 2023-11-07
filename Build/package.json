@@ -143,7 +143,7 @@
     "alwan": "^1.4.0",
     "autosize": "^6.0.1",
     "bootstrap": "^5.3.2",
-    "chart.js": "^4.2.1",
+    "chart.js": "^4.4.0",
     "cropperjs": "^1.6.1",
     "css-tree": "^2.3.1",
     "d3-dispatch": "^3.0.1",
