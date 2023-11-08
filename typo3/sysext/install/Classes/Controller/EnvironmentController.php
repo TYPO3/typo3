@@ -805,6 +805,39 @@ class EnvironmentController extends AbstractController
     }
 
     /**
+     * GD from image with box exported as AVIF file
+     */
+    public function imageProcessingGdlibFromFileToAvifAction(): ResponseInterface
+    {
+        $gifBuilder = $this->initializeGifBuilder();
+        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $inputFile = $imageBasePath . 'TestInput/Test.avif';
+        $image = $gifBuilder->imageCreateFromFile($inputFile);
+        $workArea = [0, 0, 400, 300];
+        $conf = [
+            'dimensions' => '10,50,380,50',
+            'color' => 'olive',
+        ];
+        $gifBuilder->makeBox($image, $conf, $workArea);
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdBox') . '.avif';
+        $success = $gifBuilder->ImageWrite($image, $outputFile);
+        if ($success) {
+            $result = [
+                'fileExists' => true,
+                'outputFile' => $outputFile,
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.avif',
+                'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
+            ];
+        } else {
+            $result = [
+                'status' => [$this->avifImageGenerationFailedMessage()],
+                'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
+            ];
+        }
+        return $this->getImageTestResponse($result);
+    }
+
+    /**
      * GD with text
      */
     public function imageProcessingGdlibRenderTextAction(): ResponseInterface
@@ -1148,6 +1181,15 @@ class EnvironmentController extends AbstractController
             . ' [\'GFX\'][\'processor_path\'] and ensure Ghostscript is installed on your server.',
             'Image generation failed',
             ContextualFeedbackSeverity::ERROR
+        );
+    }
+
+    protected function avifImageGenerationFailedMessage(): FlashMessage
+    {
+        return new FlashMessage(
+            'Exporting AVIF format failed. Probably your system does not provide the necessary codec libraries for this.',
+            'Skipped test',
+            ContextualFeedbackSeverity::INFO
         );
     }
 

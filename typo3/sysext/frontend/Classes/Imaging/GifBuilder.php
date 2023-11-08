@@ -45,7 +45,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  * The concept is known from TypoScript as "GIFBUILDER" where you can define a "numerical array" (TypoScript term as well)
  * of "GIFBUILDER OBJECTS" (like "TEXT", "IMAGE", etc.) and they will be rendered onto an image one by one.
  * The name "GIFBUILDER" comes from the time when GIF was the only file format supported.
- * .png, .jpg and .webp files are just as well to create today (configured with TYPO3_CONF_VARS[GFX])
+ * .png, .jpg, .webp and .avif files are just as well to create today (configured with TYPO3_CONF_VARS[GFX])
  *
  * Here is an example of how to use this class:
  *
@@ -172,6 +172,11 @@ class GifBuilder
      */
     protected int $webpQuality = 85;
 
+    /**
+     * @var int<-1, 100>
+     */
+    protected int $avifQuality = 85;
+
     public function __construct()
     {
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
@@ -179,6 +184,7 @@ class GifBuilder
             $this->processorEffectsEnabled = true;
         }
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, $this->jpegQuality);
+        $this->avifQuality = MathUtility::forceIntegerInRange($gfxConf['avif_quality'] ?? 0, -1, 100, $this->avifQuality);
         if (isset($gfxConf['webp_quality'])) {
             // see IMG_WEBP_LOSSLESS // https://www.php.net/manual/en/image.constants.php
             if ($gfxConf['webp_quality'] === 'lossless') {
@@ -196,6 +202,9 @@ class GifBuilder
         }
         if (function_exists('imagecreatefromwebp') && function_exists('imagewebp')) {
             $this->gdlibExtensions[] = 'webp';
+        }
+        if (function_exists('imagecreatefromavif') && function_exists('imageavif')) {
+            $this->gdlibExtensions[] = 'avif';
         }
         if (function_exists('imagecreatefromgif') && function_exists('imagegif')) {
             $this->gdlibExtensions[] = 'gif';
@@ -467,6 +476,11 @@ class GifBuilder
                 // Quality can also be set to IMG_WEBP_LOSSLESS = 101
                 $quality = isset($this->setup['quality']) ? MathUtility::forceIntegerInRange((int)$this->setup['quality'], 10, 101) : 0;
                 $this->ImageWrite($gdImage, $file, $quality);
+                break;
+            case 'avif':
+                $quality = isset($this->setup['quality']) ? MathUtility::forceIntegerInRange((int)$this->setup['quality'], -1, 100) : 0;
+                $speed = isset($this->setup['speed']) ? MathUtility::forceIntegerInRange((int)$this->setup['speed'], -1, 10) : -1;
+                $this->ImageWrite($gdImage, $file, $quality, $speed);
                 break;
         }
     }
@@ -1411,6 +1425,7 @@ class GifBuilder
             'jpg', 'jpeg' => 'jpg',
             'gif' => 'gif',
             'webp' => 'webp',
+            'avif' => 'avif',
             default => 'png',
         };
     }
@@ -2580,13 +2595,14 @@ class GifBuilder
      *
      * @param \GdImage $destImg The GDlib image resource pointer
      * @param string $theImage The absolute file path to write to
-     * @param int $quality The image quality (for JPEGs)
-     * @return bool The output of either imageGif, imagePng or imageJpeg based on the filename to write
+     * @param int $quality The image quality (for JPEG, WebP and AVIF files)
+     * @param int<-1,10> $speed The image speed (for AVIFs), 0 (slow, smaller file) to 10 (fast, larger file), -1 for default (=6)
+     * @return bool The output of either imageGif, imagePng, imageJpeg, imagewebp or imageavif based on the filename to write
      * @see maskImageOntoImage()
      * @see scale()
      * @see output()
      */
-    public function ImageWrite(\GdImage &$destImg, string $theImage, int $quality = 0): bool
+    public function ImageWrite(\GdImage &$destImg, string $theImage, int $quality = 0, int $speed = -1): bool
     {
         imageinterlace($destImg, false);
         $ext = strtolower(substr($theImage, (int)strrpos($theImage, '.') + 1));
@@ -2601,6 +2617,11 @@ class GifBuilder
             case 'webp':
                 if (function_exists('imagewebp')) {
                     $result = imagewebp($destImg, $theImage, ($quality ?: $this->webpQuality));
+                }
+                break;
+            case 'avif':
+                if (function_exists('imageavif')) {
+                    $result = imageavif($destImg, $theImage, ($quality ?: $this->avifQuality), $speed);
                 }
                 break;
             case 'gif':
@@ -2656,6 +2677,11 @@ class GifBuilder
             case 'webp':
                 if (function_exists('imagecreatefromwebp')) {
                     return imagecreatefromwebp($sourceImg);
+                }
+                break;
+            case 'avif':
+                if (function_exists('imagecreatefromavif')) {
+                    return imagecreatefromavif($sourceImg);
                 }
                 break;
         }

@@ -1376,6 +1376,11 @@ If value is tx_myextension[input][  |  ]  then the fieldname "email" would be
             <default><![CDATA[
 ]]></default>
         </property>
+        <property name="speed" type="int">
+            <description><![CDATA[posint (0-10)
+            Speed parameter (if ".format" = avif)]]></description>
+            <default><![CDATA[-1]]></default>
+        </property>
         <property name="transparentBackground" type="boolean">
             <description><![CDATA[Set this flag to render the background transparent. TYPO3 makes the color found at position 0,0 of the image (upper left corner) transparent.
 If you render text you should leave the niceText option OFF as the result with probably be more precise without the niceText antialiasing hack]]></description>

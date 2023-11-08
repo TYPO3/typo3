@@ -48,6 +48,9 @@ GFX:
         webp_quality:
             type: int
             description: 'Integer: Default WebP generation quality'
+        avif_quality:
+            type: int
+            description: 'Integer: Default AVIF generation quality'
 SYS:
     type: container
     description: 'System'

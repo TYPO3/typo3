@@ -15,7 +15,7 @@ GIFBUILDER, the image manipulation library for TypoScript based on GDlib, a PHP
 extension bundled into PHP, now also supports generating resulting files of
 type "webp".
 
-WebP is an image format, that is supported by all moderns browsers, and usually
+WebP is an image format, that is supported by all modern browsers, and usually
 has a better compression (= smaller file size) than jpg files.
 
 
