@@ -734,7 +734,9 @@ class FileContentParser
                 throw new \RuntimeException('Cannot set new locale as locale has already been changed before.', 1357064437);
             }
             $this->lastLocale = setlocale(LC_CTYPE, '0') ?: null;
-            setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? false) {
+                setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+            }
         }
     }
 
