@@ -72,7 +72,6 @@
             </thead>
             <tbody data-multi-record-selection-row-selection="true">
             <f:for each="{webhookRecords}" key="webhookId" as="webhook">
-                <f:variable name="webhookRecord" value="{webhook as array}"/>
                 <tr data-uid="{webhook.uid}" data-multi-record-selection-element="true">
                     <td class="col-checkbox">
                         <span class="form-check form-check-type-toggle">
@@ -89,7 +88,7 @@
                                     data-contextmenu-uid="{webhook.uid}"
                                     title="{webhook.name}"
                                 >
-                                    <core:iconForRecord table="sys_webhook" row="{webhookRecord}" />
+                                    <core:iconForRecord table="sys_webhook" row="{webhook.row}" />
                                 </a>
                             </td>
                             <td>
@@ -114,7 +113,7 @@
                         </f:then>
                         <f:else>
                             <td class="col-icon">
-                                <core:iconForRecord table="sys_webhook" row="{webhookRecord}" />
+                                <core:iconForRecord table="sys_webhook" row="{webhook.row}" />
                             </td>
                             <td>
                                 {webhook.name}
@@ -201,7 +200,7 @@
         >
             <core:icon identifier="actions-open" />
         </be:link.editRecord>
-        <f:if condition="{webhookRecord.disabled} == 1">
+        <f:if condition="{webhook.row.disabled}">
             <f:then>
                 <a
                     class="btn btn-default"
