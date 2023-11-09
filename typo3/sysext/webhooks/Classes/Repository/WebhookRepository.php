@@ -34,6 +34,7 @@ use TYPO3\CMS\Webhooks\Model\WebhookInstruction;
 class WebhookRepository
 {
     protected string $cacheIdentifierPrefix = 'webhooks_';
+    protected bool $applyDefaultRestrictions = false;
 
     public function __construct(
         protected readonly ConnectionPool $connectionPool,
@@ -80,6 +81,12 @@ class WebhookRepository
             ->setFirstResult($demand->getOffset())
             ->executeQuery()
             ->fetchAllAssociative());
+    }
+
+    public function setApplyDefaultRestrictions(bool $applyDefaultRestrictions): self
+    {
+        $this->applyDefaultRestrictions = $applyDefaultRestrictions;
+        return $this;
     }
 
     /**
@@ -159,11 +166,12 @@ class WebhookRepository
 
     protected function getQueryBuilder(bool $addDefaultOrderByClause = true): QueryBuilder
     {
-        $queryBuilder = $this->connectionPool
-            ->getQueryBuilderForTable('sys_webhook');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_webhook');
+        if (!$this->applyDefaultRestrictions) {
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
         $queryBuilder->select('*')->from('sys_webhook');
         if ($addDefaultOrderByClause) {
             $queryBuilder

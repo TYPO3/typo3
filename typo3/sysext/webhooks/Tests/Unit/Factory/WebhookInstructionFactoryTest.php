@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class WebhookInstructionFactoryTest extends UnitTestCase
 {
     /**
-     * Simulate a tt_content record
+     * Simulate a sys_webhook record
      */
     protected array $mockRecord = [
         'url' => 'https://example.com',
@@ -41,6 +41,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
         'webhook_type' => null,
         'identifier' => '033c049f-7762-4755-b072-805350a8726a',
         'uid' => 200413,
+        'row' => [],
     ];
 
     protected WebhookType $webhookType;
@@ -70,6 +71,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
         self::assertNull($webhookInstruction->getWebhookType());
         self::assertNull($webhookInstruction->getIdentifier());
         self::assertSame(0, $webhookInstruction->getUid());
+        self::assertSame([], $webhookInstruction->getRow());
     }
 
     /**
@@ -102,6 +104,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
         self::assertSame($this->webhookType->getDescription(), $webhookInstruction->getWebhookType()->getDescription());
         self::assertSame('033c049f-7762-4755-b072-805350a8726a', $webhookInstruction->getIdentifier());
         self::assertSame(200413, $webhookInstruction->getUid());
+        self::assertSame([], $webhookInstruction->getRow());
     }
 
     /**
@@ -132,5 +135,6 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
         self::assertSame($this->webhookType->getDescription(), $webhookInstruction->getWebhookType()->getDescription());
         self::assertSame('033c049f-7762-4755-b072-805350a8726a', $webhookInstruction->getIdentifier());
         self::assertSame(200413, $webhookInstruction->getUid());
+        self::assertSame($this->mockRecord, $webhookInstruction->getRow());
     }
 }

@@ -37,6 +37,7 @@ class WebhookInstruction
         private readonly ?WebhookType $webhookType = null,
         private readonly ?string $identifier = null,
         private readonly ?int $uid = null,
+        private readonly array $row = []
     ) {}
 
     public function getUid(): int
@@ -87,5 +88,13 @@ class WebhookInstruction
     public function getAdditionalHeaders(): ?array
     {
         return $this->additionalHeaders;
+    }
+
+    /**
+     * @internal
+     */
+    public function getRow(): array
+    {
+        return $this->row;
     }
 }

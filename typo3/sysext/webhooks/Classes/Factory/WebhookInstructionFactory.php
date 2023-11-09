@@ -91,6 +91,7 @@ class WebhookInstructionFactory
             $data['webhook_type'],
             $data['identifier'],
             $data['uid'],
+            $row
         );
     }
 }

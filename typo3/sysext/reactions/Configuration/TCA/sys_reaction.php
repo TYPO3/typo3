@@ -15,7 +15,7 @@ return [
         'type' => 'reaction_type',
         'typeicon_column' => 'reaction_type',
         'typeicon_classes' => [
-            'default' => 'content-webhook',
+            'default' => 'content-webhook', // @todo Change to "content-reaction" when available
         ],
         'delete' => 'deleted',
         'enablecolumns' => [
