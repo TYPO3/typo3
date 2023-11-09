@@ -1600,6 +1600,13 @@ final class TcaMigrationTest extends UnitTestCase
                                 'eval' => 'trim,unique',
                             ],
                         ],
+                        'columnWithOutdatedConfiguration' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'email',
+                                'max' => 255,
+                            ],
+                        ],
                         'wrongTypeColumn' => [
                             'config' => [
                                 'type' => 'text',
@@ -1635,6 +1642,11 @@ final class TcaMigrationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'input',
                                 'eval' => 'trim,unique',
+                            ],
+                        ],
+                        'columnWithOutdatedConfiguration' => [
+                            'config' => [
+                                'type' => 'email',
                             ],
                         ],
                         'wrongTypeColumn' => [

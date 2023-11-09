@@ -62,7 +62,7 @@ The migration from :php:`eval='email'` to :php:`type=email` is done like followi
         ]
     ]
 
-   // After
+    // After
 
     'email_field' => [
         'label' => 'Email',
