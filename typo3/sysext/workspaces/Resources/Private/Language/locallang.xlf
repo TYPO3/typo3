@@ -217,6 +217,12 @@
 			<trans-unit id="window.massAction.title" resname="window.massAction.title">
 				<source>Prepare to start mass action</source>
 			</trans-unit>
+			<trans-unit id="window.version.published" resname="window.version.published">
+				<source>Published version</source>
+			</trans-unit>
+			<trans-unit id="window.version.staged" resname="window.version.staged">
+				<source>Staged version</source>
+			</trans-unit>
 			<trans-unit id="window.selectionAction.title" resname="window.selectionAction.title">
 				<source>Prepare to execute actions on selection</source>
 			</trans-unit>
