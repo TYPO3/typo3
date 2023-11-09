@@ -268,7 +268,8 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $baseDir = $this->config->get('base-dir');
         foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
             $fileSystemResourcesPath = $path . '/Resources/Public';
-            if (str_contains($path, 'ext/' . $extensionKey) || !file_exists($fileSystemResourcesPath)) {
+            // skip non-composer installation extension paths, or if resource paths does not exist.
+            if (str_ends_with($path, self::LEGACY_EXTENSION_INSTALL_PATH . '/' . $extensionKey) || !file_exists($fileSystemResourcesPath)) {
                 continue;
             }
             $relativePath = substr($fileSystemResourcesPath, strlen($baseDir));
