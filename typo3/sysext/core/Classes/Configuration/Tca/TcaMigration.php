@@ -638,6 +638,9 @@ class TcaMigration
                 // Set the TCA type to "email"
                 $tca[$table]['columns'][$fieldName]['config']['type'] = 'email';
 
+                // Unset "max"
+                unset($tca[$table]['columns'][$fieldName]['config']['max']);
+
                 $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
                 $evalList = array_filter($evalList, static function (string $eval) {
                     // Remove anything except "unique" and "uniqueInPid" from eval
@@ -806,7 +809,7 @@ class TcaMigration
                 // Set the TCA type to "password"
                 $tca[$table]['columns'][$fieldName]['config']['type'] = 'password';
 
-                // Unset "renderType", "max" and "eval"
+                // Unset "max", "search" and "eval"
                 unset(
                     $tca[$table]['columns'][$fieldName]['config']['max'],
                     $tca[$table]['columns'][$fieldName]['config']['search'],
