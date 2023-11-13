@@ -56,9 +56,6 @@ class Popover {
   // noinspection JSMethodCanBeStatic
   /**
    * Set popover options on $element
-   *
-   * @param {element: HTMLElement} element
-   * @param {BootstrapPopover.Options} options
    */
   public setOptions(element: HTMLElement, options?: BootstrapPopover.Options): void {
     options = options || <BootstrapPopover.Options>{};
@@ -73,6 +70,10 @@ class Popover {
     delete options.content;
 
     const popover = BootstrapPopover.getInstance(element);
+    if (popover === null) {
+      console.warn('Failed to get popover instance for element.');
+      return;
+    }
     popover.setContent({
       '.popover-header': title,
       '.popover-body': content
@@ -88,44 +89,52 @@ class Popover {
   // noinspection JSMethodCanBeStatic
   /**
    * Show popover with title and content on $element
-   *
-   * @param {element: HTMLElement} element
    */
   public show(element: HTMLElement): void {
     const popover = BootstrapPopover.getInstance(element);
+    if (popover === null) {
+      console.warn('Failed to get popover instance for element.');
+      return;
+    }
     popover.show();
   }
 
   // noinspection JSMethodCanBeStatic
   /**
    * Hide popover on $element
-   *
-   * @param {HTMLElement} element
    */
   public hide(element: HTMLElement): void {
     const popover = BootstrapPopover.getInstance(element);
+    if (popover === null) {
+      console.warn('Failed to get popover instance for element.');
+      return;
+    }
     popover.hide();
   }
 
   // noinspection JSMethodCanBeStatic
   /**
    * Destroy popover on $element
-   *
-   * @param {HTMLElement} element
    */
   public destroy(element: HTMLElement): void {
     const popover = BootstrapPopover.getInstance(element);
+    if (popover === null) {
+      console.warn('Failed to get popover instance for element.');
+      return;
+    }
     popover.dispose();
   }
 
   // noinspection JSMethodCanBeStatic
   /**
    * Toggle popover on $element
-   *
-   * @param {HTMLElement} element
    */
   public toggle(element: HTMLElement): void {
     const popover = BootstrapPopover.getInstance(element);
+    if (popover === null) {
+      console.warn('Failed to get popover instance for element.');
+      return;
+    }
     popover.toggle();
   }
 
