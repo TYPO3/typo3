@@ -3921,7 +3921,13 @@ typo3-backend-security-csp-reports .infolist-overlay{position:relative;z-index:1
 typo3-backend-security-sudo-mode{display:block}
 typo3-backend-security-sudo-mode #sudo-mode-verification{display:block}
 typo3-backend-table-wizard{display:inline-block}
-#alert-container{width:400px;position:fixed;inset-inline-end:5px;top:45px;z-index:10000}
+#alert-container{width:400px;position:fixed;inset-inline-end:5px;z-index:10000;bottom:calc(var(--typo3-spacing) * 1.5)}
+@media (max-width:767px){
+#alert-container{left:50%;transform:translateX(-50%)}
+}
+@media (min-width:768px){
+#alert-container{right:calc(var(--typo3-spacing) * 1.5)}
+}
 #alert-container typo3-notification-message{margin-top:5px}
 typo3-notification-message{display:block}
 typo3-notification-message .alert{box-shadow:var(--typo3-component-box-shadow);margin:0}
