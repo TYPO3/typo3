@@ -15,6 +15,7 @@ import 'bootstrap';
 import { Popover as BootstrapPopover } from 'bootstrap';
 import Popover from './popover';
 import RegularEvent from '@typo3/core/event/regular-event';
+import DocumentService from '@typo3/core/document-service';
 
 /**
  * Module: @typo3/backend/context-help
@@ -30,7 +31,8 @@ class ContextHelp {
     this.initialize();
   }
 
-  public initialize(): void {
+  public async initialize(): Promise<void> {
+    await DocumentService.ready();
     const elements = document.querySelectorAll(this.selector);
     elements.forEach((element: HTMLElement): void => {
       element.dataset.bsHtml = 'true';
@@ -55,7 +57,6 @@ class ContextHelp {
 
     new RegularEvent('click', (e: Event): void => {
       const me = e.target as HTMLElement;
-      const elements = document.querySelectorAll(this.selector);
       elements.forEach((element: HTMLElement): void => {
         if (!element.isEqualNode(me)) {
           Popover.hide(element);
