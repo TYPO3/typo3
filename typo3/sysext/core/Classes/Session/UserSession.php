@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Session;
 
+use TYPO3\CMS\Core\Http\CookieScope;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Security\JwtTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Represents all information about a user's session.
@@ -195,17 +198,19 @@ class UserSession
 
     /**
      * Gets session ID wrapped in JWT to be used for emitting a new cookie.
-     * `Cookie: <JWT(HS256, [identifier => <session-id>], <signature>)>`
+     * `Cookie: <JWT(HS256, [identifier => <session-id>], <signature(encryption-key, cookie-domain)>)>`
      *
+     * @param ?CookieScope $scope
      * @return string the session ID wrapped in JWT to be used for emitting a new cookie
      */
-    public function getJwt(): string
+    public function getJwt(?CookieScope $scope = null): string
     {
         // @todo payload could be organized in a new `SessionToken` object
         return self::encodeHashSignedJwt(
             [
                 'identifier' => $this->identifier,
                 'time' => (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339),
+                'scope' => $scope,
             ],
             self::createSigningKeyFromEncryptionKey(UserSession::class)
         );
@@ -246,20 +251,40 @@ class UserSession
 
     /**
      * Verifies and resolves the session ID from a submitted cookie value:
-     * `Cookie: <JWT(HS256, [identifier => <session-id>], <signature>)>`
+     * `Cookie: <JWT(HS256, [identifier => <session-id>], <signature(encryption-key, cookie-domain)>)>`
      *
      * @param string $cookieValue submitted cookie value
+     * @param CookieScope $scope
      * @return non-empty-string|null session ID, null in case verification failed
      * @throws \Exception
      * @see getJwt()
      */
-    public static function resolveIdentifierFromJwt(string $cookieValue): ?string
+    public static function resolveIdentifierFromJwt(string $cookieValue, CookieScope $scope): ?string
     {
         if ($cookieValue === '') {
             return null;
         }
+
         $payload = self::decodeJwt($cookieValue, self::createSigningKeyFromEncryptionKey(UserSession::class));
-        return !empty($payload->identifier) && is_string($payload->identifier) ? $payload->identifier : null;
+
+        $identifier = !empty($payload->identifier) && is_string($payload->identifier) ? $payload->identifier : null;
+        if ($identifier === null) {
+            return null;
+        }
+
+        $domainScope = (string)($payload->scope->domain ?? '');
+        $pathScope = (string)($payload->scope->path ?? '');
+        if ($domainScope === '' || $pathScope === '') {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
+            $logger->notice('A session cookie with out a domain scope has been used', ['cookieHash' => substr(sha1($cookieValue), 0, 12)]);
+            return $identifier;
+        }
+        if ($domainScope !== $scope->domain || $pathScope !== $scope->path) {
+            // invalid scope, the cookie jwt has been used on a wrong path or domain
+            return null;
+        }
+
+        return $identifier;
     }
 
     /**

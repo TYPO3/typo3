@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
+use TYPO3\CMS\Core\Http\CookieScope;
 use TYPO3\CMS\Core\Security\JwtTrait;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -38,6 +39,7 @@ final class UserSessionTest extends UnitTestCase
             'ses_tstamp' => 1607041477,
             'ses_permanent' => 1,
         ];
+        $scope = new CookieScope(domain: 'example.com', hostOnly: true, path: '/');
 
         $session = UserSession::createFromRecord($record['ses_id'], $record, true);
 
@@ -61,7 +63,7 @@ final class UserSessionTest extends UnitTestCase
 
         self::assertTrue($session->dataWasUpdated());
         self::assertEquals(['override' => 'data'], $session->getData());
-        self::assertSame($record['ses_id'], UserSession::resolveIdentifierFromJwt($session->getJwt()));
+        self::assertSame($record['ses_id'], UserSession::resolveIdentifierFromJwt($session->getJwt($scope), $scope) ?? '');
     }
 
     /**

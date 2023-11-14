@@ -440,7 +440,8 @@ final class PageRendererTest extends FunctionalTestCase
         $userSessionManager = new UserSessionManager(
             $sessionBackend,
             86400,
-            $this->createMock(IpLocker::class)
+            $this->createMock(IpLocker::class),
+            'BE'
         );
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->initializeUserSessionManager($userSessionManager);

@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Authentication;
 
 use GuzzleHttp\Cookie\SetCookie;
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -64,6 +67,19 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/fe_users.csv');
 
+        $normalizedParams = new NormalizedParams(
+            [
+                'REQUEST_URI' => '/',
+                'HTTP_HOST' => 'localhost',
+                'DOCUMENT_ROOT' => Environment::getPublicPath(),
+                'SCRIPT_FILENAME' => Environment::getPublicPath() . '/index.php',
+                'SCRIPT_NAME' => '/index.php',
+            ],
+            $GLOBALS['TYPO3_CONF_VARS']['SYS'],
+            Environment::getPublicPath() . '/index.php',
+            Environment::getPublicPath()
+        );
+
         $nonce = Nonce::create();
         $requestToken = RequestToken::create('core/user-auth/fe')->toHashSignedJwt($nonce);
         $request = (new InternalRequest())
@@ -77,6 +93,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
                     '__RequestToken' => $requestToken,
                 ]
             )
+            ->withAttribute('normalizedParams', $normalizedParams)
             ->withCookieParams([123 => 'bogus', 'typo3nonce_' . $nonce->getSigningIdentifier()->name => $nonce->toHashSignedJwt()]);
 
         $response = $this->executeFrontendSubRequest($request);
@@ -86,8 +103,8 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
 
         // Now check whether the existing session is retrieved by providing the retrieved JWT token in the cookie params.
         $cookie = SetCookie::fromString($response->getHeaderLine('Set-Cookie'));
-        $request = (new InternalRequest())
-            ->withPageId(self::ROOT_PAGE_ID)
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('normalizedParams', $normalizedParams)
             ->withCookieParams([$cookie->getName() => $cookie->getValue()]);
 
         $frontendUserAuthentication = new FrontendUserAuthentication();

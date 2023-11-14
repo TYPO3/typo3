@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Session;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\IpLocker;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Security\JwtTrait;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
@@ -62,7 +63,8 @@ final class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendMock,
             $sessionLifetime,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $session = $subject->createAnonymousSession();
         self::assertEquals($expectedResult, $subject->willExpire($session, $gracePeriod));
@@ -75,7 +77,8 @@ final class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendMock,
             60,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $expiredSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         self::assertTrue($subject->hasExpired($expiredSession));
@@ -100,17 +103,31 @@ final class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendMock,
             50,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $subject->setLogger(new NullLogger());
+        $cookieDomain = 'example.org';
         $validSessionJwt = self::encodeHashSignedJwt(
             [
                 'identifier' => 'valid-session',
                 'time' => (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339),
+                'scope' => [
+                    'domain' => $cookieDomain,
+                    'path' => '/',
+                ],
             ],
             self::createSigningKeyFromEncryptionKey(UserSession::class)
         );
+
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getRequestHostOnly')->willReturn($cookieDomain);
+        $normalizedParams->method('getSitePath')->willReturn('/');
         $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnCallback(static fn(string $name): mixed => match ($name) {
+            'normalizedParams' => $normalizedParams,
+            default => null,
+        });
         $request->method('getCookieParams')->willReturn(['bar' => $validSessionJwt]);
         $persistedSession = $subject->createFromRequestOrAnonymous($request, 'bar');
         self::assertEquals(13, $persistedSession->getUserId());
@@ -134,11 +151,19 @@ final class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendMock,
             50,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $subject->setLogger(new NullLogger());
 
+        $cookieDomain = 'example.org';
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getRequestHostOnly')->willReturn($cookieDomain);
         $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnCallback(static fn(string $name): mixed => match ($name) {
+            'normalizedParams' => $normalizedParams,
+            default => null,
+        });
         $request->method('getCookieParams')->willReturnOnConsecutiveCalls([], ['foo' => 'invalid-session']);
         $anonymousSession = $subject->createFromRequestOrAnonymous($request, 'foo');
         self::assertTrue($anonymousSession->isNew());
@@ -165,7 +190,8 @@ final class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendMock,
             60,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         $session = $subject->updateSession($session);
@@ -188,7 +214,8 @@ final class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendMock,
             60,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         $session = $subject->fixateAnonymousSession($session);
