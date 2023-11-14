@@ -227,6 +227,13 @@ final class SecurityTest extends FunctionalTestCase
                     '<p><a href="t3://page?uid=1" target="_blank" rel="noreferrer" role="button" onmouseover="alert(1)">text</a></p>',
                 ],
             ],
+            [
+                '<?xml >s<img src=x onerror=alert(1)> ?>',
+                [
+                    '&lt;?xml &gt;s&lt;img src=x onerror=alert(1)&gt; ?&gt;',
+                    '<?xml >s<img src=x onerror=alert(1)> ?>',
+                ],
+            ],
         ];
     }
 

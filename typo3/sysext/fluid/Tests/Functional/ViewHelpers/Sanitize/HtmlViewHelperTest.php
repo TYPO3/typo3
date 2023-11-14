@@ -94,6 +94,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
 
         $logItemDataExpectation = [
             'behavior' => 'default',
+            'nodeType' => 1,
             'nodeName' => 'script',
             'initiator' => HtmlViewHelper::class,
         ];

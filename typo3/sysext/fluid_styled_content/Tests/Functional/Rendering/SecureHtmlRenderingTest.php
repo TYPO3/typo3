@@ -109,6 +109,14 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
                 '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
                 '<p>07: <a href="/" target="_blank" rel="noreferrer" class="button" role="button">TYPO3</a></p>',
             ],
+            '#08' => [
+                '08: <?xml >s<img src=x onerror=alert(1)> ?>',
+                // Note: The TYPO3 HTML Parser encodes processing instructions, it's therefore
+                // expected and "OK" that the img tag is not encoded but sanitized.
+                // If the HTML Parser would not run, the expected result would be:
+                // '<p>08: &lt;?xml &gt;s&lt;img src=x onerror=alert(1)&gt; ?&gt;</p>',
+                '<p>08: &lt;?xml &gt;s<img src="x"> ?&gt;</p>',
+            ],
         ];
     }
 

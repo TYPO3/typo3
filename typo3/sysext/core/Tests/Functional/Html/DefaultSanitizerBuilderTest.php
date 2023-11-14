@@ -145,6 +145,18 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
                 '<span style="color: orange">value</span>',
                 '<span style="color: orange">value</span>',
             ],
+            '#912' => [
+                '<!---><p>',
+                '<!---&gt;&lt;p&gt;-->',
+            ],
+            '#913' => [
+                '<!---!><p>',
+                '<!---!&gt;&lt;p&gt;-->',
+            ],
+            '#941' => [
+                '<?xml >s<img src=x onerror=alert(1)> ?>',
+                '&lt;?xml &gt;s&lt;img src=x onerror=alert(1)&gt; ?&gt;',
+            ],
         ];
     }
 
@@ -202,6 +214,7 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
         $sanitizer->sanitize('<script>alert(1)</script>', new SanitizerInitiator($trace));
         $logItemDataExpectation = [
             'behavior' => 'default',
+            'nodeType' => 1,
             'nodeName' => 'script',
             'initiator' => $trace,
         ];
