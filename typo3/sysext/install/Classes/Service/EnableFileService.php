@@ -158,6 +158,15 @@ class EnableFileService
         }
     }
 
+    /**
+     * Returns a static directory path that is suitable to be presented to
+     * unauthenticated visitors, in order to circumvent "Full Path Disclosure" issues.
+     */
+    public static function getStaticLocationForInstallToolEnableFileDirectory(): string
+    {
+        return Environment::isComposerMode() ? 'var/transient/' : 'typo3conf/';
+    }
+
     public static function getBestLocationForInstallToolEnableFile(): string
     {
         $possibleLocations = [
