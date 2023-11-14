@@ -101,7 +101,8 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $userSessionManager = new UserSessionManager(
             $sessionBackend->reveal(),
             86400,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'BE'
         );
 
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();

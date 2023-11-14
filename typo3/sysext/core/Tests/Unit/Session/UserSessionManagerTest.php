@@ -21,6 +21,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\IpLocker;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -62,7 +63,8 @@ class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendProphecy->reveal(),
             $sessionLifetime,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $session = $subject->createAnonymousSession();
         self::assertEquals($expectedResult, $subject->willExpire($session, $gracePeriod));
@@ -75,7 +77,8 @@ class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendProphecy->reveal(),
             60,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $expiredSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         self::assertTrue($subject->hasExpired($expiredSession));
@@ -88,9 +91,16 @@ class UserSessionManagerTest extends UnitTestCase
      */
     public function createFromRequestOrAnonymousCreatesProperSessionObjects(): void
     {
+        $cookieDomain = 'example.org';
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getRequestHostOnly')->willReturn($cookieDomain);
+        $key = sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . '/' . UserSession::class . '/' . $cookieDomain);
+        $sessionId = 'valid-session';
+        $signature = hash_hmac('sha256', $sessionId, $key);
+        $validSession = $sessionId . '.' . $signature;
         $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
         $sessionBackendProphecy->get('invalid-session')->willThrow(SessionNotFoundException::class);
-        $sessionBackendProphecy->get('valid-session')->willReturn([
+        $sessionBackendProphecy->get($validSession)->willReturn([
             'ses_id' => 'valid-session',
             'ses_userid' => 13,
             'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
@@ -100,18 +110,24 @@ class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendProphecy->reveal(),
             50,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $request = $this->prophesize(ServerRequestInterface::class);
         $request->getCookieParams()->willReturn([]);
+        $request->getServerParams()->willReturn(['HTTP_HOST' => $cookieDomain]);
+        $request->getAttribute('normalizedParams')->willReturn($normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request->reveal();
         $anonymousSession = $subject->createFromRequestOrAnonymous($request->reveal(), 'foo');
         self::assertTrue($anonymousSession->isNew());
         self::assertTrue($anonymousSession->isAnonymous());
-        $request->getCookieParams()->willReturn(['foo' => 'invalid-session', 'bar' => 'valid-session']);
+
+        $request->getCookieParams()->willReturn(['foo' => 'invalid-session', 'bar' => $validSession]);
         $anonymousSessionFromInvalidBackendRequest = $subject->createFromRequestOrAnonymous($request->reveal(), 'foo');
         self::assertTrue($anonymousSessionFromInvalidBackendRequest->isNew());
         self::assertTrue($anonymousSessionFromInvalidBackendRequest->isAnonymous());
         $persistedSession = $subject->createFromRequestOrAnonymous($request->reveal(), 'bar');
+
         self::assertEquals(13, $persistedSession->getUserId());
         self::assertFalse($persistedSession->isAnonymous());
         self::assertFalse($persistedSession->isNew());
@@ -136,7 +152,8 @@ class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendProphecy->reveal(),
             60,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         $session = $subject->updateSession($session);
@@ -159,7 +176,8 @@ class UserSessionManagerTest extends UnitTestCase
         $subject = new UserSessionManager(
             $sessionBackendProphecy->reveal(),
             60,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
         $session = $subject->fixateAnonymousSession($session);

@@ -92,7 +92,8 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $userSessionManager = new UserSessionManager(
             $sessionBackendProphecy->reveal(),
             86400,
-            new IpLocker(0, 0)
+            new IpLocker(0, 0),
+            'FE'
         );
         $subject = new FrontendUserAuthentication();
         $subject->setLogger(new NullLogger());

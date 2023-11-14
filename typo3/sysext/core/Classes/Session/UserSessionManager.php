@@ -21,7 +21,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Authentication\IpLocker;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Http\CookieScopeTrait;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,6 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class UserSessionManager implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use CookieScopeTrait;
 
     protected const SESSION_ID_LENGTH = 32;
     protected const GARBAGE_COLLECTION_LIFETIME = 86400;
@@ -52,6 +56,7 @@ class UserSessionManager implements LoggerAwareInterface
     protected int $garbageCollectionForAnonymousSessions = self::LIFETIME_OF_ANONYMOUS_SESSION_DATA;
     protected SessionBackendInterface $sessionBackend;
     protected IpLocker $ipLocker;
+    protected string $loginType;
 
     /**
      * Constructor. Marked as internal, as it is recommended to use the factory method "create"
@@ -61,11 +66,12 @@ class UserSessionManager implements LoggerAwareInterface
      * @param IpLocker $ipLocker
      * @internal
      */
-    public function __construct(SessionBackendInterface $sessionBackend, int $sessionLifetime, IpLocker $ipLocker)
+    public function __construct(SessionBackendInterface $sessionBackend, int $sessionLifetime, IpLocker $ipLocker, string $loginType)
     {
         $this->sessionBackend = $sessionBackend;
         $this->sessionLifetime = $sessionLifetime;
         $this->ipLocker = $ipLocker;
+        $this->loginType = $loginType;
     }
 
     protected function setGarbageCollectionTimeoutForAnonymousSessions(int $garbageCollectionForAnonymousSessions = 0): void
@@ -285,13 +291,38 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Creates a new session ID using a random with SESSION_ID_LENGTH as length
+     * Creates a new session ID using a random with SESSION_ID_LENGTH as length of the random part
      *
      * @return string
      */
     protected function createSessionId(): string
     {
-        return GeneralUtility::makeInstance(Random::class)->generateRandomHexString(self::SESSION_ID_LENGTH);
+        $normalizedParams = $this->getNormalizedParams();
+        $cookieScope = $this->getCookieScope($normalizedParams);
+        $key = sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . '/' . UserSession::class . '/' . $cookieScope['domain']);
+        $random = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(self::SESSION_ID_LENGTH);
+        $signature = hash_hmac('sha256', $random, $key);
+
+        return $random . '.' . $signature;
+    }
+
+    /**
+     * @todo/notes for backports: Same as in typo3/sysext/core/Classes/Hooks/CreateSiteConfiguration.php,
+     */
+    protected function getNormalizedParams(): NormalizedParams
+    {
+        $normalizedParams = null;
+        $serverParams = Environment::isCli() ? ['HTTP_HOST' => 'localhost'] : $_SERVER;
+        if (isset($GLOBALS['TYPO3_REQUEST'])) {
+            $normalizedParams = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams');
+            $serverParams = $GLOBALS['TYPO3_REQUEST']->getServerParams();
+        }
+
+        if (!$normalizedParams instanceof NormalizedParams) {
+            $normalizedParams = NormalizedParams::createFromServerParams($serverParams);
+        }
+
+        return $normalizedParams;
     }
 
     /**
@@ -306,6 +337,25 @@ class UserSessionManager implements LoggerAwareInterface
         if ($id === '') {
             return null;
         }
+
+        $sessionsParts = explode('.', $id, 2);
+        // Verify if session id is signed with cookie domain.
+        // Note that we allow possibly unsiged session IDs (used for testing framework or 3rd party authenticators)
+        if (count($sessionsParts) === 2) {
+            $random = $sessionsParts[0];
+            $signature = $sessionsParts[1];
+            $normalizedParams = $this->getNormalizedParams();
+            $cookieScope = $this->getCookieScope($normalizedParams);
+            $key = sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . '/' . UserSession::class . '/' . $cookieScope['domain']);
+            $validHash = hash_hmac('sha256', $random, $key);
+            if (!hash_equals($validHash, $signature)) {
+                $this->logger->notice('User Session rejected because of invalid signature', ['session' => substr(sha1($id), 0, 12)]);
+                return null;
+            }
+        } elseif ($this->logger !== null) {
+            $this->logger->notice('Unsigned session id has been used', ['session' => substr(sha1($id), 0, 12)]);
+        }
+
         try {
             $sessionRecord = $this->sessionBackend->get($id);
             if ($sessionRecord === []) {
@@ -357,7 +407,8 @@ class UserSessionManager implements LoggerAwareInterface
             self::class,
             $sessionManager->getSessionBackend($loginType),
             $sessionLifetime,
-            $ipLocker
+            $ipLocker,
+            $loginType
         );
         if ($loginType === 'FE') {
             $object->setGarbageCollectionTimeoutForAnonymousSessions((int)($GLOBALS['TYPO3_CONF_VARS']['FE']['sessionDataLifetime'] ?? 0));
