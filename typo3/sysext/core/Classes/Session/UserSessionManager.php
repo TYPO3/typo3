@@ -22,6 +22,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Http\CookieScopeTrait;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class UserSessionManager implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use CookieScopeTrait;
 
     protected const SESSION_ID_LENGTH = 32;
     protected const GARBAGE_COLLECTION_LIFETIME = 86400;
@@ -59,17 +61,19 @@ class UserSessionManager implements LoggerAwareInterface
     protected int $garbageCollectionForAnonymousSessions = self::LIFETIME_OF_ANONYMOUS_SESSION_DATA;
     protected SessionBackendInterface $sessionBackend;
     protected IpLocker $ipLocker;
+    protected string $loginType;
 
     /**
      * Constructor. Marked as internal, as it is recommended to use the factory method "create"
      *
      * @internal it is recommended to use the factory method "create"
      */
-    public function __construct(SessionBackendInterface $sessionBackend, int $sessionLifetime, IpLocker $ipLocker)
+    public function __construct(SessionBackendInterface $sessionBackend, int $sessionLifetime, IpLocker $ipLocker, string $loginType)
     {
         $this->sessionBackend = $sessionBackend;
         $this->sessionLifetime = $sessionLifetime;
         $this->ipLocker = $ipLocker;
+        $this->loginType = $loginType;
     }
 
     protected function setGarbageCollectionTimeoutForAnonymousSessions(int $garbageCollectionForAnonymousSessions = 0): void
@@ -91,7 +95,8 @@ class UserSessionManager implements LoggerAwareInterface
     {
         try {
             $cookieValue = (string)($request->getCookieParams()[$cookieName] ?? '');
-            $sessionId = UserSession::resolveIdentifierFromJwt($cookieValue);
+            $scope = $this->getCookieScope($request->getAttribute('normalizedParams'));
+            $sessionId = UserSession::resolveIdentifierFromJwt($cookieValue, $scope);
         } catch (\Exception $exception) {
             $this->logger->debug('Could not resolve session identifier from JWT', ['exception' => $exception]);
         }
@@ -354,7 +359,8 @@ class UserSessionManager implements LoggerAwareInterface
             self::class,
             $sessionManager->getSessionBackend($loginType),
             $sessionLifetime,
-            $ipLocker
+            $ipLocker,
+            $loginType
         );
         if ($loginType === 'FE') {
             $object->setGarbageCollectionTimeoutForAnonymousSessions((int)($GLOBALS['TYPO3_CONF_VARS']['FE']['sessionDataLifetime'] ?? 0));

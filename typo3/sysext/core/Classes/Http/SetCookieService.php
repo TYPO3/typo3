@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SetCookieService
 {
     use CookieHeaderTrait;
+    use CookieScopeTrait;
 
     protected readonly LoggerInterface $logger;
 
@@ -65,9 +66,7 @@ class SetCookieService
         $isRefreshTimeBasedCookie = $this->isRefreshTimeBasedCookie($userSession);
         if ($this->isSetSessionCookie($userSession) || $isRefreshTimeBasedCookie) {
             // Get the domain to be used for the cookie (if any):
-            $cookieDomain = $this->getCookieDomain($normalizedParams);
-            // If no cookie domain is set, use the base path:
-            $cookiePath = $cookieDomain ? '/' : $normalizedParams->getSitePath();
+            $cookieScope = $this->getCookieScope($normalizedParams);
             // If the cookie lifetime is set, use it:
             $cookieExpire = $isRefreshTimeBasedCookie ? $GLOBALS['EXEC_TIME'] + $this->lifetime : 0;
             // Valid options are "strict", "lax" or "none", whereas "none" only works in HTTPS requests (default & fallback is "strict")
@@ -78,13 +77,19 @@ class SetCookieService
             // SameSite "none" needs the secure option (only allowed on HTTPS)
             $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || $normalizedParams->isHttps();
             $sessionId = $userSession->getIdentifier();
-            $cookieValue = $userSession->getJwt();
+            $cookieValue = $userSession->getJwt($cookieScope);
             $setCookie = new Cookie(
                 $this->name,
                 $cookieValue,
                 $cookieExpire,
-                $cookiePath,
-                $cookieDomain,
+                $cookieScope->path,
+                // Host-Only cookies need to be provided without an explicit domain,
+                // see https://datatracker.ietf.org/doc/html/rfc6265#section-4.1.2.3
+                // and https://datatracker.ietf.org/doc/html/rfc6265#section-5.3
+                // | * If the value of the Domain attribute is "example.com", the user agent will include the cookie
+                // |   in the Cookie header when making HTTP requests to example.com, www.example.com, and www.corp.example.com
+                // | * If the server omits the Domain attribute, the user agent will return the cookie only to the origin server.
+                $cookieScope->hostOnly ? null : $cookieScope->domain,
                 $isSecure,
                 true,
                 false,
@@ -93,43 +98,10 @@ class SetCookieService
             $message = $isRefreshTimeBasedCookie ? 'Updated Cookie: {session}, {domain}' : 'Set Cookie: {session}, {domain}';
             $this->logger->debug($message, [
                 'session' => sha1($sessionId),
-                'domain' => $cookieDomain,
+                'domain' => $cookieScope->domain,
             ]);
         }
         return $setCookie;
-    }
-
-    /**
-     * Gets the domain to be used on setting cookies.
-     * The information is taken from the value in $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'].
-     *
-     * @return string The domain to be used on setting cookies
-     */
-    protected function getCookieDomain(NormalizedParams $normalizedParams): string
-    {
-        $result = '';
-        $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'] ?? '';
-        // If a specific cookie domain is defined for a given application type, use that domain
-        if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'])) {
-            $cookieDomain = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'];
-        }
-        if ($cookieDomain) {
-            if ($cookieDomain[0] === '/') {
-                $match = [];
-                $matchCnt = @preg_match($cookieDomain, $normalizedParams->getRequestHostOnly(), $match);
-                if ($matchCnt === false) {
-                    $this->logger->critical(
-                        'The regular expression for the cookie domain ({domain}) contains errors. The session is not shared across sub-domains.',
-                        ['domain' => $cookieDomain]
-                    );
-                } elseif ($matchCnt) {
-                    $result = $match[0];
-                }
-            } else {
-                $result = $cookieDomain;
-            }
-        }
-        return $result;
     }
 
     /**
@@ -180,15 +152,13 @@ class SetCookieService
      */
     public function removeCookie(NormalizedParams $normalizedParams): Cookie
     {
-        $cookieDomain = $this->getCookieDomain($normalizedParams);
-        // If no cookie domain is set, use the base path
-        $cookiePath = $cookieDomain ? '/' : $normalizedParams->getSitePath();
+        $scope = $this->getCookieScope($normalizedParams);
         return new Cookie(
             $this->name,
             '',
             -1,
-            $cookiePath,
-            $cookieDomain
+            $scope->path,
+            $scope->domain
         );
     }
 }
