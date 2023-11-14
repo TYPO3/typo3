@@ -4250,8 +4250,9 @@ select.icon-select option{padding-inline-start:22px}
 .form-control-clearable-wrapper{position:relative;border:0;padding:0}
 .form-control-clearable-wrapper input[type=search]::-webkit-search-cancel-button{display:none}
 .form-control-clearable-wrapper .form-control{padding-inline-end:2.3em}
-.form-control-clearable-wrapper .close{border:none;background-color:transparent;position:absolute;height:16px;z-index:3;top:50%;inset-inline-end:.5em;transform:translate(0,-50%);opacity:.2}
+.form-control-clearable-wrapper .close{border:2px solid transparent;background-color:transparent;position:absolute;height:20px;z-index:3;top:50%;inset-inline-end:.5em;transform:translate(0,-50%);opacity:.2}
 .form-control-clearable-wrapper .close:hover{opacity:.5}
+.form-control-clearable-wrapper .close:focus{opacity:.5;outline:0;border-color:var(--typo3-component-link-hover-color)}
 .form-control-clearable-wrapper .close .icon{vertical-align:0}
 .form-control-clearable-wrapper:focus{box-shadow:none;border-color:inherit}
 .form-notice-capslock{position:absolute;inset-inline-end:25px;top:50%;margin-top:-10px;height:20px;width:20px;padding:3px;z-index:10;background-color:#fff}
