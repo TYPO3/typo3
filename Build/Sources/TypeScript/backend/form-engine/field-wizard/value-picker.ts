@@ -30,11 +30,22 @@ enum InsertModes {
  */
 export class ValuePicker extends HTMLElement {
   private valuePicker: HTMLSelectElement;
+  private linkedField: HTMLInputElement|HTMLTextAreaElement;
 
   public connectedCallback(): void {
     this.valuePicker = this.querySelector('select') as HTMLSelectElement;
     if (this.valuePicker !== null) {
       this.valuePicker.addEventListener('change', this.onChange);
+    }
+    this.linkedField = document.querySelector(this.getAttribute('linked-field')) as HTMLInputElement|HTMLTextAreaElement;
+    if (this.linkedField !== null) {
+      this.linkedField.addEventListener('change', this.linkedFieldOnChange);
+
+      // Set initial value
+      if (this.getInsertMode() === InsertModes.replace) {
+        const formEngineInputField: HTMLInputElement|HTMLTextAreaElement = document.getElementsByName(this.linkedField.dataset.formengineInputName)[0] as HTMLInputElement|HTMLTextAreaElement;
+        formEngineInputField && this.selectValue(formEngineInputField.value);
+      }
     }
   }
 
@@ -47,23 +58,40 @@ export class ValuePicker extends HTMLElement {
 
   private readonly onChange = () => {
     this.setValue();
-    this.valuePicker.selectedIndex = 0;
     this.valuePicker.blur();
-  };
+  }
+
+  private readonly linkedFieldOnChange = () => {
+    if (this.getInsertMode() === InsertModes.replace) {
+      this.selectValue(this.linkedField.value);
+    } else {
+      this.valuePicker.selectedIndex = 0;
+    }
+  }
+
+  private selectValue (value: string): void {
+    this.valuePicker.selectedIndex = Array.from(this.valuePicker.options).findIndex((option): boolean => option.value === value);
+  }
+
+  private getInsertMode (): InsertModes {
+    return this.getAttribute('mode') as InsertModes ?? InsertModes.replace;
+  }
 
   private setValue (): void {
     const selectedValue = this.valuePicker.options[this.valuePicker.selectedIndex].value;
-    const linkedField = document.querySelector(this.getAttribute('linked-field')) as HTMLInputElement|HTMLTextAreaElement;
-    const mode = this.getAttribute('mode') as InsertModes ?? InsertModes.replace;
 
-    if (mode === InsertModes.append) {
-      linkedField.value += selectedValue;
-    } else if (mode === InsertModes.prepend) {
-      linkedField.value = selectedValue + linkedField.value;
-    } else {
-      linkedField.value = selectedValue;
+    switch (this.getInsertMode()) {
+      case InsertModes.append:
+        this.linkedField.value += selectedValue;
+        break;
+      case InsertModes.prepend:
+        this.linkedField.value = selectedValue + this.linkedField.value;
+        break;
+      default:
+        this.linkedField.value = selectedValue;
+        break;
     }
-    linkedField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+    this.linkedField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   }
 }
 
