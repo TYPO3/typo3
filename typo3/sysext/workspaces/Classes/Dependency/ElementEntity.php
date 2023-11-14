@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -31,140 +33,73 @@ class ElementEntity
     public const EVENT_CreateParentReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createParentReference';
     public const RESPONSE_Skip = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity->skip';
 
-    /**
-     * @var bool
-     */
-    protected $invalid = false;
+    protected bool $invalid = false;
+    protected string $table;
+    protected int $id;
+    protected array $data;
+    protected array $record;
+    protected DependencyResolver $dependency;
+    protected ?array $children;
+    protected ?array $parents;
+    protected ElementEntity|false|null $outerMostParent;
 
-    /**
-     * @var string
-     */
-    protected $table;
+    protected ?array $nestedChildren;
 
-    /**
-     * @var int
-     */
-    protected $id;
-
-    /**
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * @var array
-     */
-    protected $record;
-
-    /**
-     * @var DependencyResolver
-     */
-    protected $dependency;
-
-    /**
-     * @var array|null
-     */
-    protected $children;
-
-    /**
-     * @var array|null
-     */
-    protected $parents;
-
-    /**
-     * @var bool
-     */
-    protected $traversingParents = false;
-
-    /**
-     * @var ElementEntity|false|null
-     */
-    protected $outerMostParent;
-
-    /**
-     * @var array|null
-     */
-    protected $nestedChildren;
-
-    /**
-     * Creates this object.
-     *
-     * @param string $table
-     * @param int $id
-     * @param array $data (optional)
-     */
-    public function __construct($table, $id, array $data, DependencyResolver $dependency)
+    public function __construct(string $table, int $id, array $data, DependencyResolver $dependency)
     {
         $this->table = $table;
-        $this->id = (int)$id;
+        $this->id = $id;
         $this->data = $data;
         $this->dependency = $dependency;
         $this->dependency->executeEventCallback(self::EVENT_Construct, $this);
     }
 
-    /**
-     * @param bool $invalid
-     */
-    public function setInvalid($invalid)
+    public function setInvalid(bool $invalid): void
     {
-        $this->invalid = (bool)$invalid;
+        $this->invalid = $invalid;
     }
 
-    /**
-     * @return bool
-     */
-    public function isInvalid()
+    public function isInvalid(): bool
     {
         return $this->invalid;
     }
 
     /**
      * Gets the table.
-     *
-     * @return string
      */
-    public function getTable()
+    public function getTable(): string
     {
         return $this->table;
     }
 
     /**
      * Gets the id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Sets the id.
-     *
-     * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
-        $this->id = (int)$id;
+        $this->id = $id;
     }
 
     /**
      * Gets the data.
-     *
-     * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
 
     /**
      * Gets a value for a particular key from the data.
-     *
-     * @param string $key
-     * @return mixed
      */
-    public function getDataValue($key)
+    public function getDataValue(string $key): mixed
     {
         $result = null;
         if ($this->hasDataValue($key)) {
@@ -175,42 +110,32 @@ class ElementEntity
 
     /**
      * Sets a value for a particular key in the data.
-     *
-     * @param string $key
-     * @param mixed $value
      */
-    public function setDataValue($key, $value)
+    public function setDataValue(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
     }
 
     /**
      * Determines whether a particular key holds data.
-     *
-     * @param string $key
-     * @return bool
      */
-    public function hasDataValue($key)
+    public function hasDataValue(string $key): bool
     {
         return isset($this->data[$key]);
     }
 
     /**
      * Converts this object for string representation.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return self::getIdentifier($this->table, $this->id);
     }
 
     /**
      * Gets the parent dependency object.
-     *
-     * @return DependencyResolver
      */
-    public function getDependency()
+    public function getDependency(): DependencyResolver
     {
         return $this->dependency;
     }
@@ -218,9 +143,9 @@ class ElementEntity
     /**
      * Gets all child references.
      *
-     * @return array|ReferenceEntity[]
+     * @return ReferenceEntity[]
      */
-    public function getChildren()
+    public function getChildren(): array
     {
         if (!isset($this->children)) {
             $this->children = [];
@@ -280,9 +205,9 @@ class ElementEntity
     /**
      * Gets all parent references.
      *
-     * @return array|ReferenceEntity[]
+     * @return ReferenceEntity[]
      */
-    public function getParents()
+    public function getParents(): array
     {
         if (!isset($this->parents)) {
             $this->parents = [];
@@ -338,20 +263,16 @@ class ElementEntity
 
     /**
      * Determines whether there are child or parent references.
-     *
-     * @return bool
      */
-    public function hasReferences()
+    public function hasReferences(): bool
     {
         return !empty($this->getChildren()) || !empty($this->getParents());
     }
 
     /**
      * Gets the outermost parent element.
-     *
-     * @return ElementEntity|bool
      */
-    public function getOuterMostParent()
+    public function getOuterMostParent(): false|ElementEntity
     {
         if (!isset($this->outerMostParent)) {
             $parents = $this->getParents();
@@ -378,9 +299,9 @@ class ElementEntity
     /**
      * Gets nested children accumulated.
      *
-     * @return array|ReferenceEntity[]
+     * @return ReferenceEntity[]
      */
-    public function getNestedChildren()
+    public function getNestedChildren(): array
     {
         if (!isset($this->nestedChildren)) {
             $this->nestedChildren = [];
@@ -395,22 +316,16 @@ class ElementEntity
 
     /**
      * Converts the object for string representation.
-     *
-     * @param string $table
-     * @param int $id
-     * @return string
      */
-    public static function getIdentifier($table, $id)
+    public static function getIdentifier(string $table, int $id): string
     {
         return $table . ':' . $id;
     }
 
     /**
      * Gets the database record of this element.
-     *
-     * @return array
      */
-    public function getRecord()
+    public function getRecord(): array
     {
         if (empty($this->record['uid']) || (int)$this->record['uid'] !== $this->getId()) {
             $this->record = [];

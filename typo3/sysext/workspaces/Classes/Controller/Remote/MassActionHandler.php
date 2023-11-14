@@ -32,10 +32,7 @@ class MassActionHandler
 {
     public const MAX_RECORDS_TO_PROCESS = 30;
 
-    /**
-     * @var WorkspaceService
-     */
-    protected $workspaceService;
+    protected WorkspaceService $workspaceService;
 
     public function __construct()
     {
@@ -44,10 +41,8 @@ class MassActionHandler
 
     /**
      * Publishes the current workspace.
-     *
-     * @return array
      */
-    public function publishWorkspace(\stdClass $parameters)
+    public function publishWorkspace(\stdClass $parameters): array
     {
         $result = [
             'init' => false,
@@ -72,10 +67,8 @@ class MassActionHandler
 
     /**
      * Flushes the current workspace.
-     *
-     * @return array
      */
-    public function flushWorkspace(\stdClass $parameters)
+    public function flushWorkspace(\stdClass $parameters): array
     {
         $result = [
             'init' => false,
@@ -99,15 +92,11 @@ class MassActionHandler
 
     /**
      * Initializes the command map to be used for publishing.
-     *
-     * @param int $workspace
-     * @param int $language
-     * @return int
      */
-    protected function initPublishData($workspace, $language = null)
+    protected function initPublishData(int $workspace, int $language = null): int
     {
-        // workspace might be -98 a.k.a "All Workspaces but that's save here
-        $publishData = $this->workspaceService->getCmdArrayForPublishWS($workspace, false, 0, $language);
+        // workspace might be -98 a.k.a "All Workspaces" but that's safe here
+        $publishData = $this->workspaceService->getCmdArrayForPublishWS($workspace, false, $language);
         $recordCount = 0;
         foreach ($publishData as $table => $recs) {
             $recordCount += count($recs);
@@ -122,15 +111,11 @@ class MassActionHandler
 
     /**
      * Initializes the command map to be used for flushing.
-     *
-     * @param int $workspace
-     * @param int $language
-     * @return int
      */
-    protected function initFlushData($workspace, $language = null)
+    protected function initFlushData(int $workspace, int $language = null): int
     {
-        // workspace might be -98 a.k.a "All Workspaces but that's save here
-        $flushData = $this->workspaceService->getCmdArrayForFlushWS($workspace, true, 0, $language);
+        // workspace might be -98 a.k.a "All Workspaces" but that's safe here
+        $flushData = $this->workspaceService->getCmdArrayForFlushWS($workspace, $language);
         $recordCount = 0;
         foreach ($flushData as $table => $recs) {
             $recordCount += count($recs);
@@ -145,10 +130,8 @@ class MassActionHandler
 
     /**
      * Processes the data.
-     *
-     * @return int
      */
-    protected function processData()
+    protected function processData(): int
     {
         $processData = $this->getBackendUser()->getSessionData('workspaceMassAction');
         $recordsProcessed = $this->getBackendUser()->getSessionData('workspaceMassAction_processed');
@@ -195,10 +178,8 @@ class MassActionHandler
     /**
      * Validates whether the submitted language parameter can be
      * interpreted as integer value.
-     *
-     * @return int|null
      */
-    protected function validateLanguageParameter(\stdClass $parameters)
+    protected function validateLanguageParameter(\stdClass $parameters): ?int
     {
         $language = null;
         if (isset($parameters->language) && MathUtility::canBeInterpretedAsInteger($parameters->language)) {
@@ -209,8 +190,6 @@ class MassActionHandler
 
     /**
      * Gets the current workspace ID.
-     *
-     * @return int The current workspace ID
      */
     protected function getCurrentWorkspace(): int
     {

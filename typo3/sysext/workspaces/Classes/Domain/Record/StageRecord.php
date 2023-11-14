@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,46 +19,16 @@ namespace TYPO3\CMS\Workspaces\Domain\Record;
 
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
-/**
- * Combined record class
- */
 class StageRecord extends AbstractRecord
 {
-    /**
-     * @var WorkspaceRecord
-     */
-    protected $workspace;
+    protected WorkspaceRecord $workspace;
+    protected bool $internal = false;
+    protected array|null $responsiblePersons;
+    protected array|null $defaultRecipients;
+    protected array|null $preselectedRecipients;
+    protected array|null $allRecipients;
 
-    /**
-     * @var bool
-     */
-    protected $internal = false;
-
-    /**
-     * @var array|null
-     */
-    protected $responsiblePersons;
-
-    /**
-     * @var array|null
-     */
-    protected $defaultRecipients;
-
-    /**
-     * @var array|null
-     */
-    protected $preselectedRecipients;
-
-    /**
-     * @var array|null
-     */
-    protected $allRecipients;
-
-    /**
-     * @param int $uid
-     * @return StageRecord|null
-     */
-    public static function get($uid, array $record = null)
+    public static function get(int $uid, array $record = null): ?StageRecord
     {
         if (empty($record)) {
             $record = static::fetch('sys_workspace_stage', $uid);
@@ -64,11 +36,7 @@ class StageRecord extends AbstractRecord
         return WorkspaceRecord::get($record['parentid'])->getStage($uid);
     }
 
-    /**
-     * @param int $uid
-     * @return StageRecord
-     */
-    public static function build(WorkspaceRecord $workspace, $uid, array $record = null)
+    public static function build(WorkspaceRecord $workspace, int $uid, array $record = null): StageRecord
     {
         if (empty($record)) {
             $record = static::fetch('sys_workspace_stage', $uid);
@@ -82,34 +50,22 @@ class StageRecord extends AbstractRecord
         $this->workspace = $workspace;
     }
 
-    /**
-     * @return WorkspaceRecord
-     */
-    public function getWorkspace()
+    public function getWorkspace(): WorkspaceRecord
     {
         return $this->workspace;
     }
 
-    /**
-     * @return StageRecord|null
-     */
-    public function getPrevious()
+    public function getPrevious(): ?StageRecord
     {
         return $this->getWorkspace()->getPreviousStage($this->getUid());
     }
 
-    /**
-     * @return StageRecord|null
-     */
-    public function getNext()
+    public function getNext(): ?StageRecord
     {
         return $this->getWorkspace()->getNextStage($this->getUid());
     }
 
-    /**
-     * @return int
-     */
-    public function determineOrder(StageRecord $stageRecord)
+    public function determineOrder(StageRecord $stageRecord): int
     {
         if ($this->getUid() === $stageRecord->getUid()) {
             return 0;
@@ -125,10 +81,8 @@ class StageRecord extends AbstractRecord
 
     /**
      * Determines whether $this is in a previous stage compared to $stageRecord.
-     *
-     * @return bool
      */
-    public function isPreviousTo(StageRecord $stageRecord)
+    public function isPreviousTo(StageRecord $stageRecord): bool
     {
         $current = $stageRecord;
         while ($previous = $current->getPrevious()) {
@@ -142,10 +96,8 @@ class StageRecord extends AbstractRecord
 
     /**
      * Determines whether $this is in a later stage compared to $stageRecord.
-     *
-     * @return bool
      */
-    public function isNextTo(StageRecord $stageRecord)
+    public function isNextTo(StageRecord $stageRecord): bool
     {
         $current = $stageRecord;
         while ($next = $current->getNext()) {
@@ -157,10 +109,7 @@ class StageRecord extends AbstractRecord
         return false;
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultComment()
+    public function getDefaultComment(): string
     {
         $defaultComment = '';
         if (isset($this->record['default_mailcomment'])) {
@@ -169,90 +118,57 @@ class StageRecord extends AbstractRecord
         return $defaultComment;
     }
 
-    /**
-     * @param bool $internal
-     */
-    public function setInternal($internal = true)
+    public function setInternal(bool $internal): void
     {
-        $this->internal = (bool)$internal;
+        $this->internal = $internal;
     }
 
-    /**
-     * @return bool
-     */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return $this->internal;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEditStage()
+    public function isEditStage(): bool
     {
         return $this->getUid() === StagesService::STAGE_EDIT_ID;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPublishStage()
+    public function isPublishStage(): bool
     {
         return $this->getUid() === StagesService::STAGE_PUBLISH_ID;
     }
 
-    /**
-     * @return bool
-     */
-    public function isExecuteStage()
+    public function isExecuteStage(): bool
     {
         return $this->getUid() === StagesService::STAGE_PUBLISH_EXECUTE_ID;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDialogEnabled()
+    public function isDialogEnabled(): bool
     {
         return ((int)$this->record['allow_notificaton_settings'] & 1) > 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPreselectionChangeable()
+    public function isPreselectionChangeable(): bool
     {
         return ((int)$this->record['allow_notificaton_settings'] & 2) > 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function areOwnersPreselected()
+    public function areOwnersPreselected(): bool
     {
         return ((int)$this->record['notification_preselection'] & 1) > 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function areMembersPreselected()
+    public function areMembersPreselected(): bool
     {
         return ((int)$this->record['notification_preselection'] & 2) > 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function areEditorsPreselected()
+    public function areEditorsPreselected(): bool
     {
         return ((int)$this->record['notification_preselection'] & 4) > 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function areResponsiblePersonsPreselected()
+    public function areResponsiblePersonsPreselected(): bool
     {
         return ((int)$this->record['notification_preselection'] & 8) > 0;
     }
@@ -262,10 +178,7 @@ class StageRecord extends AbstractRecord
         return $this->record['notification_defaults'] !== '';
     }
 
-    /**
-     * @return bool
-     */
-    public function hasPreselection()
+    public function hasPreselection(): bool
     {
         return
             $this->areOwnersPreselected()
@@ -276,10 +189,7 @@ class StageRecord extends AbstractRecord
         ;
     }
 
-    /**
-     * @return array
-     */
-    public function getResponsiblePersons()
+    public function getResponsiblePersons(): array
     {
         if (!isset($this->responsiblePersons)) {
             $this->responsiblePersons = [];
@@ -290,10 +200,7 @@ class StageRecord extends AbstractRecord
         return $this->responsiblePersons;
     }
 
-    /**
-     * @return array
-     */
-    public function getDefaultRecipients()
+    public function getDefaultRecipients(): array
     {
         if (!isset($this->defaultRecipients)) {
             $this->defaultRecipients = $this->getStagesService()->resolveBackendUserIds($this->record['notification_defaults']);
@@ -303,10 +210,8 @@ class StageRecord extends AbstractRecord
 
     /**
      * Gets all recipients (backend user ids).
-     *
-     * @return array
      */
-    public function getAllRecipients()
+    public function getAllRecipients(): array
     {
         if (!isset($this->allRecipients)) {
             $allRecipients = $this->getDefaultRecipients();
@@ -330,7 +235,7 @@ class StageRecord extends AbstractRecord
     /**
      * @return int[]
      */
-    public function getPreselectedRecipients()
+    public function getPreselectedRecipients(): array
     {
         if (!isset($this->preselectedRecipients)) {
             $preselectedRecipients = $this->getDefaultRecipients();
@@ -351,10 +256,7 @@ class StageRecord extends AbstractRecord
         return $this->preselectedRecipients;
     }
 
-    /**
-     * @return bool
-     */
-    public function isAllowed()
+    public function isAllowed(): bool
     {
         return
             $this->isEditStage()

@@ -821,7 +821,7 @@ class BackendUtility
 
         while ($record = $res->fetchAssociative()) {
             // store the uid, because it might be unset if it's not among the requested $fields
-            $recordId = $record['uid'];
+            $recordId = (int)$record['uid'];
             $record[$titleField] = self::getRecordTitle($table, $record);
 
             // include only the requested fields in the result

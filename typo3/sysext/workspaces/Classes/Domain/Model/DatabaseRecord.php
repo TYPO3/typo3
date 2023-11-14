@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,29 +25,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DatabaseRecord
 {
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @var int
-     */
-    protected $uid;
-
-    /**
-     * @var array|null
-     */
-    protected $row;
+    protected string $table;
+    protected int $uid;
+    protected ?array $row;
 
     /**
      * Creates database record object just by id of database record.
      *
      * @param string $table Name of the database table
      * @param int $uid Id of the database record row
-     * @return DatabaseRecord
      */
-    public static function create($table, $uid)
+    public static function create(string $table, int $uid): DatabaseRecord
     {
         return GeneralUtility::makeInstance(DatabaseRecord::class, $table, $uid);
     }
@@ -55,19 +45,13 @@ class DatabaseRecord
      *
      * @param string $table Name of the database table
      * @param array $row The relevant database record row
-     * @return DatabaseRecord
      */
-    public static function createFromArray($table, array $row)
+    public static function createFromArray(string $table, array $row): DatabaseRecord
     {
         return GeneralUtility::makeInstance(DatabaseRecord::class, $table, $row['uid'], $row);
     }
 
-    /**
-     * @param string $table Name of the database table
-     * @param int $uid Id of the database record row
-     * @param array|null $row The relevant database record row
-     */
-    public function __construct($table, $uid, array $row = null)
+    public function __construct(string $table, int $uid, array $row = null)
     {
         $this->setTable($table);
         $this->setUid($uid);
@@ -78,50 +62,40 @@ class DatabaseRecord
 
     /**
      * Gets the name of the database table.
-     *
-     * @return string
      */
-    public function getTable()
+    public function getTable(): string
     {
         return $this->table;
     }
 
     /**
      * Sets the name of the database table.
-     *
-     * @param string $table
      */
-    public function setTable($table)
+    public function setTable(string $table): void
     {
         $this->table = $table;
     }
 
     /**
      * Gets the id of the database record row.
-     *
-     * @return int
      */
-    public function getUid()
+    public function getUid(): int
     {
         return $this->uid;
     }
 
     /**
      * Sets the id of the database record row.
-     *
-     * @param int $uid
      */
-    public function setUid($uid)
+    public function setUid(int $uid): void
     {
-        $this->uid = (int)$uid;
+        $this->uid = $uid;
     }
 
     /**
      * Gets the database record row.
-     *
-     * @return array
      */
-    public function getRow()
+    public function getRow(): array
     {
         $this->loadRow();
         return $this->row;
@@ -130,17 +104,15 @@ class DatabaseRecord
     /**
      * Sets the database record row.
      */
-    public function setRow(array $row)
+    public function setRow(array $row): void
     {
         $this->row = $row;
     }
 
     /**
      * Gets the record identifier (table:id).
-     *
-     * @return string
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return implode(':', [$this->getTable(), $this->getUid()]);
     }

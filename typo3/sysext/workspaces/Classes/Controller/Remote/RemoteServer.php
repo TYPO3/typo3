@@ -99,11 +99,11 @@ class RemoteServer
         }
         $versions = $this->workspaceService->selectVersionsInWorkspace(
             $this->getCurrentWorkspace(),
-            $parameter->stage,
+            (int)$parameter->stage,
             $pageId,
-            $parameter->depth,
+            (int)$parameter->depth,
             'tables_select',
-            $parameter->language
+            $parameter->language !== null ? (int)$parameter->language : null
         );
         $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace(), $request);
         return $data;
@@ -389,8 +389,8 @@ class RemoteServer
         foreach ($historyEntries as $entry) {
             $preparedEntry = [];
             $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
-            $preparedEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($entry['history_data']['next']));
-            $preparedEntry['previous_stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($entry['history_data']['current']));
+            $preparedEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle((int)$entry['history_data']['next']));
+            $preparedEntry['previous_stage_title'] = htmlspecialchars($this->stagesService->getStageTitle((int)$entry['history_data']['current']));
             $preparedEntry['user_uid'] = (int)$entry['userid'];
             $preparedEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
             $preparedEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
@@ -404,7 +404,7 @@ class RemoteServer
             $sysLogEntry = [];
             $data = $this->unserializeLogData($sysLogRow['log_data'] ?? '');
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
-            $sysLogEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($data['stage']));
+            $sysLogEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle((int)$data['stage']));
             $sysLogEntry['previous_stage_title'] = '';
             $sysLogEntry['user_uid'] = (int)$sysLogRow['userid'];
             $sysLogEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
@@ -467,10 +467,9 @@ class RemoteServer
      * given set of affected elements.
      *
      * @param CombinedRecord[] $affectedElements
-     * @return IntegrityService
      * @see getAffectedElements
      */
-    protected function createIntegrityService(array $affectedElements)
+    protected function createIntegrityService(array $affectedElements): IntegrityService
     {
         $integrityService = GeneralUtility::makeInstance(IntegrityService::class);
         $integrityService->setAffectedElements($affectedElements);
@@ -482,15 +481,13 @@ class RemoteServer
      * Affected elements have a dependency, e.g. translation overlay
      * and the default origin record - thus, the default record would be
      * affected if the translation overlay shall be published.
-     *
-     * @return array
      */
-    protected function getAffectedElements(\stdClass $parameters)
+    protected function getAffectedElements(\stdClass $parameters): array
     {
         $affectedElements = [];
         if ($parameters->type === 'selection') {
             foreach ((array)$parameters->selection as $element) {
-                $affectedElements[] = CombinedRecord::create($element->table, $element->liveId, $element->versionId);
+                $affectedElements[] = CombinedRecord::create($element->table, (int)$element->liveId, (int)$element->versionId);
             }
         } elseif ($parameters->type === 'all') {
             $versions = $this->workspaceService->selectVersionsInWorkspace(
@@ -503,7 +500,7 @@ class RemoteServer
             );
             foreach ($versions as $table => $tableElements) {
                 foreach ($tableElements as $element) {
-                    $affectedElement = CombinedRecord::create($table, $element['t3ver_oid'], $element['uid']);
+                    $affectedElement = CombinedRecord::create($table, (int)$element['t3ver_oid'], (int)$element['uid']);
                     $affectedElement->getVersionRecord()->setRow($element);
                     $affectedElements[] = $affectedElement;
                 }
@@ -515,10 +512,8 @@ class RemoteServer
     /**
      * Validates whether the submitted language parameter can be
      * interpreted as integer value.
-     *
-     * @return int|null
      */
-    protected function validateLanguageParameter(\stdClass $parameters)
+    protected function validateLanguageParameter(\stdClass $parameters): ?int
     {
         $language = null;
         if (isset($parameters->language) && MathUtility::canBeInterpretedAsInteger($parameters->language)) {
@@ -529,10 +524,8 @@ class RemoteServer
 
     /**
      * Gets the current workspace ID.
-     *
-     * @return int The current workspace ID
      */
-    protected function getCurrentWorkspace()
+    protected function getCurrentWorkspace(): int
     {
         return $this->workspaceService->getCurrentWorkspace();
     }

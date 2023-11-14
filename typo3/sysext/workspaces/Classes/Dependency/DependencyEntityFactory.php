@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,25 +24,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DependencyEntityFactory
 {
-    /**
-     * @var array
-     */
-    protected $elements = [];
-
-    /**
-     * @var array
-     */
-    protected $references = [];
+    protected array $elements = [];
+    protected array $references = [];
 
     /**
      * Gets and registers a new element.
-     *
-     * @param string $table
-     * @param int $id
-     * @param array $data (optional)
-     * @return ElementEntity
      */
-    public function getElement($table, $id, array $data, DependencyResolver $dependency)
+    public function getElement(string $table, int $id, array $data, DependencyResolver $dependency): ElementEntity
     {
         $element = GeneralUtility::makeInstance(ElementEntity::class, $table, $id, $data, $dependency);
         $elementName = $element->__toString();
@@ -52,11 +42,8 @@ class DependencyEntityFactory
 
     /**
      * Gets and registers a new reference.
-     *
-     * @param string $field
-     * @return ReferenceEntity
      */
-    public function getReference(ElementEntity $element, $field)
+    public function getReference(ElementEntity $element, string $field): ReferenceEntity
     {
         $referenceName = $element->__toString() . '.' . $field;
         if (!isset($this->references[$referenceName][$field])) {
@@ -68,15 +55,10 @@ class DependencyEntityFactory
     /**
      * Gets and registers a new reference.
      *
-     * @param string $table
-     * @param int $id
-     * @param string $field
-     * @param array $data (optional)
-     * @return ReferenceEntity
      * @see getElement
      * @see getReference
      */
-    public function getReferencedElement($table, $id, $field, array $data, DependencyResolver $dependency)
+    public function getReferencedElement(string $table, int $id, string $field, array $data, DependencyResolver $dependency): ReferenceEntity
     {
         return $this->getReference($this->getElement($table, $id, $data, $dependency), $field);
     }

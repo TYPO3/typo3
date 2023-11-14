@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,7 +20,6 @@ namespace TYPO3\CMS\Workspaces\Service\Dependency;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Workspaces\Dependency;
 use TYPO3\CMS\Workspaces\Dependency\DependencyResolver;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor;
@@ -31,35 +32,12 @@ use TYPO3\CMS\Workspaces\Service\GridDataService;
  */
 class CollectionService implements SingletonInterface
 {
-    /**
-     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-     */
-    protected $dataHandler;
+    protected ?ElementEntityProcessor $elementEntityProcessor;
+    protected ?DependencyResolver $dependencyResolver = null;
+    protected array $dataArray;
+    protected array $nestedDataArray;
 
-    /**
-     * @var Dependency\ElementEntityProcessor|null
-     */
-    protected $elementEntityProcessor;
-
-    /**
-     * @var Dependency\DependencyResolver|null
-     */
-    protected $dependencyResolver;
-
-    /**
-     * @var array
-     */
-    protected $dataArray;
-
-    /**
-     * @var array
-     */
-    protected $nestedDataArray;
-
-    /**
-     * @return Dependency\DependencyResolver
-     */
-    public function getDependencyResolver()
+    public function getDependencyResolver(): DependencyResolver
     {
         if (!isset($this->dependencyResolver)) {
             $this->dependencyResolver = GeneralUtility::makeInstance(DependencyResolver::class);
@@ -87,11 +65,8 @@ class CollectionService implements SingletonInterface
 
     /**
      * Gets a new callback to be used in the dependency resolver utility.
-     *
-     * @param string $method
-     * @return Dependency\EventCallback
      */
-    protected function getDependencyCallback($method, array $targetArguments = [])
+    protected function getDependencyCallback(string $method, array $targetArguments = []): EventCallback
     {
         return GeneralUtility::makeInstance(
             EventCallback::class,
@@ -103,10 +78,8 @@ class CollectionService implements SingletonInterface
 
     /**
      * Gets the element entity processor.
-     *
-     * @return Dependency\ElementEntityProcessor
      */
-    protected function getElementEntityProcessor()
+    protected function getElementEntityProcessor(): ElementEntityProcessor
     {
         if (!isset($this->elementEntityProcessor)) {
             $this->elementEntityProcessor = GeneralUtility::makeInstance(ElementEntityProcessor::class);
@@ -117,10 +90,8 @@ class CollectionService implements SingletonInterface
 
     /**
      * Processes the data array
-     *
-     * @return array
      */
-    public function process(array $dataArray)
+    public function process(array $dataArray): array
     {
         $collection = 0;
         $this->dataArray = $dataArray;
@@ -151,10 +122,8 @@ class CollectionService implements SingletonInterface
     /**
      * Applies structures to instance data array and
      * ensures children are added below accordant parent
-     *
-     * @return array
      */
-    protected function finalize(array $dataArray)
+    protected function finalize(array $dataArray): array
     {
         $processedDataArray = [];
         foreach ($dataArray as $dataElement) {
@@ -175,12 +144,8 @@ class CollectionService implements SingletonInterface
 
     /**
      * Resolves nested child dependencies.
-     *
-     * @param int $collection
-     * @param string $nextParentIdentifier
-     * @param int $collectionLevel
      */
-    protected function resolveDataArrayChildDependencies(ElementEntity $parent, $collection, $nextParentIdentifier = '', $collectionLevel = 0)
+    protected function resolveDataArrayChildDependencies(ElementEntity $parent, int $collection, string $nextParentIdentifier = '', int $collectionLevel = 0): void
     {
         $parentIdentifier = $parent->__toString();
         $parentIsSet = isset($this->dataArray[$parentIdentifier]);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,29 +22,11 @@ namespace TYPO3\CMS\Workspaces\Dependency;
  */
 class EventCallback
 {
-    /**
-     * @var object
-     */
-    protected $object;
+    protected object $object;
+    protected string $method;
+    protected array $targetArguments;
 
-    /**
-     * @var string
-     */
-    protected $method;
-
-    /**
-     * @var array
-     */
-    protected $targetArguments;
-
-    /**
-     * Creates the objects.
-     *
-     * @param object $object
-     * @param string $method
-     * @param array $targetArguments (optional)
-     */
-    public function __construct($object, $method, array $targetArguments = [])
+    public function __construct(object $object, string $method, array $targetArguments = [])
     {
         $this->object = $object;
         $this->method = $method;
@@ -52,12 +36,8 @@ class EventCallback
 
     /**
      * Executes the callback.
-     *
-     * @param object $caller
-     * @param string $eventName
-     * @return mixed
      */
-    public function execute(array $callerArguments, $caller, $eventName)
+    public function execute(array $callerArguments, object $caller, string $eventName): mixed
     {
         $callable = [$this->object, $this->method];
         if (is_callable($callable)) {

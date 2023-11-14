@@ -33,10 +33,7 @@ use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
  */
 class AjaxDispatcher
 {
-    /**
-     * @var array
-     */
-    protected $classMap = [
+    protected array $classMap = [
         'RemoteServer' => RemoteServer::class,
         'MassActions' => MassActionHandler::class,
         'Actions' => ActionHandler::class,

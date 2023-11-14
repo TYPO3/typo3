@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -28,12 +30,9 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
  */
 abstract class AbstractRecord
 {
-    /**
-     * @var array
-     */
-    protected $record;
+    protected array $record;
 
-    protected static function fetch($tableName, $uid)
+    protected static function fetch(string $tableName, int $uid): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -68,34 +67,22 @@ abstract class AbstractRecord
         $this->record = $record;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->getUid();
     }
 
-    /**
-     * @return int
-     */
-    public function getUid()
+    public function getUid(): int
     {
         return (int)$this->record['uid'];
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return (string)$this->record['title'];
     }
 
-    /**
-     * @return StagesService
-     */
-    protected function getStagesService()
+    protected function getStagesService(): StagesService
     {
         return GeneralUtility::makeInstance(StagesService::class);
     }

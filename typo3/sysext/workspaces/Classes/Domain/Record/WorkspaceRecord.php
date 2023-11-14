@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,10 +27,7 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
  */
 class WorkspaceRecord extends AbstractRecord
 {
-    /**
-     * @var array
-     */
-    protected $internalStages = [
+    protected array $internalStages = [
         StagesService::STAGE_EDIT_ID => [
             'name' => 'edit',
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing',
@@ -43,35 +42,21 @@ class WorkspaceRecord extends AbstractRecord
         ],
     ];
 
-    /**
-     * @var array
-     */
-    protected $internalStageFieldNames = [
+    protected array $internalStageFieldNames = [
         'notification_defaults',
         'notification_preselection',
         'allow_notificaton_settings',
     ];
 
-    /**
-     * @var array|null
-     */
-    protected $owners;
-
-    /**
-     * @var array|null
-     */
-    protected $members;
+    protected ?array $owners;
+    protected ?array $members;
 
     /**
      * @var StageRecord[]|null
      */
-    protected $stages;
+    protected ?array $stages;
 
-    /**
-     * @param int $uid
-     * @return WorkspaceRecord
-     */
-    public static function get($uid, array $record = null)
+    public static function get(int $uid, array $record = null): WorkspaceRecord
     {
         if (empty($uid)) {
             $record = [];
@@ -82,10 +67,7 @@ class WorkspaceRecord extends AbstractRecord
         return GeneralUtility::makeInstance(self::class, $record);
     }
 
-    /**
-     * @return array
-     */
-    public function getOwners()
+    public function getOwners(): array
     {
         if (!isset($this->owners)) {
             $this->owners = $this->getStagesService()->resolveBackendUserIds($this->record['adminusers']);
@@ -93,10 +75,7 @@ class WorkspaceRecord extends AbstractRecord
         return $this->owners;
     }
 
-    /**
-     * @return array
-     */
-    public function getMembers()
+    public function getMembers(): array
     {
         if (!isset($this->members)) {
             $this->members = $this->getStagesService()->resolveBackendUserIds($this->record['members']);
@@ -107,7 +86,7 @@ class WorkspaceRecord extends AbstractRecord
     /**
      * @return StageRecord[]
      */
-    public function getStages()
+    public function getStages(): array
     {
         if (!isset($this->stages)) {
             $this->stages = [];
@@ -139,13 +118,8 @@ class WorkspaceRecord extends AbstractRecord
         return $this->stages;
     }
 
-    /**
-     * @param int $stageId
-     * @return StageRecord|null
-     */
-    public function getStage($stageId)
+    public function getStage(int $stageId): ?StageRecord
     {
-        $stageId = (int)$stageId;
         $this->getStages();
         if (!isset($this->stages[$stageId])) {
             return null;
@@ -153,13 +127,8 @@ class WorkspaceRecord extends AbstractRecord
         return $this->stages[$stageId];
     }
 
-    /**
-     * @param int $stageId
-     * @return StageRecord|null
-     */
-    public function getPreviousStage($stageId)
+    public function getPreviousStage(int $stageId): ?StageRecord
     {
-        $stageId = (int)$stageId;
         $stageIds = array_keys($this->getStages());
         $stageIndex = array_search($stageId, $stageIds);
 
@@ -172,13 +141,8 @@ class WorkspaceRecord extends AbstractRecord
         return $this->stages[$previousStageId];
     }
 
-    /**
-     * @param int $stageId
-     * @return StageRecord|null
-     */
-    public function getNextStage($stageId)
+    public function getNextStage(int $stageId): ?StageRecord
     {
-        $stageId = (int)$stageId;
         $stageIds = array_keys($this->getStages());
         $stageIndex = array_search($stageId, $stageIds);
 
@@ -190,20 +154,13 @@ class WorkspaceRecord extends AbstractRecord
         return $this->stages[$nextStageId];
     }
 
-    protected function addStage(StageRecord $stage)
+    protected function addStage(StageRecord $stage): void
     {
         $this->stages[$stage->getUid()] = $stage;
     }
 
-    /**
-     * @param int $stageId
-     * @return StageRecord
-     * @throws \RuntimeException
-     */
-    protected function createInternalStage($stageId)
+    protected function createInternalStage(int $stageId): StageRecord
     {
-        $stageId = (int)$stageId;
-
         if (!isset($this->internalStages[$stageId])) {
             throw new \RuntimeException('Invalid internal stage "' . $stageId . '"', 1476048246);
         }

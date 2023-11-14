@@ -73,7 +73,7 @@ class AutoPublishCommand extends Command
                 );
 
             // Get CMD array
-            $cmd = $this->workspaceService->getCmdArrayForPublishWS($workspaceRecord['uid']);
+            $cmd = $this->workspaceService->getCmdArrayForPublishWS((int)$workspaceRecord['uid']);
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], $cmd);
             $tce->process_cmdmap();

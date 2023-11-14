@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -40,29 +42,12 @@ class CommandMap
     public const KEY_UpdateGetIdCallback = 'KEY_UpdateGetIdCallback';
     public const KEY_TransformDependentElementsToUseLiveId = 'KEY_TransformDependentElementsToUseLiveId';
 
-    /**
-     * @var array
-     */
-    protected $commandMap = [];
-
+    protected array $commandMap = [];
     protected int $workspace;
+    protected array $scopes = [];
+    protected ?ElementEntityProcessor $elementEntityProcessor;
 
-    /**
-     * @var array
-     */
-    protected $scopes;
-
-    /**
-     * @var ElementEntityProcessor|null
-     */
-    protected $elementEntityProcessor;
-
-    /**
-     * Creates this object.
-     *
-     * @param int $workspace
-     */
-    public function __construct(array $commandMap, $workspace)
+    public function __construct(array $commandMap, int $workspace)
     {
         $this->set($commandMap);
         $this->setWorkspace($workspace);
@@ -71,20 +56,16 @@ class CommandMap
 
     /**
      * Gets the command map.
-     *
-     * @return array
      */
-    public function get()
+    public function get(): array
     {
         return $this->commandMap;
     }
 
     /**
      * Sets the command map.
-     *
-     * @return CommandMap
      */
-    public function set(array $commandMap)
+    public function set(array $commandMap): self
     {
         $this->commandMap = $commandMap;
         return $this;
@@ -92,12 +73,10 @@ class CommandMap
 
     /**
      * Sets the current workspace.
-     *
-     * @param int $workspace
      */
-    public function setWorkspace($workspace)
+    public function setWorkspace(int $workspace): void
     {
-        $this->workspace = (int)$workspace;
+        $this->workspace = $workspace;
     }
 
     /**
@@ -110,10 +89,8 @@ class CommandMap
 
     /**
      * Gets the element entity processor.
-     *
-     * @return ElementEntityProcessor
      */
-    protected function getElementEntityProcessor()
+    protected function getElementEntityProcessor(): ElementEntityProcessor
     {
         if (!isset($this->elementEntityProcessor)) {
             $this->elementEntityProcessor = GeneralUtility::makeInstance(ElementEntityProcessor::class);
@@ -124,10 +101,8 @@ class CommandMap
 
     /**
      * Processes the command map.
-     *
-     * @return CommandMap
      */
-    public function process()
+    public function process(): self
     {
         $this->resolveWorkspacesSwapDependencies();
         $this->resolveWorkspacesSetStageDependencies();
@@ -141,7 +116,7 @@ class CommandMap
      * but not published with this request, are removed from the command map. Otherwise
      * this would produce hanging record sets and lost references.
      */
-    protected function resolveWorkspacesSwapDependencies()
+    protected function resolveWorkspacesSwapDependencies(): void
     {
         $scope = self::SCOPE_WorkspacesSwap;
         $dependency = $this->getDependencyUtility($scope);
@@ -162,22 +137,18 @@ class CommandMap
 
     /**
      * Adds workspaces elements for swapping/publishing.
-     *
-     * @param string $table
-     * @param int $liveId
      */
-    protected function addWorkspacesSwapElements(DependencyResolver $dependency, $table, $liveId, array $properties)
+    protected function addWorkspacesSwapElements(DependencyResolver $dependency, string $table, int $liveId, array $properties): void
     {
-        $dependency->addElement($table, $properties['swapWith'], ['liveId' => $liveId, 'properties' => $properties]);
+        $dependency->addElement($table, (int)$properties['swapWith'], ['liveId' => $liveId, 'properties' => $properties]);
     }
 
     /**
      * Invokes all items for staging with a callback method.
      *
-     * @param string $callbackMethod
      * @param array $arguments Optional leading arguments for the callback method
      */
-    protected function invokeWorkspacesSetStageItems($callbackMethod, array $arguments = [])
+    protected function invokeWorkspacesSetStageItems(string $callbackMethod, array $arguments = []): void
     {
         // Traverses the cmd[] array and fetches the accordant actions:
         foreach ($this->commandMap as $table => $versionIdCollection) {
@@ -198,7 +169,7 @@ class CommandMap
      * Workspaces records that have children or (relative) parents which are versionized
      * but not staged with this request, are removed from the command map.
      */
-    protected function resolveWorkspacesSetStageDependencies()
+    protected function resolveWorkspacesSetStageDependencies(): void
     {
         $scope = self::SCOPE_WorkspacesSetStage;
         $dependency = $this->getDependencyUtility($scope);
@@ -209,11 +180,8 @@ class CommandMap
 
     /**
      * Adds workspaces elements for staging.
-     *
-     * @param string $table
-     * @param int $versionId
      */
-    protected function addWorkspacesSetStageElements(DependencyResolver $dependency, $table, $versionId, array $properties)
+    protected function addWorkspacesSetStageElements(DependencyResolver $dependency, string $table, int $versionId, array $properties): void
     {
         $dependency->addElement($table, $versionId, ['versionId' => $versionId, 'properties' => $properties]);
     }
@@ -223,7 +191,7 @@ class CommandMap
      * Workspaces records that have children or (relative) parents which are versionized
      * but not cleared/flushed with this request, are removed from the command map.
      */
-    protected function resolveWorkspacesClearDependencies()
+    protected function resolveWorkspacesClearDependencies(): void
     {
         $scope = self::SCOPE_WorkspacesClear;
         $dependency = $this->getDependencyUtility($scope);
@@ -242,15 +210,11 @@ class CommandMap
 
     /**
      * Explodes id-lists in the command map for staging actions.
-     *
-     * @throws \RuntimeException
-     * @param string $table
-     * @param string $versionIdList
      */
-    protected function explodeSetStage($table, $versionIdList, array $properties)
+    protected function explodeSetStage(string $table, string|int $versionIdList, array $properties): void
     {
         $extractedCommandMap = [];
-        $versionIds = GeneralUtility::trimExplode(',', $versionIdList, true);
+        $versionIds = GeneralUtility::trimExplode(',', (string)$versionIdList, true);
         if (count($versionIds) > 1) {
             foreach ($versionIds as $versionId) {
                 if (isset($this->commandMap[$table][$versionId]['version'])) {
@@ -266,10 +230,8 @@ class CommandMap
     /**
      * Applies the workspaces dependencies and removes incomplete structures or automatically
      * completes them
-     *
-     * @param string $scope
      */
-    protected function applyWorkspacesDependencies(DependencyResolver $dependency, $scope)
+    protected function applyWorkspacesDependencies(DependencyResolver $dependency, string $scope): void
     {
         $transformDependentElementsToUseLiveId = $this->getScopeData($scope, self::KEY_TransformDependentElementsToUseLiveId);
         $elementsToBeVersioned = $dependency->getElements();
@@ -295,10 +257,8 @@ class CommandMap
 
     /**
      * Updates the command map accordant to valid structures and takes care of the correct order.
-     *
-     * @param string $scope
      */
-    protected function update(ElementEntity $intersectingElement, array $elements, $scope)
+    protected function update(ElementEntity $intersectingElement, array $elements, string $scope): void
     {
         $orderedCommandMap = [];
         $commonProperties = [];
@@ -323,9 +283,9 @@ class CommandMap
     }
 
     /**
-     * Merges command map elements to the top of the current command map..
+     * Merges command map elements to the top of the current command map.
      */
-    protected function mergeToTop(array $commandMap)
+    protected function mergeToTop(array $commandMap): void
     {
         ArrayUtility::mergeRecursiveWithOverrule($commandMap, $this->commandMap);
         $this->commandMap = $commandMap;
@@ -334,19 +294,15 @@ class CommandMap
     /**
      * Merges command map elements to the bottom of the current command map.
      */
-    protected function mergeToBottom(array $commandMap)
+    protected function mergeToBottom(array $commandMap): void
     {
         ArrayUtility::mergeRecursiveWithOverrule($this->commandMap, $commandMap);
     }
 
     /**
      * Removes an element from the command map.
-     *
-     * @param string $table
-     * @param string $id
-     * @param string $command (optional)
      */
-    protected function remove($table, $id, $command = null)
+    protected function remove(string $table, int|string $id, string $command = null): void
     {
         if (is_string($command)) {
             unset($this->commandMap[$table][$id][$command]);
@@ -357,30 +313,24 @@ class CommandMap
 
     /**
      * Callback to get the liveId of a dependent element.
-     *
-     * @return int
      */
-    protected function getElementLiveIdCallback(ElementEntity $element)
+    protected function getElementLiveIdCallback(ElementEntity $element): int
     {
         return $element->getDataValue('liveId');
     }
 
     /**
      * Callback to get the real id of a dependent element.
-     *
-     * @return int
      */
-    protected function getElementIdCallback(ElementEntity $element)
+    protected function getElementIdCallback(ElementEntity $element): int
     {
         return $element->getId();
     }
 
     /**
      * Callback to get the specific properties of a dependent element for swapping/publishing.
-     *
-     * @return array
      */
-    protected function getElementSwapPropertiesCallback(ElementEntity $element)
+    protected function getElementSwapPropertiesCallback(ElementEntity $element): array
     {
         return [
             'swapWith' => $element->getId(),
@@ -404,10 +354,8 @@ class CommandMap
 
     /**
      * Callback to get common properties of dependent elements for swapping/publishing.
-     *
-     * @return array
      */
-    protected function getCommonSwapPropertiesCallback(ElementEntity $element)
+    protected function getCommonSwapPropertiesCallback(ElementEntity $element): array
     {
         $commonSwapProperties = [];
         $elementProperties = $element->getDataValue('properties');
@@ -426,20 +374,16 @@ class CommandMap
 
     /**
      * Callback to get the specific properties of a dependent element for staging.
-     *
-     * @return array
      */
-    protected function getElementSetStagePropertiesCallback(ElementEntity $element)
+    protected function getElementSetStagePropertiesCallback(ElementEntity $element): array
     {
         return $this->getCommonSetStagePropertiesCallback($element);
     }
 
     /**
      * Callback to get common properties of dependent elements for staging.
-     *
-     * @return array
      */
-    protected function getCommonSetStagePropertiesCallback(ElementEntity $element)
+    protected function getCommonSetStagePropertiesCallback(ElementEntity $element): array
     {
         $commonSetStageProperties = [];
         $elementProperties = $element->getDataValue('properties');
@@ -482,9 +426,9 @@ class CommandMap
 
     /**
      * Constructs the scope settings.
-     * Currently the scopes for swapping/publishing and staging are available.
+     * Currently, the scopes for swapping/publishing and staging are available.
      */
-    protected function constructScopes()
+    protected function constructScopes(): void
     {
         $this->scopes = [
             // settings for publishing and swapping:
@@ -544,12 +488,9 @@ class CommandMap
     /**
      * Gets data for a particular scope.
      *
-     * @throws \RuntimeException
      * @param string $scope Scope identifier
-     * @param string $key
-     * @return string
      */
-    protected function getScopeData($scope, $key)
+    protected function getScopeData(string $scope, string $key): null|bool|string
     {
         if (!isset($this->scopes[$scope])) {
             throw new \RuntimeException('Scope "' . $scope . '" is not defined.', 1289342187);
@@ -559,11 +500,8 @@ class CommandMap
 
     /**
      * Gets a new callback to be used in the dependency resolver utility.
-     *
-     * @param string $method
-     * @return EventCallback
      */
-    protected function getDependencyCallback($method, array $targetArguments = [])
+    protected function getDependencyCallback(string $method, array $targetArguments = []): EventCallback
     {
         return GeneralUtility::makeInstance(
             EventCallback::class,
@@ -575,11 +513,8 @@ class CommandMap
 
     /**
      * Processes a local callback inside this object.
-     *
-     * @param string $method
-     * @return mixed
      */
-    protected function processCallback($method, array $callbackArguments)
+    protected function processCallback(string $method, array $callbackArguments): mixed
     {
         return $this->$method(...$callbackArguments);
     }

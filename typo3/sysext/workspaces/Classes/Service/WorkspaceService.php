@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -29,31 +31,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
-/**
- * Workspace service
- */
 class WorkspaceService implements SingletonInterface
 {
-    /**
-     * @var array
-     */
-    protected $versionsOnPageCache = [];
-
-    /**
-     * @var array
-     */
-    protected $pagesWithVersionsInTable = [];
+    protected array $versionsOnPageCache = [];
+    protected array $pagesWithVersionsInTable = [];
 
     public const TABLE_WORKSPACE = 'sys_workspace';
     public const LIVE_WORKSPACE_ID = 0;
 
     /**
-     * retrieves the available workspaces from the database and checks whether
+     * Retrieves the available workspaces from the database and checks whether
      * they're available to the current BE user
      *
      * @return array array of workspaces available to the current user
      */
-    public function getAvailableWorkspaces()
+    public function getAvailableWorkspaces(): array
     {
         $backendUser = $this->getBackendUser();
         $availableWorkspaces = [];
@@ -113,8 +105,6 @@ class WorkspaceService implements SingletonInterface
 
     /**
      * Find the title for the requested workspace.
-     *
-     * @throws \InvalidArgumentException
      */
     public function getWorkspaceTitle(int $wsId): string
     {
@@ -140,14 +130,12 @@ class WorkspaceService implements SingletonInterface
      * Building DataHandler CMD-array for publishing all versions in a workspace.
      *
      * @param int $wsid Real workspace ID, cannot be ONLINE (zero).
-     * @param bool $_ Unused, previously used to choose between swapping and publishing
-     * @param int $pageId The page id
+     * @param bool $_ Dummy parameter, only there because testing framework is calling it with 2 parameters
      * @param int|null $language Select specific language only
      * @return array Command array for DataHandler
      */
-    public function getCmdArrayForPublishWS($wsid, $_ = false, $pageId = 0, $language = null)
+    public function getCmdArrayForPublishWS(int $wsid, bool $_ = false, int $language = null): array
     {
-        $wsid = (int)$wsid;
         $cmd = [];
         if ($wsid > 0) {
             // Define stage to select:
@@ -160,7 +148,7 @@ class WorkspaceService implements SingletonInterface
             $versions = $this->selectVersionsInWorkspace(
                 $wsid,
                 $stage,
-                $pageId ?: -1,
+                -1,
                 999,
                 'tables_modify',
                 $language
@@ -181,14 +169,11 @@ class WorkspaceService implements SingletonInterface
      * Building DataHandler CMD-array for releasing all versions in a workspace.
      *
      * @param int $wsid Real workspace ID, cannot be ONLINE (zero).
-     * @param bool $flush Run Flush (TRUE) or ClearWSID (FALSE) command
-     * @param int $pageId The page id
-     * @param int $language Select specific language only
+     * @param int|null $language Select specific language only
      * @return array Command array for DataHandler
      */
-    public function getCmdArrayForFlushWS($wsid, $flush = true, $pageId = 0, $language = null)
+    public function getCmdArrayForFlushWS(int $wsid, int $language = null)
     {
-        $wsid = (int)$wsid;
         $cmd = [];
         if ($wsid > 0) {
             // Define stage to select:
@@ -197,7 +182,7 @@ class WorkspaceService implements SingletonInterface
             $versions = $this->selectVersionsInWorkspace(
                 $wsid,
                 $stage,
-                $pageId ?: -1,
+                -1,
                 999,
                 'tables_modify',
                 $language
@@ -205,8 +190,7 @@ class WorkspaceService implements SingletonInterface
             // Traverse the selection to build CMD array:
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
-                    // Build the cmd Array:
-                    $cmd[$table][$rec['uid']]['version'] = ['action' => $flush ? 'flush' : 'clearWSID'];
+                    $cmd[$table][$rec['uid']]['version'] = ['action' => 'flush'];
                 }
             }
         }
@@ -226,10 +210,9 @@ class WorkspaceService implements SingletonInterface
      * @param int $language Select specific language only
      * @return array Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
      */
-    public function selectVersionsInWorkspace($wsid, $stage = -99, $pageId = -1, $recursionLevel = 0, $selectionType = 'tables_select', $language = null)
+    public function selectVersionsInWorkspace(int $wsid, int $stage = -99, int $pageId = -1, int $recursionLevel = 0, string $selectionType = 'tables_select', int $language = null): array
     {
         $backendUser = $this->getBackendUser();
-        $wsid = (int)$wsid;
         $output = [];
         // Contains either nothing or a list with live-uids
         if ($pageId != -1 && $recursionLevel > 0) {
@@ -258,7 +241,7 @@ class WorkspaceService implements SingletonInterface
             }
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $stage, $language);
-                $newRecords = $this->getNewVersionsForPages($table, $pageList, $wsid, (int)$stage, $language);
+                $newRecords = $this->getNewVersionsForPages($table, $pageList, $wsid, $stage, $language);
                 foreach ($newRecords as &$newRecord) {
                     // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
                     // live counterpart, but the publish methods later need a live uid to publish to. We thus
@@ -279,15 +262,8 @@ class WorkspaceService implements SingletonInterface
 
     /**
      * Find all versionized elements except moved and new records.
-     *
-     * @param string $table
-     * @param string $pageList
-     * @param int $wsid
-     * @param int $stage
-     * @param int $language
-     * @return array
      */
-    protected function selectAllVersionsFromPages($table, $pageList, $wsid, $stage, $language = null)
+    protected function selectAllVersionsFromPages(string $table, string $pageList, int $wsid, int $stage, int $language = null): array
     {
         // Include root level page as there might be some records with where root level
         // restriction is ignored (e.g. FAL records)
@@ -517,14 +493,8 @@ class WorkspaceService implements SingletonInterface
 
     /**
      * Find all moved records at their new position.
-     *
-     * @param string $table
-     * @param string $pageList
-     * @param int $wsid
-     * @param int $stage
-     * @return array
      */
-    protected function getMovedRecordsFromPages($table, $pageList, $wsid, $stage)
+    protected function getMovedRecordsFromPages(string $table, string $pageList, int $wsid, int $stage): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
@@ -621,12 +591,9 @@ class WorkspaceService implements SingletonInterface
     /**
      * Find all page uids recursive starting from a specific page
      *
-     * @param int $pageId
-     * @param int $wsid
-     * @param int $recursionLevel
      * @return string Comma sep. uid list
      */
-    protected function getTreeUids($pageId, $wsid, $recursionLevel)
+    protected function getTreeUids(int $pageId, int $wsid, int $recursionLevel): string
     {
         $backendUser = $this->getBackendUser();
         // Reusing existing functionality with the drawback that
@@ -778,19 +745,13 @@ class WorkspaceService implements SingletonInterface
 
     /**
      * Remove all records which are not permitted for the user
-     *
-     * @param array $recs
-     * @param string $table
-     * @return array
      */
-    protected function filterPermittedElements($recs, $table)
+    protected function filterPermittedElements(array $recs, string $table): array
     {
         $permittedElements = [];
-        if (is_array($recs)) {
-            foreach ($recs as $rec) {
-                if ($this->isPageAccessibleForCurrentUser($table, $rec) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
-                    $permittedElements[] = $rec;
-                }
+        foreach ($recs as $rec) {
+            if ($this->isPageAccessibleForCurrentUser($table, $rec) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
+                $permittedElements[] = $rec;
             }
         }
         return $permittedElements;
@@ -801,9 +762,8 @@ class WorkspaceService implements SingletonInterface
      *
      * @param string $table Name of the table
      * @param array $record Record row to be checked
-     * @return bool
      */
-    protected function isPageAccessibleForCurrentUser($table, array $record)
+    protected function isPageAccessibleForCurrentUser(string $table, array $record): bool
     {
         $pageIdField = $table === 'pages' ? 'uid' : 'wspid';
         $pageId = isset($record[$pageIdField]) ? (int)$record[$pageIdField] : null;
@@ -823,9 +783,8 @@ class WorkspaceService implements SingletonInterface
      *
      * @param string $table Name of the table
      * @param array $record Record row to be checked
-     * @return bool
      */
-    protected function isLanguageAccessibleForCurrentUser($table, array $record)
+    protected function isLanguageAccessibleForCurrentUser(string $table, array $record): bool
     {
         if (BackendUtility::isTableLocalizable($table)) {
             $languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']] ?? 0;
@@ -841,7 +800,7 @@ class WorkspaceService implements SingletonInterface
      * @param int $id Primary key of the page to check
      * @param int $language Language for which to check the page
      */
-    public function isNewPage($id, $language = 0): bool
+    public function isNewPage(int $id, int $language = 0): bool
     {
         $isNewPage = false;
         // If the language is not default, check state of overlay
@@ -890,9 +849,9 @@ class WorkspaceService implements SingletonInterface
      * @param int $pageId
      * @return bool
      */
-    public function hasPageRecordVersions($workspaceId, $pageId)
+    public function hasPageRecordVersions(int $workspaceId, int $pageId): bool
     {
-        if ((int)$workspaceId === 0 || (int)$pageId === 0) {
+        if ($workspaceId === 0 || $pageId === 0) {
             return false;
         }
 
@@ -936,12 +895,8 @@ class WorkspaceService implements SingletonInterface
      *     21 => true
      *   ],
      * ]
-     *
-     * @param int $workspaceId
-     *
-     * @return array
      */
-    public function getPagesWithVersionsInTable($workspaceId)
+    public function getPagesWithVersionsInTable(int $workspaceId): array
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
             if ($tableName === 'pages' || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
@@ -964,12 +919,8 @@ class WorkspaceService implements SingletonInterface
      *   13 => true,
      *   15 => true
      * ],
-     *
-     * @param int $workspaceId
-     * @param string $tableName
-     * @return array
      */
-    protected function fetchPagesWithVersionsInTable($workspaceId, $tableName)
+    protected function fetchPagesWithVersionsInTable(int $workspaceId, string $tableName): array
     {
         if ((int)$workspaceId === 0) {
             return [];

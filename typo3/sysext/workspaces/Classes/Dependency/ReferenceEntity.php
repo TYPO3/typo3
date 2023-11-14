@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,22 +22,10 @@ namespace TYPO3\CMS\Workspaces\Dependency;
  */
 class ReferenceEntity
 {
-    /**
-     * @var ElementEntity
-     */
-    protected $element;
+    protected ElementEntity $element;
+    protected string $field;
 
-    /**
-     * @var string
-     */
-    protected $field;
-
-    /**
-     * Creates this object.
-     *
-     * @param string $field
-     */
-    public function __construct(ElementEntity $element, $field)
+    public function __construct(ElementEntity $element, string $field)
     {
         $this->element = $element;
         $this->field = $field;
@@ -43,30 +33,24 @@ class ReferenceEntity
 
     /**
      * Gets the elements.
-     *
-     * @return ElementEntity
      */
-    public function getElement()
+    public function getElement(): ElementEntity
     {
         return $this->element;
     }
 
     /**
      * Gets the field.
-     *
-     * @return string
      */
-    public function getField()
+    public function getField(): string
     {
         return $this->field;
     }
 
     /**
      * Converts this object for string representation.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->element . '.' . $this->field;
     }

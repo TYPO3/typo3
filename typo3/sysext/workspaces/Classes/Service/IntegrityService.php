@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,9 +22,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 
-/**
- * Service for integrity
- */
 class IntegrityService
 {
     /**
@@ -30,7 +29,7 @@ class IntegrityService
      *
      * @var int
      */
-    public const STATUS_Succes = 100;
+    public const STATUS_Success = 100;
     /**
      * Info status - nothing is wrong, but a notice is shown
      *
@@ -49,11 +48,9 @@ class IntegrityService
      * @var int
      */
     public const STATUS_Error = 103;
-    /**
-     * @var array
-     */
-    protected $statusRepresentation = [
-        self::STATUS_Succes => 'success',
+
+    protected array $statusRepresentation = [
+        self::STATUS_Success => 'success',
         self::STATUS_Info => 'info',
         self::STATUS_Warning => 'warning',
         self::STATUS_Error => 'error',
@@ -62,30 +59,28 @@ class IntegrityService
     /**
      * @var CombinedRecord[]
      */
-    protected $affectedElements;
+    protected array $affectedElements = [];
 
     /**
      * Array storing all issues that have been checked and
      * found during runtime in this object. The array keys
      * are identifiers of table and the version-id.
      *
-     * 'tx_table:123' => array(
-     * array(
-     * 'status' => 'warning',
-     * 'message' => 'Element cannot be...',
-     * )
-     * )
-     *
-     * @var array
+     * 'tx_table:123' => [
+     *   [
+     *     'status' => 102,
+     *     'message' => 'Element cannot be...',
+     *   ]
+     * ]
      */
-    protected $issues = [];
+    protected array $issues = [];
 
     /**
      * Sets the affected elements.
      *
      * @param CombinedRecord[] $affectedElements
      */
-    public function setAffectedElements(array $affectedElements)
+    public function setAffectedElements(array $affectedElements): void
     {
         $this->affectedElements = $affectedElements;
     }
@@ -93,7 +88,7 @@ class IntegrityService
     /**
      * Checks integrity of affected records.
      */
-    public function check()
+    public function check(): void
     {
         foreach ($this->affectedElements as $affectedElement) {
             $this->checkElement($affectedElement);
@@ -103,7 +98,7 @@ class IntegrityService
     /**
      * Checks a single element.
      */
-    public function checkElement(CombinedRecord $element)
+    public function checkElement(CombinedRecord $element): void
     {
         $this->checkLocalization($element);
     }
@@ -114,7 +109,7 @@ class IntegrityService
      * is new in this workspace,
      * then both (localization and localization parent) should be published.
      */
-    protected function checkLocalization(CombinedRecord $element)
+    protected function checkLocalization(CombinedRecord $element): void
     {
         $table = $element->getTable();
         if (BackendUtility::isTableLocalizable($table)) {
@@ -150,12 +145,11 @@ class IntegrityService
      * Gets the status of the most important severity.
      * (low << success, info, warning, error >> high)
      *
-     * @param string $identifier Record identifier (table:id) for look-ups
-     * @return string
+     * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getStatus($identifier = null)
+    public function getStatus(string $identifier = null): int
     {
-        $status = self::STATUS_Succes;
+        $status = self::STATUS_Success;
         if ($identifier === null) {
             foreach ($this->issues as $idenfieriferIssues) {
                 foreach ($idenfieriferIssues as $issue) {
@@ -175,13 +169,13 @@ class IntegrityService
     }
 
     /**
-     * Gets the (human readable) representation of the status with the most
+     * Gets the (human-readable) representation of the status with the most
      * important severity (wraps $this->getStatus() and translates the result).
      *
-     * @param string $identifier Record identifier (table:id) for look-ups
+     * @param string|null $identifier Record identifier (table:id) for look-ups
      * @return string One out of success, info, warning, error
      */
-    public function getStatusRepresentation($identifier = null)
+    public function getStatusRepresentation(string $identifier = null): string
     {
         return $this->statusRepresentation[$this->getStatus($identifier)];
     }
@@ -189,10 +183,9 @@ class IntegrityService
     /**
      * Gets issues, all or specific for one identifier.
      *
-     * @param string $identifier Record identifier (table:id) for look-ups
-     * @return array
+     * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getIssues($identifier = null)
+    public function getIssues(string $identifier = null): array
     {
         if ($identifier === null) {
             return $this->issues;
@@ -206,11 +199,9 @@ class IntegrityService
     /**
      * Gets the message of all issues.
      *
-     * @param string $identifier Record identifier (table:id) for look-ups
-     * @param bool $asString Return results as string instead of array
-     * @return array|string
+     * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getIssueMessages($identifier = null, $asString = false)
+    public function getIssueMessages(string $identifier = null): array
     {
         $messages = [];
         if ($identifier === null) {
@@ -224,9 +215,6 @@ class IntegrityService
                 $messages[] = $issue['message'];
             }
         }
-        if ($asString) {
-            $messages = implode('<br/>', $messages);
-        }
         return $messages;
     }
 
@@ -237,7 +225,7 @@ class IntegrityService
      * @param int $status Status code (see constants)
      * @param string $message Message/description of the issue
      */
-    protected function addIssue($identifier, $status, $message)
+    protected function addIssue(string $identifier, int $status, string $message): void
     {
         if (!isset($this->issues[$identifier])) {
             $this->issues[$identifier] = [];

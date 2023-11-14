@@ -78,7 +78,7 @@ class BackendUtilityHook
         }
 
         $stages = GeneralUtility::makeInstance(StagesService::class);
-        $stageName = $stages->getStageTitle($record['t3ver_stage']);
+        $stageName = $stages->getStageTitle((int)$record['t3ver_stage']);
         $editingName = $stages->getStageTitle(StagesService::STAGE_EDIT_ID);
         $message = ($languageService = $this->getLanguageService()) !== null
             ? $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified')

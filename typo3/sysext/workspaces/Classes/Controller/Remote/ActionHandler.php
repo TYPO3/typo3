@@ -208,6 +208,7 @@ class ActionHandler
      */
     public function sendToNextStageWindow($uid, $table, $t3ver_oid)
     {
+        $uid = (int)$uid;
         $elementRecord = BackendUtility::getRecord($table, $uid);
         if (is_array($elementRecord)) {
             $workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
@@ -239,6 +240,7 @@ class ActionHandler
      */
     public function sendToPrevStageWindow($uid, $table)
     {
+        $uid = (int)$uid;
         $elementRecord = BackendUtility::getRecord($table, $uid);
         if (is_array($elementRecord)) {
             $workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
@@ -282,7 +284,7 @@ class ActionHandler
         foreach ($elements as $element) {
             $this->stagesService->getRecordService()->add(
                 $element->table,
-                $element->uid
+                (int)$element->uid
             );
         }
 
@@ -616,7 +618,7 @@ class ActionHandler
     protected function getSentToStageWindow($nextStage)
     {
         if (!$nextStage instanceof StageRecord) {
-            $nextStage = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage($nextStage);
+            $nextStage = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage((int)$nextStage);
         }
 
         $result = [];

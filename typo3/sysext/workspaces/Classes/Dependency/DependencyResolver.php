@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,63 +24,33 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DependencyResolver
 {
-    /**
-     * @var int
-     */
-    protected $workspace = 0;
-
-    /**
-     * @var DependencyEntityFactory|null
-     */
-    protected $factory;
-
-    /**
-     * @var array
-     */
-    protected $elements = [];
-
-    /**
-     * @var array
-     */
-    protected $eventCallbacks = [];
-
-    /**
-     * @var bool
-     */
-    protected $outerMostParentsRequireReferences = false;
-
-    /**
-     * @var array|null
-     */
-    protected $outerMostParents;
+    protected int $workspace = 0;
+    protected ?DependencyEntityFactory $factory;
+    protected array $elements = [];
+    protected array $eventCallbacks = [];
+    protected bool $outerMostParentsRequireReferences = false;
+    protected ?array $outerMostParents;
 
     /**
      * Sets the current workspace.
-     *
-     * @param int $workspace
      */
-    public function setWorkspace($workspace)
+    public function setWorkspace(int $workspace): void
     {
-        $this->workspace = (int)$workspace;
+        $this->workspace = $workspace;
     }
 
     /**
      * Gets the current workspace.
-     *
-     * @return int
      */
-    public function getWorkspace()
+    public function getWorkspace(): int
     {
         return $this->workspace;
     }
 
     /**
      * Sets a callback for a particular event.
-     *
-     * @param string $eventName
-     * @return DependencyResolver
      */
-    public function setEventCallback($eventName, EventCallback $callback)
+    public function setEventCallback(string $eventName, EventCallback $callback): self
     {
         $this->eventCallbacks[$eventName] = $callback;
         return $this;
@@ -86,12 +58,8 @@ class DependencyResolver
 
     /**
      * Executes a registered callback (if any) for a particular event.
-     *
-     * @param string $eventName
-     * @param object $caller
-     * @return mixed
      */
-    public function executeEventCallback($eventName, $caller, array $callerArguments = [])
+    public function executeEventCallback(string $eventName, object $caller, array $callerArguments = []): mixed
     {
         if (isset($this->eventCallbacks[$eventName])) {
             /** @var EventCallback $callback */
@@ -103,11 +71,8 @@ class DependencyResolver
 
     /**
      * Sets the condition that outermost parents required at least one child or parent reference.
-     *
-     * @param bool $outerMostParentsRequireReferences
-     * @return DependencyResolver
      */
-    public function setOuterMostParentsRequireReferences($outerMostParentsRequireReferences)
+    public function setOuterMostParentsRequireReferences(bool $outerMostParentsRequireReferences): self
     {
         $this->outerMostParentsRequireReferences = (bool)$outerMostParentsRequireReferences;
         return $this;
@@ -115,12 +80,8 @@ class DependencyResolver
 
     /**
      * Adds an element to be checked for dependent references.
-     *
-     * @param string $table
-     * @param int $id
-     * @return ElementEntity
      */
-    public function addElement($table, $id, array $data = [])
+    public function addElement(string $table, int $id, array $data = []): ElementEntity
     {
         $element = $this->getFactory()->getElement($table, $id, $data, $this);
         $elementName = $element->__toString();
@@ -131,9 +92,9 @@ class DependencyResolver
     /**
      * Gets the outermost parents that define complete dependent structure each.
      *
-     * @return array|ElementEntity[]
+     * @return ElementEntity[]
      */
-    public function getOuterMostParents()
+    public function getOuterMostParents(): array
     {
         if (!isset($this->outerMostParents)) {
             $this->outerMostParents = [];
@@ -148,7 +109,7 @@ class DependencyResolver
     /**
      * Processes and registers the outermost parents accordant to the registered elements.
      */
-    protected function processOuterMostParent(ElementEntity $element)
+    protected function processOuterMostParent(ElementEntity $element): void
     {
         if ($this->outerMostParentsRequireReferences === false || $element->hasReferences()) {
             $outerMostParent = $element->getOuterMostParent();
@@ -163,11 +124,8 @@ class DependencyResolver
 
     /**
      * Gets all nested elements (including the parent) of a particular outermost parent element.
-     *
-     * @throws \RuntimeException
-     * @return array
      */
-    public function getNestedElements(ElementEntity $outerMostParent)
+    public function getNestedElements(ElementEntity $outerMostParent): array
     {
         $outerMostParentName = $outerMostParent->__toString();
         if (!isset($this->outerMostParents[$outerMostParentName])) {
@@ -179,20 +137,16 @@ class DependencyResolver
 
     /**
      * Gets the registered elements.
-     *
-     * @return array
      */
-    public function getElements()
+    public function getElements(): array
     {
         return $this->elements;
     }
 
     /**
      * Gets an instance of the factory to keep track of element or reference entities.
-     *
-     * @return DependencyEntityFactory
      */
-    public function getFactory()
+    public function getFactory(): DependencyEntityFactory
     {
         if (!isset($this->factory)) {
             $this->factory = GeneralUtility::makeInstance(DependencyEntityFactory::class);

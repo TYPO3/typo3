@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,21 +22,14 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord;
 
-/**
- * Service for records
- */
 class RecordService implements SingletonInterface
 {
     /**
      * @var DatabaseRecord[]
      */
-    protected $records = [];
+    protected array $records = [];
 
-    /**
-     * @param string $tableName
-     * @param int $id
-     */
-    public function add($tableName, $id)
+    public function add(string $tableName, int $id): void
     {
         $databaseRecord = DatabaseRecord::create($tableName, $id);
         if (!isset($this->records[$databaseRecord->getIdentifier()])) {
@@ -42,10 +37,7 @@ class RecordService implements SingletonInterface
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getIdsPerTable()
+    public function getIdsPerTable(): array
     {
         $idsPerTable = [];
         foreach ($this->records as $databaseRecord) {
