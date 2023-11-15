@@ -86,7 +86,7 @@ class LayoutController extends AbstractController
             $view->render('Layout/Init'),
             200,
             [
-                'Cache-Control' => 'no-cache, must-revalidate',
+                'Cache-Control' => 'no-cache, no-store',
                 'Content-Security-Policy' => $this->createContentSecurityPolicy()->compile($nonce),
                 'Pragma' => 'no-cache',
             ]

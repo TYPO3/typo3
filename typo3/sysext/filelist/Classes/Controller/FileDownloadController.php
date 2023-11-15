@@ -119,7 +119,7 @@ class FileDownloadController
             ->withHeader('Content-Disposition', 'attachment; filename=' . $downloadFileName)
             ->withHeader('Content-Transfer-Encoding', 'binary')
             ->withHeader('Pragma', 'no-cache')
-            ->withHeader('Cache-Control', 'public, must-revalidate')
+            ->withHeader('Cache-Control', 'no-cache, no-store')
             ->withBody($this->streamFactory->createStreamFromFile($temporaryFileName));
     }
 
