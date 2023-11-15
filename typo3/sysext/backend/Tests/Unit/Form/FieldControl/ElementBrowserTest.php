@@ -35,6 +35,9 @@ final class ElementBrowserTest extends UnitTestCase
             'isInlineChild' => false,
             'tableName' => 'tt_content',
             'inlineStructure' => [],
+            'renderData' => [
+                'fieldControlOptions' => [],
+            ],
             'parameterArray' => [
                 'itemFormElName' => '',
                 'fieldConf' => [
@@ -61,6 +64,9 @@ final class ElementBrowserTest extends UnitTestCase
             'isInlineChild' => false,
             'tableName' => 'tt_content',
             'inlineStructure' => [],
+            'renderData' => [
+                'fieldControlOptions' => [],
+            ],
             'parameterArray' => [
                 'itemFormElName' => '',
                 'fieldConf' => [
@@ -214,6 +220,9 @@ final class ElementBrowserTest extends UnitTestCase
             'site' => new Site('some-site', 123, []),
             'tableName' => 'tt_content',
             'inlineStructure' => [],
+            'renderData' => [
+                'fieldControlOptions' => [],
+            ],
             'parameterArray' => [
                 'itemFormElName' => '',
                 'fieldConf' => [
@@ -223,5 +232,64 @@ final class ElementBrowserTest extends UnitTestCase
         ]);
         $result = $elementBrowser->render();
         self::assertEquals($expected, $result['linkAttributes']['data-entry-point'] ?? '');
+    }
+
+    /**
+     * @test
+     */
+    public function renderUsesCustomTitle(): void
+    {
+        $title = 'Custom title';
+        $elementBrowser = new ElementBrowser($this->createMock(InlineStackProcessor::class));
+        $elementBrowser->setData([
+            'fieldName' => 'somefield',
+            'isInlineChild' => false,
+            'tableName' => 'tt_content',
+            'renderData' => [
+                'fieldControlOptions' => [
+                    'title' => $title,
+                ],
+            ],
+            'inlineStructure' => [],
+            'parameterArray' => [
+                'itemFormElName' => '',
+                'fieldConf' => [
+                    'config' => [
+                        'type' => 'group',
+                        'allowed' => 'pages',
+                    ],
+                ],
+            ],
+        ]);
+        $result = $elementBrowser->render();
+        self::assertSame($title, $result['title']);
+    }
+
+    /**
+     * @test
+     */
+    public function renderUsesFallbackTitle(): void
+    {
+        $elementBrowser = new ElementBrowser($this->createMock(InlineStackProcessor::class));
+        $elementBrowser->setData([
+            'fieldName' => 'somefield',
+            'isInlineChild' => false,
+            'tableName' => 'tt_content',
+            'renderData' => [
+                'fieldControlOptions' => [],
+            ],
+            'inlineStructure' => [],
+            'parameterArray' => [
+                'itemFormElName' => '',
+                'fieldConf' => [
+                    'config' => [
+                        'type' => 'user',
+                        'allowed' => 'pages',
+                    ],
+                ],
+            ],
+        ]);
+        $result = $elementBrowser->render();
+        self::assertSame('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_elements', $result['title']);
     }
 }
