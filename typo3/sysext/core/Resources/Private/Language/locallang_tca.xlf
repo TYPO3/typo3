@@ -180,14 +180,11 @@
 			<trans-unit id="be_groups.custom_options" resname="be_groups.custom_options">
 				<source>Custom module options</source>
 			</trans-unit>
-			<trans-unit id="be_groups.inc_access_lists" resname="be_groups.inc_access_lists">
-				<source>Include Access Lists</source>
-			</trans-unit>
 			<trans-unit id="be_groups.subgroup" resname="be_groups.subgroup">
 				<source>Inherit settings from groups</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tabs.base_rights" resname="be_groups.tabs.base_rights">
-				<source>Access Lists</source>
+				<source>Access Rights</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tabs.mounts_and_workspaces" resname="be_groups.tabs.mounts_and_workspaces">
 				<source>Mounts and Workspaces</source>
