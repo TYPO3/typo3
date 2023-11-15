@@ -79,7 +79,7 @@ class LayoutController extends AbstractController
             $view->render(),
             200,
             [
-                'Cache-Control' => 'no-cache, must-revalidate',
+                'Cache-Control' => 'no-cache, no-store',
                 'Pragma' => 'no-cache',
             ]
         );

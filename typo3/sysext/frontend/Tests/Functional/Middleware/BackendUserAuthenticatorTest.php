@@ -64,7 +64,7 @@ class BackendUserAuthenticatorTest extends FunctionalTestCase
             (new InternalRequest())->withPageId(1),
             (new InternalRequestContext())->withBackendUserId(1)
         );
-        self::assertEquals('no-cache, must-revalidate', $response->getHeaders()['Cache-Control'][0]);
+        self::assertEquals('no-cache, no-store', $response->getHeaders()['Cache-Control'][0]);
         self::assertEquals('no-cache', $response->getHeaders()['Pragma'][0]);
         self::assertEquals(0, $response->getHeaders()['Expires'][0]);
     }

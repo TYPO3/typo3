@@ -76,7 +76,7 @@ abstract class BackendUserAuthenticator implements MiddlewareInterface
         $headers = [
             'Expires' => 0,
             'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
-            'Cache-Control' => 'no-cache, must-revalidate',
+            'Cache-Control' => 'no-cache, no-store',
             // HTTP 1.0 compatibility, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
             'Pragma' => 'no-cache',
         ];
