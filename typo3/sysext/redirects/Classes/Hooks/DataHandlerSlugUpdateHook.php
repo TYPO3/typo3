@@ -76,10 +76,11 @@ class DataHandlerSlugUpdateHook
         $persistedChangedItem = $this->persistedChangedItems[(int)$id] ?? null;
 
         if (
-            $table !== 'pages'
+            $persistedChangedItem === null
+            || $table !== 'pages'
             || $status !== 'update'
             || empty($fieldArray['slug'])
-            || $persistedChangedItem?->getOriginal()['slug'] === $fieldArray['slug']
+            || $persistedChangedItem->getOriginal()['slug'] === $fieldArray['slug']
             || $this->isNestedHookInvocation($dataHandler)
         ) {
             return;
