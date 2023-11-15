@@ -320,14 +320,20 @@ class InstallUtility implements LoggerAwareInterface
     {
         $extTablesStaticSqlFile = $packagePath . 'ext_tables_static+adt.sql';
         $extTablesStaticSqlRelFile = PathUtility::stripPathSitePrefix($extTablesStaticSqlFile);
-        if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {
-            $shortFileHash = '';
-            if (file_exists($extTablesStaticSqlFile)) {
-                $extTablesStaticSqlContent = (string)file_get_contents($extTablesStaticSqlFile);
-                $shortFileHash = md5($extTablesStaticSqlContent);
+        $oldHash = $this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile);
+        $shortFileHash = '';
+        // We used to only store "1" in the database when data was imported
+        $needsUpdate = !$oldHash || $oldHash === 1;
+        if (file_exists($extTablesStaticSqlFile)) {
+            $extTablesStaticSqlContent = (string)file_get_contents($extTablesStaticSqlFile);
+            $shortFileHash = hash('xxh3', $extTablesStaticSqlContent);
+            $needsUpdate = $oldHash !== $shortFileHash;
+            if ($needsUpdate) {
                 $statements = $this->sqlReader->getStatementArray($extTablesStaticSqlContent);
                 $this->schemaMigrator->importStaticData($statements, true);
             }
+        }
+        if ($needsUpdate) {
             $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, $shortFileHash);
             $this->eventDispatcher->dispatch(new AfterExtensionStaticDatabaseContentHasBeenImportedEvent($extensionKey, $extTablesStaticSqlFile, $this));
         }
