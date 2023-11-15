@@ -38,6 +38,7 @@ class ElementBrowser extends AbstractNode
     {
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
+        $options = $this->data['renderData']['fieldControlOptions'];
         $parameterArray = $this->data['parameterArray'];
         $elementName = $parameterArray['itemFormElName'];
         $config = $parameterArray['fieldConf']['config'];
@@ -50,11 +51,15 @@ class ElementBrowser extends AbstractNode
             return [];
         }
 
-        $title = '';
-        if ($type === 'group') {
+        if ($options['title'] ?? false) {
+            $title = $options['title'];
+        } elseif ($type === 'group') {
             $title = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db';
         } elseif ($type === 'folder') {
             $title = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_folder';
+        } else {
+            // FieldControl requires to provide a title -> Set default if non is given and custom TCA config is used
+            $title = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_elements';
         }
 
         // Check against inline uniqueness - Create some onclick js for delete control and element browser
