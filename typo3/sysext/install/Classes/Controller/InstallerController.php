@@ -108,7 +108,7 @@ final class InstallerController
             200,
             [
                 'Content-Security-Policy' => $this->createContentSecurityPolicy()->compile($nonce),
-                'Cache-Control' => 'no-cache, must-revalidate',
+                'Cache-Control' => 'no-cache, no-store',
                 'Pragma' => 'no-cache',
             ]
         );

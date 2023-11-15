@@ -73,12 +73,9 @@ final class CompareUserCest
         $I->see('Backend user groups', 'h1');
 
         $I->amGoingTo('Add three groups to compare');
-        $I->wait(0.5);
         $I->click('#typo3-backend-user-group-list > tbody > tr:nth-child(1) > td.col-control > div:nth-child(3) > a');
-        $I->wait(0.5);
         $I->waitForElementVisible('table#typo3-backend-user-group-list');
         $I->click('#typo3-backend-user-group-list > tbody > tr:nth-child(2) > td.col-control > div:nth-child(3) > a');
-        $I->wait(0.5);
         $I->waitForElementVisible('table#typo3-backend-user-group-list');
         $I->click('#typo3-backend-user-group-list > tbody > tr:nth-child(3) > td.col-control > div:nth-child(3) > a');
 
