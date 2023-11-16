@@ -775,8 +775,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $currentQueryArray = array_replace_recursive($pageArguments->getQueryArguments(), $currentQueryArray);
         }
         if ($configuration['exclude'] ?? false) {
-            $excludeString = str_replace(',', '&', $configuration['exclude']);
-            $excludedQueryParts = [];
+            $excludeItems = array_map(urlencode(...), GeneralUtility::trimExplode(',', $configuration['exclude']));
+            $excludeString = implode('&', $excludeItems);
             parse_str($excludeString, $excludedQueryParts);
             $newQueryArray = ArrayUtility::arrayDiffKeyRecursive($currentQueryArray, $excludedQueryParts);
         } else {

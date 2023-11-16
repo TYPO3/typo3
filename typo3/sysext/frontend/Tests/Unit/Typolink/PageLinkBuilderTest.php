@@ -25,45 +25,51 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PageLinkBuilderTest extends UnitTestCase
 {
+    public static function getQueryArgumentsExcludesParametersDataProvider(): \Generator
+    {
+        $enc = self::rawUrlEncodeSquareBracketsInUrl(...);
+        yield 'nested exclude from untrusted args' => [
+            $enc('&key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322'),
+            'untrusted',
+            [
+                'exclude' => implode(',', ['key1', 'key3[key31]', 'key3[key32][key321]']),
+            ],
+            $enc('&key2=value2&key3[key32][key322]=value322'),
+        ];
+        yield 'URL encoded value' => [
+            '&param=1&param%25=2&param%2525=3',
+            'untrusted',
+            [
+                // internally: URL-decoded representation
+                'exclude' => 'param,param%,param%25',
+            ],
+            '',
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider getQueryArgumentsExcludesParametersDataProvider
      */
-    public function getQueryArgumentsExcludesParameters(): void
+    public function getQueryArgumentsExcludesParameters(string $queryString, string $queryInformation, array $configuration, string $expectedResult): void
     {
-        $queryParameters = [
-            'key1' => 'value1',
-            'key2' => 'value2',
-            'key3' => [
-                'key31' => 'value31',
-                'key32' => [
-                    'key321' => 'value321',
-                    'key322' => 'value322',
-                ],
-            ],
-        ];
+        parse_str($queryString, $queryParameters);
         $request = new ServerRequest('https://example.com');
         $request = $request->withQueryParams($queryParameters);
         $request = $request->withAttribute('routing', new PageArguments(1, '', $queryParameters, [], []));
-        $configuration = [];
-        $configuration['exclude'] = [];
-        $configuration['exclude'][] = 'key1';
-        $configuration['exclude'][] = 'key3[key31]';
-        $configuration['exclude'][] = 'key3[key32][key321]';
-        $configuration['exclude'] = implode(',', $configuration['exclude']);
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
         $GLOBALS['TSFE'] = new \stdClass();
         $cObj = new ContentObjectRenderer();
         $cObj->setRequest($request);
         $subject = $this->getAccessibleMock(PageLinkBuilder::class, null, [], '', false);
         $subject->_set('contentObjectRenderer', $cObj);
-        $actualResult = $subject->_call('getQueryArguments', 'untrusted', $configuration);
+        $actualResult = $subject->_call('getQueryArguments', $queryInformation, $configuration);
         self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * Encodes square brackets in URL.
+     * Encodes square brackets in URL for a better readability in these tests.
      */
-    private function rawUrlEncodeSquareBracketsInUrl(string $string): string
+    private static function rawUrlEncodeSquareBracketsInUrl(string $string): string
     {
         return str_replace(['[', ']'], ['%5B', '%5D'], $string);
     }
