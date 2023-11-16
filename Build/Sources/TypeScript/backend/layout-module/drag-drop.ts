@@ -269,6 +269,7 @@ class DragDrop {
     const table: string = Object.keys(parameters.cmd).shift();
     const uid: number = parseInt(Object.keys(parameters.cmd[table]).shift(), 10);
     const eventData = { component: 'dragdrop', action: isCopyAction ? 'copy' : 'move', table, uid };
+    const gridContainer = document.querySelector('.t3-grid-container') as HTMLDivElement|null;
 
     return DataHandler.process(parameters, eventData).then((result: ResponseInterface): void => {
       if (result.hasErrors) {
@@ -281,7 +282,7 @@ class DragDrop {
       } else {
         dropContainer.closest(DragDrop.contentIdentifier).after(draggedElement);
       }
-      if (isCopyAction) {
+      if (isCopyAction || (gridContainer?.dataset.defaultLanguageBinding === '1')) {
         self.location.reload();
       }
     });
