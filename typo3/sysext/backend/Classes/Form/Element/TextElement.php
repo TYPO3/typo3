@@ -124,7 +124,7 @@ class TextElement extends AbstractFormElement
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
             $html[] =               '<textarea class="form-control" rows="' . $rows . '" disabled>';
-            $html[] =                   htmlspecialchars($itemValue);
+            $html[] =                   htmlspecialchars((string)$itemValue);
             $html[] =               '</textarea>';
             $html[] =           '</div>';
             $html[] =       '</div>';
