@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
@@ -69,6 +70,7 @@ class EmailFinisher extends AbstractFinisher
         'addHtmlPart' => true,
         'attachUploads' => true,
     ];
+
     public function __construct(protected readonly EventDispatcherInterface $eventDispatcher) {}
 
     /**
@@ -77,12 +79,11 @@ class EmailFinisher extends AbstractFinisher
      *
      * @throws FinisherException
      */
-    protected function executeInternal()
+    protected function executeInternal(): void
     {
         $this->options = $this->eventDispatcher
             ->dispatch(new BeforeEmailFinisherInitializedEvent($this->finisherContext, $this->options))
             ->getOptions();
-
         $languageBackup = null;
         // Flexform overrides write strings instead of integers so
         // we need to cast the string '0' to false.
@@ -163,8 +164,16 @@ class EmailFinisher extends AbstractFinisher
             }
         }
 
-        // TODO: DI should be used to inject the MailerInterface
-        GeneralUtility::makeInstance(MailerInterface::class)->send($mail);
+        try {
+            // TODO: DI should be used to inject the MailerInterface
+            GeneralUtility::makeInstance(MailerInterface::class)->send($mail);
+        } catch (TransportExceptionInterface $e) {
+            throw new FinisherException(
+                'Failed to send the email: ' . $e->getMessage(),
+                1754047320,
+                $e
+            );
+        }
     }
 
     protected function initializeTemplatePaths(array $globalConfig, array $localConfig): TemplatePaths

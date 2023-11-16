@@ -13,3 +13,4 @@ prototypes:
               messageArguments: ''
               messageCode: 0
               severity: 0
+              errorMessage: ''

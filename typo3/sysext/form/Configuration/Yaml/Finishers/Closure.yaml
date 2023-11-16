@@ -9,3 +9,4 @@ prototypes:
           predefinedDefaults:
             options:
               closure: ''
+              errorMessage: ''

@@ -74,6 +74,7 @@ final class EmailFinisherTest extends FunctionalTestCase
 
         // create $subject with required configurations
         $subject = new EmailFinisher($this->get(EventDispatcher::class));
+        $subject->injectTranslationService($translationServiceMock);
         $subject->setOptions([
             'senderAddress' => 'sender@example.org',
             'templateName' => 'template',

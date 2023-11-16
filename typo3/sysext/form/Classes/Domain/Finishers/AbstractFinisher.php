@@ -21,9 +21,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
@@ -36,8 +39,10 @@ use TYPO3\CMS\Form\Service\TranslationService;
  * Scope: frontend
  * **This class is meant to be sub classed by developers**
  */
-abstract class AbstractFinisher implements FinisherInterface
+abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var string
      */
@@ -69,6 +74,20 @@ abstract class AbstractFinisher implements FinisherInterface
      * @var \TYPO3\CMS\Form\Domain\Finishers\FinisherContext
      */
     protected $finisherContext;
+
+    private ViewFactoryInterface $viewFactory;
+
+    private TranslationService $translationService;
+
+    public function injectViewFactory(ViewFactoryInterface $viewFactory)
+    {
+        $this->viewFactory = $viewFactory;
+    }
+
+    public function injectTranslationService(TranslationService $translationService)
+    {
+        $this->translationService = $translationService;
+    }
 
     /**
      * @param string $finisherIdentifier The identifier for this finisher
@@ -117,7 +136,24 @@ abstract class AbstractFinisher implements FinisherInterface
             return null;
         }
 
-        return $this->executeInternal();
+        try {
+            return $this->executeInternal();
+        } catch (FinisherException $e) {
+            $this->logger->error('Failed to execute finisher', ['exception' => $e]);
+            $this->finisherContext->cancel();
+            $formRuntime = $this->finisherContext->getFormRuntime();
+            $renderingOptions = $formRuntime->getRenderingOptions();
+            $viewFactoryData = new ViewFactoryData(
+                templateRootPaths: is_array($renderingOptions['templateRootPaths'] ?? false) ? $renderingOptions['templateRootPaths'] : [],
+                partialRootPaths: is_array($renderingOptions['partialRootPaths'] ?? false) ? $renderingOptions['partialRootPaths'] : [],
+                layoutRootPaths: is_array($renderingOptions['layoutRootPaths'] ?? false) ? $renderingOptions['layoutRootPaths'] : [],
+                request: $this->finisherContext->getRequest(),
+            );
+            $view = $this->viewFactory->create($viewFactoryData);
+            $message = $this->parseOption('errorMessage') ?: $this->translationService->translate('form.finisher.error', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+            $view->assign('message', $message);
+            return $view->render('Finishers/Error');
+        }
     }
 
     /**
@@ -125,6 +161,7 @@ abstract class AbstractFinisher implements FinisherInterface
      *
      * Override and fill with your own implementation!
      *
+     * @throws FinisherException
      * @return string|void|null
      */
     abstract protected function executeInternal();
@@ -226,7 +263,7 @@ abstract class AbstractFinisher implements FinisherInterface
             return $subject;
         }
 
-        return GeneralUtility::makeInstance(TranslationService::class)->translateFinisherOption(
+        return $this->translationService->translateFinisherOption(
             $formRuntime,
             $this->finisherIdentifier,
             $optionName,

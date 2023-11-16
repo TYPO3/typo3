@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
+use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -202,7 +203,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      *
      * @throws FinisherException
      */
-    protected function executeInternal()
+    protected function executeInternal(): void
     {
         $options = [];
         if (isset($this->options['table'])) {
@@ -219,10 +220,8 @@ class SaveToDatabaseFinisher extends AbstractFinisher
 
     /**
      * Prepare data for saving to database
-     *
-     * @return array
      */
-    protected function prepareData(array $elementsConfiguration, array $databaseData)
+    protected function prepareData(array $elementsConfiguration, array $databaseData): array
     {
         foreach ($this->getFormValues() as $elementIdentifier => $elementValue) {
             if (
@@ -236,7 +235,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
 
             $element = $this->getElementByIdentifier($elementIdentifier);
             if (
-                !$element instanceof FormElementInterface
+                !$element
                 || !isset($elementsConfiguration[$elementIdentifier])
                 || !isset($elementsConfiguration[$elementIdentifier]['mapOnDatabaseColumn'])
             ) {
@@ -272,8 +271,9 @@ class SaveToDatabaseFinisher extends AbstractFinisher
 
     /**
      * Perform the current database operation
+     * @throws FinisherException
      */
-    protected function process(int $iterationCount)
+    protected function process(int $iterationCount): void
     {
         $this->throwExceptionOnInconsistentConfiguration();
 
@@ -300,14 +300,23 @@ class SaveToDatabaseFinisher extends AbstractFinisher
 
         $databaseData = $this->prepareData($elementsConfiguration, $databaseData);
 
-        $this->saveToDatabase($databaseData, $table, $iterationCount);
+        try {
+            $this->saveToDatabase($databaseData, $table, $iterationCount);
+        } catch (Exception $e) {
+            throw new FinisherException(
+                'Failed to save data to database table: ' . $table . '. Error message:' . $e->getMessage(),
+                1754050114,
+                $e
+            );
+        }
     }
 
     /**
      * Save or insert the values from
      * $databaseData into the table $table
+     * @throws Exception
      */
-    protected function saveToDatabase(array $databaseData, string $table, int $iterationCount)
+    protected function saveToDatabase(array $databaseData, string $table, int $iterationCount): void
     {
         if (!empty($databaseData)) {
             if ($this->parseOption('mode') === 'update') {
@@ -338,7 +347,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      *
      * @throws FinisherException
      */
-    protected function throwExceptionOnInconsistentConfiguration()
+    protected function throwExceptionOnInconsistentConfiguration(): void
     {
         if (
             $this->parseOption('mode') === 'update'
@@ -364,7 +373,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      *
      * @return FormElementInterface|null
      */
-    protected function getElementByIdentifier(string $elementIdentifier)
+    protected function getElementByIdentifier(string $elementIdentifier): ?FormElementInterface
     {
         return $this
             ->finisherContext

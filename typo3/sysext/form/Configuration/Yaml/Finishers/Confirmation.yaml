@@ -24,6 +24,7 @@ prototypes:
             options:
               message: ''
               contentElementUid: ''
+              errorMessage: ''
         FormEngine:
           label: tt_content.finishersDefinition.Confirmation.label
           elements:

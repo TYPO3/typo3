@@ -24,6 +24,7 @@ prototypes:
               title: ''
               translation:
                 language: ''
+              errorMessage: ''
         FormEngine:
           label: tt_content.finishersDefinition.EmailToSender.label
           elements:

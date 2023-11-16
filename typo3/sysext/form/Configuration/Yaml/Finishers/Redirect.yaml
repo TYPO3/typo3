@@ -11,6 +11,7 @@ prototypes:
               pageUid: ''
               additionalParameters: ''
               fragment: ''
+              errorMessage: ''
         FormEngine:
           label: tt_content.finishersDefinition.Redirect.label
           elements:

@@ -129,6 +129,10 @@
                 <source>Form: YAML Configuration</source>
             </trans-unit>
 
+            <trans-unit id="form.finisher.error" xml:space="preserve">
+                <source>Your form could not be submitted due to a technical issue. It might be a temporary issue, but can also be related to your input.</source>
+            </trans-unit>
+
             <trans-unit id="pagination.previous">
                 <source>Previous</source>
             </trans-unit>

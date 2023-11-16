@@ -21,6 +21,7 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
@@ -189,6 +190,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * @param array $data An associative array containing column-value pairs.
      * @param array $types Types of the inserted data.
      * @return int The number of affected rows.
+     * @throws Exception
      */
     public function insert(string $tableName, array $data, array $types = []): int
     {
@@ -277,6 +279,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * @param array $identifier The update criteria. An associative array containing column-value pairs.
      * @param array $types Types of the merged $data and $identifier arrays in that order.
      * @return int The number of affected rows.
+     * @throws Exception
      */
     public function update(string $tableName, array $data, array $identifier = [], array $types = []): int
     {

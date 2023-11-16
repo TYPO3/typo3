@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
@@ -58,12 +57,12 @@ final class RedirectFinisherTest extends UnitTestCase
 
         $translationServiceMock = $this->createMock(TranslationService::class);
         $translationServiceMock->method('translateFinisherOption')->with(self::anything())->willReturnArgument(3);
-        GeneralUtility::setSingletonInstance(TranslationService::class, $translationServiceMock);
 
         $redirectFinisherMock = $this->getAccessibleMock(RedirectFinisher::class, null, [], '', false);
         $redirectFinisherMock->_set('options', [
             'pageUid' => $pageUid,
         ]);
+        $redirectFinisherMock->injectTranslationService($translationServiceMock);
         try {
             $redirectFinisherMock->execute($finisherContextMock);
             self::fail('RedirectFinisher did not throw expected exception.');
