@@ -200,6 +200,9 @@
 				<source>No results found for "%s".</source>
 				<note>Info text in case no results are found for a given search term</note>
 			</trans-unit>
+			<trans-unit id="no_sword" resname="no_sword">
+				<source>Enter a search term to search for records</source>
+			</trans-unit>
 			<trans-unit id="tables" resname="tables">
 				<source>Tables</source>
 			</trans-unit>

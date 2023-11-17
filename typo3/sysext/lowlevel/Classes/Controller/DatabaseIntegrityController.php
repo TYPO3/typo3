@@ -449,6 +449,7 @@ class DatabaseIntegrityController
                 $view->assign('sword', (string)($this->MOD_SETTINGS['sword'] ?? ''));
                 $view->assign('searchOptions', $this->form());
                 $view->assign('results', $this->search($request));
+                $view->assign('isSearching', $request->getMethod() === 'POST');
         }
 
         return $view->renderResponse('CustomSearch');
@@ -2545,11 +2546,14 @@ class DatabaseIntegrityController
     {
         $languageService = $this->getLanguageService();
         $markup = [];
+        $markup[] = '<h2 id="search-options">' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:searchOptions')) . '</h2>';
         $markup[] = '<div class="form-group">';
-        $markup[] =   '<input placeholder="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.placeholder')) . '" class="form-control" type="search" name="SET[sword]" value="' . htmlspecialchars($this->MOD_SETTINGS['sword'] ?? '') . '">';
-        $markup[] = '</div>';
-        $markup[] = '<div class="form-group">';
-        $markup[] =   '<input class="btn btn-default" type="submit" name="submit" value="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.submit')) . '">';
+        $markup[] =   '<div class="input-group">';
+        $markup[] =     '<input aria-labelledby="search-options" placeholder="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.placeholder')) . '" class="form-control" type="search" id="searchField" name="SET[sword]" value="' . htmlspecialchars($this->MOD_SETTINGS['sword'] ?? '') . '">';
+        $markup[] =     '<button class="btn btn-default" disabled type="submit" name="submitSearch" id="submitSearch" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.submit')) . '">';
+        $markup[] =       $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render();
+        $markup[] =     '</button>';
+        $markup[] =   '</div>';
         $markup[] = '</div>';
 
         return implode(LF, $markup);

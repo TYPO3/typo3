@@ -6,13 +6,11 @@
 <f:layout name="Module" />
 
 <f:section name="Before">
-    <f:if condition="{searchMode} == 'query'">
-        <f:be.pageRenderer
-            includeJavaScriptModules="{
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
                 0: '@typo3/lowlevel/query-generator.js'
             }"
-        />
-    </f:if>
+    />
 </f:section>
 
 <f:section name="Content">
@@ -20,30 +18,29 @@
     <h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search_whole_database')}</h1>
     <f:format.raw>{submenu}</f:format.raw>
 
-    <f:if condition="{searchMode} != 'query'">
-        <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:searchOptions')}</h2>
-    </f:if>
-
-    <form action="" method="post" id="DatabaseIntegrityView" name="queryform">
+    <form method="post" id="DatabaseIntegrityView" name="queryform">
         <f:if condition="{searchMode} == 'query'">
             <f:then>
                 <f:format.raw>{queryMaker}</f:format.raw>
             </f:then>
             <f:else>
                 <f:format.raw>{searchOptions}</f:format.raw>
+
+                <f:if condition="{results}">
+                    <f:then>
+                        <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:result')}</h2>
+                        <f:format.raw>{results}</f:format.raw>
+                    </f:then>
+                    <f:else if="{sword} != ''">
+                        <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_results', arguments: {0: sword})}" />
+                    </f:else>
+                    <f:else if="{isSearching}">
+                        <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_sword')}" />
+                    </f:else>
+                </f:if>
             </f:else>
         </f:if>
     </form>
-
-    <f:if condition="{results}">
-        <f:then>
-            <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:result')}</h2>
-            <f:format.raw>{results}</f:format.raw>
-        </f:then>
-        <f:else if="{sword} !== ''">
-            <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_results', arguments: {0: sword})}" />
-        </f:else>
-    </f:if>
 
 </f:section>
 
