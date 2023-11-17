@@ -445,6 +445,7 @@ class DatabaseIntegrityController
             default:
                 $view->assign('sword', (string)($this->MOD_SETTINGS['sword'] ?? ''));
                 $view->assign('results', $this->search($request));
+                $view->assign('isSearching', $request->getMethod() === 'POST');
         }
 
         return $view->renderResponse('CustomSearch');

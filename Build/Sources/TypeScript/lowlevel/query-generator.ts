@@ -20,12 +20,37 @@ import RegularEvent from '@typo3/core/event/regular-event';
  * This module handle the QueryGenerator forms.
  */
 class QueryGenerator {
-  private readonly form: HTMLFormElement = null;
-  private readonly limitField: HTMLInputElement = null;
+  private readonly form: HTMLFormElement = document.querySelector('form[name="queryform"]');
+  private readonly searchField: HTMLInputElement = document.querySelector('input#searchField');
+  private readonly submitSearch: HTMLInputElement = document.querySelector('button#submitSearch');
+  private readonly activeSearch: boolean = this.searchField ? (this.searchField.value !== '') : false;
+  private readonly limitField: HTMLInputElement = document.querySelector('input#queryLimit');
 
   constructor() {
-    this.form = document.querySelector('form[name="queryform"]');
-    this.limitField = document.querySelector('input#queryLimit');
+    if (this.submitSearch && this.activeSearch) {
+      this.submitSearch.removeAttribute('disabled');
+    }
+
+    if (this.searchField) {
+      new RegularEvent('search', (): void => {
+        if (this.searchField.value === '' && this.activeSearch) {
+          this.doSubmit();
+        }
+      }).bindTo(this.searchField);
+
+      new RegularEvent('input', (): void => {
+        if (this.searchField.value === '' && this.activeSearch) {
+          this.doSubmit();
+        }
+        this.submitSearch.toggleAttribute('disabled', this.searchField.value === '');
+      }).bindTo(this.searchField);
+
+      new RegularEvent('submit', (event: Event): void => {
+        if (this.searchField.value === '' && !this.activeSearch) {
+          event.preventDefault();
+        }
+      }).bindTo(this.form);
+    }
 
     new RegularEvent('click', (event: Event) => {
       event.preventDefault();
