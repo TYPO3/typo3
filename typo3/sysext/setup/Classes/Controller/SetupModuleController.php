@@ -425,7 +425,7 @@ class SetupModuleController
                 case 'number':
                 case 'email':
                 case 'password':
-                    $noAutocomplete = '';
+                    $autocomplete = '';
 
                     $maxLength = $config['max'] ?? 0;
                     if ((int)$maxLength > 0) {
@@ -434,7 +434,15 @@ class SetupModuleController
 
                     if ($type === 'password') {
                         $value = '';
-                        $noAutocomplete = 'autocomplete="new-password" ';
+                        $autocomplete = 'autocomplete="new-password" ';
+                    }
+
+                    if ($fieldName === 'realName') {
+                        $autocomplete = 'autocomplete="name" ';
+                    }
+
+                    if ($fieldName === 'email') {
+                        $autocomplete = 'autocomplete="email" ';
                     }
 
                     $addPasswordRequirementsDescription = false;
@@ -446,7 +454,7 @@ class SetupModuleController
                         type="' . htmlspecialchars($type) . '" ' .
                         ($addPasswordRequirementsDescription ? 'aria-describedby="description_' . htmlspecialchars($fieldName) . '" ' : '') .
                         'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" ' .
-                        $noAutocomplete .
+                        $autocomplete .
                         'value="' . htmlspecialchars((string)$value) . '" ' .
                         $more .
                         ' />';
