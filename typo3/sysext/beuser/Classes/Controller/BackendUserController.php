@@ -126,10 +126,8 @@ class BackendUserController extends ActionController
 
     /**
      * Displays all BackendUsers
-     *
-     * @param Demand|null $demand
      */
-    public function indexAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
+    public function indexAction(?Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
 
@@ -360,10 +358,8 @@ class BackendUserController extends ActionController
     /**
      * Terminate BackendUser session and logout corresponding client
      * Redirects to onlineAction with message
-     *
-     * @param string $sessionId
      */
-    protected function terminateBackendUserSessionAction($sessionId): ResponseInterface
+    protected function terminateBackendUserSessionAction(string $sessionId): ResponseInterface
     {
         // terminating value of persisted session ID
         $success = $this->backendUserSessionRepository->terminateSessionByIdentifier($sessionId);
@@ -375,10 +371,8 @@ class BackendUserController extends ActionController
 
     /**
      * Displays all BackendUserGroups
-     *
-     * @param BackendUserGroup|null $userGroupDto
      */
-    public function groupsAction(BackendUserGroup $userGroupDto = null, int $currentPage = 1, string $operation = ''): ResponseInterface
+    public function groupsAction(?BackendUserGroup $userGroupDto = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
 

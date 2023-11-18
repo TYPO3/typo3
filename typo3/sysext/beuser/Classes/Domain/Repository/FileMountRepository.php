@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class FileMountRepository extends Repository
 {
-    public function initializeObject()
+    public function initializeObject(): void
     {
         /** @var Typo3QuerySettings $querySettings */
         $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);

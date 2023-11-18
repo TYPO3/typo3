@@ -64,10 +64,8 @@ class BackendUserSessionRepository
 
     /**
      * Find Sessions for specific BackendUser
-     *
-     * @return array
      */
-    public function findByBackendUser(BackendUser $backendUser)
+    public function findByBackendUser(BackendUser $backendUser): array
     {
         $allActive = $this->findAllActive();
 
