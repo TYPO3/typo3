@@ -211,6 +211,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\SetupService(
             $container->get(ConfigurationManager::class),
             $container->get(SiteConfiguration::class),
+            $container->get(FailsafePackageManager::class),
         );
     }
 
@@ -264,8 +265,6 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Controller\InstallerController(
             $container->get(Service\LateBootService::class),
-            $container->get(Service\SilentConfigurationUpgradeService::class),
-            $container->get(Service\SilentTemplateFileUpgradeService::class),
             $container->get(ConfigurationManager::class),
             $container->get(FailsafePackageManager::class),
             $container->get(VerifyHostHeader::class),
@@ -361,7 +360,6 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Service\SetupService::class),
             $container->get(ConfigurationManager::class),
             $container->get(LateBootService::class),
-            $container->get(FailsafePackageManager::class),
         );
     }
 

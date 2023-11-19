@@ -237,7 +237,7 @@ class Installer {
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
-          this.executeSilentConfigurationUpdate();
+          this.checkDatabaseConnect();
         } else {
           this.executeAdjustTrustedHostsPattern();
         }
@@ -248,33 +248,7 @@ class Installer {
     (new AjaxRequest(this.getUrl('executeAdjustTrustedHostsPattern')))
       .get({ cache: 'no-cache' })
       .then((): void => {
-        this.executeSilentConfigurationUpdate();
-      });
-  }
-
-  private executeSilentConfigurationUpdate(): void {
-    (new AjaxRequest(this.getUrl('executeSilentConfigurationUpdate')))
-      .get({ cache: 'no-cache' })
-      .then(async (response: AjaxResponse): Promise<void> => {
-        const data = await response.resolve();
-        if (data.success === true) {
-          this.executeSilentTemplateFileUpdate();
-        } else {
-          this.executeSilentConfigurationUpdate();
-        }
-      });
-  }
-
-  private executeSilentTemplateFileUpdate(): void {
-    (new AjaxRequest(this.getUrl('executeSilentTemplateFileUpdate')))
-      .get({ cache: 'no-cache' })
-      .then(async (response: AjaxResponse): Promise<void> => {
-        const data = await response.resolve();
-        if (data.success === true) {
-          this.checkDatabaseConnect();
-        } else {
-          this.executeSilentTemplateFileUpdate();
-        }
+        this.checkDatabaseConnect();
       });
   }
 
