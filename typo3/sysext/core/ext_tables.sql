@@ -442,7 +442,7 @@ CREATE TABLE sys_http_report (
 CREATE TABLE sys_csp_resolution (
 	summary varchar(40) NOT NULL,
 	created int(11) unsigned NOT NULL,
-	scope varchar(32) NOT NULL,
+	scope varchar(264) NOT NULL,
 	mutation_identifier text,
 	mutation_collection mediumtext,
 	meta mediumtext,
