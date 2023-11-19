@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -49,11 +50,11 @@ final class RecordFinder
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'tx_styleguide_containsdemo',
-                    $queryBuilder->createNamedParameter('tx_styleguide', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('tx_styleguide')
                 )
             )
             ->executeQuery();
@@ -82,12 +83,12 @@ final class RecordFinder
             ->where(
                 $queryBuilder->expr()->eq(
                     'tx_styleguide_containsdemo',
-                    $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tableName)
                 ),
                 // only default language pages needed
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
             ->orderBy('pid', 'DESC')
@@ -159,7 +160,7 @@ final class RecordFinder
             ->where(
                 $queryBuilder->expr()->eq(
                     'tx_styleguide_isdemorecord',
-                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -187,7 +188,7 @@ final class RecordFinder
             ->where(
                 $queryBuilder->expr()->eq(
                     'tx_styleguide_isdemorecord',
-                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -216,7 +217,7 @@ final class RecordFinder
             ->where(
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
