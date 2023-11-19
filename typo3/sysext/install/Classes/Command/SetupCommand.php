@@ -29,11 +29,9 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Package\FailsafePackageManager;
-use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
+use TYPO3\CMS\Install\Service\Exception\ConfigurationFileAlreadyExistsException;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SetupDatabaseService;
 use TYPO3\CMS\Install\Service\SetupService;
@@ -59,7 +57,6 @@ class SetupCommand extends Command
         private readonly SetupService $setupService,
         private readonly ConfigurationManager $configurationManager,
         private readonly LateBootService $lateBootService,
-        private readonly FailsafePackageManager $packageManager,
     ) {
         parent::__construct($name);
     }
@@ -209,16 +206,12 @@ EOT
         $questionHelper = $this->getHelper('question');
 
         // Ensure all required files and folders exist
-        $serverType = $this->getServerType($questionHelper, $input, $output);
-        $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
-        $folderStructureFactory->getStructure($serverType)->fix();
-        // Ensure existing PackageStates.php for non-composer installation.
-        $this->packageManager->recreatePackageStatesFileIfMissing(true);
+        $this->setupService->createDirectoryStructure($this->getServerType($questionHelper, $input, $output));
 
         try {
             $force = $input->getOption('force');
             $this->setupService->prepareSystemSettings($force);
-        } catch (ExistingTargetFileNameException $exception) {
+        } catch (ConfigurationFileAlreadyExistsException) {
             $configOverwriteQuestion = new ConfirmationQuestion(
                 'Configuration already exists do you want to overwrite it [default: no] ? ',
                 false
