@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -2562,9 +2563,9 @@ class DatabaseIntegrityController
                     $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                     if ($column !== null
                         && $connection->getDatabasePlatform() instanceof PostgreSQLPlatform
-                        && !in_array($column->getType()->getName(), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
+                        && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
                     ) {
-                        if ($column->getType()->getName() === Types::SMALLINT) {
+                        if (Type::getTypeRegistry()->lookupName($column->getType()) === Types::SMALLINT) {
                             // we need to cast smallint to int first, otherwise text case below won't work
                             $quotedField .= '::int';
                         }
@@ -2592,9 +2593,9 @@ class DatabaseIntegrityController
                         $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                         if ($column !== null
                             && $connection->getDatabasePlatform() instanceof PostgreSQLPlatform
-                            && !in_array($column->getType()->getName(), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
+                            && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
                         ) {
-                            if ($column->getType()->getName() === Types::SMALLINT) {
+                            if (Type::getTypeRegistry()->lookupName($column->getType()) === Types::SMALLINT) {
                                 // we need to cast smallint to int first, otherwise text case below won't work
                                 $quotedField .= '::int';
                             }

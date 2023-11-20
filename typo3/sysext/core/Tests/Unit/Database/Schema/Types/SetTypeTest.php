@@ -38,7 +38,7 @@ final class SetTypeTest extends UnitTestCase
     public function getNameReturnsTypeIdentifier(): void
     {
         $subject = Type::getType(SetType::TYPE);
-        self::assertSame(SetType::TYPE, $subject->getName());
+        self::assertSame(SetType::TYPE, Type::getTypeRegistry()->lookupName($subject));
     }
 
     /**

@@ -25,6 +25,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSqlPlatform;
 use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Types\Type;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -457,9 +458,26 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
                 if ($setAllTypes) {
                     $types[$key] = $type->getBindingType();
                 }
-                $value = $this->convertToDatabaseValue($value, $type->getName());
+                $value = $this->convertToDatabaseValue($value, $type);
             }
         });
+    }
+
+    /**
+     * Converts a given value to its database representation according to the conversion
+     * rules of a specific DBAL mapping type.
+     *
+     * @param mixed  $value The value to convert.
+     * @param string|Type $type  The name of the DBAL mapping type.
+     *
+     * @return mixed The converted value.
+     */
+    public function convertToDatabaseValue($value, $type)
+    {
+        if (is_string($type)) {
+            $type = Type::getType($type);
+        }
+        return $type->convertToDatabaseValue($value, $this->getDatabasePlatform());
     }
 
     /**

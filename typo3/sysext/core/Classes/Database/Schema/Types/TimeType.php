@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema\Types;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * This custom type extends doctrine native TimeType to allow a
@@ -28,7 +29,7 @@ use Doctrine\DBAL\Types\ConversionException;
  */
 class TimeType extends \Doctrine\DBAL\Types\TimeType
 {
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, DoctrineAbstractPlatform $platform)
     {
         if ($value === null || (is_string($value) && $value !== '')) {
             return $value;
@@ -38,6 +39,6 @@ class TimeType extends \Doctrine\DBAL\Types\TimeType
             return $value->format($platform->getTimeFormatString());
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTime']);
+        throw ConversionException::conversionFailedInvalidType($value, self::getTypeRegistry()->lookupName($this), ['null', 'DateTime']);
     }
 }

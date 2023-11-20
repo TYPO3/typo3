@@ -35,15 +35,6 @@ final class EnumTypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function getNameReturnsTypeIdentifier(): void
-    {
-        $subject = Type::getType(EnumType::TYPE);
-        self::assertSame(EnumType::TYPE, $subject->getName());
-    }
-
-    /**
-     * @test
-     */
     public function getSQLDeclaration(): void
     {
         $fieldDeclaration = [

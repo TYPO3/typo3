@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Lowlevel\Integrity;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -407,7 +408,7 @@ class DatabaseIntegrityCheck
                         1536248937
                     );
                 }
-                $fieldType = $column->getType()->getName();
+                $fieldType = Type::getTypeRegistry()->lookupName($column->getType());
                 if (in_array(
                     $fieldType,
                     [Types::BIGINT, Types::INTEGER, Types::SMALLINT, Types::DECIMAL, Types::FLOAT],
