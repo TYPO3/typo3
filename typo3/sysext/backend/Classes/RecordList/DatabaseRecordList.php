@@ -840,10 +840,7 @@ class DatabaseRecordList
 
         $tag = 'a';
         $iconIdentifier = 'actions-plus';
-        $label = sprintf(
-            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordOfType'),
-            $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'])
-        );
+        $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:new');
         $attributes = [
             'data-recordlist-action' => 'new',
         ];
