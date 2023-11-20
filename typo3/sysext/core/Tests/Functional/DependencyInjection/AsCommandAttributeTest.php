@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DependencyInjection;
 
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\TestDi\Command\AliasTestCommand;
 use TYPO3Tests\TestDi\Command\HiddenTestCommand;
 use TYPO3Tests\TestDi\Command\VisibleTestCommand;
 
@@ -52,6 +53,27 @@ final class AsCommandAttributeTest extends FunctionalTestCase
 
         self::assertArrayHasKey('testdi:ascommand:visible', $visibleList);
         self::assertArrayNotHasKey('testdi:ascommand:hidden', $visibleList);
+    }
+
+    /**
+     * @test
+     */
+    public function asCommandAliasAttributeIsRespected(): void
+    {
+        $commandRegistry = $this->get(CommandRegistry::class);
+        $visibleList = $commandRegistry->filter();
+
+        $aliasCommand = $commandRegistry->get('testdi:ascommand:alias-main');
+        $aliasSub1Command = $commandRegistry->get('testdi:ascommand:alias-sub1');
+        $aliasSub2Command = $commandRegistry->get('testdi:ascommand:alias-sub2');
+
+        self::assertInstanceOf(AliasTestCommand::class, $aliasCommand);
+        self::assertInstanceOf(AliasTestCommand::class, $aliasSub1Command);
+        self::assertInstanceOf(AliasTestCommand::class, $aliasSub2Command);
+
+        self::assertArrayHasKey('testdi:ascommand:alias-main', $visibleList);
+        self::assertArrayNotHasKey('testdi:ascommand:alias-sub1', $visibleList);
+        self::assertArrayNotHasKey('testdi:ascommand:alias-sub2', $visibleList);
     }
 
     /**

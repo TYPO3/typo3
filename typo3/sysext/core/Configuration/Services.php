@@ -40,16 +40,43 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->registerAttributeForAutoconfiguration(
         AsCommand::class,
         static function (ChildDefinition $definition, AsCommand $attribute): void {
+            $commands = explode('|', $attribute->name);
+            $hidden = false;
+            $name = array_shift($commands);
+
+            if ($name === '') {
+                // Symfony AsCommand attribute encodes hidden flag as an empty command name
+                $hidden = true;
+                $name = array_shift($commands);
+            }
+
+            if ($name === null) {
+                // This happens in case no name and no aliases are given
+                // @todo Throw exception
+                return;
+            }
+
             $definition->addTag(
                 'console.command',
                 [
-                    'command' => ltrim($attribute->name, '|'),
+                    'command' => $name,
                     'description' => $attribute->description,
-                    'hidden' => str_starts_with($attribute->name, '|'),
+                    'hidden' => $hidden,
                     // The `schedulable` flag is not configurable via symfony attribute parameters, use sane defaults
                     'schedulable' => true,
                 ]
             );
+
+            foreach ($commands as $name) {
+                $definition->addTag(
+                    'console.command',
+                    [
+                        'command' => $name,
+                        'hidden' => $hidden,
+                        'alias' => true,
+                    ]
+                );
+            }
         }
     );
 
