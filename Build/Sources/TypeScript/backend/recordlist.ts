@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import Icons from '@typo3/backend/icons';
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -26,12 +25,12 @@ import { selector } from '@typo3/core/literals';
 interface IconIdentifier {
   collapse: string;
   expand: string;
-  editMultiple: string;
 }
 interface RecordlistIdentifier {
   entity: string;
   toggle: string;
   localize: string;
+  editMultiple: string;
   icons: IconIdentifier;
 }
 interface DataHandlerEventPayload {
@@ -60,17 +59,17 @@ class Recordlist {
     entity: '.t3js-entity',
     toggle: '.t3js-toggle-recordlist',
     localize: '.t3js-action-localize',
+    editMultiple: '.t3js-record-edit-multiple',
     icons: {
       collapse: 'actions-view-list-collapse',
-      expand: 'actions-view-list-expand',
-      editMultiple: '.t3js-record-edit-multiple',
+      expand: 'actions-view-list-expand'
     },
   };
 
   constructor() {
     new RegularEvent('click', this.toggleClick).delegateTo(document, this.identifier.toggle);
-    $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
-    $(document).on('click', this.identifier.localize, this.disableButton);
+    new RegularEvent('click', this.onEditMultiple).delegateTo(document, this.identifier.editMultiple);
+    new RegularEvent('click', this.disableButton).delegateTo(document, this.identifier.localize);
     DocumentService.ready().then((): void => {
       this.registerPaginationEvents();
     });
@@ -110,15 +109,14 @@ class Recordlist {
   public toggleClick = (e: MouseEvent, targetEl: HTMLElement): void => {
     e.preventDefault();
 
-    const $me = $(targetEl);
-    const table = $me.data('table');
-    const $target = $($me.data('bs-target'));
-    const isExpanded = $target.data('state') === 'expanded';
-    const $collapseIcon = $me.find('.t3js-icon');
+    const table = targetEl.dataset.table;
+    const target = document.querySelector(targetEl.dataset.bsTarget) as HTMLElement;
+    const isExpanded = target.dataset.state === 'expanded';
+    const collapseIcon = targetEl.querySelector('.t3js-icon');
     const toggleIcon = isExpanded ? this.identifier.icons.expand : this.identifier.icons.collapse;
 
     Icons.getIcon(toggleIcon, Icons.sizes.small).then((icon: string): void => {
-      $collapseIcon.replaceWith(icon);
+      collapseIcon.replaceWith(document.createRange().createContextualFragment(icon));
     });
 
     // Store collapse state in UC
@@ -131,9 +129,9 @@ class Recordlist {
     const collapseConfig: Record<string, number> = {};
     collapseConfig[table] = isExpanded ? 1 : 0;
 
-    $.extend(storedModuleDataList, collapseConfig);
+    storedModuleDataList = Object.assign(storedModuleDataList, collapseConfig);
     PersistentStorage.set('moduleData.web_list.collapsedTables', storedModuleDataList).then((): void => {
-      $target.data('state', isExpanded ? 'collapsed' : 'expanded');
+      target.dataset.state = isExpanded ? 'collapsed' : 'expanded';
     });
   };
 
@@ -214,10 +212,11 @@ class Recordlist {
     window.location.href = editUrl;
   };
 
-  private readonly disableButton = (event: JQueryEventObject): void => {
-    const $me = $(event.currentTarget);
+  private readonly disableButton = (event: Event): void => {
+    const me = event.target as HTMLButtonElement;
 
-    $me.prop('disable', true).addClass('disabled');
+    me.setAttribute('disabled', 'disabled');
+    me.classList.add('disabled');
   };
 
   private handleDataHandlerResult(e: CustomEvent): void {
@@ -238,24 +237,27 @@ class Recordlist {
   }
 
   private readonly deleteRow = (payload: DataHandlerEventPayload): void => {
-    const $tableElement = $(`table[data-table="${payload.table}"]`);
-    const $rowElement = $tableElement.find(`tr[data-uid="${payload.uid}"]`);
-    const $panel = $tableElement.closest('.panel');
-    const $panelHeading = $panel.find('.panel-heading');
-    const $translatedRowElements = $tableElement.find(`[data-l10nparent="${payload.uid}"]`);
+    const tableElement = document.querySelector(`table[data-table="${payload.table}"]`) as HTMLTableElement;
+    const rowElement = tableElement.querySelector(`tr[data-uid="${payload.uid}"]`) as HTMLElement;
+    const panel = tableElement.closest('.panel') as HTMLElement;
+    const panelHeading = panel.querySelector('.panel-heading') as HTMLElement;
+    const translatedRowElements = tableElement.querySelectorAll<HTMLElement>(`[data-l10nparent="${payload.uid}"]`);
 
-    const $rowElements = $().add($rowElement).add($translatedRowElements);
-    $rowElements.fadeTo('slow', 0.4, (): void => {
-      $rowElements.slideUp('slow', (): void => {
-        $rowElements.remove();
-        if ($tableElement.find('tbody tr').length === 0) {
-          $panel.slideUp('slow');
-        }
-      });
+    [rowElement, ...translatedRowElements].forEach((rowElement: HTMLElement|null): void => {
+      rowElement?.remove();
     });
-    if ($rowElement.data('l10nparent') === '0' || $rowElement.data('l10nparent') === '') {
-      const count = Number($panelHeading.find('.t3js-table-total-items').html());
-      $panelHeading.find('.t3js-table-total-items').text(count - 1);
+
+    if (tableElement.querySelector('tbody tr') === null) {
+      panel.remove();
+    }
+
+    if (rowElement.dataset.l10nparent === '0' || rowElement.dataset.l10nparent === '') {
+      const count = Number(panelHeading.querySelector('.t3js-table-total-items').textContent);
+      const tableTotalItems = panelHeading.querySelector('.t3js-table-total-items');
+
+      if (tableTotalItems !== null) {
+        tableTotalItems.textContent = String(count - 1);
+      }
     }
 
     if (payload.table === 'pages') {
