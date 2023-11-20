@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export default class DomHelper{static parents(e,t){const l=[];let s;for(;null!==(s=e.parentElement.closest(t));)e=s,l.push(s);return l}}
+export default class DomHelper{static parents(t,e){const l=[];let n;for(;null!==(n=t.parentElement.closest(e));)t=n,l.push(n);return l}static nextAll(t){const e=[];let l=null;for(;null!==(l=t.nextElementSibling);)e.push(l);return e}}

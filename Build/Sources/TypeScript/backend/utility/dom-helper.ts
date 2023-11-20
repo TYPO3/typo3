@@ -30,4 +30,17 @@ export default class DomHelper {
 
     return parents;
   }
+
+  /**
+   * Get all next siblings the passed `target` element inside `el`
+   */
+  public static nextAll(target: Element): Element[] {
+    const nextSiblings = [];
+    let nextSibling = null;
+    while ((nextSibling = target.nextElementSibling) !== null) {
+      nextSiblings.push(nextSibling);
+    }
+
+    return nextSiblings;
+  }
 }
