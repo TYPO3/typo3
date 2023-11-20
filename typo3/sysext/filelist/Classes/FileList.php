@@ -671,7 +671,8 @@ class FileList
             'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
             'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
             'title="' . htmlspecialchars($resourceView->getName()) . '" ' .
-            'loading="lazy"/>';
+            'loading="lazy" ' .
+            'alt="" />';
     }
 
     /**
