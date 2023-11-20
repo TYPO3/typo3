@@ -3031,6 +3031,7 @@ a.dropdown-toggle{text-decoration:none}
 .diff-item-result{font-family:var(--typo3-font-family-monospace);width:100%;white-space:pre-wrap;word-break:break-word;word-wrap:break-word}
 .diff-item-result del{color:#c83c3c;background-color:#f7e2e2;text-decoration:none}
 .diff-item-result ins{color:#107c10;background-color:#dbebdb;text-decoration:none}
+.diff-item-result.diff-item-result-inline{white-space:normal}
 :root{--module-bg:#fff;--module-color:inherit;--module-dark-bg:#333;--module-dark-color:#ccc;--module-docheader-height:67px;--module-docheader-zindex:300;--module-docheader-padding-y:5px;--module-docheader-padding-x:24px;--module-docheader-padding:var(--module-docheader-padding-y) var(--module-docheader-padding-x);--module-docheader-spacing-y:4px;--module-docheader-spacing-x:8px;--module-docheader-spacing:var(--module-docheader-spacing-y) var(--module-docheader-spacing-x);--module-docheader-bg:#eee;--module-docheader-border:#c3c3c3;--module-docheader-bar-height:26px;--module-docheader-scroll-offset:calc(-1 * (var(--module-docheader-bar-height) + var(--module-docheader-padding-y)));--module-body-padding-y:24px;--module-body-padding-x:24px;--module-body-padding:var(--module-body-padding-y) var(--module-body-padding-x)}
 .module{height:100%;width:100%;background-color:var(--module-bg);color:var(--module-color);overflow-y:auto}
 .module-dark{--module-color:var(--module-dark-color);--module-bg:var(--module-dark-bg)}

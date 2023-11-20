@@ -77,4 +77,8 @@ $diff-title-bgcolor: #fafafa;
         background-color: shift-color($diff-color-add, -85%);
         text-decoration: none;
     }
+
+    &.diff-item-result-inline {
+        white-space: normal;
+    }
 }
