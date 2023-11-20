@@ -33,6 +33,3 @@
 *.t3s text eol=lf
 *.txt text eol=lf
 /typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/Contrib/plugins/codesnippet/lib/highlight/LICENSE text eol=lf
-/typo3/sysext/t3editor/Resources/Public/JavaScript/Contrib/cm/AUTHORS text eol=lf
-/typo3/sysext/t3editor/Resources/Public/JavaScript/Contrib/cm/LICENSE text eol=lf
-/typo3/sysext/t3editor/Resources/Public/JavaScript/Contrib/cm/bin/source-highlight text eol=lf

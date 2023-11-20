@@ -20,7 +20,7 @@ import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map';
 import { StyleInfo, styleMap } from 'lit/directives/style-map';
 import { ref, Ref, createRef } from 'lit/directives/ref';
-import { CodeMirrorElement } from '@typo3/t3editor/element/code-mirror-element';
+import { CodeMirrorElement } from '@typo3/backend/code-editor/element/code-mirror-element';
 
 type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number }
 

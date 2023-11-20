@@ -93,11 +93,11 @@ final class TemplateCest
         $I->waitForElement('#EditDocumentController');
         $I->waitForElementNotVisible('#t3js-ui-block');
 
+        $codeMirrorSelector = 'typo3-t3editor-codemirror[name$="[config]"]';
+
         $I->wantTo('change the setup, save the TypoScript record and close the form');
-        // grab and fill setup textarea
-        $config = $I->grabTextFrom('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]');
-        $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
-        $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
+        $I->waitForElementVisible($codeMirrorSelector);
+        $I->executeJS("const codeMirror = document.querySelector('" . $codeMirrorSelector . "'); const config = codeMirror.getContent().replace('HELLO WORLD!', 'Hello Acceptance Test!'); codeMirror.setContent(config)");
         $I->switchToMainFrame();
         $I->waitForElementNotVisible('typo3-notification-message', 20);
         $I->switchToContentFrame();

@@ -23,9 +23,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extensionmanager\Package\ComposerDeficitDetector;
 use TYPO3\CMS\Extensionmanager\Service\ComposerManifestProposalGenerator;
 
@@ -100,27 +98,21 @@ class ExtensionComposerStatusController extends AbstractController
         if ($composerManifest === '') {
             return '';
         }
-        $rows = MathUtility::forceIntegerInRange(count(explode(LF, $composerManifest)), 1, PHP_INT_MAX);
-        if (ExtensionManagementUtility::isLoaded('t3editor')) {
-            $this->pageRenderer->loadJavaScriptModule('@typo3/t3editor/element/code-mirror-element.js');
-            $codeMirrorConfig = [
-                'label' => $extensionKey . ' > composer.json',
-                'panel' => 'bottom',
-                'mode' => GeneralUtility::jsonEncodeForHtmlAttribute(JavaScriptModuleInstruction::create('@codemirror/lang-json', 'json')->invoke(), false),
-                'nolazyload' => 'true',
-                'autoheight' => 'true',
-            ];
-            $textareaAttributes = [
-                'rows' => (string)count(explode(LF, $composerManifest)),
-                'class' => 'form-control',
-            ];
-            return '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>'
-                . '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($composerManifest) . '</textarea>'
-                . '</typo3-t3editor-codemirror>';
-        }
-        return '<textarea ' . GeneralUtility::implodeAttributes(['class' => 'form-control', 'rows' => (string)++$rows], true) . '>'
-            . htmlspecialchars($composerManifest)
-            . '</textarea>';
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/code-editor/element/code-mirror-element.js');
+        $codeMirrorConfig = [
+            'label' => $extensionKey . ' > composer.json',
+            'panel' => 'bottom',
+            'mode' => GeneralUtility::jsonEncodeForHtmlAttribute(JavaScriptModuleInstruction::create('@codemirror/lang-json', 'json')->invoke(), false),
+            'nolazyload' => 'true',
+            'autoheight' => 'true',
+        ];
+        $textareaAttributes = [
+            'rows' => (string)count(explode(LF, $composerManifest)),
+            'class' => 'form-control',
+        ];
+        return '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>'
+            . '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($composerManifest) . '</textarea>'
+            . '</typo3-t3editor-codemirror>';
     }
 
     protected function registerDocHeaderButtons(ModuleTemplate $view): void

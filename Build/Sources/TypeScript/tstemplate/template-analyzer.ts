@@ -52,13 +52,13 @@ class TemplateAnalyzer {
 
   private async fetchModalContent(url: string): Promise<TemplateResult> {
     // no `await` purpose (webcomponents initialize lazily)
-    topLevelModuleImport('@typo3/t3editor/element/code-mirror-element.js');
+    topLevelModuleImport('@typo3/backend/code-editor/element/code-mirror-element.js');
 
     const response: AjaxResponse = await (new AjaxRequest(url)).get();
     const source: string = await response.resolve();
 
     const mode: JavaScriptItemPayload = {
-      name: '@typo3/t3editor/language/typoscript.js',
+      name: '@typo3/backend/code-editor/language/typoscript.js',
       flags: 2 /* FLAG_USE_IMPORTMAP */,
       exportName: 'typoscript',
       items: [

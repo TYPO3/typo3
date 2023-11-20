@@ -153,7 +153,7 @@ return [
             'label' => 't3editor_1',
             'config' => [
                 'type' => 'text',
-                'renderType' => 't3editor',
+                'renderType' => 'codeEditor',
             ],
         ],
 

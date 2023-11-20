@@ -67,7 +67,7 @@ final class UsersCest extends AbstractCest
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
 
-        $this->setUserTsConfig($I, 2, "options.impexp.enableImportForNonAdminUser = 1\noptions.impexp.enableExportForNonAdminUser = 1");
+        $this->setUserTsConfig($I, 2, 'options.impexp.enableImportForNonAdminUser = 1\noptions.impexp.enableExportForNonAdminUser = 1');
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
@@ -79,6 +79,9 @@ final class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
     }
 
+    /**
+     * @depends showImportExportInContextMenuForNonAdminUserIfFlagSet
+     */
     public function hideImportCheckboxForceAllUidsForNonAdmin(ApplicationTester $I): void
     {
         $selectedPageTitle = 'Root';
@@ -101,6 +104,9 @@ final class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
     }
 
+    /**
+     * @depends showImportExportInContextMenuForNonAdminUserIfFlagSet
+     */
     public function hideUploadTabAndImportPathIfNoImportFolderAvailable(ApplicationTester $I, PageTree $pageTree): void
     {
         $selectedPageTitle = 'Root';
@@ -221,13 +227,16 @@ final class UsersCest extends AbstractCest
             $I->switchToContentFrame();
         }
 
+        $codeMirrorSelector = 'typo3-t3editor-codemirror[name="data[be_users][' . $userId . '][TSconfig]"]';
+
         $I->waitForElementVisible($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
         $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text' => 'Backend users']);
         $I->waitForElement('#typo3-backend-user-list');
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::a[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');
         $I->waitForElement('#EditDocumentController');
         $I->click('//form[@id="EditDocumentController"]//ul/li[5]/a');
-        $I->fillField('//div[@class="tab-content"]/div[5]/fieldset[1]//textarea', $userTsConfig);
+        $I->waitForElementVisible($codeMirrorSelector);
+        $I->executeJS("document.querySelector('" . $codeMirrorSelector . "').setContent('" . $userTsConfig . "')");
         $I->click($this->inModuleHeader . ' .btn[title="Save"]');
         $I->wait(0.5);
         $I->click($this->inModuleHeader . ' .btn[title="Close"]');

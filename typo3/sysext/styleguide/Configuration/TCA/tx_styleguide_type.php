@@ -127,7 +127,7 @@ return [
                 ],
                 'text_1' => [
                     'config' => [
-                        'renderType' => 't3editor',
+                        'renderType' => 'codeEditor',
                         'format' => 'html',
                     ],
                 ],

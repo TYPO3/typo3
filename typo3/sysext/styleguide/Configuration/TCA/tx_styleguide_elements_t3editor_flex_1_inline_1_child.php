@@ -84,7 +84,7 @@ return [
             'description' => 'field description',
             'config' => [
                 'type' => 'text',
-                'renderType' => 't3editor',
+                'renderType' => 'codeEditor',
                 'format' => 'html',
             ],
         ],

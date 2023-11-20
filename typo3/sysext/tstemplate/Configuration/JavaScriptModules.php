@@ -4,7 +4,6 @@ return [
     'dependencies' => [
         'backend',
         'core',
-        't3editor',
     ],
     'tags' => [
         'backend.module',

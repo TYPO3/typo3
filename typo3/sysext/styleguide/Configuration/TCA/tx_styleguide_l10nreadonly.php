@@ -347,7 +347,7 @@ return [
             'l10n_display' => 'defaultAsReadonly',
             'config' => [
                 'type' => 'text',
-                'renderType' => 't3editor',
+                'renderType' => 'codeEditor',
                 'format' => 'html',
                 'rows' => 5,
             ],

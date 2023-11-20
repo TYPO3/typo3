@@ -19,6 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
+		"ext-libxml": "*",
 		"psr/event-dispatcher": "^1.0",
 		"typo3/cms-core": "13.0.*@dev"
 	},
@@ -34,6 +35,7 @@
 		"typo3/cms-cshmanual": "*",
 		"typo3/cms-func-wizards": "*",
 		"typo3/cms-recordlist": "*",
+		"typo3/cms-t3editor": "*",
 		"typo3/cms-wizard-crpages": "*",
 		"typo3/cms-wizard-sortpages": "*"
 	},

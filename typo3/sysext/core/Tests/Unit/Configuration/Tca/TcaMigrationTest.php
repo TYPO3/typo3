@@ -3733,4 +3733,68 @@ final class TcaMigrationTest extends UnitTestCase
         ];
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function migrationChangesRenderTypeFromT3Editor(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                            'renderType' => 't3editor',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'columnsOverrides' => [
+                            'bColumn' => [
+                                'config' => [
+                                    'renderType' => 't3editor',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                            'renderType' => 'codeEditor',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'columnsOverrides' => [
+                            'bColumn' => [
+                                'config' => [
+                                    'renderType' => 'codeEditor',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
 }

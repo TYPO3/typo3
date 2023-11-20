@@ -84,9 +84,6 @@
             "@typo3/styleguide/*": [
                 "styleguide/*"
             ],
-            "@typo3/t3editor/*": [
-                "t3editor/*"
-            ],
             "@typo3/tstemplate/*": [
                 "tstemplate/*"
             ],

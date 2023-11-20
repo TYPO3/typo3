@@ -82,7 +82,7 @@ final class FieldGeneratorResolver
 
         FieldGenerator\TypeTextDefaultExtrasRichtext::class,
         FieldGenerator\TypeTextFormatDatetime::class,
-        FieldGenerator\TypeTextFormatT3editor::class,
+        FieldGenerator\TypeTextFormatCodeEditor::class,
         FieldGenerator\TypeTextMax30::class,
         FieldGenerator\TypeTextWizardSelect::class,
         FieldGenerator\TypeTextWizardTable::class,

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\CodeEditor\CodeEditor;
+use TYPO3\CMS\Backend\CodeEditor\Registry\AddonRegistry;
+use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\T3editor\Registry\AddonRegistry;
-use TYPO3\CMS\T3editor\Registry\ModeRegistry;
-use TYPO3\CMS\T3editor\T3editor;
 
 /**
  * Handles type=json elements.
@@ -75,7 +74,7 @@ class JsonElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
         $readOnly = (bool)($config['readOnly'] ?? false);
         $placeholder = trim((string)($config['placeholder'] ?? ''));
-        $enableCodeEditor = ($config['enableCodeEditor'] ?? true) && ExtensionManagementUtility::isLoaded('t3editor');
+        $enableCodeEditor = $config['enableCodeEditor'] ?? true;
 
         $itemValue = '';
         if (!empty($parameterArray['itemFormElValue'])) {
@@ -108,7 +107,6 @@ class JsonElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        // Early return readonly display in case t3editor is not available
         if ($readOnly && !$enableCodeEditor) {
             $html = [];
             $html[] = $this->renderLabel($fieldId);
@@ -148,8 +146,8 @@ class JsonElement extends AbstractFormElement
 
         // Use CodeMirror if available
         if ($enableCodeEditor) {
-            // Compile and register t3editor configuration
-            GeneralUtility::makeInstance(T3editor::class)->registerConfiguration();
+            // Compile and register code editor configuration
+            GeneralUtility::makeInstance(CodeEditor::class)->registerConfiguration();
 
             $modeRegistry = GeneralUtility::makeInstance(ModeRegistry::class);
             $mode = $modeRegistry->isRegistered('json')
@@ -186,7 +184,7 @@ class JsonElement extends AbstractFormElement
                 $codeMirrorConfig['keymaps'] = GeneralUtility::jsonEncodeForHtmlAttribute($keymaps, false);
             }
 
-            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
+            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/code-editor/element/code-mirror-element.js');
             $editorHtml = '
                 <typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true, true) . '>
                     <textarea ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>' . htmlspecialchars($itemValue) . '</textarea>

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
+use TYPO3\CMS\Backend\CodeEditor\Mode;
+use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Backend\Form\Element\JsonElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -26,8 +28,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\T3editor\Mode;
-use TYPO3\CMS\T3editor\Registry\ModeRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class JsonElementTest extends UnitTestCase
@@ -119,7 +119,7 @@ final class JsonElementTest extends UnitTestCase
         $subject->setData($data);
         $result = $subject->render();
 
-        self::assertEquals('@typo3/t3editor/element/code-mirror-element.js', $result['javaScriptModules'][0]->getName());
+        self::assertEquals('@typo3/backend/code-editor/element/code-mirror-element.js', $result['javaScriptModules'][0]->getName());
         self::assertStringContainsString('<typo3-t3editor-codemirror', $result['html']);
         self::assertStringContainsString('placeholder="placeholder"', $result['html']);
         self::assertStringContainsString('&quot;foo&quot;: &quot;bar&quot;', $result['html']);

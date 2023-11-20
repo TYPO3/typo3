@@ -35,7 +35,7 @@ final class FileOperationsCest
 
     public function fileCrud(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $fileTextareaSelector = 'textarea[name="data[editfile][0][data]"]';
+        $codeMirrorSelector = 'typo3-t3editor-codemirror[name="data[editfile][0][data]"]';
         $fileName = 'typo3-test.txt';
         $flashMessageSelector = '.typo3-messages';
 
@@ -48,13 +48,14 @@ final class FileOperationsCest
         $I->wait(0.2);
         $I->click('Create file');
         $I->see('File created:', $flashMessageSelector);
-        $I->fillField($fileTextareaSelector, 'Some Text');
+        $I->waitForElementVisible($codeMirrorSelector);
+        $I->executeJS("document.querySelector('" . $codeMirrorSelector . "').setContent('Some Text')");
 
         // Save file
         $I->amGoingTo('save the file');
         $I->click('.module-docheader button[name="_save"]');
-        $textareaValue = $I->grabValueFrom($fileTextareaSelector);
-        $I->assertEquals('Some Text', $textareaValue);
+        $I->waitForElementVisible($codeMirrorSelector);
+        $I->executeJS("console.assert(document.querySelector('" . $codeMirrorSelector . "').getContent() === 'Some Text')");
         $I->see('File saved to', $flashMessageSelector);
 
         // Save file

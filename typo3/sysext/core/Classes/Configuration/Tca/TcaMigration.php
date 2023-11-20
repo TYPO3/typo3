@@ -83,6 +83,7 @@ class TcaMigration
         $tca = $this->migrateItemsToAssociativeArray($tca);
         $tca = $this->removeMmInsertFields($tca);
         $tca = $this->removeMmHasUidField($tca);
+        $tca = $this->migrateT3EditorToCodeEditor($tca);
 
         return $tca;
     }
@@ -1474,6 +1475,35 @@ class TcaMigration
                     $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
                         . '\'MM_hasUidField\'. This config key is obsolete and should be removed. '
                         . 'Please adjust your TCA accordingly.';
+                }
+            }
+        }
+        return $tca;
+    }
+
+    protected function migrateT3EditorToCodeEditor(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['renderType'] ?? '') === 't3editor') {
+                    $tca[$table]['columns'][$fieldName]['config']['renderType'] = 'codeEditor';
+                    $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
+                        . '\'renderType\' with the value \'t3editor\', which has been migrated to \'codeEditor\'. '
+                        . 'Please adjust your TCA accordingly.';
+                }
+            }
+
+            foreach ($tableDefinition['types'] ?? [] as $typeName => $typeConfig) {
+                foreach ($typeConfig['columnsOverrides'] ?? [] as $columnOverride => $columnOverrideConfig) {
+                    if (($columnOverrideConfig['config']['renderType'] ?? '') === 't3editor') {
+                        $tca[$table]['types'][$typeName]['columnsOverrides'][$columnOverride]['config']['renderType'] = 'codeEditor';
+                        $this->messages[] = 'The TCA column override \'' . $columnOverride . '\' of table \'' . $table . '\' uses '
+                            . '\'renderType\' with the value \'t3editor\', which has been migrated to \'codeEditor\'. '
+                            . 'Please adjust your TCA accordingly.';
+                    }
                 }
             }
         }

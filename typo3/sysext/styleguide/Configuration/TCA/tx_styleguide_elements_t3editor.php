@@ -79,7 +79,7 @@ return [
             'description' => 'field description',
             'config' => [
                 'type' => 'text',
-                'renderType' => 't3editor',
+                'renderType' => 'codeEditor',
                 'format' => 'html',
                 'rows' => 7,
             ],
@@ -107,7 +107,7 @@ return [
             'description' => 'readOnly=true',
             'config' => [
                 'type' => 'text',
-                'renderType' => 't3editor',
+                'renderType' => 'codeEditor',
                 'format' => 'html',
                 'readOnly' => true,
             ],
@@ -139,7 +139,7 @@ return [
                                                 <description>field description</description>
                                                 <config>
                                                     <type>text</type>
-                                                    <renderType>t3editor</renderType>
+                                                    <renderType>codeEditor</renderType>
                                                     <format>html</format>
                                                 </config>
                                             </t3editor_1>
@@ -165,7 +165,7 @@ return [
                                                                 <description>field description</description>
                                                                 <config>
                                                                     <type>text</type>
-                                                                    <renderType>t3editor</renderType>
+                                                                    <renderType>codeEditor</renderType>
                                                                     <format>html</format>
                                                                 </config>
                                                             </t3editor_1>

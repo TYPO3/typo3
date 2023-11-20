@@ -118,7 +118,6 @@ module.exports = function (grunt) {
       linkvalidator: '<%= paths.sysext %>linkvalidator/Resources/',
       backend: '<%= paths.sysext %>backend/Resources/',
       styleguide: '<%= paths.sysext %>styleguide/Resources/',
-      t3editor: '<%= paths.sysext %>t3editor/Resources/',
       workspaces: '<%= paths.sysext %>workspaces/Resources/',
       ckeditor: '<%= paths.sysext %>rte_ckeditor/Resources/',
       core: '<%= paths.sysext %>core/Resources/',
@@ -267,9 +266,6 @@ module.exports = function (grunt) {
       },
       styleguide: {
         src: '<%= paths.styleguide %>Public/Css/*.css'
-      },
-      t3editor: {
-        src: '<%= paths.t3editor %>Public/Css/**/*.css'
       },
       workspaces: {
         src: '<%= paths.workspaces %>Public/Css/*.css'
@@ -443,36 +439,36 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: '<%= paths.node_modules %>@codemirror',
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@codemirror/',
+            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/',
             rename: (dest, src) => dest + src.replace('/dist/index', ''),
             src: ['*/dist/index.js']
           },
           {
             expand: true,
             cwd: '<%= paths.node_modules %>@lezer',
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/',
+            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/',
             rename: (dest, src) => dest + src.replace('/dist/index.es', ''),
             src: ['*/dist/index.es.js']
           },
           {
             src: '<%= paths.node_modules %>@lezer/lr/dist/index.js',
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/lr.js'
+            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/lr.js'
           },
           {
             src: '<%= paths.node_modules %>@lezer/common/dist/index.js',
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/common.js'
+            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/common.js'
           },
           {
             src: '<%= paths.node_modules %>crelt/index.es.js',
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/crelt.js'
+            dest: '<%= paths.backend %>Public/JavaScript/Contrib/crelt.js'
           },
           {
             src: '<%= paths.node_modules %>style-mod/src/style-mod.js',
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/style-mod.js'
+            dest: '<%= paths.backend %>Public/JavaScript/Contrib/style-mod.js'
           },
           {
             src: '<%= paths.node_modules %>w3c-keyname/index.es.js',
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/w3c-keyname.js'
+            dest: '<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js'
           },
         ]
       }
@@ -769,6 +765,33 @@ module.exports = function (grunt) {
       },
       thirdparty: {
         files: {
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/autocomplete.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/autocomplete.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/commands.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/commands.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-css.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-css.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-html.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-html.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-javascript.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-javascript.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-json.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-json.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-php.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-php.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-sql.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-sql.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/language.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/language.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-xml.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-xml.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lint.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lint.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/search.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/search.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/state.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/state.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/theme-one-dark.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/theme-one-dark.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/view.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/view.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/common.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/common.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/css.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/css.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/highlight.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/highlight.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/html.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/html.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/javascript.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/javascript.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/json.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/json.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/lr.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/lr.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/php.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/php.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/xml.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/xml.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/crelt.js': ['<%= paths.backend %>Public/JavaScript/Contrib/crelt.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/style-mod.js': ['<%= paths.backend %>Public/JavaScript/Contrib/style-mod.js'],
+          '<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js': ['<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js': ['<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js'],
@@ -777,21 +800,6 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js': ['<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js']
         }
-      },
-      t3editor: {
-        files: [
-          {
-            expand: true,
-            src: [
-              '<%= paths.t3editor %>Public/JavaScript/Contrib/**/*.js'
-            ],
-            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib',
-            cwd: '.',
-            rename: function (dest, src) {
-              return src;
-            }
-          }
-        ]
       },
       typescript: {
         options: {
@@ -830,7 +838,7 @@ module.exports = function (grunt) {
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],
-      minify_assets: ['terser:thirdparty', 'terser:t3editor'],
+      minify_assets: ['terser:thirdparty'],
       copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy-lit', 'copy:t3editor'],
       build: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
     },
