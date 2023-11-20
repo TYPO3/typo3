@@ -396,7 +396,7 @@ class FileReferenceContainer extends AbstractContainer
                         </a>';
                 }
             }
-            if ($event->isControlEnabled('delete') && $calcPerms->editPagePermissionIsGranted()) {
+            if ($event->isControlEnabled('delete') && $calcPerms->editContentPermissionIsGranted()) {
                 $recordInfo = $this->data['databaseRow']['uid_local'][0]['title'] ?? $this->data['recordTitle'] ?? '';
                 if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
                     $recordInfo .= ' [' . $this->data['tableName'] . ':' . $this->data['vanillaUid'] . ']';
