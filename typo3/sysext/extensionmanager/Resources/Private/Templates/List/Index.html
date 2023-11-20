@@ -24,7 +24,10 @@
             <div class="form-group">
                 <div class="input-group">
                     <f:form.textfield name="Tx_Extensionmanager_extensionkey" placeholder="{f:translate(key:'extensionList.search')}" id="Tx_Extensionmanager_extensionkey" value="{search}" class="form-control extension-list-search" />
-                    <button type="submit" class="btn btn-default"><core:icon identifier="actions-search" /></button>
+                    <button type="submit" class="btn btn-default">
+                        <span class="visually-hidden"><f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search"/></span>
+                        <core:icon identifier="actions-search" />
+                    </button>
                 </div>
             </div>
             <div class="form-group">

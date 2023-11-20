@@ -51,7 +51,10 @@
                             <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
                         </label>
                         <input type="hidden" name="currentPage" value="0" />
-                        <button type="submit" class="btn btn-default" name="search"><core:icon identifier="actions-search" /></button>
+                        <button type="submit" class="btn btn-default" name="search">
+                            <span class="visually-hidden"><f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search"/></span>
+                            <core:icon identifier="actions-search" />
+                        </button>
                     </div>
                 </div>
             </div>
