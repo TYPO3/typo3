@@ -228,7 +228,7 @@ class InputLinkElement extends AbstractFormElement
         $expansionHtml[] =              '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
         $expansionHtml[] =                  $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
         $expansionHtml[] =              '</button>';
-        $expansionHtml[] =              '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
+        $expansionHtml[] =              '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
