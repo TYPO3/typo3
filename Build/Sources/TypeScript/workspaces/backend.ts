@@ -130,7 +130,7 @@ class Backend extends Workspaces {
       $diff.append(
         $('<div />', { class: 'diff-item' }).append(
           $('<div />', { class: 'diff-item-title' }).text(currentDiff.label),
-          $('<div />', { class: 'diff-item-result diff-item-result-inline' }).html(currentDiff.content),
+          $('<div />', { class: 'diff-item-result' }).html(currentDiff.content),
         ),
       );
     }
@@ -199,7 +199,7 @@ class Backend extends Workspaces {
           $diff.append(
             $('<div />', { class: 'diff-item' }).append(
               $('<div />', { class: 'diff-item-title' }).text(currentData.differences[j].label),
-              $('<div />', { class: 'diff-item-result diff-item-result-inline' }).html(currentData.differences[j].html),
+              $('<div />', { class: 'diff-item-result' }).html(currentData.differences[j].html),
             ),
           );
         }
