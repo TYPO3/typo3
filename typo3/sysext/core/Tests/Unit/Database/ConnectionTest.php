@@ -26,7 +26,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -471,6 +471,6 @@ final class ConnectionTest extends UnitTestCase
             ->method('getWrappedConnection')
             ->willReturn($wrappedConnectionMock);
 
-        self::assertSame('mock 5.7.11', $this->connection->getServerVersion());
+        self::assertSame('Mock 5.7.11', $this->connection->getServerVersion());
     }
 }

@@ -20,7 +20,10 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSqlPlatform;
 use Doctrine\DBAL\Result;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -372,29 +375,21 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function getServerVersion(): string
     {
-        $version = $this->getDatabasePlatform()->getName();
-        switch ($version) {
-            case 'mysql':
-            case 'pdo_mysql':
-            case 'drizzle_pdo_mysql':
-                $version = 'MySQL';
-                break;
-            case 'postgresql':
-            case 'pdo_postgresql':
-                $version = 'PostgreSQL';
-                break;
-            case 'oci8':
-            case 'pdo_oracle':
-                $version = 'Oracle';
-                break;
-        }
+        $platform = $this->getDatabasePlatform();
+        $version = match (true) {
+            $platform instanceof DoctrineMariaDBPlatform,
+            $platform instanceof DoctrineMySQLPlatform =>  'MySQL',
+            $platform instanceof DoctrinePostgreSqlPlatform => 'PostgreSQL',
+            $platform instanceof DoctrineOraclePlatform => 'Oracle',
+            default => str_replace('Platform', '', array_reverse(explode('\\', $platform::class))[0] ?? ''),
+        };
 
         // if clause can be removed with Doctrine DBAL 4.
         if (method_exists($this->getWrappedConnection(), 'getServerVersion')) {
             $version .= ' ' . $this->getWrappedConnection()->getServerVersion();
         }
 
-        return $version;
+        return trim($version, ' ');
     }
 
     /**
@@ -428,7 +423,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     public function lastInsertId($tableName = null, string $fieldName = 'uid'): string
     {
         $databasePlatform = $this->getDatabasePlatform();
-        if ($databasePlatform instanceof PostgreSqlPlatform) {
+        if ($databasePlatform instanceof DoctrinePostgreSqlPlatform) {
             return parent::lastInsertId(trim(implode('_', [$tableName, $fieldName, 'seq']), '_'));
         }
         return (string)parent::lastInsertId($tableName);

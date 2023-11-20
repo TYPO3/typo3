@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderExc
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -142,7 +142,7 @@ final class DatabaseEditRowTest extends UnitTestCase
     public function addDataThrowsWorkspaceDeletePlaceholderExceptionWithDeletePlaceholderRecord(): void
     {
         $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
-        $connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $connectionMock->method('getDatabasePlatform')->willReturn(new MockMySQLPlatform());
         $connectionPoolMock = $this->getMockBuilder(ConnectionPool::class)->disableOriginalConstructor()->getMock();
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
         $connectionPoolMock->method('getConnectionByName')->willReturn($connectionMock);

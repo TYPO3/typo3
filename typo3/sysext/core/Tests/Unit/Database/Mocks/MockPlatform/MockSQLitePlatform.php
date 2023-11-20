@@ -15,12 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Mocks;
+namespace TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
+use TYPO3\CMS\Core\Database\Platform\SQLitePlatform as Typo3SQLitePlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockKeywordList;
 
-class MockPlatform extends AbstractPlatform
+class MockSQLitePlatform extends Typo3SQLitePlatform
 {
     /**
      * Gets the SQL Snippet used to declare a BLOB column type.
@@ -117,9 +118,9 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
-        return 'mock';
+        throw DBALException::notSupported(__METHOD__);
     }
 
     /**

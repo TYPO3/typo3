@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -40,7 +40,7 @@ class AbstractRestrictionTestCase extends UnitTestCase
         $connection->method('quote')->willReturnCallback(static function (string $value): string {
             return '\'' . $value . '\'';
         });
-        $connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $connection->method('getDatabasePlatform')->willReturn(new MockMySQLPlatform());
 
         $this->expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $connection);
     }

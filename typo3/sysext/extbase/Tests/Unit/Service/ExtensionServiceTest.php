@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -95,7 +95,7 @@ final class ExtensionServiceTest extends UnitTestCase
     protected function getMockDatabaseConnection(): MockObject&Connection
     {
         $connection = $this->createMock(Connection::class);
-        $connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $connection->method('getDatabasePlatform')->willReturn(new MockMySQLPlatform());
         $connection->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connection));
         $connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
 

@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query\Expression;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Platforms\TrimMode;
 use TYPO3\CMS\Core\Database\Connection;
 
@@ -277,66 +281,62 @@ class ExpressionBuilder
             );
         }
 
-        switch ($this->connection->getDatabasePlatform()->getName()) {
-            case 'postgresql':
-            case 'pdo_postgresql':
-                return $this->comparison(
-                    $isColumn ? $value . '::text' : $this->literal($this->unquoteLiteral((string)$value)),
-                    self::EQ,
-                    sprintf(
-                        'ANY(string_to_array(%s, %s))',
-                        $this->connection->quoteIdentifier($fieldName) . '::text',
-                        $this->literal(',')
-                    )
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrinePostgreSQLPlatform) {
+            return $this->comparison(
+                $isColumn ? $value . '::text' : $this->literal($this->unquoteLiteral((string)$value)),
+                self::EQ,
+                sprintf(
+                    'ANY(string_to_array(%s, %s))',
+                    $this->connection->quoteIdentifier($fieldName) . '::text',
+                    $this->literal(',')
+                )
+            );
+        }
+        if ($platform instanceof DoctrineSQLitePlatform) {
+            if (str_starts_with($value, ':') || $value === '?') {
+                throw new \InvalidArgumentException(
+                    'ExpressionBuilder::inSet() for SQLite can not be used with placeholder arguments.',
+                    1476029421
                 );
-            case 'oci8':
-            case 'pdo_oracle':
-                throw new \RuntimeException(
-                    'FIND_IN_SET support for database platform "Oracle" not yet implemented.',
-                    1459696680
-                );
-            case 'sqlite':
-            case 'sqlite3':
-            case 'pdo_sqlite':
-                if (str_starts_with($value, ':') || $value === '?') {
-                    throw new \InvalidArgumentException(
-                        'ExpressionBuilder::inSet() for SQLite can not be used with placeholder arguments.',
-                        1476029421
-                    );
-                }
-                $comparison = sprintf(
-                    'instr(%s, %s)',
+            }
+            return sprintf(
+                'instr(%s, %s)',
+                implode(
+                    '||',
+                    [
+                        $this->literal(','),
+                        $this->connection->quoteIdentifier($fieldName),
+                        $this->literal(','),
+                    ]
+                ),
+                $isColumn ?
                     implode(
                         '||',
                         [
                             $this->literal(','),
-                            $this->connection->quoteIdentifier($fieldName),
+                            // do not explicitly quote value as it is expected to be
+                            // quoted by the caller
+                            'cast(' . $value . ' as text)',
                             $this->literal(','),
                         ]
-                    ),
-                    $isColumn ?
-                        implode(
-                            '||',
-                            [
-                                $this->literal(','),
-                                // do not explicitly quote value as it is expected to be
-                                // quoted by the caller
-                                'cast(' . $value . ' as text)',
-                                $this->literal(','),
-                            ]
-                        )
-                        : $this->literal(
-                            ',' . $this->unquoteLiteral($value) . ','
-                        )
-                );
-                return $comparison;
-            default:
-                return sprintf(
-                    'FIND_IN_SET(%s, %s)',
-                    $value,
-                    $this->connection->quoteIdentifier($fieldName)
-                );
+                    )
+                    : $this->literal(
+                        ',' . $this->unquoteLiteral($value) . ','
+                    )
+            );
         }
+        if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
+            return sprintf(
+                'FIND_IN_SET(%s, %s)',
+                $value,
+                $this->connection->quoteIdentifier($fieldName)
+            );
+        }
+        throw new \RuntimeException(
+            sprintf('FIND_IN_SET support for database platform "%s" not yet implemented.', $platform::class),
+            1459696680
+        );
     }
 
     /**
@@ -356,74 +356,68 @@ class ExpressionBuilder
                 1627573099
             );
         }
-
         if (str_contains($value, ',')) {
             throw new \InvalidArgumentException(
                 'ExpressionBuilder::notInSet() can not be used with values that contain a comma (",").',
                 1627573100
             );
         }
-
-        switch ($this->connection->getDatabasePlatform()->getName()) {
-            case 'postgresql':
-            case 'pdo_postgresql':
-                return $this->comparison(
-                    $isColumn ? $value . '::text' : $this->literal($this->unquoteLiteral((string)$value)),
-                    self::NEQ,
-                    sprintf(
-                        'ALL(string_to_array(%s, %s))',
-                        $this->connection->quoteIdentifier($fieldName) . '::text',
-                        $this->literal(',')
-                    )
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrinePostgreSQLPlatform) {
+            return $this->comparison(
+                $isColumn ? $value . '::text' : $this->literal($this->unquoteLiteral((string)$value)),
+                self::NEQ,
+                sprintf(
+                    'ALL(string_to_array(%s, %s))',
+                    $this->connection->quoteIdentifier($fieldName) . '::text',
+                    $this->literal(',')
+                )
+            );
+        }
+        if ($platform instanceof DoctrineSQLitePlatform) {
+            if (str_starts_with($value, ':') || $value === '?') {
+                throw new \InvalidArgumentException(
+                    'ExpressionBuilder::inSet() for SQLite can not be used with placeholder arguments.',
+                    1627573103
                 );
-            case 'oci8':
-            case 'pdo_oracle':
-                throw new \RuntimeException(
-                    'negative FIND_IN_SET support for database platform "Oracle" not yet implemented.',
-                    1627573101
-                );
-            case 'sqlite':
-            case 'sqlite3':
-            case 'pdo_sqlite':
-                if (str_starts_with($value, ':') || $value === '?') {
-                    throw new \InvalidArgumentException(
-                        'ExpressionBuilder::inSet() for SQLite can not be used with placeholder arguments.',
-                        1627573103
-                    );
-                }
-                $comparison = sprintf(
-                    'instr(%s, %s) = 0',
+            }
+            return sprintf(
+                'instr(%s, %s) = 0',
+                implode(
+                    '||',
+                    [
+                        $this->literal(','),
+                        $this->connection->quoteIdentifier($fieldName),
+                        $this->literal(','),
+                    ]
+                ),
+                $isColumn ?
                     implode(
                         '||',
                         [
                             $this->literal(','),
-                            $this->connection->quoteIdentifier($fieldName),
+                            // do not explicitly quote value as it is expected to be
+                            // quoted by the caller
+                            'cast(' . $value . ' as text)',
                             $this->literal(','),
                         ]
-                    ),
-                    $isColumn ?
-                        implode(
-                            '||',
-                            [
-                                $this->literal(','),
-                                // do not explicitly quote value as it is expected to be
-                                // quoted by the caller
-                                'cast(' . $value . ' as text)',
-                                $this->literal(','),
-                            ]
-                        )
-                        : $this->literal(
-                            ',' . $this->unquoteLiteral($value) . ','
-                        )
-                );
-                return $comparison;
-            default:
-                return sprintf(
-                    'NOT FIND_IN_SET(%s, %s)',
-                    $value,
-                    $this->connection->quoteIdentifier($fieldName)
-                );
+                    )
+                    : $this->literal(
+                        ',' . $this->unquoteLiteral($value) . ','
+                    )
+            );
         }
+        if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
+            return sprintf(
+                'NOT FIND_IN_SET(%s, %s)',
+                $value,
+                $this->connection->quoteIdentifier($fieldName)
+            );
+        }
+        throw new \RuntimeException(
+            sprintf('negative FIND_IN_SET support for database platform "%s" not yet implemented.', $platform::class),
+            1627573101
+        );
     }
 
     /**
@@ -434,21 +428,19 @@ class ExpressionBuilder
      */
     public function bitAnd(string $fieldName, int $value): string
     {
-        switch ($this->connection->getDatabasePlatform()->getName()) {
-            case 'oci8':
-            case 'pdo_oracle':
-                return sprintf(
-                    'BITAND(%s, %s)',
-                    $this->connection->quoteIdentifier($fieldName),
-                    $value
-                );
-            default:
-                return $this->comparison(
-                    $this->connection->quoteIdentifier($fieldName),
-                    '&',
-                    $value
-                );
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrineOraclePlatform) {
+            return sprintf(
+                'BITAND(%s, %s)',
+                $this->connection->quoteIdentifier($fieldName),
+                $value
+            );
         }
+        return $this->comparison(
+            $this->connection->quoteIdentifier($fieldName),
+            '&',
+            $value
+        );
     }
 
     /**

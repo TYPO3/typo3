@@ -22,7 +22,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockOraclePlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPostgreSQLPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockSQLitePlatform;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExpressionBuilderTest extends UnitTestCase
@@ -155,8 +159,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function likeQuotesIdentifier(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('mysql');
+        $databasePlatform = $this->createMock(MockMySQLPlatform::class);
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $this->connectionMock->method('quote')->willReturnCallback(function (string $value): string {
@@ -171,8 +174,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function notLikeQuotesIdentifier(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('mysql');
+        $databasePlatform = $this->createMock(MockMySQLPlatform::class);
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $this->connectionMock->method('quote')->willReturnCallback(function (string $value): string {
@@ -251,8 +253,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function inSetForMySQL(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('mysql');
+        $databasePlatform = $this->createMock(MockMySQLPlatform::class);
 
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '`' . $identifier . '`';
@@ -270,8 +271,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function inSetForPostgreSQL(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('postgresql');
+        $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn('"');
 
         $series = [
@@ -301,8 +301,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function inSetForPostgreSQLWithColumn(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('postgresql');
+        $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
 
         $this->connectionMock->expects(self::atLeastOnce())->method('quote')->with(',', self::anything())->willReturn("','");
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
@@ -321,8 +320,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function inSetForSQLite(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('sqlite');
+        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $series = [
@@ -354,8 +352,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function inSetForSQLiteWithQuoteCharactersInValue(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('sqlite');
+        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $series = [
@@ -386,8 +383,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function inSetForSQLiteThrowsExceptionOnPositionalPlaceholder(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('sqlite');
+        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -403,8 +399,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function inSetForSQLiteThrowsExceptionOnNamedPlaceholder(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('sqlite');
+        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -440,8 +435,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function notInSetForMySQL(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('mysql');
+        $databasePlatform = $this->createMock(MockMySQLPlatform::class);
 
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '`' . $identifier . '`';
@@ -459,8 +453,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function notInSetForPostgreSQL(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('postgresql');
+        $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn('"');
 
         $series = [
@@ -490,8 +483,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function notInSetForPostgreSQLWithColumn(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('postgresql');
+        $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
 
         $this->connectionMock->expects(self::atLeastOnce())->method('quote')->with(',', self::anything())->willReturn("','");
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
@@ -510,8 +502,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function notInSetForSQLite(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('sqlite');
+        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $series = [
@@ -542,8 +533,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function notInSetForSQLiteWithQuoteCharactersInValue(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('sqlite');
+        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $series = [
@@ -574,8 +564,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function notInSetForSQLiteThrowsExceptionOnPositionalPlaceholder(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('sqlite');
+        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -591,8 +580,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function notInSetForSQLiteThrowsExceptionOnNamedPlaceholder(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
-        $databasePlatform->method('getName')->willReturn('sqlite');
+        $databasePlatform = $this->createMock(MockSQLitePlatform::class);
         $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
@@ -608,7 +596,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function defaultBitwiseAnd(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
+        $databasePlatform = $this->createMock(MockMySQLPlatform::class);
 
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
@@ -624,7 +612,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      */
     public function bitwiseAndForOracle(): void
     {
-        $databasePlatform = $this->createMock(MockPlatform::class);
+        $databasePlatform = $this->createMock(MockOraclePlatform::class);
         $databasePlatform->method('getName')->willReturn('pdo_oracle');
 
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {

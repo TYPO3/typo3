@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSessionManager;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -690,7 +690,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         // as the ConnectionPool is never used!
         if (!$admin) {
             $connectionMock = $this->createMock(Connection::class);
-            $connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
+            $connectionMock->method('getDatabasePlatform')->willReturn(new MockMySQLPlatform());
             $connectionMock->method('quoteIdentifier')
                 ->willReturnCallback(fn(string $identifier): string => '`' . str_replace('.', '`.`', $identifier) . '`');
 

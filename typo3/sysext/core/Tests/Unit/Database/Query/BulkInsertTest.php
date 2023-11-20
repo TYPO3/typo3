@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BulkInsertTest extends UnitTestCase
@@ -47,7 +47,7 @@ final class BulkInsertTest extends UnitTestCase
             ->willReturnArgument(0);
         $this->connection
             ->method('getDatabasePlatform')
-            ->willReturn(new MockPlatform());
+            ->willReturn(new MockMySQLPlatform());
     }
 
     /**

@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseDefaultLanguagePageRow;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -79,7 +79,7 @@ final class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
     public function addDataDoesApplyToATranslatedPagesTable(): void
     {
         $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
-        $connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $connectionMock->method('getDatabasePlatform')->willReturn(new MockMySQLPlatform());
         $connectionPoolMock = $this->getMockBuilder(ConnectionPool::class)->disableOriginalConstructor()->getMock();
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
         $connectionPoolMock->method('getConnectionByName')->willReturn($connectionMock);
