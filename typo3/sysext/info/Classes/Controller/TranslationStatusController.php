@@ -141,9 +141,7 @@ class TranslationStatusController extends InfoModuleController
         $userTsConfig = $backendUser->getTSConfig();
         $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
 
-        // If another page module was specified, replace the default Page module with the new one
-        $pageModule = trim($userTsConfig['options.']['overridePageModule'] ?? '');
-        $pageModule = $this->moduleProvider->isModuleRegistered($pageModule) ? $pageModule : 'web_layout';
+        $pageModule = 'web_layout';
         $pageModuleAccess = $this->moduleProvider->accessGranted($pageModule, $backendUser);
 
         foreach ($tree->tree as $data) {

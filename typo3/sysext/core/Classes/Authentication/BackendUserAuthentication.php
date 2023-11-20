@@ -1648,13 +1648,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Initializing workspace.
-     * Called from within this function, see fetchGroupData()
+     * Initializing workspace settings after all TSconfig has been parsed.
+     * Called from within fetchGroupData()
      *
      * @see fetchGroupData()
-     * @internal should only be used from within TYPO3 Core
      */
-    public function workspaceInit()
+    protected function workspaceInit(): void
     {
         // Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
         $this->setWorkspace($this->user['workspace_id']);
@@ -1667,7 +1666,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Limiting the DB mountpoints if there any selected in the workspace record
+     * Limiting the DB mountpoints if there are any selected in the workspace record
      */
     protected function initializeDbMountpointsInWorkspace()
     {

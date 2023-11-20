@@ -656,7 +656,6 @@ export class TypoScriptStreamParserFactory {
         'override': kw('override'),
         'overrideAttribs': kw('overrideAttribs'),
         'overrideId': kw('overrideId'),
-        'overridePageModule': kw('overridePageModule'),
         'PAGE': kw('PAGE'),
         'page': A,
         'PAGE_TARGET': kw('PAGE_TARGET'),

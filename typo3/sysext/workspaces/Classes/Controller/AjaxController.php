@@ -81,21 +81,9 @@ class AjaxController
             'title'       => $this->workspaceService->getWorkspaceTitle($workspaceId),
             'workspaceId' => $workspaceId,
             'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid,
-            'pageModule'  => $this->getPageModuleName(),
+            'pageModule'  => $this->moduleProvider->accessGranted('web_layout', $this->getBackendUser()) ? 'web_layout' : '',
         ];
         return new JsonResponse($ajaxResponse);
-    }
-
-    /**
-     * Get the page module name. Either "web_layout" or custom
-     * module name from TSconfig. Also perform module access check.
-     */
-    protected function getPageModuleName(): string
-    {
-        $backendUser = $this->getBackendUser();
-        $pageModule = trim($backendUser->getTSConfig()['options.']['overridePageModule'] ?? '');
-        $pageModule = $this->moduleProvider->isModuleRegistered($pageModule) ? $pageModule : 'web_layout';
-        return $this->moduleProvider->accessGranted($pageModule, $backendUser) ? $pageModule : '';
     }
 
     protected function getBackendUser(): BackendUserAuthentication

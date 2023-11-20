@@ -485,10 +485,7 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function isPageModuleAllowed(): bool
     {
-        return $this->moduleProvider->accessGranted(
-            trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? 'web_layout'),
-            $this->getBackendUser()
-        );
+        return $this->moduleProvider->accessGranted('web_layout', $this->getBackendUser());
     }
 
     /**
