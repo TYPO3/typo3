@@ -14,9 +14,10 @@ Description
 The symfony PHP attribute :php:`\Symfony\Component\Console\Attribute\AsCommand`
 is now accepted to register console commands.
 This way CLI commands can be registered by setting the attribute on the command
-class. Only the parameters `command`, `description` and `hidden` are still viable. In order to
-overwrite the schedulable parameter use the old :file:`Services.yaml` way to
-register console commands. By default `schedulable` is true.
+class. Only the parameters `command`, `description`, `aliases` and `hidden` are
+still viable. In order to overwrite the schedulable parameter use the old
+:file:`Services.yaml` way to register console commands. By default `schedulable`
+is true.
 
 Before:
 
@@ -29,6 +30,9 @@ Before:
           command: 'myprefix:dofoo'
           description: 'My description'
           schedulable: true
+        - name: 'console.command'
+          command: 'myprefix:dofoo-alias'
+          alias: true
 
 After:
 
@@ -45,7 +49,7 @@ attribute is assigned to the command class instead:
     use Symfony\Component\Console\Command\Command;
     use Symfony\Component\Console\Attribute\AsCommand;
 
-    #[AsCommand(name: 'myprefix:dofoo', description: 'My description')]
+    #[AsCommand(name: 'myprefix:dofoo', description: 'My description', aliases: ['myprefix:dofoo-alias'])]
     class MyCommand extends Command
     {
     }
