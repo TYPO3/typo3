@@ -79,7 +79,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
 
         if ($this->task !== null && isset($this->schedulableCommands[$this->task->getCommandIdentifier()])) {
             $command = $this->schedulableCommands[$this->task->getCommandIdentifier()];
-            $fields['description'] = $this->getCommandDescriptionField($command->getDescription());
             $argumentFields = $this->getCommandArgumentFields($command->getDefinition());
             $fields = array_merge($fields, $argumentFields);
             $optionFields = $this->getCommandOptionFields($command->getDefinition());
@@ -217,17 +216,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     }
 
     /**
-     * Get description of selected command
-     */
-    protected function getCommandDescriptionField(string $description): array
-    {
-        return [
-            'code' => '',
-            'label' => $description,
-        ];
-    }
-
-    /**
      * Gets a select field containing all possible schedulable commands
      */
     protected function getSchedulableCommandsField(array $txSchedulerPostData): array
@@ -272,6 +260,8 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $fields['arguments_' . $name] = [
                 'code' => $this->renderArgumentField($argument, (string)$value),
                 'label' => $this->getArgumentLabel($argument),
+                'description' => $this->getArgumentDescription($argument),
+                'type' => 'input',
             ];
         }
 
@@ -301,7 +291,10 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
 
             $fields['options_' . $name] = [
                 'code' => $this->renderOptionField($option, (bool)$enabled, (string)$value),
+                'additionalCode' => $this->renderOptionField($option, (bool)$enabled, (string)$value),
                 'label' => $this->getOptionLabel($option),
+                'description' => $this->getOptionDescription($option),
+                'type' => 'commandOption',
             ];
         }
 
@@ -313,7 +306,15 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     protected function getArgumentLabel(InputArgument $argument): string
     {
-        return 'Argument: ' . $argument->getName() . '. ' . $argument->getDescription();
+        return 'Argument "' . $argument->getName() . '"';
+    }
+
+    /**
+     * Get the description of a command argument
+     */
+    protected function getArgumentDescription(InputArgument $argument): string
+    {
+        return $argument->getDescription();
     }
 
     /**
@@ -321,7 +322,15 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     protected function getOptionLabel(InputOption $option): string
     {
-        return 'Option: ' . $option->getName() . '. ' . $option->getDescription();
+        return 'Option "' . $option->getName() . '"';
+    }
+
+    /**
+     * Get the description of a command option
+     */
+    protected function getOptionDescription(InputOption $option): string
+    {
+        return $option->getDescription();
     }
 
     protected function renderSelectField(array $options, string $selectedOptionValue): string
@@ -360,13 +369,14 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     {
         $name = $argument->getName();
         $fieldName = 'tx_scheduler[task_executeschedulablecommand][arguments][' . $name . ']';
-
+        $inputTagId = 'arguments_' . $name;
         $inputTag = new TagBuilder();
         $inputTag->setTagName('input');
         $inputTag->addAttribute('type', 'text');
         $inputTag->addAttribute('name', $fieldName);
         $inputTag->addAttribute('value', $currentValue);
         $inputTag->addAttribute('class', 'form-control form-control-clearable t3js-clearable');
+        $inputTag->addAttribute('id', $inputTagId);
 
         return $inputTag->render();
     }
@@ -374,7 +384,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Renders a field for defining an option's value
      */
-    protected function renderOptionField(InputOption $option, bool $enabled, string $currentValue): string
+    protected function renderOptionField(InputOption $option, bool $enabled, string $currentValue): array
     {
         $name = $option->getName();
 
@@ -385,26 +395,35 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         $checkboxTag->addAttribute('id', $checkboxId);
         $checkboxTag->addAttribute('name', $checkboxFieldName);
         $checkboxTag->addAttribute('type', 'checkbox');
+        $checkboxTag->addAttribute('class', 'form-check-input');
+        $checkboxTagId = 'options_' . $name;
+        $checkboxTag->addAttribute('id', $checkboxTagId);
         if ($enabled) {
             $checkboxTag->addAttribute('checked', 'checked');
         }
-        $html = '<label for="' . $checkboxId . '">'
-            . $checkboxTag->render()
+        $html = $checkboxTag->render()
+            . '<label class="form-check-label" for="' . $checkboxTagId . '">'
             . ' ' . $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.addOptionToCommand')
             . '</label>';
 
+        $optionValueField = '';
         if ($option->isValueRequired() || $option->isValueOptional() || $option->isArray()) {
             $valueFieldName = 'tx_scheduler[task_executeschedulablecommand][option_values][' . $name . ']';
             $inputTag = new TagBuilder();
+            $inputTagId = 'options_' . $name . '_values';
             $inputTag->setTagName('input');
             $inputTag->addAttribute('name', $valueFieldName);
             $inputTag->addAttribute('type', 'text');
             $inputTag->addAttribute('value', $currentValue);
             $inputTag->addAttribute('class', 'form-control form-control-clearable t3js-clearable');
-            $html .= $inputTag->render();
+            $inputTag->addAttribute('id', $inputTagId);
+            $optionValueField = $inputTag->render();
         }
 
-        return $html;
+        return [
+            'html' => $html,
+            'optionValueField' => $optionValueField,
+        ];
     }
 
     protected function getLanguageService(): LanguageService

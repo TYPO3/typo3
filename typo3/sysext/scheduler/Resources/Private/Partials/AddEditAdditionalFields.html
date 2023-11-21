@@ -15,6 +15,9 @@
                 <f:then>
                     <label class="form-label">{field.langLabel}</label>
                 </f:then>
+                <f:else if="{field.type} == 'commandOption'">
+                    <label class="form-label" for="{field.fieldID}_values">{field.langLabel}</label>
+                </f:else>
                 <f:else>
                     <label class="form-label" for="{field.fieldID}">{field.langLabel}</label>
                 </f:else>
@@ -63,6 +66,9 @@
                         </f:then>
                         <f:else if="{field.type} == 'input'">
                             <div class="formengine-field-item t3js-formengine-field-item">
+                                <f:if condition="{field.description}">
+                                    <div class="form-description">{field.description}</div>
+                                </f:if>
                                 <div class="form-control-wrap">
                                     <div class="form-wizards-wrap">
                                         <div class="form-wizards-element">
@@ -110,6 +116,23 @@
                                     <div class="form-wizards-element">
                                         <div class="form-check form-switch">
                                             {field.code -> f:format.raw()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:else>
+                        <f:else if="{field.type} == 'commandOption'">
+                            <div class="formengine-field-item t3js-formengine-field-item">
+                                <f:if condition="{field.description}">
+                                    <div class="form-description">{field.description}</div>
+                                </f:if>
+                                <div class="form-check t3-form-field-eval-null-checkbox">
+                                    {field.code.html -> f:format.raw()}
+                                </div>
+                                <div class="form-control-wrap">
+                                    <div class="form-wizards-wrap">
+                                        <div class="form-wizards-element">
+                                            {field.code.optionValueField -> f:format.raw()}
                                         </div>
                                     </div>
                                 </div>

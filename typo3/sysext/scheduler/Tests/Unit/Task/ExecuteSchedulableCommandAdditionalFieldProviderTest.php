@@ -83,7 +83,7 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTes
             $this->getMockBuilder(SchedulerModuleController::class)->disableOriginalConstructor()->getMock()
         );
 
-        self::assertCount(4, $fields);
-        self::assertTrue(isset($fields['schedulableCommands'], $fields['description'], $fields['arguments_action'], $fields['options_action']));
+        self::assertCount(3, $fields);
+        self::assertTrue(isset($fields['schedulableCommands'], $fields['arguments_action'], $fields['options_action']));
     }
 }

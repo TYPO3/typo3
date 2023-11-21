@@ -795,6 +795,7 @@ class SchedulerModuleController
                 'browser' => $fieldInfo['browser'] ?? '',
                 'pageTitle' => $fieldInfo['pageTitle'] ?? '',
                 'type' => $fieldInfo['type'] ?? '',
+                'description' => $fieldInfo['description'] ?? '',
             ];
         }
         return $currentAdditionalFields;
