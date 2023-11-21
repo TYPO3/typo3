@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -364,7 +365,10 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         }
 
         $backendUser = $this->getBackendUser();
-        if ($backendUser->check('tables_modify', 'tt_content') && $backendUser->recordEditAccessInternals('tt_content', $row)) {
+        if ($backendUser->check('tables_modify', 'tt_content')
+            && $backendUser->recordEditAccessInternals('tt_content', $row)
+            && (new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? [])))->editContentPermissionIsGranted()
+        ) {
             $urlParameters = [
                 'edit' => [
                     'tt_content' => [
