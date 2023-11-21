@@ -232,7 +232,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
             try {
                 $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName($connectionName)
-                    ->getServerVersion();
+                    ->getPlatformServerVersion();
             } catch (\Exception $exception) {
                 $success = false;
             }

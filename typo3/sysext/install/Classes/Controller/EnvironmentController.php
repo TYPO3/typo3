@@ -1027,7 +1027,7 @@ class EnvironmentController extends AbstractController
             $connectionParameters = $connection->getParams();
             $connectionInfo = [
                 'connectionName' => $connectionName,
-                'version' => $connection->getServerVersion(),
+                'version' => $connection->getPlatformServerVersion(),
                 'databaseName' => $connection->getDatabase(),
                 'username' => $connectionParameters['user'] ?? '',
                 'host' => $connectionParameters['host'] ?? '',

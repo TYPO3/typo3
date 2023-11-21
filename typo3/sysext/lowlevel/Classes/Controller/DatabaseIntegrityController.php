@@ -477,7 +477,7 @@ class DatabaseIntegrityController
                 $selectQueryString = $this->getSelectQuery($queryString);
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
 
-                $isConnectionMysql = str_starts_with($connection->getServerVersion(), 'MySQL');
+                $isConnectionMysql = str_starts_with($connection->getPlatformServerVersion(), 'MySQL');
                 $fullQueryString = '';
                 try {
                     if ($mQ === 'explain' && $isConnectionMysql) {

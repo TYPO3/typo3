@@ -76,7 +76,7 @@ class PostgreSql extends AbstractPlatform
     {
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        if (!str_starts_with($defaultConnection->getServerVersion(), 'PostgreSQL')) {
+        if (!str_starts_with($defaultConnection->getPlatformServerVersion(), 'PostgreSQL')) {
             return $this->messageQueue;
         }
 
@@ -95,7 +95,7 @@ class PostgreSql extends AbstractPlatform
      */
     protected function checkPostgreSqlVersion(Connection $connection)
     {
-        preg_match('/PostgreSQL ((\d+\.)*(\d+\.)*\d+)/', $connection->getServerVersion(), $match);
+        preg_match('/PostgreSQL ((\d+\.)*(\d+\.)*\d+)/', $connection->getPlatformServerVersion(), $match);
         $currentPostgreSqlVersion = $match[1];
         if (version_compare($currentPostgreSqlVersion, $this->minimumPostgreSQLVerion, '<')) {
             $this->messageQueue->enqueue(new FlashMessage(

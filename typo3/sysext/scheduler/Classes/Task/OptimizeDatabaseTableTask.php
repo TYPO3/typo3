@@ -48,7 +48,7 @@ class OptimizeDatabaseTableTask extends AbstractTask
         foreach ($this->selectedTables as $tableName) {
             $connection = $connectionPool->getConnectionForTable($tableName);
 
-            if (str_starts_with($connection->getServerVersion(), 'MySQL')) {
+            if (str_starts_with($connection->getPlatformServerVersion(), 'MySQL')) {
                 try {
                     $connection->query('OPTIMIZE TABLE ' . $connection->quoteIdentifier($tableName));
                 } catch (DBALException $e) {

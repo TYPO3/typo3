@@ -357,7 +357,7 @@ class IndexSearchRepository
     protected function getResultRows_SQLpointerMysqlFulltext(array $searchWordsArray, int $freeIndexUid): Result|false
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_fulltext');
-        if (!str_starts_with($connection->getServerVersion(), 'MySQL')) {
+        if (!str_starts_with($connection->getPlatformServerVersion(), 'MySQL')) {
             throw new \RuntimeException(
                 'Extension indexed_search is configured to use mysql fulltext, but table \'index_fulltext\''
                 . ' is running on a different DBMS.',

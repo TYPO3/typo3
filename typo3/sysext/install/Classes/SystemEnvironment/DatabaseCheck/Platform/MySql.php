@@ -98,7 +98,7 @@ class MySql extends AbstractPlatform
     {
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        if (!str_starts_with($defaultConnection->getServerVersion(), 'MySQL')) {
+        if (!str_starts_with($defaultConnection->getPlatformServerVersion(), 'MySQL')) {
             return $this->messageQueue;
         }
         $this->checkMySQLOrMariaDBVersion($defaultConnection);
@@ -144,7 +144,7 @@ class MySql extends AbstractPlatform
     {
         $platformLabel = $this->getPlatformLabel($connection);
         $minimumVersion = $this->getMinimumVersion($connection);
-        $serverVersion = $connection->getServerVersion();
+        $serverVersion = $connection->getPlatformServerVersion();
         preg_match('/MySQL (5\.5\.5-|)((\d+\.)*(\d+\.)*\d+)/', $serverVersion, $match);
         $currentMysqlVersion = $match[2] ?? null;
         if ($currentMysqlVersion === null) {

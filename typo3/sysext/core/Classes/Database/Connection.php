@@ -372,25 +372,42 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * If no version information is available only the platform name will be shown.
      * If the platform name is unknown or unsupported the driver name will be shown.
      *
-     * @internal
+     * @internal only and not part of public API.
      */
     public function getServerVersion(): string
     {
-        $platform = $this->getDatabasePlatform();
-        $version = match (true) {
-            $platform instanceof DoctrineMariaDBPlatform,
-            $platform instanceof DoctrineMySQLPlatform =>  'MySQL',
-            $platform instanceof DoctrinePostgreSqlPlatform => 'PostgreSQL',
-            $platform instanceof DoctrineOraclePlatform => 'Oracle',
-            default => str_replace('Platform', '', array_reverse(explode('\\', $platform::class))[0] ?? ''),
-        };
-
-        // if clause can be removed with Doctrine DBAL 4.
-        if (method_exists($this->getWrappedConnection(), 'getServerVersion')) {
-            $version .= ' ' . $this->getWrappedConnection()->getServerVersion();
+        $connection = $this->getWrappedConnection();
+        if (method_exists($connection, 'getServerVersion')) {
+            return $connection->getServerVersion();
         }
 
-        return trim($version, ' ');
+        // Return empty server version due to database connection error.
+        return '';
+    }
+
+    /**
+     * Returns the version of the current platform if applicable, containing the platform as prefix.
+     *
+     * If no version information is available only the platform name will be shown.
+     * If the platform name is unknown or unsupported the driver name will be shown.
+     *
+     * @internal only and not part of public API.
+     */
+    public function getPlatformServerVersion(): string
+    {
+        $platform = $this->getDatabasePlatform();
+        $version = trim($this->getServerVersion());
+        if ($version !== '') {
+            $version = ' ' . $version;
+        }
+        return match (true) {
+            // @todo Check if we should use 'MariaDB' now directly instead of MySQL as an alias.
+            $platform instanceof DoctrineMariaDBPlatform => 'MySQL' . $version,
+            $platform instanceof DoctrineMySQLPlatform => 'MySQL' . $version,
+            $platform instanceof DoctrinePostgreSQLPlatform => 'PostgreSQL' . $version,
+            $platform instanceof DoctrineOraclePlatform => 'Oracle' . $version,
+            default => (str_replace('Platform', '', array_reverse(explode('\\', $platform::class))[0] ?? '')) . $version,
+        };
     }
 
     /**

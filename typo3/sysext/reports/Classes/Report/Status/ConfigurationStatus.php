@@ -224,7 +224,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
-        return str_starts_with($connection->getServerVersion(), 'MySQL');
+        return str_starts_with($connection->getPlatformServerVersion(), 'MySQL');
     }
 
     /**

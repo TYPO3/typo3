@@ -90,7 +90,7 @@ final class MySqlTest extends UnitTestCase
         string $expectedTitle
     ): void {
         $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
-        $connectionMock->method('getServerVersion')->willReturn($serverVersionString);
+        $connectionMock->method('getPlatformServerVersion')->willReturn($serverVersionString);
         $connectionMock->method('getDatabasePlatform')->willReturn($platform);
         $subject = new class () extends MySql {
             public function callCheckMySQLOrMariaDBVersion(Connection $connection): void

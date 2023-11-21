@@ -462,7 +462,7 @@ final class ConnectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function getServerVersionReportsPlatformVersion(): void
+    public function getServerVersionReportsServerVersionOnly(): void
     {
         $wrappedConnectionMock = $this->createMock(Connection::class);
         $wrappedConnectionMock->method('getServerVersion')->willReturn('5.7.11');
@@ -471,6 +471,21 @@ final class ConnectionTest extends UnitTestCase
             ->method('getWrappedConnection')
             ->willReturn($wrappedConnectionMock);
 
-        self::assertSame('Mock 5.7.11', $this->connection->getServerVersion());
+        self::assertSame('5.7.11', $this->connection->getServerVersion());
+    }
+
+    /**
+     * @test
+     */
+    public function getPlatformServerVersionReportsPlatformVersion(): void
+    {
+        $wrappedConnectionMock = $this->createMock(Connection::class);
+        $wrappedConnectionMock->method('getServerVersion')->willReturn('5.7.11');
+
+        $this->connection
+            ->method('getWrappedConnection')
+            ->willReturn($wrappedConnectionMock);
+
+        self::assertSame('Mock 5.7.11', $this->connection->getPlatformServerVersion());
     }
 }
