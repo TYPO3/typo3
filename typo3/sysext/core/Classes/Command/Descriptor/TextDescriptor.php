@@ -54,7 +54,7 @@ class TextDescriptor extends SymfonyTextDescriptor
             $width = $this->getColumnWidth(['' => ['commands' => array_keys($commands)]]);
 
             foreach ($commands as $command) {
-                $this->write(sprintf("%-{$width}s %s\n", $command['name'], strip_tags($command['description'])), true);
+                $this->write(sprintf("%-{$width}s %s\n", $command['name'], strip_tags($command['description'] ?? '')), true);
             }
             return;
         }
