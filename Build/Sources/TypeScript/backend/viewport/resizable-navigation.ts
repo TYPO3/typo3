@@ -74,10 +74,10 @@ export class ResizableNavigation extends LitElement {
   protected render(): TemplateResult {
     return html`
       <div class="scaffold-content-navigation-switcher">
-        <button @mouseup="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">
+        <button @click="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">
           <typo3-backend-icon identifier="actions-chevron-right" size="small"></typo3-backend-icon>
         </button>
-        <button @mouseup="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="${lll('viewport_navigation_hide')}">
+        <button @click="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="${lll('viewport_navigation_hide')}">
           <typo3-backend-icon identifier="actions-chevron-left" size="small"></typo3-backend-icon>
         </button>
       </div>
@@ -85,12 +85,14 @@ export class ResizableNavigation extends LitElement {
     `;
   }
 
-  private readonly toggleNavigation = (event: MouseEvent | TouchEvent) => {
-    if (event instanceof MouseEvent && event.button === 2) {
-      return;
-    }
+  private readonly toggleNavigation = (event: MouseEvent | TouchEvent | KeyboardEvent) => {
     event.stopPropagation();
     this.parentContainer.classList.toggle('scaffold-content-navigation-expanded');
+
+    if (event.currentTarget instanceof HTMLElement) {
+      const sibling = (event.currentTarget.nextElementSibling ?? event.currentTarget.previousElementSibling) as HTMLElement;
+      sibling.focus();
+    }
   };
 
   private readonly fallbackNavigationSizeIfNeeded = (event: UIEvent) => {
