@@ -4405,6 +4405,10 @@ html{scroll-behavior:smooth}
 .scheduler-panel+.scheduler-panel{margin-top:calc(var(--typo3-spacing) * 1.5)}
 .task-form .form-wizards-wrap{margin-bottom:.5rem!important}
 .task-form .row{max-width:800px}
+@media (min-width:1200px){
+.scheduler-info-text{width:90%}
+.scheduler-info-container{display:grid;grid-template-columns:50% 50%;gap:var(--typo3-spacing)}
+}
 #tx-styleguide-navigation{position:fixed;width:260px}
 #tx-styleguide-content{margin-left:300px}
 #tx-styleguide-content .example{--typo3-component-color-scheme:var(--typo3-light-color-scheme);--typo3-component-color:var(--typo3-light-color);--typo3-component-primary-color:var(--typo3-light-primary-color);--typo3-component-secondary-color:var(--typo3-light-secondary-color);--typo3-component-bg:var(--typo3-light-bg);--typo3-component-border-color:var(--typo3-light-border-color);--typo3-component-link-color:var(--typo3-light-link-color);--typo3-component-link-hover-color:var(--typo3-light-link-hover-color);--typo3-component-hover-color:var(--typo3-light-hover-color);--typo3-component-hover-bg:var(--typo3-light-hover-bg);--typo3-component-hover-border-color:var(--typo3-light-hover-border-color);--typo3-component-focus-color:var(--typo3-light-focus-color);--typo3-component-focus-bg:var(--typo3-light-focus-bg);--typo3-component-focus-border-color:var(--typo3-light-focus-border-color);--typo3-component-active-color:var(--typo3-light-active-color);--typo3-component-active-bg:var(--typo3-light-active-bg);--typo3-component-active-border-color:var(--typo3-light-active-border-color);--typo3-component-disabled-color:var(--typo3-light-disabled-color);--typo3-component-disabled-bg:var(--typo3-light-disabled-bg);--typo3-component-disabled-border-color:var(--typo3-light-disabled-border-color);background-color:var(--typo3-component-bg);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);padding:var(--typo3-spacing);margin-bottom:var(--typo3-spacing)}

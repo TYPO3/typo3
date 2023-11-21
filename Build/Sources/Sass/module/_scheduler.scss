@@ -18,3 +18,15 @@
 .task-form .row {
     max-width: 800px;
 }
+
+@include media-breakpoint-up('xl') {
+    .scheduler-info-text {
+        width: 90%;
+    }
+
+    .scheduler-info-container {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        gap: var(--typo3-spacing);
+    }
+}
