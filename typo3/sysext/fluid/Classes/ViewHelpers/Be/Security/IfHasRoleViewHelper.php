@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Security;
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -75,12 +76,7 @@ final class IfHasRoleViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('role', 'string', 'The usergroup (either the usergroup uid or its title).');
     }
 
-    /**
-     * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.
-     *
-     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexibility in overriding this method.
-     */
-    protected static function evaluateCondition($arguments = null): bool
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         $role = $arguments['role'];
         if (!is_array($GLOBALS['BE_USER']->userGroups) || $arguments['role'] === null) {

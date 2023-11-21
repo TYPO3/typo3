@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Security;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -84,7 +85,7 @@ final class IfHasRoleViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('role', 'string', 'The usergroup (either the usergroup uid or its title).');
     }
 
-    protected static function evaluateCondition($arguments = null): bool
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         $role = $arguments['role'];
         /** @var UserAspect $userAspect */
