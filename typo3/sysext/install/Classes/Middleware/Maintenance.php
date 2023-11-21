@@ -79,8 +79,12 @@ class Maintenance implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!$this->canHandleRequest($request)) {
+        if (!$this->canHandleRequest()) {
             return $handler->handle($request);
+        }
+
+        if (($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] ?? '') === '') {
+            return new HtmlResponse('$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'installToolPassword\'] must not be empty.', 500);
         }
 
         $controllerName = $request->getQueryParams()['install']['controller'] ?? 'layout';
@@ -234,17 +238,11 @@ class Maintenance implements MiddlewareInterface
     }
 
     /**
-     * This request handler can handle any request when not in CLI mode.
-     * Warning: Order of these methods is security relevant and interferes with different access
-     * conditions (new/existing installation). See the single method comments for details.
-     *
-     * @return bool Returns always TRUE
+     * This request handler is only accessible when basic system integrity constraints are fulfilled.
      */
-    protected function canHandleRequest(ServerRequestInterface $request): bool
+    protected function canHandleRequest(): bool
     {
-        $basicIntegrity = $this->checkIfEssentialConfigurationExists()
-            && !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])
-            && !EnableFileService::isFirstInstallAllowed();
+        $basicIntegrity = $this->checkIfEssentialConfigurationExists() && !EnableFileService::isFirstInstallAllowed();
         if (!$basicIntegrity) {
             return false;
         }
@@ -253,10 +251,8 @@ class Maintenance implements MiddlewareInterface
 
     /**
      * Checks if ENABLE_INSTALL_TOOL exists.
-     *
-     * @return bool
      */
-    protected function checkEnableInstallToolFile()
+    protected function checkEnableInstallToolFile(): bool
     {
         return EnableFileService::checkInstallToolEnableFile();
     }
