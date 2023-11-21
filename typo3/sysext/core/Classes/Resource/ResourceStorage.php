@@ -2090,8 +2090,7 @@ class ResourceStorage implements ResourceStorageInterface
      ********************/
     /**
      * Returns an array with all file objects in a folder and its subfolders, with the file identifiers as keys.
-     * @todo check if this is a duplicate
-     * @return File[]
+     * @return array<string, File>
      */
     protected function getAllFileObjectsInFolder(Folder $folder): array
     {
