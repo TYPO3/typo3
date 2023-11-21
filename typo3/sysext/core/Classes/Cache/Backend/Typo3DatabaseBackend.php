@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Cache\Backend;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -495,8 +497,9 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      */
     protected function isConnectionMysql(Connection $connection): bool
     {
-        $serverVersion = $connection->getPlatformServerVersion();
-        return str_starts_with($serverVersion, 'MySQL');
+        $platform = $connection->getDatabasePlatform();
+        return $platform instanceof DoctrineMariaDBPlatform
+            || $platform instanceof DoctrineMySQLPlatform;
     }
 
     /**

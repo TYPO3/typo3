@@ -18,8 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Lowlevel\Controller;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Psr\Http\Message\ResponseInterface;
@@ -312,7 +313,8 @@ class DatabaseIntegrityController
 
         // EXPLAIN is no ANSI SQL, for now this is only executed on mysql
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        if (!$connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+        $platform = $connection->getDatabasePlatform();
+        if (!($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform)) {
             unset($this->MOD_MENU['search_query_makeQuery']['explain']);
         }
 
@@ -476,8 +478,9 @@ class DatabaseIntegrityController
                 $queryString = $this->getQuery($this->queryConfig);
                 $selectQueryString = $this->getSelectQuery($queryString);
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+                $platform = $connection->getDatabasePlatform();
 
-                $isConnectionMysql = str_starts_with($connection->getPlatformServerVersion(), 'MySQL');
+                $isConnectionMysql = ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform);
                 $fullQueryString = '';
                 try {
                     if ($mQ === 'explain' && $isConnectionMysql) {
@@ -2562,7 +2565,7 @@ class DatabaseIntegrityController
                     $quotedField = $queryBuilder->quoteIdentifier($field);
                     $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                     if ($column !== null
-                        && $connection->getDatabasePlatform() instanceof PostgreSQLPlatform
+                        && $connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform
                         && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
                     ) {
                         if (Type::getTypeRegistry()->lookupName($column->getType()) === Types::SMALLINT) {
@@ -2592,7 +2595,7 @@ class DatabaseIntegrityController
                         $quotedField = $queryBuilder->quoteIdentifier($field);
                         $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                         if ($column !== null
-                            && $connection->getDatabasePlatform() instanceof PostgreSQLPlatform
+                            && $connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform
                             && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
                         ) {
                             if (Type::getTypeRegistry()->lookupName($column->getType()) === Types::SMALLINT) {

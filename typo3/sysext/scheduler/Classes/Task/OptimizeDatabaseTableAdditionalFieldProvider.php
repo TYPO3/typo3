@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -187,8 +189,9 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
      */
     protected function getOptimizableTablesForConnection(Connection $connection, array $tableNames = []): array
     {
-        // Return empty list if the database platform is not MySQL
-        if (!str_starts_with($connection->getPlatformServerVersion(), 'MySQL')) {
+        // Return empty list if the database platform is not MySQL/MariaDB
+        $platform = $connection->getDatabasePlatform();
+        if (!($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform)) {
             return [];
         }
 

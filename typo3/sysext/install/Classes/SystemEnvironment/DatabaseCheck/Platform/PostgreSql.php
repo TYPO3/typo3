@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -76,7 +77,8 @@ class PostgreSql extends AbstractPlatform
     {
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        if (!str_starts_with($defaultConnection->getPlatformServerVersion(), 'PostgreSQL')) {
+        $platform = $defaultConnection->getDatabasePlatform();
+        if (!($platform instanceof DoctrinePostgreSQLPlatform)) {
             return $this->messageQueue;
         }
 

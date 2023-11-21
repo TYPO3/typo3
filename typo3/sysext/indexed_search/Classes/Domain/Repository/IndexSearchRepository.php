@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Result;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
@@ -357,7 +359,8 @@ class IndexSearchRepository
     protected function getResultRows_SQLpointerMysqlFulltext(array $searchWordsArray, int $freeIndexUid): Result|false
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_fulltext');
-        if (!str_starts_with($connection->getPlatformServerVersion(), 'MySQL')) {
+        $platform = $connection->getDatabasePlatform();
+        if (!($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform)) {
             throw new \RuntimeException(
                 'Extension indexed_search is configured to use mysql fulltext, but table \'index_fulltext\''
                 . ' is running on a different DBMS.',

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Reports\Report\Status;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
@@ -221,10 +223,11 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected function isMysqlUsed()
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $platform = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
+            ->getDatabasePlatform();
 
-        return str_starts_with($connection->getPlatformServerVersion(), 'MySQL');
+        return $platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform;
     }
 
     /**
