@@ -2910,6 +2910,7 @@ ul.dropdown-list li{display:flex;gap:1px}
 .dropdown-table td[data-type=icon] .icon,.dropdown-table th[data-type=icon] .icon{vertical-align:unset}
 .dropdown-table td[data-type=value],.dropdown-table th[data-type=value]{word-break:break-word}
 button.dropdown-toggle-link{border:0;padding:0;background:0 0}
+button.dropdown-toggle-link typo3-backend-icon{display:inline-block;vertical-align:-22%}
 a.dropdown-toggle{text-decoration:none}
 .dropdown-toggle-no-chevron:after{display:none!important}
 :root{--avatar-size-small:16px;--avatar-size-medium:32px;--avatar-size-large:48px;--avatar-size-mega:64px}

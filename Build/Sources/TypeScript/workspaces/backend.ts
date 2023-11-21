@@ -17,6 +17,7 @@ import $ from 'jquery';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/input/clearable';
+import '@typo3/workspaces/renderable/record-table';
 import Workspaces from './workspaces';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import Persistent from '@typo3/backend/storage/persistent';
@@ -27,6 +28,7 @@ import windowManager from '@typo3/backend/window-manager';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import { selector } from '@typo3/core/literals';
+import IconHelper from '@typo3/workspaces/utility/icon-helper';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -84,7 +86,6 @@ class Backend extends Workspaces {
     totalPages: 1,
     totalItems: 0,
   };
-  private latestPath: string = '';
   private markedRecordsForMassAction: string[] = [];
   private readonly indentationPadding: number = 26;
 
@@ -390,7 +391,7 @@ class Backend extends Workspaces {
           iconIdentifier = 'actions-caret-right';
         }
 
-        $me.empty().append(this.getIcon(iconIdentifier));
+        $me.empty().append(IconHelper.getIcon(iconIdentifier));
       });
     $(window.top.document).on('click', '.t3js-workspace-recipients-selectall', (): void => {
       $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', true);
@@ -609,7 +610,6 @@ class Backend extends Workspaces {
    * @param {Object} result
    */
   private renderWorkspaceInfos(result: any): void {
-    this.elements.$tableBody.children().remove();
     this.resetMassActionState(result.data.length);
     this.buildPagination(result.total);
 
@@ -622,125 +622,8 @@ class Backend extends Workspaces {
       this.elements.$noContentsContainer.hide();
     }
 
-    for (let i = 0; i < result.data.length; ++i) {
-      const item = result.data[i];
-      const $actions = $('<div />', { class: 'btn-group' });
-      let $integrityIcon: JQuery;
-      const hasSubitems = item.Workspaces_CollectionChildren > 0 && item.Workspaces_CollectionCurrent !== '';
-      $actions.append(
-        this.getAction(
-          hasSubitems,
-          'expand',
-          (item.expanded ? 'actions-caret-down' : 'actions-caret-right'),
-        ).attr('title', TYPO3.lang['tooltip.expand'])
-          .attr('data-bs-target', '[data-collection="' + item.Workspaces_CollectionCurrent + '"]')
-          .attr('aria-expanded', !hasSubitems || item.expanded ? 'true' : 'false')
-          .attr('data-bs-toggle', 'collapse'),
-        this.getAction(
-          item.hasChanges,
-          'changes',
-          'actions-document-info')
-          .attr('title', TYPO3.lang['tooltip.showChanges']),
-        this.getAction(
-          item.allowedAction_publish && item.Workspaces_CollectionParent === '',
-          'publish',
-          'actions-version-swap-version')
-          .attr('title', TYPO3.lang['tooltip.publish']),
-        this.getAction(
-          item.allowedAction_view,
-          'preview',
-          'actions-version-workspace-preview',
-        ).attr('title', TYPO3.lang['tooltip.viewElementAction']),
-        this.getAction(
-          item.allowedAction_edit,
-          'open',
-          'actions-open',
-        ).attr('title', TYPO3.lang['tooltip.editElementAction']),
-        this.getAction(
-          item.allowedAction_versionPageOpen,
-          'version',
-          'actions-version-page-open',
-        ).attr('title', TYPO3.lang['tooltip.openPage']),
-        this.getAction(
-          item.allowedAction_delete,
-          'remove',
-          'actions-version-document-remove').attr('title', TYPO3.lang['tooltip.discardVersion'],
-        ),
-      );
-
-      if (item.integrity.messages !== '') {
-        $integrityIcon = $('<span>' + this.getIcon(item.integrity.status) + '</span>');
-        $integrityIcon
-          .attr('title', item.integrity.messages);
-      }
-
-      if (this.latestPath !== item.path_Workspace) {
-        this.latestPath = item.path_Workspace;
-        this.elements.$tableBody.append(
-          $('<tr />').append(
-            $('<th />'),
-            $('<th />', { colspan: 7 }).html(
-              '<span title="' + item.path_Workspace + '">' + item.path_Workspace_crop + '</span>'
-            ),
-          ),
-        );
-      }
-      const $checkbox = $('<span />', { class: 'form-check form-check-type-toggle' }).append(
-        $('<input />', { type: 'checkbox', class: 'form-check-input t3js-multi-record-selection-check' })
-      );
-
-      const rowConfiguration: Record<string, string> = {
-        'data-uid': item.uid,
-        'data-pid': item.livepid,
-        'data-t3ver_oid': item.t3ver_oid,
-        'data-t3ver_wsid': item.t3ver_wsid,
-        'data-table': item.table,
-        'data-next-stage': item.value_nextStage,
-        'data-prev-stage': item.value_prevStage,
-        'data-stage': item.stage,
-        'data-multi-record-selection-element': 'true',
-      };
-
-      if (item.Workspaces_CollectionParent !== '') {
-        // fetch parent and see if this one is expanded
-        const parentItem = result.data.find((element: any) => {
-          return element.Workspaces_CollectionCurrent === item.Workspaces_CollectionParent;
-        });
-        rowConfiguration['data-collection'] = item.Workspaces_CollectionParent;
-        rowConfiguration.class = 'collapse' + (parentItem.expanded ? ' show' : '');
-      } else if (item.Workspaces_CollectionCurrent !== '') {
-        // Set CollectionCurrent attribute for parent records
-        rowConfiguration['data-collection-current'] = item.Workspaces_CollectionCurrent;
-      }
-
-      this.elements.$tableBody.append(
-        $('<tr />', rowConfiguration).append(
-          $('<td />', { class: 'col-checkbox' }).empty().append($checkbox),
-          $('<td />', {
-            class: 't3js-title-workspace',
-            style: item.Workspaces_CollectionLevel > 0
-              ? 'padding-left: ' + this.indentationPadding * item.Workspaces_CollectionLevel + 'px'
-              : '',
-          }).html(
-            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Workspace, item.icon_Workspace_Overlay) + '</span>'
-            + '&nbsp;'
-            + '<a href="#" data-action="changes">'
-            + '<span class="workspace-state-' + item.state_Workspace + '" title="' + item.label_Workspace + '">' + item.label_Workspace_crop + '</span>'
-            + '</a>',
-          ),
-          $('<td />', { class: 't3js-title-live' }).html(
-            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Live, item.icon_Live_Overlay) + '</span>'
-            + '&nbsp;'
-            + '<span class"workspace-live-title title="' + item.label_Live + '">' + item.label_Live_crop + '</span>'
-          ),
-          $('<td />').text(item.label_Stage),
-          $('<td />').text(item.lastChangedFormatted),
-          $('<td />').empty().append($integrityIcon),
-          $('<td />').html(this.getIcon(item.language.icon)),
-          $('<td />', { class: 'text-end nowrap' }).append($actions),
-        ),
-      );
-    }
+    const workspacesRecordTable = document.querySelector('typo3-workspaces-record-table');
+    workspacesRecordTable.results = result.data;
   }
 
   /**
@@ -1246,24 +1129,6 @@ class Backend extends Workspaces {
   };
 
   /**
-   * Renders the action button based on the user's permission.
-   *
-   * @param {string} condition
-   * @param {string} action
-   * @param {string} iconIdentifier
-   * @return {JQuery}
-   */
-  private getAction(condition: boolean, action: string, iconIdentifier: string): JQuery {
-    if (condition) {
-      return $('<button />', {
-        class: 'btn btn-default',
-        'data-action': action,
-      }).append(this.getIcon(iconIdentifier));
-    }
-    return $('<span />', { class: 'btn btn-default disabled' }).append(this.getIcon('empty-empty'));
-  }
-
-  /**
    * Fetches and renders available preview links
    */
   private readonly generatePreviewLinks = (): void => {
@@ -1299,40 +1164,6 @@ class Backend extends Workspaces {
       );
     });
   };
-
-  /**
-   * Gets a specific icon. A specific "switch" is added due to the integrity
-   * flags that are added in the IntegrityService.
-   */
-  private getIcon(identifier: string, overlay: string = ''): string {
-    switch (identifier) {
-      case 'language':
-        identifier = 'flags-multiple';
-        break;
-      case 'integrity':
-      case 'info':
-        identifier = 'status-dialog-information';
-        break;
-      case 'success':
-        identifier = 'status-dialog-ok';
-        break;
-      case 'warning':
-        identifier = 'status-dialog-warning';
-        break;
-      case 'error':
-        identifier = 'status-dialog-error';
-        break;
-      default:
-    }
-    return '<typo3-backend-icon ' + Object.entries({
-      'identifier': identifier,
-      'overlay': overlay,
-      'size': 'small'
-    })
-      .filter(([key, value]) => key && value !== '')
-      .map(([key, value]) => `${key}="${value}"`)
-      .join(' ') + '></typo3-backend-icon>';
-  }
 
   /**
    * This is used to reset the records, internally stored for

@@ -51,67 +51,8 @@
         </form>
         <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages, showEntireWorkspaceDropDown: showEntireWorkspaceDropDown, position: 'top'}" />
         <div id="workspace-content-wrapper">
-            <div id="workspace-contents" class="table-fit mb-0" style="display: none">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>
-                            <div class="btn-group dropdown">
-                                <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
-                                    <core:icon identifier="actions-selection" size="small" />
-                                </button>
-                                <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
-                                    <li>
-                                        <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')}">
-                                            <span class="dropdown-item-columns">
-                                                <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                                                    <core:icon identifier="actions-selection-elements-all" size="small" />
-                                                </span>
-                                                <span class="dropdown-item-column dropdown-item-column-title">
-                                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
-                                                </span>
-                                            </span>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')}">
-                                            <span class="dropdown-item-columns">
-                                                <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                                                    <core:icon identifier="actions-selection-elements-none" size="small" />
-                                                </span>
-                                                <span class="dropdown-item-column dropdown-item-column-title">
-                                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll" />
-                                                </span>
-                                            </span>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="dropdown-item" data-multi-record-selection-check-action="toggle" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')}">
-                                            <span class="dropdown-item-columns">
-                                                <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                                                    <core:icon identifier="actions-selection-elements-invert" size="small" />
-                                                </span>
-                                                <span class="dropdown-item-column dropdown-item-column-title">
-                                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection" />
-                                                </span>
-                                            </span>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </th>
-                        <th><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:column.wsTitle" /></th>
-                        <th><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:column.liveTitle" /></th>
-                        <th><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:column.stage" /></th>
-                        <th><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:column.lastChangeOn" /></th>
-                        <th><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:column.integrity" /></th>
-                        <th><core:icon identifier="flags-multiple" size="small" /></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody data-multi-record-selection-row-selection="true">
-                    </tbody>
-                </table>
+            <div id="workspace-contents" style="display: none">
+                <typo3-workspaces-record-table></typo3-workspaces-record-table>
             </div>
             <div id="workspace-contents-empty" style="display: none">
                 <div class="shadow-sm bg-info bg-gradient p-3">
