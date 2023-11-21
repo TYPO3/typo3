@@ -49,14 +49,7 @@ enum Identifiers {
 }
 
 type Diff = { field: string, label: string, content: string, html: string };
-type Comment = {
-  user_comment: string;
-  previous_stage_title: string;
-  stage_title: string;
-  tstamp: number;
-  user_username: string;
-  user_avatar: string
-}
+
 type History = {
   differences: string | Diff[];
   datetime: string;
@@ -93,6 +86,7 @@ class Backend extends Workspaces {
     super();
 
     topLevelModuleImport('@typo3/workspaces/renderable/send-to-stage-form.js');
+    topLevelModuleImport('@typo3/workspaces/renderable/comment-view.js');
 
     DocumentService.ready().then((): void => {
       this.getElements();
@@ -144,36 +138,11 @@ class Backend extends Workspaces {
    * @param {Object} comments
    * @return {$}
    */
-  private static generateCommentView(comments: Comment[]): JQuery {
-    const $comments = $('<div />');
+  private static generateCommentView(comments: any[]): HTMLElement {
+    const commentView = document.createElement('typo3-workspaces-comment-view');
+    commentView.comments = comments;
 
-    for (const comment of comments) {
-      const $panel = $('<div />', { class: 'panel panel-default' });
-
-      if (comment.user_comment.length > 0) {
-        $panel.append(
-          $('<div />', { class: 'panel-body' }).html(comment.user_comment),
-        );
-      }
-
-      $panel.append(
-        $('<div />', { class: 'panel-footer' }).append(
-          $('<span />', { class: 'badge badge-success me-2' }).text(comment.previous_stage_title + ' > ' + comment.stage_title),
-          $('<span />', { class: 'badge badge-info' }).text(comment.tstamp),
-        ),
-      );
-
-      $comments.append(
-        $('<div />', { class: 'media' }).append(
-          $('<div />', { class: 'media-left text-center' }).text(comment.user_username).prepend(
-            $('<div />').html(comment.user_avatar),
-          ),
-          $('<div />', { class: 'media-body' }).append($panel),
-        ),
-      );
-    }
-
-    return $comments;
+    return commentView;
   }
 
   /**
