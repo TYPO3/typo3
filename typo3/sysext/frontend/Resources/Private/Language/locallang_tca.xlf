@@ -312,9 +312,6 @@
 			<trans-unit id="pages.keywords_formlabel" resname="pages.keywords_formlabel">
 				<source>Keywords</source>
 			</trans-unit>
-			<trans-unit id="pages.description_formlabel" resname="pages.description_formlabel">
-				<source>Description</source>
-			</trans-unit>
 			<trans-unit id="pages.author_formlabel" resname="pages.author_formlabel">
 				<source>Author Name</source>
 			</trans-unit>

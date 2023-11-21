@@ -600,7 +600,7 @@ return [
         'description' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.description',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
