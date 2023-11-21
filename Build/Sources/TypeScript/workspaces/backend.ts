@@ -49,14 +49,7 @@ enum Identifiers {
   pagination = '#workspace-pagination',
 }
 
-type Diff = { field: string, label: string, content: string, html: string };
-
-type History = {
-  differences: string | Diff[];
-  datetime: string;
-  user: string;
-  user_avatar: string;
-}
+export type Diff = { field: string, label: string, content: string, html: string };
 
 /**
  * Backend workspace module. Loaded only in Backend context, not in
@@ -88,6 +81,7 @@ class Backend extends Workspaces {
 
     topLevelModuleImport('@typo3/workspaces/renderable/send-to-stage-form.js');
     topLevelModuleImport('@typo3/workspaces/renderable/comment-view.js');
+    topLevelModuleImport('@typo3/workspaces/renderable/history-view.js');
 
     DocumentService.ready().then((): void => {
       this.getElements();
@@ -152,54 +146,11 @@ class Backend extends Workspaces {
    * @param {Object} data
    * @return {JQuery}
    */
-  private static generateHistoryView(data: History[]): JQuery {
-    const $history = $('<div />');
+  private static generateHistoryView(data: any[]): HTMLElement {
+    const historyViewElement = document.createElement('typo3-workspaces-history-view');
+    historyViewElement.historyItems = data;
 
-    for (const currentData of data) {
-      const $panel = $('<div />', { class: 'panel panel-default' });
-      let $diff;
-
-      if (typeof currentData.differences === 'object') {
-        if (currentData.differences.length === 0) {
-          // Somehow here are no differences. What a pity, skip that record
-          continue;
-        }
-        $diff = $('<div />', { class: 'diff' });
-
-        for (let j = 0; j < currentData.differences.length; ++j) {
-          $diff.append(
-            $('<div />', { class: 'diff-item' }).append(
-              $('<div />', { class: 'diff-item-title' }).text(currentData.differences[j].label),
-              $('<div />', { class: 'diff-item-result' }).html(currentData.differences[j].html),
-            ),
-          );
-        }
-
-        $panel.append(
-          $('<div />').append($diff),
-        );
-      } else {
-        $panel.append(
-          $('<div />', { class: 'panel-body' }).text(currentData.differences),
-        );
-      }
-      $panel.append(
-        $('<div />', { class: 'panel-footer' }).append(
-          $('<span />', { class: 'badge badge-info' }).text(currentData.datetime),
-        ),
-      );
-
-      $history.append(
-        $('<div />', { class: 'media' }).append(
-          $('<div />', { class: 'media-left text-center' }).text(currentData.user).prepend(
-            $('<div />').html(currentData.user_avatar),
-          ),
-          $('<div />', { class: 'media-body' }).append($panel),
-        ),
-      );
-    }
-
-    return $history;
+    return historyViewElement;
   }
 
   /**
