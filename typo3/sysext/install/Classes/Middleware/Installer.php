@@ -47,7 +47,7 @@ class Installer implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!$this->canHandleRequest($request)) {
+        if (!$this->canHandleRequest()) {
             return $handler->handle($request);
         }
 
@@ -120,10 +120,8 @@ class Installer implements MiddlewareInterface
     /**
      * First installation is in progress, if system/settings.php does not exist,
      * or if FIRST_INSTALL file exists.
-     *
-     * @return bool Returns always TRUE
      */
-    protected function canHandleRequest(ServerRequestInterface $request): bool
+    protected function canHandleRequest(): bool
     {
         $localConfigurationFileLocation = (new ConfigurationManager())->getSystemConfigurationFileLocation();
         return !@is_file($localConfigurationFileLocation) || EnableFileService::isFirstInstallAllowed();
