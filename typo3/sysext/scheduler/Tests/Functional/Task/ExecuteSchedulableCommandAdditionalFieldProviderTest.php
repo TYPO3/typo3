@@ -68,7 +68,7 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends Functio
             $this->get(SchedulerModuleController::class)
         );
 
-        self::assertCount(4, $fields);
-        self::assertTrue(isset($fields['schedulableCommands'], $fields['description'], $fields['arguments_action'], $fields['options_action']));
+        self::assertCount(3, $fields);
+        self::assertTrue(isset($fields['schedulableCommands'], $fields['arguments_action'], $fields['options_action']));
     }
 }
