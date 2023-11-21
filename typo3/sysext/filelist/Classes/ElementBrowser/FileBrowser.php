@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -56,7 +58,7 @@ class FileBrowser extends AbstractResourceBrowser
     {
         parent::initVariables($request);
 
-        $this->searchWord = (string)trim($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
+        $this->searchWord = trim((string)($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? ''));
 
         $fileExtensions = GeneralUtility::trimExplode(';', explode('|', $this->bparams)[3], true);
         $allowed = str_replace('allowed=', '', $fileExtensions[0] ?? '');
@@ -85,10 +87,7 @@ class FileBrowser extends AbstractResourceBrowser
         );
     }
 
-    /**
-     * @return string HTML content
-     */
-    public function render()
+    public function render(): string
     {
         $this->initSelectedFolder();
         $contentHtml = '';
@@ -100,7 +99,7 @@ class FileBrowser extends AbstractResourceBrowser
             $markup[] = '<div class="mb-4">';
             $markup[] = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
                 ->setSearchWord($this->searchWord ?? '')
-                ->render($this->getRequest(), $this->createUri([]));
+                ->render($this->getRequest(), $this->createUri());
             $markup[] = '</div>';
 
             // Create the filelist header bar

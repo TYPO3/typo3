@@ -57,7 +57,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 
     protected ?FileList $filelist = null;
     protected ?string $viewMode = null;
-    protected ?string $displayThumbs = null;
+    protected bool $displayThumbs = true;
 
     protected ?Folder $selectedFolder = null;
     protected ?Matcher $resourceDisplayMatcher = null;
@@ -141,14 +141,15 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
             $this->viewMode = $this->getBackendUser()->getModuleData($this->moduleStorageIdentifier)['viewMode'] ?? ViewMode::TILES->value;
         }
 
-        $this->displayThumbs = $request->getParsedBody()['displayThumbs'] ?? $request->getQueryParams()['displayThumbs'] ?? null;
-        if ($this->displayThumbs !== null) {
+        $displayThumbs = $request->getParsedBody()['displayThumbs'] ?? $request->getQueryParams()['displayThumbs'] ?? null;
+        if ($displayThumbs !== null) {
+            $this->displayThumbs = (bool)$displayThumbs;
             $this->getBackendUser()->pushModuleData(
                 $this->moduleStorageIdentifier,
                 array_merge($this->getBackendUser()->getModuleData($this->moduleStorageIdentifier) ?? [], ['displayThumbs' => $this->displayThumbs])
             );
         } else {
-            $this->displayThumbs = $this->getBackendUser()->getModuleData($this->moduleStorageIdentifier)['displayThumbs'] ?? true;
+            $this->displayThumbs = (bool)($this->getBackendUser()->getModuleData($this->moduleStorageIdentifier)['displayThumbs'] ?? true);
         }
 
         // Selected Folder folder
@@ -233,7 +234,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         if (!($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
             $viewModeItems[] = GeneralUtility::makeInstance(DropdownDivider::class);
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
-                ->setActive((bool)$this->displayThumbs)
+                ->setActive($this->displayThumbs)
                 ->setHref($this->createUri($request, ['displayThumbs' => $this->displayThumbs ? 0 : 1]))
                 ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
                 ->setIcon($this->iconFactory->getIcon('actions-image'));

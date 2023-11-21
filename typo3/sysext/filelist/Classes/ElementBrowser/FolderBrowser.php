@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -50,10 +52,7 @@ class FolderBrowser extends AbstractResourceBrowser
         $this->resourceSelectableMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
     }
 
-    /**
-     * @return string HTML content
-     */
-    public function render()
+    public function render(): string
     {
         $this->initSelectedFolder();
         $contentHtml = '';

@@ -2628,19 +2628,20 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * Returns the folders on the root level of the storage
+     * Returns the folder on the root level of the storage
      * or the first mount point of this storage for this user
      * if $respectFileMounts is set.
      *
-     * @param bool $respectFileMounts
-     * @return Folder
      * @todo: this is a bad method design, because the calling code can never fetch all filemounts nor traverse them.
      */
-    public function getRootLevelFolder($respectFileMounts = true)
+    public function getRootLevelFolder(bool $respectFileMounts = true): Folder
     {
         if ($respectFileMounts && !empty($this->fileMounts)) {
             $mount = reset($this->fileMounts);
-            return $mount['folder'];
+            $rootLevelFolder = $mount['folder'] ?? null;
+            if ($rootLevelFolder instanceof Folder) {
+                return $rootLevelFolder;
+            }
         }
         return $this->createFolderObject($this->driver->getRootLevelFolder(), '');
     }

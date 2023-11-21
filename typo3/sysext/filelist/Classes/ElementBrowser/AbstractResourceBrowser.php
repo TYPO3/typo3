@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -44,7 +46,7 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
 
     protected ?FileList $filelist = null;
     protected ?string $viewMode = null;
-    protected ?string $displayThumbs = null;
+    protected bool $displayThumbs = true;
 
     protected ?Folder $selectedFolder = null;
     protected ?Matcher $resourceDisplayMatcher = null;
@@ -82,14 +84,15 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
             $this->viewMode = $this->getBackendUser()->getModuleData($this->moduleStorageIdentifier)['viewMode'] ?? ViewMode::TILES->value;
         }
 
-        $this->displayThumbs = $request->getParsedBody()['displayThumbs'] ?? $request->getQueryParams()['displayThumbs'] ?? null;
-        if ($this->displayThumbs !== null) {
+        $displayThumbs = $request->getParsedBody()['displayThumbs'] ?? $request->getQueryParams()['displayThumbs'] ?? null;
+        if ($displayThumbs !== null) {
+            $this->displayThumbs = (bool)$displayThumbs;
             $this->getBackendUser()->pushModuleData(
                 $this->moduleStorageIdentifier,
                 array_merge($this->getBackendUser()->getModuleData($this->moduleStorageIdentifier) ?? [], ['displayThumbs' => $this->displayThumbs])
             );
         } else {
-            $this->displayThumbs = $this->getBackendUser()->getModuleData($this->moduleStorageIdentifier)['displayThumbs'] ?? true;
+            $this->displayThumbs = (bool)($this->getBackendUser()->getModuleData($this->moduleStorageIdentifier)['displayThumbs'] ?? true);
         }
 
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $this->getRequest());
@@ -110,7 +113,7 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
         }
 
         if (!$this->selectedFolder) {
-            $this->selectedFolder = $resourceFactory->getDefaultStorage()?->getRootLevelFolder() ?? null;
+            $this->selectedFolder = $resourceFactory->getDefaultStorage()?->getRootLevelFolder();
         }
     }
 
@@ -128,9 +131,9 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.list'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-list'));
         if (!($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
-            $viewModeItems[] = GeneralUtility::makeInstance(DropdownDivider::class);
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
-                ->setActive((bool)$this->displayThumbs)
+                ->setActive($this->displayThumbs)
                 ->setHref($this->createUri(['displayThumbs' => $this->displayThumbs ? 0 : 1]))
                 ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
                 ->setIcon($this->iconFactory->getIcon('actions-image'));
@@ -158,11 +161,9 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
             'bparams' => $this->bparams,
         ], $values);
 
-        $values = array_filter($values, static function ($value) {
-            return $value !== null && trim($value) !== '';
+        return array_filter($values, static function ($value) {
+            return $value !== null && trim((string)$value) !== '';
         });
-
-        return $values;
     }
 
     protected function createUri(array $parameters = []): string
