@@ -1510,8 +1510,8 @@ class Import extends ImportExport
                                         }
                                     } else {
                                         // Get tokenizedContent string and proceed only if that is not blank:
-                                        $tokenizedContent = $this->dat['records'][$table . ':' . $uid]['rels'][$field]['softrefs']['tokenizedContent'];
-                                        if (strlen($tokenizedContent) && is_array($softrefsByField)) {
+                                        $tokenizedContent = $this->dat['records'][$table . ':' . $uid]['rels'][$field]['softrefs']['tokenizedContent'] ?? '';
+                                        if ($tokenizedContent !== '' && is_array($softrefsByField)) {
                                             $updateData[$table][$actualUid][$field] = $this->processSoftReferencesSubstTokens($tokenizedContent, $softrefsByField, $table, (string)$uid);
                                         }
                                     }
