@@ -27,7 +27,7 @@ CREATE TABLE sys_file_metadata (
 
 	# TEXT + AUDIO + VIDEO
 	# correspond to the language of the document
-	language varchar(12) DEFAULT '',
+	language varchar(45) DEFAULT '',
 
 	# FE permissions
 	fe_groups tinytext

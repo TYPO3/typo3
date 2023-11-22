@@ -215,6 +215,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
+                'max' => 255,
             ],
         ],
         'download_name' => [
@@ -226,6 +227,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim',
+                'max' => 255,
             ],
         ],
         'creator' => [
@@ -237,6 +239,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim',
+                'max' => 255,
             ],
         ],
         'publisher' => [
@@ -248,6 +251,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
+                'max' => 45,
             ],
         ],
         'source' => [
@@ -257,6 +261,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
+                'max' => 255,
             ],
         ],
         'copyright' => [
@@ -276,6 +281,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
+                'max' => 45,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
@@ -289,6 +295,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
+                'max' => 45,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
@@ -302,6 +309,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
+                'max' => 45,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
@@ -484,6 +492,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim',
+                'max' => 45,
             ],
         ],
         'fe_groups' => [
