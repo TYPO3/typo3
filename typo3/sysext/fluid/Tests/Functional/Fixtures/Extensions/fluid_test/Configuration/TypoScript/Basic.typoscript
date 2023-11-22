@@ -3,7 +3,6 @@ config {
     debug = 0
     admPanel = 0
     disableAllHeaderCode = 1
-    sendCacheHeaders = 0
     absRefPrefix = /
     contentObjectExceptionHandler = 0
     intTarget = _blank

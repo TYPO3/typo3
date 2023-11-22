@@ -293,7 +293,6 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
                     'debug' => 0,
                     'admPanel' => 0,
                     'disableAllHeaderCode' => 1,
-                    'sendCacheHeaders' => 0,
                 ],
                 'page' => 'PAGE',
                 'page.' => [

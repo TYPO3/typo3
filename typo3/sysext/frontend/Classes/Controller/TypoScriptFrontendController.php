@@ -2170,11 +2170,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // Set cache related headers to client (used to enable proxy / client caching!)
-        if (!empty($this->config['config']['sendCacheHeaders'])) {
-            $headers = $this->getCacheHeaders();
-            foreach ($headers as $header => $value) {
-                $response = $response->withHeader($header, $value);
-            }
+        $headers = $this->getCacheHeaders();
+        foreach ($headers as $header => $value) {
+            $response = $response->withHeader($header, $value);
         }
         // Set additional headers if any have been configured via TypoScript
         $additionalHeaders = $this->getAdditionalHeaders();
@@ -2197,6 +2195,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function getCacheHeaders(): array
     {
+        $headers = [];
         // Getting status whether we can send cache control headers for proxy caching:
         $doCache = $this->isStaticCacheble();
         $isBackendUserLoggedIn = $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
@@ -2204,13 +2203,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
         $isClientCachable = $doCache && !$isBackendUserLoggedIn && !$isInWorkspace;
         if ($isClientCachable) {
-            $headers = [
-                'Expires' => gmdate('D, d M Y H:i:s T', $this->cacheExpires),
-                'ETag' => '"' . md5($this->content) . '"',
-                'Cache-Control' => 'max-age=' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']),
-                // no-cache
-                'Pragma' => 'public',
-            ];
+            // Only send the headers to the client that they are allowed to cache if explicitly activated.
+            if (!empty($this->config['config']['sendCacheHeaders'])) {
+                $headers = [
+                    'Expires' => gmdate('D, d M Y H:i:s T', $this->cacheExpires),
+                    'ETag' => '"' . md5($this->content) . '"',
+                    'Cache-Control' => 'max-age=' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']),
+                    // no-cache
+                    'Pragma' => 'public',
+                ];
+            }
         } else {
             // "no-store" is used to ensure that the client HAS to ask the server every time, and is not allowed to store anything at all
             $headers = [
