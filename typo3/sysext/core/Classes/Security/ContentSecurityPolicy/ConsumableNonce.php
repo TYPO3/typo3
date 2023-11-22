@@ -34,8 +34,9 @@ final class ConsumableNonce extends ConsumableString
     {
         if ($nonce === null || strlen($nonce) < self::MIN_BYTES) {
             $nonce = random_bytes(self::MIN_BYTES);
+            $nonce = StringUtility::base64urlEncode($nonce);
         }
-        $this->b64 = StringUtility::base64urlEncode($nonce);
+        $this->b64 = $nonce;
         parent::__construct($this->b64);
     }
 }
