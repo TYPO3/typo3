@@ -170,7 +170,6 @@ final class PasswordHashFactoryTest extends UnitTestCase
      */
     public function getDefaultHashReturnsInstanceOfConfiguredDefaultFeMethod(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['FE']['saltedPWHashingMethod'] = Argon2iPasswordHash::class;
         $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('FE');
         self::assertInstanceOf(Argon2iPasswordHash::class, $hashInstance);
     }
@@ -180,7 +179,6 @@ final class PasswordHashFactoryTest extends UnitTestCase
      */
     public function getDefaultHashReturnsInstanceOfConfiguredDefaultBeMethod(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = Argon2iPasswordHash::class;
         $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('BE');
         self::assertInstanceOf(Argon2iPasswordHash::class, $hashInstance);
     }
@@ -216,7 +214,6 @@ final class PasswordHashFactoryTest extends UnitTestCase
     {
         $argon2iPasswordHashMock = $this->createMock(Argon2iPasswordHash::class);
         $argon2iPasswordHashMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = Argon2iPasswordHash::class;
         GeneralUtility::addInstance(Argon2iPasswordHash::class, $argon2iPasswordHashMock);
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533822084);

@@ -42,7 +42,7 @@ final class ListUtilityTest extends UnitTestCase
                 ->willReturn([
                     'lang' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                     'news' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
-                    'saltedpasswords' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
+                    'felogin' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                 ]);
         $this->subject->injectPackageManager($packageManagerMock);
     }
@@ -54,37 +54,37 @@ final class ListUtilityTest extends UnitTestCase
                 [
                     'lang' => [],
                     'news' => [],
-                    'saltedpasswords' => [],
+                    'felogin' => [],
                 ],
                 [
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
-                    'saltedpasswords' => ['installed' => true],
+                    'felogin' => ['installed' => true],
                 ],
             ],
             'different extension lists' => [
                 [
                     'lang' => [],
                     'news' => [],
-                    'saltedpasswords' => [],
+                    'felogin' => [],
                 ],
                 [
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
-                    'saltedpasswords' => ['installed' => true],
+                    'felogin' => ['installed' => true],
                 ],
             ],
             'different extension lists - set2' => [
                 [
                     'lang' => [],
                     'news' => [],
-                    'saltedpasswords' => [],
+                    'felogin' => [],
                     'em' => [],
                 ],
                 [
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
-                    'saltedpasswords' => ['installed' => true],
+                    'felogin' => ['installed' => true],
                     'em' => [],
                 ],
             ],
@@ -93,14 +93,14 @@ final class ListUtilityTest extends UnitTestCase
                     'lang' => [],
                     'fluid' => [],
                     'news' => [],
-                    'saltedpasswords' => [],
+                    'felogin' => [],
                     'em' => [],
                 ],
                 [
                     'lang' => ['installed' => true],
                     'fluid' => [],
                     'news' => ['installed' => true],
-                    'saltedpasswords' => ['installed' => true],
+                    'felogin' => ['installed' => true],
                     'em' => [],
                 ],
             ],
@@ -123,7 +123,7 @@ final class ListUtilityTest extends UnitTestCase
                 [
                     'lang' => ['property1' => 'oldvalue'],
                     'news' => [],
-                    'saltedpasswords' => [],
+                    'felogin' => [],
                 ],
                 [
                     'property1' => 'property value1',
@@ -131,7 +131,7 @@ final class ListUtilityTest extends UnitTestCase
                 [
                     'lang' => ['property1' => 'oldvalue', 'state' => 'stable'],
                     'news' => ['property1' => 'property value1', 'state' => 'stable'],
-                    'saltedpasswords' => ['property1' => 'property value1', 'state' => 'stable'],
+                    'felogin' => ['property1' => 'property value1', 'state' => 'stable'],
                 ],
             ],
         ];
