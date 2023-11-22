@@ -2,7 +2,6 @@ config {
     no_cache = 1
     debug = 0
     admPanel = 0
-    sendCacheHeaders = 0
 }
 
 page = PAGE
