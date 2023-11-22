@@ -242,14 +242,13 @@ class AjaxDataHandler {
       if (!result.hasErrors) {
         const panel = anchorElement.closest('.recordlist');
         const panelHeading = panel.querySelector('.recordlist-heading-title');
-        const translatedRowElement = tableElement.querySelector('[data-l10nparent="' + uid + '"]')?.closest('tr[data-uid]') as HTMLTableRowElement|undefined;
-
-        if (translatedRowElement !== undefined) {
+        const translatedRowElements = tableElement.querySelectorAll('[data-l10nparent="' + uid + '"]');
+        translatedRowElements.forEach((translatedRowElement: HTMLTableRowElement): void => {
           new RegularEvent('transitionend', (): void => {
             translatedRowElement.remove();
           }).bindTo(translatedRowElement);
           translatedRowElement.classList.add('record-deleted');
-        }
+        });
 
         new RegularEvent('transitionend', (): void => {
           rowElement.remove();
