@@ -58,6 +58,9 @@ final class SysNoteCest
         $I->click('button.t3js-toggle-recordlist[data-table="pages"]');
         $I->canSee('Internal notes', 'h2');
         $I->canSee('new sys_note');
+        $I->switchToMainFrame();
+        $I->waitForElementNotVisible('#alert-container');
+        $I->switchToContentFrame();
         $I->click('.note-list > .note > .note-header > .note-header-bar > .note-actions a:nth-child(1)');
         $I->wait(0.2);
         $I->canSee('Edit Internal note "new sys_note"');
