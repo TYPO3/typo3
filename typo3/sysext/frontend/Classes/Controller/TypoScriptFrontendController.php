@@ -1349,6 +1349,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $setupConditionList = $setupMatcherVisitor->getConditionListWithVerdicts();
             $gotSetupConditionsFromCache = true;
         }
+        $setupIncludeTree = null;
         if ($this->no_cache || !$gotSetupConditionsFromCache) {
             // We did not get setup condition list from cache, or are not allowed to use cache. We have to build setup
             // condition list from scratch. This means we'll fetch the full setup include tree (from cache if possible),
@@ -1455,7 +1456,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 if ($this->no_cache || $forceTemplateParsing) {
                     // Note $typoscriptCache *is not* hand over here: IncludeTree is calculated from scratch, we're not allowed to use cache.
                     $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site);
-                } else {
+                } elseif ($setupIncludeTree === null) {
                     // Note $typoscriptCache *is* hand over here, we can potentially grab the fully cached includeTree here, or cache entry will be created.
                     $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
                 }
