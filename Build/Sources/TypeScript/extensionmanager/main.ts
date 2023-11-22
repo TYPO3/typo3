@@ -12,7 +12,6 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import $ from 'jquery';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import NProgress from 'nprogress';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
@@ -122,17 +121,31 @@ class ExtensionManager {
         }).delegateTo(extensionList, '.reloadSqlData');
 
       }
-      $(document).on('click', '.onClickMaskExtensionManager', (): void => {
+
+      new RegularEvent('click', (): void => {
         NProgress.start();
-      }).on('click', 'a[data-action=update-extension]', (e: JQueryEventObject): void => {
+      }).delegateTo(document, '.onClickMaskExtensionManager');
+
+      new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
         e.preventDefault();
 
         NProgress.start();
-        new AjaxRequest($(e.currentTarget).attr('href')).get().then(this.updateExtension);
-      }).on('change', 'input[name=unlockDependencyIgnoreButton]', (e: JQueryEventObject): void => {
-        const $actionButton = $('.t3js-dependencies');
-        $actionButton.toggleClass('disabled', !$(e.currentTarget).prop('checked'));
-      });
+        new AjaxRequest(target.href).get().then(this.updateExtension);
+      }).delegateTo(document, 'a[data-action=update-extension]');
+
+      new RegularEvent('change', (e: Event, target: HTMLInputElement): void => {
+        const actionButton = document.querySelector('.t3js-dependencies');
+
+        if (target.checked) {
+          actionButton.classList.remove('disabled');
+        } else {
+          actionButton.classList.add('disabled');
+        }
+      }).delegateTo(document, 'input[name=unlockDependencyIgnoreButton]');
+
+      new RegularEvent('click', (): void => {
+        NProgress.start();
+      }).delegateTo(document, '.t3-button-action-installdistribution');
 
       let searchField: HTMLInputElement;
       if ((searchField = document.querySelector(ExtensionManagerIdentifier.searchField)) !== null) {
@@ -158,10 +171,6 @@ class ExtensionManager {
           },
         });
       }
-
-      $(document).on('click', '.t3-button-action-installdistribution', (): void => {
-        NProgress.start();
-      });
 
       this.Repository.initDom();
       this.Update.initializeEvents();
@@ -199,40 +208,50 @@ class ExtensionManager {
   private async updateExtension(response: AjaxResponse): Promise<void> {
     let i = 0;
     const data: UpdateInformation = await response.resolve();
-    const $form = $('<form>');
+    const form = document.createElement('form');
     for (const [version, comment] of Object.entries(data.updateComments)) {
-      const $input = $('<input>').attr({ type: 'radio', name: 'version' }).val(version);
+      const versionInput = document.createElement('input');
+      versionInput.setAttribute('type', 'radio');
+      versionInput.setAttribute('name', 'version');
+      versionInput.value = version;
       if (i === 0) {
-        $input.attr('checked', 'checked');
+        versionInput.setAttribute('checked', 'checked');
       }
-      $form.append([
-        $('<h3>').append([
-          $input,
-          ' ' + securityUtility.encodeHtml(version),
-        ]),
-        $('<div>')
-          .append(
-            comment
-              .replace(/(\r\n|\n\r|\r|\n)/g, '\n')
-              .split(/\n/).map((line: string): string => {
-                return securityUtility.encodeHtml(line);
-              })
-              .join('<br>'),
-          ),
-      ]);
+
+      const versionHeader = document.createElement('h3');
+      versionHeader.innerHTML = securityUtility.encodeHtml(version);
+      versionHeader.prepend(versionInput);
+
+      const commentDiv = document.createElement('div');
+      commentDiv.innerHTML = comment
+        .replace(/(\r\n|\n\r|\r|\n)/g, '\n')
+        .split(/\n/).map((line: string): string => {
+          return securityUtility.encodeHtml(line);
+        })
+        .join('<br>');
+
+      form.append(versionHeader, commentDiv);
       i++;
     }
-    const $container = $('<div>').append([
-      $('<h1>').text(TYPO3.lang['extensionList.updateConfirmation.title']),
-      $('<h2>').text(TYPO3.lang['extensionList.updateConfirmation.message']),
-      $form,
-    ]);
+
+    const updateConfirmationTitle = document.createElement('h1');
+    updateConfirmationTitle.textContent = TYPO3.lang['extensionList.updateConfirmation.title'];
+
+    const updateConfirmationMessage = document.createElement('h2');
+    updateConfirmationMessage.textContent = TYPO3.lang['extensionList.updateConfirmation.message'];
+
+    const container = document.createElement('div');
+    container.append(
+      updateConfirmationTitle,
+      updateConfirmationMessage,
+      form,
+    );
 
     NProgress.done();
 
     Modal.confirm(
       TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
-      $container,
+      container,
       Severity.warning,
       [
         {
@@ -246,7 +265,7 @@ class ExtensionManager {
           trigger: (e: Event, modal: ModalElement): void => {
             NProgress.start();
             new AjaxRequest(data.url).withQueryArguments({
-              version: $('input:radio[name=version]:checked', modal).val(),
+              version: (modal.querySelector('input[name="version"]:checked') as HTMLInputElement)?.value,
             }).get().finally((): void => {
               location.reload();
             });

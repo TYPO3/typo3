@@ -11,32 +11,31 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 class UploadForm {
   public expandedUploadFormClass: string = 'transformed';
 
   public initializeEvents(): void {
     // Show upload form
-    $(document).on('click', '.t3js-upload', (event: JQueryEventObject): void => {
-      const $me = $(event.currentTarget);
-      const $uploadForm = $('.extension-upload-form');
+    new RegularEvent('click', (event: Event, target: HTMLAnchorElement): void => {
+      const uploadForm = document.querySelector('.extension-upload-form') as HTMLElement;
 
       event.preventDefault();
-      if ($me.hasClass(this.expandedUploadFormClass)) {
-        $uploadForm.stop().slideUp();
-        $me.removeClass(this.expandedUploadFormClass);
+      if (uploadForm.classList.contains(this.expandedUploadFormClass)) {
+        uploadForm.style.display = 'none';
+        uploadForm.classList.remove(this.expandedUploadFormClass);
       } else {
-        $me.addClass(this.expandedUploadFormClass);
-        $uploadForm.stop().slideDown();
+        uploadForm.style.display = '';
+        uploadForm.classList.add(this.expandedUploadFormClass);
 
-        new AjaxRequest($me.attr('href')).get().then(async (response: AjaxResponse): Promise<void> => {
-          $uploadForm.find('.t3js-upload-form-target').html(await response.resolve());
+        new AjaxRequest(target.href).get().then(async (response: AjaxResponse): Promise<void> => {
+          uploadForm.querySelector('.t3js-upload-form-target').innerHTML = await response.resolve();
         });
       }
-    });
+    }).delegateTo(document, '.t3js-upload');
   }
 }
 

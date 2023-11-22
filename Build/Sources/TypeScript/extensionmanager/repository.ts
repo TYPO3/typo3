@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import NProgress from 'nprogress';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
@@ -70,10 +69,12 @@ class Repository {
 
   private readonly getDependencies = async(response: AjaxResponse): Promise<void> => {
     const data = await response.resolve();
+    const messageElement = document.createElement('div');
+    messageElement.innerHTML = data.message;
 
     NProgress.done();
     if (data.hasDependencies) {
-      Modal.confirm(data.title, $(data.message), Severity.info, [
+      Modal.confirm(data.title, messageElement, Severity.info, [
         {
           text: TYPO3.lang['button.cancel'],
           active: true,
@@ -107,8 +108,11 @@ class Repository {
       // FIXME: As of now, the endpoint doesn't set proper headers, thus we have to parse the response text
       // https://review.typo3.org/c/Packages/TYPO3.CMS/+/63438
       const data: ExtensionInstallResult = await response.raw().json();
+      const errorMessageElement = document.createElement('div');
+      errorMessageElement.innerHTML = data.errorMessage;
+
       if (data.errorCount > 0) {
-        const modal = Modal.confirm(data.errorTitle, $(data.errorMessage), Severity.error, [
+        const modal = Modal.confirm(data.errorTitle, errorMessageElement, Severity.error, [
           {
             text: TYPO3.lang['button.cancel'],
             active: true,
@@ -119,8 +123,8 @@ class Repository {
           }, {
             text: TYPO3.lang['button.resolveDependenciesIgnore'],
             btnClass: 'btn-danger disabled t3js-dependencies',
-            trigger: (e: JQueryEventObject): void => {
-              if (!$(e.currentTarget).hasClass('disabled')) {
+            trigger: (e: Event): void => {
+              if (!(e.currentTarget as HTMLElement).classList.contains('disabled')) {
                 this.getResolveDependenciesAndInstallResult(data.skipDependencyUri);
                 Modal.dismiss();
               }
