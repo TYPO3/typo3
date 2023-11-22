@@ -1,8 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
 <nav class="{form.renderingOptions.formNavigation.navigationClassAttribute}" aria-label="{form.renderingOptions.formNavigation.navigationAriaLabelAttribute}">
     <f:if condition="{form.previousPage}">
-        <f:form.hidden property="__currentPage" value="{form.previousPage.index}" respectSubmittedDataValue="false"/>
-        <f:form.button type="button" onclick="document.forms['{form.formDefinition.identifier}'].submit();" class="{form.renderingOptions.formNavigation.btnPreviousClassAttribute}" formnovalidate="formnovalidate">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'previousButtonLabel')}</f:form.button>
+        <f:form.button property="__currentPage" value="{form.previousPage.index}" formnovalidate="formnovalidate" class="{form.renderingOptions.formNavigation.btnPreviousClassAttribute}">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'previousButtonLabel')}</f:form.button>
     </f:if>
     <f:if condition="{form.nextPage}">
         <f:then>

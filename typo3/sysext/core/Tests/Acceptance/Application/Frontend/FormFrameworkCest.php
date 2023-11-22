@@ -28,7 +28,7 @@ final class FormFrameworkCest
     private string $subjectSelector = '[id^=simpleform] input[placeholder="Subject"]';
     private string $emailSelector = '[id^=simpleform] input[placeholder="Email address"]';
     private string $textareaSelector = '[id^=simpleform] textarea';
-    private string $submitSelector = '[id^=simpleform] button[type=submit]';
+    private string $submitSelector = '[id^=simpleform] button[type=submit]:not([formnovalidate])';
     private string $summaryValueSelector = '[id^=simpleform] table td:not(.summary-table-first-col)';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
