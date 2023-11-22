@@ -171,7 +171,8 @@ class FrontendConfigurationManager implements SingletonInterface
         /** @var ServerRequestInterface $request */
         $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'];
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
-        return $frontendTypoScript->getSetupArray();
+        // @todo Throw a exception if attribute is not available in v13 only.
+        return $frontendTypoScript?->getSetupArray() ?? [];
     }
 
     /**
