@@ -427,8 +427,8 @@ class FileProvider extends AbstractProvider
                 );
             }
             $attributes += [
-                'data-title' => htmlspecialchars($title),
-                'data-message' => htmlspecialchars($confirmMessage),
+                'data-title' => $title,
+                'data-message' => $confirmMessage,
             ];
         }
         if ($itemName === 'new' && $this->isFolder()) {
@@ -454,16 +454,16 @@ class FileProvider extends AbstractProvider
             $okLabel = $this->clipboard->currentMode() === 'copy' ? 'copy' : 'pasteinto';
             $okText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . $okLabel);
             $attributes += [
-                'data-title' => htmlspecialchars($title),
-                'data-message' => htmlspecialchars($confirmMessage),
-                'data-button-close-text' => htmlspecialchars($closeText),
-                'data-button-ok-text' => htmlspecialchars($okText),
+                'data-title' => $title,
+                'data-message' => $confirmMessage,
+                'data-button-close-text' => $closeText,
+                'data-button-ok-text' => $okText,
             ];
         }
         if ($itemName === 'downloadFile') {
             $attributes += [
-                'data-url' => htmlspecialchars((string)$this->record->getPublicUrl()),
-                'data-name' => htmlspecialchars($this->record->getName()),
+                'data-url' => (string)$this->record->getPublicUrl(),
+                'data-name' => $this->record->getName(),
             ];
         }
 
@@ -479,22 +479,22 @@ class FileProvider extends AbstractProvider
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         switch ($itemName) {
             case 'downloadFolder':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_download'));
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_download');
                 break;
             case 'edit':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_edit'));
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_edit');
                 break;
             case 'upload':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_upload'));
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_upload');
                 break;
             case 'new':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('wizard_element_browser'));
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('wizard_element_browser');
                 break;
             case 'newFile':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_create'));
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_create');
                 break;
             case 'updateOnlineMedia':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_update_online_media'));
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_update_online_media');
                 break;
         }
 
