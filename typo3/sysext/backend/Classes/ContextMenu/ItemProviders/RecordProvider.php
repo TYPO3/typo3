@@ -286,7 +286,7 @@ class RecordProvider extends AbstractProvider
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute('new_content_element_wizard', $urlParameters);
             $attributes += [
-                'data-new-wizard-url' => htmlspecialchars($url),
+                'data-new-wizard-url' => $url,
                 'data-title' => $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement'),
             ];
         }
@@ -308,7 +308,7 @@ class RecordProvider extends AbstractProvider
         $viewLink = $this->getViewLink();
         if ($viewLink) {
             $attributes += [
-                'data-preview-url' => htmlspecialchars($viewLink),
+                'data-preview-url' => $viewLink,
             ];
         }
         return $attributes;
@@ -345,10 +345,10 @@ class RecordProvider extends AbstractProvider
                 GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), (int)$this->backendUser->uc['titleLen'])
             );
             $attributes += [
-                'data-title' => htmlspecialchars($title),
-                'data-message' => htmlspecialchars($confirmMessage),
-                'data-button-close-text' => htmlspecialchars($closeText),
-                'data-button-ok-text' => htmlspecialchars($okText),
+                'data-title' => $title,
+                'data-message' => $confirmMessage,
+                'data-button-close-text' => $closeText,
+                'data-button-ok-text' => $okText,
             ];
         }
         return $attributes;
@@ -385,10 +385,10 @@ class RecordProvider extends AbstractProvider
             );
 
             $attributes += [
-                'data-title' => htmlspecialchars($title),
-                'data-message' => htmlspecialchars($confirmMessage),
-                'data-button-close-text' => htmlspecialchars($closeText),
-                'data-button-ok-text' => htmlspecialchars($okText),
+                'data-title' => $title,
+                'data-message' => $confirmMessage,
+                'data-button-close-text' => $closeText,
+                'data-button-ok-text' => $okText,
             ];
         }
         return $attributes;

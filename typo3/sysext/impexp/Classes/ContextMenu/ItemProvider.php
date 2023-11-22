@@ -107,10 +107,10 @@ class ItemProvider extends AbstractProvider
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         switch ($itemName) {
             case 'exportT3d':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tx_impexp_export'));
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('tx_impexp_export');
                 break;
             case 'importT3d':
-                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tx_impexp_import'));
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('tx_impexp_import');
                 break;
         }
 
