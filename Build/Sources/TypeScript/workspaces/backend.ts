@@ -18,6 +18,7 @@ import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/input/clearable';
 import '@typo3/workspaces/renderable/record-table';
+import '@typo3/workspaces/renderable/pagination';
 import Workspaces from './workspaces';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import Persistent from '@typo3/backend/storage/persistent';
@@ -615,39 +616,10 @@ class Backend extends Workspaces {
       return;
     }
 
-    const $ul = $('<ul />', { class: 'pagination' });
-    const liElements: Array<JQuery> = [];
-    const $controlFirstPage = $('<li />', { class: 'page-item' }).append(
-        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'previous' }).append(
-          $('<typo3-backend-icon />', { 'identifier': 'actions-arrow-left-alt', 'size': 'small' }),
-        ),
-      ),
-      $controlLastPage = $('<li />', { class: 'page-item' }).append(
-        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'next' }).append(
-          $('<typo3-backend-icon />', { 'identifier': 'actions-arrow-right-alt', 'size': 'small' }),
-        ),
-      );
+    const pagination = document.createElement('typo3-workspaces-pagination');
+    pagination.paging = this.paging;
 
-    if (this.paging.currentPage === 1) {
-      $controlFirstPage.addClass('disabled').find('button').prop('disabled', true);
-    }
-
-    if (this.paging.currentPage === this.paging.totalPages) {
-      $controlLastPage.addClass('disabled').find('button').prop('disabled', true);
-    }
-
-    for (let i = 1; i <= this.paging.totalPages; i++) {
-      const $li = $('<li />', { class: 'page-item' + (this.paging.currentPage === i ? ' active' : '') });
-      $li.append(
-        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'page', 'data-page': i }).append(
-          $('<span />').text(i),
-        ),
-      );
-      liElements.push($li);
-    }
-
-    $ul.append($controlFirstPage, liElements, $controlLastPage);
-    this.elements.$pagination.empty().append($ul);
+    this.elements.$pagination.empty().append(pagination);
   }
 
   /**
