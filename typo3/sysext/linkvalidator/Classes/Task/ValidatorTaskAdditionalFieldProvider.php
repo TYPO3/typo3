@@ -118,19 +118,22 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             }
         }
         $fieldId = 'task_page';
+        $pageUid = '';
+        $pageTitle = '';
+        if (!empty($taskInfo['page'])) {
+            $pageUid = (int)$taskInfo['page'];
+            $pageTitle = $this->getPageTitle((int)$taskInfo['page']);
+        }
         $fieldCode = '<input type="number" min="0" class="form-control form-control-clearable t3js-clearable" name="tx_scheduler[linkvalidator][page]" id="'
             . $fieldId
             . '" value="'
             . htmlspecialchars((string)$taskInfo['page'])
             . '">';
         $label = $lang->sL($this->languageFile . ':tasks.validate.page');
-        $pageTitle = '';
-        if (!empty($taskInfo['page'])) {
-            $pageTitle = $this->getPageTitle((int)$taskInfo['page']);
-        }
         $additionalFields[$fieldId] = [
             'browser' => 'page',
             'pageTitle' => $pageTitle,
+            'pageUid' => $pageUid,
             'code' => $fieldCode,
             'cshTable' => 'linkvalidator',
             'cshLabel' => $fieldId,

@@ -25,7 +25,7 @@
             <f:if condition="{field.browser} == 'page'">
                 <f:then>
                     <f:comment><!--  A page browser button. Used in ext:linkvalidator task. See issue #12211. --></f:comment>
-                    <div class="formengine-field-item">
+                    <div class="formengine-field-item t3js-formengine-field-item">
                         <div class="form-wizards-wrap">
                             <div class="form-wizards-element">
                                 {field.code -> f:format.raw()}
@@ -34,20 +34,32 @@
                                 <div class="btn-group-vertical">
                                     <f:be.link
                                         route="wizard_element_browser"
-                                        class="btn btn-default t3js-element-browser"
+                                        class="t3js-element-browser btn btn-default"
                                         data="{trigger-for: field.fieldID, mode:'db'}"
                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
                                     >
                                         <core:icon identifier="actions-insert-record" />
                                     </f:be.link>
-                                    <span
-                                        title="{f:translate(key: 'LLL:EXT:typo3/sysext/core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
-                                        id="page_{field.fieldID}"
-                                    >
-                                        {field.pageTitle}
-                                    </span>
                                 </div>
                             </div>
+                            <f:if condition="{field.pageUid}">
+                                <div class="form-wizards-items-bottom">
+                                    <div class="table-fit mt-1 mb-0">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="col-icon">
+                                                        <core:icon identifier="apps-pagetree-page-default" />
+                                                    </td>
+                                                    <td class="col-title">
+                                                        <span class="text-body-secondary">{field.pageTitle} [{field.pageUid}]</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </f:if>
                         </div>
                     </div>
                 </f:then>
