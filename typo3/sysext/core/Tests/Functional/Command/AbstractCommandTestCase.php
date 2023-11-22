@@ -25,18 +25,33 @@ abstract class AbstractCommandTestCase extends FunctionalTestCase
     protected function executeConsoleCommand(string $cmdline, ...$args): array
     {
         $cmd = vsprintf(PHP_BINARY . ' ' . GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3') . ' ' . $cmdline, array_map('escapeshellarg', $args));
+        $handle = proc_open(
+            $cmd,
+            [
+                // For details, see https://www.php.net/manual/en/function.proc-open
+                ['pipe', 'r'], // stdin is a pipe that the child will read from
+                ['pipe', 'w'], // stdout is a pipe that the child will write to
+                ['pipe', 'w'], // stderr is a pipe that the child will write to
+            ],
+            $pipes
+        );
 
-        $output = '';
-
-        $handle = popen($cmd, 'r');
-        while (!feof($handle)) {
-            $output .= fgets($handle, 4096);
+        if (!is_resource($handle)) {
+            throw new \Exception('Failed to create proc_open handle', 1700678064);
         }
-        $status = pclose($handle);
+
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        $status = proc_close($handle);
 
         return [
             'status' => $status,
-            'output' => $output,
+            'stdout' => $stdout,
+            'stderr' => $stderr,
         ];
     }
 }

@@ -49,30 +49,30 @@ final class CliCommandTest extends AbstractCommandTestCase
     public static function commandTestDataProvider(): array
     {
         return [
-            ['command' => 'styleguide:generate tca', 'args' => '', 'code' => 0],
-            ['command' => 'styleguide:generate frontend', 'args' => '', 'code' => 0],
-            ['command' => 'cleanup:localprocessedfiles', 'args' => '-v', 'code' => 0],
-            ['command' => 'cache:flush', 'args' => '', 'code' => 0],
-            ['command' => 'cache:warmup', 'args' => '', 'code' => 0],
-            ['command' => 'cleanup:flexforms', 'args' => '', 'code' => 0],
-            ['command' => 'cleanup:deletedrecords', 'args' => '', 'code' => 0],
-            ['command' => 'cleanup:orphanrecords', 'args' => '', 'code' => 0],
-            ['command' => 'cleanup:previewlinks', 'args' => '', 'code' => 0],
-            ['command' => 'cleanup:versions', 'args' => '', 'code' => 0],
-            ['command' => 'extension:list', 'args' => '', 'code' => 0],
-            ['command' => 'extension:setup', 'args' => '', 'code' => 0],
-            ['command' => 'extension:deactivate workspaces', 'args' => '', 'code' => 0],
-            ['command' => 'extension:activate workspaces', 'args' => '', 'code' => 0],
-            ['command' => 'language:update', 'args' => '', 'code' => 0],
-            ['command' => 'mailer:spool:send', 'args' => '', 'code' => 1],
-            ['command' => 'redirects:checkintegrity', 'args' => '', 'code' => 0],
-            ['command' => 'redirects:cleanup', 'args' => '', 'code' => 0],
-            ['command' => 'referenceindex:update', 'args' => '--check', 'code' => 0],
-            ['command' => 'scheduler:run', 'args' => '', 'code' => 0],
-            ['command' => 'site:list', 'args' => '', 'code' => 0],
-            ['command' => 'site:show show-me', 'args' => '', 'code' => 0],
-            ['command' => 'syslog:list', 'args' => '', 'code' => 0],
-            ['command' => 'upgrade:list', 'args' => '', 'code' => 0],
+            ['command' => 'styleguide:generate tca', 'args' => [], 'code' => 0],
+            ['command' => 'styleguide:generate frontend', 'args' => [], 'code' => 0],
+            ['command' => 'cleanup:localprocessedfiles', 'args' => ['-v'], 'code' => 0],
+            ['command' => 'cache:flush', 'args' => [], 'code' => 0],
+            ['command' => 'cache:warmup', 'args' => [], 'code' => 0],
+            ['command' => 'cleanup:flexforms', 'args' => [], 'code' => 0],
+            ['command' => 'cleanup:deletedrecords', 'args' => [], 'code' => 0],
+            ['command' => 'cleanup:orphanrecords', 'args' => [], 'code' => 0],
+            ['command' => 'cleanup:previewlinks', 'args' => [], 'code' => 0],
+            ['command' => 'cleanup:versions', 'args' => [], 'code' => 0],
+            ['command' => 'extension:list', 'args' => [], 'code' => 0],
+            ['command' => 'extension:setup', 'args' => [], 'code' => 0],
+            ['command' => 'extension:deactivate workspaces', 'args' => [], 'code' => 0],
+            ['command' => 'extension:activate workspaces', 'args' => [], 'code' => 0],
+            ['command' => 'language:update', 'args' => [], 'code' => 0],
+            ['command' => 'mailer:spool:send', 'args' => [], 'code' => 1],
+            ['command' => 'redirects:checkintegrity', 'args' => [], 'code' => 0],
+            ['command' => 'redirects:cleanup', 'args' => [], 'code' => 0],
+            ['command' => 'referenceindex:update', 'args' => ['--check'], 'code' => 0],
+            ['command' => 'scheduler:run', 'args' => [], 'code' => 0],
+            ['command' => 'site:list', 'args' => [], 'code' => 0],
+            ['command' => 'site:show show-me', 'args' => [], 'code' => 0],
+            ['command' => 'syslog:list', 'args' => [], 'code' => 0],
+            ['command' => 'upgrade:list', 'args' => [], 'code' => 0],
         ];
     }
 
@@ -80,9 +80,9 @@ final class CliCommandTest extends AbstractCommandTestCase
      * @test
      * @dataProvider commandTestDataProvider
      */
-    public function cliCommand(string $command, string $args, int $expectedExitCode): void
+    public function cliCommand(string $command, array $args, int $expectedExitCode): void
     {
-        $result = $this->executeConsoleCommand($command, $args);
+        $result = $this->executeConsoleCommand($command, ...$args);
 
         self::assertEquals($expectedExitCode, $result['status']);
     }
