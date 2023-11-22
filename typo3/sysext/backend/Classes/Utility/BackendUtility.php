@@ -1179,8 +1179,8 @@ class BackendUtility
             $parts[] = $row['title'];
         }
         if ($row['uid'] === 0) {
-            $out = htmlspecialchars(implode(' - ', $parts));
-            return $includeAttrib ? 'title="' . $out . '"' : $out;
+            $out = implode(' - ', $parts);
+            return $includeAttrib ? 'title="' . htmlspecialchars($out) . '"' : $out;
         }
         switch (VersionState::tryFrom($row['t3ver_state'] ?? 0)) {
             case VersionState::DELETE_PLACEHOLDER:
@@ -1253,8 +1253,8 @@ class BackendUtility
             $label = implode(', ', $fe_groups);
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['fe_group']['label']) . ' ' . $label;
         }
-        $out = htmlspecialchars(implode(' - ', $parts));
-        return $includeAttrib ? 'title="' . $out . '"' : $out;
+        $out = implode(' - ', $parts);
+        return $includeAttrib ? 'title="' . htmlspecialchars($out) . '"' : $out;
     }
 
     /**
@@ -1264,45 +1264,68 @@ class BackendUtility
      *
      * @param array $row Table row; $row is a row from the table, $table
      * @param string $table Table name
-     * @return string
+     * @param bool $escapeResult If $escapeResult is set, then the return value is escaped with htmlspecialchars()
      */
-    public static function getRecordIconAltText($row, $table = 'pages')
+    public static function getRecordIconAltText($row, $table = 'pages', bool $escapeResult = true): string
     {
         if ($table === 'pages') {
-            $out = self::titleAttribForPages($row, '', false);
-        } else {
-            $out = !empty(trim($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'] ?? ''))
-                ? ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] ?? '') . ' '
-                : '';
-            $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'] ?? [];
-            // Uid is added
-            $out .= 'id=' . ($row['uid'] ?? 0);
-            if (static::isTableWorkspaceEnabled($table)) {
-                switch (VersionState::tryFrom($row['t3ver_state'] ?? 0)) {
-                    case VersionState::DELETE_PLACEHOLDER:
-                        $out .= ' - Deleted element!';
-                        break;
-                    case VersionState::MOVE_POINTER:
-                        $out .= ' - NEW LOCATION (Move-to Pointer) WSID#' . $row['t3ver_wsid'];
-                        break;
-                    case VersionState::NEW_PLACEHOLDER:
-                        $out .= ' - New element!';
-                        break;
-                }
+            $title = self::titleAttribForPages($row, '', false);
+            return $escapeResult ? htmlspecialchars($title) : $title;
+        }
+
+        $languageService = static::getLanguageService();
+        $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
+
+        $parts = ['id=' . ($row['uid'] ?? '0')];
+        if (!empty(trim($ctrl['descriptionColumn'] ?? '')) && !empty(trim($row[$ctrl['descriptionColumn']] ?? ''))) {
+            $parts[] = trim($row[$ctrl['descriptionColumn']] ?? '');
+        }
+        $recordTitle = self::getRecordTitle($table, $row);
+        if (!empty($recordTitle)) {
+            $parts[] = $recordTitle;
+        }
+
+        if (isset($ctrl['type'])) {
+            // @todo: We need to ensure that only raw rows gets passed here
+            //        It can happen that we recieve already processed data from FormEngine.
+            //        In this case, the row can contain arrays for the types.
+            $labelKey = $row[$ctrl['type']] ?? '';
+            if (is_array($labelKey)) {
+                $labelKey = (string)array_shift($labelKey);
             }
-            // Hidden
-            $lang = static::getLanguageService();
-            if ($ctrl['disabled'] ?? false) {
-                $out .= ($row[$ctrl['disabled']] ?? false) ? ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden') : '';
-            }
-            if (($ctrl['starttime'] ?? false) && ($row[$ctrl['starttime']] ?? 0) > $GLOBALS['EXEC_TIME']) {
-                $out .= ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.starttime') . ':' . self::date($row[$ctrl['starttime']]) . ' (' . self::daysUntil($row[$ctrl['starttime']]) . ' ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
-            }
-            if (($ctrl['endtime'] ?? false) && ($row[$ctrl['endtime']] ?? false)) {
-                $out .= ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.endtime') . ': ' . self::date($row[$ctrl['endtime']]) . ' (' . self::daysUntil($row[$ctrl['endtime']]) . ' ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
+            $recordType = self::getLabelFromItemlist($table, $ctrl['type'], $labelKey, $row);
+            if (!empty($recordType)) {
+                $parts[] = $languageService->sL($recordType);
             }
         }
-        return htmlspecialchars($out);
+
+        if (static::isTableWorkspaceEnabled($table)) {
+            switch (VersionState::tryFrom($row['t3ver_state'] ?? 0)) {
+                case VersionState::DELETE_PLACEHOLDER:
+                    $parts[] = 'Deleted element!';
+                    break;
+                case VersionState::MOVE_POINTER:
+                    $parts[] = 'NEW LOCATION (Move-to Pointer) WSID#' . ($row['t3ver_wsid'] ?? 0);
+                    break;
+                case VersionState::NEW_PLACEHOLDER:
+                    $parts[] = 'New element!';
+                    break;
+            }
+        }
+        if (($ctrl['enablecolumns']['disabled'] ?? false) && ($row[$ctrl['enablecolumns']['disabled']] ?? false)) {
+            $parts[] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden');
+        }
+        if (($ctrl['enablecolumns']['starttime'] ?? false) && ($row[$ctrl['enablecolumns']['starttime']] ?? 0) > $GLOBALS['EXEC_TIME']) {
+            $parts[] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.starttime')
+                . ': ' . self::date($row[$ctrl['enablecolumns']['starttime']])
+                . ' (' . self::daysUntil($row[$ctrl['enablecolumns']['starttime']]) . ' ' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
+        }
+        if (($ctrl['enablecolumns']['endtime'] ?? false) && ($row[$ctrl['enablecolumns']['endtime']] ?? false)) {
+            $parts[] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.endtime')
+                . ': ' . self::date($row[$ctrl['enablecolumns']['endtime']])
+                . ' (' . self::daysUntil($row[$ctrl['enablecolumns']['endtime']]) . ' ' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
+        }
+        return $escapeResult ? htmlspecialchars(implode(' - ', $parts)) : implode(' - ', $parts);
     }
 
     /**
@@ -1482,10 +1505,17 @@ class BackendUtility
             } else {
                 // No userFunc: Build label
                 $ctrlLabel = $GLOBALS['TCA'][$table]['ctrl']['label'] ?? '';
+                $ctrlLabelValue = $row[$ctrlLabel] ?? '';
+                // $row might be a processed row generated by FormResultCompiler
+                // => bail out if the ctrlLabel field has been processed into an array
+                //    (e.g. in sys_file_reference.uid_local)
+                if (is_array($ctrlLabelValue)) {
+                    $ctrlLabelValue = '';
+                }
                 $recordTitle = self::getProcessedValue(
                     $table,
                     $ctrlLabel,
-                    (string)($row[$ctrlLabel] ?? ''),
+                    (string)$ctrlLabelValue,
                     0,
                     false,
                     false,

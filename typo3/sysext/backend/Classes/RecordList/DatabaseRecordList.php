@@ -1139,7 +1139,7 @@ class DatabaseRecordList
             } elseif ($fCol === 'icon') {
                 $icon = $this->iconFactory
                     ->getIconForRecord($table, $row, IconSize::SMALL)
-                    ->setTitle(BackendUtility::getRecordIconAltText($row, $table))
+                    ->setTitle(BackendUtility::getRecordIconAltText($row, $table, false))
                     ->render();
                 $theData[$fCol] = ''
                     . ($indent ? '<span class="indent indent-inline-block" style="--indent-level: ' . $indent . '"></span> ' : '')

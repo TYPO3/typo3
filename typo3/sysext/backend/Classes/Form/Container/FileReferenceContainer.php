@@ -219,7 +219,7 @@ class FileReferenceContainer extends AbstractContainer
             . '-' . self::FILE_REFERENCE_TABLE
             . '-' . ($databaseRow['uid'] ?? 0);
 
-        $altText = BackendUtility::getRecordIconAltText($databaseRow, self::FILE_REFERENCE_TABLE);
+        $altText = BackendUtility::getRecordIconAltText($databaseRow, self::FILE_REFERENCE_TABLE, false);
 
         // Renders a thumbnail for the header
         $thumbnail = '';
@@ -252,7 +252,7 @@ class FileReferenceContainer extends AbstractContainer
                                 'width="' . $processedImage->getProperty('width') . '" ' .
                                 'height="' . $processedImage->getProperty('height') . '" ' .
                                 'alt="" ' .
-                                'title="' . $altText . '" ' .
+                                'title="' . htmlspecialchars($altText) . '" ' .
                                 'loading="lazy">';
                         }
                     }

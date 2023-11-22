@@ -321,7 +321,7 @@ class InlineRecordContainer extends AbstractContainer
         return '
             <button class="form-irre-header-cell form-irre-header-button" ' . $ariaAttributesString . '>
                 <div class="form-irre-header-icon" id="' . $objectId . '_iconcontainer">
-                    ' . $this->iconFactory->getIconForRecord($foreignTable, $record, IconSize::SMALL)->setTitle(BackendUtility::getRecordIconAltText($record, $foreignTable))->render() . '
+                    ' . $this->iconFactory->getIconForRecord($foreignTable, $record, IconSize::SMALL)->setTitle(BackendUtility::getRecordIconAltText($record, $foreignTable, false))->render() . '
                 </div>
                 <div class="form-irre-header-body"><span id="' . $objectId . '_label">' . $recordTitle . '</span></div>
             </button>

@@ -115,13 +115,13 @@ final readonly class MovePageController
             'targetHasSubpages' => $this->pageHasSubpages($targetPid),
             'element' => [
                 'record' => $elementRow,
-                'recordTooltip' => BackendUtility::getRecordIconAltText($elementRow, 'pages'),
+                'recordTooltip' => BackendUtility::getRecordIconAltText($elementRow, 'pages', false),
                 'recordTitle' => BackendUtility::getRecordTitle('pages', $elementRow),
                 'recordPath' => BackendUtility::getRecordPath($pageIdToMove, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),
             ],
             'target' => [
                 'record' => $targetRow,
-                'recordTooltip' => BackendUtility::getRecordIconAltText($targetRow, 'pages'),
+                'recordTooltip' => BackendUtility::getRecordIconAltText($targetRow, 'pages', false),
                 'recordTitle' => BackendUtility::getRecordTitle('pages', $targetRow),
                 'recordPath' => BackendUtility::getRecordPath($targetPid, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),
             ],
