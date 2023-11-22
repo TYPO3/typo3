@@ -17,10 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
@@ -147,13 +150,15 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
     {
         $src = (string)$this->arguments['src'];
         if (($src === '' && $this->arguments['image'] === null) || ($src !== '' && $this->arguments['image'] !== null)) {
-            throw new Exception('You must either specify a string src or a File object.', 1382284106);
+            throw new Exception($this->getExceptionMessage('You must either specify a string src or a File object.'), 1382284106);
         }
 
         if ((string)$this->arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
             throw new Exception(
-                'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
-                . ' as a valid image file extension and can not be processed.',
+                $this->getExceptionMessage(
+                    'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
+                    . ' as a valid image file extension and can not be processed.',
+                ),
                 1618989190
             );
         }
@@ -209,14 +214,28 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
             }
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
-            throw new Exception($e->getMessage(), 1509741911, $e);
+            throw new Exception($this->getExceptionMessage($e->getMessage()), 1509741911, $e);
         } catch (\UnexpectedValueException $e) {
             // thrown if a file has been replaced with a folder
-            throw new Exception($e->getMessage(), 1509741912, $e);
+            throw new Exception($this->getExceptionMessage($e->getMessage()), 1509741912, $e);
         } catch (\InvalidArgumentException $e) {
             // thrown if file storage does not exist
-            throw new Exception($e->getMessage(), 1509741914, $e);
+            throw new Exception($this->getExceptionMessage($e->getMessage()), 1509741914, $e);
         }
         return $this->tag->render();
+    }
+
+    protected function getExceptionMessage(string $detailedMessage): string
+    {
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $request = $renderingContext->getRequest();
+        if ($request instanceof RequestInterface) {
+            $currentContentObject = $request->getAttribute('currentContentObject');
+            if ($currentContentObject instanceof ContentObjectRenderer) {
+                return sprintf('Unable to render image tag in "%s": %s', $currentContentObject->currentRecord, $detailedMessage);
+            }
+        }
+        return "Unable to render image tag: $detailedMessage";
     }
 }

@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
+namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Uri;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -36,7 +36,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
     }
 
@@ -44,34 +44,34 @@ final class ImageViewHelperTest extends FunctionalTestCase
     {
         return [
             [
-                '<f:image />',
-                1382284106,
-                'Unable to render image tag: You must either specify a string src or a File object.',
+                '<f:uri.image />',
+                1460976233,
+                'Unable to render image uri: You must either specify a string src or a File object.',
             ],
             [
-                '<f:image src="" />',
-                1382284106,
-                'Unable to render image tag: You must either specify a string src or a File object.',
+                '<f:uri.image src="" />',
+                1460976233,
+                'Unable to render image uri: You must either specify a string src or a File object.',
             ],
             [
-                '<f:image src="something" />',
-                1509741911,
-                'Unable to render image tag: Folder "/something/" does not exist.',
+                '<f:uri.image src="something" />',
+                1509741907,
+                'Unable to render image uri: Folder "/something/" does not exist.',
             ],
             [
-                '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
-                1509741914,
-                'Unable to render image tag: File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
+                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
+                1509741910,
+                'Unable to render image uri: File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
             ],
             [
-                '<f:image src="fileadmin/image.jpg" />',
-                1509741912,
-                'Unable to render image tag: Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
+                '<f:uri.image src="fileadmin/image.jpg" />',
+                1509741908,
+                'Unable to render image uri: Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
             ],
             [
-                '<f:image src="something" fileExtension="dummy" />',
-                1618989190,
-                'Unable to render image tag: The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
+                '<f:uri.image src="something" fileExtension="dummy" />',
+                1618992262,
+                'Unable to render image uri: The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
             ],
         ];
     }
@@ -95,34 +95,34 @@ final class ImageViewHelperTest extends FunctionalTestCase
     {
         return [
             [
-                '<f:image />',
-                1382284106,
-                'Unable to render image tag in "tt_content:123": You must either specify a string src or a File object.',
+                '<f:uri.image />',
+                1460976233,
+                'Unable to render image uri in "tt_content:123": You must either specify a string src or a File object.',
             ],
             [
-                '<f:image src="" />',
-                1382284106,
-                'Unable to render image tag in "tt_content:123": You must either specify a string src or a File object.',
+                '<f:uri.image src="" />',
+                1460976233,
+                'Unable to render image uri in "tt_content:123": You must either specify a string src or a File object.',
             ],
             [
-                '<f:image src="something" />',
-                1509741911,
-                'Unable to render image tag in "tt_content:123": Folder "/something/" does not exist.',
+                '<f:uri.image src="something" />',
+                1509741907,
+                'Unable to render image uri in "tt_content:123": Folder "/something/" does not exist.',
             ],
             [
-                '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
-                1509741914,
-                'Unable to render image tag in "tt_content:123": File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
+                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
+                1509741910,
+                'Unable to render image uri in "tt_content:123": File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
             ],
             [
-                '<f:image src="fileadmin/image.jpg" />',
-                1509741912,
-                'Unable to render image tag in "tt_content:123": Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
+                '<f:uri.image src="fileadmin/image.jpg" />',
+                1509741908,
+                'Unable to render image uri in "tt_content:123": Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
             ],
             [
-                '<f:image src="something" fileExtension="dummy" />',
-                1618989190,
-                'Unable to render image tag in "tt_content:123": The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
+                '<f:uri.image src="something" fileExtension="dummy" />',
+                1618992262,
+                'Unable to render image uri in "tt_content:123": The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
             ],
         ];
     }
@@ -154,20 +154,20 @@ final class ImageViewHelperTest extends FunctionalTestCase
     {
         return [
             'crop false' => [
-                '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="false" />',
-                '@^<img src="typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg" width="300" height="500" alt="" />$@',
+                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="false" />',
+                '@^typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg$@',
             ],
             'crop null' => [
-                '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="null" />',
-                '@^<img src="typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg" width="300" height="500" alt="" />$@',
+                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="null" />',
+                '@^typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg$@',
             ],
             'crop as array' => [
-                '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="{\'x\': 200, \'y\': 200, \'width\': 200, \'height\': 200}" />',
-                '@^<img src="typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg" width="300" height="500" alt="" />$@',
+                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="{\'x\': 200, \'y\': 200, \'width\': 200, \'height\': 200}" />',
+                '@^typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg$@',
             ],
             'jpg file extension' => [
-                '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="null" fileExtension="jpg" />',
-                '@^<img src="typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg" width="300" height="500" alt="" />$@',
+                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="null" fileExtension="jpg" />',
+                '@^typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg$@',
             ],
         ];
     }
