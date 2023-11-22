@@ -42,6 +42,6 @@ The options of this command in detail:
 -  `-s, --statusCode[=STATUSCODE]  Cleanup redirects matching provided status code(s) (multiple values allowed)`
 -  `-a, --days[=DAYS]              Cleanup redirects older than provided number of days`
 -  `-c, --hitCount[=HITCOUNT]      Cleanup redirects matching hit counts lower than given number`
--  `-p, --path[=PATH]              Cleanup redirects matching given path (as database like expression)>`
+-  `-p, --path[=PATH]              Cleanup redirects matching given path (as database like expression)`
 
 .. index:: Backend, CLI, Frontend, ext:redirects
