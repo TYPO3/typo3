@@ -358,7 +358,7 @@ class TreeController
         $prefix = '';
         $nameSourceField = 'title';
         $visibleText = $page['title'];
-        $tooltip = BackendUtility::titleAttribForPages($page, '', false);
+        $tooltip = BackendUtility::titleAttribForPages($page, '', false, $this->useNavTitle);
         if ($pageId !== 0) {
             $icon = $this->iconFactory->getIconForRecord('pages', $page, IconSize::SMALL);
         } else {

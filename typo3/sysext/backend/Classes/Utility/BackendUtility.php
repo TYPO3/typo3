@@ -1124,9 +1124,10 @@ class BackendUtility
      * @param array $row Input must be a page row ($row) with the proper fields set (be sure - send the full range of fields for the table)
      * @param string $perms_clause This is used to get the record path of the shortcut page, if any (and doktype==4)
      * @param bool $includeAttrib If $includeAttrib is set, then the 'title=""' attribute is wrapped about the return value, which is in any case htmlspecialchar()'ed already
+     * @param bool $preferNavTitle Prefers the 'nav_title' if available over the 'title' (nessesary for Tree with options.pageTree.showNavTitle = 1)
      * @return string
      */
-    public static function titleAttribForPages($row, $perms_clause = '', $includeAttrib = true)
+    public static function titleAttribForPages($row, $perms_clause = '', $includeAttrib = true, $preferNavTitle = false)
     {
         if (!isset($row['uid'])) {
             return '';
@@ -1134,8 +1135,13 @@ class BackendUtility
         $lang = static::getLanguageService();
         $parts = [];
         $parts[] = 'id=' . $row['uid'];
+        if ($preferNavTitle && trim($row['nav_title'] ?? '') !== '') {
+            $parts[] = $row['nav_title'];
+        } else {
+            $parts[] = $row['title'];
+        }
         if ($row['uid'] === 0) {
-            $out = htmlspecialchars($parts[0]);
+            $out = htmlspecialchars(implode(' - ', $parts));
             return $includeAttrib ? 'title="' . $out . '"' : $out;
         }
         switch (VersionState::tryFrom($row['t3ver_state'] ?? 0)) {
