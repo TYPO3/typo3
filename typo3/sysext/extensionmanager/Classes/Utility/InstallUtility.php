@@ -21,6 +21,7 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
+use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
@@ -37,7 +38,6 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -92,7 +92,7 @@ class InstallUtility implements LoggerAwareInterface
         $backup = $this->bootService->makeCurrent($container);
         // Reload cache files and Typo3LoadedExtensions
         $this->opcodeCacheService->clearAllActive();
-        ExtensionManagementUtility::loadExtLocalconf(false);
+        $container->get(ExtLocalconfFactory::class)->loadUncached();
         $tcaFactory = $container->get(TcaFactory::class);
         $GLOBALS['TCA'] = $tcaFactory->create();
         Bootstrap::loadExtTables(false);

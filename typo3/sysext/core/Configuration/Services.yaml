@@ -170,6 +170,11 @@ services:
     arguments:
       $runtimeCache: '@cache.runtime'
 
+  TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory:
+    public: true
+    arguments:
+      $codeCache: '@cache.core'
+
   TYPO3\CMS\Core\Configuration\Tca\TcaFactory:
     public: true
     arguments:

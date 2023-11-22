@@ -25,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -74,7 +75,7 @@ class CacheWarmupCommand extends Command
         $allowExtFileCaches = true;
         if ($group === 'system' || $group === 'all') {
             $allowExtFileCaches = false;
-            ExtensionManagementUtility::createExtLocalconfCacheEntry($coreCache);
+            $container->get(ExtLocalconfFactory::class)->createCacheEntry();
             ExtensionManagementUtility::createExtTablesCacheEntry($coreCache);
         }
         // Perform a full boot to load localconf (requirement for extensions and for TCA loading).

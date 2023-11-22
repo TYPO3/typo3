@@ -37,24 +37,9 @@ class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtili
         return static::$packageManager;
     }
 
-    public static function getExtLocalconfCacheIdentifier(): string
-    {
-        return parent::getExtLocalconfCacheIdentifier();
-    }
-
-    public static function loadSingleExtLocalconfFiles(): void
-    {
-        parent::loadSingleExtLocalconfFiles();
-    }
-
     public static function resetExtTablesWasReadFromCacheOnceBoolean(): void
     {
         self::$extTablesWasReadFromCacheOnce = false;
-    }
-
-    public static function createExtLocalconfCacheEntry(FrontendInterface $cache): void
-    {
-        parent::createExtLocalconfCacheEntry($cache);
     }
 
     public static function createExtTablesCacheEntry(FrontendInterface $cache): void

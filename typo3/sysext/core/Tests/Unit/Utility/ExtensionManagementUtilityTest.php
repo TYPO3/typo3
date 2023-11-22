@@ -1136,140 +1136,6 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /////////////////////////////////////////
-    // Tests concerning loadExtLocalconf
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function loadExtLocalconfDoesNotReadFromCacheIfCachingIsDenied(): void
-    {
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->expects(self::never())->method('getCache');
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $packageManager = $this->createMockPackageManagerWithMockPackage(StringUtility::getUniqueId());
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        ExtensionManagementUtility::loadExtLocalconf(false);
-    }
-
-    /**
-     * @test
-     */
-    public function loadExtLocalconfRequiresCacheFileIfExistsAndCachingIsAllowed(): void
-    {
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->method('getCache')->willReturn($mockCache);
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->method('has')->willReturn(true);
-        $mockCache->expects(self::once())->method('require');
-        ExtensionManagementUtility::loadExtLocalconf(true);
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning loadSingleExtLocalconfFiles
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function loadSingleExtLocalconfFilesRequiresExtLocalconfFileRegisteredInGlobalTypo3LoadedExt(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1340559079);
-
-        $extensionName = StringUtility::getUniqueId('foo');
-        $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
-        $extLocalconfLocation = $packageManager->getPackage($extensionName)->getPackagePath() . 'ext_localconf.php';
-        file_put_contents($extLocalconfLocation, "<?php\n\nthrow new RuntimeException('', 1340559079);\n\n?>");
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        ExtensionManagementUtilityAccessibleProxy::loadSingleExtLocalconfFiles();
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning createExtLocalconfCacheEntry
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function createExtLocalconfCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtLocalconf(): void
-    {
-        $extensionName = StringUtility::getUniqueId('foo');
-        $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
-        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
-        $extLocalconfLocation = $packageManager->getPackage($extensionName)->getPackagePath() . 'ext_localconf.php';
-        $uniqueStringInLocalconf = StringUtility::getUniqueId('foo');
-        file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInLocalconf), self::anything());
-        ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry($mockCache);
-    }
-
-    /**
-     * @test
-     */
-    public function createExtLocalconfCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtLocalconfExists(): void
-    {
-        $extensionName = StringUtility::getUniqueId('foo');
-        $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
-        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockCache->expects(self::once())
-            ->method('set')
-            ->with(self::anything(), self::logicalNot(self::stringContains($extensionName)), self::anything());
-        ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry($mockCache);
-    }
-
-    /**
-     * @test
-     */
-    public function createExtLocalconfCacheEntryWritesCacheEntryWithNoTags(): void
-    {
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
-        $packageManager = $this->createMockPackageManagerWithMockPackage(StringUtility::getUniqueId());
-        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry($mockCache);
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning getExtLocalconfCacheIdentifier
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function getExtLocalconfCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix(): void
-    {
-        $prefix = 'ext_localconf_';
-        $identifier = ExtensionManagementUtilityAccessibleProxy::getExtLocalconfCacheIdentifier();
-        self::assertStringStartsWith($prefix, $identifier);
-        $sha1 = str_replace($prefix, '', $identifier);
-        self::assertEquals(40, strlen($sha1));
-    }
-
-    /////////////////////////////////////////
     // Tests concerning loadExtTables
     /////////////////////////////////////////
     /**
@@ -1284,7 +1150,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $packageManager = $this->createMockPackageManagerWithMockPackage(StringUtility::getUniqueId());
         ExtensionManagementUtility::setPackageManager($packageManager);
-        ExtensionManagementUtility::loadExtLocalconf(false);
+        ExtensionManagementUtility::loadExtTables(false);
     }
 
     /**

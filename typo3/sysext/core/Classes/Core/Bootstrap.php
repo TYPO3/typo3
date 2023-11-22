@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
@@ -149,7 +150,7 @@ class Bootstrap
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
         $tcaFactory = $container->get(TcaFactory::class);
         ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
-        static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
+        $container->get(ExtLocalconfFactory::class)->load();
         static::unsetReservedGlobalVariables();
         $GLOBALS['TCA'] = $tcaFactory->get();
         static::checkEncryptionKey();
@@ -300,20 +301,6 @@ class Bootstrap
         }
 
         return new ComposerPackageArtifact(dirname($composerInstallersPath));
-    }
-
-    /**
-     * Load ext_localconf of extensions
-     *
-     * @param bool $allowCaching
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public static function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true, FrontendInterface $coreCache = null)
-    {
-        if ($allowCaching) {
-            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
-        }
-        ExtensionManagementUtility::loadExtLocalconf($allowCaching, $coreCache);
     }
 
     /**

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -125,7 +126,11 @@ class BootService
         $cacheCore = $container->get('cache.core');
         $tcaFactory = $container->get(TcaFactory::class);
         ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
-        Bootstrap::loadTypo3LoadedExtAndExtLocalconf($allowCaching, $cacheCore);
+        if ($allowCaching) {
+            $container->get(ExtLocalconfFactory::class)->load();
+        } else {
+            $container->get(ExtLocalconfFactory::class)->loadUncached();
+        }
         Bootstrap::unsetReservedGlobalVariables();
         $GLOBALS['BE_USER'] = $beUserBackup;
         if ($allowCaching) {
