@@ -32,7 +32,7 @@ showForgotPassword
          bool
 
    Description
-         If set, the section in the template to display the link to the forget
+         If set, the section in the template to display the link to the forgot
          password dialogue is visible.
 
          .. important::
@@ -279,7 +279,7 @@ dateFormat
          Y-m-d H:i
 
    Description
-         Format for the link is valid until message (forget password email)
+         Format for the link is valid until message (forgot password email)
 
 
 
@@ -437,7 +437,7 @@ forgotLinkHashValidTime
          {$styles.content.loginform.forgotLinkHashValidTime}
 
    Description
-         Time in hours how long the link for forget password is valid
+         Time in hours how long the link for forgot password is valid
 
 
 

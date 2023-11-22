@@ -11,9 +11,9 @@ styles.content.loginform {
   # cat=Frontend Login/01_Storage/101; type=options [0,1,2,3,4,255]; label= Recursive: If set, also subfolder at configured recursive levels of the User Storage Page will be used
   recursive = 0
 
-  # cat=Frontend Login/03_Features/100; type=boolean; label= Display Password Recovery Link: If set, the section in the template to display the link to the forget password dialogue is visible. DEPRECATED will be removed with 12. Use showForgotPassword instead.
+  # cat=Frontend Login/03_Features/100; type=boolean; label= Display Password Recovery Link: If set, the section in the template to display the link to the forgot password dialogue is visible. DEPRECATED will be removed with 12. Use showForgotPassword instead.
   showForgotPasswordLink = 0
-  # cat=Frontend Login/03_Features/100; type=boolean; label= Display Password Recovery Link: If set, the section in the template to display the link to the forget password dialogue is visible.
+  # cat=Frontend Login/03_Features/100; type=boolean; label= Display Password Recovery Link: If set, the section in the template to display the link to the forgot password dialogue is visible.
   showForgotPassword = 0
   # cat=Frontend Login/03_Features/101; type=boolean; label= Display Remember Login Option: If set, the section in the template to display the option to remember the login (with a cookie) is visible.
   showPermaLogin = 0
@@ -26,7 +26,7 @@ styles.content.loginform {
   emailFromName =
   # cat=Frontend Login/04_EMail/102; type=string; label= Reply to email Address: Reply to address used in the change password emails
   replyToEmail =
-  # cat=Frontend Login/04_Email/103; type=string; label= Date format: Format for the link is valid until message (forget password email)
+  # cat=Frontend Login/04_Email/103; type=string; label= Date format: Format for the link is valid until message (forgot password email)
   dateFormat = Y-m-d H:i
 
   email {
@@ -53,7 +53,7 @@ styles.content.loginform {
   # cat=Frontend Login/05_Redirects/106; type=boolean; label= Disable Redirect: If set redirecting is disabled
   redirectDisable = 0
 
-  # cat=Frontend Login/06_Security/100; type=int+; label= Time in hours how long the link for forget password is valid: How many hours the link for forget password is valid
+  # cat=Frontend Login/06_Security/100; type=int+; label= Time in hours how long the link for forgot password is valid: How many hours the link for forgot password is valid
   forgotLinkHashValidTime = 12
   # cat=Frontend Login/06_Security/101; type=int+; label= Minimum amount of characters, when setting a new password: Minimum length of the new password a user sets
   newPasswordMinLength = 6
