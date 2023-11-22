@@ -100,6 +100,13 @@
 			<trans-unit id="view_redirect" resname="view_redirect">
 				<source>View redirect</source>
 			</trans-unit>
+
+			<trans-unit id="labels.delete.title" resname="labels.delete.title">
+				<source>Delete redirects</source>
+			</trans-unit>
+			<trans-unit id="labels.delete.message" resname="labels.delete.message">
+				<source>Are you sure you want to delete all marked redirects?</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
