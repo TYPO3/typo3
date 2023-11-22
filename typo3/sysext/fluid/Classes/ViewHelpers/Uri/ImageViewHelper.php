@@ -17,10 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
+use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -136,11 +139,18 @@ final class ImageViewHelper extends AbstractViewHelper
         $absolute = $arguments['absolute'];
 
         if (($src === '' && $image === null) || ($src !== '' && $image !== null)) {
-            throw new Exception('You must either specify a string src or a File object.', 1460976233);
+            throw new Exception(self::getExceptionMessage('You must either specify a string src or a File object.', $renderingContext), 1460976233);
         }
 
         if ((string)$arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$arguments['fileExtension'])) {
-            throw new Exception('The extension ' . $arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.', 1618992262);
+            throw new Exception(
+                self::getExceptionMessage(
+                    'The extension ' . $arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
+                    . ' as a valid image file extension and can not be processed.',
+                    $renderingContext
+                ),
+                1618992262
+            );
         }
 
         try {
@@ -176,14 +186,27 @@ final class ImageViewHelper extends AbstractViewHelper
             return $imageService->getImageUri($processedImage, $absolute);
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
-            throw new Exception($e->getMessage(), 1509741907, $e);
+            throw new Exception(self::getExceptionMessage($e->getMessage(), $renderingContext), 1509741907, $e);
         } catch (\UnexpectedValueException $e) {
             // thrown if a file has been replaced with a folder
-            throw new Exception($e->getMessage(), 1509741908, $e);
+            throw new Exception(self::getExceptionMessage($e->getMessage(), $renderingContext), 1509741908, $e);
         } catch (\InvalidArgumentException $e) {
             // thrown if file storage does not exist
-            throw new Exception($e->getMessage(), 1509741910, $e);
+            throw new Exception(self::getExceptionMessage($e->getMessage(), $renderingContext), 1509741910, $e);
         }
+    }
+
+    protected static function getExceptionMessage(string $detailedMessage, RenderingContextInterface $renderingContext): string
+    {
+        /** @var RenderingContext $renderingContext */
+        $request = $renderingContext->getRequest();
+        if ($request instanceof RequestInterface) {
+            $currentContentObject = $request->getAttribute('currentContentObject');
+            if ($currentContentObject instanceof ContentObjectRenderer) {
+                return sprintf('Unable to render image uri in "%s": %s', $currentContentObject->currentRecord, $detailedMessage);
+            }
+        }
+        return sprintf('Unable to render image uri: %s', $detailedMessage);
     }
 
     protected static function getImageService(): ImageService
