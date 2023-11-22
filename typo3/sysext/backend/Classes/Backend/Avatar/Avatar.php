@@ -81,7 +81,8 @@ class Avatar
         $avatarImage = $this->getImage($backendUser, $size);
         return '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '" ' .
             'width="' . (int)$avatarImage->getWidth() . '" ' .
-            'height="' . (int)$avatarImage->getHeight() . '" />';
+            'height="' . (int)$avatarImage->getHeight() . '" ' .
+            'alt="" />';
     }
 
     /**

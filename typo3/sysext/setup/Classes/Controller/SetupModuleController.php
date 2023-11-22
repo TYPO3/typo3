@@ -543,7 +543,8 @@ class SetupModuleController
                             $icon = '<span class="avatar avatar-size-medium mb-2"><span class="avatar-image">' .
                                 '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
                                 ' width="' . (int)$avatarImage->getWidth() . '"' .
-                                ' height="' . (int)$avatarImage->getHeight() . '" />' .
+                                ' height="' . (int)$avatarImage->getHeight() . '"' .
+                                ' alt="" />' .
                                 '</span></span>';
                             $html .= '<span id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
                         }
