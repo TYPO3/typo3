@@ -249,7 +249,7 @@ class GroupElement extends AbstractFormElement
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
-        if ((!isset($config['hideSuggest']) || (bool)$config['hideSuggest'] !== true)) {
+        if (!isset($config['hideSuggest']) || (bool)$config['hideSuggest'] !== true) {
             $html[] =   '<div class="form-wizards-items-top">';
             $html[] =       '<div class="autocomplete t3-form-suggest-container">';
             $html[] =           '<div class="input-group">';
