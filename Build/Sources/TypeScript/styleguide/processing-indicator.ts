@@ -25,7 +25,7 @@ Icons.getIcon('spinner-circle', Icons.sizes.small).then((spinner: string): void 
     e.preventDefault();
 
     const originalIcon = target.querySelector('span').outerHTML;
-    const disabledButton = target.parentNode.querySelector('button.disabled');
+    const disabledButton = target.parentNode.querySelector('button.disabled') as HTMLButtonElement;
 
     target.querySelector('span').outerHTML = spinner;
     target.classList.add('disabled');
@@ -45,7 +45,9 @@ Icons.getIcon('spinner-circle', Icons.sizes.small).then((spinner: string): void 
       }
       // Set button states
       target.querySelector('.t3js-icon').outerHTML = originalIcon;
+      target.hidden = true;
       disabledButton.classList.remove('disabled');
+      disabledButton.hidden = false;
     }).catch((error: AjaxResponse): void => {
       // Action failed, reset to its original state
       NProgress.done();
