@@ -101,6 +101,15 @@
         width: 15ch;
     }
 
+    .col-fieldname {
+        min-width: 200px;
+        width: 200px;
+
+        @include media-breakpoint-up('md') {
+            width: 250px;
+        }
+    }
+
     .col-recordtitle {
         width: 250px;
     }

@@ -40,7 +40,7 @@
 				<source>Are you sure you want to delete all marked records from the table '%s'?</source>
 			</trans-unit>
 			<trans-unit id="showInfo" resname="showInfo">
-				<source>Display information</source>
+				<source>Info</source>
 			</trans-unit>
 			<trans-unit id="edit" resname="edit">
 				<source>Edit record</source>

@@ -571,6 +571,15 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="show_item.php.viewItem" resname="show_item.php.viewItem">
 				<source>View Item</source>
 			</trans-unit>
+			<trans-unit id="show_item.php.fieldValues" resname="show_item.php.fieldValues">
+				<source>Field values</source>
+			</trans-unit>
+			<trans-unit id="show_item.php.general" resname="show_item.php.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="show_item.php.references" resname="show_item.php.references">
+				<source>References</source>
+			</trans-unit>
 			<trans-unit id="show_item.php.referencesToThisItem" resname="show_item.php.referencesToThisItem">
 				<source>References to this item</source>
 			</trans-unit>
@@ -629,7 +638,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>FTP AREA</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.missing_record" resname="show_item.php.missing_record">
-				<source>Missing</source>
+				<source>Record is missing!</source>
 			</trans-unit>
 			<trans-unit id="db_new.php.pagetitle" resname="db_new.php.pagetitle">
 				<source>New record</source>
