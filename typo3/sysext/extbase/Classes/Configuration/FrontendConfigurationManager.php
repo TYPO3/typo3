@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -199,6 +200,9 @@ class FrontendConfigurationManager implements SingletonInterface
         $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'];
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
         try {
+            if (!($frontendTypoScript instanceof FrontendTypoScript)) {
+                throw new \RuntimeException('Missing frontend.typoscript attribute in request.', 1700926754);
+            }
             return $frontendTypoScript->getSetupArray();
         } catch (\RuntimeException) {
             // This Extbase bootstrap is executed in a context where TSFE did not calculate TS.
