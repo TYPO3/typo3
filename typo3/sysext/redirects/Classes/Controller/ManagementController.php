@@ -75,6 +75,7 @@ class ManagementController
                 $request,
             )
         );
+        $languageService = $this->getLanguageService();
         $view = $event->getView();
         $view->assignMultiple([
             'redirects' => $event->getRedirects(),
@@ -84,6 +85,20 @@ class ManagementController
             'demand' => $event->getDemand(),
             'showHitCounter' => $event->getShowHitCounter(),
             'pagination' => $this->preparePagination($event->getDemand()),
+            'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                'idField' => 'uid',
+                'tableName' => 'sys_redirect',
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            ]),
+            'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                'idField' => 'uid',
+                'tableName' => 'sys_redirect',
+                'title' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.title'),
+                'content' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.message'),
+                'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
+                'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            ]),
         ]);
         return $view->renderResponse('Management/Overview');
     }

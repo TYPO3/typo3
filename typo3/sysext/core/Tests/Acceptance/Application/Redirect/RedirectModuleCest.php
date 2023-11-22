@@ -58,11 +58,11 @@ final class RedirectModuleCest
 
     public function canEditRecordFromListView(ApplicationTester $I): void
     {
-        $sourceHost = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(2)');
-        $sourcePath = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(3) > a');
+        $sourceHost = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(3)');
+        $sourcePath = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(4) > a');
 
         $I->amGoingTo('test edit on source path');
-        $I->click('table.table-striped > tbody > tr > td:nth-child(3) > a');
+        $I->click('table.table-striped > tbody > tr > td:nth-child(4) > a');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Edit Redirect "' . $sourceHost . ', ' . $sourcePath . '" on root level');
         $I->click('div.module-docheader .btn.t3js-editform-close');
@@ -70,7 +70,7 @@ final class RedirectModuleCest
         $I->canSee('Redirect Management', 'h1');
 
         $I->amGoingTo('test edit on edit button');
-        $I->click('table.table-striped > tbody > tr > td:nth-child(7) > div > a:nth-child(2)');
+        $I->click('table.table-striped > tbody > tr > td:nth-child(8) > div > a:nth-child(2)');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Edit Redirect "' . $sourceHost . ', ' . $sourcePath . '" on root level');
         $I->click('div.module-docheader .btn.t3js-editform-close');
