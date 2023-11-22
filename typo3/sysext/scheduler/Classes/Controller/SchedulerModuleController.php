@@ -794,6 +794,7 @@ class SchedulerModuleController
                 'langLabel' => $this->getLanguageService()->sL($fieldInfo['label'] ?? ''),
                 'browser' => $fieldInfo['browser'] ?? '',
                 'pageTitle' => $fieldInfo['pageTitle'] ?? '',
+                'pageUid' => $fieldInfo['pageUid'] ?? '',
                 'type' => $fieldInfo['type'] ?? '',
                 'description' => $fieldInfo['description'] ?? '',
             ];
