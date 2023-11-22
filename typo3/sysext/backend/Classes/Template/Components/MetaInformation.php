@@ -233,7 +233,7 @@ class MetaInformation
             // If there IS a real page
             $theIcon = $iconFactory
                 ->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)
-                ->setTitle(BackendUtility::getRecordIconAltText($pageRecord))
+                ->setTitle(BackendUtility::getRecordIconAltText($pageRecord, 'pages', false))
                 ->render();
             // Make Icon:
             $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);

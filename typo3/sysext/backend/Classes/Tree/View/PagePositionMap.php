@@ -179,7 +179,7 @@ class PagePositionMap
             // The line with the icon and title:
             $icon = $this->iconFactory
                 ->getIconForRecord('pages', $dat['row'], Icon::SIZE_SMALL)
-                ->setTitle(BackendUtility::getRecordIconAltText($dat['row'], 'pages'))
+                ->setTitle(BackendUtility::getRecordIconAltText($dat['row'], 'pages', false))
                 ->render();
 
             $lines[] = '<span class="text-nowrap">' . $icon . ' ' .

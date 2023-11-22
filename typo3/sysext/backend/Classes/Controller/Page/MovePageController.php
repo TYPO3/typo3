@@ -84,7 +84,7 @@ final class MovePageController
         $elRow = BackendUtility::getRecordWSOL('pages', $this->moveUid);
         // Headerline: Icon, record title:
         $assigns['record'] = $elRow;
-        $assigns['recordTooltip'] = BackendUtility::getRecordIconAltText($elRow, 'pages');
+        $assigns['recordTooltip'] = BackendUtility::getRecordIconAltText($elRow, 'pages', false);
         $assigns['recordTitle'] = BackendUtility::getRecordTitle('pages', $elRow, true);
         // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
         $assigns['makeCopyChecked'] = (bool)$this->makeCopy;
