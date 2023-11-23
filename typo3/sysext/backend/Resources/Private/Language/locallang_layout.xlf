@@ -6,9 +6,6 @@
 			<trans-unit id="title" resname="title">
 				<source>Page content</source>
 			</trans-unit>
-			<trans-unit id="advancedFunctions" resname="advancedFunctions">
-				<source>Advanced functions</source>
-			</trans-unit>
 			<trans-unit id="noEditItems" resname="noEditItems">
 				<source>Sorry, you do not have permissions to edit items on this page!</source>
 			</trans-unit>

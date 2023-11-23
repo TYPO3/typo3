@@ -200,6 +200,7 @@ class FormResultCompiler
             'FormEngine.refreshRequiredContent' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.content'),
             'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
             'FormEngine.minCharactersLeft' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minCharactersLeft'),
+            'labels.contextMenu.open' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open'),
             'label.confirm.delete_record.content' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.content'),
             'label.confirm.delete_record.title' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title'),
             'buttons.confirm.delete_record.no' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no'),

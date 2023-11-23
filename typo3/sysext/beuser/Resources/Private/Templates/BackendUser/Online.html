@@ -34,6 +34,7 @@
                                             data-contextmenu-table="be_users"
                                             data-contextmenu-uid="{onlineUser.backendUser.uid}"
                                             title="{f:if(condition: '{onlineUser.backendUser.description}', then: '{onlineUser.backendUser.description} ')}(id={onlineUser.backendUser.uid})"
+                                            aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                                         >
                                             <backend:avatar backendUser="{onlineUser.backendUser.uid}" showIcon="true" />
                                         </button>
