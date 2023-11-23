@@ -127,7 +127,7 @@ class CheckNamespaceIntegrity
             // therefor the variable gets passed as reference here
             $namespace = $this->getExtensionTestsNamespaces($systemExtensionKey, $relativeFilename);
         }
-        $ignorePartValues= ['Classes', 'Tests'];
+        $ignorePartValues = ['Classes', 'Tests'];
         if ($namespace !== '') {
             $parts = explode('/', $relativeFilename);
             if (in_array($parts[0], $ignorePartValues, true)) {
@@ -171,7 +171,7 @@ class CheckNamespaceIntegrity
         string $systemExtensionKey,
         string $fullComposerJsonFilePath,
         string &$relativeFileName,
-        bool $autoloadDev=false
+        bool $autoloadDev = false
     ): string {
         $autoloadKey = 'autoload';
         if ($autoloadDev) {
@@ -223,9 +223,11 @@ class CheckNamespaceIntegrity
                     __DIR__ . '/../../typo3/sysext/core/Tests/Acceptance',
                 ]
             )
-            ->notPath('typo3/sysext/core/Tests/Acceptance/Support/_generated')
-            // exclude some files not providing classes, so no namespace information is available
-            ->exclude('Configuration')
+            ->notPath(patterns: [
+                'typo3/sysext/core/Tests/Acceptance/Support/_generated',
+                // exclude some files not providing classes, so no namespace information is available
+                'typo3/sysext/*/Configuration',
+            ])
             ->notName('ext_emconf.php')
             // this test extension tests missing autoload infos, so of course it will break the integrity check
             ->exclude('Core/Fixtures/test_extension')
