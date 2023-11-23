@@ -17,7 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Connection as DoctrineConnection;
+use TYPO3\CMS\Core\Database\Connection as Typo3Connection;
 
 /**
  * Provides functionality to generate and execute row based bulk INSERT statements.
@@ -39,7 +40,7 @@ class BulkInsertQuery
     protected $columns;
 
     /**
-     * @var Connection
+     * @var DoctrineConnection
      */
     protected $connection;
 
@@ -66,12 +67,12 @@ class BulkInsertQuery
     /**
      * Constructor.
      *
-     * @param Connection $connection The connection to use for query execution.
+     * @param DoctrineConnection $connection The connection to use for query execution.
      * @param string $table The name of the table to insert rows into.
      * @param string[] $columns The names of the columns to insert values into.
      *                          Can be left empty to allow arbitrary row inserts based on the table's column order.
      */
-    public function __construct(Connection $connection, string $table, array $columns = [])
+    public function __construct(DoctrineConnection $connection, string $table, array $columns = [])
     {
         $this->connection = $connection;
         $this->table = $connection->quoteIdentifier($table);
@@ -168,7 +169,7 @@ class BulkInsertQuery
                 continue;
             }
 
-            $this->types[] = null;
+            $this->types[] = Typo3Connection::PARAM_STR;
         }
 
         $this->values[] = $valueSet;

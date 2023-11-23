@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
@@ -25,11 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BulkInsertTest extends UnitTestCase
 {
-    /**
-     * @var Connection
-     */
-    protected $connection;
-
+    protected Connection&MockObject $connection;
     protected ?AbstractPlatform $platform;
     protected string $testTable = 'testTable';
 
@@ -167,7 +164,7 @@ final class BulkInsertTest extends UnitTestCase
 
         self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
         self::assertSame(['bar', 'baz'], $query->getParameters());
-        self::assertSame([null, null], $query->getParameterTypes());
+        self::assertSame([Connection::PARAM_STR, Connection::PARAM_STR], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -175,7 +172,7 @@ final class BulkInsertTest extends UnitTestCase
 
         self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
         self::assertSame(['bar', 'baz'], $query->getParameters());
-        self::assertSame([null, Connection::PARAM_BOOL], $query->getParameterTypes());
+        self::assertSame([Connection::PARAM_STR, Connection::PARAM_BOOL], $query->getParameterTypes());
     }
 
     /**
@@ -189,7 +186,7 @@ final class BulkInsertTest extends UnitTestCase
 
         self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
         self::assertSame(['bar', 'baz'], $query->getParameters());
-        self::assertSame([null, null], $query->getParameterTypes());
+        self::assertSame([Connection::PARAM_STR, Connection::PARAM_STR], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -197,7 +194,7 @@ final class BulkInsertTest extends UnitTestCase
 
         self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
         self::assertSame(['bar', 'baz'], $query->getParameters());
-        self::assertSame([null, Connection::PARAM_INT], $query->getParameterTypes());
+        self::assertSame([Connection::PARAM_STR, Connection::PARAM_INT], $query->getParameterTypes());
     }
 
     /**
@@ -211,7 +208,7 @@ final class BulkInsertTest extends UnitTestCase
 
         self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
         self::assertSame(['bar', 'baz'], $query->getParameters());
-        self::assertSame([null, null], $query->getParameterTypes());
+        self::assertSame([Connection::PARAM_STR, Connection::PARAM_STR], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -239,7 +236,7 @@ final class BulkInsertTest extends UnitTestCase
             (string)$query
         );
         self::assertSame(['bar', 'baz', 'bar', 'baz', 'bar', 'baz', 'bar', 'baz'], $query->getParameters());
-        self::assertSame([null, null, null, null, null, null, null, null], $query->getParameterTypes());
+        self::assertSame([Connection::PARAM_STR, Connection::PARAM_STR, Connection::PARAM_STR, Connection::PARAM_STR, Connection::PARAM_STR, Connection::PARAM_STR, Connection::PARAM_STR, Connection::PARAM_STR], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -262,8 +259,8 @@ final class BulkInsertTest extends UnitTestCase
                 Connection::PARAM_BOOL,
                 Connection::PARAM_INT,
                 Connection::PARAM_BOOL,
-                null,
-                null,
+                Connection::PARAM_STR,
+                Connection::PARAM_STR,
                 Connection::PARAM_INT,
                 Connection::PARAM_BOOL,
             ],
