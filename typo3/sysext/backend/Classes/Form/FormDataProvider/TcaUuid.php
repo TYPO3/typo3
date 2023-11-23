@@ -31,19 +31,18 @@ class TcaUuid implements FormDataProviderInterface
             if (($fieldConfig['config']['type'] ?? '') !== 'uuid') {
                 continue;
             }
-
             // Skip if field is already filled with a valid uuid
             if (Uuid::isValid((string)($result['databaseRow'][$fieldName] ?? ''))) {
                 continue;
             }
-
-            $result['databaseRow'][$fieldName] = (string)match ((int)($fieldConfig['config']['version'] ?? 0)) {
-                6 => Uuid::v6(),
-                7 => Uuid::v7(),
-                default => Uuid::v4()
-            };
+            if ($fieldConfig['config']['required'] ?? true) {
+                $result['databaseRow'][$fieldName] = (string)match ((int)($fieldConfig['config']['version'] ?? 0)) {
+                    6 => Uuid::v6(),
+                    7 => Uuid::v7(),
+                    default => Uuid::v4()
+                };
+            }
         }
-
         return $result;
     }
 }

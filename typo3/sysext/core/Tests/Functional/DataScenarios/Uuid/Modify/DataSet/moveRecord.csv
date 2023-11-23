@@ -1,0 +1,18 @@
+"pages"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug"
+,1,0,256,0,0,0,0,0,0,0,0,"FunctionalTest","/"
+,50,0,512,0,0,0,0,0,0,0,0,"Second Root Page","/"
+,51,50,128,0,0,0,0,0,0,0,0,"DataHandlerTest in second tree","/data-handler"
+,52,51,128,0,0,0,0,0,0,0,0,"Relations in second tree","/data-handler/relations"
+,88,1,256,0,0,0,0,0,0,0,0,"DataHandlerTest","/data-handler"
+,89,88,256,0,0,0,0,0,0,0,0,"Relations","/data-handler/relations"
+,90,88,512,0,0,0,0,0,0,0,0,"Target","/data-handler/target"
+,91,88,256,0,1,89,89,0,0,0,0,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations"
+,92,88,256,0,2,89,89,0,0,0,0,"[Translate to Deutsch:] Relations","/data-handler/translate-to-deutsch-relations"
+"test_uuid"
+,"uid","pid","sorting","title","unique_identifier","hidden","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid"
+,1,90,256,"First born","8b078a23-f640-4a4f-b826-0834d10560ad",0,0,0,0,0,0,0
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"02aa95a647ed365ffeeac881bd1af449","pages",91,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"14f90231b8565c61decd2aeaebea6034","pages",92,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
