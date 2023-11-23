@@ -355,8 +355,8 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
             ->getConnectionForTable('tt_content')->getDatabasePlatform();
         $replacements = [
             '%quoteCharacter%' => $databasePlatform->getStringLiteralQuoteCharacter(),
-            '%commentStart%' => $databasePlatform->getSqlCommentStartString(),
-            '%commentEnd%' => $databasePlatform->getSqlCommentEndString(),
+            '%commentStart%' => '--',
+            '%commentEnd%' => "\n",
         ];
         $injector = str_replace(array_keys($replacements), $replacements, $injector);
         $settings = $this->prepareSettings($settings, $replacements);

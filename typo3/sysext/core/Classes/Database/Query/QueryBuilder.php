@@ -456,12 +456,17 @@ class QueryBuilder
      */
     public function count(string $item): QueryBuilder
     {
-        $countExpr = $this->getConnection()->getDatabasePlatform()->getCountExpression(
+        $countExpr = $this->getCountExpression(
             $item === '*' ? $item : $this->quoteIdentifier($item)
         );
         $this->concreteQueryBuilder->select($countExpr);
 
         return $this;
+    }
+
+    protected function getCountExpression(string $column): string
+    {
+        return 'COUNT(' . $column . ')';
     }
 
     /**
