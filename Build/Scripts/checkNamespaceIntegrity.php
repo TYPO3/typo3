@@ -129,7 +129,7 @@ class CheckNamespaceIntegrity
         } elseif (str_starts_with($relativeFilename, 'Tests/')) {
             $namespace = $this->getExtensionTestsNamespaces($systemExtensionKey, $relativeFilename);
         }
-        $ignorePartValues= ['Classes', 'Tests'];
+        $ignorePartValues = ['Classes', 'Tests'];
         if ($namespace !== '') {
             $parts = explode('/', $relativeFilename);
             if (in_array($parts[0], $ignorePartValues, true)) {
@@ -173,7 +173,7 @@ class CheckNamespaceIntegrity
         string $systemExtensionKey,
         string $fullComposerJsonFilePath,
         string $relativeFileName,
-        bool $autoloadDev=false
+        bool $autoloadDev = false
     ): string {
         $autoloadKey = 'autoload';
         if ($autoloadDev) {
@@ -223,6 +223,8 @@ class CheckNamespaceIntegrity
             )
             ->notPath([
                 'typo3/sysext/core/Tests/Acceptance/Support/_generated',
+                // exclude some files not providing classes, so no namespace information is available
+                'typo3/sysext/*/Configuration',
             ])
             // @todo remove fixture extensions exclude and handle properly after fixture extensions has been streamlined
             ->notPath([
@@ -233,6 +235,9 @@ class CheckNamespaceIntegrity
                 'Core/Fixtures/test_extension',
                 'Fixtures/testclasses',
             ])
+            ->notName('ext_emconf.php')
+            // this test extension tests missing autoload infos, so of course it will break the integrity check
+            ->exclude('Core/Fixtures/test_extension')
             ->name('*.php')
             ->sortByName();
     }
