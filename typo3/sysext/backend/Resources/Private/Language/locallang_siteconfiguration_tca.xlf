@@ -180,6 +180,9 @@
 			<trans-unit id="site_errorhandling.errorHandler.php" resname="site_errorhandling.errorHandler.php">
 				<source>PHP Class (must implement the PageErrorHandlerInterface)</source>
 			</trans-unit>
+			<trans-unit id="site_errorhandling.errorHandler.loginRedirect" resname="site_errorhandling.errorHandler.loginRedirect">
+				<source>Redirect to login page</source>
+			</trans-unit>
 			<trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate">
 				<source>Fluid Template File</source>
 			</trans-unit>
@@ -200,6 +203,18 @@
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN">
 				<source>ErrorHandler Class Target (FQCN)</source>
+			</trans-unit>
+			<trans-unit id="site_errorhandling.loginRedirectTarget" resname="site_errorhandling.loginRedirectTarget">
+				<source>Target page where login process is handled</source>
+			</trans-unit>
+			<trans-unit id="site_errorhandling.loginRedirectParameter" resname="site_errorhandling.loginRedirectParameter">
+				<source>URL parameter for redirect</source>
+			</trans-unit>
+			<trans-unit id="site_errorhandling.loginRedirectParameter.return_url" resname="site_errorhandling.loginRedirectParameter.return_url">
+				<source>return_url (used by e.g. ext:felogin)</source>
+			</trans-unit>
+			<trans-unit id="site_errorhandling.loginRedirectParameter.redirect_url" resname="site_errorhandling.loginRedirectParameter.redirect_url">
+				<source>redirect_url (used by e.g. ext:oidc or ext:felogin)</source>
 			</trans-unit>
 			<trans-unit id="site_errorhandling.errorPhpClassFQCN.placeholder" resname="site_errorhandling.errorPhpClassFQCN.placeholder">
 				<source>Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</source>

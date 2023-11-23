@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
+use TYPO3\CMS\Core\Error\PageErrorHandler\RedirectLoginErrorHandler;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -43,6 +44,7 @@ class Site implements SiteInterface
     protected const ERRORHANDLER_TYPE_PAGE = 'Page';
     protected const ERRORHANDLER_TYPE_FLUID = 'Fluid';
     protected const ERRORHANDLER_TYPE_PHP = 'PHP';
+    protected const ERRORHANDLER_TYPE_LOGIN_REDIRECT = 'LoginRedirect';
 
     /**
      * @var string
@@ -305,6 +307,8 @@ class Site implements SiteInterface
                 return GeneralUtility::makeInstance(FluidPageErrorHandler::class, $statusCode, $errorHandlerConfiguration);
             case self::ERRORHANDLER_TYPE_PAGE:
                 return GeneralUtility::makeInstance(PageContentErrorHandler::class, $statusCode, $errorHandlerConfiguration);
+            case self::ERRORHANDLER_TYPE_LOGIN_REDIRECT:
+                return GeneralUtility::makeInstance(RedirectLoginErrorHandler::class, $statusCode, $errorHandlerConfiguration);
             case self::ERRORHANDLER_TYPE_PHP:
                 $handler = GeneralUtility::makeInstance($errorHandlerConfiguration['errorPhpClassFQCN'], $statusCode, $errorHandlerConfiguration);
                 // Check if the interface is implemented
