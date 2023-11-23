@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
+namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -27,9 +27,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class TcaFlexProcessTest extends UnitTestCase
+final class TcaFlexProcessTest extends FunctionalTestCase
 {
     protected BackendUserAuthentication&MockObject $backendUserMock;
 
@@ -41,8 +41,8 @@ final class TcaFlexProcessTest extends UnitTestCase
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = '';
 
         // Some tests call FormDataCompiler for sub elements. Those tests have functional test characteristics.
-        // This is ok for the time being, but this settings takes care only parts of the compiler are called
-        // to have less dependencies.
+        // This is ok for the time being, but these settings takes care only parts of the compiler are called
+        // to have fewer dependencies.
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [];
     }
 

@@ -18,43 +18,30 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaSelectTreeAjaxFieldDataTest extends UnitTestCase
 {
-    protected TcaSelectTreeAjaxFieldData $subject;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = new TcaSelectTreeAjaxFieldData();
-    }
-
     #[Test]
     public function compileReturnsIncomingData(): void
     {
-        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
-        $orderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
-
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaSelectTreeAjaxFieldData'] = [];
-
         $input = ['foo'];
-
-        self::assertEquals($input, $this->subject->compile($input));
+        $subject = new TcaSelectTreeAjaxFieldData(
+            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+        );
+        self::assertEquals($input, $subject->compile($input));
     }
 
     #[Test]
     public function compileReturnsResultChangedByDataProvider(): void
     {
-        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
-        $orderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
-
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaSelectTreeAjaxFieldData'] = [
             \stdClass::class => [],
         ];
@@ -67,24 +54,23 @@ final class TcaSelectTreeAjaxFieldDataTest extends UnitTestCase
                 }
             }
         );
-
-        self::assertEquals(['foo'], $this->subject->compile([]));
+        $subject = new TcaSelectTreeAjaxFieldData(
+            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+        );
+        self::assertEquals(['foo'], $subject->compile([]));
     }
 
     #[Test]
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
-        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
-        $orderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
-
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1485299408);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaSelectTreeAjaxFieldData'] = [
             \stdClass::class => [],
         ];
-
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1485299408);
-
-        $this->subject->compile([]);
+        $subject = new TcaSelectTreeAjaxFieldData(
+            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+        );
+        $subject->compile([]);
     }
 }

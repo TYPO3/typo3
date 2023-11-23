@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\FormDataGroup;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A data provider group for site and language configuration.
@@ -29,21 +29,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * It's similar to "fullDatabaseRecord", with some unused TCA types
  * kicked out and some own data providers for record data and inline handling.
  */
-class SiteConfigurationDataGroup implements FormDataGroupInterface
+#[Autoconfigure(public: true, shared: false)]
+readonly class SiteConfigurationDataGroup implements FormDataGroupInterface
 {
-    /**
-     * Compile form data
-     *
-     * @param array $result Initialized result array
-     * @return array Result filled with data
-     * @throws \UnexpectedValueException
-     */
-    public function compile(array $result)
+    public function __construct(
+        private OrderedProviderList $orderedProviderList,
+    ) {}
+
+    public function compile(array $result): array
     {
-        $orderedProviderList = GeneralUtility::makeInstance(OrderedProviderList::class);
-        $orderedProviderList->setProviderList(
+        $this->orderedProviderList->setProviderList(
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['siteConfiguration']
         );
-        return $orderedProviderList->compile($result);
+        return $this->orderedProviderList->compile($result);
     }
 }
