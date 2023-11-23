@@ -539,7 +539,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             // If an already localized record is fetched, the "uid" of the default language is used
             // as the record is re-fetched in the DataMapper
             if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
+                && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] ?? 0) > 0
                 && $languageOfCurrentRecord > 0
             ) {
                 $row['_LOCALIZED_UID'] = $row['uid'];
