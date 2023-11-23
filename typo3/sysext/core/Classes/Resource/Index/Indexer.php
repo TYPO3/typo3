@@ -161,17 +161,25 @@ class Indexer implements LoggerAwareInterface
     }
 
     /**
-     * Since by now all files in filesystem have been looked at it is save to assume,
-     * that files that are in indexed but not touched in this run are missing
+     * Since by now all files in filesystem have been looked at, it is safe to assume,
+     * that files that are indexed, but not touched in this run, are missing
      */
     protected function detectMissingFiles()
     {
-        $indexedNotExistentFiles = $this->getFileIndexRepository()->findInStorageAndNotInUidList(
+        $allCurrentFiles = $this->getFileIndexRepository()->findInStorageAndNotInUidList(
             $this->storage,
-            $this->identifiedFileUids
+            []
         );
 
-        foreach ($indexedNotExistentFiles as $record) {
+        foreach ($allCurrentFiles as $record) {
+            // Check if the record retrieved from the database was associated
+            // with an existing file.
+            // If yes: All is good, file is in index and in database.
+            // If no: Database record may need to be marked as removed (extra check!)
+            if (in_array($record['uid'], $this->identifiedFileUids, true)) {
+                continue;
+            }
+
             if (!$this->storage->hasFile($record['identifier'])) {
                 $this->getFileIndexRepository()->markFileAsMissing($record['uid']);
             }
