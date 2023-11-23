@@ -24,67 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaUuidTest extends UnitTestCase
 {
-    public function resultArrayDataProvider(): \Generator
-    {
-        yield 'Only handles TCA type "uuid" records' => [
-            [
-                'command' => 'new',
-                'tableName' => 'aTable',
-                'databaseRow' => [
-                    'aField' => '',
-                ],
-                'processedTca' => [
-                    'columns' => [
-                        'aField' => [
-                            'config' => [
-                                'type' => 'input',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            '',
-        ];
-        yield 'Does not handle records with valid uuid value' => [
-            [
-                'command' => 'edit',
-                'tableName' => 'aTable',
-                'databaseRow' => [
-                    'aField' => 'b3190536-1431-453e-afbb-25b8c5022513',
-                ],
-                'processedTca' => [
-                    'columns' => [
-                        'aField' => [
-                            'config' => [
-                                'type' => 'uuid',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'b3190536-1431-453e-afbb-25b8c5022513',
-        ];
-        yield 'Does handle records with invalid uuid value' => [
-            [
-                'command' => 'edit',
-                'tableName' => 'aTable',
-                'databaseRow' => [
-                    'aField' => '_-invalid-_',
-                ],
-                'processedTca' => [
-                    'columns' => [
-                        'aField' => [
-                            'config' => [
-                                'type' => 'uuid',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'b3190536-1431-453e-afbb-25b8c5022513',
-        ];
-    }
-
     #[Test]
     public function addDataDoesOnlyHandleTypeUuid(): void
     {
@@ -177,6 +116,30 @@ final class TcaUuidTest extends UnitTestCase
 
         self::assertFalse(Uuid::isValid($input['databaseRow']['aField']));
         self::assertTrue(Uuid::isValid((new TcaUuid())->addData($input)['databaseRow']['aField']));
+    }
+
+    #[Test]
+    public function addDataDoesNotCreateUuidValueOnRequiredFalse(): void
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'uuid',
+                            'required' => false,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertEmpty((new TcaUuid())->addData($input)['databaseRow']['aField']);
     }
 
     #[Test]

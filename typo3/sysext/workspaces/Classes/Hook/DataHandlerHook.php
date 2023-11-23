@@ -350,7 +350,7 @@ class DataHandlerHook
 
         $schema = $this->tcaSchemaFactory->get($table);
         // Find fields to keep
-        $keepFields = $this->getUniqueFields($schema);
+        $keepFields = $this->getFieldNamesToKeep($schema);
         // Sorting needs to be exchanged for moved records
         if ($schema->hasCapability(TcaSchemaCapability::SortByField) && $versionState !== VersionState::MOVE_POINTER) {
             $keepFields[] = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
@@ -830,11 +830,12 @@ class DataHandlerHook
     }
 
     /**
-     * Returns all fieldnames from a table which have the unique evaluation type set.
+     * Returns all fieldnames from a table which have the unique evaluation type set,
+     * that should not exchange the content between LIVE and the versioned record.
      *
      * @return string[] Array of fieldnames
      */
-    protected function getUniqueFields(TcaSchema $schema): array
+    protected function getFieldNamesToKeep(TcaSchema $schema): array
     {
         $listArr = [];
         foreach ($schema->getFields() as $field) {
@@ -843,6 +844,8 @@ class DataHandlerHook
                 if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
                     $listArr[] = $field->getName();
                 }
+            } elseif ($field->isType(TableColumnType::UUID)) {
+                $listArr[] = $field->getName();
             }
         }
         return $listArr;
