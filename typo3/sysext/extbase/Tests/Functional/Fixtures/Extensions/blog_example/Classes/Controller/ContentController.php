@@ -30,11 +30,7 @@ use TYPO3Tests\BlogExample\Domain\Repository\TtContentRepository;
 class ContentController extends ActionController
 {
     private TtContentRepository $contentRepository;
-
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = JsonView::class;
+    protected string $defaultViewObjectName = JsonView::class;
 
     private DataMapFactory $dataMapFactory;
 

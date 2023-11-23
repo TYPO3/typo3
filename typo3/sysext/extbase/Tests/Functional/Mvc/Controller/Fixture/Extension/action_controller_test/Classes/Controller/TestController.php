@@ -33,8 +33,8 @@ use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
 class TestController extends ActionController
 {
     public $view;
-    public $arguments;
-    public $actionMethodName;
+    public Arguments $arguments;
+    public string $actionMethodName;
     public RequestInterface $request;
 
     public function getArguments(): Arguments

@@ -30,10 +30,7 @@ use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
  */
 class UpdateFromTerController extends AbstractController
 {
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = JsonView::class;
+    protected string $defaultViewObjectName = JsonView::class;
 
     public function __construct(
         protected readonly RemoteRegistry $remoteRegistry,

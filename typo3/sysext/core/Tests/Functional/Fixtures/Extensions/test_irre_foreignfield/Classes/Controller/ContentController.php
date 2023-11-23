@@ -30,11 +30,7 @@ use TYPO3Tests\TestIrreForeignfield\Service\QueueService;
 class ContentController extends AbstractController
 {
     private ContentRepository $contentRepository;
-
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = JsonView::class;
+    protected string $defaultViewObjectName = JsonView::class;
 
     public function __construct(
         DataMapFactory $dataMapFactory,

@@ -37,11 +37,7 @@ class QueueController extends ActionController
     protected QueueService $queueService;
     private ContentRepository $contentRepository;
     private PersistenceManagerInterface $persistenceManager;
-
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = JsonView::class;
+    protected string $defaultViewObjectName = JsonView::class;
 
     public function __construct(
         DataMapFactory $dataMapFactory,

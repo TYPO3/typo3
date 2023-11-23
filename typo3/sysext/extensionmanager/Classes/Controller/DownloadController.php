@@ -36,10 +36,7 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  */
 class DownloadController extends AbstractController
 {
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = JsonView::class;
+    protected string $defaultViewObjectName = JsonView::class;
 
     /**
      * @var JsonView

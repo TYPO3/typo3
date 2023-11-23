@@ -19,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -59,33 +60,23 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 abstract class ActionController implements ControllerInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    protected $responseFactory;
+    protected ResponseFactoryInterface $responseFactory;
+    protected StreamFactoryInterface $streamFactory;
 
     /**
-     * @var StreamFactoryInterface
+     * @internal
      */
-    protected $streamFactory;
+    protected ReflectionService $reflectionService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected $reflectionService;
+    protected HashService $hashService;
 
     /**
-     * @var HashService
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected $hashService;
-
-    /**
-     * @var ViewResolverInterface
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    private $viewResolver;
+    private ViewResolverInterface $viewResolver;
 
     /**
      * The current view, as resolved by resolveView()
@@ -98,99 +89,73 @@ abstract class ActionController implements ControllerInterface
      * The default view object to use if none of the resolved views can render
      * a response for the current request.
      *
-     * @var string
+     * @var class-string<ViewInterface>
      */
-    protected $defaultViewObjectName = TemplateView::class;
+    protected string $defaultViewObjectName = TemplateView::class;
 
     /**
      * Name of the action method
-     *
-     * @var string
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @var non-empty-string
+     * @internal
      */
-    protected $actionMethodName = 'indexAction';
+    protected string $actionMethodName = 'indexAction';
 
     /**
      * Name of the special error action method which is called in case of errors
-     *
-     * @var string
      */
-    protected $errorMethodName = 'errorAction';
+    protected string $errorMethodName = 'errorAction';
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
-     */
-    protected $mvcPropertyMappingConfigurationService;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * The current request.
-     */
+    protected MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService;
+    protected EventDispatcherInterface $eventDispatcher;
     protected RequestInterface $request;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
-     */
-    protected $uriBuilder;
+    protected UriBuilder $uriBuilder;
 
     /**
      * Contains the settings of the current extension
-     *
-     * @var array
      */
-    protected $settings;
+    protected array $settings;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected $validatorResolver;
+    protected ValidatorResolver $validatorResolver;
+
+    protected Arguments $arguments;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
+     * @internal
      */
-    protected $arguments;
+    protected ConfigurationManagerInterface $configurationManager;
 
     /**
-     * @var ConfigurationManagerInterface
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected $configurationManager;
+    private PropertyMapper $propertyMapper;
 
     /**
-     * @var PropertyMapper
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    private $propertyMapper;
-
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     private FlashMessageService $internalFlashMessageService;
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     private ExtensionService $internalExtensionService;
 
-    final public function injectResponseFactory(ResponseFactoryInterface $responseFactory)
+    final public function injectResponseFactory(ResponseFactoryInterface $responseFactory): void
     {
         $this->responseFactory = $responseFactory;
     }
 
-    final public function injectStreamFactory(StreamFactoryInterface $streamFactory)
+    final public function injectStreamFactory(StreamFactoryInterface $streamFactory): void
     {
         $this->streamFactory = $streamFactory;
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
         $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
@@ -198,38 +163,38 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    public function injectValidatorResolver(ValidatorResolver $validatorResolver)
+    public function injectValidatorResolver(ValidatorResolver $validatorResolver): void
     {
         $this->validatorResolver = $validatorResolver;
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    public function injectViewResolver(ViewResolverInterface $viewResolver)
+    public function injectViewResolver(ViewResolverInterface $viewResolver): void
     {
         $this->viewResolver = $viewResolver;
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    public function injectReflectionService(ReflectionService $reflectionService)
+    public function injectReflectionService(ReflectionService $reflectionService): void
     {
         $this->reflectionService = $reflectionService;
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    public function injectHashService(HashService $hashService)
+    public function injectHashService(HashService $hashService): void
     {
         $this->hashService = $hashService;
     }
 
-    public function injectMvcPropertyMappingConfigurationService(MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService)
+    public function injectMvcPropertyMappingConfigurationService(MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService): void
     {
         $this->mvcPropertyMappingConfigurationService = $mvcPropertyMappingConfigurationService;
     }
@@ -240,7 +205,7 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     public function injectPropertyMapper(PropertyMapper $propertyMapper): void
     {
@@ -248,7 +213,7 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     final public function injectInternalFlashMessageService(FlashMessageService $flashMessageService): void
     {
@@ -256,7 +221,7 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     final public function injectInternalExtensionService(ExtensionService $extensionService): void
     {
@@ -269,7 +234,7 @@ abstract class ActionController implements ControllerInterface
      * Override this method to solve tasks which all actions have in
      * common.
      */
-    protected function initializeAction() {}
+    protected function initializeAction(): void {}
 
     /**
      * Implementation of the arguments initialization in the action controller:
@@ -277,10 +242,10 @@ abstract class ActionController implements ControllerInterface
      *
      * Don't override this method - use initializeAction() instead.
      *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
+     * @throws InvalidArgumentTypeException
      * @see initializeArguments()
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     protected function initializeActionMethodArguments(): void
     {
@@ -311,7 +276,7 @@ abstract class ActionController implements ControllerInterface
      * - Model-based validators (validate annotations in the model)
      * - Custom model validator classes
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     protected function initializeActionMethodValidators(): void
     {
@@ -351,9 +316,9 @@ abstract class ActionController implements ControllerInterface
      * Collects the base validators which were defined for the data type of each
      * controller argument and adds them to the argument's validator chain.
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    public function initializeControllerArgumentsBaseValidators()
+    public function initializeControllerArgumentsBaseValidators(): void
     {
         /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
@@ -367,9 +332,7 @@ abstract class ActionController implements ControllerInterface
     /**
      * Handles an incoming request and returns a response object
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
@@ -412,11 +375,9 @@ abstract class ActionController implements ControllerInterface
      * You can add assets with this method without worrying about duplicates, if
      * for example you do this in a plugin that gets used multiple time on a page.
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected function renderAssetsForRequest($request): void
+    protected function renderAssetsForRequest(RequestInterface $request): void
     {
         if (!$this->view instanceof AbstractTemplateView) {
             // Only AbstractTemplateView (from Fluid engine, so this includes all TYPO3 Views based
@@ -440,12 +401,11 @@ abstract class ActionController implements ControllerInterface
     /**
      * Resolves and checks the current action method name
      *
-     * @return string Method name of the current action
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException if the action specified in the request object does not exist (and if there's no default action either).
+     * @throws NoSuchActionException if the action specified in the request object does not exist (and if there's no default action either).
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected function resolveActionMethodName()
+    protected function resolveActionMethodName(): string
     {
         $actionMethodName = $this->request->getControllerActionName() . 'Action';
         if (!method_exists($this, $actionMethodName)) {
@@ -461,7 +421,7 @@ abstract class ActionController implements ControllerInterface
      * response object. If the action doesn't return anything and a valid
      * view exists, the view is rendered automatically.
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     protected function callActionMethod(RequestInterface $request): ResponseInterface
     {
@@ -498,7 +458,7 @@ abstract class ActionController implements ControllerInterface
      * Prepares a view for the current action.
      * By default, this method tries to locate a view with a name matching the current action.
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     protected function resolveView(): ViewInterface
     {
@@ -534,7 +494,7 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     protected function setViewConfiguration(ViewInterface $view): void
     {
@@ -570,10 +530,8 @@ abstract class ActionController implements ControllerInterface
      *
      * We clear the page cache by default on an error as well, as we need to make sure the
      * data is re-evaluated when the user changes something.
-     *
-     * @return ResponseInterface
      */
-    protected function errorAction()
+    protected function errorAction(): ResponseInterface
     {
         $this->addErrorFlashMessage();
         if (($response = $this->forwardToReferringRequest()) !== null) {
@@ -588,9 +546,9 @@ abstract class ActionController implements ControllerInterface
      * If an error occurred during this request, this adds a flash message describing the error to the flash
      * message container.
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected function addErrorFlashMessage()
+    protected function addErrorFlashMessage(): void
     {
         $errorFlashMessage = $this->getErrorFlashMessage();
         if ($errorFlashMessage !== false) {
@@ -603,11 +561,9 @@ abstract class ActionController implements ControllerInterface
      * display no flash message at all on errors. Override this to customize
      * the flash message in your action controller.
      *
-     * @return string|bool The flash message or FALSE if no flash message should be set
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * Returns either the flash message or "false" if no flash message should be set
      */
-    protected function getErrorFlashMessage()
+    protected function getErrorFlashMessage(): bool|string
     {
         return 'An error occurred while trying to call ' . static::class . '->' . $this->actionMethodName . '()';
     }
@@ -618,7 +574,7 @@ abstract class ActionController implements ControllerInterface
      * call this method before you have finished the necessary business logic!
      *
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     protected function forwardToReferringRequest(): ?ResponseInterface
     {
@@ -665,32 +621,30 @@ abstract class ActionController implements ControllerInterface
      * We may add all validation error messages to a log file in the future,
      * but for security reasons (@see #54074) we do not return these here.
      *
-     * @return string
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected function getFlattenedValidationErrorMessage()
+    protected function getFlattenedValidationErrorMessage(): string
     {
-        $outputMessage = 'Validation failed while trying to call ' . static::class . '->' . $this->actionMethodName . '().' . PHP_EOL;
-        return $outputMessage;
+        return 'Validation failed while trying to call ' . static::class . '->' . $this->actionMethodName . '().' . PHP_EOL;
     }
 
     /**
      * Creates a Message object and adds it to the FlashMessageQueue.
      *
-     * @param string $messageTitle Optional message title
-     * @param ContextualFeedbackSeverity $severity
-     * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
      * @throws \InvalidArgumentException if the message body is no string
-     * @see \TYPO3\CMS\Core\Messaging\FlashMessage
+     * @see FlashMessage
      */
-    public function addFlashMessage(string $messageBody, $messageTitle = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK, $storeInSession = true)
-    {
-        /* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+    public function addFlashMessage(
+        string $messageBody,
+        string $messageTitle = '',
+        ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK,
+        bool $storeInSession = true
+    ): void {
+        /* @var FlashMessage $flashMessage */
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
             $messageBody,
-            (string)$messageTitle,
+            $messageTitle,
             $severity,
             $storeInSession
         );
@@ -703,7 +657,7 @@ abstract class ActionController implements ControllerInterface
      *       create a flash message identifier from the current request. Users then should inject the flash message
      *       service themselves if needed.
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
     protected function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
     {
@@ -731,8 +685,15 @@ abstract class ActionController implements ControllerInterface
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      */
-    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303): ResponseInterface
-    {
+    protected function redirect(
+        ?string $actionName,
+        ?string $controllerName = null,
+        ?string $extensionName = null,
+        ?array $arguments = null,
+        ?int $pageUid = null,
+        $_ = null,
+        int $statusCode = 303
+    ): ResponseInterface {
         if ($controllerName === null) {
             $controllerName = $this->request->getControllerName();
         }
@@ -750,27 +711,24 @@ abstract class ActionController implements ControllerInterface
     /**
      * Redirects the web request to another uri.
      *
-     * @param mixed $uri A string representation of a URI
+     * @param string|UriInterface $uri A string representation of a URI
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
      */
-    protected function redirectToUri($uri, $_ = null, $statusCode = 303): ResponseInterface
+    protected function redirectToUri(string|UriInterface $uri, $_ = null, int $statusCode = 303): ResponseInterface
     {
-        $uri = $this->addBaseUriIfNecessary($uri);
+        $uri = $this->addBaseUriIfNecessary((string)$uri);
         return new RedirectResponse($uri, $statusCode);
     }
 
     /**
      * Adds the base uri if not already in place.
      *
-     * @param string $uri The URI
-     * @return string
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected function addBaseUriIfNecessary($uri)
+    protected function addBaseUriIfNecessary(string $uri): string
     {
-        return GeneralUtility::locationHeaderUrl((string)$uri);
+        return GeneralUtility::locationHeaderUrl($uri);
     }
 
     /**
@@ -779,17 +737,16 @@ abstract class ActionController implements ControllerInterface
      *
      * @param int $statusCode The HTTP status code
      * @param string $statusMessage A custom HTTP status message
-     * @param string $content Body content which further explains the status
-     * @return never
+     * @param string|null $content Body content which further explains the status
      * @throws PropagateResponseException
      */
-    public function throwStatus($statusCode, $statusMessage = null, $content = null)
+    public function throwStatus(int $statusCode, string $statusMessage = '', ?string $content = null): never
     {
         if ($content === null) {
             $content = $statusCode . ' ' . $statusMessage;
         }
         $response = $this->responseFactory
-            ->createResponse((int)$statusCode, (string)$statusMessage)
+            ->createResponse($statusCode, $statusMessage)
             ->withBody($this->streamFactory->createStream((string)$content));
         throw new PropagateResponseException($response, 1476045871);
     }
@@ -799,9 +756,9 @@ abstract class ActionController implements ControllerInterface
      *
      * @throws Exception\RequiredArgumentMissingException
      *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal
      */
-    protected function mapRequestArgumentsToControllerArguments()
+    protected function mapRequestArgumentsToControllerArguments(): void
     {
         /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
@@ -814,10 +771,7 @@ abstract class ActionController implements ControllerInterface
         }
     }
 
-    /**
-     * @param mixed $rawValue
-     */
-    private function setArgumentValue(Argument $argument, $rawValue): void
+    private function setArgumentValue(Argument $argument, mixed $rawValue): void
     {
         if ($rawValue === null) {
             $argument->setValue(null);
@@ -848,26 +802,22 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * Returns a response object with either the given html string or the current rendered view as content.
-     *
-     * @param string|null $html
      */
     protected function htmlResponse(string $html = null): ResponseInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8')
-            ->withBody($this->streamFactory->createStream((string)($html ?? $this->view->render())));
+            ->withBody($this->streamFactory->createStream(($html ?? $this->view->render())));
     }
 
     /**
      * Returns a response object with either the given json string or the current rendered
      * view as content. Mainly to be used for actions / controllers using the JsonView.
-     *
-     * @param string|null $json
      */
     protected function jsonResponse(string $json = null): ResponseInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/json; charset=utf-8')
-            ->withBody($this->streamFactory->createStream((string)($json ?? $this->view->render())));
+            ->withBody($this->streamFactory->createStream(($json ?? $this->view->render())));
     }
 }

@@ -33,11 +33,7 @@ use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 class BlogController extends ActionController
 {
     private BlogRepository $blogRepository;
-
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = JsonView::class;
+    protected string $defaultViewObjectName = JsonView::class;
 
     private DataMapFactory $dataMapFactory;
 
