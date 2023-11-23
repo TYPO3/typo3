@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase">
 		<header/>
 		<body>
+			<trans-unit id="converter.datetime.notrecognized" resname="converter.datetime.notrecognized">
+				<source>The date "%s" was not recognized (for format "%s").</source>
+			</trans-unit>
 			<trans-unit id="property.error" resname="property.error">
 				<source>Validation errors for property "%s"</source>
 			</trans-unit>

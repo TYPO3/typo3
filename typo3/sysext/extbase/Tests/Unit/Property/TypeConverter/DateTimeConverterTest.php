@@ -29,12 +29,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DateTimeConverterTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     protected DateTimeConverter $converter;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->converter = new DateTimeConverter();
+        $this->converter = $this->getAccessibleMock(DateTimeConverter::class, ['translateErrorMessage']);
     }
 
     #[Test]

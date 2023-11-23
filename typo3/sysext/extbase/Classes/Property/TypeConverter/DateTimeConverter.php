@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
 use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Converter which transforms from different input formats into DateTime objects.
@@ -128,12 +129,26 @@ class DateTimeConverter extends AbstractTypeConverter
             $date = $targetType::createFromFormat($dateFormat, $dateAsString);
         }
         if ($date === false) {
-            return new \TYPO3\CMS\Extbase\Validation\Error('The date "%s" was not recognized (for format "%s").', 1307719788, [$dateAsString, $dateFormat]);
+            return new \TYPO3\CMS\Extbase\Validation\Error(
+                $this->translateErrorMessage(
+                    'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:converter.datetime.notrecognized',
+                ),
+                1307719788,
+                [$dateAsString, $dateFormat]
+            );
         }
         if (is_array($source)) {
             $date = $this->overrideTimeIfSpecified($date, $source);
         }
         return $date;
+    }
+
+    /**
+     * Wrap static call to LocalizationUtility to simplify unit testing.
+     */
+    protected function translateErrorMessage(string $translateKey): string
+    {
+        return LocalizationUtility::translate($translateKey) ?? '';
     }
 
     /**
