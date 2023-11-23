@@ -151,7 +151,7 @@ class TableBuilder
 
         $column->setNotnull(!$item->allowNull);
         $column->setAutoincrement($item->autoIncrement);
-        $column->setComment($item->comment);
+        $column->setComment((string)$item->comment);
 
         // Set default value (unless it's an auto increment column)
         if ($item->hasDefaultValue && !$column->getAutoincrement()) {
