@@ -43,8 +43,7 @@
     <div class="card card-size-fixed-small">
         <f:render partial="Card/Header" arguments="{ title: 'Check TCA in ext_tables.php', subtitle: 'TCA', icon: 'EXT:install/Resources/Public/Icons/modules/install-check-extables.svg'}" />
         <div class="card-body">
-            <p class="card-text">Identify any extensions that are modifying the Table Control Array (TCA) in ext_tables.php. Changes made to the TCA can result in performance drawbacks.
-            </p>
+            <p class="card-text">Identify extensions that are modifying the Table Configuration Array (TCA) in <code>ext_tables.php</code>.</p>
         </div>
         <div class="card-footer">
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/tca-ext-tables-check.js">Check TCA&hellip;</button>
