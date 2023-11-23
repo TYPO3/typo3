@@ -28,16 +28,9 @@ class OnTheFly implements FormDataGroupInterface
     /**
      * @var string[]
      */
-    protected $providerList = [];
+    protected array $providerList = [];
 
-    /**
-     * Compile form data
-     *
-     * @param array $result Initialized result array
-     * @return array Result filled with data
-     * @throws \UnexpectedValueException
-     */
-    public function compile(array $result)
+    public function compile(array $result): array
     {
         if (empty($this->providerList)) {
             throw new \UnexpectedValueException(
@@ -45,21 +38,17 @@ class OnTheFly implements FormDataGroupInterface
                 1441108674
             );
         }
-
         foreach ($this->providerList as $providerClassName) {
             /** @var FormDataProviderInterface $provider */
             $provider = GeneralUtility::makeInstance($providerClassName);
-
             if (!$provider instanceof FormDataProviderInterface) {
                 throw new \UnexpectedValueException(
                     'Data provider ' . $providerClassName . ' must implement FormDataProviderInterface',
                     1441108719
                 );
             }
-
             $result = $provider->addData($result);
         }
-
         return $result;
     }
 
@@ -68,7 +57,7 @@ class OnTheFly implements FormDataGroupInterface
      *
      * @param array $list Given list of Provider class names
      */
-    public function setProviderList(array $list)
+    public function setProviderList(array $list): void
     {
         $this->providerList = $list;
     }

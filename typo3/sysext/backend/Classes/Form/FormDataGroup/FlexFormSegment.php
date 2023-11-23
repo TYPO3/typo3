@@ -15,28 +15,24 @@
 
 namespace TYPO3\CMS\Backend\Form\FormDataGroup;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A data provider group for flex form elements
  */
-class FlexFormSegment implements FormDataGroupInterface
+#[Autoconfigure(public: true, shared: false)]
+readonly class FlexFormSegment implements FormDataGroupInterface
 {
-    /**
-     * Compile form data
-     *
-     * @param array $result Initialized result array
-     * @return array Result filled with data
-     * @throws \UnexpectedValueException
-     */
-    public function compile(array $result)
+    public function __construct(
+        private OrderedProviderList $orderedProviderList,
+    ) {}
+
+    public function compile(array $result): array
     {
-        $orderedProviderList = GeneralUtility::makeInstance(OrderedProviderList::class);
-        $orderedProviderList->setProviderList(
+        $this->orderedProviderList->setProviderList(
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment']
         );
-
-        return $orderedProviderList->compile($result);
+        return $this->orderedProviderList->compile($result);
     }
 }

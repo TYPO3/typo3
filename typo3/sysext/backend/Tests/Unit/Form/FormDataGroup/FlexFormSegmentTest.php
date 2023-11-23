@@ -19,42 +19,29 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
+use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FlexFormSegmentTest extends UnitTestCase
 {
-    protected FlexFormSegment $subject;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = new FlexFormSegment();
-    }
-
     #[Test]
     public function compileReturnsIncomingData(): void
     {
-        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
-        $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
-
+        $subject = new FlexFormSegment(
+            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+        );
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [];
-
         $input = ['foo'];
-
-        self::assertEquals($input, $this->subject->compile($input));
+        self::assertEquals($input, $subject->compile($input));
     }
 
     #[Test]
     public function compileReturnsResultChangedByDataProvider(): void
     {
-        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
-        $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
-
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
             \stdClass::class => [],
         ];
@@ -67,24 +54,23 @@ final class FlexFormSegmentTest extends UnitTestCase
                 }
             }
         );
-
-        self::assertEquals(['foo'], $this->subject->compile([]));
+        $subject = new FlexFormSegment(
+            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+        );
+        self::assertEquals(['foo'], $subject->compile([]));
     }
 
     #[Test]
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
-        $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceMock);
-        $orderingServiceMock->method('orderByDependencies')->withAnyParameters()->willReturnArgument(0);
-
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1485299408);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
             \stdClass::class => [],
         ];
-
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1485299408);
-
-        $this->subject->compile([]);
+        $subject = new FlexFormSegment(
+            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+        );
+        $subject->compile([]);
     }
 }

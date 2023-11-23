@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Core\Service;
  *
  *    A depends on B, C depends on A, B is independent
  */
-class DependencyOrderingService
+readonly class DependencyOrderingService
 {
     /**
      * Order items by specified dependencies before/after
