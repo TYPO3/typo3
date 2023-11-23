@@ -29,7 +29,6 @@ final class FrontendGroupsVisibleFieldsTest extends FunctionalTestCase
         'title',
         'description',
         'subgroup',
-        'tx_extbase_type',
     ];
 
     /**
