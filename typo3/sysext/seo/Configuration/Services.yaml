@@ -15,5 +15,5 @@ services:
 
   TYPO3\CMS\Seo\Widgets\Provider\PagesWithoutDescriptionDataProvider:
     arguments:
-      $excludedDoktypes: [ 3, 4, 6, 7, 199, 254, 255 ]
+      $excludedDoktypes: [ 3, 4, 6, 7, 199, 254 ]
       $limit: 8
