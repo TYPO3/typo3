@@ -139,7 +139,7 @@ class SlugService implements LoggerAwareInterface
             $this->autoCreateRedirects = false;
         }
         $this->redirectTTL = (int)$settings->get('redirects.redirectTTL', 0);
-        $this->httpStatusCode = (int)$settings->get('httpStatusCode', 307);
+        $this->httpStatusCode = (int)$settings->get('redirects.httpStatusCode', 307);
     }
 
     protected function createCorrelationIds(int $pageId, CorrelationId $correlationId): void
