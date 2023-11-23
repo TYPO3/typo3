@@ -272,10 +272,9 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function inSetForPostgreSQL(): void
     {
         $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn('"');
 
         $series = [
-            ["'1'", Connection::PARAM_STR, "'1'"],
+            ['1', Connection::PARAM_STR, "'1'"],
             [',', Connection::PARAM_STR, "','"],
         ];
         $this->connectionMock->expects(self::exactly(2))->method('quote')
@@ -321,7 +320,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function inSetForSQLite(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $series = [
             [',', Connection::PARAM_STR, "','"],
@@ -353,7 +351,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function inSetForSQLiteWithQuoteCharactersInValue(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $series = [
             [',', Connection::PARAM_STR, "','"],
@@ -384,7 +381,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function inSetForSQLiteThrowsExceptionOnPositionalPlaceholder(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
 
@@ -400,7 +396,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function inSetForSQLiteThrowsExceptionOnNamedPlaceholder(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
 
@@ -454,10 +449,9 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function notInSetForPostgreSQL(): void
     {
         $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn('"');
 
         $series = [
-            ["'1'", Connection::PARAM_STR, "'1'"],
+            ['1', Connection::PARAM_STR, "'1'"],
             [',', Connection::PARAM_STR, "','"],
         ];
         $this->connectionMock->expects(self::exactly(2))->method('quote')
@@ -503,7 +497,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function notInSetForSQLite(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $series = [
             [',', Connection::PARAM_STR, "','"],
@@ -534,7 +527,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function notInSetForSQLiteWithQuoteCharactersInValue(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $series = [
             [',', Connection::PARAM_STR, "','"],
@@ -565,7 +557,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function notInSetForSQLiteThrowsExceptionOnPositionalPlaceholder(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
 
@@ -581,7 +572,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function notInSetForSQLiteThrowsExceptionOnNamedPlaceholder(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
-        $databasePlatform->method('getStringLiteralQuoteCharacter')->willReturn("'");
 
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
 

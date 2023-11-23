@@ -560,10 +560,7 @@ class ExpressionBuilder
      */
     protected function unquoteLiteral(string $value): string
     {
-        $quoteChar = $this->connection
-            ->getDatabasePlatform()
-            ->getStringLiteralQuoteCharacter();
-
+        $quoteChar = "'";
         $isQuoted = str_starts_with($value, $quoteChar) && str_ends_with($value, $quoteChar);
 
         if ($isQuoted) {

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Expression;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -970,5 +971,16 @@ final class ExpressionBuilderTest extends FunctionalTestCase
             ->executeQuery()
             ->fetchAllAssociative();
         self::assertSame($expectedRows, $rows);
+    }
+
+    /**
+     * @test
+     */
+    public function ensureThatExpectedQuoteCharUsedInUnquoteIsValid(): void
+    {
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+
+        $quoteChar = substr($connection->quote('__FAKE__', ParameterType::STRING), 0, 1);
+        self::assertSame("'", $quoteChar, $connection->getDatabasePlatform()::class);
     }
 }

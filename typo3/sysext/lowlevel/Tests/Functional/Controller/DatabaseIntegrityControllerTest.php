@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Lowlevel\Tests\Functional\Controller;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -351,10 +350,8 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
      */
     public function arbitraryDataIsEscaped(string $injector, array $settings): void
     {
-        $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tt_content')->getDatabasePlatform();
         $replacements = [
-            '%quoteCharacter%' => $databasePlatform->getStringLiteralQuoteCharacter(),
+            '%quoteCharacter%' => "'",
             '%commentStart%' => '--',
             '%commentEnd%' => "\n",
         ];
