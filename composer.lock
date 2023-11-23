@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4fe892f0d94b8fa169f2f08ecde2820",
+    "content-hash": "aec5e694d945275340a720bb71b12bf8",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8992,20 +8992,19 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "8.0.6",
+            "version": "8.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "70d1174466c339882ab34fad6d5a85763a3a3972"
+                "reference": "a0ccebcddbc9ac34024d4edcf4165dc145e15e56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/70d1174466c339882ab34fad6d5a85763a3a3972",
-                "reference": "70d1174466c339882ab34fad6d5a85763a3a3972",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a0ccebcddbc9ac34024d4edcf4165dc145e15e56",
+                "reference": "a0ccebcddbc9ac34024d4edcf4165dc145e15e56",
                 "shasum": ""
             },
             "require": {
-                "ext-pdo": "*",
                 "guzzlehttp/psr7": "^2.5.0",
                 "php": "^8.1",
                 "phpunit/phpunit": "^10.1",
@@ -9021,7 +9020,7 @@
                 "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "*"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.11.0",
+                "friendsofphp/php-cs-fixer": "^3.37.1",
                 "phpstan/phpstan": "^1.9.2",
                 "phpstan/phpstan-phpunit": "^1.1.1",
                 "typo3/cms-workspaces": "12.*.*@dev || 13.*.*@dev"
@@ -9060,9 +9059,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/8.0.6"
+                "source": "https://github.com/TYPO3/testing-framework/tree/8.0.7"
             },
-            "time": "2023-09-19T17:10:03+00:00"
+            "time": "2023-11-23T13:51:56+00:00"
         }
     ],
     "aliases": [],
@@ -9088,5 +9087,5 @@
     "platform-overrides": {
         "php": "8.1.1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
