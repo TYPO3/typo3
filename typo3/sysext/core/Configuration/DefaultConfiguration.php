@@ -21,6 +21,9 @@
 return [
     'DB' => [
         'additionalQueryRestrictions' => [],
+        'globalDriverMiddlewares' => [
+            'typo3/core/custom-platform-driver-middleware' => \TYPO3\CMS\Core\Database\Middleware\CustomPlatformDriverMiddleware::class,
+        ],
     ],
     'GFX' => [ // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
         'thumbnails' => true,

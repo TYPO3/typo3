@@ -186,18 +186,14 @@ class ConnectionPool
 
     /**
      * Return any doctrine driver middlewares, that may have been set up in:
+     * - for all configured connections
      * - $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverMiddlewares'] for a specific connection
      */
     protected function getDriverMiddlewares(array $connectionParams): array
     {
         /** @var array<int|string, string> $driverMiddlewares */
         $driverMiddlewares = array_replace(
-            // @todo Make global connection driver middlewares configurable by moving this to
-            //       $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares'] as a dedicated
-            //       feature change.
-            [
-                'typo3/core/custom-platform-driver-middleware' => \TYPO3\CMS\Core\Database\Middleware\CustomPlatformDriverMiddleware::class,
-            ],
+            $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares'] ?? [],
             $connectionParams['driverMiddlewares'] ?? []
         );
         $middlewares = [];
