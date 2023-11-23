@@ -70,6 +70,7 @@ class ConnectionPool
     protected array $overrideDoctrineTypes = [
         Types::DATE_MUTABLE => DateType::class,
         Types::DATETIME_MUTABLE => DateTimeType::class,
+        Types::DATETIME_IMMUTABLE => DateTimeType::class,
         Types::TIME_MUTABLE => TimeType::class,
     ];
 

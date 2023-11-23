@@ -488,6 +488,8 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * @param string|Type $type  The name of the DBAL mapping type.
      *
      * @return mixed The converted value.
+     *
+     * @see ConnectionPool::$overrideDoctrineTypes
      */
     public function convertToDatabaseValue($value, $type)
     {
