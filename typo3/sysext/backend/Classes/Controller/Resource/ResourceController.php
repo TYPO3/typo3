@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -39,15 +38,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class ResourceController
 {
     public function __construct(
-        protected readonly ResourceFactory $resourceFactory,
-        protected readonly FlashMessageService $flashMessageService
+        private readonly ResourceFactory $resourceFactory,
     ) {}
 
     public function renameResourceAction(ServerRequestInterface $request): ResponseInterface
     {
         $identifier = $request->getParsedBody()['identifier'] ?? null;
         $origin = null;
-        $resource = null;
 
         if ($identifier) {
             $origin = $this->resourceFactory->retrieveFileOrFolderObject($identifier);
@@ -67,6 +64,7 @@ final class ResourceController
             if (!$resourceName || trim((string)$resourceName) === '') {
                 throw new \InvalidArgumentException('The resource name cannot be empty', 1676978732);
             }
+            $oldName = $origin->getName();
             $resource = $origin->rename($resourceName);
         } catch (\Exception $exception) {
             $message = match ($exception->getCode()) {
@@ -76,7 +74,6 @@ final class ResourceController
                 1676978732 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNameCannotBeEmpty'),
                 default => $exception->getMessage(),
             };
-
             return new JsonResponse($this->getResponseData(false, $message));
         }
 
@@ -84,7 +81,7 @@ final class ResourceController
             true,
             sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.success.message.renamed'),
-                $origin->getName(),
+                $oldName,
                 $resource->getName()
             ),
             $origin,
@@ -95,7 +92,7 @@ final class ResourceController
     /**
      * Prepare response data for a JSON response
      */
-    protected function getResponseData(bool $success, string $message, ?ResourceInterface $origin = null, ?ResourceInterface $resource = null): array
+    private function getResponseData(bool $success, string $message, ?ResourceInterface $origin = null, ?ResourceInterface $resource = null): array
     {
         $flashMessageQueue = new FlashMessageQueue('backend');
         $flashMessageQueue->enqueue(
@@ -104,7 +101,6 @@ final class ResourceController
                 $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.' . ($success ? 'success' : 'error'))
             )
         );
-
         return [
             'success' => $success,
             'status' => $flashMessageQueue,
@@ -116,12 +112,11 @@ final class ResourceController
     /**
      * Prepare resource data for a JSON response
      */
-    protected function getResourceResponseData(?ResourceInterface $resource): ?array
+    private function getResourceResponseData(?ResourceInterface $resource): ?array
     {
         if (!$resource) {
             return null;
         }
-
         return [
             'type' => $resource instanceof File ? 'file' : 'folder',
             'identifier' => $resource instanceof File || $resource instanceof Folder ? $resource->getCombinedIdentifier() : null,
@@ -132,7 +127,7 @@ final class ResourceController
         ];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
