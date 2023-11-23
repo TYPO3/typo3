@@ -21,7 +21,6 @@ import Modal, { ModalElement } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import AjaxDataHandler from '@typo3/backend/ajax-data-handler';
-import ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
 import Notification from '@typo3/backend/notification';
 
 interface DeleteActionConfiguration extends ActionConfiguration {
@@ -31,6 +30,10 @@ interface DeleteActionConfiguration extends ActionConfiguration {
   content: string;
   ok: string;
   cancel: string;
+}
+
+interface DatahandlerCommand {
+  delete?: number
 }
 
 /**
@@ -75,21 +78,26 @@ class MultiRecordSelectionDeleteAction {
           text: configuration.ok || TYPO3.lang['button.delete'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
           name: 'delete',
-          trigger: (e: Event, modal: ModalElement) => {
+          trigger: async (e: Event, modal: ModalElement): Promise<void> => {
             modal.hideModal();
-            AjaxDataHandler.process('cmd[' + tableName + '][' + entityIdentifiers.join(',') + '][delete]=1')
-              .then((result: ResponseInterface): void => {
-                if (result.hasErrors) {
-                  throw result.messages;
-                } else if (returnUrl !== '') {
-                  window.location.href = returnUrl;
-                } else {
-                  modal.ownerDocument.location.reload();
+            try {
+              const result = await AjaxDataHandler.process({
+                cmd: {
+                  [tableName]: Object.fromEntries(entityIdentifiers.map((identifier: string): [string, DatahandlerCommand] => [
+                    identifier, { delete: 1 }
+                  ]))
                 }
-              })
-              .catch((): void => {
-                Notification.error('Could not delete records');
               });
+              if (result.hasErrors) {
+                throw result.messages;
+              } else if (returnUrl !== '') {
+                window.location.href = returnUrl;
+              } else {
+                modal.ownerDocument.location.reload();
+              }
+            } catch {
+              Notification.error('Could not delete records');
+            }
           }
         }
       ]
