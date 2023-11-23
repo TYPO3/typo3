@@ -51,6 +51,7 @@
                                     data-contextmenu-table="be_groups"
                                     data-contextmenu-uid="{group.row.uid}"
                                     title="id={group.row.uid}"
+                                    aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                                 >
                                     <core:iconForRecord table="be_groups" row="{group.row}"/>
                                 </button>
@@ -82,6 +83,7 @@
                                 data-contextmenu-table="pages"
                                 data-contextmenu-uid="{item.uid}"
                                 title="id={item.uid}"
+                                aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                             >
                                 <core:iconForRecord table="pages" row="{item}"/>
                             </button>
@@ -108,6 +110,7 @@
                                 data-contextmenu-table="sys_filemounts"
                                 data-contextmenu-uid="{item.uid}"
                                 title="id={item.uid}"
+                                aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                             >
                                 <core:iconForRecord table="sys_filemounts" row="{item}"/>
                             </button>
@@ -154,6 +157,7 @@
                                 data-contextmenu-table="sys_category"
                                 data-contextmenu-uid="{item.uid}"
                                 title="id={item.uid}"
+                                aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                             >
                                 <core:iconForRecord table="sys_category" row="{item}"/>
                             </button>
@@ -177,6 +181,7 @@
                 data-contextmenu-table="sys_workspace"
                 data-contextmenu-uid="{workspaces.record.uid}"
                 title="id={workspaces.record.uid}"
+                aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
             >
                 <core:iconForRecord table="sys_workspaces" row="{workspaces.record}"/>
                 {workspaces.record.title}

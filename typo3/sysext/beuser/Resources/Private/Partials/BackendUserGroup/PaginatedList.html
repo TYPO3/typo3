@@ -26,6 +26,7 @@
                             data-contextmenu-table="be_groups"
                             data-contextmenu-uid="{backendUserGroup.uid}"
                             title="{f:if(condition: '{backendUserGroup.description}', then: '{backendUserGroup.description} ')}(id={backendUserGroup.uid})"
+                            aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                         >
                             <beuser:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
                         </button>

@@ -759,8 +759,9 @@ class FileQueueItem {
         this.$iconCol
           .html(
             '<button type="button" class="btn btn-link p-0" data-contextmenu-trigger="click" data-contextmenu-uid="'
-            + combinedIdentifier + '" data-contextmenu-table="sys_file">'
-            + data.upload[0].icon + '</span></button>',
+            + combinedIdentifier + '" data-contextmenu-table="sys_file" aria-label="'
+            + (TYPO3.lang['labels.contextMenu.open'] || 'Open context menu') + '">'
+            + data.upload[0].icon + '</span></button>'
           );
       }
 

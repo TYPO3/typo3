@@ -29,6 +29,7 @@
                             data-contextmenu-table="sys_filemounts"
                             data-contextmenu-uid="{fileMount.uid}"
                             title="{f:if(condition: '{fileMount.title}', then: '{fileMount.title} ')}(id={fileMount.uid})"
+                            aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                         >
                             <beuser:spriteIconForRecord table="sys_filemounts" object="{fileMount}" />
                         </button>
