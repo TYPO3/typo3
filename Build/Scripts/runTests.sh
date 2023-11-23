@@ -245,7 +245,7 @@ Options:
             - 10.11  long-term, maintained until 2028-02
             - 11.0   development series
             - 11.1   short-term development series
-        With "-d mariadb":
+        With "-d mysql":
             - 8.0   maintained until 2026-04 (default)
         With "-d postgres":
             - 10    unmaintained since 2022-11-10 (default)
