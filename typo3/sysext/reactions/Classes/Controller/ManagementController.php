@@ -22,13 +22,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reactions\Pagination\DemandedArrayPaginator;
 use TYPO3\CMS\Reactions\ReactionRegistry;
 use TYPO3\CMS\Reactions\Repository\ReactionDemand;
@@ -61,6 +61,7 @@ class ManagementController
         $paginator = new DemandedArrayPaginator($reactionRecords, $demand->getPage(), $demand->getLimit(), $this->reactionRepository->countAll());
         $pagination = new SimplePagination($paginator);
 
+        $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
         $languageService = $this->getLanguageService();
 
         return $view->assignMultiple([
@@ -69,20 +70,32 @@ class ManagementController
             'paginator' => $paginator,
             'pagination' => $pagination,
             'reactionRecords' => $reactionRecords,
-            'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                'idField' => 'uid',
-                'tableName' => 'sys_reaction',
-                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-            ]),
-            'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                'idField' => 'uid',
-                'tableName' => 'sys_reaction',
-                'title' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.title'),
-                'content' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.message'),
-                'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
-                'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
-                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-            ]),
+            'actions' => [
+                new Action(
+                    'edit',
+                    [
+                        'idField' => 'uid',
+                        'tableName' => 'sys_reaction',
+                        'returnUrl' => $requestUri,
+                    ],
+                    'actions-open',
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit'
+                ),
+                new Action(
+                    'delete',
+                    [
+                        'idField' => 'uid',
+                        'tableName' => 'sys_reaction',
+                        'title' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.title'),
+                        'content' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.message'),
+                        'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
+                        'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
+                        'returnUrl' => $requestUri,
+                    ],
+                    'actions-edit-delete',
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'
+                ),
+            ],
         ])->renderResponse('Management/Overview');
     }
 

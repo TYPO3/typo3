@@ -1,0 +1,26 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="multi-record-selection-actions-wrapper">
+    <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
+        <div class="col">
+            <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
+        </div>
+        <div class="col">
+            <f:for each="{actions}" as="action">
+                <button class="btn btn-default btn-sm"
+                        data-multi-record-selection-action="{action.name}"
+                        data-multi-record-selection-action-config='{action.configuration -> f:format.raw()}'
+                >
+                    {action.icon -> f:format.raw()}
+                    <span class="text">{action.label}</span>
+                </button>
+            </f:for>
+        </div>
+    </div>
+</div>
+
+</html>
