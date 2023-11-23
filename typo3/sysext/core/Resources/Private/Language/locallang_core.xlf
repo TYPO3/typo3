@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
+			<trans-unit id="labels.datepicker.label" resname="labels.datepicker.label">
+				<source>Open date picker</source>
+			</trans-unit>
 			<trans-unit id="labels.openInNewWindow" resname="labels.openInNewWindow">
 				<source>Open in new window</source>
 			</trans-unit>

@@ -197,6 +197,8 @@ class DatetimeElement extends AbstractFormElement
         $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
+        $buttonAriaLabelEscaped = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.datepicker.label'));
+
         $expansionHtml = [];
         $expansionHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $expansionHtml[] =  '<div class="form-wizards-wrap">';
@@ -204,7 +206,7 @@ class DatetimeElement extends AbstractFormElement
         $expansionHtml[] =          '<div class="input-group">';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
-        $expansionHtml[] =              '<button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#' . $attributes['id'] . '">';
+        $expansionHtml[] =              '<button class="btn btn-default" aria-label="' . $buttonAriaLabelEscaped . '" type="button" data-global-event="click" data-action-focus="#' . $attributes['id'] . '">';
         $expansionHtml[] =                  $this->iconFactory->getIcon('actions-edit-pick-date', IconSize::SMALL)->render();
         $expansionHtml[] =              '</button>';
         $expansionHtml[] =          '</div>';
