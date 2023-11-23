@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -129,12 +131,12 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $typoLinkParameter = $typoLinkCodec->encode($mergedTypoLinkConfiguration);
 
         // expose internal typoLink configuration to Fluid child context
-        $variableProvider = $renderingContext->getVariableProvider();
-        $variableProvider->add($partsAs, $typoLinkConfiguration);
+        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$partsAs => $typoLinkConfiguration]));
+        $renderingContext->setVariableProvider($variableProvider);
         // If no link has to be rendered, the inner content will be returned as such
         $content = (string)$renderChildrenClosure();
         // clean up exposed variables
-        $variableProvider->remove($partsAs);
+        $renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
 
         if ($parameter) {
             $content = self::invokeContentObjectRenderer($arguments, $typoLinkParameter, $content);

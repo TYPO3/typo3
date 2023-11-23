@@ -206,6 +206,13 @@ EOT
                     . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
                     . ' data-other="&#039;&#039;" title="&lt;Title&gt;" class="&lt;CSS&gt;">Link Text</a>',
             ],
+            'parts-as is local variable' => [
+                '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
+                [
+                    'parameter' => 'http://typo3.org/ "_self"',
+                ],
+                '<a href="http://typo3.org/" target="_self">_self</a>',
+            ],
         ];
     }
 

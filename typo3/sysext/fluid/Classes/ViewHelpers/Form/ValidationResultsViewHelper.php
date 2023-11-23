@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -93,7 +95,6 @@ final class ValidationResultsViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $templateVariableContainer = $renderingContext->getVariableProvider();
         $for = $arguments['for'];
         $as = $arguments['as'];
 
@@ -104,9 +105,14 @@ final class ValidationResultsViewHelper extends AbstractViewHelper
         if ($validationResults !== null && $for !== '') {
             $validationResults = $validationResults->forProperty($for);
         }
-        $templateVariableContainer->add($as, $validationResults);
+
+        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$as => $validationResults]));
+        $renderingContext->setVariableProvider($variableProvider);
+
         $output = $renderChildrenClosure();
-        $templateVariableContainer->remove($as);
+
+        $renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
+
         return $output;
     }
 }

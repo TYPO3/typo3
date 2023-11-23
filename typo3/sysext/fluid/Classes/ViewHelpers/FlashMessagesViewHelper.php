@@ -24,6 +24,8 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -159,10 +161,13 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
         if ($as === null) {
             return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render($flashMessages);
         }
-        $templateVariableContainer = $renderingContext->getVariableProvider();
-        $templateVariableContainer->add($as, $flashMessages);
+
+        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$as => $flashMessages]));
+        $renderingContext->setVariableProvider($variableProvider);
+
         $content = $renderChildrenClosure();
-        $templateVariableContainer->remove($as);
+
+        $renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
 
         return $content;
     }

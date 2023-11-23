@@ -27,6 +27,8 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -83,10 +85,10 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
             ];
         }
 
-        $as = $arguments['as'];
-        $renderingContext->getVariableProvider()->add($as, $data);
+        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$arguments['as'] => $data]));
+        $renderingContext->setVariableProvider($variableProvider);
         $output = (string)$renderChildrenClosure();
-        $renderingContext->getVariableProvider()->remove($as);
+        $renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
 
         return $output;
     }
