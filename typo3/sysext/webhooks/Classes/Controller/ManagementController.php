@@ -22,13 +22,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Webhooks\Pagination\DemandedArrayPaginator;
 use TYPO3\CMS\Webhooks\Repository\WebhookDemand;
 use TYPO3\CMS\Webhooks\Repository\WebhookRepository;
@@ -69,20 +69,32 @@ class ManagementController
             'paginator' => $paginator,
             'pagination' => $pagination,
             'webhookRecords' => $webhookRecords,
-            'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                'idField' => 'uid',
-                'tableName' => 'sys_webhook',
-                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-            ]),
-            'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                'idField' => 'uid',
-                'tableName' => 'sys_webhook',
-                'title' => $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:labels.delete.title'),
-                'content' => $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:labels.delete.message'),
-                'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
-                'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
-                'returnUrl' => $requestUri,
-            ]),
+            'actions' => [
+                new Action(
+                    'edit',
+                    [
+                        'idField' => 'uid',
+                        'tableName' => 'sys_webhook',
+                        'returnUrl' => $requestUri,
+                    ],
+                    'actions-open',
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit'
+                ),
+                new Action(
+                    'delete',
+                    [
+                        'idField' => 'uid',
+                        'tableName' => 'sys_webhook',
+                        'title' => $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:labels.delete.title'),
+                        'content' => $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:labels.delete.message'),
+                        'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
+                        'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
+                        'returnUrl' => $requestUri,
+                    ],
+                    'actions-edit-delete',
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'
+                ),
+            ],
         ])->renderResponse('Management/Overview');
     }
 

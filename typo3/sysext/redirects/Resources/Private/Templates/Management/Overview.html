@@ -62,7 +62,8 @@
 </f:section>
 
 <f:section name="table">
-    <f:render section="multiRecordSelectionActions" arguments="{_all}" />
+    <f:comment>Partial is used from EXT:backend/Resources/Private/Partials/MultiRecordSelection/Actions.html</f:comment>
+    <f:render partial="MultiRecordSelection/Actions" arguments="{actions: actions}"/>
     <div class="table-fit">
         <table class="table table-striped table-hover">
             <thead>
@@ -260,7 +261,7 @@
             </tbody>
         </table>
     </div>
-    <f:render section="multiRecordSelectionActions" arguments="{_all}" />
+    <f:render partial="MultiRecordSelection/Actions" arguments="{actions: actions}"/>
     <f:render partial="Pagination" arguments="{_all}" />
 </f:section>
 
@@ -336,29 +337,5 @@
             </div>
         </div>
     </form>
-</f:section>
-
-<f:section name="multiRecordSelectionActions">
-    <div class="multi-record-selection-actions-wrapper">
-        <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
-            <div class="col">
-                <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
-            </div>
-            <div class="col">
-                <button class="btn btn-default btn-sm" data-multi-record-selection-action="edit" data-multi-record-selection-action-config='{editActionConfiguration -> f:format.raw()}'>
-                    <core:icon identifier="actions-open" size="small" />
-                    <span class="text">
-                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit" />
-                    </span>
-                </button>
-                <button class="btn btn-default btn-sm" data-multi-record-selection-action="delete" data-multi-record-selection-action-config='{deleteActionConfiguration -> f:format.raw()}'>
-                    <core:icon identifier="actions-edit-delete" size="small" />
-                    <span class="text">
-                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete" />
-                    </span>
-                </button>
-            </div>
-        </div>
-    </div>
 </f:section>
 </html>
