@@ -63,6 +63,11 @@ class CacheLifetimeCalculator
             // otherwise it's the default of 24 hours
             $cacheTimeout = $defaultCacheTimoutInSeconds ?: (int)($renderingInstructions['cache_period'] ?? $this->defaultCacheTimeout);
         }
+        // A pages endtime limits the upper bound of the maxmium cache lifetime
+        $pageEndtime = (int)($pageRecord['endtime'] ?? 0);
+        if ($pageEndtime > 0) {
+            $cacheTimeout = min($cacheTimeout, $pageEndtime - $GLOBALS['EXEC_TIME']);
+        }
         if (!empty($renderingInstructions['cache_clearAtMidnight'])) {
             $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
             $midnightTime = mktime(0, 0, 0, (int)date('m', $timeOutTime), (int)date('d', $timeOutTime), (int)date('Y', $timeOutTime));
