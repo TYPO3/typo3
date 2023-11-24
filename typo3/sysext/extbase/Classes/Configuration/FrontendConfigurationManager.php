@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -171,8 +172,14 @@ class FrontendConfigurationManager implements SingletonInterface
         /** @var ServerRequestInterface $request */
         $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'];
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
-        // @todo Throw a exception if attribute is not available in v13 only.
-        return $frontendTypoScript?->getSetupArray() ?? [];
+        if (!($frontendTypoScript instanceof FrontendTypoScript)) {
+            throw new \RuntimeException(
+                'Setup array has not been initialized. This happens in cached Frontend scope where full TypoScript' .
+                ' is not needed by the system.',
+                1700841298
+            );
+        }
+        return $frontendTypoScript->getSetupArray();
     }
 
     /**
