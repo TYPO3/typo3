@@ -319,6 +319,12 @@
 			<trans-unit id="extensionList.dependenciesResolveDownloadError.title" resname="extensionList.dependenciesResolveDownloadError.title">
 				<source>Download Error</source>
 			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveInstallError.title" resname="extensionList.dependenciesResolveInstallError.title">
+				<source>Install Error</source>
+			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveInstallError.message" resname="extensionList.dependenciesResolveInstallError.message">
+				<source>Your installation failed while resolving dependencies.</source>
+			</trans-unit>
 			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" resname="extensionList.dependenciesResolveDownloadSuccess.message">
 				<source>Your installation of {0} was successful.</source>
 			</trans-unit>

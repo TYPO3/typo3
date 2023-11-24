@@ -105,60 +105,70 @@ class Repository {
   private getResolveDependenciesAndInstallResult(url: string): void {
     NProgress.start();
     new AjaxRequest(url).get().then(async (response: AjaxResponse): Promise<void> => {
-      // FIXME: As of now, the endpoint doesn't set proper headers, thus we have to parse the response text
-      // https://review.typo3.org/c/Packages/TYPO3.CMS/+/63438
-      const data: ExtensionInstallResult = await response.raw().json();
-      const errorMessageElement = document.createElement('div');
-      errorMessageElement.innerHTML = data.errorMessage;
+      try {
+        // FIXME: As of now, the endpoint doesn't set proper headers, thus we have to parse the response text
+        // https://review.typo3.org/c/Packages/TYPO3.CMS/+/63438
+        const data: ExtensionInstallResult = await response.raw().json();
+        const errorMessageElement = document.createElement('div');
+        errorMessageElement.innerHTML = data.errorMessage;
 
-      if (data.errorCount > 0) {
-        const modal = Modal.confirm(data.errorTitle, errorMessageElement, Severity.error, [
-          {
-            text: TYPO3.lang['button.cancel'],
-            active: true,
-            btnClass: 'btn-default',
-            trigger: (): void => {
-              Modal.dismiss();
-            },
-          }, {
-            text: TYPO3.lang['button.resolveDependenciesIgnore'],
-            btnClass: 'btn-danger disabled t3js-dependencies',
-            trigger: (e: Event): void => {
-              if (!(e.currentTarget as HTMLElement).classList.contains('disabled')) {
-                this.getResolveDependenciesAndInstallResult(data.skipDependencyUri);
+        if (data.errorCount > 0) {
+          const modal = Modal.confirm(data.errorTitle, errorMessageElement, Severity.error, [
+            {
+              text: TYPO3.lang['button.cancel'],
+              active: true,
+              btnClass: 'btn-default',
+              trigger: (): void => {
                 Modal.dismiss();
-              }
+              },
+            }, {
+              text: TYPO3.lang['button.resolveDependenciesIgnore'],
+              btnClass: 'btn-danger disabled t3js-dependencies',
+              trigger: (e: Event): void => {
+                if (!(e.currentTarget as HTMLElement).classList.contains('disabled')) {
+                  this.getResolveDependenciesAndInstallResult(data.skipDependencyUri);
+                  Modal.dismiss();
+                }
+              },
             },
-          },
-        ]);
-        modal.addEventListener('typo3-modal-shown', (): void => {
-          const actionButton = modal.querySelector('.t3js-dependencies');
-          modal.querySelector('input[name="unlockDependencyIgnoreButton"]').addEventListener('change', (e: Event): void => {
-            if ((e.currentTarget as HTMLInputElement).checked) {
-              actionButton?.classList.remove('disabled');
-            } else {
-              actionButton?.classList.add('disabled');
-            }
+          ]);
+          modal.addEventListener('typo3-modal-shown', (): void => {
+            const actionButton = modal.querySelector('.t3js-dependencies');
+            modal.querySelector('input[name="unlockDependencyIgnoreButton"]').addEventListener('change', (e: Event): void => {
+              if ((e.currentTarget as HTMLInputElement).checked) {
+                actionButton?.classList.remove('disabled');
+              } else {
+                actionButton?.classList.add('disabled');
+              }
+            });
           });
-        });
-      } else {
-        let successMessage = TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.message'
-        + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension);
+        } else {
+          let successMessage = TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.message'
+          + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension);
 
-        successMessage += '\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ': ';
-        for (const [index, value] of Object.entries(data.result)) {
-          successMessage += '\n\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ': ';
-          for (const extkey of Object.keys(value)) {
-            successMessage += '\n* ' + extkey;
+          successMessage += '\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ': ';
+          for (const [index, value] of Object.entries(data.result)) {
+            successMessage += '\n\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ': ';
+            for (const extkey of Object.keys(value)) {
+              successMessage += '\n* ' + extkey;
+            }
           }
+          Notification.info(
+            TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey]
+              .replace(/\{0\}/g, data.extension),
+            successMessage,
+            15,
+          );
+          top.TYPO3.ModuleMenu.App.refreshMenu();
         }
-        Notification.info(
-          TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey]
-            .replace(/\{0\}/g, data.extension),
-          successMessage,
-          15,
+      } catch {
+        // Catching errors on resolving the response. One case is that an extensions might lead to
+        // the PHP request being aborted, which results in an empty response body. Calling .json()
+        // on this, results in a SyntaxError. Therefore catch such errors and display a flash message.
+        Notification.error(
+          TYPO3.lang['extensionList.dependenciesResolveInstallError.title'] || 'Install error',
+          TYPO3.lang['extensionList.dependenciesResolveInstallError.message'] || 'Your installation failed while resolving dependencies.'
         );
-        top.TYPO3.ModuleMenu.App.refreshMenu();
       }
     }).finally((): void => {
       NProgress.done();
