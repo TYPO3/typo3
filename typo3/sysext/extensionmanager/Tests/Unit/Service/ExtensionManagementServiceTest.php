@@ -50,19 +50,19 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $remoteRegistryMock->method('getRemote')->with(self::anything())->willReturn($this->remoteMock);
         $this->fileHandlingUtilityMock = $this->createMock(FileHandlingUtility::class);
 
+        $this->downloadQueue = new DownloadQueue();
         $this->managementService = new ExtensionManagementService(
             $remoteRegistryMock,
-            $this->fileHandlingUtilityMock
+            $this->fileHandlingUtilityMock,
+            $this->downloadQueue,
+            new NoopEventDispatcher()
         );
-        $this->managementService->injectEventDispatcher(new NoopEventDispatcher());
 
         $this->dependencyUtilityMock = $this->createMock(DependencyUtility::class);
         $this->installUtilityMock = $this->createMock(InstallUtility::class);
-        $this->downloadQueue = new DownloadQueue();
 
         $this->managementService->injectDependencyUtility($this->dependencyUtilityMock);
         $this->managementService->injectInstallUtility($this->installUtilityMock);
-        $this->managementService->injectDownloadQueue($this->downloadQueue);
     }
 
     /**
@@ -118,12 +118,10 @@ final class ExtensionManagementServiceTest extends UnitTestCase
      */
     public function installExtensionWillReturnDownloadedExtensions(): void
     {
-        $downloadQueue = new DownloadQueue();
         $extension = new Extension();
         $extension->setExtensionKey('foo');
         $extension->_setProperty('remote', 'ter');
-        $downloadQueue->addExtensionToQueue($extension);
-        $this->managementService->injectDownloadQueue($downloadQueue);
+        $this->downloadQueue->addExtensionToQueue($extension);
         $this->installUtilityMock->method('enrichExtensionWithDetails')->with('foo')->willReturn([
             'key' => 'foo',
             'remote' => 'ter',
@@ -140,12 +138,10 @@ final class ExtensionManagementServiceTest extends UnitTestCase
      */
     public function installExtensionWillReturnUpdatedExtensions(): void
     {
-        $downloadQueue = new DownloadQueue();
         $extension = new Extension();
         $extension->setExtensionKey('foo');
         $extension->_setProperty('remote', 'ter');
-        $downloadQueue->addExtensionToQueue($extension, 'update');
-        $this->managementService->injectDownloadQueue($downloadQueue);
+        $this->downloadQueue->addExtensionToQueue($extension, 'update');
         $this->installUtilityMock->method('enrichExtensionWithDetails')->with('foo')->willReturn([
             'key' => 'foo',
             'remote' => 'ter',

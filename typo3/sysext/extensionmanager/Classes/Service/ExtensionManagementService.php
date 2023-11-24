@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -34,66 +36,18 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 class ExtensionManagementService implements SingletonInterface
 {
-    /**
-     * @var DownloadQueue
-     */
-    protected $downloadQueue;
+    protected DependencyUtility $dependencyUtility;
+    protected InstallUtility $installUtility;
 
-    /**
-     * @var DependencyUtility
-     */
-    protected $dependencyUtility;
+    protected bool $automaticInstallationEnabled = true;
+    protected bool $skipDependencyCheck = false;
 
-    /**
-     * @var InstallUtility
-     */
-    protected $installUtility;
-
-    /**
-     * @var bool
-     */
-    protected $automaticInstallationEnabled = true;
-
-    /**
-     * @var bool
-     */
-    protected $skipDependencyCheck = false;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var FileHandlingUtility
-     */
-    protected $fileHandlingUtility;
-
-    /**
-     * @var RemoteRegistry
-     */
-    protected $remoteRegistry;
-
-    /**
-     * @var string
-     */
-    protected $downloadPath = 'Local';
-
-    public function __construct(RemoteRegistry $remoteRegistry, FileHandlingUtility $fileHandlingUtility)
-    {
-        $this->remoteRegistry = $remoteRegistry;
-        $this->fileHandlingUtility = $fileHandlingUtility;
-    }
-
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function injectDownloadQueue(DownloadQueue $downloadQueue)
-    {
-        $this->downloadQueue = $downloadQueue;
-    }
+    public function __construct(
+        protected readonly RemoteRegistry $remoteRegistry,
+        protected readonly FileHandlingUtility $fileHandlingUtility,
+        protected readonly DownloadQueue $downloadQueue,
+        protected readonly EventDispatcherInterface $eventDispatcher
+    ) {}
 
     public function injectDependencyUtility(DependencyUtility $dependencyUtility)
     {
@@ -105,10 +59,7 @@ class ExtensionManagementService implements SingletonInterface
         $this->installUtility = $installUtility;
     }
 
-    /**
-     * @param string $extensionKey
-     */
-    public function markExtensionForInstallation($extensionKey)
+    public function markExtensionForInstallation(string $extensionKey): void
     {
         // We have to check for dependencies of the extension first, before marking it for installation
         // because this extension might have dependencies, which need to be installed first
@@ -121,7 +72,7 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Mark an extension for download
      */
-    public function markExtensionForDownload(Extension $extension)
+    public function markExtensionForDownload(Extension $extension): void
     {
         // We have to check for dependencies of the extension first, before marking it for download
         // because this extension might have dependencies, which need to be downloaded and installed first
@@ -131,7 +82,7 @@ class ExtensionManagementService implements SingletonInterface
         }
     }
 
-    public function markExtensionForUpdate(Extension $extension)
+    public function markExtensionForUpdate(Extension $extension): void
     {
         // We have to check for dependencies of the extension first, before marking it for download
         // because this extension might have dependencies, which need to be downloaded and installed first
@@ -141,20 +92,15 @@ class ExtensionManagementService implements SingletonInterface
 
     /**
      * Enables or disables the dependency check for system environment (PHP, TYPO3) before extension installation
-     *
-     * @param bool $skipDependencyCheck
      */
-    public function setSkipDependencyCheck($skipDependencyCheck)
+    public function setSkipDependencyCheck(bool $skipDependencyCheck): void
     {
         $this->skipDependencyCheck = $skipDependencyCheck;
     }
 
-    /**
-     * @param bool $automaticInstallationEnabled
-     */
-    public function setAutomaticInstallationEnabled($automaticInstallationEnabled)
+    public function setAutomaticInstallationEnabled(bool $automaticInstallationEnabled): void
     {
-        $this->automaticInstallationEnabled = (bool)$automaticInstallationEnabled;
+        $this->automaticInstallationEnabled = $automaticInstallationEnabled;
     }
 
     /**
@@ -218,20 +164,13 @@ class ExtensionManagementService implements SingletonInterface
 
     /**
      * Returns the unresolved dependency errors
-     *
-     * @return array
      */
-    public function getDependencyErrors()
+    public function getDependencyErrors(): array
     {
         return $this->dependencyUtility->getDependencyErrors();
     }
 
-    /**
-     * @param string $extensionKey
-     * @return Extension
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     */
-    public function getExtension($extensionKey)
+    public function getExtension(string $extensionKey): Extension
     {
         return Extension::createFromExtensionArray(
             $this->installUtility->enrichExtensionWithDetails($extensionKey)
@@ -240,23 +179,13 @@ class ExtensionManagementService implements SingletonInterface
 
     /**
      * Checks if an extension is available in the system
-     *
-     * @param string $extensionKey
-     * @return bool
      */
-    public function isAvailable($extensionKey)
+    public function isAvailable(string $extensionKey): bool
     {
         return $this->installUtility->isAvailable($extensionKey);
     }
 
-    /**
-     * @param string $extensionKey
-     * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException if the package isn't available
-     * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException if an invalid package key was passed
-     * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException if an invalid package path was passed
-     * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException if no extension configuration file could be found
-     */
-    public function reloadPackageInformation($extensionKey)
+    public function reloadPackageInformation(string $extensionKey): void
     {
         $this->installUtility->reloadPackageInformation($extensionKey);
     }
@@ -266,7 +195,7 @@ class ExtensionManagementService implements SingletonInterface
      *
      * @return bool Returns TRUE if all dependencies can be resolved, otherwise FALSE
      */
-    protected function checkDependencies(Extension $extension)
+    protected function checkDependencies(Extension $extension): bool
     {
         $this->dependencyUtility->setSkipDependencyCheck($this->skipDependencyCheck);
         $this->dependencyUtility->checkDependencies($extension);
@@ -334,15 +263,13 @@ class ExtensionManagementService implements SingletonInterface
 
     /**
      * Get and resolve dependencies
-     *
-     * @return array
      */
-    public function getAndResolveDependencies(Extension $extension)
+    public function getAndResolveDependencies(Extension $extension): array
     {
         $this->dependencyUtility->setSkipDependencyCheck($this->skipDependencyCheck);
         $this->dependencyUtility->checkDependencies($extension);
         $installQueue = $this->downloadQueue->getExtensionInstallStorage();
-        if (is_array($installQueue) && !empty($installQueue)) {
+        if ($installQueue !== []) {
             $installQueue = ['install' => $installQueue];
         }
         return array_merge($this->downloadQueue->getExtensionQueue(), $installQueue);
@@ -351,9 +278,9 @@ class ExtensionManagementService implements SingletonInterface
     /**
      * Downloads the extension the user wants to install
      * This is separated from downloading the dependencies
-     * as an extension is able to provide it's own dependencies
+     * as an extension is able to provide its own dependencies
      */
-    public function downloadMainExtension(Extension $extension)
+    public function downloadMainExtension(Extension $extension): void
     {
         // The extension object has a uid if the extension is not present in the system
         // or an update of a present extension is triggered.
@@ -380,22 +307,8 @@ class ExtensionManagementService implements SingletonInterface
                     $extension->getExtensionKey(),
                     $extension->getVersion(),
                     $this->fileHandlingUtility,
-                    $extension->getMd5hash(),
-                    $this->downloadPath
+                    $extension->getMd5hash()
                 );
         }
-    }
-
-    /**
-     * Set the download path
-     *
-     * @throws ExtensionManagerException
-     */
-    public function setDownloadPath(string $downloadPath): void
-    {
-        if (!in_array($downloadPath, Extension::returnAllowedInstallTypes(), true)) {
-            throw new ExtensionManagerException($downloadPath . ' not in allowed download paths', 1344766387);
-        }
-        $this->downloadPath = $downloadPath;
     }
 }

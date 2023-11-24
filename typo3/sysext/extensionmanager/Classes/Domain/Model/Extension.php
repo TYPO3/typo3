@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -33,10 +35,8 @@ class Extension extends AbstractEntity
 
     /**
      * Contains default categories.
-     *
-     * @var array
      */
-    protected static $defaultCategories = [
+    protected static array $defaultCategories = [
         0 => 'be',
         1 => 'module',
         2 => 'fe',
@@ -51,10 +51,8 @@ class Extension extends AbstractEntity
 
     /**
      * Contains default states.
-     *
-     * @var array
      */
-    protected static $defaultStates = [
+    protected static array $defaultStates = [
         0 => 'alpha',
         1 => 'beta',
         2 => 'stable',
@@ -66,175 +64,75 @@ class Extension extends AbstractEntity
         999 => 'n/a',
     ];
 
-    /**
-     * @var string
-     */
-    protected $extensionKey = '';
-
-    /**
-     * @var string
-     */
-    protected $version = '';
-
-    /**
-     * @var int
-     */
-    protected $integerVersion = 0;
-
-    /**
-     * @var string
-     */
-    protected $title = '';
-
-    /**
-     * @var string
-     */
-    protected $description = '';
-
-    /**
-     * @var int
-     */
-    protected $state = 0;
-
-    /**
-     * @var int
-     */
-    protected $category = 0;
-
-    /**
-     * @var \DateTime
-     */
-    protected $lastUpdated;
-
-    /**
-     * @var string
-     */
-    protected $updateComment = '';
-
-    /**
-     * @var string
-     */
-    protected $authorName = '';
-
-    /**
-     * @var string
-     */
-    protected $authorEmail = '';
-
-    /**
-     * @var bool
-     */
-    protected $currentVersion = false;
-
-    /**
-     * @var string
-     */
-    protected $md5hash = '';
-
-    /**
-     * @var int
-     */
-    protected $reviewState;
-
-    /**
-     * @var int
-     */
-    protected $alldownloadcounter;
-
-    /**
-     * @var string
-     */
-    protected $serializedDependencies = '';
+    protected string $extensionKey = '';
+    protected string $version = '';
+    protected int $integerVersion = 0;
+    protected string $title = '';
+    protected string $description = '';
+    protected int $state = 0;
+    protected int $category = 0;
+    protected ?\DateTime $lastUpdated;
+    protected string $updateComment = '';
+    protected string $authorName = '';
+    protected string $authorEmail = '';
+    protected bool $currentVersion = false;
+    protected string $md5hash = '';
+    protected int $reviewState;
+    protected int $alldownloadcounter;
+    protected string $serializedDependencies = '';
 
     /**
      * @var \SplObjectStorage<Dependency>
      */
-    protected $dependencies;
-
-    /**
-     * @var string
-     */
-    protected $documentationLink = '';
-
-    /**
-     * @var string
-     */
-    protected $distributionImage = '';
-
-    /**
-     * @var string
-     */
-    protected $distributionWelcomeImage = '';
-
-    /**
-     * @var string
-     */
-    protected $remote;
+    protected \SplObjectStorage|null $dependencies = null;
+    protected string $documentationLink = '';
+    protected string $distributionImage = '';
+    protected string $distributionWelcomeImage = '';
+    protected string $remote;
 
     /**
      * @internal
-     * @var int
      */
-    protected $position = 0;
+    protected int $position = 0;
 
-    /**
-     * @param string $authorEmail
-     */
-    public function setAuthorEmail($authorEmail)
+    public function setAuthorEmail(string $authorEmail): void
     {
         $this->authorEmail = $authorEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthorEmail()
+    public function getAuthorEmail(): string
     {
         return $this->authorEmail;
     }
 
-    /**
-     * @param string $authorName
-     */
-    public function setAuthorName($authorName)
+    public function setAuthorName(string $authorName): void
     {
         $this->authorName = $authorName;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthorName()
+    public function getAuthorName(): string
     {
         return $this->authorName;
     }
 
-    /**
-     * @param int $category
-     */
-    public function setCategory($category)
+    public function setCategory(int $category): void
     {
         $this->category = $category;
     }
 
-    /**
-     * @return int
-     */
-    public function getCategory()
+    public function getCategory(): int
     {
         return $this->category;
     }
 
     /**
      * Get Category String
-     *
-     * @return string
      */
-    public function getCategoryString()
+    public function getCategoryString(): string
     {
         $categoryString = '';
-        if (isset(self::$defaultCategories[$this->getCategory()])) {
-            $categoryString = self::$defaultCategories[$this->getCategory()];
+        if (isset(self::$defaultCategories[$this->category])) {
+            $categoryString = self::$defaultCategories[$this->category];
         }
         return $categoryString;
     }
@@ -242,11 +140,8 @@ class Extension extends AbstractEntity
     /**
      * Returns category index from a given string or an integer.
      * Fallback to 4 - 'misc' in case string is not found or integer ist out of range.
-     *
-     * @param string|int $category Category string or integer
-     * @return int Valid category index
      */
-    public function getCategoryIndexFromStringOrNumber($category)
+    public function getCategoryIndexFromStringOrNumber(mixed $category): int
     {
         $categoryIndex = 4;
         if (MathUtility::canBeInterpretedAsInteger($category)) {
@@ -263,73 +158,47 @@ class Extension extends AbstractEntity
         return (int)$categoryIndex;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $extensionKey
-     */
-    public function setExtensionKey($extensionKey)
+    public function setExtensionKey(string $extensionKey): void
     {
         $this->extensionKey = $extensionKey;
     }
 
-    /**
-     * @return string
-     */
-    public function getExtensionKey()
+    public function getExtensionKey(): string
     {
         return $this->extensionKey;
     }
 
-    public function setLastUpdated(\DateTime $lastUpdated)
+    public function setLastUpdated(\DateTime $lastUpdated): void
     {
         $this->lastUpdated = $lastUpdated;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getLastUpdated()
+    public function getLastUpdated(): \DateTime
     {
         return $this->lastUpdated;
     }
 
-    /**
-     * @param int $state
-     */
-    public function setState($state)
+    public function setState(int $state): void
     {
         $this->state = $state;
     }
 
-    /**
-     * @return int
-     */
-    public function getState()
+    public function getState(): int
     {
         return $this->state;
     }
 
-    /**
-     * Get State string
-     *
-     * @return string
-     */
-    public function getStateString()
+    public function getStateString(): string
     {
         $stateString = '';
         if (isset(self::$defaultStates[$this->getState()])) {
@@ -341,11 +210,8 @@ class Extension extends AbstractEntity
     /**
      * Returns either array with all default states or index/title
      * of a state entry.
-     *
-     * @param mixed $state state title or state index
-     * @return mixed
      */
-    public function getDefaultState($state = null)
+    public function getDefaultState(int|string|null $state = null): mixed
     {
         $defaultState = '';
         if ($state === null) {
@@ -373,82 +239,52 @@ class Extension extends AbstractEntity
         return $defaultState;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $updateComment
-     */
-    public function setUpdateComment($updateComment)
+    public function setUpdateComment(string $updateComment): void
     {
         $this->updateComment = $updateComment;
     }
 
-    /**
-     * @return string
-     */
-    public function getUpdateComment()
+    public function getUpdateComment(): string
     {
         return $this->updateComment;
     }
 
-    /**
-     * @param string $version
-     */
-    public function setVersion($version)
+    public function setVersion(string $version): void
     {
         $this->version = $version;
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
 
-    /**
-     * @param bool $currentVersion
-     */
-    public function setCurrentVersion($currentVersion)
+    public function setCurrentVersion(bool $currentVersion): void
     {
         $this->currentVersion = $currentVersion;
     }
 
-    /**
-     * @return bool
-     */
-    public function getCurrentVersion()
+    public function getCurrentVersion(): bool
     {
         return $this->currentVersion;
     }
 
-    /**
-     * @param string $md5hash
-     */
-    public function setMd5hash($md5hash)
+    public function setMd5hash(string $md5hash): void
     {
         $this->md5hash = $md5hash;
     }
 
-    /**
-     * @return string
-     */
-    public function getMd5hash()
+    public function getMd5hash(): string
     {
         return $this->md5hash;
     }
@@ -457,9 +293,8 @@ class Extension extends AbstractEntity
      * Possible install paths
      *
      * @static
-     * @return array
      */
-    public static function returnInstallPaths()
+    public static function returnInstallPaths(): array
     {
         return [
             'System' => Environment::getFrameworkBasePath() . '/',
@@ -471,26 +306,19 @@ class Extension extends AbstractEntity
      * Allowed install names: System, Local
      *
      * @static
-     * @return array
      */
-    public static function returnAllowedInstallTypes()
+    public static function returnAllowedInstallTypes(): array
     {
         $installPaths = self::returnInstallPaths();
         return array_keys($installPaths);
     }
 
-    /**
-     * @param string $dependencies
-     */
-    public function setSerializedDependencies($dependencies)
+    public function setSerializedDependencies(string $dependencies): void
     {
         $this->serializedDependencies = $dependencies;
     }
 
-    /**
-     * @return string
-     */
-    public function getSerializedDependencies()
+    public function getSerializedDependencies(): string
     {
         return $this->serializedDependencies;
     }
@@ -498,7 +326,7 @@ class Extension extends AbstractEntity
     /**
      * @param \SplObjectStorage<Dependency> $dependencies
      */
-    public function setDependencies($dependencies)
+    public function setDependencies(\SplObjectStorage $dependencies)
     {
         $this->dependencies = $dependencies;
     }
@@ -506,7 +334,7 @@ class Extension extends AbstractEntity
     /**
      * @return \SplObjectStorage<Dependency>
      */
-    public function getDependencies()
+    public function getDependencies(): \SplObjectStorage
     {
         if (!is_object($this->dependencies)) {
             $this->setDependencies($this->convertDependenciesToObjects($this->getSerializedDependencies()));
@@ -524,71 +352,47 @@ class Extension extends AbstractEntity
         return null;
     }
 
-    public function addDependency(Dependency $dependency)
+    public function addDependency(Dependency $dependency): void
     {
         $this->dependencies->attach($dependency);
     }
 
-    /**
-     * @param int $integerVersion
-     */
-    public function setIntegerVersion($integerVersion)
+    public function setIntegerVersion(int $integerVersion): void
     {
         $this->integerVersion = $integerVersion;
     }
 
-    /**
-     * @return int
-     */
-    public function getIntegerVersion()
+    public function getIntegerVersion(): int
     {
         return $this->integerVersion;
     }
 
-    /**
-     * @param int $reviewState
-     */
-    public function setReviewState($reviewState)
+    public function setReviewState(int $reviewState): void
     {
         $this->reviewState = $reviewState;
     }
 
-    /**
-     * @return int
-     */
-    public function getReviewState()
+    public function getReviewState(): int
     {
         return $this->reviewState;
     }
 
-    /**
-     * @param int $position
-     */
-    public function setPosition($position)
+    public function setPosition(int $position): void
     {
         $this->position = $position;
     }
 
-    /**
-     * @return int
-     */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
 
-    /**
-     * @param int $alldownloadcounter
-     */
-    public function setAlldownloadcounter($alldownloadcounter)
+    public function setAlldownloadcounter(int $alldownloadcounter): void
     {
         $this->alldownloadcounter = $alldownloadcounter;
     }
 
-    /**
-     * @return int
-     */
-    public function getAlldownloadcounter()
+    public function getAlldownloadcounter(): int
     {
         return $this->alldownloadcounter;
     }

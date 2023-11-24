@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,13 +17,11 @@
 
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
-use TYPO3\CMS\Core\SingletonInterface;
-
 /**
  * Utility for dealing with ext_emconf
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class EmConfUtility implements SingletonInterface
+class EmConfUtility
 {
     /**
      * Returns the $EM_CONF array from an extensions ext_emconf.php file
@@ -30,7 +30,7 @@ class EmConfUtility implements SingletonInterface
      * @param string $absolutePath path to the ext_emconf.php
      * @return array|false EMconf array values or false if no ext_emconf.php found.
      */
-    public function includeEmConf(string $extensionKey, string $absolutePath)
+    public function includeEmConf(string $extensionKey, string $absolutePath): array|false
     {
         $_EXTKEY = $extensionKey;
         $path = rtrim($absolutePath, '/') . '/ext_emconf.php';
@@ -46,10 +46,8 @@ class EmConfUtility implements SingletonInterface
 
     /**
      * Generates the content for the ext_emconf.php file
-     *
-     * @return string
      */
-    public function constructEmConf(string $extensionKey, array $emConf)
+    public function constructEmConf(string $extensionKey, array $emConf): string
     {
         $emConf = $this->fixEmConf($emConf);
         $emConf = var_export($emConf, true);
@@ -72,10 +70,8 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 
     /**
      * Fix the em conf - Converts old / ter em_conf format to new format
-     *
-     * @return array
      */
-    protected function fixEmConf(array $emConf)
+    protected function fixEmConf(array $emConf): array
     {
         if (
             !isset($emConf['constraints']) || !isset($emConf['constraints']['depends'])
@@ -128,10 +124,10 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
      * It leaves out all version numbers and the "php" and "typo3" dependencies,
      * as they are implicit and of no interest without the version number.
      *
-     * @param mixed $dependency Either a string or an array listing dependencies.
+     * @param string|array $dependency Either a string or an array listing dependencies.
      * @return array A simple dependency list for display
      */
-    protected function stringToDependency($dependency)
+    protected function stringToDependency(string|array $dependency): array
     {
         $constraint = [];
         if (is_string($dependency) && $dependency !== '') {

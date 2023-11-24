@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -256,9 +258,6 @@ class InstallUtility implements LoggerAwareInterface
         return $dependentExtensions;
     }
 
-    /**
-     * @throws ExtensionManagerException
-     */
     protected function getExtensionArray(string $extensionKey): array
     {
         $availableExtensions = $this->listUtility->getAvailableExtensions();

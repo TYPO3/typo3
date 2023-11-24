@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -29,26 +31,21 @@ class DownloadQueue implements SingletonInterface
      *
      * @var array<string, array<string>>
      */
-    protected $extensionStorage = [];
+    protected array $extensionStorage = [];
 
     /**
      * Storage for extensions to be installed
-     *
-     * @var array
      */
-    protected $extensionInstallStorage = [];
+    protected array $extensionInstallStorage = [];
 
     /**
      * Adds an extension to the download queue.
      * If the extension was already requested in a different version
      * an exception is thrown.
-     *
-     * @param string $stack
-     * @throws ExtensionManagerException
      */
-    public function addExtensionToQueue(Extension $extension, $stack = 'download')
+    public function addExtensionToQueue(Extension $extension, string $stack = 'download'): void
     {
-        if (!is_string($stack) || !in_array($stack, ['download', 'update'])) {
+        if (!in_array($stack, ['download', 'update'])) {
             throw new ExtensionManagerException('Stack has to be either "download" or "update"', 1342432103);
         }
         if (!isset($this->extensionStorage[$stack])) {
@@ -66,10 +63,7 @@ class DownloadQueue implements SingletonInterface
         $this->extensionStorage[$stack][$extension->getExtensionKey()] = $extension;
     }
 
-    /**
-     * @return array
-     */
-    public function getExtensionQueue()
+    public function getExtensionQueue(): array
     {
         return $this->extensionStorage;
     }
@@ -77,12 +71,11 @@ class DownloadQueue implements SingletonInterface
     /**
      * Remove an extension from download queue
      *
-     * @param string $stack Stack to remove extension from (download, update or install)
-     * @throws ExtensionManagerException
+     * @param string $stack Stack to remove extension from (download or update)
      */
-    public function removeExtensionFromQueue(Extension $extension, $stack = 'download')
+    public function removeExtensionFromQueue(Extension $extension, string $stack = 'download'): void
     {
-        if (!is_string($stack) || !in_array($stack, ['download', 'update'])) {
+        if (!in_array($stack, ['download', 'update'])) {
             throw new ExtensionManagerException('Stack has to be either "download" or "update"', 1342432104);
         }
         if (array_key_exists($stack, $this->extensionStorage) && is_array($this->extensionStorage[$stack])) {
@@ -94,20 +87,16 @@ class DownloadQueue implements SingletonInterface
 
     /**
      * Adds an extension to the install queue for later installation
-     *
-     * @param Extension $extension
      */
-    public function addExtensionToInstallQueue($extension)
+    public function addExtensionToInstallQueue(Extension $extension): void
     {
         $this->extensionInstallStorage[$extension->getExtensionKey()] = $extension;
     }
 
     /**
      * Gets the extension installation queue
-     *
-     * @return array
      */
-    public function getExtensionInstallStorage()
+    public function getExtensionInstallStorage(): array
     {
         return $this->extensionInstallStorage;
     }
@@ -118,7 +107,7 @@ class DownloadQueue implements SingletonInterface
      * @param string $stack either "download" or "update"
      * @return bool
      */
-    public function isQueueEmpty($stack)
+    public function isQueueEmpty(string $stack): bool
     {
         return empty($this->extensionStorage[$stack]);
     }
@@ -127,9 +116,8 @@ class DownloadQueue implements SingletonInterface
      * Resets the extension queue and returns old extensions
      *
      * @param string|null $stack if null, all stacks are reset
-     * @return array
      */
-    public function resetExtensionQueue($stack = null)
+    public function resetExtensionQueue(?string $stack = null): array
     {
         $storage = [];
         if ($stack === null) {
@@ -145,9 +133,8 @@ class DownloadQueue implements SingletonInterface
 
     /**
      * Resets the install queue and returns the old extensions
-     * @return array
      */
-    public function resetExtensionInstallStorage()
+    public function resetExtensionInstallStorage(): array
     {
         $storage = $this->extensionInstallStorage;
         $this->extensionInstallStorage = [];

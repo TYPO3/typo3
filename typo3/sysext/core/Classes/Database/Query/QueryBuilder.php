@@ -660,11 +660,11 @@ class QueryBuilder
      * @param string $fromAlias The alias that points to a from clause.
      * @param string $join The table name to join.
      * @param string $alias The alias of the join table.
-     * @param string|null $condition The condition for the join.
+     * @param CompositeExpression|string|null $condition The condition for the join.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function leftJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
+    public function leftJoin(string $fromAlias, string $join, string $alias, CompositeExpression|string $condition = null): QueryBuilder
     {
         $conditionExpression = $this->expr()->and(
             $condition,

@@ -26,39 +26,16 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  */
 class Dependency
 {
-    /**
-     * @var string
-     */
-    protected $identifier = '';
-
-    /**
-     * @var string
-     */
-    protected $lowestVersion = '';
-
-    /**
-     * @var string
-     */
-    protected $highestVersion = '';
-
-    /**
-     * @var string
-     */
-    protected $type = '';
-
-    /**
-     * @var array
-     */
-    protected static $dependencyTypes = [
+    protected string $identifier = '';
+    protected string $lowestVersion = '';
+    protected string $highestVersion = '';
+    protected string $type = '';
+    protected static array $dependencyTypes = [
         'depends',
         'conflicts',
         'suggests',
     ];
-
-    /**
-     * @var array
-     */
-    public static $specialDependencies = [
+    public static array $specialDependencies = [
         'typo3',
         'php',
     ];
@@ -77,7 +54,6 @@ class Dependency
      * @param string $identifier the extension name or "typo3" or "php" for TYPO3 Core / PHP version constraints
      * @param string $versionConstraint the actual version number. "1.0.0-2.0.0" or "1.0.0" which means "1.0.0 or higher"
      * @param string $dependencyType use "depends", "suggests" or "conflicts".
-     * @throws ExtensionManagerException
      */
     public static function createFromEmConf(
         string $identifier,

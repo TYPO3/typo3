@@ -143,9 +143,9 @@ class DownloadController extends AbstractController
     /**
      * Install an extension from TER action
      */
-    public function installFromTerAction(Extension $extension, string $downloadPath = 'Local'): ResponseInterface
+    public function installFromTerAction(Extension $extension): ResponseInterface
     {
-        [$result, $errorMessages] = $this->installFromTer($extension, $downloadPath);
+        [$result, $errorMessages] = $this->installFromTer($extension);
         $isAutomaticInstallationEnabled = (bool)$this->extensionConfiguration->get('extensionmanager', 'automaticInstallation');
         $this->view->assignMultiple([
             'result'  => $result,
@@ -163,7 +163,7 @@ class DownloadController extends AbstractController
     public function installExtensionWithoutSystemDependencyCheckAction(Extension $extension): ResponseInterface
     {
         $this->managementService->setSkipDependencyCheck(true);
-        return (new ForwardResponse('installFromTer'))->withArguments(['extension' => $extension, 'downloadPath' => 'Local']);
+        return (new ForwardResponse('installFromTer'))->withArguments(['extension' => $extension]);
     }
 
     /**
@@ -283,19 +283,18 @@ class DownloadController extends AbstractController
      *
      * @return array{
      *     0: array{
-         *     downloaded?: array<string, Extension>,
-         *     updated?: array<string, Extension>,
-         *     installed?: array<string, string>,
-         * }|false,
+     *         downloaded?: array<string, Extension>,
+     *         updated?: array<string, Extension>,
+     *         installed?: array<string, string>,
+     *     }|false,
      *     1: array<string, array<int, array{code: int, message: string}>>,
      * }
      */
-    protected function installFromTer(Extension $extension, string $downloadPath = 'Local'): array
+    protected function installFromTer(Extension $extension): array
     {
         $result = false;
         $errorMessages = [];
         try {
-            $this->managementService->setDownloadPath($downloadPath);
             $isAutomaticInstallationEnabled = (bool)$this->extensionConfiguration->get('extensionmanager', 'automaticInstallation');
             $this->managementService->setAutomaticInstallationEnabled($isAutomaticInstallationEnabled);
             if (($result = $this->managementService->installExtension($extension)) === false) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -53,11 +55,11 @@ class FileHandlingUtility implements LoggerAwareInterface
     /**
      * Unpack an extension in t3x data format and write files
      */
-    public function unpackExtensionFromExtensionDataArray(string $extensionKey, array $extensionData, string $pathType = 'Local'): void
+    public function unpackExtensionFromExtensionDataArray(string $extensionKey, array $extensionData): void
     {
         $files = $extensionData['FILES'] ?? [];
         $emConfData = $extensionData['EM_CONF'] ?? [];
-        $extensionDir = $this->makeAndClearExtensionDir($extensionKey, $pathType);
+        $extensionDir = $this->makeAndClearExtensionDir($extensionKey);
         $directories = $this->extractDirectoriesFromExtensionData($files);
         $files = array_diff_key($files, array_flip($directories));
         $this->createDirectoriesForExtensionFiles($directories, $extensionDir);
@@ -68,14 +70,11 @@ class FileHandlingUtility implements LoggerAwareInterface
 
     /**
      * Returns the installation directory for an extension depending on the installation scope
-     *
-     * @param string $pathType Extension installation scope (Local,Global,System)
-     * @throws ExtensionManagerException
      */
-    public function getExtensionDir(string $extensionKey, string $pathType = 'Local'): string
+    public function getExtensionDir(string $extensionKey): string
     {
         $paths = Extension::returnInstallPaths();
-        $path = $paths[$pathType] ?? '';
+        $path = $paths['Local'] ?? '';
         if (!$path || !is_dir($path) || !$extensionKey) {
             throw new ExtensionManagerException(
                 sprintf(
@@ -90,8 +89,6 @@ class FileHandlingUtility implements LoggerAwareInterface
 
     /**
      * Remove specified directory
-     *
-     * @throws ExtensionManagerException
      */
     public function removeDirectory(string $extDirPath): void
     {
@@ -120,12 +117,10 @@ class FileHandlingUtility implements LoggerAwareInterface
      *
      * @param string $file path to zip file
      * @param string $fileName file name
-     * @param string $pathType path type (Local, Global, System)
-     * @throws ExtensionManagerException
      */
-    public function unzipExtensionFromFile(string $file, string $fileName, string $pathType = 'Local'): void
+    public function unzipExtensionFromFile(string $file, string $fileName): void
     {
-        $extensionDir = $this->makeAndClearExtensionDir($fileName, $pathType);
+        $extensionDir = $this->makeAndClearExtensionDir($fileName);
         try {
             if ($this->zipService->verify($file)) {
                 $this->zipService->extract($file, $extensionDir);
@@ -155,8 +150,6 @@ class FileHandlingUtility implements LoggerAwareInterface
     /**
      * Loops over an array of directories and creates them in the given root path
      * It also creates nested directory structures
-     *
-     * @throws ExtensionManagerException
      */
     protected function createDirectoriesForExtensionFiles(array $directories, string $rootPath): void
     {
@@ -191,13 +184,10 @@ class FileHandlingUtility implements LoggerAwareInterface
     /**
      * Removes the current extension of $type and creates the base folder for
      * the new one (which is going to be imported)
-     *
-     * @param string $pathType Extension installation scope (Local,Global,System)
-     * @throws ExtensionManagerException
      */
-    protected function makeAndClearExtensionDir(string $extensionKey, string $pathType = 'Local'): string
+    protected function makeAndClearExtensionDir(string $extensionKey): string
     {
-        $extDirPath = $this->getExtensionDir($extensionKey, $pathType);
+        $extDirPath = $this->getExtensionDir($extensionKey);
         if (is_dir($extDirPath)) {
             $this->removeDirectory($extDirPath);
         }
@@ -207,8 +197,6 @@ class FileHandlingUtility implements LoggerAwareInterface
 
     /**
      * Add specified directory
-     *
-     * @throws ExtensionManagerException
      */
     protected function addDirectory(string $extDirPath): void
     {
@@ -235,9 +223,6 @@ class FileHandlingUtility implements LoggerAwareInterface
         GeneralUtility::writeFile($rootPath . 'ext_emconf.php', $emConfContent);
     }
 
-    /**
-     * Returns relative path
-     */
     protected function getRelativePath(string $absolutePath): string
     {
         return PathUtility::stripPathSitePrefix($absolutePath);

@@ -23,7 +23,6 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
-use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
  * Controller for actions relating to update of full extension list from TER
@@ -38,7 +37,6 @@ class UpdateFromTerController extends AbstractController
 
     public function __construct(
         protected readonly RemoteRegistry $remoteRegistry,
-        protected readonly ListUtility $listUtility,
         protected readonly ExtensionRepository $extensionRepository
     ) {}
 

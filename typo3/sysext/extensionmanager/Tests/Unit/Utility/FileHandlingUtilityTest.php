@@ -17,16 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -88,31 +85,6 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $subject->expects(self::once())->method('addDirectory')->with($this->testRoot . 'ext-' . $extKey . '/');
         $subject->method('getExtensionDir')->willReturn($this->testRoot . 'ext-' . $extKey . '/');
         $subject->_call('makeAndClearExtensionDir', $extKey);
-    }
-
-    /**
-     * @test
-     */
-    public function makeAndClearExtensionDirThrowsExceptionOnInvalidPath(): void
-    {
-        $this->expectException(ExtensionManagerException::class);
-        $this->expectExceptionCode(1337280417);
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
-        $subject = $this->getAccessibleMock(
-            FileHandlingUtility::class,
-            ['removeDirectory', 'addDirectory'],
-            [
-                $this->createMock(PackageManager::class),
-                $this->createMock(EmConfUtility::class),
-                $this->createMock(OpcodeCacheService::class),
-                $this->createMock(ZipService::class),
-                $languageServiceFactoryMock,
-            ]
-        );
-        $subject->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
 
     /**
