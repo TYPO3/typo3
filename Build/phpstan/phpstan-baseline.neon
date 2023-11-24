@@ -2336,11 +2336,6 @@ parameters:
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
 		-
-			message: "#^Offset 'msg' on \\*NEVER\\* on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 2
-			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
-
-		-
 			message: "#^Parameter \\#2 \\$all of method TYPO3\\\\CMS\\\\Impexp\\\\Import\\:\\:loadFile\\(\\) expects bool, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Tests/Functional/ImportExportTest.php

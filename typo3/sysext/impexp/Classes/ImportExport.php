@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -332,7 +334,7 @@ abstract class ImportExport
             $this->traversePageTree($this->dat['header']['pagetree'], $previewData['insidePageTree']);
             foreach ($previewData['insidePageTree'] as &$line) {
                 $line['controls'] = $this->renderControls($line);
-                $line['message'] = (($line['msg'] ?? '') && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($line['msg']) . '</span>' : '');
+                $line['message'] = (!empty($line['msg']) && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($line['msg']) . '</span>' : '');
             }
         }
 
@@ -344,7 +346,7 @@ abstract class ImportExport
             $this->traverseAllRecords($this->remainHeader['records'], $previewData['outsidePageTree']);
             foreach ($previewData['outsidePageTree'] as &$line) {
                 $line['controls'] = $this->renderControls($line);
-                $line['message'] = (($line['msg'] ?? '') && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($line['msg']) . '</span>' : '');
+                $line['message'] = (!empty($line['msg']) && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($line['msg']) . '</span>' : '');
             }
         }
 
@@ -1202,10 +1204,10 @@ abstract class ImportExport
      */
     protected function createDefaultImportExportFolder(): void
     {
-        $defaultTemporaryFolder = $this->getBackendUser()->getDefaultUploadTemporaryFolder();
+        $defaultTemporaryFolder = $this->getDefaultUploadTemporaryFolder();
         $defaultImportExportFolder = null;
-        $importExportFolderName = 'importexport';
         if ($defaultTemporaryFolder !== null) {
+            $importExportFolderName = 'importexport';
             if ($defaultTemporaryFolder->hasFolder($importExportFolderName) === false) {
                 $defaultImportExportFolder = $defaultTemporaryFolder->createFolder($importExportFolderName);
             } else {
@@ -1213,6 +1215,30 @@ abstract class ImportExport
             }
         }
         $this->defaultImportExportFolder = $defaultImportExportFolder;
+    }
+
+    /**
+     * Returns a \TYPO3\CMS\Core\Resource\Folder object that could be used for uploading
+     * temporary files in user context. The folder _temp_ below the default upload folder
+     * of the user is used.
+     */
+    protected function getDefaultUploadTemporaryFolder(): ?Folder
+    {
+        $defaultFolder = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class)->resolve($this->getBackendUser());
+
+        if ($defaultFolder !== false) {
+            $tempFolderName = '_temp_';
+            $createFolder = !$defaultFolder->hasFolder($tempFolderName);
+            if ($createFolder === true) {
+                try {
+                    return $defaultFolder->createFolder($tempFolderName);
+                } catch (Exception $folderAccessException) {
+                }
+            } else {
+                return $defaultFolder->getSubfolder($tempFolderName);
+            }
+        }
+        return null;
     }
 
     public function removeDefaultImportExportFolder(): void
@@ -1229,7 +1255,7 @@ abstract class ImportExport
      *
      * @param string $dirPrefix Path relative to public web path.
      * @param bool $checkAlternatives If set to false, do not look for an alternative path.
-     * @return string If a path is available, it will be returned, otherwise NULL.
+     * @return string|null If a path is available, it will be returned, otherwise NULL.
      * @throws \Exception
      */
     protected function resolveStoragePath(string $dirPrefix, bool $checkAlternatives = true): ?string

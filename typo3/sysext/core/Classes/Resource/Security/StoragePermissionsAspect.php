@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Resource\Security;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -29,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * The aspect injects user permissions and mount points into the storage
  * based on user or group configuration.
  *
- * We do not have AOP in TYPO3 for now, thus the aspect which
+ * We do not have AOP in TYPO3, thus the aspect which
  * deals with resource security is an EventListener which reacts on storage object creation.
  *
  * @internal this is an Event Listener, and not part of TYPO3 Core API.
@@ -45,11 +46,11 @@ final class StoragePermissionsAspect
         $storage = $event->getStorage();
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-            && !$GLOBALS['BE_USER']->isAdmin()
+            && !$this->getBackendUser()->isAdmin()
         ) {
             $storage->setEvaluatePermissions(true);
             if ($storage->getUid() > 0) {
-                $storage->setUserPermissions($GLOBALS['BE_USER']->getFilePermissionsForStorage($storage));
+                $storage->setUserPermissions($this->getFilePermissionsForStorage($storage));
             } else {
                 $storage->setEvaluatePermissions(false);
             }
@@ -60,15 +61,15 @@ final class StoragePermissionsAspect
     /**
      * Adds file mounts from the user's file mount records
      */
-    private function addFileMountsToStorage(ResourceStorage $storage)
+    private function addFileMountsToStorage(ResourceStorage $storage): void
     {
-        foreach ($GLOBALS['BE_USER']->getFileMountRecords() as $fileMountRow) {
+        foreach ($this->getBackendUser()->getFileMountRecords() as $fileMountRow) {
             if (!str_contains($fileMountRow['identifier'], ':')) {
                 // Skip record since the file mount identifier is invalid
                 continue;
             }
             [$base, $path] = GeneralUtility::trimExplode(':', $fileMountRow['identifier'], false, 2);
-            if ((int)$base === (int)$storage->getUid()) {
+            if ((int)$base === $storage->getUid()) {
                 try {
                     $storage->addFileMount($path, $fileMountRow);
                 } catch (FolderDoesNotExistException $e) {
@@ -76,5 +77,35 @@ final class StoragePermissionsAspect
                 }
             }
         }
+    }
+
+    /**
+     * Gets the file permissions for a storage
+     * by merging any storage-specific permissions for a
+     * storage with the default settings.
+     * Admin users will always get the default settings.
+     */
+    private function getFilePermissionsForStorage(ResourceStorage $storageObject): array
+    {
+        $backendUser = $this->getBackendUser();
+        $finalUserPermissions = $backendUser->getFilePermissions();
+        if ($backendUser->isAdmin()) {
+            return $finalUserPermissions;
+        }
+        $storageFilePermissions = $backendUser->getTSConfig()['permissions.']['file.']['storage.'][$storageObject->getUid() . '.'] ?? [];
+        if (!empty($storageFilePermissions)) {
+            array_walk(
+                $storageFilePermissions,
+                static function (string $value, string $permission) use (&$finalUserPermissions): void {
+                    $finalUserPermissions[$permission] = (bool)$value;
+                }
+            );
+        }
+        return $finalUserPermissions;
+    }
+
+    private function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

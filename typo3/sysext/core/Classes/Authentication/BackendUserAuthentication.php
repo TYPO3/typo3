@@ -32,11 +32,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
@@ -1474,12 +1470,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * Please note that these permissions only apply, if the storage has the
      * capabilities (browseable, writable), and if the driver allows for writing etc
-     *
-     * @return array
      */
-    public function getFilePermissions()
+    public function getFilePermissions(): array
     {
-        if (!isset($this->filePermissions)) {
+        if ($this->filePermissions === null) {
             $filePermissions = [
                 // File permissions
                 'addFile' => false,
@@ -1524,127 +1518,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->filePermissions = $filePermissions;
         }
         return $this->filePermissions;
-    }
-
-    /**
-     * Gets the file permissions for a storage
-     * by merging any storage-specific permissions for a
-     * storage with the default settings.
-     * Admin users will always get the default settings.
-     *
-     * @return array
-     */
-    public function getFilePermissionsForStorage(ResourceStorage $storageObject)
-    {
-        $finalUserPermissions = $this->getFilePermissions();
-        if (!$this->isAdmin()) {
-            $storageFilePermissions = $this->getTSConfig()['permissions.']['file.']['storage.'][$storageObject->getUid() . '.'] ?? [];
-            if (!empty($storageFilePermissions)) {
-                array_walk(
-                    $storageFilePermissions,
-                    static function (string $value, string $permission) use (&$finalUserPermissions): void {
-                        $finalUserPermissions[$permission] = (bool)$value;
-                    }
-                );
-            }
-        }
-        return $finalUserPermissions;
-    }
-
-    /**
-     * Returns a \TYPO3\CMS\Core\Resource\Folder object that is used for uploading
-     * files by default.
-     * This is used for RTE and its magic images, as well as uploads
-     * in the FormEngine fields.
-     *
-     * The default upload folder for a user is the defaultFolder on the first
-     * filestorage/filemount that the user can access and to which files are allowed to be added
-     * however, you can set the users' upload folder like this:
-     *
-     * options.defaultUploadFolder = 3:myfolder/yourfolder/
-     *
-     * @param int $pid PageUid
-     * @param string $table Table name
-     * @param string $field Field name
-     * @return \TYPO3\CMS\Core\Resource\Folder|bool The default upload folder for this user
-     * @internal use DefaultUploadFolderResolver instead.
-     */
-    public function getDefaultUploadFolder($pid = null, $table = null, $field = null)
-    {
-        $uploadFolder = $this->getTSConfig()['options.']['defaultUploadFolder'] ?? '';
-        if ($uploadFolder) {
-            try {
-                $uploadFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($uploadFolder);
-            } catch (Exception\FolderDoesNotExistException $e) {
-                $uploadFolder = null;
-            }
-        }
-        if (empty($uploadFolder)) {
-            foreach ($this->getFileStorages() as $storage) {
-                if ($storage->isDefault() && $storage->isWritable()) {
-                    try {
-                        $uploadFolder = $storage->getDefaultFolder();
-                        if ($uploadFolder->checkActionPermission('write')) {
-                            break;
-                        }
-                        $uploadFolder = null;
-                    } catch (Exception $folderAccessException) {
-                        // If the folder is not accessible (no permissions / does not exist) we skip this one.
-                    }
-                    break;
-                }
-            }
-            if (!$uploadFolder instanceof Folder) {
-                foreach ($this->getFileStorages() as $storage) {
-                    if ($storage->isWritable()) {
-                        try {
-                            $uploadFolder = $storage->getDefaultFolder();
-                            if ($uploadFolder->checkActionPermission('write')) {
-                                break;
-                            }
-                            $uploadFolder = null;
-                        } catch (Exception $folderAccessException) {
-                            // If the folder is not accessible (no permissions / does not exist) try the next one.
-                        }
-                    }
-                }
-            }
-        }
-
-        if ($uploadFolder instanceof Folder) {
-            return $uploadFolder;
-        }
-        return false;
-    }
-
-    /**
-     * Returns a \TYPO3\CMS\Core\Resource\Folder object that could be used for uploading
-     * temporary files in user context. The folder _temp_ below the default upload folder
-     * of the user is used.
-     *
-     * @return \TYPO3\CMS\Core\Resource\Folder|null
-     * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getDefaultUploadFolder()
-     * @internal use DefaultUploadFolderResolver instead.
-     */
-    public function getDefaultUploadTemporaryFolder()
-    {
-        $defaultTemporaryFolder = null;
-        $defaultFolder = $this->getDefaultUploadFolder();
-
-        if ($defaultFolder !== false) {
-            $tempFolderName = '_temp_';
-            $createFolder = !$defaultFolder->hasFolder($tempFolderName);
-            if ($createFolder === true) {
-                try {
-                    $defaultTemporaryFolder = $defaultFolder->createFolder($tempFolderName);
-                } catch (Exception $folderAccessException) {
-                }
-            } else {
-                $defaultTemporaryFolder = $defaultFolder->getSubfolder($tempFolderName);
-            }
-        }
-
-        return $defaultTemporaryFolder;
     }
 
     /**

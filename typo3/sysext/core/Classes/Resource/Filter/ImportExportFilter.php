@@ -35,7 +35,7 @@ class ImportExportFilter
      */
     public static function filterImportExportFilesAndFolders(string $itemName, string $itemIdentifier, string $parentIdentifier, array $additionalInformation, DriverInterface $driverInstance)
     {
-        // + `_temp_` is hard-coded in `BackendUserAuthentication::getDefaultUploadTemporaryFolder()`
+        // + `_temp_` is hard-coded in `ImportExport::getDefaultUploadTemporaryFolder()`
         // + `importexport` is hard-coded in `ImportExport::createDefaultImportExportFolder()`
         $importExportFolderSubPath = '/_temp_/importexport/';
         if (str_ends_with($parentIdentifier, $importExportFolderSubPath) || str_contains($itemIdentifier, $importExportFolderSubPath)) {
