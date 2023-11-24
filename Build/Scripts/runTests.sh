@@ -150,6 +150,20 @@ cleanRenderedDocumentationFiles() {
     echo "done"
 }
 
+getPhpImageVersion() {
+    case ${1} in
+        8.1)
+            echo -n "2.7"
+            ;;
+        8.2)
+            echo -n "1.6"
+            ;;
+        8.3)
+            echo -n "1.7"
+            ;;
+    esac
+}
+
 loadHelp() {
     # Load help text into $HELP
     read -r -d '' HELP <<EOF
@@ -372,11 +386,6 @@ SUFFIX=$(echo $RANDOM)
 NETWORK="typo3-core-${SUFFIX}"
 CI_PARAMS=""
 CONTAINER_HOST="host.docker.internal"
-declare -A PHP_IMAGE_VERSIONS=(
-    ["8.1"]="2.7"
-    ["8.2"]="1.6"
-    ["8.3"]="1.7"
-)
 
 # Option parsing updates above default vars
 # Reset in case getopts has been used previously in the shell
@@ -415,7 +424,7 @@ while getopts ":a:b:s:c:d:i:p:e:xy:o:nhug" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if [[ -z "${PHP_IMAGE_VERSIONS[${PHP_VERSION}]:-}" ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(8.1|8.2|8.3)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
@@ -486,7 +495,8 @@ if ! type ${CONTAINER_BIN} >/dev/null 2>&1; then
 fi
 
 IMAGE_APACHE="ghcr.io/typo3/core-testing-apache24:1.1"
-IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):${PHP_IMAGE_VERSIONS[$PHP_VERSION]}"
+IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):$(getPhpImageVersion $PHP_VERSION)"
+
 IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs18:1.0"
 IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs18-chrome:1.0"
 IMAGE_ALPINE="docker.io/alpine:3.8"
