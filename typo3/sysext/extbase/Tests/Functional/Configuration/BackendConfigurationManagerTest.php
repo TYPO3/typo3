@@ -134,8 +134,9 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     {
         $request = (new ServerRequest())->withQueryParams(['id' => 123]);
         $subject = $this->get(BackendConfigurationManager::class);
+        $subject->setRequest($request);
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
         self::assertEquals(123, $actualResult);
     }
 
@@ -146,8 +147,9 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     {
         $request = (new ServerRequest())->withQueryParams(['id' => 123])->withParsedBody(['id' => 321]);
         $subject = $this->get(BackendConfigurationManager::class);
+        $subject->setRequest($request);
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
         self::assertEquals(321, $actualResult);
     }
 
@@ -166,8 +168,9 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
             ]
         );
         $subject = $this->get(BackendConfigurationManager::class);
+        $subject->setRequest(new ServerRequest());
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
         self::assertEquals(123, $actualResult);
     }
 
@@ -185,8 +188,9 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
             ]
         );
         $subject = $this->get(BackendConfigurationManager::class);
+        $subject->setRequest(new ServerRequest());
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
         self::assertEquals(1, $actualResult);
     }
 
@@ -196,8 +200,9 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound(): void
     {
         $subject = $this->get(BackendConfigurationManager::class);
+        $subject->setRequest(new ServerRequest());
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
         self::assertEquals(0, $actualResult);
     }
 

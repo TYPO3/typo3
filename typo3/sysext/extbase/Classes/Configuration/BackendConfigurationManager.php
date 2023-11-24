@@ -134,13 +134,9 @@ class BackendConfigurationManager implements SingletonInterface
      */
     public function getConfiguration(?string $extensionName = null, ?string $pluginName = null): array
     {
-        // @todo: Avoid $GLOBALS['TYPO3_REQUEST'] in v13.
-        /** @var ServerRequestInterface|null $request */
-        $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
-
         $frameworkConfiguration = $this->getExtbaseConfiguration();
         if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
-            $frameworkConfiguration['persistence']['storagePid'] = $this->getCurrentPageId($request);
+            $frameworkConfiguration['persistence']['storagePid'] = $this->getCurrentPageId();
         }
         // only merge $this->configuration and override controller configuration when retrieving configuration of the current plugin
         if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
@@ -183,11 +179,7 @@ class BackendConfigurationManager implements SingletonInterface
      */
     public function getTypoScriptSetup(): array
     {
-        // @todo: Avoid $GLOBALS['TYPO3_REQUEST'] in v13.
-        /** @var ServerRequestInterface|null $request */
-        $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
-
-        $pageId = $this->getCurrentPageId($request);
+        $pageId = $this->getCurrentPageId();
 
         $cacheIdentifier = 'extbase-backend-typoscript-pageId-' . $pageId;
         $setupArray = $this->runtimeCache->get($cacheIdentifier);
@@ -195,7 +187,7 @@ class BackendConfigurationManager implements SingletonInterface
             return $setupArray;
         }
 
-        $site = $request?->getAttribute('site');
+        $site = $this->request?->getAttribute('site');
 
         $rootLine = [];
         $sysTemplateFakeRow = [
@@ -218,7 +210,7 @@ class BackendConfigurationManager implements SingletonInterface
         ];
         if ($pageId > 0) {
             $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
-            $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
+            $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $this->request);
             ksort($rootLine);
         }
         if (empty($sysTemplateRows)) {
@@ -232,7 +224,7 @@ class BackendConfigurationManager implements SingletonInterface
         // hassle. See the Frontend TypoScript calculation on how to do this.
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->lossyTokenizer, $site, $this->typoScriptCache);
         $expressionMatcherVariables = [
-            'request' => $request,
+            'request' => $this->request,
             'pageId' => $pageId,
             'page' => !empty($rootLine) ? $rootLine[array_key_first($rootLine)] : [],
             'fullRootLine' => $rootLine,
@@ -314,14 +306,12 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return int current page id. If no page is selected current root page id is returned
      */
-    protected function getCurrentPageId(?ServerRequestInterface $request = null): int
+    protected function getCurrentPageId(): int
     {
         if ($this->currentPageId !== null) {
             return $this->currentPageId;
         }
-        if ($request !== null) {
-            $this->currentPageId = $this->getCurrentPageIdFromRequest($request);
-        }
+        $this->currentPageId = $this->getCurrentPageIdFromRequest();
         $this->currentPageId = $this->currentPageId ?: $this->getCurrentPageIdFromCurrentSiteRoot();
         $this->currentPageId = $this->currentPageId ?: $this->getCurrentPageIdFromRootTemplate();
         $this->currentPageId = $this->currentPageId ?: 0;
@@ -333,9 +323,9 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return int the page UID, will be 0 if none has been set
      */
-    protected function getCurrentPageIdFromRequest(ServerRequestInterface $request): int
+    protected function getCurrentPageIdFromRequest(): int
     {
-        return (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        return (int)($this->request?->getParsedBody()['id'] ?? $this->request?->getQueryParams()['id'] ?? 0);
     }
 
     /**
