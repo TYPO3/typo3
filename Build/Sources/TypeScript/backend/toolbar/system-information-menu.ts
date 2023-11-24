@@ -57,11 +57,11 @@ class SystemInformationMenu {
   }
 
   private static getData(): SystemInformationData {
-    const element = document.querySelector(SystemInformationSelector.data) as HTMLElement;
-    const data: DOMStringMap = element.dataset;
+    const element: null|HTMLElement = document.querySelector(SystemInformationSelector.data) as HTMLElement;
+    const data: null|DOMStringMap = element?.dataset;
     return {
-      count: data.systeminformationDataCount ? parseInt(data.systeminformationDataCount, 10) : 0,
-      severityBadgeClass: data.systeminformationDataSeveritybadgeclass ?? '',
+      count: data?.systeminformationDataCount ? parseInt(data.systeminformationDataCount, 10) : 0,
+      severityBadgeClass: data?.systeminformationDataSeveritybadgeclass ?? '',
     };
   }
 
