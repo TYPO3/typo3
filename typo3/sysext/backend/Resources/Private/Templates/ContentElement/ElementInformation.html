@@ -234,7 +234,7 @@
 <f:section name="action">
     <div class="btn-group" role="group">
         <f:if condition="{line.webListUrl}">
-            <button class="btn btn-default btn-sm" {f:if(condition: languageColumn.previewUrlAttributes, then: '{languageColumn.previewUrlAttributes -> f:format.raw()}', else: 'disabled="true"')} title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
+            <button class="btn btn-default btn-sm" {f:if(condition: line.previewUrlAttributes, then: '{line.previewUrlAttributes -> f:format.raw()}', else: 'disabled="true"')} title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
                 <core:icon identifier="actions-document-view" size="small" />
             </button>
         </f:if>
