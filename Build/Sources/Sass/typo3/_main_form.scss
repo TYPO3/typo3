@@ -190,10 +190,10 @@ select {
     }
 
     .close {
-        border: 2px solid transparent;
+        border: none;
         background-color: transparent;
         position: absolute;
-        height: 20px;
+        height: 16px;
         z-index: 3;
         top: 50%;
         inset-inline-end: .5em;
@@ -202,12 +202,6 @@ select {
 
         &:hover {
             opacity: .5;
-        }
-
-        &:focus {
-            opacity: .5;
-            outline: 0;
-            border-color: var(--typo3-component-link-hover-color);
         }
 
         .icon {
