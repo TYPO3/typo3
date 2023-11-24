@@ -33,7 +33,7 @@ class Clearable {
     //
     // https://github.com/typo3/typo3.icons
     const closeIcon =
-      `<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-close" data-identifier="actions-close" aria-hidden="true">
+      `<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-close" data-identifier="actions-close">
         <span class="icon-markup">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                 <path
@@ -78,7 +78,6 @@ class Clearable {
       const clearButton = Clearable.createCloseButton();
       const toggleClearButtonVisibility = (): void => {
         clearButton.style.visibility = this.value.length === 0 ? 'hidden' : 'visible';
-        clearButton.tabIndex = this.value.length === 0 ? -1 : 0;
       };
 
       clearButton.addEventListener('click', (e: Event): void => {
