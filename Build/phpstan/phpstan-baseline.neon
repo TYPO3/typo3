@@ -866,11 +866,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Type/Enumeration.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:require\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/ExtensionManagementUtility.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php

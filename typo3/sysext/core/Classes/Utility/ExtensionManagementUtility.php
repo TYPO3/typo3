@@ -17,11 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Utility;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -33,19 +29,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
  */
 class ExtensionManagementUtility
 {
-    /**
-     * TRUE, if ext_tables file was read from cache for this script run.
-     * The frontend tends to do that multiple times, but the caching framework does
-     * not allow this (via a require_once call). This variable is used to track
-     * the access to the cache file to read the single ext_tables.php if it was
-     * already read from cache
-     *
-     * @todo See if we can get rid of the 'load multiple times' scenario in fe
-     */
-    protected static bool $extTablesWasReadFromCacheOnce = false;
     protected static PackageManager $packageManager;
-    protected static EventDispatcherInterface $eventDispatcher;
-    protected static ?CacheManager $cacheManager;
 
     /**
      * Sets the package manager for all that backwards compatibility stuff,
@@ -56,24 +40,6 @@ class ExtensionManagementUtility
     public static function setPackageManager(PackageManager $packageManager): void
     {
         static::$packageManager = $packageManager;
-    }
-
-    /**
-     * Sets the event dispatcher to be available.
-     *
-     * @internal only used for tests and the internal TYPO3 Bootstrap process
-     */
-    public static function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        static::$eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Returns the Cache manager
-     */
-    protected static function getCacheManager(): CacheManager
-    {
-        return static::$cacheManager ??= GeneralUtility::makeInstance(CacheManager::class);
     }
 
     /**************************************
@@ -1147,93 +1113,6 @@ tt_content.' . $key . $suffix . ' {
             }
         }
         return $returnFullPath ? $extensionPath . $icon : $icon;
-    }
-
-    /**
-     * Execute all ext_tables.php files of loaded extensions.
-     * The method implements an optionally used caching mechanism that concatenates all
-     * ext_tables.php files in one file.
-     *
-     * This is an internal method. It is only used during bootstrap and
-     * extensions should not use it!
-     *
-     * @param bool $allowCaching Whether to load / create concatenated cache file
-     * @internal
-     */
-    public static function loadExtTables(bool $allowCaching = true, FrontendInterface $codeCache = null): void
-    {
-        if ($allowCaching && !self::$extTablesWasReadFromCacheOnce) {
-            self::$extTablesWasReadFromCacheOnce = true;
-            $cacheIdentifier = self::getExtTablesCacheIdentifier();
-            $codeCache = $codeCache ?? self::getCacheManager()->getCache('core');
-            $hasCache = $codeCache->require($cacheIdentifier) !== false;
-            if (!$hasCache) {
-                self::loadSingleExtTablesFiles();
-                self::createExtTablesCacheEntry($codeCache);
-            }
-        } else {
-            self::loadSingleExtTablesFiles();
-        }
-    }
-
-    /**
-     * Load ext_tables.php as single files
-     */
-    protected static function loadSingleExtTablesFiles(): void
-    {
-        // Load each ext_tables.php file of loaded extensions
-        foreach (static::$packageManager->getActivePackages() as $package) {
-            $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
-            if (@file_exists($extTablesPath)) {
-                require $extTablesPath;
-            }
-        }
-    }
-
-    /**
-     * Create concatenated ext_tables.php cache file
-     *
-     * @internal
-     */
-    public static function createExtTablesCacheEntry(FrontendInterface $codeCache): void
-    {
-        $phpCodeToCache = [];
-        // Set same globals as in loadSingleExtTablesFiles()
-        $phpCodeToCache[] = '/**';
-        $phpCodeToCache[] = ' * Compiled ext_tables.php cache file';
-        $phpCodeToCache[] = ' */';
-        $phpCodeToCache[] = '';
-        // Iterate through loaded extensions and add ext_tables content
-        foreach (static::$packageManager->getActivePackages() as $package) {
-            $extensionKey = $package->getPackageKey();
-            $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
-            if (@file_exists($extTablesPath)) {
-                // Include a header per extension to make the cache file more readable
-                $phpCodeToCache[] = '/**';
-                $phpCodeToCache[] = ' * Extension: ' . $extensionKey;
-                $phpCodeToCache[] = ' * File: ' . $extTablesPath;
-                $phpCodeToCache[] = ' */';
-                $phpCodeToCache[] = '';
-                // Add ext_tables.php content of extension
-                $phpCodeToCache[] = 'namespace {';
-                $phpCodeToCache[] = trim((string)file_get_contents($extTablesPath));
-                $phpCodeToCache[] = '}';
-                $phpCodeToCache[] = '';
-            }
-        }
-        $phpCodeToCache = implode(LF, $phpCodeToCache);
-        // Remove all start and ending php tags from content
-        $phpCodeToCache = preg_replace('/<\\?php|\\?>/is', '', $phpCodeToCache);
-        $phpCodeToCache = preg_replace('/declare\\s?+\\(\\s?+strict_types\\s?+=\\s?+1\\s?+\\);/is', '', (string)$phpCodeToCache);
-        $codeCache->set(self::getExtTablesCacheIdentifier(), $phpCodeToCache);
-    }
-
-    /**
-     * Cache identifier for concatenated ext_tables.php files
-     */
-    protected static function getExtTablesCacheIdentifier(): string
-    {
-        return (new PackageDependentCacheIdentifier(self::$packageManager))->withPrefix('ext_tables')->toString();
     }
 
     /**

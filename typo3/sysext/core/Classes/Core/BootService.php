@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Core;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
+use TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -123,9 +124,7 @@ class BootService
 
         $container->get('boot.state')->complete = false;
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $cacheCore = $container->get('cache.core');
         $tcaFactory = $container->get(TcaFactory::class);
-        ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
         if ($allowCaching) {
             $container->get(ExtLocalconfFactory::class)->load();
         } else {
@@ -141,7 +140,11 @@ class BootService
         $container->get('boot.state')->complete = true;
         $eventDispatcher->dispatch(new BootCompletedEvent($allowCaching));
         if ($loadExtTables) {
-            Bootstrap::loadExtTables($allowCaching, $cacheCore);
+            if ($allowCaching) {
+                $container->get(ExtTablesFactory::class)->load();
+            } else {
+                $container->get(ExtTablesFactory::class)->loadUncached();
+            }
         }
 
         if ($resetContainer) {

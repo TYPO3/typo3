@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -27,29 +25,9 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtility
 {
-    public static function setCacheManager(CacheManager $cacheManager = null): void
-    {
-        static::$cacheManager = $cacheManager;
-    }
-
     public static function getPackageManager(): PackageManager
     {
         return static::$packageManager;
-    }
-
-    public static function resetExtTablesWasReadFromCacheOnceBoolean(): void
-    {
-        self::$extTablesWasReadFromCacheOnce = false;
-    }
-
-    public static function createExtTablesCacheEntry(FrontendInterface $cache): void
-    {
-        parent::createExtTablesCacheEntry($cache);
-    }
-
-    public static function getExtTablesCacheIdentifier(): string
-    {
-        return parent::getExtTablesCacheIdentifier();
     }
 
     public static function removeDuplicatesForInsertion($insertionList, $list = ''): string

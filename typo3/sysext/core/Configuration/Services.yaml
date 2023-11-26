@@ -175,6 +175,11 @@ services:
     arguments:
       $codeCache: '@cache.core'
 
+  TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory:
+    public: true
+    arguments:
+      $codeCache: '@cache.core'
+
   TYPO3\CMS\Core\Configuration\Tca\TcaFactory:
     public: true
     arguments:

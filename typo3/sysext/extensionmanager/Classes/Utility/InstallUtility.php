@@ -22,11 +22,11 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
+use TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\BootService;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -95,7 +95,7 @@ class InstallUtility implements LoggerAwareInterface
         $container->get(ExtLocalconfFactory::class)->loadUncached();
         $tcaFactory = $container->get(TcaFactory::class);
         $GLOBALS['TCA'] = $tcaFactory->create();
-        Bootstrap::loadExtTables(false);
+        $container->get(ExtTablesFactory::class)->loadUncached();
         $this->updateDatabase();
         foreach ($extensionKeys as $extensionKey) {
             $this->processExtensionSetup($extensionKey);

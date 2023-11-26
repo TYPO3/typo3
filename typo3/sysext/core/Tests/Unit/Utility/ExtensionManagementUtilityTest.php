@@ -18,10 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -45,7 +42,6 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
     protected function tearDown(): void
     {
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager(null);
         parent::tearDown();
     }
 
@@ -1133,124 +1129,6 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         ];
         ExtensionManagementUtility::addTcaSelectItem('testTable', 'testField', ['label' => 'insertedElement'], $relativeToField, $relativePosition);
         self::assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning loadExtTables
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function loadExtTablesDoesNotReadFromCacheIfCachingIsDenied(): void
-    {
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->expects(self::never())->method('getCache');
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $packageManager = $this->createMockPackageManagerWithMockPackage(StringUtility::getUniqueId());
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        ExtensionManagementUtility::loadExtTables(false);
-    }
-
-    /**
-     * @test
-     */
-    public function loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed(): void
-    {
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->method('getCache')->willReturn($mockCache);
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->method('has')->willReturn(true);
-        $mockCache->expects(self::once())->method('require');
-        // Reset the internal cache access tracking variable of extMgm
-        // This method is only in the ProxyClass!
-        ExtensionManagementUtilityAccessibleProxy::resetExtTablesWasReadFromCacheOnceBoolean();
-        ExtensionManagementUtility::loadExtTables(true);
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning createExtTablesCacheEntry
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function createExtTablesCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtTables(): void
-    {
-        $extensionName = StringUtility::getUniqueId('foo');
-        $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
-        $extensionPath = $packageManager->getPackage($extensionName)->getPackagePath();
-        $extTablesLocation = $extensionPath . 'ext_tables.php';
-        $uniqueStringInTables = StringUtility::getUniqueId('foo');
-        file_put_contents($extTablesLocation, "<?php\n\n$uniqueStringInTables\n\n?>");
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
-
-        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInTables), self::anything());
-        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry($mockCache);
-    }
-
-    /**
-     * @test
-     */
-    public function createExtTablesCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtTablesExists(): void
-    {
-        $extensionName = StringUtility::getUniqueId('foo');
-        $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
-
-        $mockCache->expects(self::once())
-            ->method('set')
-            ->with(self::anything(), self::logicalNot(self::stringContains($extensionName)), self::anything());
-        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry($mockCache);
-    }
-
-    /**
-     * @test
-     */
-    public function createExtTablesCacheEntryWritesCacheEntryWithNoTags(): void
-    {
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
-        $packageManager = $this->createMockPackageManagerWithMockPackage(StringUtility::getUniqueId());
-        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry($mockCache);
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning getExtTablesCacheIdentifier
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function getExtTablesCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix(): void
-    {
-        $prefix = 'ext_tables_';
-        $identifier = ExtensionManagementUtilityAccessibleProxy::getExtTablesCacheIdentifier();
-        self::assertStringStartsWith($prefix, $identifier);
-        $sha1 = str_replace($prefix, '', $identifier);
-        self::assertEquals(40, strlen($sha1));
     }
 
     /////////////////////////////////////////
