@@ -10,7 +10,7 @@ unit javascript:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1 -d mariadb -i 10.3
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1 -d mariadb -i 10.4
     - Build/Scripts/runTests.sh -s unitJavascript
 
 unit php 8.1 max:

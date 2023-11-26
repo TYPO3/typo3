@@ -26,7 +26,7 @@ functional deprecated mariadb 10.10 php 8.2 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.10 -p 8.2
-functional deprecated mariadb 10.3 php 8.1 min:
+functional deprecated mariadb 10.4 php 8.1 min:
   stage: functional
   tags:
     - metal2
@@ -39,7 +39,7 @@ functional deprecated mariadb 10.3 php 8.1 min:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 8.1
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.4 -p 8.1
 
 functional deprecated mysql 8.0 php 8.3 max:
   stage: functional
@@ -200,7 +200,7 @@ functional mariadb 10.10 php 8.2 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional mariadb 10.3 php 8.1 min:
+functional mariadb 10.4 php 8.1 min:
   stage: functional
   tags:
     - metal2
@@ -214,7 +214,7 @@ functional mariadb 10.3 php 8.1 min:
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.4 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 functional mysql 8.0 php 8.3 max:
   stage: functional

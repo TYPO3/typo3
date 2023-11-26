@@ -1,4 +1,4 @@
-acceptance install mariadb 10.3 php 8.1 pre-merge:
+acceptance install mariadb 10.4 php 8.1 pre-merge:
   stage: main
   tags:
     - metal2
@@ -12,7 +12,7 @@ acceptance install mariadb 10.3 php 8.1 pre-merge:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.4 -p 8.1
 
 acceptance install mysql 8.0 php 8.1 pre-merge:
   stage: main

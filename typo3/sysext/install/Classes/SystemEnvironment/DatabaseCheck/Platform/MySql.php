@@ -49,7 +49,7 @@ class MySql extends AbstractPlatform
      */
     protected array $minimumVersion = [
         self::PLATFORM_MYSQL => '8.0.0',
-        self::PLATFORM_MARIADB => '10.3.0',
+        self::PLATFORM_MARIADB => '10.4.3',
     ];
 
     /**

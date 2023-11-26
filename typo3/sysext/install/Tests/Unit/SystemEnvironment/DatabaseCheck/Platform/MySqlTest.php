@@ -55,15 +55,15 @@ final class MySqlTest extends UnitTestCase
         // MariaDB cases
         yield 'MariaDB version with prefix detects correct' => [
             'platform' => new MariaDBPlatform(),
-            'serverVersionString' => 'MySQL 5.5.5-10.3.32-MariaDB-1:10.3.32+maria~focal-log',
+            'serverVersionString' => 'MySQL 5.5.5-10.4.3-MariaDB-1:10.10.4.3+maria~focal-log',
             'expectedSeverity' => ContextualFeedbackSeverity::OK,
-            'expectedTitle' => 'MariaDB version 10.3.32 is fine',
+            'expectedTitle' => 'MariaDB version 10.4.3 is fine',
         ];
         yield 'MariaDB version without prefix detects correct' => [
             'platform' => new MariaDBPlatform(),
-            'serverVersionString' => 'MySQL 10.3.32-MariaDB-1:10.3.32+maria~focal-log',
+            'serverVersionString' => 'MySQL 10.4.3-MariaDB-1:10.4.3+maria~focal-log',
             'expectedSeverity' => ContextualFeedbackSeverity::OK,
-            'expectedTitle' => 'MariaDB version 10.3.32 is fine',
+            'expectedTitle' => 'MariaDB version 10.4.3 is fine',
         ];
         yield 'MariaDB old version with prefix detects as too low' => [
             'platform' => new MariaDBPlatform(),

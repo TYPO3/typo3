@@ -16,7 +16,7 @@ acceptance install mariadb 10.10 php 8.2 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
-acceptance install mariadb 10.3 php 8.1 min:
+acceptance install mariadb 10.4 php 8.1 min:
   stage: acceptance
   tags:
     - metal2
@@ -33,7 +33,7 @@ acceptance install mariadb 10.3 php 8.1 min:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.4 -p 8.1
 
 acceptance install mysql 8.0 php 8.2 max:
   stage: acceptance
