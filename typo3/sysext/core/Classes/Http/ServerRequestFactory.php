@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -61,7 +62,17 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         $headers = static::prepareHeaders($serverParameters);
 
         $method = $serverParameters['REQUEST_METHOD'] ?? 'GET';
-        $uri = new Uri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+        try {
+            $uri = new Uri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+        } catch (\InvalidArgumentException $e) {
+            if (Environment::isCli()) {
+                throw new InvalidRequestUrlOnCliException(
+                    'Usage of ' . __METHOD__ . ' on CLI is discouraged. In case you rely on the method, you have to fake a valid request URL using $_SERVER.',
+                    1701105725
+                );
+            }
+            throw $e;
+        }
 
         $request = new ServerRequest(
             $uri,
