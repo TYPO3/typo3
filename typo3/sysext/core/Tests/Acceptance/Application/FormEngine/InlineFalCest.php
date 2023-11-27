@@ -51,7 +51,6 @@ class InlineFalCest
     {
         $infoButtonSelector = '.tab-content button[data-action="infowindow"]';
         $I->wait(2);
-        $filename = $I->grabTextFrom(self::$filenameSelector);
         $I->click($infoButtonSelector);
         $I->wait(2);
         $modalDialog->canSeeDialog();
@@ -59,7 +58,7 @@ class InlineFalCest
         $I->switchToIFrame('.modal-iframe');
         $I->wait(2);
         $modalTitle = $I->grabTextFrom('.card-title');
-        $I->assertStringContainsString($filename, $modalTitle);
+        $I->assertStringContainsString('bus_lane.jpg', $modalTitle);
     }
 
     public function hideFalRelation(ApplicationTester $I): void
