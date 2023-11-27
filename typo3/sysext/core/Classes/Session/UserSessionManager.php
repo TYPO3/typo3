@@ -23,6 +23,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\CookieScopeTrait;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -95,7 +96,7 @@ class UserSessionManager implements LoggerAwareInterface
     {
         try {
             $cookieValue = (string)($request->getCookieParams()[$cookieName] ?? '');
-            $scope = $this->getCookieScope($request->getAttribute('normalizedParams'));
+            $scope = $this->getCookieScope($request->getAttribute('normalizedParams') ?? NormalizedParams::createFromRequest($request));
             $sessionId = UserSession::resolveIdentifierFromJwt($cookieValue, $scope);
         } catch (\Exception $exception) {
             $this->logger->debug('Could not resolve session identifier from JWT', ['exception' => $exception]);
