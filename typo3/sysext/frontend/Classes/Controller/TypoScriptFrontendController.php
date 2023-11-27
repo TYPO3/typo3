@@ -1310,7 +1310,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $includeTreeTraverserVisitors = [];
                 $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
                 $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-                $includeTreeTraverserVisitors[] = $constantAstBuilderVisitor;
+                $includeTreeTraverserVisitors[] = $conditionMatcherVisitor;
                 $constantConditionIncludeListAccumulatorVisitor = new IncludeTreeConditionIncludeListAccumulatorVisitor();
                 $includeTreeTraverserVisitors[] = $constantConditionIncludeListAccumulatorVisitor;
                 $includeTreeTraverser->traverse($constantIncludeTree, $includeTreeTraverserVisitors);
