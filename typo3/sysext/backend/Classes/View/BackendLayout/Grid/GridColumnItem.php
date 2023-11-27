@@ -317,7 +317,7 @@ class GridColumnItem extends AbstractGridObject
     {
         $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
         if ($this->record[$hiddenField]) {
-            return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unhide');
+            return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unHide');
         }
         return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hide');
     }
