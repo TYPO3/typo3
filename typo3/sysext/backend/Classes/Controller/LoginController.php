@@ -295,6 +295,20 @@ class LoginController
         // Might set JavaScript in the header to close window.
         $this->checkRedirect($request);
 
+        $languageService = $this->getLanguageService();
+
+        $clearButtonTitle = $languageService->sL(
+            'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.inputfield.clearButton.title'
+        );
+
+        $this->pageRenderer->addJsInlineCode(
+            'loginFormJsLang',
+            'window.TYPO3 = window.TYPO3 || {}; window.TYPO3.lang = {"labels.inputfield.clearButton.title": "' . $clearButtonTitle . '"};',
+            false,
+            false,
+            true,
+        );
+
         // Show login form
         if (empty($backendUser->user['uid'])) {
             $action = 'login';

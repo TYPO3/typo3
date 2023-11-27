@@ -1512,6 +1512,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="labels.datepicker.today" resname="labels.datepicker.today">
 				<source>Today</source>
 			</trans-unit>
+			<trans-unit id="labels.inputfield.clearButton.title" resname="labels.inputfield.clearButton.title">
+				<source>Clear input</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
