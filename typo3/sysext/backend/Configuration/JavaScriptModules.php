@@ -18,7 +18,7 @@ return [
         ],
         '@typo3/t3editor/' => [
             // @deprecated since TYPO3 v13, will be removed in TYPO3 v14
-            'path' => 'EXT:backend/Resources/Public/JavaScript/code-editor',
+            'path' => 'EXT:backend/Resources/Public/JavaScript/code-editor/',
         ],
         'crelt' => 'EXT:backend/Resources/Public/JavaScript/Contrib/crelt.js',
         'style-mod' => 'EXT:backend/Resources/Public/JavaScript/Contrib/style-mod.js',
