@@ -104,7 +104,7 @@ class Package implements PackageInterface
         if (!(@is_dir($packagePath) || (is_link($packagePath) && is_dir($packagePath)))) {
             throw new InvalidPackagePathException(sprintf('Tried to instantiate a package object for package "%s" with a non-existing package path "%s". Either the package does not exist anymore, or the code creating this object contains an error.', $packageKey, $packagePath), 1166631890);
         }
-        if (substr($packagePath, -1, 1) !== '/') {
+        if (!str_ends_with($packagePath, '/')) {
             throw new InvalidPackagePathException(sprintf('The package path "%s" provided for package "%s" has no trailing forward slash.', $packagePath, $packageKey), 1166633722);
         }
         $this->packageKey = $packageKey;

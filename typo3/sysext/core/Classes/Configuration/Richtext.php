@@ -156,7 +156,7 @@ class Richtext
     protected function addFlattenedPageTsConfig(array $typoScriptArray): array
     {
         foreach ($typoScriptArray as $key => $data) {
-            if (substr($key, -1) !== '.') {
+            if (!str_ends_with($key, '.')) {
                 continue;
             }
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);

@@ -68,7 +68,7 @@ class FilesProcessor implements DataProcessorInterface
 
             if (!empty($processorConfiguration['references.'])) {
                 $referenceConfiguration = $processorConfiguration['references.'];
-                $relationField = $cObj->stdWrapValue('fieldName', $referenceConfiguration ?? []);
+                $relationField = $cObj->stdWrapValue('fieldName', $referenceConfiguration);
 
                 // If no reference fieldName is set, there's nothing to do
                 if (!empty($relationField)) {

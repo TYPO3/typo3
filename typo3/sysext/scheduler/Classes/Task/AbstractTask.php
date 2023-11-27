@@ -363,7 +363,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     /**
      * Returns the execution object
      *
-     * @return Execution The internal execution object
+     * @return Execution|object|null The internal execution object - when an invalid task is being unserialized, the Execution object might not be available
      * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
     public function getExecution()

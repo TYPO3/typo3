@@ -47,12 +47,12 @@ class ContentContentObject extends AbstractContentObject
                 $frontendController->recordRegister[$originalRec] = 1;
             }
         }
-        $conf['table'] = trim((string)$this->cObj->stdWrapValue('table', $conf ?? []));
+        $conf['table'] = trim((string)$this->cObj->stdWrapValue('table', $conf));
         $conf['select.'] = !empty($conf['select.']) ? $conf['select.'] : [];
         $renderObjName = ($conf['renderObj'] ?? false) ? $conf['renderObj'] : '<' . $conf['table'];
         $renderObjKey = ($conf['renderObj'] ?? false) ? 'renderObj' : '';
         $renderObjConf = $conf['renderObj.'] ?? [];
-        $slide = (int)$this->cObj->stdWrapValue('slide', $conf ?? []);
+        $slide = (int)$this->cObj->stdWrapValue('slide', $conf);
         if (!$slide) {
             $slide = 0;
         }
@@ -120,7 +120,7 @@ class ContentContentObject extends AbstractContentObject
             }
         } while ($again && $slide && ((string)$tmpValue === '' && $slideCollectFuzzy || $slideCollect));
 
-        $wrap = $this->cObj->stdWrapValue('wrap', $conf ?? []);
+        $wrap = $this->cObj->stdWrapValue('wrap', $conf);
         if ($wrap) {
             $theValue = $this->cObj->wrap($theValue, $wrap);
         }

@@ -105,7 +105,7 @@ class FilesContentObject extends AbstractContentObject
             # or: sys_file_references with uid 27:
             references = 27
              */
-            $referencesUidList = (string)$this->cObj->stdWrapValue('references', $conf ?? []);
+            $referencesUidList = (string)$this->cObj->stdWrapValue('references', $conf);
             $referencesUids = GeneralUtility::intExplode(',', $referencesUidList, true);
             $fileCollector->addFileReferences($referencesUids);
 
@@ -121,22 +121,22 @@ class FilesContentObject extends AbstractContentObject
             files = 12,14,15# using stdWrap:
             files.field = some_field
              */
-            $fileUids = GeneralUtility::intExplode(',', (string)$this->cObj->stdWrapValue('files', $conf ?? []), true);
+            $fileUids = GeneralUtility::intExplode(',', (string)$this->cObj->stdWrapValue('files', $conf), true);
             $fileCollector->addFiles($fileUids);
         }
 
         if ((isset($conf['collections']) && $conf['collections']) || (isset($conf['collections.']) && $conf['collections.'])) {
-            $collectionUids = GeneralUtility::intExplode(',', (string)$this->cObj->stdWrapValue('collections', $conf ?? []), true);
+            $collectionUids = GeneralUtility::intExplode(',', (string)$this->cObj->stdWrapValue('collections', $conf), true);
             $fileCollector->addFilesFromFileCollections($collectionUids);
         }
 
         if ((isset($conf['folders']) && $conf['folders']) || (isset($conf['folders.']) && $conf['folders.'])) {
-            $folderIdentifiers = GeneralUtility::trimExplode(',', (string)$this->cObj->stdWrapValue('folders', $conf ?? []));
+            $folderIdentifiers = GeneralUtility::trimExplode(',', (string)$this->cObj->stdWrapValue('folders', $conf));
             $fileCollector->addFilesFromFolders($folderIdentifiers, !empty($conf['folders.']['recursive']));
         }
 
         // Enable sorting for multiple fileObjects
-        $sortingProperty = (string)$this->cObj->stdWrapValue('sorting', $conf ?? []);
+        $sortingProperty = (string)$this->cObj->stdWrapValue('sorting', $conf);
         if ($sortingProperty !== '') {
             $sortingDirection = $this->cObj->stdWrapValue('direction', $conf['sorting.'] ?? []);
             $fileCollector->sort($sortingProperty, $sortingDirection);
@@ -187,10 +187,7 @@ class FilesContentObject extends AbstractContentObject
         }
     }
 
-    /**
-     * @return FileCollector
-     */
-    protected function getFileCollector()
+    protected function getFileCollector(): FileCollector
     {
         return GeneralUtility::makeInstance(FileCollector::class);
     }

@@ -36,7 +36,7 @@ class TaskValidator
     public function isValid(mixed $value): bool
     {
         return $value instanceof AbstractTask
-            && $value->getExecution()
+            && $value->getExecution() !== null
             && get_class($value->getExecution()) !== \__PHP_Incomplete_Class::class;
     }
 }

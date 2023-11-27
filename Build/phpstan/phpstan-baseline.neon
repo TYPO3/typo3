@@ -1736,41 +1736,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Finishers/AbstractFinisher.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\ClosureFinisher\\:\\:executeInternal\\(\\) should return string\\|null but empty return statement found\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/ClosureFinisher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\ClosureFinisher\\:\\:executeInternal\\(\\) should return string\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/ClosureFinisher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\DeleteUploadsFinisher\\:\\:executeInternal\\(\\) should return string\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/DeleteUploadsFinisher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\EmailFinisher\\:\\:executeInternal\\(\\) should return string\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/EmailFinisher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\FlashMessageFinisher\\:\\:executeInternal\\(\\) should return string\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/FlashMessageFinisher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\RedirectFinisher\\:\\:executeInternal\\(\\) should return string\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/RedirectFinisher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\SaveToDatabaseFinisher\\:\\:executeInternal\\(\\) should return string\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/SaveToDatabaseFinisher.php
-
-		-
 			message: "#^Right side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormDefinition.php
@@ -1881,21 +1846,6 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Functional/Service/TranslationServiceTest.php
 
 		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/CaseContentObject.php
-
-		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentContentObject.php
-
-		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectArrayContentObject.php
-
-		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
@@ -1977,7 +1927,7 @@ parameters:
 
 		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 19
+			count: 14
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
@@ -2001,33 +1951,18 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 5
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/FilesContentObject.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:\\$currentValKey \\(string\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php
 
 		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 5
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php
-
-		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/HierarchicalMenuContentObject.php
-
-		-
-			message: "#^Negated boolean expression is always true\\.$#"
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ImageContentObject.php
 
 		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 7
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ImageContentObject.php
 
 		-
@@ -2044,31 +1979,6 @@ parameters:
 			message: "#^Offset '_PAGES_OVERLAY_UID' on array on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
-
-		-
-			message: "#^Parameter \\#1 \\$content of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:stdWrap\\(\\) expects string, int given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:\\$conf \\(array\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:\\$mconf \\(array\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
-
-		-
-			message: "#^Variable \\$altArray in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
-
-		-
-			message: "#^Variable \\$configuration on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/CategoryMenuUtility.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:\\$I \\(array\\) on left side of \\?\\? is not nullable\\.$#"
@@ -2091,16 +2001,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
 
 		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 5
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ScalableVectorGraphicsContentObject.php
-
-		-
-			message: "#^Variable \\$referenceConfiguration on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/DataProcessing/FilesProcessor.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 8
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
@@ -2114,11 +2014,6 @@ parameters:
 			message: "#^Result of && is always false\\.$#"
 			count: 3
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Context\\\\AspectInterface\\:\\:isPreview\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
@@ -2589,11 +2484,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between non\\-falsy\\-string and '' will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Validation/Validator/TaskValidator.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"

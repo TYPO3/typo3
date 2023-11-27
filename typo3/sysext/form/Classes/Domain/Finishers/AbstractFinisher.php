@@ -126,7 +126,7 @@ abstract class AbstractFinisher implements FinisherInterface
      *
      * Override and fill with your own implementation!
      *
-     * @return string|null
+     * @return string|void|null
      */
     abstract protected function executeInternal();
 

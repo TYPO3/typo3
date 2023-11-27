@@ -55,7 +55,7 @@ class HierarchicalMenuContentObject extends AbstractContentObject
             $theValue .= $menu->writeMenu();
         } catch (NoSuchMenuTypeException $e) {
         }
-        $wrap = $this->cObj->stdWrapValue('wrap', $conf ?? []);
+        $wrap = $this->cObj->stdWrapValue('wrap', $conf);
         if ($wrap) {
             $theValue = $this->cObj->wrap($theValue, $wrap);
         }

@@ -75,6 +75,7 @@ class PreviewSimulator implements MiddlewareInterface
             $showHiddenRecords = $visibilityAspect->includeHidden();
             $isPreview = $simulatingDate || $simulatingGroup || $showHiddenRecords || $showHiddenPages || $isOfflineWorkspace || $rootlineRequiresPreviewFlag;
             if ($this->context->hasAspect('frontend.preview')) {
+                /** @var PreviewAspect $previewAspect */
                 $previewAspect = $this->context->getAspect('frontend.preview');
                 $isPreview = $previewAspect->isPreview() || $isPreview;
             }

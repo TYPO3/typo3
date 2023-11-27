@@ -712,7 +712,7 @@ abstract class AbstractItemProvider
                             // Pick the first one (always on 0), and use uid only.
                             $rowFieldValue = $rowFieldValue[0]['uid'] ?? $rowFieldValue[0] ?? '';
                         }
-                        if (substr($whereClauseParts[0], -1) === '\'' && $whereClauseSubParts[1][0] === '\'') {
+                        if (str_ends_with($whereClauseParts[0], '\'') && $whereClauseSubParts[1][0] === '\'') {
                             $whereClauseParts[0] = substr($whereClauseParts[0], 0, -1);
                             $whereClauseSubParts[1] = substr($whereClauseSubParts[1], 1);
                         }

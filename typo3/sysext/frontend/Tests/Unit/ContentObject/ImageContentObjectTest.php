@@ -114,8 +114,7 @@ final class ImageContentObjectTest extends UnitTestCase
     public static function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider(): array
     {
         return [
-            [null, null, null],
-            ['foo', null, null],
+            ['foo', [], null],
             ['foo', ['sourceCollection.' => 1], 'bar'],
         ];
     }

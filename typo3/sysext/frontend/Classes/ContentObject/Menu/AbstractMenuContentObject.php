@@ -205,15 +205,15 @@ abstract class AbstractMenuContentObject
     public function start($_, $sys_page, $id, $conf, int $menuNumber, $objSuffix = '', ?ServerRequestInterface $request = null)
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        $this->conf = $conf;
+        $this->conf = (array)$conf;
         $this->menuNumber = $menuNumber;
-        $this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
+        $this->mconf = (array)$conf[$this->menuNumber . $objSuffix . '.'];
         $this->request = $request;
         // Sets the internal vars. $sys_page MUST be the PageRepository object
         if ($this->conf[$this->menuNumber . $objSuffix] && is_object($sys_page)) {
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
-            $this->conf['alwaysActivePIDlist'] = (string)$this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf ?? []);
+            $this->conf['alwaysActivePIDlist'] = (string)$this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf);
             if (trim($this->conf['alwaysActivePIDlist'])) {
                 $this->alwaysActivePIDlist = GeneralUtility::intExplode(',', $this->conf['alwaysActivePIDlist']);
             }
@@ -225,7 +225,7 @@ abstract class AbstractMenuContentObject
             }
             // EntryLevel
             $this->entryLevel = $this->parent_cObj->getKey(
-                $this->parent_cObj->stdWrapValue('entryLevel', $this->conf ?? []),
+                $this->parent_cObj->stdWrapValue('entryLevel', $this->conf),
                 $tsfe->config['rootLine'] ?? []
             );
             // Set parent page: If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
@@ -360,11 +360,11 @@ abstract class AbstractMenuContentObject
         $maxItems = (int)(($this->mconf['maxItems'] ?? 0) ?: ($this->conf['maxItems'] ?? 0));
         $begin = $this->parent_cObj->calc(($this->mconf['begin'] ?? 0) ?: ($this->conf['begin'] ?? 0));
         $minItemsConf = $this->mconf['minItems.'] ?? $this->conf['minItems.'] ?? null;
-        $minItems = is_array($minItemsConf) ? $this->parent_cObj->stdWrap($minItems, $minItemsConf) : $minItems;
+        $minItems = is_array($minItemsConf) ? $this->parent_cObj->stdWrap((string)$minItems, $minItemsConf) : $minItems;
         $maxItemsConf = $this->mconf['maxItems.'] ?? $this->conf['maxItems.'] ?? null;
-        $maxItems = is_array($maxItemsConf) ? $this->parent_cObj->stdWrap($maxItems, $maxItemsConf) : $maxItems;
+        $maxItems = is_array($maxItemsConf) ? $this->parent_cObj->stdWrap((string)$maxItems, $maxItemsConf) : $maxItems;
         $beginConf = $this->mconf['begin.'] ?? $this->conf['begin.'] ?? null;
-        $begin = is_array($beginConf) ? $this->parent_cObj->stdWrap($begin, $beginConf) : $begin;
+        $begin = is_array($beginConf) ? $this->parent_cObj->stdWrap((string)$begin, $beginConf) : $begin;
         $this->menuArr = [];
         foreach ($menuItems as &$data) {
             $data['isSpacer'] = ($data['isSpacer'] ?? false) || (int)($data['doktype'] ?? 0) === PageRepository::DOKTYPE_SPACER || ($data['ITEM_STATE'] ?? '') === 'SPC';
@@ -468,7 +468,7 @@ abstract class AbstractMenuContentObject
         $alternativeSortingField = trim($this->mconf['alternativeSortingField'] ?? '') ?: 'sorting';
 
         // Additional where clause, usually starts with AND (as usual with all additionalWhere functionality in TS)
-        $additionalWhere = $this->parent_cObj->stdWrapValue('additionalWhere', $this->mconf ?? []);
+        $additionalWhere = $this->parent_cObj->stdWrapValue('additionalWhere', $this->mconf);
         $additionalWhere .= $this->getDoktypeExcludeWhere();
 
         // ... only for the FIRST level of a HMENU
@@ -1236,7 +1236,7 @@ abstract class AbstractMenuContentObject
             $MP_params = $MP_var ? '&MP=' . rawurlencode($MP_var) : '';
         }
         // Setting main target
-        $mainTarget = $altTarget ?: (string)$this->parent_cObj->stdWrapValue('target', $this->mconf ?? []);
+        $mainTarget = $altTarget ?: (string)$this->parent_cObj->stdWrapValue('target', $this->mconf);
         // Creating link
         $addParams = ($this->mconf['addParams'] ?? '') . ($this->I['val']['additionalParams'] ?? '') . $MP_params;
         try {
@@ -1273,15 +1273,15 @@ abstract class AbstractMenuContentObject
     protected function subMenu(int $uid, string $objSuffix, int $menuItemKey)
     {
         // Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
-        $altArray = '';
+        $altArray = [];
         if (is_array($this->menuArr[$menuItemKey]['_SUB_MENU'] ?? null) && !empty($this->menuArr[$menuItemKey]['_SUB_MENU'])) {
             $altArray = $this->menuArr[$menuItemKey]['_SUB_MENU'];
         }
         // Make submenu if the page is the next active
         $menuType = $this->conf[($this->menuNumber + 1) . $objSuffix] ?? '';
         // stdWrap for expAll
-        $this->mconf['expAll'] = $this->parent_cObj->stdWrapValue('expAll', $this->mconf ?? []);
-        if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($menuItemKey)) || is_array($altArray)) && !($this->mconf['sectionIndex'] ?? false)) {
+        $this->mconf['expAll'] = $this->parent_cObj->stdWrapValue('expAll', $this->mconf);
+        if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($menuItemKey)) || $altArray !== []) && !($this->mconf['sectionIndex'] ?? false)) {
             try {
                 $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
                 /** @var AbstractMenuContentObject $submenu */
@@ -1296,7 +1296,7 @@ abstract class AbstractMenuContentObject
                 $submenu->parent_cObj = $this->parent_cObj;
                 $submenu->setParentMenu($this->menuArr, $menuItemKey);
                 // Setting alternativeMenuTempArray (will be effective only if an array and not empty)
-                if (is_array($altArray) && !empty($altArray)) {
+                if ($altArray !== []) {
                     $submenu->alternativeMenuTempArray = $altArray;
                 }
                 if ($submenu->start(null, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix, $this->request)) {
@@ -1603,7 +1603,7 @@ abstract class AbstractMenuContentObject
      */
     protected function getBannedUids()
     {
-        $excludeUidList = (string)$this->parent_cObj->stdWrapValue('excludeUidList', $this->conf ?? []);
+        $excludeUidList = (string)$this->parent_cObj->stdWrapValue('excludeUidList', $this->conf);
         if (!trim($excludeUidList)) {
             return [];
         }

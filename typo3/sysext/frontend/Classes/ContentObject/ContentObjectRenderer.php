@@ -3034,7 +3034,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected function round($content, array $conf = [])
     {
         $decimals = (int)$this->stdWrapValue('decimals', $conf, 0);
-        $type = $this->stdWrapValue('roundType', $conf ?? []);
+        $type = $this->stdWrapValue('roundType', $conf);
         $floatVal = (float)$content;
         switch ($type) {
             case 'ceil':
@@ -3454,14 +3454,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $attrib = [];
             $nonWrapped = false;
             $tagName = '';
-            if (isset($l[0]) && $l[0] === '<' && substr($l, -1) === '>') {
+            if (isset($l[0]) && $l[0] === '<' && str_ends_with($l, '>')) {
                 $fwParts = explode('>', substr($l, 1), 2);
                 [$tagName] = explode(' ', $fwParts[0], 2);
                 if (!$fwParts[1]) {
-                    if (substr($tagName, -1) === '/') {
+                    if (str_ends_with($tagName, '/')) {
                         $tagName = substr($tagName, 0, -1);
                     }
-                    if (substr($fwParts[0], -1) === '/') {
+                    if (str_ends_with($fwParts[0], '/')) {
                         $sameBeginEnd = true;
                         $emptyTag = true;
                         // decode HTML entities, they're encoded later again
@@ -4393,7 +4393,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 return LinkResult::adapt($linkResult, LinkResult::STRING_CAST_JSON);
         }
 
-        $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
+        $wrap = (string)$this->stdWrapValue('wrap', $conf);
         if ($conf['ATagBeforeWrap'] ?? false) {
             $linkResult = $linkResult->withLinkText($this->wrap((string)$linkResult->getLinkText(), $wrap));
             return LinkResult::adapt($linkResult)->getHtml();
@@ -5194,7 +5194,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $constraints[] = $expressionBuilder->eq($table . '.uid', 0);
         }
 
-        $where = trim((string)$this->stdWrapValue('where', $conf ?? []));
+        $where = trim((string)$this->stdWrapValue('where', $conf));
         if ($where) {
             $constraints[] = QueryHelper::stripLogicalOperatorPrefix($where);
         }
@@ -5214,13 +5214,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $queryParts['where'] = $expressionBuilder->and(...$constraints);
         }
         // GROUP BY
-        $groupBy = trim((string)$this->stdWrapValue('groupBy', $conf ?? []));
+        $groupBy = trim((string)$this->stdWrapValue('groupBy', $conf));
         if ($groupBy) {
             $queryParts['groupBy'] = QueryHelper::parseGroupBy($groupBy);
         }
 
         // ORDER BY
-        $orderByString = trim((string)$this->stdWrapValue('orderBy', $conf ?? []));
+        $orderByString = trim((string)$this->stdWrapValue('orderBy', $conf));
         if ($orderByString) {
             $queryParts['orderBy'] = QueryHelper::parseOrderBy($orderByString);
         }

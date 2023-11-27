@@ -32,7 +32,7 @@ class CaseContentObject extends AbstractContentObject
             return '';
         }
 
-        $setCurrent = $this->cObj->stdWrapValue('setCurrent', $conf ?? []);
+        $setCurrent = $this->cObj->stdWrapValue('setCurrent', $conf);
         if ($setCurrent) {
             $this->cObj->data[$this->cObj->currentValKey] = $setCurrent;
         }

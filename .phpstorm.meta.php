@@ -16,7 +16,8 @@ namespace PHPSTORM_META {
         'frontend.user',
         'workspace',
         'language',
-        'typoscript'
+        'typoscript',
+        'frontend.preview',
     );
     override(\TYPO3\CMS\Core\Context\Context::getAspect(), map([
         'date' => \TYPO3\CMS\Core\Context\DateTimeAspect::class,
@@ -26,6 +27,7 @@ namespace PHPSTORM_META {
         'workspace' => \TYPO3\CMS\Core\Context\WorkspaceAspect::class,
         'language' => \TYPO3\CMS\Core\Context\LanguageAspect::class,
         'typoscript' => \TYPO3\CMS\Core\Context\TypoScriptAspect::class,
+        'frontend.preview' => \TYPO3\CMS\Frontend\Context\PreviewAspect::class,
     ]));
     expectedArguments(
         \TYPO3\CMS\Core\Context\DateTimeAspect::get(),
@@ -74,6 +76,11 @@ namespace PHPSTORM_META {
         \TYPO3\CMS\Core\Context\TypoScriptAspect::get(),
         0,
         'forcedTemplateParsing'
+    );
+    expectedArguments(
+        \TYPO3\CMS\Frontend\Context\PreviewAspect::get(),
+        0,
+        'isPreview'
     );
 
     expectedArguments(
