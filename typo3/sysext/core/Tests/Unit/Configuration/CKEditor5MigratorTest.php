@@ -1211,6 +1211,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                             'htmlSupport' => [
                                 'allow' => [
                                     [
+                                        'name' => [
+                                            'pattern' => '^[a-z]+$',
+                                        ],
                                         'classes' => true,
                                         'attributes' => true,
                                         'styles' => true,
@@ -1305,6 +1308,9 @@ final class CKEditor5MigratorTest extends UnitTestCase
                             'htmlSupport' => [
                                 'allow' => [
                                     [
+                                        'name' => [
+                                            'pattern' => '^[a-z]+$',
+                                        ],
                                         'classes' => true,
                                         'attributes' => true,
                                         'styles' => true,

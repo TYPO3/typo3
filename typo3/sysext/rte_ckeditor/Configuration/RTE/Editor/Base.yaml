@@ -12,7 +12,3 @@ editor:
         position: 'inside'
         side: 'right'
         label: ''
-    htmlSupport:
-      allow:
-        # Allow any class or any data attribute in any (configured) tag
-        - { classes: true, attributes: { pattern: 'data-.+' } }
