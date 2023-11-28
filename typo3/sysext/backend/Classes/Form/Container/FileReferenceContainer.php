@@ -257,7 +257,8 @@ class FileReferenceContainer extends AbstractContainer
                                 'width="' . $processedImage->getProperty('width') . '" ' .
                                 'height="' . $processedImage->getProperty('height') . '" ' .
                                 'alt="' . $altText . '" ' .
-                                'title="' . $altText . '">';
+                                'title="' . $altText . '" ' .
+                                'loading="lazy">';
                         }
                     }
                 } catch (\InvalidArgumentException $e) {

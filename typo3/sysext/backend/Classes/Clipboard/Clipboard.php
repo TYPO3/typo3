@@ -306,7 +306,7 @@ class Clipboard
                         $thumb = '<img src="' . htmlspecialchars($processedFile->getPublicUrl() ?? '') . '" ' .
                             'width="' . htmlspecialchars((string)$processedFile->getProperty('width')) . '" ' .
                             'height="' . htmlspecialchars((string)$processedFile->getProperty('height')) . '" ' .
-                            'title="' . htmlspecialchars($processedFile->getName()) . '" alt="" />';
+                            'title="' . htmlspecialchars($processedFile->getName()) . '" alt="" loading="lazy" />';
                     }
                     $linkItemText = GeneralUtility::fixed_lgd_cs($fileObject->getName(), (int)($this->getBackendUser()->uc['titleLen'] ?? 0));
                     $combinedIdentifier = ($parentFolder = $fileObject->getParentFolder()) instanceof Folder ? $parentFolder->getCombinedIdentifier() : '';

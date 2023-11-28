@@ -82,7 +82,8 @@ class Avatar
         return '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '" ' .
             'width="' . (int)$avatarImage->getWidth() . '" ' .
             'height="' . (int)$avatarImage->getHeight() . '" ' .
-            'alt="" />';
+            'alt="" ' .
+            'loading="lazy" />';
     }
 
     /**
