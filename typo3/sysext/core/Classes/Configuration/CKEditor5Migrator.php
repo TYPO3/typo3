@@ -762,7 +762,9 @@ class CKEditor5Migrator
 
             foreach ($config4 as $name => $options) {
                 $config = [];
-                if ($name !== '*') {
+                if ($name === '*') {
+                    $config['name'] = [ 'pattern' => '^[a-z]+$' ];
+                } else {
                     $name = (string)$name;
                     $config['name'] = str_contains($name, '*') || str_contains($name, ' ') ?
                         [ 'pattern' => str_replace(['*', ' '], ['.+', '|'], $name) ] :
