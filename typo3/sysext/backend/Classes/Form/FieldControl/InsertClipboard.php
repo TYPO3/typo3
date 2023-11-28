@@ -66,7 +66,7 @@ class InsertClipboard extends AbstractNode
             'iconIdentifier' => 'actions-document-paste-into',
             'title' => $title,
             'linkAttributes' => [
-                'id' => htmlspecialchars($id),
+                'id' => $id,
                 'data-element' => $dataAttributes['element'],
                 'data-clipboard-items' => json_encode($dataAttributes['clipboardItems']),
             ],

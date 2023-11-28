@@ -86,9 +86,9 @@ class LinkPopup extends AbstractNode
             'iconIdentifier' => 'actions-wizard-link',
             'title' => $title,
             'linkAttributes' => [
-                'id' => htmlspecialchars($id),
+                'id' => $id,
                 'href' => $url,
-                'data-item-name' => htmlspecialchars($itemName),
+                'data-item-name' => $itemName,
             ],
             'javaScriptModules' => [
                 JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/link-popup.js')->instance('#' . $id),

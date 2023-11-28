@@ -90,8 +90,8 @@ class ElementBrowser extends AbstractNode
         // Initialize link attributes
         $linkAttributes = [
             'class' => 't3js-element-browser',
-            'data-mode' => htmlspecialchars($elementBrowserType),
-            'data-params' => htmlspecialchars($elementName . '|||' . $allowed . '|' . $objectPrefix),
+            'data-mode' => $elementBrowserType,
+            'data-params' => $elementName . '|||' . $allowed . '|' . $objectPrefix,
         ];
 
         // Add the default entry point - if found
@@ -158,7 +158,7 @@ class ElementBrowser extends AbstractNode
 
         // Add the entry point to the link attribute - if resolved
         if ($entryPoint !== '') {
-            $linkAttributes['data-entry-point'] = htmlspecialchars($entryPoint);
+            $linkAttributes['data-entry-point'] = $entryPoint;
         }
 
         return $linkAttributes;

@@ -90,7 +90,7 @@ class EditPopup extends AbstractNode
             'iconIdentifier' => 'actions-open',
             'title' => $title,
             'linkAttributes' => [
-                'id' => htmlspecialchars($id),
+                'id' => $id,
                 'href' => $url,
                 'data-element' => $itemName,
                 'data-window-parameters' => $windowOpenParameters,

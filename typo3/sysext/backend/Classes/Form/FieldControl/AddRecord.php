@@ -94,7 +94,7 @@ class AddRecord extends AbstractNode
             'iconIdentifier' => 'actions-plus',
             'title' => $title,
             'linkAttributes' => [
-                'id' => htmlspecialchars($id),
+                'id' => $id,
                 'href' => (string)$uriBuilder->buildUriFromRoute('wizard_add', $urlParameters),
             ],
             'javaScriptModules' => [
