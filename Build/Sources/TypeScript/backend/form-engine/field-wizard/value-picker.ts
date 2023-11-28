@@ -29,30 +29,52 @@ enum InsertModes {
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 export class ValuePicker extends HTMLElement {
-  private valuePicker: HTMLSelectElement;
-  private linkedField: HTMLInputElement|HTMLTextAreaElement;
+  private valuePicker: HTMLSelectElement|null = null;
+  private linkedField: HTMLInputElement|HTMLTextAreaElement|null = null;
+  private initialValueSet: boolean = false;
+
+  public constructor() {
+    super();
+    const slot = document.createElement('slot');
+    slot.addEventListener('slotchange', () => this.initializeValuePicker(slot));
+    this.attachShadow({ mode: 'open' }).append(slot);
+  }
 
   public connectedCallback(): void {
-    this.valuePicker = this.querySelector('select') as HTMLSelectElement;
-    if (this.valuePicker !== null) {
-      this.valuePicker.addEventListener('change', this.onChange);
-    }
-    this.linkedField = document.querySelector(this.getAttribute('linked-field')) as HTMLInputElement|HTMLTextAreaElement;
-    if (this.linkedField !== null) {
-      this.linkedField.addEventListener('change', this.linkedFieldOnChange);
-
-      // Set initial value
-      if (this.getInsertMode() === InsertModes.replace) {
-        const formEngineInputField: HTMLInputElement|HTMLTextAreaElement = document.getElementsByName(this.linkedField.dataset.formengineInputName)[0] as HTMLInputElement|HTMLTextAreaElement;
-        formEngineInputField && this.selectValue(formEngineInputField.value);
-      }
-    }
+    this.linkedField = document.querySelector(this.getAttribute('linked-field')) as HTMLInputElement|HTMLTextAreaElement|null;
+    this.linkedField?.addEventListener('change', this.linkedFieldOnChange);
+    this.initializeValuePicker(this.shadowRoot.querySelector('slot'));
   }
 
   public disconnectedCallback(): void {
-    if (this.valuePicker !== null) {
-      this.valuePicker.removeEventListener('change', this.onChange);
-      this.valuePicker = null;
+    this.linkedField?.removeEventListener('change', this.linkedFieldOnChange);
+    this.linkedField = null;
+  }
+
+  private initializeValuePicker(slot: HTMLSlotElement): void {
+    const picker = (slot.assignedElements()[0] ?? null) as HTMLSelectElement|null;
+    if (picker !== null && picker.tagName.toLowerCase() !== 'select') {
+      throw new Error(`ValuePicker could not be initialized. Expected <select> child name, but found: ${picker}`);
+    }
+    if (picker !== this.valuePicker) {
+      this.valuePicker?.removeEventListener('change', this.onChange);
+      this.valuePicker = picker;
+      this.valuePicker?.addEventListener('change', this.onChange);
+      this.initialValueSet = false;
+    }
+    this.setInitialPickerValue();
+  }
+
+  private setInitialPickerValue() {
+    if (this.linkedField === null || this.valuePicker === null || this.initialValueSet) {
+      return;
+    }
+    if (this.getInsertMode() === InsertModes.replace) {
+      const formEngineInputField = (document.getElementsByName(this.linkedField.dataset.formengineInputName)[0] ?? null) as HTMLInputElement|HTMLTextAreaElement;
+      if (formEngineInputField !== null) {
+        this.selectValue(formEngineInputField.value);
+        this.initialValueSet = true;
+      }
     }
   }
 
@@ -62,6 +84,9 @@ export class ValuePicker extends HTMLElement {
   }
 
   private readonly linkedFieldOnChange = () => {
+    if (this.valuePicker === null) {
+      return;
+    }
     if (this.getInsertMode() === InsertModes.replace) {
       this.selectValue(this.linkedField.value);
     } else {
