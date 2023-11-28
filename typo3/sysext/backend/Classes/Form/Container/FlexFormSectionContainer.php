@@ -58,7 +58,6 @@ class FlexFormSectionContainer extends AbstractContainer
         // Render each existing container
         foreach ($flexFormDataStructureArray['children'] as $flexFormContainerIdentifier => $containerDataStructure) {
             $existingContainerData = $flexFormRowData[$flexFormContainerIdentifier];
-            // @todo: This relies on the fact that "_TOGGLE" is *below* the real data in the saved xml structure
             $existingSectionContainerDataStructureType = key($existingContainerData);
             $existingContainerData = $existingContainerData[$existingSectionContainerDataStructureType];
             $options = $this->data;
@@ -67,7 +66,6 @@ class FlexFormSectionContainer extends AbstractContainer
             $options['flexFormFormPrefix'] = $this->data['flexFormFormPrefix'] . '[' . $flexFormFieldName . '][el]';
             $options['flexFormContainerName'] = $existingSectionContainerDataStructureType;
             $options['flexFormContainerIdentifier'] = $flexFormContainerIdentifier;
-            $options['flexFormContainerElementCollapsed'] = (bool)($flexFormRowData[$flexFormContainerIdentifier]['_TOGGLE'] ?? false);
             $options['renderType'] = 'flexFormContainerContainer';
             $flexFormContainerContainerResult = $this->nodeFactory->create($options)->render();
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormContainerContainerResult);

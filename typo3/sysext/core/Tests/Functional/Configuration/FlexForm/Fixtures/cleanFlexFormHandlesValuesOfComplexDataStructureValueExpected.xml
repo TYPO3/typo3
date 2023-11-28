@@ -16,7 +16,6 @@
                                     </field>
                                 </el>
                             </itemType>
-                            <itemType index="_TOGGLE">0</itemType>
                         </section>
                         <section index="2">
                             <itemType index="container_1">
@@ -29,7 +28,6 @@
                                     </field>
                                 </el>
                             </itemType>
-                            <itemType index="_TOGGLE">1</itemType>
                         </section>
                         <section index="3">
                             <itemType index="container_1">

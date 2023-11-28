@@ -207,9 +207,8 @@ class FlexFormTools
                             }
                         }
                         if (isset($valueSectionContainers['_TOGGLE'])) {
-                            // @todo: _TOGGLE is a UI artefact storing open/close containers. This should of course be stored in BE user uc instead.
-                            //        See DataHandler and FormEngine for further handling. We keep it for now if set, though.
-                            $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey]['_TOGGLE'] = $valueSectionContainers['_TOGGLE'];
+                            // This was removed in TYPO3 v13, see #102551
+                            unset($newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey]['_TOGGLE']);
                         }
                     }
                 } elseif (isset($valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {

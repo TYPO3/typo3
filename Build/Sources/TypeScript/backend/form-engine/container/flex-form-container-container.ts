@@ -18,11 +18,11 @@ import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '@typo3/backend/severity';
 import { selector } from '@typo3/core/literals';
+import ClientStorage from '@typo3/backend/storage/client';
 
 enum Selectors {
   toggleSelector = '[data-bs-toggle="flexform-inline"]',
   actionFieldSelector = '.t3js-flex-control-action',
-  toggleFieldSelector = '.t3js-flex-control-toggle',
   controlSectionSelector = '.t3js-formengine-irre-control',
   sectionContentContainerSelector = '.t3js-flex-section-content',
   deleteContainerButtonSelector = '.t3js-delete',
@@ -39,29 +39,30 @@ class FlexFormContainerContainer {
   private readonly parentContainer: FlexFormSectionContainer;
   private readonly container: HTMLElement;
   private readonly containerContent: HTMLElement;
+  private readonly parentId: string;
   private readonly containerId: string;
+  private readonly toggleKeyInLocalStorage: string;
 
   private readonly panelHeading: HTMLElement;
   private readonly panelButton: HTMLElement;
-  private readonly toggleField: HTMLInputElement;
 
   constructor(parentContainer: FlexFormSectionContainer, container: HTMLElement) {
     this.securityUtility = new SecurityUtility();
     this.parentContainer = parentContainer;
     this.container = container;
     this.containerContent = container.querySelector(Selectors.sectionContentContainerSelector);
+    this.parentId = container.dataset.parent;
     this.containerId = container.dataset.flexformContainerId;
+    this.toggleKeyInLocalStorage = `formengine-flex-${parentContainer.getSectionContainer().id}-${this.containerId}-collapse`
 
     this.panelHeading = container.querySelector(selector`[data-bs-target="#flexform-container-${this.containerId}"]`);
     this.panelButton = this.panelHeading.querySelector(selector`[aria-controls="flexform-container-${this.containerId}"]`);
-    this.toggleField = container.querySelector(Selectors.toggleFieldSelector);
 
     this.registerEvents();
-    this.generatePreview();
   }
 
-  private static getCollapseInstance(container: HTMLElement): Collapse {
-    return Collapse.getInstance(container) ?? new Collapse(container, { toggle: false });
+  private static getCollapseInstance(container: HTMLElement, toggle: boolean): Collapse {
+    return Collapse.getInstance(container) ?? new Collapse(container, { toggle });
   }
 
   public getStatus(): ContainerStatus {
@@ -76,8 +77,8 @@ class FlexFormContainerContainer {
       this.registerDelete();
     }
 
-    this.registerToggle();
     this.registerPanelToggle();
+    this.registerToggle();
   }
 
   private registerDelete(): void {
@@ -123,9 +124,12 @@ class FlexFormContainerContainer {
   }
 
   private registerToggle(): void {
+    const isCollapsed = (ClientStorage.get(this.toggleKeyInLocalStorage) ?? '1') === '1';
+    const collapseInstance = FlexFormContainerContainer.getCollapseInstance(this.containerContent, !isCollapsed);
+    this.generatePreview();
+
     new RegularEvent('click', (): void => {
-      FlexFormContainerContainer.getCollapseInstance(this.containerContent).toggle();
-      this.generatePreview();
+      collapseInstance.toggle();
     }).delegateTo(this.container, `${Selectors.toggleSelector} .form-irre-header-cell:not(${Selectors.controlSectionSelector}`);
   }
 
@@ -133,10 +137,12 @@ class FlexFormContainerContainer {
     ['hide.bs.collapse', 'show.bs.collapse'].forEach((eventName: string): void => {
       new RegularEvent(eventName, (e: Event): void => {
         const collapseTriggered = e.type === 'hide.bs.collapse';
+        ClientStorage.set(this.toggleKeyInLocalStorage, collapseTriggered ? '1' : '0');
 
-        this.toggleField.value = collapseTriggered ? '1' : '0';
         this.panelButton.setAttribute('aria-expanded', collapseTriggered ? 'false' : 'true');
         this.panelButton.parentElement.classList.toggle('collapsed', collapseTriggered);
+
+        this.generatePreview();
       }).bindTo(this.containerContent);
     });
   }

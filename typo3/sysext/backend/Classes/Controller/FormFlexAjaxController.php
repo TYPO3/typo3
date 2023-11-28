@@ -118,7 +118,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $formData['flexFormSheetName'] = $flexFormSheetName;
         $formData['flexFormContainerName'] = $flexFormContainerName;
         $formData['flexFormContainerIdentifier'] = $flexFormContainerIdentifier;
-        $formData['flexFormContainerElementCollapsed'] = false;
 
         $formData['flexFormFormPrefix'] = '[data][' . $flexFormSheetName . '][lDEF][' . $flexFormFieldName . '][el]';
 

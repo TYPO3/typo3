@@ -25,7 +25,6 @@
                                     </field>
                                 </el>
                             </value>
-                            <value index=""_TOGGLE"">0</value>
                         </field>
                         <field index=""6532a079af56f639811624"">
                             <value index=""container_2"">
@@ -35,7 +34,6 @@
                                     </field>
                                 </el>
                             </value>
-                            <value index=""_TOGGLE"">0</value>
                         </field>
                     </el>
                 </field>
@@ -59,7 +57,6 @@
                                     </field>
                                 </el>
                             </value>
-                            <value index=""_TOGGLE"">0</value>
                         </field>
                         <field index=""6532a0ee05424283979143"">
                             <value index=""container_2"">
@@ -69,7 +66,6 @@
                                     </field>
                                 </el>
                             </value>
-                            <value index=""_TOGGLE"">0</value>
                         </field>
                     </el>
                 </field>

@@ -44,7 +44,6 @@ class FlexFormContainerContainer extends AbstractContainer
         $row = $this->data['databaseRow'];
         $fieldName = $this->data['fieldName'];
         $flexFormFormPrefix = $this->data['flexFormFormPrefix'];
-        $flexFormContainerElementCollapsed = $this->data['flexFormContainerElementCollapsed'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
 
         $flexFormContainerIdentifier = $this->data['flexFormContainerIdentifier'];
@@ -52,10 +51,6 @@ class FlexFormContainerContainer extends AbstractContainer
             . $flexFormFormPrefix
             . '[' . $flexFormContainerIdentifier . ']'
             . '[_ACTION]';
-        $toggleFieldName = 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']'
-            . $flexFormFormPrefix
-            . '[' . $flexFormContainerIdentifier . ']'
-            . '[_TOGGLE]';
 
         $moveAndDeleteContent = [];
         $userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
@@ -102,13 +97,13 @@ class FlexFormContainerContainer extends AbstractContainer
             'class' => 'form-irre-header-cell form-irre-header-button',
             'type' => 'button',
             'aria-controls' => $flexFormDomContainerId,
-            'aria-expanded' => $flexFormContainerElementCollapsed ? 'false' : 'true',
+            'aria-expanded' => 'false',
         ];
 
         $html = [];
         $html[] = '<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>';
         $html[] =    '<div ' . GeneralUtility::implodeAttributes($panelHeaderAttributes, true) . '>';
-        $html[] =        '<div class="form-irre-header ' . ($flexFormContainerElementCollapsed ? ' collapsed' : '') . '">';
+        $html[] =        '<div class="form-irre-header collapsed">';
         $html[] =            '<div class="form-irre-header-cell form-irre-header-icon">';
         $html[] =                '<span class="caret"></span>';
         $html[] =            '</div>';
@@ -125,17 +120,10 @@ class FlexFormContainerContainer extends AbstractContainer
         $html[] =            '</div>';
         $html[] =        '</div>';
         $html[] =    '</div>';
-        $html[] =    '<div id="' . htmlspecialchars($flexFormDomContainerId) . '" class="panel-collapse collapse t3js-flex-section-content ' . ($flexFormContainerElementCollapsed ? '' : 'show') . '">';
+        $html[] =    '<div id="' . htmlspecialchars($flexFormDomContainerId) . '" class="panel-collapse collapse t3js-flex-section-content">';
         $html[] =        $containerContentResult['html'];
         $html[] =    '</div>';
         $html[] =    '<input class="t3js-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value="" />';
-        $html[] =    '<input';
-        $html[] =        'class="t3js-flex-control-toggle"';
-        $html[] =        'type="hidden"';
-        $html[] =        'id="flexform-toggle-container-' . htmlspecialchars($flexFormContainerIdentifier) . '"';
-        $html[] =        'name="' . htmlspecialchars($toggleFieldName) . '"';
-        $html[] =        'value="' . ($flexFormContainerElementCollapsed ? '1' : '0') . '"';
-        $html[] =    '/>';
         $html[] = '</div>';
 
         $resultArray['html'] = implode(LF, $html);

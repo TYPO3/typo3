@@ -398,10 +398,6 @@ class TcaFlexProcess implements FormDataProviderInterface
                         foreach ($containerValueArray as $aContainerIdentifier => $aContainerArray) {
                             if (is_array($aContainerArray)) {
                                 foreach ($aContainerArray as $aContainerName => $aContainerElementArray) {
-                                    if ($aContainerName === '_TOGGLE') {
-                                        // Don't handle internal toggle state field
-                                        continue;
-                                    }
                                     if (!isset($dataStructureFields[$dataStructureFieldName]['el'][$aContainerName])) {
                                         // Container not defined in ds
                                         continue;

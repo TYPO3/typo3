@@ -3285,7 +3285,6 @@ class DataHandler implements LoggerAwareInterface
                         if (!is_array($dataValues_current[$key]['el'] ?? false)) {
                             $dataValues_current[$key]['el'] = [];
                         }
-                        // @todo: Ugly! This relies on the fact that _TOGGLE and _ACTION are *below* the business fields!
                         $theKey = key($el);
                         if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el'] ?? false)) {
                             continue;

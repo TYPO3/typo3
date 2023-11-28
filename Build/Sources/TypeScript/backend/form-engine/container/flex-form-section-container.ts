@@ -61,6 +61,10 @@ class FlexFormSectionContainer {
     return this.container;
   }
 
+  public getSectionContainer(): HTMLElement {
+    return this.sectionContainer;
+  }
+
   public isRestructuringAllowed(): boolean {
     return this.allowRestructure;
   }

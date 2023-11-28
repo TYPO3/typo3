@@ -59,7 +59,6 @@ final class FlexFormServiceTest extends UnitTestCase
 									</field>
 								</el>
 							</itemType>
-							<itemType index="_TOGGLE">0</itemType>
 						</section>
 						<section index="2">
 							<itemType index="_arrayContainer">
@@ -72,7 +71,6 @@ final class FlexFormServiceTest extends UnitTestCase
 									</field>
 								</el>
 							</itemType>
-							<itemType index="_TOGGLE">0</itemType>
 						</section>
 					</el>
 				</field>
