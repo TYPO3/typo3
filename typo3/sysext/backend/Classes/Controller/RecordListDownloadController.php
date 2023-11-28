@@ -123,12 +123,12 @@ class RecordListDownloadController
         $recordList = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $recordList->setRequest($request);
         $recordList->modTSconfig = $this->modTSconfig;
-        $recordList->setFields[$this->table] = ($parsedBody['allColumns'] ?? false)
-            ? BackendUtility::getAllowedFieldsForTable($this->table)
-            : $backendUser->getModuleData('list/displayFields')[$this->table] ?? [];
         $recordList->setLanguagesAllowedForUser($this->getSiteLanguages($request));
         $recordList->start($this->id, $this->table, 0, $searchString, $searchLevels);
-
+        if (($parsedBody['allColumns'] ?? false)) {
+            // Overwrite setFields in case all allowed columns should be included.
+            $recordList->setFields[$this->table] = BackendUtility::getAllowedFieldsForTable($this->table);
+        }
         $columnsToRender = $recordList->getColumnsToRender($this->table, false);
         $hideTranslations = ($this->modTSconfig['hideTranslations'] ?? '') === '*'
             || GeneralUtility::inList($this->modTSconfig['hideTranslations'] ?? '', $this->table);
