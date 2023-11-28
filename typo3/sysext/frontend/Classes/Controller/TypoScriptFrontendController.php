@@ -1136,13 +1136,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // This means we'll fetch the full constants include tree (from cache if possible), register the condition
             // matcher and register the AST builder and traverse include tree to retrieve constants AST and calculate
             // 'flat constants' from it. Both are cached if allowed afterwards for the 'if' above to kick in next time.
-            if ($this->no_cache) {
-                // Note $typoscriptCache *is not* hand over here: IncludeTree is calculated from scratch, we're not allowed to use cache.
-                $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $tokenizer, $site);
-            } else {
-                // Note $typoscriptCache *is* hand over here, we can potentially grab the fully cached includeTree here, or cache entry will be created.
-                $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
-            }
+            // $typoscriptCache can be null here with no_cache=1.
+            $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
             $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
             $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
             $includeTreeTraverserConditionVerdictAwareVisitors = [];
@@ -1211,13 +1206,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // condition list from scratch. This means we'll fetch the full setup include tree (from cache if possible),
             // register the constant substitution visitor, and register condition matcher and register the condition
             // accumulator visitor.
-            if ($this->no_cache) {
-                // Note $typoscriptCache *is not* hand over here: IncludeTree is calculated from scratch, we're not allowed to use cache.
-                $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site);
-            } else {
-                // Note $typoscriptCache *is* hand over here, we can potentially grab the fully cached includeTree here, or cache entry will be created.
-                $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
-            }
+            // $typoscriptCache can be null here with no_cache=1.
+            $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
             $includeTreeTraverserVisitors = [];
             $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
             $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
@@ -1232,9 +1222,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // conditions if an upper one does not match.
             $includeTreeTraverser->traverse($setupIncludeTree, $includeTreeTraverserVisitors);
             $setupConditionList = $setupMatcherVisitor->getConditionListWithVerdicts();
-            if (!$this->no_cache) {
-                $typoscriptCache->set($setupConditionIncludeListCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize($setupConditionIncludeListAccumulatorVisitor->getConditionIncludes()), '\'\\') . '\');');
-            }
+            $typoscriptCache?->set($setupConditionIncludeListCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize($setupConditionIncludeListAccumulatorVisitor->getConditionIncludes()), '\'\\') . '\');');
         }
 
         // We now gathered everything to calculate the page cache identifier: It depends on sys_template rows, the calculated
@@ -1309,12 +1297,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if ($this->no_cache || $forceTemplateParsing || !$gotSetupFromCache) {
                 // We need AST and couldn't get it from cache or are now allowed to. We thus need the full setup
                 // IncludeTree, which we can get from cache again if allowed, or is calculated a-new if not.
-                if ($this->no_cache || $forceTemplateParsing) {
-                    // Note $typoscriptCache *is not* hand over here: IncludeTree is calculated from scratch, we're not allowed to use cache.
-                    $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site);
-                } elseif ($setupIncludeTree === null) {
-                    // Note $typoscriptCache *is* hand over here, we can potentially grab the fully cached includeTree here, or cache entry will be created.
-                    $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
+                if ($this->no_cache || $forceTemplateParsing || $setupIncludeTree === null) {
+                    // $typoscriptCache can be null here with no_cache=1.
+                    $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $forceTemplateParsing ? null : $typoscriptCache);
                 }
                 $includeTreeTraverserConditionVerdictAwareVisitors = [];
                 $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
