@@ -1081,6 +1081,7 @@ class BackendUtility
                         'width' => $processedImage->getProperty('width'),
                         'height' => $processedImage->getProperty('height'),
                         'alt' => $fileReferenceObject->getName(),
+                        'loading' => 'lazy',
                     ];
                     $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . $tparams . '/>';
                 } else {
