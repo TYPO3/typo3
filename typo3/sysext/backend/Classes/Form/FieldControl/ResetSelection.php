@@ -57,8 +57,8 @@ class ResetSelection extends AbstractNode
             'iconIdentifier' => 'actions-edit-undo',
             'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection',
             'linkAttributes' => [
-                'id' => htmlspecialchars($id),
-                'data-item-name' => htmlspecialchars($itemName),
+                'id' => $id,
+                'data-item-name' => $itemName,
                 'data-selected-indices' => json_encode($initiallySelectedIndices),
             ],
             'javaScriptModules' => [

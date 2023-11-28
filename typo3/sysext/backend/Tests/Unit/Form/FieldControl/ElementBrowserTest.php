@@ -175,14 +175,14 @@ final class ElementBrowserTest extends UnitTestCase
             ],
             '',
         ];
-        yield 'Entry point is escaped' => [
+        yield 'Entry point is not escaped' => [ // Escaping is later done by calling code (FieldControl::render())
             [
                 'type' => 'folder',
                 'elementBrowserEntryPoints' => [
                     '_default' => '1:/<script>alert(1)</script>/',
                 ],
             ],
-            '1:/&lt;script&gt;alert(1)&lt;/script&gt;/',
+            '1:/<script>alert(1)</script>/',
         ];
         yield 'Pid placeholder is resolved' => [
             [

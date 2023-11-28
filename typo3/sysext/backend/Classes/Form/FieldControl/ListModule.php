@@ -99,7 +99,7 @@ class ListModule extends AbstractNode
             'iconIdentifier' => 'actions-system-list-open',
             'title' => $title,
             'linkAttributes' => [
-                'id' => htmlspecialchars($id),
+                'id' => $id,
                 'href' => (string)$this->uriBuilder->buildUriFromRoute('wizard_list', $urlParameters),
             ],
             'javaScriptModules' => [
