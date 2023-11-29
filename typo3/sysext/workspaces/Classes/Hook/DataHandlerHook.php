@@ -112,7 +112,7 @@ class DataHandlerHook
                 $this->version_swap(
                     $table,
                     $id,
-                    $value['swapWith'],
+                    (int)$value['swapWith'],
                     $dataHandler,
                     $comment,
                     $notificationAlternativeRecipients
@@ -545,7 +545,7 @@ class DataHandlerHook
      * @param string $comment Notification comment
      * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
      */
-    protected function version_swap($table, $id, $swapWith, DataHandler $dataHandler, string $comment, $notificationAlternativeRecipients = [])
+    protected function version_swap(string $table, int $id, int $swapWith, DataHandler $dataHandler, string $comment, array $notificationAlternativeRecipients)
     {
         // Check prerequisites before start publishing
         // Skip records that have been deleted during the current execution

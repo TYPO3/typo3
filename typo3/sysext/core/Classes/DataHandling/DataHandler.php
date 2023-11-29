@@ -5189,12 +5189,12 @@ class DataHandler implements LoggerAwareInterface
      * @param bool $deleteRecordsOnPage If false and if deleting pages, records on the page will not be deleted (edge case while swapping workspaces)
      * @internal should only be used from within DataHandler
      */
-    public function deleteEl($table, $uid, $noRecordCheck = false, $forceHardDelete = false, bool $deleteRecordsOnPage = true)
+    public function deleteEl(string $table, int $uid, bool $noRecordCheck = false, bool $forceHardDelete = false, bool $deleteRecordsOnPage = true): void
     {
         if ($table === 'pages') {
             $this->deletePages($uid, $noRecordCheck, $forceHardDelete, $deleteRecordsOnPage);
         } else {
-            $this->discardLocalizedWorkspaceVersionsOfRecord((string)$table, (int)$uid);
+            $this->discardLocalizedWorkspaceVersionsOfRecord($table, $uid);
             $this->discardWorkspaceVersionsOfRecord($table, $uid);
             $this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
         }
@@ -5289,10 +5289,9 @@ class DataHandler implements LoggerAwareInterface
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
      * @internal should only be used from within DataHandler
      */
-    public function deleteRecord($table, $uid, $noRecordCheck = false, $forceHardDelete = false)
+    public function deleteRecord(string $table, int $uid, bool $noRecordCheck = false, bool $forceHardDelete = false): void
     {
-        $currentUserWorkspace = (int)$this->BE_USER->workspace;
-        $uid = (int)$uid;
+        $currentUserWorkspace = $this->BE_USER->workspace;
         if (!$GLOBALS['TCA'][$table] || !$uid) {
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions [{reason}]', -1, ['reason' => $this->BE_USER->errorMsg]);
             return;
@@ -5416,22 +5415,23 @@ class DataHandler implements LoggerAwareInterface
      * @param bool $deleteRecordsOnPage If false, records on the page will not be deleted (edge case while swapping workspaces)
      * @internal should only be used from within DataHandler
      */
-    public function deletePages($uid, $force = false, $forceHardDelete = false, bool $deleteRecordsOnPage = true)
+    public function deletePages(int $uid, bool $force = false, bool $forceHardDelete = false, bool $deleteRecordsOnPage = true): void
     {
-        $uid = (int)$uid;
         if ($uid === 0) {
             $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'Deleting all pages starting from the root-page is disabled', -1, [], 0);
             return;
         }
         // Getting list of pages to delete:
         if ($force) {
-            // Returns the branch WITHOUT permission checks (0 secures that), so it cannot return -1
-            $pageIdsInBranch = $this->doesBranchExist('', $uid, 0, true);
-            $res = GeneralUtility::intExplode(',', $pageIdsInBranch . $uid, true);
+            // Returns the branch WITHOUT permission checks, so it cannot return null
+            $res = $this->doesBranchExist($uid, Permission::NOTHING);
+            if (is_array($res)) {
+                $res[] = $uid;
+            }
         } else {
             $res = $this->canDeletePage($uid);
         }
-        // Perform deletion if not error:
+        // Perform deletion if no error occurred
         if (is_array($res)) {
             foreach ($res as $deleteId) {
                 $this->deleteSpecificPage($deleteId, $forceHardDelete, $deleteRecordsOnPage);
@@ -5457,14 +5457,12 @@ class DataHandler implements LoggerAwareInterface
      * @internal
      * @see deletePages()
      */
-    public function deleteSpecificPage($uid, $forceHardDelete = false, bool $deleteRecordsOnPage = true)
+    protected function deleteSpecificPage(int $uid, bool $forceHardDelete, bool $deleteRecordsOnPage): void
     {
-        $uid = (int)$uid;
         if (!$uid) {
             // Early void return on invalid uid
             return;
         }
-        $forceHardDelete = (bool)$forceHardDelete;
 
         // Delete either a default language page or a translated page
         $pageIdInDefaultLanguage = $this->getDefaultLanguagePageId($uid);
@@ -5523,7 +5521,7 @@ class DataHandler implements LoggerAwareInterface
                     );
                 }
 
-                $currentUserWorkspace = (int)$this->BE_USER->workspace;
+                $currentUserWorkspace = $this->BE_USER->workspace;
                 if ($currentUserWorkspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
                     // If we are in a workspace, make sure only records of this workspace are deleted.
                     $queryBuilder->andWhere(
@@ -5539,7 +5537,7 @@ class DataHandler implements LoggerAwareInterface
                 while ($row = $statement->fetchAssociative()) {
                     // Delete any further workspace overlays of the record in question, then delete the record.
                     $this->discardWorkspaceVersionsOfRecord($table, $row['uid']);
-                    $this->deleteRecord($table, $row['uid'], true, $forceHardDelete);
+                    $this->deleteRecord($table, (int)$row['uid'], true, $forceHardDelete);
                 }
             }
         }
@@ -5575,20 +5573,19 @@ class DataHandler implements LoggerAwareInterface
             return 'Attempt to delete page without permissions';
         }
 
-        $pageIdsInBranch = $this->doesBranchExist('', $uid, Permission::PAGE_DELETE, true);
-
-        if ($pageIdsInBranch === -1) {
+        $pagesInBranch = $this->doesBranchExist($uid, Permission::PAGE_DELETE);
+        if ($pagesInBranch === null) {
             return 'Attempt to delete pages in branch without permissions';
         }
 
-        $pagesInBranch = GeneralUtility::intExplode(',', $pageIdsInBranch . $uid, true);
+        $pagesInBranch[] = $uid;
 
         if ($disallowedTables = $this->checkForRecordsFromDisallowedTables($pagesInBranch)) {
             return 'Attempt to delete records from disallowed tables (' . implode(', ', $disallowedTables) . ')';
         }
 
         foreach ($pagesInBranch as $pageInBranch) {
-            if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, false, $isTranslatedPage ? false : true)) {
+            if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, false, !$isTranslatedPage)) {
                 return 'Attempt to delete page which has prohibited localizations';
             }
         }
@@ -7316,22 +7313,18 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Checks if a whole branch of pages exists
+     * Checks if a whole branch of pages exists.
      *
      * Tests the branch under $pid like doesRecordExist(), but it doesn't test the page with $pid as uid - use doesRecordExist() for this purpose.
-     * If $recurse is set, the function will follow subpages. This MUST be set, if we need the id-list for deleting pages or else we get an incomplete list
      *
-     * @param string $inList List of page uids, this is added to and returned in the end
      * @param int $pid Page ID to select subpages from.
-     * @param int $perms Perms integer to check each page record for.
-     * @param bool $recurse Recursion flag: If set, it will go out through the branch.
-     * @return string|int List of page IDs in branch, if there are subpages, empty string if there are none or -1 if no permission
+     * @param int $permissions Perms integer to check each page record for.
+     * @param array $pageIdsInBranch List of page uids, this is added to and returned in the end
+     * @return array<int>|null List of page IDs in branch, if there are subpages, empty array if there are none or null if no permission
      * @internal should only be used from within DataHandler
      */
-    public function doesBranchExist($inList, $pid, $perms, $recurse)
+    protected function doesBranchExist(int $pid, int $permissions, array $pageIdsInBranch = []): ?array
     {
-        $pid = (int)$pid;
-        $perms = (int)$perms;
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
         $result = $queryBuilder
@@ -7342,21 +7335,19 @@ class DataHandler implements LoggerAwareInterface
             ->executeQuery();
         while ($row = $result->fetchAssociative()) {
             // IF admin, then it's OK
-            if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $perms)) {
-                $inList .= $row['uid'] . ',';
-                if ($recurse) {
-                    // Follow the subpages recursively...
-                    $inList = $this->doesBranchExist($inList, $row['uid'], $perms, $recurse);
-                    if ($inList === -1) {
-                        return -1;
-                    }
+            if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $permissions)) {
+                $pageIdsInBranch[] = (int)$row['uid'];
+                // Follow the subpages recursively
+                $pageIdsInBranch = $this->doesBranchExist((int)$row['uid'], $permissions, $pageIdsInBranch);
+                if ($pageIdsInBranch === null) {
+                    return null;
                 }
             } else {
                 // No permissions
-                return -1;
+                return null;
             }
         }
-        return $inList;
+        return $pageIdsInBranch;
     }
 
     /**
