@@ -21,11 +21,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Persistence;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -78,19 +80,21 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $this->storageRepository = $storageRepository;
         $this->filePersistenceSlot = $filePersistenceSlot;
         $this->resourceFactory = $resourceFactory;
-        $fakeRequest = false;
-        if (!isset($GLOBALS['TYPO3_REQUEST'])) {
-            // @todo: FormPersistenceManager is sometimes triggered via CLI without request. In this
-            //        case we fake a request so extbase ConfigurationManager still works.
+        // @todo: FormPersistenceManager is sometimes triggered via CLI without request (why/where?).
+        //        In this case we fake a request so extbase ConfigurationManager still works.
+        //        This of course needs to fall! The code below needs to be moved out of __construct()
+        //        and must be added to methods that need this. Request then needs to be hand over to
+        //        those methods, with $GLOBALS['TYPO3_REQUEST'] being only a b/w compat layer for one
+        //        version. If CLI uses this class, it should properly set up and hand over a request.
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        } else {
             $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-            $GLOBALS['TYPO3_REQUEST'] = $request;
-            $fakeRequest = true;
+            $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         }
+        $configurationManager->setRequest($request);
         $this->formSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
         $this->typoScriptSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
-        if ($fakeRequest) {
-            unset($GLOBALS['TYPO3_REQUEST']);
-        }
         $this->runtimeCache = $cacheManager->getCache('runtime');
     }
 
