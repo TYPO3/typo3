@@ -1936,6 +1936,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function generatePageTitle(): string
     {
+        // config.noPageTitle = 2 - means do not render the page title
+        if ((int)($this->config['config']['noPageTitle'] ?? 0) === 2) {
+            return '';
+        }
+
         // Check for a custom pageTitleSeparator, and perform stdWrap on it
         $pageTitleSeparator = (string)$this->cObj->stdWrapValue('pageTitleSeparator', $this->config['config'] ?? []);
         if ($pageTitleSeparator !== '' && $pageTitleSeparator === ($this->config['config']['pageTitleSeparator'] ?? '')) {
@@ -1960,10 +1965,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // stdWrap around the title tag
         $titleTagContent = $this->cObj->stdWrapValue('pageTitle', $this->config['config']);
 
-        // config.noPageTitle = 2 - means do not render the page title
-        if (isset($this->config['config']['noPageTitle']) && (int)$this->config['config']['noPageTitle'] === 2) {
-            $titleTagContent = '';
-        }
         if ($titleTagContent !== '') {
             $this->pageRenderer->setTitle($titleTagContent);
         }
