@@ -61,26 +61,27 @@ class AdministrationController extends ActionController
      */
     protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
+        $languageService = $this->getLanguageService();
         $menuItems = [
             'statistic' => [
                 'controller' => 'Administration',
                 'action' => 'statistic',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.statistic'),
+                'label' => $languageService->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.statistic'),
             ],
             'pages' => [
                 'controller' => 'Administration',
                 'action' => 'pages',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.pages'),
+                'label' => $languageService->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.pages'),
             ],
             'externalDocuments' => [
                 'controller' => 'Administration',
                 'action' => 'externalDocuments',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.externalDocuments'),
+                'label' => $languageService->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.externalDocuments'),
             ],
             'index' => [
                 'controller' => 'Administration',
                 'action' => 'index',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.general'),
+                'label' => $languageService->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.general'),
             ],
         ];
 
@@ -88,6 +89,11 @@ class AdministrationController extends ActionController
 
         $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('IndexedSearchModuleMenu');
+        $menu->setLabel(
+            $languageService->sL(
+                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
+            )
+        );
 
         $context = '';
         foreach ($menuItems as $menuItemConfig) {
@@ -104,7 +110,7 @@ class AdministrationController extends ActionController
 
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
         $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $languageService->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $context
         );
 

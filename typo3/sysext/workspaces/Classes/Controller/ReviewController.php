@@ -165,7 +165,11 @@ class ReviewController
         }
         $actionMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier('workspaceSelector');
-        $actionMenu->setLabel('');
+        $actionMenu->setLabel(
+            $this->getLanguageService()->sL(
+                'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
+            )
+        );
         foreach ($items as $workspaceData) {
             $menuItem = $actionMenu
                 ->makeMenuItem()

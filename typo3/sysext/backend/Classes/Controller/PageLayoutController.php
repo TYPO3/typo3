@@ -287,7 +287,11 @@ class PageLayoutController
 
         $actionMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier('actionMenu');
-        $actionMenu->setLabel('');
+        $actionMenu->setLabel(
+            $languageService->sL(
+                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:pagelayout.moduleMenu.dropdown.label'
+            )
+        );
         $defaultKey = null;
         $foundDefaultKey = false;
         foreach ($actions as $key => $action) {

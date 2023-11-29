@@ -393,6 +393,9 @@
 			<trans-unit id="status.is_new" resname="status.is_new">
 				<source>Record was created in this workspace</source>
 			</trans-unit>
+			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
+				<source>Selected workspace</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

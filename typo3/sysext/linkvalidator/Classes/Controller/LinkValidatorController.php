@@ -462,6 +462,11 @@ class LinkValidatorController
         $languageService = $this->getLanguageService();
         $actionMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier('reportLinkvalidatorSelector');
+        $actionMenu->setLabel(
+            $languageService->sL(
+                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
+            )
+        );
         $actionMenu->addMenuItem(
             $actionMenu->makeMenuItem()
                 ->setTitle($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:Report'))

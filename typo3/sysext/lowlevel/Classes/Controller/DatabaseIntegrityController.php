@@ -371,6 +371,11 @@ class DatabaseIntegrityController
 
         $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('DatabaseJumpMenu');
+        $menu->setLabel(
+            $this->getLanguageService()->sL(
+                'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.docheader.viewmode'
+            )
+        );
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()

@@ -138,6 +138,9 @@ class ReportController
         $languageService = $this->getLanguageService();
         $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebFuncJumpMenu');
+        $menu->setLabel(
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:choose_report')
+        );
         $menuItem = $menu->makeMenuItem()
             ->setHref(
                 (string)$this->uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index'])
