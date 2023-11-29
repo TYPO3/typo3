@@ -16,6 +16,11 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
+			message: "#^Offset 2 does not exist on array\\{\\}\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
+
+		-
 			message: "#^Offset 2 on array\\{\\} in empty\\(\\) does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
@@ -306,6 +311,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Collection/AbstractRecordCollection.php
 
 		-
+			message: "#^Offset string does not exist on null\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
+
+		-
 			message: "#^Offset string on null in empty\\(\\) does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
@@ -383,11 +393,6 @@ parameters:
 		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 3
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Offset 't3ver_oid' on array on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
