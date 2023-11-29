@@ -84,13 +84,6 @@ class FieldControl extends AbstractNode
             $options['renderData']['fieldControlOptions'] = $orderedFieldControlConfiguration['options'] ?? [];
             $controlResult = $this->nodeFactory->create($options)->render();
 
-            if (!is_array($controlResult)) {
-                throw new \RuntimeException(
-                    'Field controls must return an array',
-                    1484838560
-                );
-            }
-
             // If the controlResult is empty (this control rendered nothing), continue to next one
             if (empty($controlResult)) {
                 continue;
