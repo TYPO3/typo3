@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\DataHandler\CommandMap;
 use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 use TYPO3\CMS\Workspaces\Messages\StageChangeMessage;
@@ -62,6 +63,7 @@ class DataHandlerHook
 
     public function __construct(
         private readonly MessageBusInterface $messageBus,
+        private readonly WorkspacePublishGate $workspacePublishGate,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
@@ -596,12 +598,12 @@ class DataHandlerHook
         }
         $workspaceId = (int)$swapVersion['t3ver_wsid'];
         $currentStage = (int)$swapVersion['t3ver_stage'];
-        if (!$dataHandler->BE_USER->workspacePublishAccess($workspaceId)) {
+        if (!$this->workspacePublishGate->isGranted($dataHandler->BE_USER, $workspaceId)) {
             $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'User could not publish records from workspace #{workspace}', -1, ['workspace' => $workspaceId]);
             return;
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
-        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || $currentStage === StagesService::STAGE_PUBLISH_ID)) {
+        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE) || $currentStage === StagesService::STAGE_PUBLISH_ID)) {
             $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', -1, ['workspace' => $workspaceId]);
             return;
         }
@@ -911,12 +913,12 @@ class DataHandlerHook
     {
         $id = (int)$newRecordInWorkspace['uid'];
         $workspaceId = (int)$newRecordInWorkspace['t3ver_wsid'];
-        if (!$dataHandler->BE_USER->workspacePublishAccess($workspaceId)) {
+        if (!$this->workspacePublishGate->isGranted($dataHandler->BE_USER, $workspaceId)) {
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'User could not publish records from workspace #{workspace}', -1, ['workspace' => $workspaceId]);
             return;
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
-        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$newRecordInWorkspace['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID)) {
+        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE) || (int)$newRecordInWorkspace['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID)) {
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', -1, ['workspace' => $workspaceId]);
             return;
         }

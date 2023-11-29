@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 use TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent;
@@ -78,6 +79,7 @@ class GridDataService implements LoggerAwareInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly WorkspaceService $workspaceService,
         private readonly ModuleProvider $moduleProvider,
+        private readonly WorkspacePublishGate $workspacePublishGate,
     ) {}
 
     /**
@@ -117,8 +119,9 @@ class GridDataService implements LoggerAwareInterface
     {
         $backendUser = $this->getBackendUser();
         $workspaceAccess = $backendUser->checkWorkspace($backendUser->workspace);
-        $swapStage = ($workspaceAccess['publish_access'] ?? 0) & 1 ? StagesService::STAGE_PUBLISH_ID : 0;
-        $swapAccess = $backendUser->workspacePublishAccess($backendUser->workspace);
+        $swapStage = ($workspaceAccess['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE ? StagesService::STAGE_PUBLISH_ID : StagesService::STAGE_EDIT_ID;
+
+        $isAllowedToPublish = $this->workspacePublishGate->isGranted($backendUser, $backendUser->workspace);
         $this->initializeWorkspacesCachingFramework();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         // check for dataArray in cache
@@ -206,9 +209,9 @@ class GridDataService implements LoggerAwareInterface
                     ];
                     $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
                     $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
-                    if ($swapAccess && $swapStage != 0 && $versionRecord['t3ver_stage'] == $swapStage) {
+                    if ($isAllowedToPublish && $swapStage !== StagesService::STAGE_EDIT_ID && (int)$versionRecord['t3ver_stage'] === $swapStage) {
                         $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
-                    } elseif ($swapAccess && $swapStage == 0) {
+                    } elseif ($isAllowedToPublish && $swapStage === StagesService::STAGE_EDIT_ID) {
                         $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify;
                     } else {
                         $versionArray['allowedAction_publish'] = false;
@@ -219,7 +222,7 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['allowedAction_edit'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
                     $versionArray['allowedAction_versionPageOpen'] = $this->isPageModuleAllowed() && !$isDeletedPage;
                     $versionArray['state_Workspace'] = $recordState;
-                    $versionArray['hasChanges'] = ($recordState === 'unchanged') ? false : true;
+                    $versionArray['hasChanges'] = $recordState !== 'unchanged';
                     // Allows to be overridden by PSR-14 event to dynamically modify the expand / collapse state
                     $versionArray['expanded'] = false;
 

@@ -39,6 +39,10 @@ class WorkspaceService implements SingletonInterface
     public const TABLE_WORKSPACE = 'sys_workspace';
     public const LIVE_WORKSPACE_ID = 0;
 
+    public const PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE = 1;
+    public const PUBLISH_ACCESS_ONLY_WORKSPACE_OWNERS = 2;
+    public const PUBLISH_ACCESS_HIDE_ENTIRE_WORKSPACE_ACTION_DROPDOWN = 4;
+
     /**
      * Retrieves the available workspaces from the database and checks whether
      * they're available to the current BE user
@@ -141,7 +145,7 @@ class WorkspaceService implements SingletonInterface
             // Define stage to select:
             $stage = -99;
             $workspaceRec = BackendUtility::getRecord('sys_workspace', $wsid);
-            if ($workspaceRec['publish_access'] & 1) {
+            if ($workspaceRec['publish_access'] & self::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE) {
                 $stage = StagesService::STAGE_PUBLISH_ID;
             }
             // Select all versions to publishing

@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -49,6 +50,7 @@ class ReviewController
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly WorkspacePublishGate $workspacePublishGate,
         protected readonly TranslationConfigurationProvider $translationConfigurationProvider
     ) {}
 
@@ -121,7 +123,7 @@ class ReviewController
             'availableStages' => $this->stagesService->getStagesForWSUser(),
             'availableSelectStages' => $this->getAvailableSelectStages(),
             'stageActions' => $this->getStageActions(),
-            'showEntireWorkspaceDropDown' => !(($backendUser->workspaceRec['publish_access'] ?? 0) & 4),
+            'showEntireWorkspaceDropDown' => !(($backendUser->workspaceRec['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_HIDE_ENTIRE_WORKSPACE_ACTION_DROPDOWN),
             'selectedLanguage' => $selectedLanguage,
             'selectedDepth' => (int)$moduleData->get('depth', ($pageUid === 0 ? 999 : 1)),
             'selectedStage' => (int)$moduleData->get('stage'),
@@ -287,8 +289,9 @@ class ReviewController
         $actions = [];
         $massActionsEnabled = (bool)($backendUser->getTSConfig()['options.']['workspaces.']['enableMassActions'] ?? true);
         if ($massActionsEnabled) {
-            $publishAccess = $backendUser->workspacePublishAccess($currentWorkspace);
-            if ($publishAccess && !(($backendUser->workspaceRec['publish_access'] ?? 0) & 1)) {
+            if ($this->workspacePublishGate->isGranted($backendUser, $currentWorkspace)
+                && !(($backendUser->workspaceRec['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE)
+            ) {
                 $actions[] = ['action' => 'publish', 'title' => $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_publish')];
             }
             if ($currentWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID) {

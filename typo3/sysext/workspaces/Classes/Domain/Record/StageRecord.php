@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Domain\Record;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
 class StageRecord extends AbstractRecord
@@ -261,7 +263,9 @@ class StageRecord extends AbstractRecord
         return
             $this->isEditStage()
             || static::getBackendUser()->workspaceCheckStageForCurrent($this->getUid())
-            || $this->isExecuteStage() && static::getBackendUser()->workspacePublishAccess($this->workspace->getUid())
-        ;
+            || (
+                $this->isExecuteStage()
+                && GeneralUtility::makeInstance(WorkspacePublishGate::class)->isGranted(static::getBackendUser(), $this->workspace->getUid())
+            );
     }
 }

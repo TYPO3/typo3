@@ -269,13 +269,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * $groupId must be set. $this->userGroupsUID must contain groups
      * Will return TRUE also if the user is a member of a group through subgroups.
      *
-     * @param int $groupId Group ID to look for in $this->userGroupsUID
-     * @return bool
      * @internal should only be used from within TYPO3 Core, use Context API for quicker access
      */
-    public function isMemberOfGroup($groupId)
+    protected function isMemberOfGroup(int $groupId): bool
     {
-        $groupId = (int)$groupId;
         if (!empty($this->userGroupsUID) && $groupId) {
             return in_array($groupId, $this->userGroupsUID, true);
         }
@@ -507,7 +504,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             if ($this->user['uid'] == $row['perms_userid']) {
                 $out |= $row['perms_user'];
             }
-            if ($this->isMemberOfGroup($row['perms_groupid'])) {
+            if ($this->isMemberOfGroup((int)$row['perms_groupid'])) {
                 $out |= $row['perms_group'];
             }
             $out |= $row['perms_everybody'];
@@ -855,41 +852,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return true;
         }
         return false;
-    }
-
-    /**
-     * Returns TRUE if the user has access to publish content from the workspace ID given.
-     * Admin-users are always granted access to do this
-     * If the workspace ID is 0 (live) all users have access also
-     * For custom workspaces it depends on whether the user is owner OR like with
-     * draft workspace if the user has access to Live workspace.
-     *
-     * @param int $wsid Workspace UID; 0,1+
-     * @return bool Returns TRUE if the user has access to publish content from the workspace ID given.
-     * @internal this method will be moved to EXT:workspaces
-     */
-    public function workspacePublishAccess($wsid)
-    {
-        if ($this->isAdmin()) {
-            return true;
-        }
-        $wsAccess = $this->checkWorkspace($wsid);
-        // If no access to workspace, of course you cannot publish!
-        if ($wsAccess === false) {
-            return false;
-        }
-        if ((int)$wsAccess['uid'] === 0) {
-            // If access to Live workspace, no problem.
-            return true;
-        }
-        // Custom workspaces
-        // 1. Owners can always publish
-        if ($wsAccess['_ACCESS'] === 'owner') {
-            return true;
-        }
-        // 2. User has access to online workspace which is OK as well as long as publishing
-        // access is not limited by workspace option.
-        return $this->checkWorkspace(0) && !($wsAccess['publish_access'] & 2);
     }
 
     /**
@@ -1666,11 +1628,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Uses checkWorkspace() to check if current workspace is available for user.
      * This function caches the result and so can be called many times with no performance loss.
      *
-     * @return array See checkWorkspace()
      * @see checkWorkspace()
      * @internal should only be used from within TYPO3 Core
      */
-    public function checkWorkspaceCurrent()
+    protected function checkWorkspaceCurrent(): false|array|null
     {
         if (!isset($this->checkWorkspaceCurrent_cache)) {
             $this->checkWorkspaceCurrent_cache = $this->checkWorkspace($this->workspace);
@@ -1727,9 +1688,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Sets the default workspace in the context of the current backend user.
      * @internal should only be used from within TYPO3 Core
      */
-    public function setDefaultWorkspace()
+    protected function setDefaultWorkspace(): void
     {
-        $this->workspace = (int)$this->getDefaultWorkspace();
+        $this->workspace = $this->getDefaultWorkspace();
         $this->workspaceRec = $this->checkWorkspace($this->workspace);
     }
 
@@ -1741,7 +1702,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @return int Default workspace id.
      * @internal should only be used from within TYPO3 Core
      */
-    public function getDefaultWorkspace()
+    protected function getDefaultWorkspace(): int
     {
         if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return 0;
@@ -1750,8 +1711,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($this->checkWorkspace(0)) {
             return 0;
         }
-        // Otherwise -99 is the fallback
-        $defaultWorkspace = -99;
         // Traverse all workspaces
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
@@ -1761,11 +1720,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             ->executeQuery();
         while ($workspaceRecord = $result->fetchAssociative()) {
             if ($this->checkWorkspace($workspaceRecord)) {
-                $defaultWorkspace = (int)$workspaceRecord['uid'];
-                break;
+                return (int)$workspaceRecord['uid'];
             }
         }
-        return $defaultWorkspace;
+        // Otherwise -99 is the fallback
+        return -99;
     }
 
     /**
