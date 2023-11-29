@@ -108,13 +108,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public int $id;
 
-    /**
-     * The type (read-only)
-     * @var int|string
-     * @internal since TYPO3 v12. Use $TSFE->getPageArguments()->getPageType() instead
-     */
-    protected int|string $type = 0;
-
     protected Site $site;
     protected SiteLanguage $language;
 
@@ -273,8 +266,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $pSetup = '';
 
     /**
-     * This hash is unique to the template, the $this->id and $this->type vars and
-     * the list of groups. Used to get and later store the cached data
+     * This hash is unique to the page id, involved TS templates, TS condition verdicts, and
+     * some other parameters that influence page render result. Used to get/set page cache.
      * @internal
      */
     public string $newHash = '';
@@ -978,7 +971,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->id = $pageArguments->getPageId();
         // We store the originally requested id
         $this->requestedId = $this->id;
-        $this->type = (int)($pageArguments->getPageType() ?: 0);
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
             $this->MP = (string)($pageArguments->getArguments()['MP'] ?? '');
             // Ensure no additional arguments are given via the &MP=123-345,908-172 (e.g. "/")
@@ -1349,13 +1341,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 }
             }
 
-            $typoScriptPageTypeName = $setupArray['types.'][$this->type] ?? '';
+            $type = (int)($this->pageArguments->getPageType() ?: 0);
+            $typoScriptPageTypeName = $setupArray['types.'][$type] ?? '';
             $this->pSetup = $setupArray[$typoScriptPageTypeName . '.'] ?? '';
 
             if (!is_array($this->pSetup)) {
-                $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $this->type, 'type_name' => $typoScriptPageTypeName]);
+                $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $type, 'type_name' => $typoScriptPageTypeName]);
                 try {
-                    $message = 'The page is not configured! [type=' . $this->type . '][' . $typoScriptPageTypeName . '].';
+                    $message = 'The page is not configured! [type=' . $type . '][' . $typoScriptPageTypeName . '].';
                     $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
                         $request,
                         $message,
@@ -1363,7 +1356,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     );
                     throw new PropagateResponseException($response, 1533931374);
                 } catch (AbstractServerErrorException $e) {
-                    $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
+                    $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $type . ' configured.';
                     $exceptionClass = get_class($e);
                     throw new $exceptionClass($message . ' ' . $explanation, 1294587217);
                 }
@@ -1479,7 +1472,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $userAspect = $this->context->getAspect('frontend.user');
         $hashParameters = [
             'id' => $this->id,
-            'type' => $this->type,
+            'type' => (int)($this->pageArguments->getPageType() ?: 0),
             'groupIds' => (string)implode(',', $userAspect->getGroupIds()),
             'MP' => (string)$this->MP,
             'site' => $this->site->getIdentifier(),
@@ -1701,8 +1694,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->calculateLinkVars($request->getQueryParams());
         $parameter = $this->page['uid'];
-        if ($this->type) {
-            $parameter .= ',' . $this->type;
+        $type = (int)($this->pageArguments->getPageType() ?: 0);
+        if ($type) {
+            $parameter .= ',' . $type;
         }
         return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->createUrl([
             'parameter' => $parameter,
