@@ -46,7 +46,7 @@
 				<source>"%s" (Invalid ext:form configuration).</source>
 			</trans-unit>
 			<trans-unit id="tt_content.preview.invalidFrameworkConfiguration.text" resname="tt_content.preview.invalidFrameworkConfiguration.text" xml:space="preserve">
-				<source>Invalid ext:form configuration. %s</source>
+				<source>Invalid ext:form configuration in form "%s": %s</source>
 			</trans-unit>
 			<trans-unit id="tt_content.preview.invalidFrameworkConfiguration.title" resname="tt_content.preview.invalidFrameworkConfiguration.title" xml:space="preserve">
 				<source>Invalid configuration.</source>
