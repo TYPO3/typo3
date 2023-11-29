@@ -139,6 +139,11 @@ final class ConfigurationController
     {
         $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('tree');
+        $menu->setLabel(
+            $this->getLanguageService()->sL(
+                'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
+            )
+        );
         foreach ($providers as $provider) {
             $menuItem = $menu->makeMenuItem()
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_config', ['tree' => $provider->getIdentifier()]))

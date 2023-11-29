@@ -552,6 +552,12 @@ class BackendUserController extends ActionController
         $this->uriBuilder->setRequest($this->request);
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('BackendUserModuleMenu');
+        $menu->setLabel(
+            LocalizationUtility::translate(
+                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:modulemenu.label',
+                'backend',
+            )
+        );
         $menu->addMenuItem(
             $menu->makeMenuItem()
             ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUsers', 'beuser'))

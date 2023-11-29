@@ -190,6 +190,15 @@ Have a nice day.</source>
 			<trans-unit id="liveSearch.pageRecordProvider.typeLabel" resname="liveSearch.pageRecordProvider.typeLabel">
 				<source>Page</source>
 			</trans-unit>
+			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
+				<source>Module action</source>
+			</trans-unit>
+			<trans-unit id="pagelayout.moduleMenu.dropdown.label" resname="pagelayout.moduleMenu.dropdown.label">
+				<source>Display mode</source>
+			</trans-unit>
+			<trans-unit id="editdocument.moduleMenu.dropdown.label" resname="editdocument.moduleMenu.dropdown.label">
+				<source>Record language</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

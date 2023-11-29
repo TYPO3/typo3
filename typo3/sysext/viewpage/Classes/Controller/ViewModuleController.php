@@ -138,6 +138,11 @@ class ViewModuleController
         if (count($languages) > 1) {
             $languageMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('_langSelector');
+            $languageMenu->setLabel(
+                $languageService->sL(
+                    'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
+                )
+            );
             foreach ($languages as $value => $label) {
                 $href = (string)$this->uriBuilder->buildUriFromRoute(
                     'page_preview',

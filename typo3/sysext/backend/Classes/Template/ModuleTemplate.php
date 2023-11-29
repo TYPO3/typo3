@@ -388,6 +388,12 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         }
         $menu = $this->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('moduleMenu');
+        $menu->setLabel(
+            $this->getLanguageService()->sL(
+                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
+            )
+        );
+
         foreach ($menuModule->getSubModules() as $module) {
             $item = $menu
                 ->makeMenuItem()

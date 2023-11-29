@@ -384,6 +384,9 @@
 			<trans-unit id="workingTable.stages" resname="workingTable.stages">
 				<source>Stages</source>
 			</trans-unit>
+			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
+				<source>Selected workspace</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

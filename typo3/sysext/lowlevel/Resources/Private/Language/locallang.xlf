@@ -16,6 +16,9 @@
 				<source>%s search match(es)</source>
 			</trans-unit>
 
+			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
+				<source>Configuration to show</source>
+			</trans-unit>
 			<trans-unit id="typo3ConfVars" resname="typo3ConfVars">
 				<source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
 			</trans-unit>
@@ -85,6 +88,10 @@
 			</trans-unit>
 			<trans-unit id="module.dbint.description" resname="module.dbint.description">
 				<source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+			</trans-unit>
+
+			<trans-unit id="module.dbint.docheader.viewmode" resname="module.dbint.docheader.viewmode">
+				<source>Module action</source>
 			</trans-unit>
 			<trans-unit id="search.placeholder" resname="search.placeholder">
 				<source>Search Word</source>

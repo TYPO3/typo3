@@ -1975,6 +1975,11 @@ class EditDocumentController
                     }
                     $languageMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
                     $languageMenu->setIdentifier('_langSelector');
+                    $languageMenu->setLabel(
+                        $this->getLanguageService()->sL(
+                            'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:editdocument.moduleMenu.dropdown.label'
+                        )
+                    );
                     foreach ($availableLanguages as $languageId => $language) {
                         $selectorOptionLabel = $language['title'];
                         // Create url for creating a localized record

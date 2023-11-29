@@ -118,6 +118,11 @@ class AbstractController extends ActionController
         ]);
         $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('ExtensionManagerModuleMenu');
+        $menu->setLabel(
+            $this->translate(
+                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
+            )
+        );
 
         foreach ($menuItems as $menuItemConfig) {
             if ($request->getControllerName() === $menuItemConfig['controller']) {

@@ -51,6 +51,9 @@
 			<trans-unit id="iframe.title" resname="iframe.title">
 				<source>View selected page in different screen resolutions</source>
 			</trans-unit>
+			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
+				<source>Page language</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
