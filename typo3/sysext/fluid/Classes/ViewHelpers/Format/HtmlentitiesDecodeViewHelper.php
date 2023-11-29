@@ -79,21 +79,22 @@ final class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
      * Converts all HTML entities to their applicable characters as needed using PHPs html_entity_decode() function.
      *
      * @see https://www.php.net/html_entity_decode
+     * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $value = $renderChildrenClosure();
         $encoding = $arguments['encoding'];
         $keepQuotes = $arguments['keepQuotes'];
 
-        if (!is_string($value)) {
+        if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }
         if ($encoding === null) {
             $encoding = self::resolveDefaultEncoding();
         }
         $flags = $keepQuotes ? ENT_NOQUOTES : ENT_COMPAT;
-        return html_entity_decode($value, $flags, $encoding);
+        return html_entity_decode((string)$value, $flags, $encoding);
     }
 
     /**
