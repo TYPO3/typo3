@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\RateLimiter;
 
+use Symfony\Component\RateLimiter\RateLimit;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
@@ -73,7 +74,12 @@ final class RateLimiterFactoryTest extends FunctionalTestCase
         $request = (new ServerRequest('https://example.com', 'POST'));
         $subject = new RateLimiterFactory();
         $rateLimiter = $subject->createLoginRateLimiter($userAuth, $request);
-        self::assertEquals($expected, $rateLimiter->consume($tokens)->isAccepted());
+        $rateLimit = null;
+        for ($i = 0; $i < $tokens; $i++) {
+            $rateLimit = $rateLimiter->consume();
+        }
+        self::assertInstanceOf(RateLimit::class, $rateLimit);
+        self::assertEquals($expected, $rateLimit->isAccepted());
     }
 
     /**
