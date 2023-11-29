@@ -83,21 +83,25 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
                     );
                 }
             } catch (NoSuchFileException $e) {
-                $this->addInvalidFrameworkConfigurationFlashMessage($e);
+                $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
                 $formLabel = sprintf(
                     $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
                     $persistenceIdentifier
                 );
             } catch (ParseErrorException $e) {
-                $this->addInvalidFrameworkConfigurationFlashMessage($e);
+                $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
                 $formLabel = sprintf(
                     $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration'),
                     $persistenceIdentifier
                 );
             } catch (\Exception $e) {
                 // Top level catch - FAL throws top level exceptions on missing files, eg. in getFileInfoByIdentifier() of LocalDriver
-                $this->addInvalidFrameworkConfigurationFlashMessage($e);
-                $formLabel = $e->getMessage();
+                $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
+                $formLabel = sprintf(
+                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
+                    $persistenceIdentifier,
+                    $e->getMessage()
+                );
             }
         } else {
             $formLabel = $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
@@ -111,13 +115,11 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
         return $itemContent;
     }
 
-    /**
-     * @param \Exception $e
-     */
-    protected function addInvalidFrameworkConfigurationFlashMessage(\Exception $e)
+    protected function addInvalidFrameworkConfigurationFlashMessage(string $persistenceIdentifier, \Exception $e): void
     {
         $messageText = sprintf(
             $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
+            $persistenceIdentifier,
             $e->getMessage()
         );
 
