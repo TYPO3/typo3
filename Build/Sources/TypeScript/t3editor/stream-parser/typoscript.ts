@@ -968,7 +968,7 @@ export class TypoScriptStreamParserFactory {
 
     function readRegexp(stream: StringStream) {
       let escaped = false, next, inSet = false;
-      while ((next = stream.next()) != null) {
+      while ((next = stream.next()) !== undefined) {
         if (!escaped) {
           if (next === '/' && !inSet) {return;}
           if (next === '[') {inSet = true;}
@@ -1082,7 +1082,7 @@ export class TypoScriptStreamParserFactory {
 
     function tokenComment(stream: StringStream, state: State) {
       let maybeEnd = false, ch;
-      while ((ch = stream.next()) !== null) {
+      while ((ch = stream.next()) !== undefined) {
         if (ch === '/' && maybeEnd) {
           state.tokenize = tokenBase;
           break;
