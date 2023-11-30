@@ -303,7 +303,7 @@ class ReviewController
 
     /**
      * Get stages to be used in the review filter. This basically
-     * adds -99 (all stages) and removes -20 (publish).
+     * adds -99 (all stages) and removes the publishing stage (-20).
      */
     protected function getAvailableSelectStages(): array
     {
@@ -312,9 +312,9 @@ class ReviewController
         return array_merge([
             [
                 'uid' => -99,
-                'label' => $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_all'),
+                'label' => $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_all'),
             ],
-        ], array_filter($stages, static fn(array $stage): bool => (int)($stage['uid'] ?? 0) !== -20));
+        ], array_filter($stages, static fn(array $stage): bool => (int)($stage['uid'] ?? 0) !== StagesService::STAGE_PUBLISH_EXECUTE_ID));
     }
 
     protected function getLanguageService(): LanguageService

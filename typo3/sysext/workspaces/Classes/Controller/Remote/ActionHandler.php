@@ -334,7 +334,7 @@ class ActionHandler
 
         if ($stageRecord->hasPreselection() && !$stageRecord->isPreselectionChangeable()) {
             $preselectedBackendUsers = $this->stagesService->getBackendUsers(
-                implode(',', $this->stagesService->getPreselectedRecipients($stageRecord))
+                $this->stagesService->getPreselectedRecipients($stageRecord)
             );
 
             foreach ($preselectedBackendUsers as $preselectedBackendUser) {
@@ -447,7 +447,7 @@ class ActionHandler
         return [
             'success' => true,
             // force refresh after publishing changes
-            'refreshLivePanel' => $parameters->stageId == -20,
+            'refreshLivePanel' => (int)$parameters->stageId === StagesService::STAGE_PUBLISH_EXECUTE_ID,
         ];
     }
 

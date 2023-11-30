@@ -30,7 +30,7 @@ class WorkspaceRecord extends AbstractRecord
     protected array $internalStages = [
         StagesService::STAGE_EDIT_ID => [
             'name' => 'edit',
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing',
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_editing',
         ],
         StagesService::STAGE_PUBLISH_ID => [
             'name' => 'publish',
@@ -38,7 +38,7 @@ class WorkspaceRecord extends AbstractRecord
         ],
         StagesService::STAGE_PUBLISH_EXECUTE_ID => [
             'name' => 'execute',
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_publish',
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_publish',
         ],
     ];
 

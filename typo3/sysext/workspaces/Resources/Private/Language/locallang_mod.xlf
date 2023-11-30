@@ -12,8 +12,17 @@
 			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
 				<source>Create and handle versioning workflows</source>
 			</trans-unit>
+			<trans-unit id="stage_editing" resname="stage_editing">
+				<source>Editing</source>
+			</trans-unit>
 			<trans-unit id="stage_ready_to_publish" resname="stage_ready_to_publish">
 				<source>Ready to publish</source>
+			</trans-unit>
+			<trans-unit id="stage_publish" resname="stage_publish">
+				<source>Publish</source>
+			</trans-unit>
+			<trans-unit id="stage_all" resname="stage_all">
+				<source>All stages</source>
 			</trans-unit>
 			<trans-unit id="previewText" resname="previewText">
 				<source>Preview of workspace %s (%s)</source>
