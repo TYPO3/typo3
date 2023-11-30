@@ -38,7 +38,7 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,o,a){var i,n=arguments.len
         `))}renderTab(t,e){return html`
       <tr>
         <td colspan="2" class="nowrap">
-          <button type="button" class="btn btn-link" title="${t.description}" data-action="setP" @click="${e=>this.updateClipboard(e,{CB:{setP:t.identifier}})}">
+          <button type="button" class="btn btn-link" aria-checked="${e.current===t.identifier}" title="${t.description}" data-action="setP" @click="${e=>this.updateClipboard(e,{CB:{setP:t.identifier}})}">
             ${e.current===t.identifier?html`
               <typo3-backend-icon identifier="actions-check-circle-alt" size="small"></typo3-backend-icon>
               ${t.title}
