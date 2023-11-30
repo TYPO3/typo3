@@ -128,7 +128,7 @@ export class ClipboardPanel extends LitElement {
     return html`
       <tr>
         <td colspan="2" class="nowrap">
-          <button type="button" class="btn btn-link" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setP': tab.identifier } })}">
+          <button type="button" class="btn btn-link" aria-checked="${clipboardData.current === tab.identifier}" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setP': tab.identifier } })}">
             ${clipboardData.current === tab.identifier ? html`
               <typo3-backend-icon identifier="actions-check-circle-alt" size="small"></typo3-backend-icon>
               ${tab.title}
