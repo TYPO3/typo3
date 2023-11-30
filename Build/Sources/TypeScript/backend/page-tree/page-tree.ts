@@ -59,17 +59,17 @@ export class PageTree extends SvgTree
     const nodeStop = nodes
       .append('svg')
       .attr('class', 'node-stop')
-      .attr('y', (super.settings.icon.size / 2 * -1))
-      .attr('x', (super.settings.icon.size / 2 * -1))
-      .attr('height', super.settings.icon.size)
-      .attr('width', super.settings.icon.size)
+      .attr('y', (this.settings.icon.size / 2 * -1))
+      .attr('x', (this.settings.icon.size / 2 * -1))
+      .attr('height', this.settings.icon.size)
+      .attr('width', this.settings.icon.size)
       .attr('visibility', (node: TreeNode) => node.stopPageTree && node.depth !== 0 ? 'visible' : 'hidden')
       .on('click', (evt: MouseEvent, node: TreeNode) => {
         document.dispatchEvent(new CustomEvent('typo3:pagetree:mountPoint', { detail: { pageId: parseInt(node.identifier, 10) } }));
       });
     nodeStop.append('rect')
-      .attr('height', super.settings.icon.size)
-      .attr('width', super.settings.icon.size)
+      .attr('height', this.settings.icon.size)
+      .attr('width', this.settings.icon.size)
       .attr('fill', 'rgba(0,0,0,0)');
     nodeStop.append('use')
       .attr('transform-origin', '50% 50%')
