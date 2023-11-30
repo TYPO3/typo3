@@ -194,7 +194,7 @@ class RequestHandler implements RequestHandlerInterface
     {
         // Generate the main content between the <body> tags
         // This has to be done first, as some additional TSFE-related code could have been written
-        $pageContent = $this->generatePageBodyContent($controller);
+        $pageContent = $this->generatePageBodyContent($controller, $request);
         // If 'disableAllHeaderCode' is set, all the pageRenderer settings are not evaluated
         if ($controller->config['config']['disableAllHeaderCode'] ?? false) {
             return $pageContent;
@@ -221,21 +221,22 @@ class RequestHandler implements RequestHandlerInterface
      * render everything that can be cached, otherwise put placeholders for COA_INT/USER_INT objects
      * in the content that is processed later-on.
      */
-    protected function generatePageBodyContent(TypoScriptFrontendController $controller): string
+    protected function generatePageBodyContent(TypoScriptFrontendController $controller, ServerRequestInterface $request): string
     {
-        $pageContent = $controller->cObj->cObjGet($controller->pSetup) ?: '';
-        if ($controller->pSetup['wrap'] ?? false) {
-            $pageContent = $controller->cObj->wrap($pageContent, $controller->pSetup['wrap']);
+        $typoScriptPageSetupArray = $this->getTypoScriptPageSetupArray($request);
+        $pageContent = $controller->cObj->cObjGet($typoScriptPageSetupArray) ?: '';
+        if ($typoScriptPageSetupArray['wrap'] ?? false) {
+            $pageContent = $controller->cObj->wrap($pageContent, $typoScriptPageSetupArray['wrap']);
         }
-        if ($controller->pSetup['stdWrap.'] ?? false) {
-            $pageContent = $controller->cObj->stdWrap($pageContent, $controller->pSetup['stdWrap.']);
+        if ($typoScriptPageSetupArray['stdWrap.'] ?? false) {
+            $pageContent = $controller->cObj->stdWrap($pageContent, $typoScriptPageSetupArray['stdWrap.']);
         }
         return $pageContent;
     }
 
     /**
-     * At this point, the cacheable content has just been generated (thus, all content is available but hasn't been added
-     * to PageRenderer yet). The method is called after the "main" page content, since some JS may be inserted at that point
+     * At this point, the cacheable content has just been generated: Content is available but hasn't been added
+     * to PageRenderer yet. The method is called after the "main" page content, since some JS may be inserted at that point
      * that has been registered by cacheable plugins.
      * PageRenderer is now populated with all <head> data and additional JavaScript/CSS/FooterData/HeaderData that can be cached.
      * Once finished, the content is added to the >addBodyContent() functionality.
@@ -243,6 +244,9 @@ class RequestHandler implements RequestHandlerInterface
     protected function processHtmlBasedRenderingSettings(TypoScriptFrontendController $controller, SiteLanguage $siteLanguage, ServerRequestInterface $request): void
     {
         $pageRenderer = $this->getPageRenderer();
+        $typoScriptSetupArray = $request->getAttribute('frontend.typoscript')->getSetupArray();
+        $typoScriptPageSetupArray = $this->getTypoScriptPageSetupArray($request);
+
         if ($controller->config['config']['moveJsFromHeaderToFooter'] ?? false) {
             $pageRenderer->enableMoveJsFromHeaderToFooter();
         }
@@ -251,7 +255,7 @@ class RequestHandler implements RequestHandlerInterface
                 $file = $this->filePathSanitizer->sanitize($controller->config['config']['pageRendererTemplateFile'], true);
                 $pageRenderer->setTemplateFile($file);
             } catch (Exception) {
-                // do nothing
+                // Custom template is not set if sanitize() throws
             }
         }
         $headerComment = trim($controller->config['config']['headerComment'] ?? '');
@@ -264,10 +268,10 @@ class RequestHandler implements RequestHandlerInterface
             $htmlTagAttributes['dir'] = 'rtl';
         }
         $docType = $pageRenderer->getDocType();
-        // Setting document type:
+        // Set document type
         $docTypeParts = [];
         $xmlDocument = true;
-        // Part 1: XML prologue
+        // XML prologue
         $xmlPrologue = (string)($controller->config['config']['xmlprologue'] ?? '');
         switch ($xmlPrologue) {
             case 'none':
@@ -285,7 +289,7 @@ class RequestHandler implements RequestHandlerInterface
             default:
                 $docTypeParts[] = $xmlPrologue;
         }
-        // Part 2: DTD
+        // DTD
         if ($docType->getDoctypeDeclaration() !== '') {
             $docTypeParts[] = $docType->getDoctypeDeclaration();
         }
@@ -305,19 +309,20 @@ class RequestHandler implements RequestHandlerInterface
                 }
             }
         }
-        // Begin header section:
-        $htmlTag = $this->generateHtmlTag($htmlTagAttributes, $controller->config['config'] ?? [], $controller->cObj);
-        $pageRenderer->setHtmlTag($htmlTag);
-        // Head tag:
-        $headTag = $controller->pSetup['headTag'] ?? '<head>';
-        if (isset($controller->pSetup['headTag.'])) {
-            $headTag = $controller->cObj->stdWrap($headTag, $controller->pSetup['headTag.']);
+
+        $pageRenderer->setHtmlTag($this->generateHtmlTag($htmlTagAttributes, $controller->config['config'] ?? [], $controller->cObj));
+
+        $headTag = $typoScriptPageSetupArray['headTag'] ?? '<head>';
+        if (isset($typoScriptPageSetupArray['headTag.'])) {
+            $headTag = $controller->cObj->stdWrap($headTag, $typoScriptPageSetupArray['headTag.']);
         }
         $pageRenderer->setHeadTag($headTag);
+
         $pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
-        if ($controller->pSetup['shortcutIcon'] ?? false) {
+
+        if ($typoScriptPageSetupArray['shortcutIcon'] ?? false) {
             try {
-                $favIcon = $this->filePathSanitizer->sanitize($controller->pSetup['shortcutIcon']);
+                $favIcon = $this->filePathSanitizer->sanitize($typoScriptPageSetupArray['shortcutIcon']);
                 $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, Environment::getPublicPath() . '/' . $favIcon);
                 if ($iconFileInfo->isFile()) {
                     $iconMimeType = $iconFileInfo->getMimeType();
@@ -328,17 +333,17 @@ class RequestHandler implements RequestHandlerInterface
                     $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($controller->absRefPrefix . $favIcon));
                 }
             } catch (Exception) {
-                // do nothing
+                // FavIcon is not set if sanitize() throws
             }
         }
-        // Including CSS files
-        $typoScriptSetupArray = $request->getAttribute('frontend.typoscript')->getSetupArray();
-        if (is_array($typoScriptSetupArray['plugin.'] ?? null)) {
+
+        // Inline CSS from plugins, files, libraries and inline
+        if (is_array($typoScriptSetupArray['plugin.'] ?? false)) {
             $stylesFromPlugins = '';
             foreach ($typoScriptSetupArray['plugin.'] as $key => $iCSScode) {
                 if (is_array($iCSScode)) {
                     if (($iCSScode['_CSS_DEFAULT_STYLE'] ?? false) && empty($controller->config['config']['removeDefaultCss'])) {
-                        $cssDefaultStyle = $controller->cObj->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode ?? []);
+                        $cssDefaultStyle = $controller->cObj->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode);
                         $stylesFromPlugins .= '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle . LF;
                     }
                 }
@@ -347,318 +352,289 @@ class RequestHandler implements RequestHandlerInterface
                 $this->addCssToPageRenderer($controller, $stylesFromPlugins, false, 'InlineDefaultCss');
             }
         }
-        /**********************************************************************/
-        /* config.includeCSS / config.includeCSSLibs
-        /**********************************************************************/
-        if (is_array($controller->pSetup['includeCSS.'] ?? null)) {
-            foreach ($controller->pSetup['includeCSS.'] as $key => $CSSfile) {
-                if (!is_array($CSSfile)) {
-                    $cssFileConfig = &$controller->pSetup['includeCSS.'][$key . '.'];
-                    if (isset($cssFileConfig['if.']) && !$controller->cObj->checkIf($cssFileConfig['if.'])) {
+        if (is_array($typoScriptPageSetupArray['includeCSS.'] ?? false)) {
+            foreach ($typoScriptPageSetupArray['includeCSS.'] as $key => $cssResource) {
+                if (is_array($cssResource)) {
+                    continue;
+                }
+                $cssResourceConfig = $additionalAttributes = $typoScriptPageSetupArray['includeCSS.'][$key . '.'] ?? [];
+                if (isset($cssResourceConfig['if.']) && !$controller->cObj->checkIf($cssResourceConfig['if.'])) {
+                    continue;
+                }
+                if (!($cssResourceConfig['external'] ?? false)) {
+                    try {
+                        $cssResource = $this->filePathSanitizer->sanitize($cssResource, true);
+                    } catch (Exception) {
                         continue;
                     }
-                    if ($cssFileConfig['external'] ?? false) {
-                        $ss = $CSSfile;
-                    } else {
-                        try {
-                            $ss = $this->filePathSanitizer->sanitize($CSSfile, true);
-                        } catch (Exception) {
-                            $ss = null;
-                        }
-                    }
-                    if ($ss) {
-                        $additionalAttributes = $cssFileConfig ?? [];
-                        unset(
-                            $additionalAttributes['if.'],
-                            $additionalAttributes['alternate'],
-                            $additionalAttributes['media'],
-                            $additionalAttributes['title'],
-                            $additionalAttributes['external'],
-                            $additionalAttributes['inline'],
-                            $additionalAttributes['disableCompression'],
-                            $additionalAttributes['excludeFromConcatenation'],
-                            $additionalAttributes['allWrap'],
-                            $additionalAttributes['allWrap.'],
-                            $additionalAttributes['forceOnTop'],
-                        );
-                        $pageRenderer->addCssFile(
-                            $ss,
-                            ($cssFileConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
-                            ($cssFileConfig['media'] ?? false) ?: 'all',
-                            ($cssFileConfig['title'] ?? false) ?: '',
-                            empty($cssFileConfig['external']) && empty($cssFileConfig['inline']) && empty($cssFileConfig['disableCompression']),
-                            (bool)($cssFileConfig['forceOnTop'] ?? false),
-                            $cssFileConfig['allWrap'] ?? '',
-                            ($cssFileConfig['excludeFromConcatenation'] ?? false) || ($cssFileConfig['inline'] ?? false),
-                            $cssFileConfig['allWrap.']['splitChar'] ?? '|',
-                            (bool)($cssFileConfig['inline'] ?? false),
-                            $additionalAttributes
-                        );
-                    }
-                    unset($cssFileConfig);
                 }
+                unset(
+                    $additionalAttributes['if.'],
+                    $additionalAttributes['alternate'],
+                    $additionalAttributes['media'],
+                    $additionalAttributes['title'],
+                    $additionalAttributes['external'],
+                    $additionalAttributes['inline'],
+                    $additionalAttributes['disableCompression'],
+                    $additionalAttributes['excludeFromConcatenation'],
+                    $additionalAttributes['allWrap'],
+                    $additionalAttributes['allWrap.'],
+                    $additionalAttributes['forceOnTop'],
+                );
+                $pageRenderer->addCssFile(
+                    $cssResource,
+                    ($cssResourceConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
+                    ($cssResourceConfig['media'] ?? false) ?: 'all',
+                    ($cssResourceConfig['title'] ?? false) ?: '',
+                    empty($cssResourceConfig['external']) && empty($cssResourceConfig['inline']) && empty($cssResourceConfig['disableCompression']),
+                    (bool)($cssResourceConfig['forceOnTop'] ?? false),
+                    $cssResourceConfig['allWrap'] ?? '',
+                    ($cssResourceConfig['excludeFromConcatenation'] ?? false) || ($cssResourceConfig['inline'] ?? false),
+                    $cssResourceConfig['allWrap.']['splitChar'] ?? '|',
+                    (bool)($cssResourceConfig['inline'] ?? false),
+                    $additionalAttributes
+                );
             }
         }
-        if (is_array($controller->pSetup['includeCSSLibs.'] ?? null)) {
-            foreach ($controller->pSetup['includeCSSLibs.'] as $key => $CSSfile) {
-                if (!is_array($CSSfile)) {
-                    $cssFileConfig = &$controller->pSetup['includeCSSLibs.'][$key . '.'];
-                    if (isset($cssFileConfig['if.']) && !$controller->cObj->checkIf($cssFileConfig['if.'])) {
+        if (is_array($typoScriptPageSetupArray['includeCSSLibs.'] ?? false)) {
+            foreach ($typoScriptPageSetupArray['includeCSSLibs.'] as $key => $cssResource) {
+                if (is_array($cssResource)) {
+                    continue;
+                }
+                $cssResourceConfig = $additionalAttributes = $typoScriptPageSetupArray['includeCSSLibs.'][$key . '.'] ?? [];
+                if (isset($cssResourceConfig['if.']) && !$controller->cObj->checkIf($cssResourceConfig['if.'])) {
+                    continue;
+                }
+                if (!($cssResourceConfig['external'] ?? false)) {
+                    try {
+                        $cssResource = $this->filePathSanitizer->sanitize($cssResource, true);
+                    } catch (Exception) {
                         continue;
                     }
-                    if ($cssFileConfig['external'] ?? false) {
-                        $ss = $CSSfile;
-                    } else {
-                        try {
-                            $ss = $this->filePathSanitizer->sanitize($CSSfile, true);
-                        } catch (Exception) {
-                            $ss = null;
-                        }
-                    }
-                    if ($ss) {
-                        $additionalAttributes = $cssFileConfig ?? [];
-                        unset(
-                            $additionalAttributes['if.'],
-                            $additionalAttributes['alternate'],
-                            $additionalAttributes['media'],
-                            $additionalAttributes['title'],
-                            $additionalAttributes['external'],
-                            $additionalAttributes['internal'],
-                            $additionalAttributes['disableCompression'],
-                            $additionalAttributes['excludeFromConcatenation'],
-                            $additionalAttributes['allWrap'],
-                            $additionalAttributes['allWrap.'],
-                            $additionalAttributes['forceOnTop'],
-                        );
-                        $pageRenderer->addCssLibrary(
-                            $ss,
-                            ($cssFileConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
-                            ($cssFileConfig['media'] ?? false) ?: 'all',
-                            ($cssFileConfig['title'] ?? false) ?: '',
-                            empty($cssFileConfig['external']) && empty($cssFileConfig['inline']) && empty($cssFileConfig['disableCompression']),
-                            (bool)($cssFileConfig['forceOnTop'] ?? false),
-                            $cssFileConfig['allWrap'] ?? '',
-                            ($cssFileConfig['excludeFromConcatenation'] ?? false) || ($cssFileConfig['inline'] ?? false),
-                            $cssFileConfig['allWrap.']['splitChar'] ?? '|',
-                            (bool)($cssFileConfig['inline'] ?? false),
-                            $additionalAttributes
-                        );
-                    }
-                    unset($cssFileConfig);
                 }
+                unset(
+                    $additionalAttributes['if.'],
+                    $additionalAttributes['alternate'],
+                    $additionalAttributes['media'],
+                    $additionalAttributes['title'],
+                    $additionalAttributes['external'],
+                    $additionalAttributes['internal'],
+                    $additionalAttributes['disableCompression'],
+                    $additionalAttributes['excludeFromConcatenation'],
+                    $additionalAttributes['allWrap'],
+                    $additionalAttributes['allWrap.'],
+                    $additionalAttributes['forceOnTop'],
+                );
+                $pageRenderer->addCssLibrary(
+                    $cssResource,
+                    ($cssResourceConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
+                    ($cssResourceConfig['media'] ?? false) ?: 'all',
+                    ($cssResourceConfig['title'] ?? false) ?: '',
+                    empty($cssResourceConfig['external']) && empty($cssResourceConfig['inline']) && empty($cssResourceConfig['disableCompression']),
+                    (bool)($cssResourceConfig['forceOnTop'] ?? false),
+                    $cssResourceConfig['allWrap'] ?? '',
+                    ($cssResourceConfig['excludeFromConcatenation'] ?? false) || ($cssResourceConfig['inline'] ?? false),
+                    $cssResourceConfig['allWrap.']['splitChar'] ?? '|',
+                    (bool)($cssResourceConfig['inline'] ?? false),
+                    $additionalAttributes
+                );
             }
         }
-
-        $style = $controller->cObj->cObjGet($controller->pSetup['cssInline.'] ?? null, 'cssInline.');
+        $style = $controller->cObj->cObjGet($typoScriptPageSetupArray['cssInline.'] ?? null, 'cssInline.');
         if (trim($style)) {
             $this->addCssToPageRenderer($controller, $style, true, 'additionalTSFEInlineStyle');
         }
-        // JavaScript library files
-        if (is_array($controller->pSetup['includeJSLibs.'] ?? null)) {
-            foreach ($controller->pSetup['includeJSLibs.'] as $key => $JSfile) {
-                if (!is_array($JSfile)) {
-                    if (isset($controller->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJSLibs.'][$key . '.']['if.'])) {
+
+        // JavaScript includes
+        if (is_array($typoScriptPageSetupArray['includeJSLibs.'] ?? false)) {
+            foreach ($typoScriptPageSetupArray['includeJSLibs.'] as $key => $jsResource) {
+                if (is_array($jsResource)) {
+                    continue;
+                }
+                $jsResourceConfig = $additionalAttributes = $typoScriptPageSetupArray['includeJSLibs.'][$key . '.'] ?? [];
+                if (isset($jsResourceConfig['if.']) && !$controller->cObj->checkIf($jsResourceConfig['if.'])) {
+                    continue;
+                }
+                if (!($jsResourceConfig['external'] ?? false)) {
+                    try {
+                        $jsResource = $this->filePathSanitizer->sanitize($jsResource, true);
+                    } catch (Exception) {
                         continue;
                     }
-                    if ($controller->pSetup['includeJSLibs.'][$key . '.']['external'] ?? false) {
-                        $ss = $JSfile;
-                    } else {
-                        try {
-                            $ss = $this->filePathSanitizer->sanitize($JSfile, true);
-                        } catch (Exception) {
-                            $ss = null;
-                        }
-                    }
-                    if ($ss) {
-                        $jsFileConfig = &$controller->pSetup['includeJSLibs.'][$key . '.'];
-                        $additionalAttributes = $jsFileConfig ?? [];
-                        $crossOrigin = (string)($jsFileConfig['crossorigin'] ?? '');
-                        if ($crossOrigin === '' && ($jsFileConfig['integrity'] ?? false) && ($jsFileConfig['external'] ?? false)) {
-                            $crossOrigin = 'anonymous';
-                        }
-                        unset(
-                            $additionalAttributes['if.'],
-                            $additionalAttributes['type'],
-                            $additionalAttributes['crossorigin'],
-                            $additionalAttributes['integrity'],
-                            $additionalAttributes['external'],
-                            $additionalAttributes['allWrap'],
-                            $additionalAttributes['allWrap.'],
-                            $additionalAttributes['disableCompression'],
-                            $additionalAttributes['excludeFromConcatenation'],
-                            $additionalAttributes['integrity'],
-                            $additionalAttributes['defer'],
-                            $additionalAttributes['nomodule'],
-                        );
-                        $pageRenderer->addJsLibrary(
-                            $key,
-                            $ss,
-                            $jsFileConfig['type'] ?? null,
-                            empty($jsFileConfig['external']) && empty($jsFileConfig['disableCompression']),
-                            (bool)($jsFileConfig['forceOnTop'] ?? false),
-                            $jsFileConfig['allWrap'] ?? '',
-                            (bool)($jsFileConfig['excludeFromConcatenation'] ?? false),
-                            $jsFileConfig['allWrap.']['splitChar'] ?? '|',
-                            (bool)($jsFileConfig['async'] ?? false),
-                            $jsFileConfig['integrity'] ?? '',
-                            (bool)($jsFileConfig['defer'] ?? false),
-                            $crossOrigin,
-                            (bool)($jsFileConfig['nomodule'] ?? false),
-                            $additionalAttributes
-                        );
-                        unset($jsFileConfig);
-                    }
                 }
+                $crossOrigin = (string)($jsResourceConfig['crossorigin'] ?? '');
+                if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
+                    $crossOrigin = 'anonymous';
+                }
+                unset(
+                    $additionalAttributes['if.'],
+                    $additionalAttributes['type'],
+                    $additionalAttributes['crossorigin'],
+                    $additionalAttributes['integrity'],
+                    $additionalAttributes['external'],
+                    $additionalAttributes['allWrap'],
+                    $additionalAttributes['allWrap.'],
+                    $additionalAttributes['disableCompression'],
+                    $additionalAttributes['excludeFromConcatenation'],
+                    $additionalAttributes['integrity'],
+                    $additionalAttributes['defer'],
+                    $additionalAttributes['nomodule'],
+                );
+                $pageRenderer->addJsLibrary(
+                    $key,
+                    $jsResource,
+                    $jsResourceConfig['type'] ?? null,
+                    empty($jsResourceConfig['external']) && empty($jsResourceConfig['disableCompression']),
+                    (bool)($jsResourceConfig['forceOnTop'] ?? false),
+                    $jsResourceConfig['allWrap'] ?? '',
+                    (bool)($jsResourceConfig['excludeFromConcatenation'] ?? false),
+                    $jsResourceConfig['allWrap.']['splitChar'] ?? '|',
+                    (bool)($jsResourceConfig['async'] ?? false),
+                    $jsResourceConfig['integrity'] ?? '',
+                    (bool)($jsResourceConfig['defer'] ?? false),
+                    $crossOrigin,
+                    (bool)($jsResourceConfig['nomodule'] ?? false),
+                    $additionalAttributes
+                );
             }
         }
-        if (is_array($controller->pSetup['includeJSFooterlibs.'] ?? null)) {
-            foreach ($controller->pSetup['includeJSFooterlibs.'] as $key => $JSfile) {
-                if (!is_array($JSfile)) {
-                    if (isset($controller->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJSFooterlibs.'][$key . '.']['if.'])) {
+        if (is_array($typoScriptPageSetupArray['includeJSFooterlibs.'] ?? false)) {
+            foreach ($typoScriptPageSetupArray['includeJSFooterlibs.'] as $key => $jsResource) {
+                if (is_array($jsResource)) {
+                    continue;
+                }
+                $jsResourceConfig = $additionalAttributes = $typoScriptPageSetupArray['includeJSFooterlibs.'][$key . '.'] ?? [];
+                if (isset($jsResourceConfig['if.']) && !$controller->cObj->checkIf($jsResourceConfig['if.'])) {
+                    continue;
+                }
+                if (!($jsResourceConfig['external'] ?? false)) {
+                    try {
+                        $jsResource = $this->filePathSanitizer->sanitize($jsResource, true);
+                    } catch (Exception) {
                         continue;
                     }
-                    if ($controller->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ?? false) {
-                        $ss = $JSfile;
-                    } else {
-                        try {
-                            $ss = $this->filePathSanitizer->sanitize($JSfile, true);
-                        } catch (Exception) {
-                            $ss = null;
-                        }
-                    }
-                    if ($ss) {
-                        $jsFileConfig = &$controller->pSetup['includeJSFooterlibs.'][$key . '.'];
-                        $additionalAttributes = $jsFileConfig ?? [];
-                        $crossOrigin = (string)($jsFileConfig['crossorigin'] ?? '');
-                        if ($crossOrigin === '' && ($jsFileConfig['integrity'] ?? false) && ($jsFileConfig['external'] ?? false)) {
-                            $crossOrigin = 'anonymous';
-                        }
-                        unset(
-                            $additionalAttributes['if.'],
-                            $additionalAttributes['type'],
-                            $additionalAttributes['crossorigin'],
-                            $additionalAttributes['integrity'],
-                            $additionalAttributes['external'],
-                            $additionalAttributes['allWrap'],
-                            $additionalAttributes['allWrap.'],
-                            $additionalAttributes['disableCompression'],
-                            $additionalAttributes['excludeFromConcatenation'],
-                            $additionalAttributes['integrity'],
-                            $additionalAttributes['defer'],
-                            $additionalAttributes['nomodule'],
-                        );
-                        $pageRenderer->addJsFooterLibrary(
-                            $key,
-                            $ss,
-                            $jsFileConfig['type'] ?? null,
-                            empty($jsFileConfig['external']) && empty($jsFileConfig['disableCompression']),
-                            (bool)($jsFileConfig['forceOnTop'] ?? false),
-                            $jsFileConfig['allWrap'] ?? '',
-                            (bool)($jsFileConfig['excludeFromConcatenation'] ?? false),
-                            $jsFileConfig['allWrap.']['splitChar'] ?? '|',
-                            (bool)($jsFileConfig['async'] ?? false),
-                            $jsFileConfig['integrity'] ?? '',
-                            (bool)($jsFileConfig['defer'] ?? false),
-                            $crossOrigin,
-                            (bool)($jsFileConfig['nomodule'] ?? false),
-                            $additionalAttributes
-                        );
-                        unset($jsFileConfig);
-                    }
                 }
+                $crossOrigin = (string)($jsResourceConfig['crossorigin'] ?? '');
+                if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
+                    $crossOrigin = 'anonymous';
+                }
+                unset(
+                    $additionalAttributes['if.'],
+                    $additionalAttributes['type'],
+                    $additionalAttributes['crossorigin'],
+                    $additionalAttributes['integrity'],
+                    $additionalAttributes['external'],
+                    $additionalAttributes['allWrap'],
+                    $additionalAttributes['allWrap.'],
+                    $additionalAttributes['disableCompression'],
+                    $additionalAttributes['excludeFromConcatenation'],
+                    $additionalAttributes['integrity'],
+                    $additionalAttributes['defer'],
+                    $additionalAttributes['nomodule'],
+                );
+                $pageRenderer->addJsFooterLibrary(
+                    $key,
+                    $jsResource,
+                    $jsResourceConfig['type'] ?? null,
+                    empty($jsResourceConfig['external']) && empty($jsResourceConfig['disableCompression']),
+                    (bool)($jsResourceConfig['forceOnTop'] ?? false),
+                    $jsResourceConfig['allWrap'] ?? '',
+                    (bool)($jsResourceConfig['excludeFromConcatenation'] ?? false),
+                    $jsResourceConfig['allWrap.']['splitChar'] ?? '|',
+                    (bool)($jsResourceConfig['async'] ?? false),
+                    $jsResourceConfig['integrity'] ?? '',
+                    (bool)($jsResourceConfig['defer'] ?? false),
+                    $crossOrigin,
+                    (bool)($jsResourceConfig['nomodule'] ?? false),
+                    $additionalAttributes
+                );
             }
         }
-        // JavaScript files
-        if (is_array($controller->pSetup['includeJS.'] ?? null)) {
-            foreach ($controller->pSetup['includeJS.'] as $key => $JSfile) {
-                if (!is_array($JSfile)) {
-                    if (isset($controller->pSetup['includeJS.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJS.'][$key . '.']['if.'])) {
+        if (is_array($typoScriptPageSetupArray['includeJS.'] ?? false)) {
+            foreach ($typoScriptPageSetupArray['includeJS.'] as $key => $jsResource) {
+                if (is_array($jsResource)) {
+                    continue;
+                }
+                $jsResourceConfig = $typoScriptPageSetupArray['includeJS.'][$key . '.'] ?? [];
+                if (isset($jsResourceConfig['if.']) && !$controller->cObj->checkIf($jsResourceConfig['if.'])) {
+                    continue;
+                }
+                if (!($jsResourceConfig['external'] ?? false)) {
+                    try {
+                        $jsResource = $this->filePathSanitizer->sanitize($jsResource, true);
+                    } catch (Exception) {
                         continue;
                     }
-                    if ($controller->pSetup['includeJS.'][$key . '.']['external'] ?? false) {
-                        $ss = $JSfile;
-                    } else {
-                        try {
-                            $ss = $this->filePathSanitizer->sanitize($JSfile, true);
-                        } catch (Exception) {
-                            $ss = null;
-                        }
-                    }
-                    if ($ss) {
-                        $jsConfig = &$controller->pSetup['includeJS.'][$key . '.'];
-                        $crossOrigin = (string)($jsConfig['crossorigin'] ?? '');
-                        if ($crossOrigin === '' && ($jsConfig['integrity'] ?? false) && ($jsConfig['external'] ?? false)) {
-                            $crossOrigin = 'anonymous';
-                        }
-                        $pageRenderer->addJsFile(
-                            $ss,
-                            $jsConfig['type'] ?? null,
-                            empty($jsConfig['external']) && empty($jsConfig['disableCompression']),
-                            (bool)($jsConfig['forceOnTop'] ?? false),
-                            $jsConfig['allWrap'] ?? '',
-                            (bool)($jsConfig['excludeFromConcatenation'] ?? false),
-                            $jsConfig['allWrap.']['splitChar'] ?? '|',
-                            (bool)($jsConfig['async'] ?? false),
-                            $jsConfig['integrity'] ?? '',
-                            (bool)($jsConfig['defer'] ?? false),
-                            $crossOrigin,
-                            (bool)($jsConfig['nomodule'] ?? false),
-                            $jsConfig['data.'] ?? []
-                        );
-                        unset($jsConfig);
-                    }
                 }
+                $crossOrigin = (string)($jsResourceConfig['crossorigin'] ?? '');
+                if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
+                    $crossOrigin = 'anonymous';
+                }
+                $pageRenderer->addJsFile(
+                    $jsResource,
+                    $jsResourceConfig['type'] ?? null,
+                    empty($jsResourceConfig['external']) && empty($jsResourceConfig['disableCompression']),
+                    (bool)($jsResourceConfig['forceOnTop'] ?? false),
+                    $jsResourceConfig['allWrap'] ?? '',
+                    (bool)($jsResourceConfig['excludeFromConcatenation'] ?? false),
+                    $jsResourceConfig['allWrap.']['splitChar'] ?? '|',
+                    (bool)($jsResourceConfig['async'] ?? false),
+                    $jsResourceConfig['integrity'] ?? '',
+                    (bool)($jsResourceConfig['defer'] ?? false),
+                    $crossOrigin,
+                    (bool)($jsResourceConfig['nomodule'] ?? false),
+                    // @todo: This does not use the same logic as with "additionalAttributes" above. Also not documented correctly.
+                    $jsResourceConfig['data.'] ?? []
+                );
             }
         }
-        if (is_array($controller->pSetup['includeJSFooter.'] ?? null)) {
-            foreach ($controller->pSetup['includeJSFooter.'] as $key => $JSfile) {
-                if (!is_array($JSfile)) {
-                    if (isset($controller->pSetup['includeJSFooter.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJSFooter.'][$key . '.']['if.'])) {
+        if (is_array($typoScriptPageSetupArray['includeJSFooter.'] ?? false)) {
+            foreach ($typoScriptPageSetupArray['includeJSFooter.'] as $key => $jsResource) {
+                if (is_array($jsResource)) {
+                    continue;
+                }
+                $jsResourceConfig = $typoScriptPageSetupArray['includeJSFooter.'][$key . '.'] ?? [];
+                if (isset($jsResourceConfig['if.']) && !$controller->cObj->checkIf($jsResourceConfig['if.'])) {
+                    continue;
+                }
+                if (!($jsResourceConfig['external'] ?? false)) {
+                    try {
+                        $jsResource = $this->filePathSanitizer->sanitize($jsResource, true);
+                    } catch (Exception) {
                         continue;
                     }
-                    if ($controller->pSetup['includeJSFooter.'][$key . '.']['external'] ?? false) {
-                        $ss = $JSfile;
-                    } else {
-                        try {
-                            $ss = $this->filePathSanitizer->sanitize($JSfile, true);
-                        } catch (Exception) {
-                            $ss = null;
-                        }
-                    }
-                    if ($ss) {
-                        $jsConfig = &$controller->pSetup['includeJSFooter.'][$key . '.'];
-                        $crossOrigin = (string)($jsConfig['crossorigin'] ?? '');
-                        if ($crossOrigin === '' && ($jsConfig['integrity'] ?? false) && ($jsConfig['external'] ?? false)) {
-                            $crossOrigin = 'anonymous';
-                        }
-                        $pageRenderer->addJsFooterFile(
-                            $ss,
-                            $jsConfig['type'] ?? null,
-                            empty($jsConfig['external']) && empty($jsConfig['disableCompression']),
-                            (bool)($jsConfig['forceOnTop'] ?? false),
-                            $jsConfig['allWrap'] ?? '',
-                            (bool)($jsConfig['excludeFromConcatenation'] ?? false),
-                            $jsConfig['allWrap.']['splitChar'] ?? '|',
-                            (bool)($jsConfig['async'] ?? false),
-                            $jsConfig['integrity'] ?? '',
-                            (bool)($jsConfig['defer'] ?? false),
-                            $crossOrigin,
-                            (bool)($jsConfig['nomodule'] ?? false),
-                            $jsConfig['data.'] ?? []
-                        );
-                        unset($jsConfig);
-                    }
                 }
+                $crossOrigin = (string)($jsResourceConfig['crossorigin'] ?? '');
+                if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
+                    $crossOrigin = 'anonymous';
+                }
+                $pageRenderer->addJsFooterFile(
+                    $jsResource,
+                    $jsResourceConfig['type'] ?? null,
+                    empty($jsResourceConfig['external']) && empty($jsResourceConfig['disableCompression']),
+                    (bool)($jsResourceConfig['forceOnTop'] ?? false),
+                    $jsResourceConfig['allWrap'] ?? '',
+                    (bool)($jsResourceConfig['excludeFromConcatenation'] ?? false),
+                    $jsResourceConfig['allWrap.']['splitChar'] ?? '|',
+                    (bool)($jsResourceConfig['async'] ?? false),
+                    $jsResourceConfig['integrity'] ?? '',
+                    (bool)($jsResourceConfig['defer'] ?? false),
+                    $crossOrigin,
+                    (bool)($jsResourceConfig['nomodule'] ?? false),
+                    // @todo: This does not use the same logic as with "additionalAttributes" above. Also not documented correctly.
+                    $jsResourceConfig['data.'] ?? []
+                );
             }
         }
-        // Headerdata
-        if (is_array($controller->pSetup['headerData.'] ?? null)) {
-            $pageRenderer->addHeaderData($controller->cObj->cObjGet($controller->pSetup['headerData.'], 'headerData.'));
+
+        // Header and footer data
+        if (is_array($typoScriptPageSetupArray['headerData.'] ?? false)) {
+            $pageRenderer->addHeaderData($controller->cObj->cObjGet($typoScriptPageSetupArray['headerData.'], 'headerData.'));
         }
-        // Footerdata
-        if (is_array($controller->pSetup['footerData.'] ?? null)) {
-            $pageRenderer->addFooterData($controller->cObj->cObjGet($controller->pSetup['footerData.'], 'footerData.'));
+        if (is_array($typoScriptPageSetupArray['footerData.'] ?? false)) {
+            $pageRenderer->addFooterData($controller->cObj->cObjGet($typoScriptPageSetupArray['footerData.'], 'footerData.'));
         }
+
         $controller->generatePageTitle();
 
         // @internal hook for EXT:seo, will be gone soon, do not use it in your own extensions
@@ -669,44 +645,23 @@ class RequestHandler implements RequestHandlerInterface
         }
 
         $this->generateHrefLangTags($controller, $request);
-        $this->generateMetaTagHtml(
-            $controller->pSetup['meta.'] ?? [],
-            $controller->cObj
-        );
+        $this->generateMetaTagHtml($typoScriptPageSetupArray['meta.'] ?? [], $controller->cObj);
 
-        // Javascript inline code
-        $inlineJS = implode(
-            LF,
-            $controller->cObj->cObjGetSeparated(
-                $controller->pSetup['jsInline.'] ?? null,
-                'jsInline.'
-            )
-        );
-        // Javascript inline code for Footer
-        $inlineFooterJs = implode(
-            LF,
-            $controller->cObj->cObjGetSeparated(
-                $controller->pSetup['jsFooterInline.'] ?? null,
-                'jsFooterInline.'
-            )
-        );
-        $compressJs = (bool)($controller->config['config']['compressJs'] ?? false);
+        // Javascript inline and inline footer code
+        $inlineJS = implode(LF, $controller->cObj->cObjGetSeparated($typoScriptPageSetupArray['jsInline.'] ?? null, 'jsInline.'));
+        $inlineFooterJs = implode(LF, $controller->cObj->cObjGetSeparated($typoScriptPageSetupArray['jsFooterInline.'] ?? null, 'jsFooterInline.'));
 
-        // Needs to be called after call cObjGet() calls in order to get all headerData and footerData and replacements
-        // see #100216
+        // Needs to be called after all cObjGet() calls in order to get all headerData and footerData and replacements
         $controller->INTincScript_loadJSCode();
 
-        // this option is set to "external" as default
+        $compressJs = (bool)($controller->config['config']['compressJs'] ?? false);
         if (($controller->config['config']['removeDefaultJS'] ?? 'external') === 'external') {
-            /*
-             * This keeps inlineJS from *_INT Objects from being moved to external files.
-             * At this point in frontend rendering *_INT Objects only have placeholders instead
-             * of actual content so moving these placeholders to external files would
-             *     a) break the JS file (syntax errors due to the placeholders)
-             *     b) the needed JS would never get included to the page
-             * Therefore inlineJS from *_INT Objects must not be moved to external files but
-             * kept internal.
-             */
+            // "removeDefaultJS" is "external" by default
+            // This keeps inlineJS from *_INT Objects from being moved to external files.
+            // At this point in frontend rendering *_INT Objects only have placeholders instead
+            // of actual content. Moving these placeholders to external files would break the JS file with
+            // syntax errors due to the placeholders, and the needed JS would never get included to the page.
+            // Therefore, inlineJS from *_INT Objects must not be moved to external files but kept internal.
             $inlineJSint = '';
             $this->stripIntObjectPlaceholder($inlineJS, $inlineJSint);
             if ($inlineJSint) {
@@ -732,12 +687,12 @@ class RequestHandler implements RequestHandlerInterface
                 $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $compressJs);
             }
         }
-        if (isset($controller->pSetup['inlineLanguageLabelFiles.']) && is_array($controller->pSetup['inlineLanguageLabelFiles.'])) {
-            foreach ($controller->pSetup['inlineLanguageLabelFiles.'] as $key => $languageFile) {
+        if (is_array($typoScriptPageSetupArray['inlineLanguageLabelFiles.'] ?? false)) {
+            foreach ($typoScriptPageSetupArray['inlineLanguageLabelFiles.'] as $key => $languageFile) {
                 if (is_array($languageFile)) {
                     continue;
                 }
-                $languageFileConfig = &$controller->pSetup['inlineLanguageLabelFiles.'][$key . '.'];
+                $languageFileConfig = $typoScriptPageSetupArray['inlineLanguageLabelFiles.'][$key . '.'];
                 if (isset($languageFileConfig['if.']) && !$controller->cObj->checkIf($languageFileConfig['if.'])) {
                     continue;
                 }
@@ -748,14 +703,14 @@ class RequestHandler implements RequestHandlerInterface
                 );
             }
         }
-        if (isset($controller->pSetup['inlineSettings.']) && is_array($controller->pSetup['inlineSettings.'])) {
-            $pageRenderer->addInlineSettingArray('TS', $controller->pSetup['inlineSettings.']);
+        if (is_array($typoScriptPageSetupArray['inlineSettings.'] ?? false)) {
+            $pageRenderer->addInlineSettingArray('TS', $typoScriptPageSetupArray['inlineSettings.']);
         }
         // Compression and concatenate settings
         if ($controller->config['config']['compressCss'] ?? false) {
             $pageRenderer->enableCompressCss();
         }
-        if ($compressJs ?? false) {
+        if ($compressJs) {
             $pageRenderer->enableCompressJavascript();
         }
         if ($controller->config['config']['concatenateCss'] ?? false) {
@@ -774,26 +729,20 @@ class RequestHandler implements RequestHandlerInterface
         }
         // Header complete, now the body tag is added so the regular content can be applied later-on
         if ($controller->config['config']['disableBodyTag'] ?? false) {
-            $bodyTag = '';
+            $pageRenderer->addBodyContent(LF);
         } else {
-            $defBT = (isset($controller->pSetup['bodyTagCObject']) && $controller->pSetup['bodyTagCObject'])
-                ? $controller->cObj->cObjGetSingle($controller->pSetup['bodyTagCObject'], $controller->pSetup['bodyTagCObject.'] ?? [], 'bodyTagCObject')
-                : '<body>';
-            $bodyTag = (isset($controller->pSetup['bodyTag']) && $controller->pSetup['bodyTag'])
-                ? $controller->pSetup['bodyTag']
-                : $defBT;
-            if (trim($controller->pSetup['bodyTagAdd'] ?? '')) {
-                $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($controller->pSetup['bodyTagAdd']) . '>';
+            $bodyTag = '<body>';
+            if ($typoScriptPageSetupArray['bodyTag'] ?? false) {
+                $bodyTag = $typoScriptPageSetupArray['bodyTag'];
+            } elseif ($typoScriptPageSetupArray['bodyTagCObject'] ?? false) {
+                $bodyTag = $controller->cObj->cObjGetSingle($typoScriptPageSetupArray['bodyTagCObject'], $typoScriptPageSetupArray['bodyTagCObject.'] ?? [], 'bodyTagCObject');
             }
+            if (trim($typoScriptPageSetupArray['bodyTagAdd'] ?? '')) {
+                $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($typoScriptPageSetupArray['bodyTagAdd']) . '>';
+            }
+            $pageRenderer->addBodyContent(LF . $bodyTag);
         }
-        $pageRenderer->addBodyContent(LF . $bodyTag);
     }
-
-    /*************************
-     *
-     * Helper functions
-     *
-     *************************/
 
     /**
      * Searches for placeholder created from *_INT cObjects, removes them from
@@ -813,7 +762,7 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * Generate meta tags from meta tag TypoScript
      *
-     * @param array $metaTagTypoScript TypoScript configuration for meta tags (e.g. $GLOBALS['TSFE']->pSetup['meta.'])
+     * @param array $metaTagTypoScript TypoScript configuration for meta tags
      */
     protected function generateMetaTagHtml(array $metaTagTypoScript, ContentObjectRenderer $cObj)
     {
@@ -935,10 +884,7 @@ class RequestHandler implements RequestHandlerInterface
         if ($controller->config['config']['disableHrefLang'] ?? false) {
             return;
         }
-
-        $hrefLangs = $this->eventDispatcher->dispatch(
-            new ModifyHrefLangTagsEvent($request)
-        )->getHrefLangs();
+        $hrefLangs = $this->eventDispatcher->dispatch(new ModifyHrefLangTagsEvent($request))->getHrefLangs();
         if (count($hrefLangs) > 1) {
             $data = [];
             foreach ($hrefLangs as $hrefLang => $href) {
@@ -991,6 +937,36 @@ class RequestHandler implements RequestHandlerInterface
         if (!empty($message)) {
             $controller->content = str_ireplace('</body>', $message . '</body>', $controller->content);
         }
+    }
+
+    /**
+     * The main TypoScript PAGE setup array of requested page type with fallback 0.
+     *
+     * Given below TS and requesting with url fragment type=1701323928:
+     *
+     * page = PAGE
+     * page.typeNum = 1701323928
+     * page.10 = TEXT
+     * page.10.value = Hello world!
+     *
+     * Result:
+     * [
+     *      '10' = 'TEXT',
+     *      '10.' = [
+     *          'value' => 'Hello world!'
+     *      ]
+     * ]
+     */
+    protected function getTypoScriptPageSetupArray(ServerRequestInterface $request): array
+    {
+        $type = (int)($request->getAttribute('routing')->getPageType() ?: 0);
+        $typoScriptArray = $request->getAttribute('frontend.typoscript')->getSetupArray();
+        $typoScriptPageTypeName = $typoScriptArray['types.'][$type] ?? '';
+        $typoScriptPageTypeSetupArray = $typoScriptArray[$typoScriptPageTypeName . '.'] ?? null;
+        if (!is_array($typoScriptPageTypeSetupArray)) {
+            throw new \RuntimeException('TypoScript page setup must be an array at this point', 1701322208);
+        }
+        return $typoScriptPageTypeSetupArray;
     }
 
     protected function getLanguageService(): LanguageService

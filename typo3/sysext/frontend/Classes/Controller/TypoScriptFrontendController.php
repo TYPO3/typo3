@@ -259,13 +259,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected int $cacheExpires = 0;
 
     /**
-     * TypoScript configuration of the page-object.
-     * @var array|string
-     * @internal should only be used by TYPO3 Core
-     */
-    public $pSetup = '';
-
-    /**
      * This hash is unique to the page id, involved TS templates, TS condition verdicts, and
      * some other parameters that influence page render result. Used to get/set page cache.
      * @internal
@@ -1343,9 +1336,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
             $type = (int)($this->pageArguments->getPageType() ?: 0);
             $typoScriptPageTypeName = $setupArray['types.'][$type] ?? '';
-            $this->pSetup = $setupArray[$typoScriptPageTypeName . '.'] ?? '';
-
-            if (!is_array($this->pSetup)) {
+            $typoScriptPageTypeSetup = $setupArray[$typoScriptPageTypeName . '.'] ?? null;
+            if (!is_array($typoScriptPageTypeSetup)) {
                 $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $type, 'type_name' => $typoScriptPageTypeName]);
                 try {
                     $message = 'The page is not configured! [type=' . $type . '][' . $typoScriptPageTypeName . '].';
@@ -1372,8 +1364,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->config['config'] = $setupArray['config.'];
             }
             // Override it with the page/type-specific "config."
-            if (is_array($this->pSetup['config.'] ?? null)) {
-                $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
+            if (is_array($typoScriptPageTypeSetup['config.'] ?? null)) {
+                $this->config['config'] = array_replace_recursive($this->config['config'], $typoScriptPageTypeSetup['config.']);
             }
             $this->config['rootLine'] = $localRootline;
             $frontendTypoScript->setSetupArray($setupArray);

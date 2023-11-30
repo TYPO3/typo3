@@ -2101,16 +2101,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/DataProcessing/FilesProcessor.php
 
 		-
-			message: "#^Variable \\$compressJs on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Http/RequestHandler.php
-
-		-
-			message: "#^Variable \\$iCSScode on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Http/RequestHandler.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 8
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
