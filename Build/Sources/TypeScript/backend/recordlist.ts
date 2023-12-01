@@ -138,7 +138,7 @@ class Recordlist {
   /**
    * Handles editing multiple records.
    */
-  public onEditMultiple = (event: Event): void => {
+  public onEditMultiple = (event: Event, target: HTMLElement): void => {
     event.preventDefault();
     let tableName: string = '';
     let returnUrl: string = '';
@@ -163,8 +163,7 @@ class Recordlist {
         }
       });
     } else {
-      // Edit record request was triggered via t3js-* class.
-      const target: HTMLElement = event.currentTarget as HTMLElement;
+      // Edit record request was triggered via t3js-* class on target.
       const tableContainer: HTMLElement = target.closest('[data-table]');
       if (tableContainer === null) {
         return;
@@ -212,11 +211,9 @@ class Recordlist {
     window.location.href = editUrl;
   };
 
-  private readonly disableButton = (event: Event): void => {
-    const me = event.target as HTMLButtonElement;
-
-    me.setAttribute('disabled', 'disabled');
-    me.classList.add('disabled');
+  private readonly disableButton = (event: Event, target: HTMLElement): void => {
+    target.setAttribute('disabled', 'disabled');
+    target.classList.add('disabled');
   };
 
   private handleDataHandlerResult(e: CustomEvent): void {
