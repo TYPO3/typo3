@@ -36,7 +36,7 @@ class TextpicPreviewRenderer extends StandardContentPreviewRenderer
         }
 
         if ($row['image']) {
-            $content .= $this->linkEditContent(BackendUtility::thumbCode($row, 'tt_content', 'image', '', '', null, 0, '', '', false), $row);
+            $content .= $this->linkEditContent(BackendUtility::thumbCode(row: $row, table: 'tt_content', field: 'image', linkInfoPopup: false), $row);
         }
 
         return $content;
