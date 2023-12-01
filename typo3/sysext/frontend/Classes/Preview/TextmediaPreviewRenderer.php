@@ -36,7 +36,7 @@ class TextmediaPreviewRenderer extends StandardContentPreviewRenderer
         }
 
         if ($row['assets']) {
-            $content .= $this->linkEditContent(BackendUtility::thumbCode($row, 'tt_content', 'assets', '', '', null, 0, '', '', false), $row);
+            $content .= $this->linkEditContent(BackendUtility::thumbCode(row: $row, table: 'tt_content', field: 'assets', linkInfoPopup: false), $row);
         }
 
         return $content;

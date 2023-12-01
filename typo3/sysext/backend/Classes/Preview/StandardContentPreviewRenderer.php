@@ -305,7 +305,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      */
     protected function getThumbCodeUnlinked($row, $table, $field): string
     {
-        return BackendUtility::thumbCode($row, $table, $field, '', '', null, 0, '', '', false);
+        return BackendUtility::thumbCode(row: $row, table: $table, field: $field, linkInfoPopup: false);
     }
 
     /**
