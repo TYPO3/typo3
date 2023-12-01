@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -164,6 +166,63 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
+    public static function fallbackChainInNonExtbaseContextDataProvider(): array
+    {
+        return [
+            'languageKey fallback to default when key is not localized to de' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:not.localized.to.de" languageKey="de" />',
+                'EN label',
+            ],
+            'languageKey de when key is localized to de' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de" languageKey="de" />',
+                'DE label',
+            ],
+            'languageKey de when key is not localized to de_ch' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de" />',
+                'DE label',
+            ],
+            'languageKey de_at when key is localized to de_ch' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de_ch" />',
+                'DE-CH label',
+            ],
+            'key + extensionName: languageKey fallback to default when key is not localized to de' => [
+                '<f:translate extensionName="test_translate" key="not.localized.to.de" languageKey="de" />',
+                'EN label',
+            ],
+            'key + extensionName: languageKey de when key is localized to de' => [
+                '<f:translate extensionName="test_translate" key="localized.to.de" languageKey="de" />',
+                'DE label',
+            ],
+            'key + extensionName: fallback to "de" when key is not localized to de_ch' => [
+                '<f:translate extensionName="test_translate" key="localized.to.de" />',
+                'DE label',
+            ],
+            'key + extensionName: find "de_ch" when key is localized to de_ch' => [
+                '<f:translate extensionName="test_translate" key="localized.to.de_ch" />',
+                'DE-CH label',
+            ],
+        ];
+    }
+
+    /**
+     * Analyzes that the frontend request can resolve the locale from the frontend request,
+     * both LLL: prefix and extensionName + id combinations.
+     *
+     * @test
+     * @dataProvider fallbackChainInNonExtbaseContextDataProvider
+     */
+    public function renderInNonExtbaseContextHandlesLocaleFromFrontendRequest(string $template, string $expected): void
+    {
+        $request = new ServerRequest();
+        $request = $request
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('language', new SiteLanguage(0, 'de_CH.utf8', new Uri('https://example.ch/'), []));
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->setRequest($request);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertSame($expected, (new TemplateView($context))->render());
+    }
+
     /**
      * @test
      */
@@ -265,16 +324,20 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="localized.to.de" languageKey="de" />',
                 'DE label',
             ],
-            /*
-             * @todo: Data set below fails, but it works with the non-extbase version above.
-             *        Maybe fallback chains are not properly set up in extbase LocalizationUtility?
-            'languageKey de when key is not localized to de_at' => [
+            'fallback to de when key is not localized to de_at with explicit languageKey given' => [
                 '<f:translate key="localized.to.de" languageKey="de_at" />',
                 'DE label',
             ],
-            */
-            'languageKey de_at when key is localized to de_at' => [
+            'fallback to de when key is not localized to de_at without explicit languageKey given' => [
+                '<f:translate key="localized.to.de" />',
+                'DE label',
+            ],
+            'use direct "de_AT" label when key is localized to de_at with explicit languageKey given' => [
                 '<f:translate key="localized.to.de_at" languageKey="de_at" />',
+                'DE_AT label',
+            ],
+            'use direct "de_AT" label when key is localized to de_at without explicit languageKey given' => [
+                '<f:translate key="localized.to.de_at" />',
                 'DE_AT label',
             ],
         ];
@@ -288,6 +351,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
+        $GLOBALS['BE_USER']->user['lang'] = 'de-AT';
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('test_translate');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -318,7 +382,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @todo: Test not active, same reason as commented data set above.
+     * @test
      */
     public function renderInExtbaseContextHandlesLocaleObjectAsLanguageKeyWithFallback(): void
     {
