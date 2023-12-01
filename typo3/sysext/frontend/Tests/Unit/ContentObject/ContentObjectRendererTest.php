@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
@@ -181,6 +182,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $container = new Container();
         $container->set(ContentObjectFactory::class, $contentObjectFactoryMock);
         GeneralUtility::setContainer($container);
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         $this->subject->start([], 'tt_content');
     }

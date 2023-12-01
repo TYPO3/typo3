@@ -17,13 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestFluidTemplate;
 
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 
-class ContentObjectCurrentValue implements ContentObjectPostInitHookInterface
+final class ContentObjectCurrentValue
 {
-    public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject)
+    #[AsEventListener]
+    public function __invoke(AfterContentObjectRendererInitializedEvent $event): void
     {
-        $parentObject->setCurrentVal('My current value');
+        $event->getContentObjectRenderer()->setCurrentVal('My current value');
     }
 }

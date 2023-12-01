@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -141,6 +143,7 @@ final class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedSources(): void
     {
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -233,6 +236,7 @@ final class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyDefault(string $layoutKey, array $configuration): void
     {
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -352,6 +356,7 @@ final class ImageContentObjectTest extends UnitTestCase
         string $doctype,
         string $expectedHtml
     ): void {
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -397,6 +402,7 @@ final class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageSourceCollectionHookCalled(): void
     {
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $cObj = $this->getAccessibleMock(
             ContentObjectRenderer::class,
             ['getResourceFactory', 'stdWrap', 'getImgResource']

@@ -20,9 +20,11 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -36,6 +38,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -1250,5 +1253,45 @@ And another one';
 
         self::assertEquals($expectedWidth, $result[0]);
         self::assertEquals($expectedHeight, $result[1]);
+    }
+
+    /**
+     * @test
+     */
+    public function afterContentObjectRendererInitializedEventIsCalled(): void
+    {
+        $afterContentObjectRendererInitializedEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'after-content-object-renderer-initialized-listener',
+            static function (AfterContentObjectRendererInitializedEvent $event) use (&$afterContentObjectRendererInitializedEvent) {
+                $afterContentObjectRendererInitializedEvent = $event;
+                $afterContentObjectRendererInitializedEvent->getContentObjectRenderer()->data['foo'] = 'baz';
+                $afterContentObjectRendererInitializedEvent->getContentObjectRenderer()->setCurrentVal('foo current val');
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(AfterContentObjectRendererInitializedEvent::class, 'after-content-object-renderer-initialized-listener');
+
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject->start(['foo' => 'bar'], 'aTable');
+
+        self::assertInstanceOf(AfterContentObjectRendererInitializedEvent::class, $afterContentObjectRendererInitializedEvent);
+
+        $modifiedContentObjectRenderer = $afterContentObjectRendererInitializedEvent->getContentObjectRenderer();
+
+        self::assertEquals($subject, $modifiedContentObjectRenderer);
+        self::assertEquals(
+            [
+                'foo' => 'baz',
+                $modifiedContentObjectRenderer->currentValKey => 'foo current val',
+            ],
+            $modifiedContentObjectRenderer->data
+        );
+        self::assertEquals('aTable', $modifiedContentObjectRenderer->getCurrentTable());
+        self::assertEquals('foo current val', $modifiedContentObjectRenderer->getCurrentVal());
     }
 }

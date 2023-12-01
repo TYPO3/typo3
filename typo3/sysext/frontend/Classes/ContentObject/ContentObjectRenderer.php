@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Result;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -65,6 +66,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
@@ -472,13 +474,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             $this->stdWrapHookObjects[] = $hookObject;
         }
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'] ?? [] as $className) {
-            $postInitializationProcessor = GeneralUtility::makeInstance($className);
-            if (!$postInitializationProcessor instanceof ContentObjectPostInitHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . ContentObjectPostInitHookInterface::class, 1274563549);
-            }
-            $postInitializationProcessor->postProcessContentObjectInitialization($this);
-        }
+
+        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new AfterContentObjectRendererInitializedEvent($this)
+        );
     }
 
     /**

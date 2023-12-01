@@ -1056,4 +1056,10 @@ return [
             'Breaking-102108-TCATypesbitmask_Settings.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'postInit\']' => [
+        'restFiles' => [
+            'Breaking-102581-RemovedHookForManipulatingContentObjectRenderer.rst',
+            'Feature-102581-PSR-14EventForModifyingContentObjectRenderer.rst',
+        ],
+    ],
 ];

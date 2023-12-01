@@ -2397,4 +2397,11 @@ return [
             'Breaking-102583-RemovedContextAspectTyposcript.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface' => [
+        'restFiles' => [
+            'Breaking-102581-RemovedHookForManipulatingContentObjectRenderer.rst',
+            'Deprecation-102581-UnusedInterfaceForContentObjectRendererHook.rst',
+            'Feature-102581-PSR-14EventForModifyingContentObjectRenderer.rst',
+        ],
+    ],
 ];
