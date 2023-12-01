@@ -125,6 +125,7 @@ class LocalizationUtility
         $cache = self::getRuntimeCache();
         if (!$cache->get($languageKeyHash)) {
             if ($alternativeLanguageKeys === [] || $alternativeLanguageKeys === null) {
+                // Using the Locales factory, as it handles dependencies (e.g. "de-AT" falls back to "de")
                 $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($languageKey);
             } else {
                 $locale = new Locale($languageKey, $alternativeLanguageKeys);
