@@ -38,8 +38,10 @@ class CleanUpLocalProcessedFilesService
 
     /**
      * Find processed files without a reference
+     * @param int $limit  Limit (deprecated)
+     * @param bool $fullReset  When true also removes entries that have an empty identifier or storage
      */
-    public function getFilesToClean(int $limit = 0): array
+    public function getFilesToClean(int $limit = 0, bool $fullReset = false): array
     {
         $queryBuilder = $this->getQueryBuilderWithoutRestrictions();
         $localStorages = GeneralUtility::makeInstance(StorageRepository::class)->findByStorageType(self::DRIVER);
@@ -53,7 +55,7 @@ class CleanUpLocalProcessedFilesService
                     'identifier',
                     $queryBuilder->createPositionalParameter('')
                 ),
-                // we need to ensure to search an identifier only for the responsible storage ( placeholder pos 2)
+                // we need to ensure to search an identifier only for the responsible storage (placeholder pos 2)
                 $queryBuilder->expr()->eq(
                     'storage',
                     $queryBuilder->createPositionalParameter(0, Connection::PARAM_INT)
@@ -76,11 +78,16 @@ class CleanUpLocalProcessedFilesService
                         mb_strlen(trim($storageBasePath, '/') . '/')
                     );
 
-                    // reuse prepared statement to find processed files without any processed record entries in matching
-                    // storage, using `$filePath` as equal match for field `identifier` and storage uid.
-                    $statement->bindValue(1, $filePath);
-                    $statement->bindValue(2, $storage->getUid(), Connection::PARAM_INT);
-                    if ((int)$statement->executeQuery()->fetchOne() === 0) {
+                    // The full reset does not need to check the database, it clears all files.
+                    if (!$fullReset) {
+                        // reuse prepared statement to find processed files without any processed record entries in matching
+                        // storage, using `$filePath` as equal match for field `identifier` and storage uid.
+                        $statement->bindValue(1, $filePath);
+                        $statement->bindValue(2, $storage->getUid(), Connection::PARAM_INT);
+                        if ((int)$statement->executeQuery()->fetchOne() === 0) {
+                            $files[] = $splFileInfo;
+                        }
+                    } else {
                         $files[] = $splFileInfo;
                     }
                 }
@@ -92,11 +99,36 @@ class CleanUpLocalProcessedFilesService
 
     /**
      * Find records which reference non-existing files
+     * @param bool $fullReset  When true also removes entries that have an empty identifier or storage
      */
-    public function getRecordsToClean(): array
+    public function getRecordsToClean(bool $fullReset = false): array
     {
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $queryBuilder = $this->getQueryBuilderWithoutRestrictions();
+        $conditions = [
+            $queryBuilder->expr()->eq(
+                'sfs.driver',
+                $queryBuilder->createNamedParameter(self::DRIVER)
+            ),
+        ];
+
+        if (!$fullReset) {
+            $conditions[] = $queryBuilder->expr()->neq(
+                'sfp.identifier',
+                $queryBuilder->createNamedParameter('')
+            );
+            $storageJoinCondition = $queryBuilder->expr()->eq(
+                'sfp.storage',
+                $queryBuilder->quoteIdentifier('sfs.uid')
+            );
+        } else {
+            // When removing all records, also the fallback storage needs to be cleared.
+            $storageJoinCondition = $queryBuilder->expr()->gte(
+                'sfp.storage',
+                0
+            );
+        }
+
         $queryBuilder
             ->select('sfp.storage', 'sfp.identifier', 'sfp.uid')
             ->from(self::TABLE_NAME, 'sfp')
@@ -104,25 +136,19 @@ class CleanUpLocalProcessedFilesService
                 'sfp',
                 'sys_file_storage',
                 'sfs',
-                $queryBuilder->expr()->eq(
-                    'sfp.storage',
-                    $queryBuilder->quoteIdentifier('sfs.uid')
-                )
+                $storageJoinCondition
             )
-            ->where(
-                $queryBuilder->expr()->neq(
-                    'sfp.identifier',
-                    $queryBuilder->createNamedParameter('')
-                ),
-                $queryBuilder->expr()->eq(
-                    'sfs.driver',
-                    $queryBuilder->createNamedParameter(self::DRIVER)
-                )
-            );
+            ->where(...array_values($conditions));
 
         $results = $queryBuilder->executeQuery();
         $processedToDelete = [];
         while ($processedFile = $results->fetchAssociative()) {
+            if ($fullReset) {
+                // When removing all records, it does not matter if the storage file exists or not.
+                $processedToDelete[] = $processedFile;
+                continue;
+            }
+
             $storage = $storageRepository->findByUid((int)$processedFile['storage']);
             $processedPathAndFileIdentifier = (string)$processedFile['identifier'];
 

@@ -41,6 +41,8 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         'typo3/sysext/lowlevel/Tests/Functional/Fixtures/DataSet/FileWithoutProcessedFileRecord.png' => 'fileadmin/_processed_/1/b/FileWithoutProcessedFileRecord.png',
         'typo3/sysext/lowlevel/Tests/Functional/Fixtures/DataSet/NotReferencedImage2.png' => 'local-storage/_processed_/0/a/NotReferencedImage2.png',
         'typo3/sysext/lowlevel/Tests/Functional/Fixtures/DataSet/FileWithoutProcessedFileRecord2.png' => 'local-storage/_processed_/1/b/FileWithoutProcessedFileRecord2.png',
+        'typo3/sysext/lowlevel/Tests/Functional/Fixtures/DataSet/ReferencedImage.png' => 'local-storage/_processed_/1/a/ReferencedImage.png',
+        'typo3/sysext/lowlevel/Tests/Functional/Fixtures/DataSet/ReferencedImage2.png' => 'local-storage/_processed_/1/a/ReferencedImage2.png',
     ];
 
     protected function setUp(): void
@@ -111,6 +113,8 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('fileadmin/_processed_/1/b/FileWithoutProcessedFileRecord.png'));
         self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/0/a/NotReferencedImage2.png'));
         self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/b/FileWithoutProcessedFileRecord2.png'));
+        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/a/ReferencedImage.png'));
+        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/a/ReferencedImage2.png'));
         self::assertFileExists(GeneralUtility::getFileAbsFileName('fileadmin/image.png'));
     }
 
@@ -132,6 +136,8 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         self::assertFileExists(GeneralUtility::getFileAbsFileName('local-storage/_processed_/0/a/NotReferencedImage2.png'));
         self::assertFileExists(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/b/FileWithoutProcessedFileRecord2.png'));
         self::assertFileExists(GeneralUtility::getFileAbsFileName('fileadmin/image.png'));
+        self::assertFileExists(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/a/ReferencedImage.png'));
+        self::assertFileExists(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/a/ReferencedImage2.png'));
     }
 
     /**
@@ -149,8 +155,28 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
 
         self::assertStringContainsString('[RECORD] Would delete /_processed_/a/SomeMissingFile.png', $output);
         self::assertStringContainsString('Are you sure you want to delete these processed files and records', $output);
-        self::assertStringContainsString('Deleted 1 processed records', $output);
-        self::assertStringContainsString('Deleted 4 processed files', $output);
+        self::assertStringContainsString('Deleted 3 processed records', $output);
+        self::assertStringContainsString('Deleted 6 processed files', $output);
+    }
+
+    /**
+     * @test
+     */
+    public function confirmDeleteYesForAll(): void
+    {
+        $this->commandTester->setInputs(['yes']);
+        // Set -v option, because the command does not need provide this option due to the use of isVerbose().
+        $this->commandTester->execute(['--all' => true], [
+            'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+        ]);
+
+        $output = $this->commandTester->getDisplay();
+
+        self::assertStringContainsString('[RECORD] Would delete /_processed_/a/SomeMissingFile.png', $output);
+        self::assertStringContainsString('Are you sure you want to delete these processed files and records', $output);
+        self::assertStringContainsString('Deleted 5 processed records', $output);
+        self::assertStringContainsString('Failed to delete 5 records', $output);
+        self::assertStringContainsString('Deleted 6 processed files', $output);
     }
 
     /**
@@ -165,4 +191,44 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         self::assertStringContainsString('Are you sure you want to delete these processed files and records', $output);
         self::assertStringNotContainsString('Deleted', $output);
     }
+
+    /**
+     * @test
+     */
+    public function confirmDeleteNoWithAllOption(): void
+    {
+        $this->commandTester->setInputs(['no']);
+        $this->commandTester->execute(['--all' => true]);
+        $output = $this->commandTester->getDisplay();
+
+        self::assertStringContainsString('Are you sure you want to delete these processed files and records', $output);
+        self::assertStringNotContainsString('Deleted', $output);
+    }
+
+    /**
+     * @test
+     */
+    public function allFilesAreDeleted(): void
+    {
+        $this->commandTester->execute(['--force' => true, '--all' => true]);
+
+        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('fileadmin/_processed_/0/a/NotReferencedImage.png'));
+        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('fileadmin/_processed_/1/b/FileWithoutProcessedFileRecord.png'));
+        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/0/a/NotReferencedImage2.png'));
+        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/b/FileWithoutProcessedFileRecord2.png'));
+        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/a/ReferencedImage.png'));
+        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/a/ReferencedImage2.png'));
+        self::assertFileExists(GeneralUtility::getFileAbsFileName('fileadmin/image.png'));
+    }
+
+    /**
+     * @test
+     */
+    public function allDatabaseRecordsAreDeleted(): void
+    {
+        $this->commandTester->execute(['--force' => true, '--all' => true]);
+
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/Modify/allDeleted.csv');
+    }
+
 }
