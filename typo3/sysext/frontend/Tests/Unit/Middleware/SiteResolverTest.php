@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Middleware\SiteResolver;
@@ -56,9 +55,7 @@ final class SiteResolverTest extends UnitTestCase
         $this->siteFoundRequestHandler = new class () implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                /** @var Site $site */
                 $site = $request->getAttribute('site', false);
-                /** @var SiteLanguage $language */
                 $language = $request->getAttribute('language', false);
                 if ($site && $language) {
                     return new JsonResponse(

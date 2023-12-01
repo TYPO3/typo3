@@ -155,7 +155,7 @@ class DataMapItem
     /**
      * Gets the id of this data-map item.
      *
-     * @return mixed
+     * @return int|string
      */
     public function getId()
     {
@@ -305,7 +305,7 @@ class DataMapItem
      * @param string $scope
      * @return int|string
      */
-    public function getIdForScope($scope)
+    public function getIdForScope(string $scope)
     {
         if (
             $scope === static::SCOPE_PARENT
@@ -338,7 +338,7 @@ class DataMapItem
     /**
      * @return DataMapItem[]
      */
-    public function findDependencies(string $scope)
+    public function findDependencies(string $scope): array
     {
         return $this->dependencies[$scope] ?? [];
     }
@@ -346,7 +346,7 @@ class DataMapItem
     /**
      * @return string[]
      */
-    public function getApplicableScopes()
+    public function getApplicableScopes(): array
     {
         $scopes = [];
         if (!empty($this->getSourceFieldName())) {
@@ -360,11 +360,8 @@ class DataMapItem
     /**
      * Extracts real id from provided id-value, which can either be a real
      * integer value, a 'NEW...' id, or a combined identifier 'tt_content_13'.
-     *
-     * @param int|string $idValue
-     * @return int|string
      */
-    protected function extractId($idValue)
+    protected function extractId(int|string $idValue): int|string
     {
         if (MathUtility::canBeInterpretedAsInteger($idValue)) {
             return $idValue;
@@ -378,10 +375,7 @@ class DataMapItem
         return $id;
     }
 
-    /**
-     * @return State|null
-     */
-    protected function buildState()
+    protected function buildState(): ?State
     {
         // build from persisted states
         if (!$this->isNew()) {
@@ -405,9 +399,7 @@ class DataMapItem
         }
         // apply any provided updates to the states
         if (is_array($this->suggestedValues['l10n_state'] ?? null)) {
-            $state->update(
-                $this->suggestedValues['l10n_state'] ?? []
-            );
+            $state->update($this->suggestedValues['l10n_state']);
         }
         return $state;
     }

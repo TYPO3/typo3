@@ -29,35 +29,16 @@ class CorrelationId implements \JsonSerializable
 {
     protected const DEFAULT_VERSION = 1;
     protected const PATTERN_V1 = '#^(?P<flags>[[:xdigit:]]{4})\$(?:(?P<scope>[[:alnum:]]+):)?(?P<subject>[[:alnum:]]+)(?P<aspects>(?:\/[[:alnum:]._-]+)*)$#';
-
-    /**
-     * @var int
-     */
-    protected $version = self::DEFAULT_VERSION;
-
-    /**
-     * @var string
-     */
-    protected $scope;
-
-    /**
-     * @var int
-     */
-    protected $capabilities = 0;
-
-    /**
-     * @var string
-     */
-    protected $subject;
+    protected int $version = self::DEFAULT_VERSION;
+    protected ?string $scope = null;
+    protected int $capabilities = 0;
+    protected ?string $subject = null;
 
     /**
      * @var string[]
      */
-    protected $aspects = [];
+    protected array $aspects = [];
 
-    /**
-     * @return static
-     */
     public static function forScope(string $scope): self
     {
         $target = static::create();
@@ -72,9 +53,6 @@ class CorrelationId implements \JsonSerializable
             ->withAspects(...$aspects);
     }
 
-    /**
-     * @return static
-     */
     public static function fromString(string $correlationId): self
     {
         if (!preg_match(self::PATTERN_V1, $correlationId, $matches, PREG_UNMATCHED_AS_NULL)) {
@@ -82,7 +60,7 @@ class CorrelationId implements \JsonSerializable
         }
 
         $flags = hexdec($matches['flags'] ?? 0);
-        $aspects = !empty($matches['aspects']) ? explode('/', ltrim($matches['aspects'] ?? '', '/')) : [];
+        $aspects = !empty($matches['aspects']) ? explode('/', ltrim($matches['aspects'], '/')) : [];
         $target = static::create()
             ->withSubject($matches['subject'])
             ->withAspects(...$aspects);
@@ -92,9 +70,6 @@ class CorrelationId implements \JsonSerializable
         return $target;
     }
 
-    /**
-     * @return static
-     */
     protected static function create(): self
     {
         return GeneralUtility::makeInstance(static::class);

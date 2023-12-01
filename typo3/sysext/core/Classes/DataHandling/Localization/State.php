@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -26,10 +28,7 @@ class State
     public const STATE_PARENT = 'parent';
     public const STATE_SOURCE = 'source';
 
-    /**
-     * @return State|null
-     */
-    public static function create(string $tableName)
+    public static function create(string $tableName): ?State
     {
         if (!static::isApplicable($tableName)) {
             return null;
@@ -41,11 +40,7 @@ class State
         );
     }
 
-    /**
-     * @param string|null $json
-     * @return State|null
-     */
-    public static function fromJSON(string $tableName, string $json = null)
+    public static function fromJSON(string $tableName, string $json = null): ?State
     {
         if (!static::isApplicable($tableName)) {
             return null;
@@ -59,10 +54,7 @@ class State
         );
     }
 
-    /**
-     * @return bool
-     */
-    public static function isApplicable(string $tableName)
+    public static function isApplicable(string $tableName): bool
     {
         return
             static::hasColumns($tableName)
@@ -73,9 +65,9 @@ class State
     }
 
     /**
-     * @return array
+     * @return string[]
      */
-    public static function getFieldNames(string $tableName)
+    public static function getFieldNames(string $tableName): array
     {
         return array_keys(
             array_filter(
@@ -90,10 +82,7 @@ class State
         );
     }
 
-    /**
-     * @return bool
-     */
-    protected static function hasColumns(string $tableName)
+    protected static function hasColumns(string $tableName): bool
     {
         return
             !empty($GLOBALS['TCA'][$tableName]['columns'])
@@ -101,41 +90,20 @@ class State
         ;
     }
 
-    /**
-     * @return bool
-     */
-    protected static function hasLanguageFieldName(string $tableName)
+    protected static function hasLanguageFieldName(string $tableName): bool
     {
         return !empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField']);
     }
 
-    /**
-     * @return bool
-     */
-    protected static function hasTranslationParentFieldName(string $tableName)
+    protected static function hasTranslationParentFieldName(string $tableName): bool
     {
         return !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']);
     }
 
-    /**
-     * @var string
-     */
-    protected $tableName;
-
-    /**
-     * @var array
-     */
-    protected $states;
-
-    /**
-     * @var array
-     */
-    protected $originalStates;
-
-    /**
-     * @var array
-     */
-    protected $validStates = [
+    protected string $tableName;
+    protected array $states;
+    protected array $originalStates;
+    protected array $validStates = [
         self::STATE_CUSTOM,
         self::STATE_SOURCE,
         self::STATE_PARENT,
@@ -152,7 +120,7 @@ class State
         );
     }
 
-    public function update(array $states)
+    public function update(array $states): void
     {
         $this->states = array_merge(
             $this->states,
@@ -163,7 +131,7 @@ class State
     /**
      * Updates field names having a particular state to a target state.
      */
-    public function updateStates(string $currentState, string $targetState)
+    public function updateStates(string $currentState, string $targetState): void
     {
         $states = [];
         foreach ($this->filterFieldNames($currentState) as $fieldName) {
@@ -174,10 +142,7 @@ class State
         }
     }
 
-    /**
-     * @return string|null
-     */
-    public function export()
+    public function export(): string|false|null
     {
         if (empty($this->states)) {
             return null;
@@ -193,7 +158,7 @@ class State
     /**
      * @return string[]
      */
-    public function getModifiedFieldNames()
+    public function getModifiedFieldNames(): array
     {
         return array_keys(
             array_diff_assoc(
@@ -203,50 +168,32 @@ class State
         );
     }
 
-    /**
-     * @return bool
-     */
-    public function isModified()
+    public function isModified(): bool
     {
         return !empty($this->getModifiedFieldNames());
     }
 
-    /**
-     * @return bool
-     */
-    public function isUndefined(string $fieldName)
+    public function isUndefined(string $fieldName): bool
     {
         return !isset($this->states[$fieldName]);
     }
 
-    /**
-     * @return bool
-     */
-    public function isCustomState(string $fieldName)
+    public function isCustomState(string $fieldName): bool
     {
         return ($this->states[$fieldName] ?? null) === static::STATE_CUSTOM;
     }
 
-    /**
-     * @return bool
-     */
-    public function isParentState(string $fieldName)
+    public function isParentState(string $fieldName): bool
     {
         return ($this->states[$fieldName] ?? null) === static::STATE_PARENT;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSourceState(string $fieldName)
+    public function isSourceState(string $fieldName): bool
     {
         return ($this->states[$fieldName] ?? null) === static::STATE_SOURCE;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getState(string $fieldName)
+    public function getState(string $fieldName): ?string
     {
         return $this->states[$fieldName] ?? null;
     }
@@ -256,7 +203,7 @@ class State
      *
      * @return string[]
      */
-    public function filterFieldNames(string $desiredState, bool $modified = false)
+    public function filterFieldNames(string $desiredState, bool $modified = false): array
     {
         if (!$modified) {
             $fieldNames = array_keys($this->states);
@@ -274,9 +221,9 @@ class State
     /**
      * Filter out field names that don't exist in TCA.
      *
-     * @return array
+     * @return string[]
      */
-    protected function sanitize(array $states)
+    protected function sanitize(array $states): array
     {
         $fieldNames = static::getFieldNames($this->tableName);
         return array_intersect_key(
@@ -287,10 +234,8 @@ class State
 
     /**
      * Add missing states for field names.
-     *
-     * @return array
      */
-    protected function enrich(array $states)
+    protected function enrich(array $states): array
     {
         foreach (static::getFieldNames($this->tableName) as $fieldName) {
             $isValid = in_array(

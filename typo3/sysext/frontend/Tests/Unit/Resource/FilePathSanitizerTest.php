@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -193,10 +194,18 @@ final class FilePathSanitizerTest extends UnitTestCase
     /**
      * @test
      */
+    public function sanitizeThrowsExceptionWithFileNameContainingOnlySpaces(): void
+    {
+        self::expectException(InvalidFileNameException::class);
+        (new FilePathSanitizer())->sanitize('  ');
+    }
+
+    /**
+     * @test
+     */
     public function sanitizeThrowsExceptionWithInvalidFileName(): void
     {
-        $this->expectException(InvalidFileNameException::class);
-        self::assertNull((new FilePathSanitizer())->sanitize('  '));
-        self::assertNull((new FilePathSanitizer())->sanitize('something/../else'));
+        self::expectException(InvalidPathException::class);
+        (new FilePathSanitizer())->sanitize('something/../else');
     }
 }

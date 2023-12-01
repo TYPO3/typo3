@@ -369,7 +369,7 @@ class SlugHelper
         $counter = 0;
         while (
             !$isUnique($newValue, $state)
-            && ++$counter < 100
+            && ++$counter <= 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);
         }

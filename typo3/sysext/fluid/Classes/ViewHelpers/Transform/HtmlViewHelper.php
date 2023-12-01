@@ -78,12 +78,13 @@ final class HtmlViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array{selector: string} $arguments
+     * @param array{selector: string, onFailure: string} $arguments
      * @return string transformed markup
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $content = $renderChildrenClosure();
+        /** @var HtmlWorker $worker */
         $worker = GeneralUtility::makeInstance(HtmlWorker::class);
 
         $selector = $arguments['selector'];

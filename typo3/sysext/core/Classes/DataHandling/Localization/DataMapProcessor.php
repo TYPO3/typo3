@@ -1192,9 +1192,9 @@ class DataMapProcessor
     /**
      * Flatten array
      *
-     * @return string[]
+     * @return int[]
      */
-    protected function mapRelationItemId(array $relationItems)
+    protected function mapRelationItemId(array $relationItems): array
     {
         return array_map(
             static function (array $relationItem) {

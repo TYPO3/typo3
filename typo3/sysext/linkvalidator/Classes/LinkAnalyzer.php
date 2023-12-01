@@ -233,12 +233,12 @@ class LinkAnalyzer
     /**
      * Recheck for broken links for one field in table for record.
      *
-     * @param string $recordUid uid of record to check
+     * @param string|int $recordUid uid of record to check
      * @param int $timestamp - only recheck if timestamp changed
      */
     public function recheckLinks(
         array $checkOptions,
-        string $recordUid,
+        string|int $recordUid,
         string $table,
         string $field,
         int $timestamp,
@@ -270,7 +270,7 @@ class LinkAnalyzer
 
         if (!$row) {
             // missing record: remove existing links
-            $this->brokenLinkRepository->removeBrokenLinksForRecord($table, $recordUid);
+            $this->brokenLinkRepository->removeBrokenLinksForRecord($table, (int)$recordUid);
             return;
         }
         if (($row['tstamp'] ?? 0) && $timestamp && ((int)($row['tstamp']) < $timestamp)) {
@@ -281,7 +281,7 @@ class LinkAnalyzer
         $this->analyzeRecord($resultsLinks, $table, [$field], $row);
         if ($resultsLinks) {
             // remove existing broken links from table
-            $this->brokenLinkRepository->removeBrokenLinksForRecord($table, $recordUid);
+            $this->brokenLinkRepository->removeBrokenLinksForRecord($table, (int)$recordUid);
             // find all broken links for list of links
             $this->checkLinks($resultsLinks, $checkOptions);
         }

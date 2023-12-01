@@ -30,15 +30,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class NullSite implements SiteInterface
 {
-    /**
-     * @var int
-     */
-    protected $rootPageId = 0;
+    protected int $rootPageId = 0;
 
     /**
      * @var SiteLanguage[]
      */
-    protected $languages;
+    protected array $languages;
 
     /**
      * Sets up a null site object
@@ -57,7 +54,7 @@ class NullSite implements SiteInterface
                 ['enabled' => true]
             );
         } else {
-            foreach ($languages ?? [] as $languageConfiguration) {
+            foreach ($languages as $languageConfiguration) {
                 $languageUid = (int)$languageConfiguration['languageId'];
                 // Language configuration does not have a base defined
                 // So the main site base is used (usually done for default languages)
@@ -173,8 +170,6 @@ class NullSite implements SiteInterface
 
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController
-     *
-     * @throws \RuntimeException
      */
     public function getErrorHandler(int $statusCode): PageErrorHandlerInterface
     {

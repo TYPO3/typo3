@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
@@ -26,18 +27,19 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class AssetRendererTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected ?AssetRenderer $assetRenderer;
-    protected ?EventDispatcherInterface $eventDispatcher;
+    protected AssetRenderer $assetRenderer;
+    protected MockObject&EventDispatcherInterface $eventDispatcher;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->assetRenderer = GeneralUtility::makeInstance(
             AssetRenderer::class,
             null,
-            $this->eventDispatcher
+            $eventDispatcher
         );
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

@@ -144,7 +144,7 @@ abstract class AbstractEnhancerSiteRequestTestCase extends AbstractTestCase
             true
         );
 
-        /** @var ExceptionExpectation $exceptionDeclaration */
+        /** @var ExceptionExpectation|null $exceptionDeclaration */
         $exceptionDeclaration = $testSet->getSingleApplicable(ExceptionExpectation::class);
         if ($exceptionDeclaration !== null) {
             // @todo This part is "ugly"...

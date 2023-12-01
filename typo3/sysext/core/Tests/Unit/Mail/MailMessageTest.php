@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Header\MailboxHeader;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -298,7 +299,9 @@ final class MailMessageTest extends UnitTestCase
     public function setReadReceiptToToWorksAsExpected(): void
     {
         $this->subject->setReadReceiptTo('foo@example.com');
-        self::assertSame('foo@example.com', $this->subject->getHeaders()->get('Disposition-Notification-To')->getAddress()->getAddress());
+        /** @var MailboxHeader $header */
+        $header = $this->subject->getHeaders()->get('Disposition-Notification-To');
+        self::assertSame('foo@example.com', $header->getAddress()->getAddress());
     }
 
     public static function exceptionIsThrownForInvalidArgumentCombinationsDataProvider(): array

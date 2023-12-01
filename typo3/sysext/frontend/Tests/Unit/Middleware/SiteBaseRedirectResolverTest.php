@@ -44,9 +44,7 @@ final class SiteBaseRedirectResolverTest extends UnitTestCase
         $this->siteFoundRequestHandler = new class () implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                /** @var Site $site */
                 $site = $request->getAttribute('site', false);
-                /** @var SiteLanguage $language */
                 $language = $request->getAttribute('language', false);
                 if ($site && $language) {
                     return new JsonResponse(

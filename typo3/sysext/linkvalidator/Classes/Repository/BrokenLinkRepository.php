@@ -228,7 +228,7 @@ class BrokenLinkRepository
      *
      * @param int[] $pageIds Pages to check for broken links
      * @param string[] $linkTypes Link types to validate
-     * @param string[] $searchFields table => [fields1, field2, ...], ... : fields in which linkvalidator should
+     * @param string[][] $searchFields table => [fields1, field2, ...], ... : fields in which linkvalidator should
      *   search for broken links
      * @param int[] $languages Allowed languages
      */

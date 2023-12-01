@@ -336,18 +336,8 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:getSortNumber\\(\\) should return array\\|bool\\|int\\|null but returns float\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:pageInfo\\(\\) should return string but returns array\\.$#"
 			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:workspaceCannotEditRecord\\(\\) should return string but returns false\\.$#"
-			count: 2
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
@@ -371,32 +361,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: "#^Variable \\$fieldArray in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Variable \\$incomingFieldArray on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Offset 'l10n_state' on array on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapItem.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapProcessor\\:\\:fetchDependencies\\(\\) should return array\\<array\\<TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\> but returns array\\<int\\|string, array\\<string, array\\<int, TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\>\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapProcessor\\:\\:mapRelationItemId\\(\\) should return array\\<string\\> but returns array\\<int\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapProcessor\\:\\:resolvePersistedInlineRelations\\(\\) should return array\\<int\\> but returns array\\<string\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
 
@@ -404,41 +369,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$dependencies of method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\:\\:setDependencies\\(\\) expects array\\<array\\<TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\>, array\\<TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\State\\:\\:\\$states \\(array\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/State.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\:\\:fromString\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\) but returns TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
-			message: "#^Offset 'aspects' on array\\<string\\|null\\> on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\RecordStateFactory\\:\\:forName\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\RecordStateFactory\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/RecordStateFactory.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between int\\|string and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/RecordStateFactory.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between int\\<0, 99\\> and 100 will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/SlugHelper.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getUid\\(\\)\\.$#"
@@ -841,11 +771,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Session/UserSessionManager.php
 
 		-
-			message: "#^Variable \\$languages on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Site/Entity/NullSite.php
-
-		-
 			message: "#^Parameter \\#1 \\$node of method TYPO3\\\\CMS\\\\Core\\\\Tree\\\\TableConfiguration\\\\ArrayTreeRenderer\\:\\:renderNode\\(\\) expects TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeRepresentationNode, TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/ArrayTreeRenderer.php
@@ -1051,11 +976,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Log/Fixtures/WriterFixture.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mime\\\\Header\\\\HeaderInterface\\:\\:getAddress\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailMessageTest.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\Smtp\\\\Stream\\\\AbstractStream\\:\\:getHost\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
@@ -1064,11 +984,6 @@ parameters:
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\Smtp\\\\Stream\\\\AbstractStream\\:\\:getPort\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
-
-		-
-			message: "#^Call to an undefined method Psr\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:expects\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Page/AssetRendererTest.php
 
 		-
 			message: "#^Cannot call method withCurrentPageNumber\\(\\) on array\\.$#"
@@ -1661,11 +1576,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/MediaViewHelper.php
 
 		-
-			message: "#^Offset 'onFailure' does not exist on array\\{selector\\: string\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Transform/HtmlViewHelper.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
 			count: 4
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Form/SelectViewHelperTest.php
@@ -2046,11 +1956,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/EnhancerSiteRequest/AbstractEnhancerSiteRequestTestCase.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/ApplicableConjunction.php
@@ -2159,41 +2064,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$conf of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:prefixComment\\(\\) expects array, null given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteBaseRedirectResolverTest.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteBaseRedirectResolverTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteBaseRedirectResolverTest.php
-
-		-
-			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
-
-		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/Resource/FilePathSanitizerTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getUid\\(\\)\\.$#"
@@ -2411,16 +2281,6 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/FileNodeTest.php
 
 		-
-			message: "#^Parameter \\#2 \\$recordUid of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Repository\\\\BrokenLinkRepository\\:\\:removeBrokenLinksForRecord\\(\\) expects int, string given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/linkvalidator/Classes/LinkAnalyzer.php
-
-		-
-			message: "#^Parameter \\#3 \\$searchFields of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Repository\\\\BrokenLinkRepository\\:\\:getAllBrokenLinksForPages\\(\\) expects array\\<string\\>, array\\<string, array\\<int, string\\>\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Tests/Functional/Repository/BrokenLinkRepositoryTest.php
-
-		-
 			message: "#^Binary operation \"\\>\\>\" between string and 1 results in an error\\.$#"
 			count: 2
 			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
@@ -2454,11 +2314,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/lowlevel/Classes/Integrity/DatabaseIntegrityCheck.php
-
-		-
-			message: "#^Offset 'records' on non\\-empty\\-array on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Classes/Controller/RecyclerAjaxController.php
 
 		-
 			message: "#^Offset 1 does not exist on array\\<0, TYPO3\\\\CMS\\\\Redirects\\\\Event\\\\BeforeRedirectMatchDomainEvent\\>\\.$#"
