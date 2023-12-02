@@ -23,8 +23,6 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\TypoScriptAspect;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -55,7 +53,6 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
     public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         if ($this->getConfigurationOption('forceTemplateParsing')) {
-            GeneralUtility::makeInstance(Context::class)->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, true));
             $request = $request->withAttribute('noCache', true);
         }
         $this->getTimeTracker()->LR = $this->getConfigurationOption('LR');

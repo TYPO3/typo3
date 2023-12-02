@@ -1261,8 +1261,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->lock->acquireLock('pages', $this->newHash);
         }
 
-        $forceTemplateParsing = $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing');
-        if ($this->no_cache || empty($this->config) || $this->isINTincScript() || $forceTemplateParsing) {
+        if ($this->no_cache || empty($this->config) || $this->isINTincScript()) {
             // We don't need the full setup AST in many cached scenarios. However, if no_cache is set, if no page cache
             // entry could be loaded, if the page cache entry has _INT object, or if the user forced template
             // parsing (adminpanel), then we still need the full setup AST. If there is "just" an _INT object, we can
@@ -1271,7 +1270,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $setupTypoScriptCacheIdentifier = 'setup-' . sha1($serializedSysTemplateRows . $serializedConstantConditionList . serialize($setupConditionList));
             $gotSetupFromCache = false;
             $setupArray = [];
-            if (!$this->no_cache && !$forceTemplateParsing) {
+            if (!$this->no_cache) {
                 // We need AST, but we are allowed to potentially get it from cache.
                 if ($setupTypoScriptCache = $typoscriptCache->require($setupTypoScriptCacheIdentifier)) {
                     $frontendTypoScript->setSetupTree($setupTypoScriptCache['ast']);
@@ -1279,12 +1278,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $gotSetupFromCache = true;
                 }
             }
-            if ($this->no_cache || $forceTemplateParsing || !$gotSetupFromCache) {
+            if ($this->no_cache || !$gotSetupFromCache) {
                 // We need AST and couldn't get it from cache or are now allowed to. We thus need the full setup
                 // IncludeTree, which we can get from cache again if allowed, or is calculated a-new if not.
-                if ($this->no_cache || $forceTemplateParsing || $setupIncludeTree === null) {
+                if ($this->no_cache || $setupIncludeTree === null) {
                     // $typoscriptCache can be null here with no_cache=1.
-                    $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $forceTemplateParsing ? null : $typoscriptCache);
+                    $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
                 }
                 $includeTreeTraverserConditionVerdictAwareVisitors = [];
                 $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
@@ -1328,7 +1327,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $setupAst->addChild($typesNode);
                 }
                 $setupArray = $setupAst->toArray();
-                if (!$this->no_cache && !$forceTemplateParsing) {
+                if (!$this->no_cache) {
                     // Write cache entry for AST and its array representation, we're allowed to do it.
                     $typoscriptCache->set($setupTypoScriptCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize(['ast' => $setupAst, 'array' => $setupArray]), '\'\\') . '\');');
                 }
