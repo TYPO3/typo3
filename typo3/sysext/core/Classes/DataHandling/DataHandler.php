@@ -7675,7 +7675,7 @@ class DataHandler implements LoggerAwareInterface
     public function getRecordPropertiesFromRow($table, $row)
     {
         if ($GLOBALS['TCA'][$table]) {
-            $liveUid = ($row['t3ver_oid'] ?? null) ? ($row['t3ver_oid'] ?? null) : ($row['uid'] ?? null);
+            $liveUid = ($row['t3ver_oid'] ?? null) ?: ($row['uid'] ?? null);
             return [
                 'header' => BackendUtility::getRecordTitle($table, $row),
                 'pid' => $row['pid'] ?? null,
