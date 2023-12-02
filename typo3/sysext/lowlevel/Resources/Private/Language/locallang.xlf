@@ -61,6 +61,9 @@
 			<trans-unit id="symfonyExpressionLanguage" resname="symfonyExpressionLanguage">
 				<source>Symfony Expression Language Providers</source>
 			</trans-unit>
+			<trans-unit id="doctrineDbalDriverMiddlewares" resname="doctrineDbalDriverMiddlewares">
+				<source>Doctrine DBAL Driver Middlewares</source>
+			</trans-unit>
 			<trans-unit id="formYamlConfiguration" resname="formYamlConfiguration">
 				<source>Form: YAML Configuration</source>
 			</trans-unit>

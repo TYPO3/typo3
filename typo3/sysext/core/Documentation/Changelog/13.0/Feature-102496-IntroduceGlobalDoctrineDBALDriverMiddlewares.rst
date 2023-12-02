@@ -30,11 +30,10 @@ has been introduced as a configuration per connection.
 Now it's also possible to register global driver middlewares once, which are applied
 to all configured connections and then the specific connection middlewares.
 
-..  warning::
+See :ref:`sortable Doctrine DBAL middleware registration <_feature-102586-1701536342>` feature
+changelog for further details about the middleware configuration block.
 
-    It's possible to remove a global registered driver middleware for specific
-    connections by setting the name to an empty string. Using :php:`unset()` on
-    the global configuration array would remove it for all connections.
+..  warning::
 
     Do not remove or disable provided global core driver middlewares which are
     essential.
@@ -44,21 +43,33 @@ Registering a new global driver middleware
 
 ..  code-block:: php
 
-    $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares']['my-ext/custom-global-driver-middleware]
-        = \MyVendor\MyExt\Doctrine\Driver\CustomGlobalDriverMiddleware::class;
+    use MyVendor\MyExt\Doctrine\Driver\CustomGlobalDriverMiddleware;
+
+    // Register a global middleware
+    $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares']['my-ext/custom-global-driver-middleware'] = [
+      'target' => CustomGlobalDriverMiddleware::class,
+      'after' [
+        'typo3/core/custom-platform-driver-middleware',
+      ],
+    ];
 
 Disable a global middleware for a specific connection
 =====================================================
 
 ..  code-block:: php
 
+    use MyVendor\MyExt\Doctrine\Driver\CustomGlobalDriverMiddleware;
+
     // Register a global middleware
-    $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares']['my-ext/custom-global-driver-middleware]
-        = \MyVendor\MyExt\Doctrine\Driver\CustomGlobalDriverMiddleware::class;
+    $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares']['my-ext/custom-global-driver-middleware'] = [
+      'target' => CustomGlobalDriverMiddleware::class,
+      'after' [
+        'typo3/core/custom-platform-driver-middleware',
+      ],
+    ];
 
     // Disable a global driver middleware for a specific connection
-    $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['SecondDatabase']['driverMiddlewares']['my-ext/custom-global-driver-middleware]
-        = '';
+    $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['SecondDatabase']['driverMiddlewares']['my-ext/custom-global-driver-middleware']['disabled'] = true;
 
 Impact
 ======

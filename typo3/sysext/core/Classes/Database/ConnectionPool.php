@@ -132,6 +132,15 @@ class ConnectionPool
             return static::$connections[$connectionName];
         }
 
+        static::$connections[$connectionName] = $this->getDatabaseConnection(
+            $this->getConnectionParams($connectionName),
+        );
+
+        return static::$connections[$connectionName];
+    }
+
+    protected function getConnectionParams(string $connectionName): array
+    {
         $connectionParams = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName] ?? [];
         if (empty($connectionParams)) {
             throw new \RuntimeException(
@@ -164,9 +173,7 @@ class ConnectionPool
             unset($connectionParams['tableoptions']);
         }
 
-        static::$connections[$connectionName] = $this->getDatabaseConnection($connectionParams);
-
-        return static::$connections[$connectionName];
+        return $connectionParams;
     }
 
     /**
@@ -191,20 +198,19 @@ class ConnectionPool
      */
     protected function getDriverMiddlewares(array $connectionParams): array
     {
-        /** @var array<int|string, string> $driverMiddlewares */
-        $driverMiddlewares = array_replace(
-            $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares'] ?? [],
-            $connectionParams['driverMiddlewares'] ?? []
-        );
+        $driverMiddlewares = $this->getOrderedConnectionDriverMiddlewareConfiguration($connectionParams);
         $middlewares = [];
+        foreach ($driverMiddlewares as $middlewareConfiguration) {
+            $className = $middlewareConfiguration['target'];
+            $classImplements = $middlewareConfiguration['targetImplements'];
 
-        foreach ($driverMiddlewares as $identifier => $className) {
-            // Using a empty classname for an identifier disables the middleware. This can be used to disable a
-            // global driver middleware for a specific connection.
-            if ($className === '') {
+            $disabled = $middlewareConfiguration['disabled'];
+            if ($disabled === true) {
+                // Middleware disabled, skip to next middleware.
                 continue;
             }
-            if (!in_array(DriverMiddleware::class, class_implements($className) ?: [], true)) {
+
+            if (!in_array(DriverMiddleware::class, $classImplements, true)) {
                 throw new \UnexpectedValueException(
                     sprintf(
                         'Doctrine Driver Middleware "%s" must implement \Doctrine\DBAL\Driver\Middleware',
@@ -213,10 +219,65 @@ class ConnectionPool
                     1677958727
                 );
             }
+
             $middlewares[] = GeneralUtility::makeInstance($className);
         }
 
         return $middlewares;
+    }
+
+    /**
+     * @internal only for `ext:lowlevel` usage to retrieve configuration overview.     *
+     * @return array
+     */
+    public function getConnectionMiddlewareConfigurationArrayForLowLevelConfiguration(): array
+    {
+        $configurationArray = [
+            'Raw' => [
+                'GlobalDriverMiddlewares' => $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares'] ?? [],
+                'Connections' => [],
+            ],
+            'Connections' => [],
+        ];
+        foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
+            $connectionParams = $this->getConnectionParams($connectionName);
+            $configurationArray['Raw']['Connections'][$connectionName] = $connectionParams;
+            $configurationArray['Connections'][$connectionName] = $this->getOrderedConnectionDriverMiddlewareConfiguration($connectionParams);
+        }
+        return $configurationArray;
+    }
+
+    /**
+     * @param array $connectionParams
+     * @return array<non-empty-string, array{target: class-string, targetImplements: string[], disabled: bool, after: string[], before: string[], type: string}>
+     */
+    protected function getOrderedConnectionDriverMiddlewareConfiguration(array $connectionParams): array
+    {
+        /** @var DriverMiddlewareService $driverMiddlewareService */
+        $driverMiddlewareService = GeneralUtility::makeInstance(DriverMiddlewareService::class);
+        /** @var array<non-empty-string, array{target: class-string, disabled: bool, after: string[], before: string[], type: string}> $driverMiddlewares */
+        $driverMiddlewares = [];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares'] ?? [] as $identifier => $middleware) {
+            $identifier = (string)$identifier;
+            $driverMiddlewares[$identifier] = $driverMiddlewareService->ensureCompleteMiddlewareConfiguration(
+                $driverMiddlewareService->normalizeMiddlewareConfiguration($identifier, $middleware)
+            );
+            $driverMiddlewares[$identifier]['type'] = 'global';
+        }
+        foreach ($connectionParams['driverMiddlewares'] ?? [] as $identifier => $middleware) {
+            $identifier = (string)$identifier;
+            $middleware = array_replace(
+                $driverMiddlewares[$identifier] ?? [],
+                $driverMiddlewareService->normalizeMiddlewareConfiguration($identifier, $middleware)
+            );
+            $middleware = $driverMiddlewareService->ensureCompleteMiddlewareConfiguration($middleware);
+            $driverMiddlewares[$identifier] = $middleware;
+            $driverMiddlewares[$identifier]['type'] = $driverMiddlewares[$identifier]['type']
+                ? 'global-with-connection-override'
+                : 'connection';
+        }
+
+        return $driverMiddlewareService->order($driverMiddlewares);
     }
 
     /**

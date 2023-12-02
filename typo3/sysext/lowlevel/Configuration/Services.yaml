@@ -209,3 +209,11 @@ services:
         identifier: 'symfonyExpressionLanguage'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:symfonyExpressionLanguage'
         after: 'toolbaritems'
+
+  lowlevel.configuration.module.provider.doctrine-driver-middlewares:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ConnectionDriverMiddlewaresProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'doctrineDbalDriverMiddlewares'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doctrineDbalDriverMiddlewares'
+        after: 'expressionlanguage'

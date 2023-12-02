@@ -55,6 +55,7 @@ class ServiceProvider extends AbstractServiceProvider
             SymfonyEventDispatcher::class => [ static::class, 'getSymfonyEventDispatcher' ],
             Cache\CacheManager::class => [ static::class, 'getCacheManager' ],
             Database\ConnectionPool::class => [ static::class, 'getConnectionPool' ],
+            Database\DriverMiddlewareService::class => [ static::class, 'getDriverMiddlewaresService' ],
             Charset\CharsetConverter::class => [ static::class, 'getCharsetConverter' ],
             Configuration\SiteConfiguration::class => [ static::class, 'getSiteConfiguration' ],
             Command\ListCommand::class => [ static::class, 'getListCommand' ],
@@ -158,6 +159,13 @@ class ServiceProvider extends AbstractServiceProvider
         }
 
         return self::new($container, Database\ConnectionPool::class);
+    }
+
+    public static function getDriverMiddlewaresService(ContainerInterface $container): Database\DriverMiddlewareService
+    {
+        return self::new($container, Database\DriverMiddlewareService::class, [
+            $container->get(Service\DependencyOrderingService::class),
+        ]);
     }
 
     public static function getCharsetConverter(ContainerInterface $container): Charset\CharsetConverter
