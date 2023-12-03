@@ -125,7 +125,7 @@ class ConnectionMigrator
     /**
      * Perform add/change/create operations on tables and fields in an
      * optimized, non-interactive, mode using the original doctrine
-     * SchemaManager ->toSaveSql() method.
+     * PlatformSaveAlterSchemaSQLTrait->getSaveAlterSchemaSQL() method.
      */
     public function install(bool $createOnly = false): array
     {
@@ -172,9 +172,10 @@ class ConnectionMigrator
             }
         }
 
-        $statements = $schemaDiff->toSaveSql(
-            $this->connection->getDatabasePlatform()
-        );
+        $databasePlatform = $this->connection->getDatabasePlatform();
+        $statements = method_exists($databasePlatform, 'getSaveAlterSchemaSQL')
+            ? $databasePlatform->getSaveAlterSchemaSQL($schemaDiff)
+            : $databasePlatform->getAlterSchemaSQL($schemaDiff);
 
         foreach ($statements as $statement) {
             try {
@@ -331,7 +332,7 @@ class ConnectionMigrator
             $schemaDiff->fromSchema
         );
 
-        $statements = $addTableSchemaDiff->toSql($this->connection->getDatabasePlatform());
+        $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($addTableSchemaDiff);
 
         return ['create_table' => $this->calculateUpdateSuggestionsHashes($statements)];
     }
@@ -412,7 +413,7 @@ class ConnectionMigrator
             $schemaDiff->fromSchema
         );
 
-        $statements = $addFieldSchemaDiff->toSql($this->connection->getDatabasePlatform());
+        $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($addFieldSchemaDiff);
 
         return ['add' => $this->calculateUpdateSuggestionsHashes($statements)];
     }
@@ -454,7 +455,10 @@ class ConnectionMigrator
                 $schemaDiff->fromSchema
             );
 
-            $statements = $tableOptionsSchemaDiff->toSaveSql($this->connection->getDatabasePlatform());
+            $databasePlatform = $this->connection->getDatabasePlatform();
+            $statements = method_exists($databasePlatform, 'getSaveAlterSchemaSQL')
+                ? $databasePlatform->getSaveAlterSchemaSQL($tableOptionsSchemaDiff)
+                : $databasePlatform->getAlterSchemaSQL($tableOptionsSchemaDiff);
             foreach ($statements as $statement) {
                 $updateSuggestions['change'][md5($statement)] = $statement;
             }
@@ -498,7 +502,7 @@ class ConnectionMigrator
                         $schemaDiff->fromSchema
                     );
 
-                    $statements = $temporarySchemaDiff->toSql($databasePlatform);
+                    $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
                         $updateSuggestions['change'][md5($statement)] = $statement;
                     }
@@ -533,7 +537,7 @@ class ConnectionMigrator
                         $schemaDiff->fromSchema
                     );
 
-                    $statements = $temporarySchemaDiff->toSql($databasePlatform);
+                    $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
                         $updateSuggestions['change'][md5($statement)] = $statement;
                     }
@@ -581,7 +585,7 @@ class ConnectionMigrator
                         $schemaDiff->fromSchema
                     );
 
-                    $statements = $temporarySchemaDiff->toSql($databasePlatform);
+                    $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
                         $updateSuggestions['change'][md5($statement)] = $statement;
                         $updateSuggestions['change_currentValue'][md5($statement)] = $currentDeclaration;
@@ -614,7 +618,7 @@ class ConnectionMigrator
                         $schemaDiff->fromSchema
                     );
 
-                    $statements = $temporarySchemaDiff->toSql($databasePlatform);
+                    $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
                         $updateSuggestions['change'][md5($statement)] = $statement;
                     }
@@ -653,7 +657,7 @@ class ConnectionMigrator
                 $schemaDiff->fromSchema
             );
 
-            $statements = $changedFieldDiff->toSql($this->connection->getDatabasePlatform());
+            $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($changedFieldDiff);
             foreach ($statements as $statement) {
                 $updateSuggestions['change_table'][md5($statement)] = $statement;
             }
@@ -720,7 +724,7 @@ class ConnectionMigrator
             $schemaDiff->fromSchema
         );
 
-        $statements = $changedFieldDiff->toSql($this->connection->getDatabasePlatform());
+        $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($changedFieldDiff);
 
         return ['change' => $this->calculateUpdateSuggestionsHashes($statements)];
     }
@@ -820,7 +824,7 @@ class ConnectionMigrator
             $schemaDiff->fromSchema
         );
 
-        $statements = $removedFieldDiff->toSql($this->connection->getDatabasePlatform());
+        $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($removedFieldDiff);
 
         return ['drop' => $this->calculateUpdateSuggestionsHashes($statements)];
     }
@@ -846,7 +850,7 @@ class ConnectionMigrator
                 $schemaDiff->fromSchema
             );
 
-            $statements = $tableDiff->toSql($this->connection->getDatabasePlatform());
+            $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($tableDiff);
             foreach ($statements as $statement) {
                 $updateSuggestions['drop_table'][md5($statement)] = $statement;
             }

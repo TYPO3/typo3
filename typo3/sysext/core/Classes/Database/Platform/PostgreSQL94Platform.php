@@ -29,6 +29,8 @@ use Doctrine\DBAL\Platforms\PostgreSQL94Platform as DoctrinePostgreSQL94Platform
  */
 class PostgreSQL94Platform extends DoctrinePostgreSQL94Platform
 {
+    use PlatformSaveAlterSchemaSQLTrait;
+
     /**
      * @internal Only for internal usage. doctrine/dbal deprecated this method on platforms. Usage may be removed at
      *           any time.

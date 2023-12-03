@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Database\Schema\TableDiff;
 class MariaDBPlatform extends DoctrineMariaDBPlatform
 {
     use MySQLCompatibleAlterTablePlatformAwareTrait;
+    use PlatformSaveAlterSchemaSQLTrait;
 
     /**
      * Gets the SQL statements for altering an existing table.

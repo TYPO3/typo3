@@ -30,6 +30,8 @@ use Doctrine\DBAL\Platforms\PostgreSQL100Platform as DoctrinePostgreSQL100Platfo
  */
 class PostgreSQL100Platform extends DoctrinePostgreSQL100Platform
 {
+    use PlatformSaveAlterSchemaSQLTrait;
+
     /**
      * @internal Only for internal usage. doctrine/dbal deprecated this method on platforms. Usage may be removed at
      *           any time.

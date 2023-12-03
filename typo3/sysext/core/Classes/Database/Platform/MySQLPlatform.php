@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Database\Schema\TableDiff;
 class MySQLPlatform extends DoctrineMySQLPlatform
 {
     use MySQLCompatibleAlterTablePlatformAwareTrait;
+    use PlatformSaveAlterSchemaSQLTrait;
 
     /**
      * Gets the SQL statements for altering an existing table.

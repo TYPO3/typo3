@@ -139,9 +139,8 @@ class SchemaMigrator
     }
 
     /**
-     * Perform add/change/create operations on tables and fields in an optimized,
-     * non-interactive, mode using the original doctrine SchemaManager ->toSaveSql()
-     * method.
+     * Perform add/change/create operations on tables and fields in an optimized, non-interactive, mode
+     * using the original doctrine PlatformSaveAlterSchemaSQLTrait->getSaveAlterSchemaSQL() method.
      *
      * @param string[] $statements The CREATE TABLE statements
      * @param bool $createOnly Only perform changes that add fields or create tables
