@@ -1737,16 +1737,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Clears cache content (for $this->newHash)
-     *
-     * @internal
-     */
-    public function clearPageCacheContent()
-    {
-        $this->pageCache->remove($this->newHash);
-    }
-
-    /**
      * Setting the SYS_LASTCHANGED value in the pagerecord: This value will thus be set to the highest tstamp of records rendered on the page.
      * This includes all records with no regard to hidden records, userprotection and so on.
      *
