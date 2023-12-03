@@ -25,6 +25,7 @@ use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as PDOMySqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as PDOPgSqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as PDOSqliteDriver;
+use TYPO3\CMS\Core\Database\Middleware\UsableForConnectionInterface;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Schema\SchemaManager\CoreSchemaManagerFactory;
 use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType;
@@ -133,6 +134,7 @@ class ConnectionPool
         }
 
         static::$connections[$connectionName] = $this->getDatabaseConnection(
+            $connectionName,
             $this->getConnectionParams($connectionName),
         );
 
@@ -196,9 +198,9 @@ class ConnectionPool
      * - for all configured connections
      * - $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverMiddlewares'] for a specific connection
      */
-    protected function getDriverMiddlewares(array $connectionParams): array
+    protected function getDriverMiddlewares(string $connectionName, array $connectionParams): array
     {
-        $driverMiddlewares = $this->getOrderedConnectionDriverMiddlewareConfiguration($connectionParams);
+        $driverMiddlewares = $this->getOrderedConnectionDriverMiddlewareConfiguration($connectionName, $connectionParams);
         $middlewares = [];
         foreach ($driverMiddlewares as $middlewareConfiguration) {
             $className = $middlewareConfiguration['target'];
@@ -208,16 +210,6 @@ class ConnectionPool
             if ($disabled === true) {
                 // Middleware disabled, skip to next middleware.
                 continue;
-            }
-
-            if (!in_array(DriverMiddleware::class, $classImplements, true)) {
-                throw new \UnexpectedValueException(
-                    sprintf(
-                        'Doctrine Driver Middleware "%s" must implement \Doctrine\DBAL\Driver\Middleware',
-                        $className
-                    ),
-                    1677958727
-                );
             }
 
             $middlewares[] = GeneralUtility::makeInstance($className);
@@ -242,7 +234,7 @@ class ConnectionPool
         foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
             $connectionParams = $this->getConnectionParams($connectionName);
             $configurationArray['Raw']['Connections'][$connectionName] = $connectionParams;
-            $configurationArray['Connections'][$connectionName] = $this->getOrderedConnectionDriverMiddlewareConfiguration($connectionParams);
+            $configurationArray['Connections'][$connectionName] = $this->getOrderedConnectionDriverMiddlewareConfiguration($connectionName, $connectionParams);
         }
         return $configurationArray;
     }
@@ -251,7 +243,7 @@ class ConnectionPool
      * @param array $connectionParams
      * @return array<non-empty-string, array{target: class-string, targetImplements: string[], disabled: bool, after: string[], before: string[], type: string}>
      */
-    protected function getOrderedConnectionDriverMiddlewareConfiguration(array $connectionParams): array
+    protected function getOrderedConnectionDriverMiddlewareConfiguration(string $connectionName, array $connectionParams): array
     {
         /** @var DriverMiddlewareService $driverMiddlewareService */
         $driverMiddlewareService = GeneralUtility::makeInstance(DriverMiddlewareService::class);
@@ -276,6 +268,24 @@ class ConnectionPool
                 ? 'global-with-connection-override'
                 : 'connection';
         }
+        $driverMiddlewares = array_filter($driverMiddlewares, static function (array $middleware) use ($connectionName, $connectionParams): bool {
+            $className = $middleware['target'];
+            $classImplements = $middleware['targetImplements'];
+            if (!in_array(DriverMiddleware::class, $classImplements, true)) {
+                throw new \UnexpectedValueException(
+                    sprintf(
+                        'Doctrine Driver Middleware "%s" must implement \Doctrine\DBAL\Driver\Middleware',
+                        $className
+                    ),
+                    1677958727
+                );
+            }
+            if (in_array(UsableForConnectionInterface::class, $classImplements, true)) {
+                return GeneralUtility::makeInstance($middleware['target'])->canBeUsedForConnection($connectionName, $connectionParams);
+            }
+
+            return true;
+        });
 
         return $driverMiddlewareService->order($driverMiddlewares);
     }
@@ -283,7 +293,7 @@ class ConnectionPool
     /**
      * Creates a connection object based on the specified parameters
      */
-    protected function getDatabaseConnection(array $connectionParams): Connection
+    protected function getDatabaseConnection(string $connectionName, array $connectionParams): Connection
     {
         $this->registerDoctrineTypes();
 
@@ -293,7 +303,7 @@ class ConnectionPool
         }
 
         $connectionParams = $this->mapCustomDriver($connectionParams);
-        $middlewares = $this->getDriverMiddlewares($connectionParams);
+        $middlewares = $this->getDriverMiddlewares($connectionName, $connectionParams);
         $configuration = (new Configuration())
             ->setMiddlewares($middlewares)
             // @link https://github.com/doctrine/dbal/blob/3.7.x/UPGRADE.md#deprecated-not-setting-a-schema-manager-factory
