@@ -24,6 +24,15 @@ return [
         'globalDriverMiddlewares' => [
             'typo3/core/custom-platform-driver-middleware' => [
                 'target' => \TYPO3\CMS\Core\Database\Middleware\CustomPlatformDriverMiddleware::class,
+                'before' => [
+                    'typo3/core/custom-pdo-driver-result-middleware',
+                ],
+            ],
+            'typo3/core/custom-pdo-driver-result-middleware' => [
+                'target' => \TYPO3\CMS\Core\Database\Middleware\CustomPdoDriverResultMiddleware::class,
+                'after' => [
+                    'typo3/core/custom-platform-driver-middleware',
+                ],
             ],
         ],
     ],

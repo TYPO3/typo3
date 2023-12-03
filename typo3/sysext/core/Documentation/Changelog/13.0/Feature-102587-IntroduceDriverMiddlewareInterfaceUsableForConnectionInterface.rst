@@ -40,6 +40,13 @@ This allows to decide if a middleware should be used for specific connection,
 either based on the :php:`$connectionName` or the :php:`$connectionParams`,
 for example the concrete :php:`$connectionParams['driver']`.
 
+..  note::
+
+    Real use-cases to use this interface should be rare edge cases, usually
+    a driver middleware should only be configured on a connection where is
+    needed - or does not harm if used for all connection types as global
+    driver middleware.
+
 Custom driver middleware example using the interface
 ----------------------------------------------------
 
@@ -103,7 +110,11 @@ Custom driver middleware example using the interface
     $middlewareConfiguration = [
       'target' => CustomMiddleware::class,
       'after' => [
+        // NOTE: Custom driver middleware should be registered after essential
+        //       TYPO3 core driver middlewares. Use the following identifiers
+        //       to ensure that.
         'typo3/core/custom-platform-driver-middleware',
+        'typo3/core/custom-pdo-driver-result-middleware',
       ],
     ];
 

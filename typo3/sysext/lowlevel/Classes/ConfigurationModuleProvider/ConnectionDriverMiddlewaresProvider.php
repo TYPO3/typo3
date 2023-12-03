@@ -56,6 +56,12 @@ class ConnectionDriverMiddlewaresProvider extends AbstractProvider
             new ModifyBlindedConfigurationOptionsEvent($this->blindedConfigurationOptions, 'doctrine-dbal-driver-middlewares')
         )->getBlindedConfigurationOptions();
         foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
+            foreach ($configurationArray['Connections'][$connectionName] as &$middleware) {
+                $middlewareTarget = $middleware['target'] ?? '';
+                $middleware['targetImplementedInterfaces'] = ($middlewareTarget !== '' && class_exists($middlewareTarget))
+                    ? (class_implements($middlewareTarget) ?: [])
+                    : [];
+            }
             if ($connectionName !== 'Default') {
                 $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections'][$connectionName] =
                     $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections']['Default'];

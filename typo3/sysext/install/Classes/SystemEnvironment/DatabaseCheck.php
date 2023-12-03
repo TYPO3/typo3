@@ -20,10 +20,10 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
 use Doctrine\DBAL\Driver\IBMDB2\Driver as DB2Driver;
 use Doctrine\DBAL\Driver\Mysqli\Driver as DoctrineMysqliDriver;
 use Doctrine\DBAL\Driver\OCI8\Driver as DoctrineOCI8Driver;
+use Doctrine\DBAL\Driver\PDO\MySQL\Driver as DoctrinePDOMySqlDriver;
 use Doctrine\DBAL\Driver\PDO\OCI\Driver as DoctrinePDOOCIDriver;
-use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as TYPO3PDOMySqlDriver;
-use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as TYPO3PDOPgSqlDriver;
-use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as TYPO3PDOSqliteDriver;
+use Doctrine\DBAL\Driver\PDO\PgSQL\Driver as DoctrinePDOPgSqlDriver;
+use Doctrine\DBAL\Driver\PDO\SQLite\Driver as DoctrinePDOSqliteDriver;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -78,21 +78,23 @@ class DatabaseCheck implements CheckInterface
      * List of database platforms to check
      *
      * @var string[]
+     * @todo Check if this property can be removed after DatabaseCheck::retrieveDatabasePlatformByDriverName() could be
+     *       removed.
      */
     private static $databaseDriverToPlatformMapping = [
         DoctrineMysqliDriver::class => DatabaseCheckPlatformMysql::class,
-        TYPO3PDOMySqlDriver::class => DatabaseCheckPlatformMysql::class,
-        TYPO3PDOPgSqlDriver::class => DatabaseCheckPlatformPostgreSql::class,
-        TYPO3PDOSqliteDriver::class => DatabaseCheckPlatformSqlite::class,
+        DoctrinePDOMySqlDriver::class => DatabaseCheckPlatformMysql::class,
+        DoctrinePDOPgSqlDriver::class => DatabaseCheckPlatformPostgreSql::class,
+        DoctrinePDOSqliteDriver::class => DatabaseCheckPlatformSqlite::class,
     ];
 
     /**
      * @var string[]
      */
     private static $driverMap = [
-        'pdo_mysql' => TYPO3PDOMySqlDriver::class,
-        'pdo_sqlite' => TYPO3PDOSqliteDriver::class,
-        'pdo_pgsql' => TYPO3PDOPgSqlDriver::class,
+        'pdo_mysql' => DoctrinePDOMySqlDriver::class,
+        'pdo_sqlite' => DoctrinePDOSqliteDriver::class,
+        'pdo_pgsql' => DoctrinePDOPgSqlDriver::class,
         'pdo_oci' => DoctrinePDOOCIDriver::class,
         'oci8' => DoctrineOCI8Driver::class,
         'ibm_db2' => DB2Driver::class,
@@ -106,9 +108,9 @@ class DatabaseCheck implements CheckInterface
      */
     private $databaseDriverCheckMap = [
         DoctrineMysqliDriver::class => DatabaseCheckDriverMysqli::class,
-        TYPO3PDOMySqlDriver::class => DatabaseCheckDriverPdoMysql::class,
-        TYPO3PDOPgSqlDriver::class => DatabaseCheckDriverPDOPgSql::class,
-        TYPO3PDOSqliteDriver::class => DatabaseCheckDriverPDOSqlite::class,
+        DoctrinePDOMySqlDriver::class => DatabaseCheckDriverPdoMysql::class,
+        DoctrinePDOPgSqlDriver::class => DatabaseCheckDriverPDOPgSql::class,
+        DoctrinePDOSqliteDriver::class => DatabaseCheckDriverPDOSqlite::class,
     ];
 
     public function __construct()
@@ -220,15 +222,15 @@ class DatabaseCheck implements CheckInterface
         }
 
         if (static::isPdoMysql()) {
-            $installedDrivers[] = TYPO3PDOMySqlDriver::class;
+            $installedDrivers[] = DoctrinePDOMySqlDriver::class;
         }
 
         if (static::isPdoPgsql()) {
-            $installedDrivers[] = TYPO3PDOPgSqlDriver::class;
+            $installedDrivers[] = DoctrinePDOPgSqlDriver::class;
         }
 
         if (static::isPdoSqlite()) {
-            $installedDrivers[] = TYPO3PDOSqliteDriver::class;
+            $installedDrivers[] = DoctrinePDOSqliteDriver::class;
         }
 
         return $installedDrivers;
@@ -236,6 +238,7 @@ class DatabaseCheck implements CheckInterface
 
     /**
      * @throws Exception
+     * @todo This method seems to be unused. Check if it can be removed or if it needs to be deprecated.
      */
     public static function retrieveDatabasePlatformByDriverName(string $databaseDriverName): string
     {

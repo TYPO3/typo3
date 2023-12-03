@@ -49,7 +49,11 @@ Registering a new global driver middleware
     $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares']['my-ext/custom-global-driver-middleware'] = [
       'target' => CustomGlobalDriverMiddleware::class,
       'after' [
+        // NOTE: Custom driver middleware should be registered after essential
+        //       TYPO3 core driver middlewares. Use the following identifiers
+        //       to ensure that.
         'typo3/core/custom-platform-driver-middleware',
+        'typo3/core/custom-pdo-driver-result-middleware',
       ],
     ];
 
@@ -64,7 +68,11 @@ Disable a global middleware for a specific connection
     $GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares']['my-ext/custom-global-driver-middleware'] = [
       'target' => CustomGlobalDriverMiddleware::class,
       'after' [
+        // NOTE: Custom driver middleware should be registered after essential
+        //       TYPO3 core driver middlewares. Use the following identifiers
+        //       to ensure that.
         'typo3/core/custom-platform-driver-middleware',
+        'typo3/core/custom-pdo-driver-result-middleware',
       ],
     ];
 

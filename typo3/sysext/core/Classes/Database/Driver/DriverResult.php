@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver;
 
-use Doctrine\DBAL\Driver\PDO\Exception;
-use Doctrine\DBAL\Driver\Result as ResultInterface;
+use Doctrine\DBAL\Driver\Middleware\AbstractResultMiddleware;
 
 /**
  * TYPO3's custom Result object for Database statements based on Doctrine DBAL.
@@ -27,28 +26,16 @@ use Doctrine\DBAL\Driver\Result as ResultInterface;
  * is called when retrieving data. This isn't the actual Result object (Doctrine\DBAL\Result) which
  * is used in user-land code.
  *
- * Because Doctrine's DBAL Driver Result object is marked as final, all logic is copied from the ResultInterface.
- *
  * @internal this implementation is not part of TYPO3's Public API.
  */
-class DriverResult implements ResultInterface
+class DriverResult extends AbstractResultMiddleware
 {
-    private \PDOStatement $statement;
-
-    /**
-     * @internal The result can be only instantiated by its driver connection or statement.
-     */
-    public function __construct(\PDOStatement $statement)
-    {
-        $this->statement = $statement;
-    }
-
     /**
      * {@inheritDoc}
      */
     public function fetchNumeric()
     {
-        return $this->fetch(\PDO::FETCH_NUM);
+        return $this->mapResourceToString(parent::fetchNumeric());
     }
 
     /**
@@ -56,7 +43,7 @@ class DriverResult implements ResultInterface
      */
     public function fetchAssociative()
     {
-        return $this->fetch(\PDO::FETCH_ASSOC);
+        return $this->mapResourceToString(parent::fetchAssociative());
     }
 
     /**
@@ -64,7 +51,7 @@ class DriverResult implements ResultInterface
      */
     public function fetchOne()
     {
-        return $this->fetch(\PDO::FETCH_COLUMN);
+        return $this->mapResourceToString(parent::fetchOne());
     }
 
     /**
@@ -72,7 +59,9 @@ class DriverResult implements ResultInterface
      */
     public function fetchAllNumeric(): array
     {
-        return $this->fetchAll(\PDO::FETCH_NUM);
+        $data = $this->mapResourceToString(parent::fetchAllNumeric());
+        assert(is_array($data));
+        return array_map($this->mapResourceToString(...), $data);
     }
 
     /**
@@ -80,7 +69,9 @@ class DriverResult implements ResultInterface
      */
     public function fetchAllAssociative(): array
     {
-        return $this->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $this->mapResourceToString(parent::fetchAllAssociative());
+        assert(is_array($data));
+        return array_map($this->mapResourceToString(...), $data);
     }
 
     /**
@@ -88,61 +79,7 @@ class DriverResult implements ResultInterface
      */
     public function fetchFirstColumn(): array
     {
-        return $this->fetchAll(\PDO::FETCH_COLUMN);
-    }
-
-    public function rowCount(): int
-    {
-        try {
-            return $this->statement->rowCount();
-        } catch (\PDOException $exception) {
-            throw Exception::new($exception);
-        }
-    }
-
-    public function columnCount(): int
-    {
-        try {
-            return $this->statement->columnCount();
-        } catch (\PDOException $exception) {
-            throw Exception::new($exception);
-        }
-    }
-
-    public function free(): void
-    {
-        $this->statement->closeCursor();
-    }
-
-    /**
-     * @return mixed|false
-     *
-     * @throws Exception
-     */
-    private function fetch(int $mode)
-    {
-        try {
-            $result = $this->statement->fetch($mode);
-            $result = $this->mapResourceToString($result);
-            return $result;
-        } catch (\PDOException $exception) {
-            throw Exception::new($exception);
-        }
-    }
-
-    /**
-     * @return list<mixed>
-     *
-     * @throws Exception
-     */
-    private function fetchAll(int $mode): array
-    {
-        try {
-            $data = $this->statement->fetchAll($mode);
-        } catch (\PDOException $exception) {
-            throw Exception::new($exception);
-        }
-
+        $data = $this->mapResourceToString(parent::fetchFirstColumn());
         assert(is_array($data));
         return array_map($this->mapResourceToString(...), $data);
     }

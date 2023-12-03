@@ -61,7 +61,7 @@ class DriverMiddlewareService
 
     /**
      * @param array $middleware
-     * @return array{target: class-string, targetImplements: string[], disabled: bool, after: string[], before: string[], type: string}
+     * @return array{target: class-string, disabled: bool, after: string[], before: string[], type: string}
      */
     public function ensureCompleteMiddlewareConfiguration(array $middleware): array
     {
@@ -75,7 +75,6 @@ class DriverMiddlewareService
         $targetImplements = $target !== '' && class_exists($target) ? (class_implements($target) ?: []) : [];
         return [
             'target' => $target,
-            'targetImplements' => $targetImplements,
             'disabled' => (bool)($middleware['disabled'] ?? false),
             'after' => (array)($middleware['after'] ?? []),
             'before' => (array)($middleware['before'] ?? []),

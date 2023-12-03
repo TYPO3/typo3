@@ -34,16 +34,18 @@ similar to the PSR-15 middleware stack. Available structure for a middleware con
 
     /** @var array{target: string, disabled?: bool, after?: string[], before?: string[]} $middlewareConfiguration */
     $middlewareConfiguration = [
-      // target is required
-      'target' => 'class fqdn',       // for example MyDriverMiddleware::class
+      // target is required - for example use MyDriverMiddleware::class
+      'target' => 'class fqdn',
       // disabled can be used to disable a global middleware for a specific
       // connection. This is optional and defaults to `false` if not provided
       'disabled' => false,
       // list of middleware identifiers, the current middleware should be registered after
       'after' => [
-        // It's highly advised to define at least the following identifier to ensure that
-        // getDatabasePlatform() returns the correct platform instances.
+        // NOTE: Custom driver middleware should be registered after essential
+        //       TYPO3 core driver middlewares. Use the following identifiers
+        //       to ensure that.
         'typo3/core/custom-platform-driver-middleware',
+        'typo3/core/custom-pdo-driver-result-middleware',
       ],
       // list of middleware identifiers, the current middleware should be registered before
       'before' => [
@@ -68,9 +70,9 @@ similar to the PSR-15 middleware stack. Available structure for a middleware con
 
 ..  info::
 
-    All custom driver middlewares, `global` or `connection` based, should be
-    placed after the `'typo3/core/custom-platform-driver-middleware'` driver
-    middleware.
+    All custom driver middlewares, `global` or `connection` based, should be placed after the
+    `'typo3/core/custom-platform-driver-middleware'` and `'typo3/core/custom-pdo-driver-result-middleware'`
+    driver middleware to ensure essential core driver middlewares has been processed first.
 
 ..  tip::
 

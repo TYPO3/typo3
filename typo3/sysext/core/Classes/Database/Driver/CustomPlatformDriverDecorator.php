@@ -45,7 +45,7 @@ use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform;
 use TYPO3\CMS\Core\Database\Platform\SQLitePlatform;
 
 /**
- * @internal Not part of public core API.
+ * @internal this implementation is not part of TYPO3's Public API.
  */
 final class CustomPlatformDriverDecorator extends AbstractDriverMiddleware
 {

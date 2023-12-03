@@ -17,16 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Middleware;
 
-use Doctrine\DBAL\Driver;
-use Doctrine\DBAL\Driver\Middleware;
+use Doctrine\DBAL\Driver as DoctrineDriver;
+use Doctrine\DBAL\Driver\Middleware as DoctrineDriverMiddleware;
 use TYPO3\CMS\Core\Database\Driver\CustomPlatformDriverDecorator;
 
 /**
  * Wraps the driver to ensure extended *Platform classes are used for connections.
+ * @internal only and not part of public core API.
  */
-final class CustomPlatformDriverMiddleware implements Middleware
+final class CustomPlatformDriverMiddleware implements DoctrineDriverMiddleware
 {
-    public function wrap(Driver $driver): Driver
+    public function wrap(DoctrineDriver $driver): DoctrineDriver
     {
         return new CustomPlatformDriverDecorator($driver);
     }

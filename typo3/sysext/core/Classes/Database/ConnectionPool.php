@@ -22,9 +22,6 @@ use Doctrine\DBAL\Driver\Middleware as DriverMiddleware;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
-use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as PDOMySqlDriver;
-use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as PDOPgSqlDriver;
-use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as PDOSqliteDriver;
 use TYPO3\CMS\Core\Database\Middleware\UsableForConnectionInterface;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Schema\SchemaManager\CoreSchemaManagerFactory;
@@ -73,17 +70,6 @@ class ConnectionPool
         Types::DATETIME_MUTABLE => DateTimeType::class,
         Types::DATETIME_IMMUTABLE => DateTimeType::class,
         Types::TIME_MUTABLE => TimeType::class,
-    ];
-
-    /**
-     * List of custom drivers and their mappings to the driver classes.
-     *
-     * @var string[]
-     */
-    protected static $driverMap = [
-        'pdo_mysql' => PDOMySqlDriver::class,
-        'pdo_sqlite' => PDOSqliteDriver::class,
-        'pdo_pgsql' => PDOPgSqlDriver::class,
     ];
 
     /**
@@ -179,21 +165,6 @@ class ConnectionPool
     }
 
     /**
-     * Map custom driver class for certain driver
-     *
-     * @internal
-     */
-    protected function mapCustomDriver(array $connectionParams): array
-    {
-        // if no custom driver is provided, map TYPO3 specific drivers
-        if (!isset($connectionParams['driverClass']) && isset(static::$driverMap[$connectionParams['driver']])) {
-            $connectionParams['driverClass'] = static::$driverMap[$connectionParams['driver']];
-        }
-
-        return $connectionParams;
-    }
-
-    /**
      * Return any doctrine driver middlewares, that may have been set up in:
      * - for all configured connections
      * - $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverMiddlewares'] for a specific connection
@@ -204,8 +175,6 @@ class ConnectionPool
         $middlewares = [];
         foreach ($driverMiddlewares as $middlewareConfiguration) {
             $className = $middlewareConfiguration['target'];
-            $classImplements = $middlewareConfiguration['targetImplements'];
-
             $disabled = $middlewareConfiguration['disabled'];
             if ($disabled === true) {
                 // Middleware disabled, skip to next middleware.
@@ -241,7 +210,7 @@ class ConnectionPool
 
     /**
      * @param array $connectionParams
-     * @return array<non-empty-string, array{target: class-string, targetImplements: string[], disabled: bool, after: string[], before: string[], type: string}>
+     * @return array<non-empty-string, array{target: class-string, disabled: bool, after: string[], before: string[], type: string}>
      */
     protected function getOrderedConnectionDriverMiddlewareConfiguration(string $connectionName, array $connectionParams): array
     {
@@ -270,7 +239,7 @@ class ConnectionPool
         }
         $driverMiddlewares = array_filter($driverMiddlewares, static function (array $middleware) use ($connectionName, $connectionParams): bool {
             $className = $middleware['target'];
-            $classImplements = $middleware['targetImplements'];
+            $classImplements = class_exists($className) ? (class_implements($className) ?: []) : [];
             if (!in_array(DriverMiddleware::class, $classImplements, true)) {
                 throw new \UnexpectedValueException(
                     sprintf(
@@ -302,7 +271,6 @@ class ConnectionPool
             $connectionParams['charset'] = 'utf8';
         }
 
-        $connectionParams = $this->mapCustomDriver($connectionParams);
         $middlewares = $this->getDriverMiddlewares($connectionName, $connectionParams);
         $configuration = (new Configuration())
             ->setMiddlewares($middlewares)
@@ -328,7 +296,7 @@ class ConnectionPool
 
     /**
      * Returns the connection specific query builder object that can be used to build
-     * complex SQL queries using and object oriented approach.
+     * complex SQL queries using and object-oriented approach.
      */
     public function getQueryBuilderForTable(string $tableName): QueryBuilder
     {

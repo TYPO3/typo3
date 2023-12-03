@@ -20,9 +20,21 @@ namespace TYPO3\CMS\Core\Database\Middleware;
 use Doctrine\DBAL\Driver\Middleware as DoctrineDriverMiddleware;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 
+/**
+ * Custom driver middleware can implement this interface to decide per connection and
+ * connection configuration if it should be used or not. For example, registering a
+ * global driver middleware which only takes affect on connections using a specific
+ * driver like `pdo_sqlite`.
+ *
+ * Usually this should be a rare case and mostly a driver middleware can be simply
+ * configured as a connection middleware directly, which leaves this more or less
+ * a special implementation detail for the TYPO3 core.
+ */
 interface UsableForConnectionInterface extends DoctrineDriverMiddleware
 {
     /**
+     * Return true if the driver middleware should be used for the concrete connection.
+     *
      * @see ConnectionPool::getDriverMiddlewares()
      */
     public function canBeUsedForConnection(string $identifier, array $connectionParams): bool;
