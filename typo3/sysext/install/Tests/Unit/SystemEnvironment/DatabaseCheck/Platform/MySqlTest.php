@@ -41,9 +41,9 @@ final class MySqlTest extends UnitTestCase
         // MySQL cases
         yield 'MySQL version valid' => [
             'platform' => new MySQLPlatform(),
-            'serverVersionString' => 'MySQL 8.0.11',
+            'serverVersionString' => 'MySQL 8.0.17',
             'expectedSeverity' => ContextualFeedbackSeverity::OK,
-            'expectedTitle' => 'MySQL version 8.0.11 is fine',
+            'expectedTitle' => 'MySQL version 8.0.17 is fine',
         ];
         yield 'MySQL old version detects as too low' => [
             'platform' => new MySQLPlatform(),
