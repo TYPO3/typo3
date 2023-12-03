@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
@@ -680,7 +681,7 @@ class ConnectionMigrator
                 continue;
             }
 
-            $databasePlatform = $this->getDatabasePlatformName($index);
+            $databasePlatform = $this->getDatabasePlatformForTable($index);
 
             // Treat each changed column with a new diff to get a dedicated suggestions
             // just for this single column.
@@ -700,12 +701,12 @@ class ConnectionMigrator
                     [],
                     $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name))
                 );
-                if ($databasePlatform === 'postgresql') {
+                if ($databasePlatform instanceof DoctrinePostgreSQLPlatform) {
                     $renameColumnTableDiff->renamedColumns[$oldFieldName] = $changedColumn->column;
                 }
                 $changedTables[$index . ':' . $changedColumn->column->getName()] = $renameColumnTableDiff;
 
-                if ($databasePlatform === 'sqlite') {
+                if ($databasePlatform instanceof DoctrineSQLitePlatform) {
                     break;
                 }
             }
@@ -740,7 +741,7 @@ class ConnectionMigrator
         foreach ($schemaDiff->changedTables as $index => $changedTable) {
             $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
 
-            $isSqlite = $this->getDatabasePlatformName($index) === 'sqlite';
+            $isSqlite = $this->getDatabasePlatformForTable($index) instanceof DoctrineSQLitePlatform;
             $addMoreOperations = true;
 
             if (count($changedTable->removedColumns) !== 0) {
@@ -1279,20 +1280,22 @@ class ConnectionMigrator
         return $options;
     }
 
-    /**
-     * @todo Adopt usages to directly use platform instanceof checks and remove this method.
-     */
-    protected function getDatabasePlatformName(string $tableName): string
+    protected function getDatabasePlatformForTable(string $tableName): AbstractPlatform
     {
         $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
-        if ($databasePlatform instanceof DoctrinePostgreSQLPlatform) {
-            return 'postgresql';
-        }
-        if ($databasePlatform instanceof DoctrineSQLitePlatform) {
-            return 'sqlite';
-        }
-        // @todo report MariaDB as mariadb if all usages are adopted for the split.
-
-        return 'mysql';
+        return match (true) {
+            $databasePlatform instanceof DoctrinePostgreSQLPlatform,
+            $databasePlatform instanceof DoctrineSQLitePlatform,
+            $databasePlatform instanceof DoctrineMariaDBPlatform,
+            $databasePlatform instanceof DoctrineMySQLPlatform => $databasePlatform,
+            default => throw new \RuntimeException(
+                sprintf(
+                    'Platform "%s" not supported for table "%s" connection.',
+                    get_class($databasePlatform),
+                    $tableName,
+                ),
+                1701619871
+            ),
+        };
     }
 }
