@@ -120,7 +120,6 @@ class RequestHandler implements RequestHandlerInterface
             $nonce = $request->getAttribute('nonce');
             $this->getPageRenderer()->setNonce($nonce);
 
-            $controller->generatePage_preProcessing();
             $controller->preparePageContentGeneration($request);
 
             // Make sure all FAL resources are prefixed with absPrefPrefix

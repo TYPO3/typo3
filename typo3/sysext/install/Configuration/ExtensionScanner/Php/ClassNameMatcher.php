@@ -2392,4 +2392,9 @@ return [
             'Breaking-102165-FileAbstractionLayerProcessingAPIsAndInterfaceChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Context\TypoScriptAspect' => [
+        'restFiles' => [
+            'Breaking-102583-RemovedContextAspectTyposcript.rst',
+        ],
+    ],
 ];

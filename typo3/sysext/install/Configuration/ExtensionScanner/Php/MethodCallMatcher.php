@@ -6094,4 +6094,11 @@ return [
             'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->generatePage_preProcessing' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-102590-TSFE-generatePage_preProcessingRemoved.rst',
+        ],
+    ],
 ];

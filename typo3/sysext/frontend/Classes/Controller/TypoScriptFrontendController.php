@@ -266,15 +266,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public string $newHash = '';
 
     /**
-     * This flag is set before the page is generated IF $this->no_cache is set. If this
-     * flag is set after the page content was generated, $this->no_cache is forced to be set.
-     * This is done in order to make sure that PHP code from Plugins / USER scripts does not falsely
-     * clear the no_cache flag.
-     * @internal
-     */
-    protected bool $no_cacheBeforePageGen = false;
-
-    /**
      * Eg. insert JS-functions in this array ($additionalHeaderData) to include them
      * once. Use associative keys.
      *
@@ -1819,20 +1810,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return $this->pageCacheTags;
     }
 
-    /********************************************
-     *
-     * Page generation; rendering and inclusion
-     *
-     *******************************************/
-    /**
-     * Does some processing BEFORE the page content is generated / built.
-     */
-    public function generatePage_preProcessing()
-    {
-        // Used as a safety check in case a PHP script is falsely disabling $this->no_cache during page generation.
-        $this->no_cacheBeforePageGen = $this->no_cache;
-    }
-
     /**
      * Check the value of "content_from_pid" of the current page record, and see if the current request
      * should actually show content from another page.
@@ -1895,11 +1872,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function generatePage_postProcessing(ServerRequestInterface $request)
     {
         $this->setAbsRefPrefix();
-        // This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated.
-        // This is a safety precaution, as it could have been unset by some script.
-        if ($this->no_cacheBeforePageGen) {
-            $this->set_no_cache('no_cache has been set before the page was generated - safety check', true);
-        }
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $event = new AfterCacheableContentIsGeneratedEvent($request, $this, $this->newHash, !$this->no_cache);
         $event = $eventDispatcher->dispatch($event);

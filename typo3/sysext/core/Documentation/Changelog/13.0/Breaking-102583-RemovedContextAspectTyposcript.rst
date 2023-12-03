@@ -20,7 +20,7 @@ related property :php:`forcedTemplateParsing`.
 Impact
 ======
 
-The following calls with throw PHP exceptions:
+The following calls will throw PHP exceptions:
 
 .. code-block:: php
 
