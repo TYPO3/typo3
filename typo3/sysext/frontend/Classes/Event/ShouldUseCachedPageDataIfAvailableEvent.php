@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Event to allow listeners to disable the loading of cached page data when a page is requested.
- * Does not have any effect if "no_cache" is activated, or if there is no cached version of a page.
+ * Does not have any effect if caching is disabled, or if there is no cached version of a page.
  */
 final class ShouldUseCachedPageDataIfAvailableEvent
 {

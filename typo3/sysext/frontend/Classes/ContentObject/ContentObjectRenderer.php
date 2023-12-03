@@ -689,7 +689,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // Store cache
-        if ($cacheConfiguration !== null && !$this->getTypoScriptFrontendController()->no_cache) {
+        if ($cacheConfiguration !== null && $this->getRequest()->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
             $key = $this->calculateCacheKey($cacheConfiguration);
             if (!empty($key)) {
                 $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
@@ -5497,7 +5497,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function getFromCache(array $configuration)
     {
-        if ($this->getTypoScriptFrontendController()->no_cache) {
+        if (!$this->getRequest()->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
             return false;
         }
         $cacheKey = $this->calculateCacheKey($configuration);

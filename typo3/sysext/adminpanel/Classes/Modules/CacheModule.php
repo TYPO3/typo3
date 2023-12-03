@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 
 class CacheModule extends AbstractModule implements PageSettingsProviderInterface, RequestEnricherInterface, ResourceProviderInterface
 {
@@ -84,7 +85,9 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
     public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         if ($this->configurationService->getConfigurationOption('cache', 'noCache')) {
-            $request = $request->withAttribute('noCache', true);
+            $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
+            $cacheInstruction->disableCache('EXT:adminpanel: "No caching" disables cache.');
+            $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
         }
         return $request;
     }

@@ -25,29 +25,20 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Middleware\PageArgumentValidator;
-use TYPO3\CMS\Frontend\Middleware\PageResolver;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PageArgumentValidatorTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected CacheHashCalculator $cacheHashCalculator;
-    protected TimeTracker $timeTrackerStub;
-    protected RequestHandlerInterface $responseOutputHandler;
-    protected PageResolver&AccessibleObjectInterface $subject;
+    private RequestHandlerInterface $responseOutputHandler;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->timeTrackerStub = new TimeTracker(false);
-        $this->cacheHashCalculator = new CacheHashCalculator();
-
         // A request handler which only runs through
         $this->responseOutputHandler = new class () implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -70,7 +61,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
 
-        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
+        $subject = new PageArgumentValidator(new CacheHashCalculator());
         $subject->setLogger(new NullLogger());
 
         $response = $subject->process($request, $this->responseOutputHandler);
@@ -90,7 +81,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
 
-        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
+        $subject = new PageArgumentValidator(new CacheHashCalculator());
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
@@ -107,7 +98,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
         $request = new ServerRequest($incomingUrl, 'GET');
 
-        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
+        $subject = new PageArgumentValidator(new CacheHashCalculator());
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
@@ -127,7 +118,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
 
-        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
+        $subject = new PageArgumentValidator(new CacheHashCalculator());
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(200, $response->getStatusCode());
     }
@@ -144,7 +135,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
 
-        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
+        $subject = new PageArgumentValidator(new CacheHashCalculator());
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);

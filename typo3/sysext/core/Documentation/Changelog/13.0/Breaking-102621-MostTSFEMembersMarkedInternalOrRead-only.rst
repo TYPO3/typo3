@@ -59,6 +59,7 @@ The following public class properties have been marked "read only":
 The following public class properties have been marked :php:`@internal` - in general
 all properties not listed above:
 
+* :php:`TypoScriptFrontendController->no_cache` - Use Request attribute :php:`frontend.cache.instruction` instead
 * :php:`TypoScriptFrontendController->additionalHeaderData`
 * :php:`TypoScriptFrontendController->additionalFooterData`
 * :php:`TypoScriptFrontendController->register`

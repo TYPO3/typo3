@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 
 /**
  * This middleware authenticates a Backend User (be_user) (pre)-viewing a frontend page.
@@ -70,9 +71,11 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                 && (strtolower($request->getServerParams()['HTTP_CACHE_CONTROL'] ?? '') === 'no-cache'
                     || strtolower($request->getServerParams()['HTTP_PRAGMA'] ?? '') === 'no-cache')
             ) {
-                // Detecting if shift-reload has been clicked to set noCache attribute if so.
+                // Detecting if shift-reload has been clicked to disable caching if so.
                 // This is only done if a backend user is logged in to prevent DoS-attacks for "casual" requests.
-                $request = $request->withAttribute('noCache', true);
+                $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
+                $cacheInstruction->disableCache('EXT:frontend: Logged in backend user forced reload disabled cache.');
+                $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
             }
         }
 

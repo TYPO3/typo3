@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\RouteResultInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
 
@@ -74,7 +75,6 @@ class WorkspacePreview implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $addInformationAboutDisabledCache = false;
         $keyword = $this->getPreviewInputCode($request);
         $setCookieOnCurrentRequest = false;
         $normalizedParams = $request->getAttribute('normalizedParams');
@@ -118,20 +118,16 @@ class WorkspacePreview implements MiddlewareInterface
             $GLOBALS['BE_USER']->setTemporaryWorkspace(0);
             // Register the backend user as aspect
             $this->setBackendUserAspect($context, $GLOBALS['BE_USER']);
-            // Caching is disabled, because otherwise generated URLs could include the keyword parameter
-            $request = $request->withAttribute('noCache', true);
-            $addInformationAboutDisabledCache = true;
+            $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
+            $cacheInstruction->disableCache('ext:workspaces: Disabled FE cache with BE_USER previewing live workspace');
+            $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
             $setCookieOnCurrentRequest = false;
         }
 
         $response = $handler->handle($request);
 
-        $tsfe = $this->getTypoScriptFrontendController();
-        if ($tsfe !== null && $addInformationAboutDisabledCache) {
-            $tsfe->set_no_cache('GET Parameter ADMCMD_prev=LIVE was given', true);
-        }
-
         // Add an info box to the frontend content
+        $tsfe = $this->getTypoScriptFrontendController();
         if ($tsfe !== null && $context->getPropertyFromAspect('workspace', 'isOffline', false)) {
             $previewInfo = $this->renderPreviewInfo($tsfe, $request->getUri());
             $body = $response->getBody();

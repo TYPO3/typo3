@@ -53,15 +53,16 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
                     'pageUid' => $tsfe->id,
                     'pageType' => $tsfe->getPageArguments()->getPageType(),
                     'groupList' => implode(',', $frontendUserAspect->getGroupIds()),
-                    'noCache' => $this->isNoCacheEnabled(),
+                    'noCache' => !$this->isCachingAllowed($request),
+                    'noCacheReasons' => $request->getAttribute('frontend.cache.instruction')->getDisabledCacheReasons(),
                     'countUserInt' => count($tsfe->config['INTincScript'] ?? []),
                     'totalParsetime' => $this->getTimeTracker()->getParseTime(),
                     'feUser' => [
                         'uid' => $frontendUserAspect->get('id') ?: 0,
                         'username' => $frontendUserAspect->get('username') ?: '',
                     ],
-                    'imagesOnPage' => $this->collectImagesOnPage(),
-                    'documentSize' => $this->collectDocumentSize(),
+                    'imagesOnPage' => $this->collectImagesOnPage($request),
+                    'documentSize' => $this->collectDocumentSize($request),
                 ],
             ]
         );
@@ -106,7 +107,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
      * Collects images from TypoScriptFrontendController and calculates the total size.
      * Returns human-readable image sizes for fluid template output
      */
-    protected function collectImagesOnPage(): array
+    protected function collectImagesOnPage(ServerRequestInterface $request): array
     {
         $imagesOnPage = [
             'files' => [],
@@ -115,7 +116,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
             'totalSizeHuman' => GeneralUtility::formatSize(0),
         ];
 
-        if ($this->isNoCacheEnabled() === false) {
+        if ($this->isCachingAllowed($request)) {
             return $imagesOnPage;
         }
 
@@ -138,21 +139,20 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     }
 
     /**
-     * Gets the document size from the current page in a human readable format
+     * Gets the document size from the current page in a human-readable format
      */
-    protected function collectDocumentSize(): string
+    protected function collectDocumentSize(ServerRequestInterface $request): string
     {
         $documentSize = 0;
-        if ($this->isNoCacheEnabled() === true) {
+        if (!$this->isCachingAllowed($request)) {
             $documentSize = mb_strlen($this->getTypoScriptFrontendController()->content, 'UTF-8');
         }
-
         return GeneralUtility::formatSize($documentSize);
     }
 
-    protected function isNoCacheEnabled(): bool
+    protected function isCachingAllowed(ServerRequestInterface $request): bool
     {
-        return (bool)$this->getTypoScriptFrontendController()->no_cache;
+        return $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
     }
 
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController

@@ -62,6 +62,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentContentObject;
@@ -2709,6 +2710,7 @@ final class ContentObjectRendererTest extends UnitTestCase
             ContentObjectRenderer::class,
             [
                 'calculateCacheKey',
+                'getRequest',
                 'getTypoScriptFrontendController',
             ]
         );
@@ -2717,13 +2719,18 @@ final class ContentObjectRendererTest extends UnitTestCase
             ->method('calculateCacheKey')
             ->with($conf)
             ->willReturn($cacheKey);
+        $request = (new ServerRequest())->withAttribute('frontend.cache.instruction', new CacheInstruction());
+        $subject
+            ->expects(self::once())
+            ->method('getRequest')
+            ->willReturn($request);
         $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendController
             ->expects(self::exactly($times))
             ->method('addCacheTags')
             ->with($tags);
         $subject
-            ->expects(self::exactly($times + 1))
+            ->expects(self::exactly($times))
             ->method('getTypoScriptFrontendController')
             ->willReturn($typoScriptFrontendController);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);

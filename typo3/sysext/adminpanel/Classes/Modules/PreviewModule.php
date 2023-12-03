@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 
 /**
  * Admin Panel Preview Module
@@ -44,8 +45,6 @@ use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 class PreviewModule extends AbstractModule implements RequestEnricherInterface, PageSettingsProviderInterface, ResourceProviderInterface, OnSubmitActorInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    protected CacheManager $cacheManager;
 
     /**
      * module configuration, set on initialize
@@ -61,10 +60,9 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      */
     protected array $config;
 
-    public function injectCacheManager(CacheManager $cacheManager): void
-    {
-        $this->cacheManager = $cacheManager;
-    }
+    public function __construct(
+        protected readonly CacheManager $cacheManager,
+    ) {}
 
     public function getIconIdentifier(): string
     {
@@ -98,8 +96,11 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         ];
         if ($this->config['showFluidDebug']) {
             // forcibly unset fluid caching as it does not care about the tsfe based caching settings
+            // @todo: Useless?! CacheManager is initialized via bootstrap already, TYPO3_CONF_VARS is not read again?
             unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend']);
-            $request = $request->withAttribute('noCache', true);
+            $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
+            $cacheInstruction->disableCache('EXT:adminpanel: "Show fluid debug output" disables cache.');
+            $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
         }
         $this->initializeFrontendPreview(
             $this->config['showHiddenPages'],

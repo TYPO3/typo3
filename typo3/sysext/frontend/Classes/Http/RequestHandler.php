@@ -179,7 +179,7 @@ class RequestHandler implements RequestHandlerInterface
 
         // Create a default Response object and add headers and body to it
         $response = new Response();
-        $response = $controller->applyHttpHeadersToResponse($response);
+        $response = $controller->applyHttpHeadersToResponse($request, $response);
         $this->displayPreviewInfoMessage($controller);
         $response->getBody()->write($controller->content);
         return $response;

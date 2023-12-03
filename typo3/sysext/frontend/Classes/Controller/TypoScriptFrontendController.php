@@ -74,7 +74,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
@@ -112,14 +111,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected Site $site;
     protected SiteLanguage $language;
     protected PageArguments $pageArguments;
-
-    /**
-     * Page will not be cached. Write only TRUE. Never clear value (some other
-     * code might have reasons to set it TRUE).
-     * @var bool
-     * @internal
-     */
-    public $no_cache = false;
 
     /**
      * Rootline of page records all the way to the root.
@@ -399,21 +390,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function __construct(Context $context, Site $site, SiteLanguage $siteLanguage, PageArguments $pageArguments)
     {
-        $this->initializeContext($context);
+        $this->context = $context;
         $this->site = $site;
         $this->language = $siteLanguage;
         $this->setPageArguments($pageArguments);
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         $this->initCaches();
-    }
-
-    private function initializeContext(Context $context): void
-    {
-        $this->context = $context;
-        if (!$this->context->hasAspect('frontend.preview')) {
-            $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
-        }
     }
 
     protected function initPageRenderer(): void
@@ -870,7 +853,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Analysing $this->pageAccessFailureHistory into a summary array telling which features disabled display and on which pages and conditions. That data can be used inside a page-not-found handler
+     * Analysing $this->pageAccessFailureHistory into a summary array telling which features disabled display and on which pages and conditions.
+     * That data can be used inside a page-not-found handler
      *
      * @param string|null $failureReasonCode the error code to be attached (optional), see PageAccessFailureReasons list for details
      * @return array Summary of why page access was not allowed.
@@ -890,7 +874,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
             foreach ($combinedRecords as $k => $pagerec) {
                 // If $k=0 then it is the very first page the original ID was pointing at and that will get a full check of course
-                // If $k>0 it is parent pages being tested. They are only significant for the access to the first page IF they had the extendToSubpages flag set, hence checked only then!
+                // If $k>0 it is parent pages being tested. They are only significant for the access to the first page IF they had the
+                // extendToSubpages flag set, hence checked only then!
                 if (!$k || $pagerec['extendToSubpages']) {
                     if ($pagerec['hidden'] ?? false) {
                         $output['hidden'][$pagerec['uid']] = true;
@@ -1009,6 +994,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         $site = $this->getSite();
+        $isCachingAllowed = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
 
         $tokenizer = new LossyTokenizer();
         $treeBuilder = GeneralUtility::makeInstance(SysTemplateTreeBuilder::class);
@@ -1017,9 +1003,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         /** @var PhpFrontend|null $typoscriptCache */
         $typoscriptCache = null;
-        if (!$this->no_cache) {
-            // $this->no_cache = true might have been set by earlier TypoScriptFrontendInitialization middleware.
-            // This means we don't do fancy cache stuff, calculate full TypoScript and ignore page cache.
+        if ($isCachingAllowed) {
+            // disableCache() might have been called by earlier middlewares. This means we don't do fancy cache
+            // stuff, calculate full TypoScript and don't get() from nor set() to typoscript and page cache.
             /** @var PhpFrontend|null $typoscriptCache */
             $typoscriptCache = $cacheManager->getCache('typoscript');
         }
@@ -1048,7 +1034,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $flatConstants = [];
         $serializedConstantConditionList = '';
         $gotConstantFromCache = false;
-        if (!$this->no_cache && $constantConditionIncludeTree = $typoscriptCache->require($constantConditionIncludeListCacheIdentifier)) {
+        if ($isCachingAllowed && $constantConditionIncludeTree = $typoscriptCache->require($constantConditionIncludeListCacheIdentifier)) {
             // We got the flat list of all constants conditions for this TypoScript combination from cache. Good. We traverse
             // this list to calculate "current" condition verdicts. With a hash of this list together with a hash of the
             // TypoScript sys_templates, we try to retrieve the full constants TypoScript from cache.
@@ -1068,12 +1054,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $gotConstantFromCache = true;
             }
         }
-        if ($this->no_cache || !$gotConstantFromCache) {
+        if (!$isCachingAllowed || !$gotConstantFromCache) {
             // We did not get constants from cache, or are not allowed to use cache. We have to build constants from scratch.
             // This means we'll fetch the full constants include tree (from cache if possible), register the condition
             // matcher and register the AST builder and traverse include tree to retrieve constants AST and calculate
             // 'flat constants' from it. Both are cached if allowed afterwards for the 'if' above to kick in next time.
-            // $typoscriptCache can be null here with no_cache=1.
             $constantIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
             $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
             $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
@@ -1085,12 +1070,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // children for not matching conditions, which is important to create the correct AST.
             $includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
             $constantsAst = $constantAstBuilderVisitor->getAst();
-            // @internal Dispatch and experimental event allowing listeners to still change the constants AST,
+            // @internal Dispatch an experimental event allowing listeners to still change the constants AST,
             //           to for instance implement nested constants if really needed. Note this event may change
             //           or vanish later without further notice.
             $constantsAst = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(new ModifyTypoScriptConstantsEvent($constantsAst))->getConstantsAst();
             $flatConstants = $constantsAst->flatten();
-            if (!$this->no_cache) {
+            if ($isCachingAllowed) {
                 // We are allowed to cache and can create both the full list of conditions, plus the constant AST and flat constant
                 // list cache entry. To do that, we need all (!) conditions, but the above ConditionVerdictAwareIncludeTreeTraverser
                 // did not find nested conditions if an upper condition did not match. We thus have to traverse include tree a
@@ -1121,7 +1106,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $setupConditionIncludeListCacheIdentifier = 'setup-condition-include-list-' . sha1($serializedSysTemplateRows . $serializedConstantConditionList);
         $setupConditionList = [];
         $gotSetupConditionsFromCache = false;
-        if (!$this->no_cache && $setupConditionIncludeTree = $typoscriptCache->require($setupConditionIncludeListCacheIdentifier)) {
+        if ($isCachingAllowed && $setupConditionIncludeTree = $typoscriptCache->require($setupConditionIncludeListCacheIdentifier)) {
             // We got the flat list of all setup conditions for this TypoScript combination from cache. Good. We traverse
             // this list to calculate "current" condition verdicts, which we need as hash to be part of page cache identifier.
             $includeTreeTraverserVisitors = [];
@@ -1138,12 +1123,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $gotSetupConditionsFromCache = true;
         }
         $setupIncludeTree = null;
-        if ($this->no_cache || !$gotSetupConditionsFromCache) {
+        if (!$isCachingAllowed || !$gotSetupConditionsFromCache) {
             // We did not get setup condition list from cache, or are not allowed to use cache. We have to build setup
             // condition list from scratch. This means we'll fetch the full setup include tree (from cache if possible),
             // register the constant substitution visitor, and register condition matcher and register the condition
             // accumulator visitor.
-            // $typoscriptCache can be null here with no_cache=1.
             $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
             $includeTreeTraverserVisitors = [];
             $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
@@ -1167,7 +1151,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // obviously the page id.
         $this->lock = GeneralUtility::makeInstance(ResourceMutex::class);
         $this->newHash = $this->createHashBase($sysTemplateRows, $constantConditionList, $setupConditionList);
-        if (!$this->no_cache) {
+        if ($isCachingAllowed) {
             if ($this->shouldAcquireCacheData($request)) {
                 // Try to get a page cache row.
                 $this->getTimeTracker()->push('Cache Row');
@@ -1213,16 +1197,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->lock->acquireLock('pages', $this->newHash);
         }
 
-        if ($this->no_cache || empty($this->config) || $this->isINTincScript()) {
-            // We don't need the full setup AST in many cached scenarios. However, if no_cache is set, if no page cache
-            // entry could be loaded, if the page cache entry has _INT object, or if the user forced template
-            // parsing (adminpanel), then we still need the full setup AST. If there is "just" an _INT object, we can
-            // use a possible cache entry for the setup AST, which speeds up _INT parsing quite a bit. In other cases
-            // we calculate full setup AST and cache it if allowed.
+        if (!$isCachingAllowed || empty($this->config) || $this->isINTincScript()) {
+            // We don't need the full setup AST in many cached scenarios. However, if caching is not allowed, if no page
+            // cache entry could be loaded or if the page cache entry has _INT object, then we still need the full setup AST.
+            // If there is "just" an _INT object, we can use a possible cache entry for the setup AST, which speeds up _INT
+            // parsing quite a bit. In other cases we calculate full setup AST and cache it if allowed.
             $setupTypoScriptCacheIdentifier = 'setup-' . sha1($serializedSysTemplateRows . $serializedConstantConditionList . serialize($setupConditionList));
             $gotSetupFromCache = false;
             $setupArray = [];
-            if (!$this->no_cache) {
+            if ($isCachingAllowed) {
                 // We need AST, but we are allowed to potentially get it from cache.
                 if ($setupTypoScriptCache = $typoscriptCache->require($setupTypoScriptCacheIdentifier)) {
                     $frontendTypoScript->setSetupTree($setupTypoScriptCache['ast']);
@@ -1230,11 +1213,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $gotSetupFromCache = true;
                 }
             }
-            if ($this->no_cache || !$gotSetupFromCache) {
+            if (!$isCachingAllowed || !$gotSetupFromCache) {
                 // We need AST and couldn't get it from cache or are now allowed to. We thus need the full setup
                 // IncludeTree, which we can get from cache again if allowed, or is calculated a-new if not.
-                if ($this->no_cache || $setupIncludeTree === null) {
-                    // $typoscriptCache can be null here with no_cache=1.
+                if (!$isCachingAllowed || $setupIncludeTree === null) {
                     $setupIncludeTree = $treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $tokenizer, $site, $typoscriptCache);
                 }
                 $includeTreeTraverserConditionVerdictAwareVisitors = [];
@@ -1279,7 +1261,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $setupAst->addChild($typesNode);
                 }
                 $setupArray = $setupAst->toArray();
-                if (!$this->no_cache) {
+                if ($isCachingAllowed) {
                     // Write cache entry for AST and its array representation, we're allowed to do it.
                     $typoscriptCache->set($setupTypoScriptCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize(['ast' => $setupAst, 'array' => $setupArray]), '\'\\') . '\');');
                 }
@@ -1322,9 +1304,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $frontendTypoScript->setSetupArray($setupArray);
         }
 
-        // Set $this->no_cache TRUE if the config.no_cache value is set!
-        if (!$this->no_cache && ($this->config['config']['no_cache'] ?? false)) {
-            $this->set_no_cache('config.no_cache is set', true);
+        // Disable cache if config.no_cache is set!
+        if ($this->config['config']['no_cache'] ?? false) {
+            $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
+            $cacheInstruction->disableCache('EXT:frontend: Disabled cache due to TypoScript "config.no_cache = 1"');
         }
 
         // Auto-configure settings when a site is configured
@@ -1389,8 +1372,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function shouldAcquireCacheData(ServerRequestInterface $request): bool
     {
-        // Trigger event for possible by-pass of requiring of page cache (for re-caching purposes)
-        $event = new ShouldUseCachedPageDataIfAvailableEvent($request, $this, !$this->no_cache);
+        // Trigger event for possible by-pass of requiring of page cache.
+        $event = new ShouldUseCachedPageDataIfAvailableEvent($request, $this, $request->getAttribute('frontend.cache.instruction')->isCachingAllowed());
         GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
         return $event->shouldUseCachedPageData();
     }
@@ -1812,7 +1795,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->setAbsRefPrefix();
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
-        $event = new AfterCacheableContentIsGeneratedEvent($request, $this, $this->newHash, !$this->no_cache);
+        $usePageCache = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
+        $event = new AfterCacheableContentIsGeneratedEvent($request, $this, $this->newHash, $usePageCache);
         $event = $eventDispatcher->dispatch($event);
 
         // Processing if caching is enabled
@@ -2070,7 +2054,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @internal
      */
-    public function applyHttpHeadersToResponse(ResponseInterface $response): ResponseInterface
+    public function applyHttpHeadersToResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $response = $response->withHeader('Content-Type', $this->contentType);
         // Set header for content language unless disabled
@@ -2085,7 +2069,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // Set cache related headers to client (used to enable proxy / client caching!)
-        $headers = $this->getCacheHeaders();
+        $headers = $this->getCacheHeaders($request);
         foreach ($headers as $header => $value) {
             $response = $response->withHeader($header, $value);
         }
@@ -2108,11 +2092,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Get cache headers good for client/reverse proxy caching.
      */
-    protected function getCacheHeaders(): array
+    protected function getCacheHeaders(ServerRequestInterface $request): array
     {
         $headers = [];
         // Getting status whether we can send cache control headers for proxy caching:
-        $doCache = $this->isStaticCacheble();
+        $doCache = $this->isStaticCacheble($request);
         $isBackendUserLoggedIn = $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
         $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
         // Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
@@ -2139,8 +2123,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $this->getTimeTracker()->setTSlogMessage('Cache-headers with max-age "' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']) . '" would have been sent');
                 } else {
                     $reasonMsg = [];
-                    if ($this->no_cache) {
-                        $reasonMsg[] = 'Caching disabled (no_cache).';
+                    if (!$request->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
+                        $reasonMsg[] = 'Caching disabled.';
                     }
                     if ($this->isINTincScript()) {
                         $reasonMsg[] = '*_INT object(s) on page.';
@@ -2169,9 +2153,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @internal
      */
-    public function isStaticCacheble(): bool
+    public function isStaticCacheble(ServerRequestInterface $request): bool
     {
-        return !$this->no_cache && !$this->isINTincScript() && !$this->context->getAspect('frontend.user')->isUserOrGroupSet();
+        $isCachingAllowed = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
+        return $isCachingAllowed && !$this->isINTincScript() && !$this->context->getAspect('frontend.user')->isUserOrGroupSet();
     }
 
     /**
@@ -2258,9 +2243,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Sets the cache-flag to 1. Could be called from user-included php-files in order to ensure that a page is not cached.
      *
      * @param string $reason An optional reason to be written to the log.
-     * @param bool $internalRequest Whether the request is internal or not (true should only be used by core calls).
+     * @todo: deprecate
      */
-    public function set_no_cache(string $reason = '', bool $internalRequest = false): void
+    public function set_no_cache(string $reason = ''): void
     {
         $warning = '';
         $context = [];
@@ -2284,22 +2269,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             $context['line'] = $trace[0]['line'];
         }
-        if (!$internalRequest && $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
             $warning .= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
             $this->getTimeTracker()->setTSlogMessage($warning, LogLevel::NOTICE);
         } else {
             $warning .= ' Caching is disabled!';
-            $this->disableCache();
+            /** @var ServerRequestInterface $request */
+            $request = $GLOBALS['TYPO3_REQUEST'];
+            $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
+            $cacheInstruction->disableCache('EXT:frontend: Caching disabled using deprecated set_no_cache().');
         }
         $this->logger->notice($warning, $context);
-    }
-
-    /**
-     * Disables caching of the current page.
-     */
-    protected function disableCache(): void
-    {
-        $this->no_cache = true;
     }
 
     /**

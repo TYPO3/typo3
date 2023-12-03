@@ -74,6 +74,10 @@
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache\': isCachedInfo
     }'}" debug="false"/>
 
+<f:if condition="{info.noCache}">
+    <f:render partial="Data/TableKeyValue" arguments="{label: 'Disabled Cache reasons', languageKey: languageKey, data: info.noCacheReasons}" debug="false"/>
+</f:if>
+
 <f:render partial="Data/TableKeyValue" arguments="{label: 'UserIntObjects', languageKey: languageKey, data: '{
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:countUserInt\': info.countUserInt
     }'}" debug="false"/>

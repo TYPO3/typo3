@@ -21,12 +21,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Event that is used directly after all cached content is stored in
- * the page cache.
+ * Event that is used directly after all cached content is stored in the page cache.
  *
- * If a page is called from the cache, this event is NOT fired.
- * This event is also NOT FIRED when $TSFE->no_cache (or manipulated via AfterCacheableContentIsGeneratedEvent)
- * is set.
+ * NOT fired, if:
+ * * A page is called from the cache
+ * * Caching is disabled using 'frontend.cache.instruction' request attribute, which can
+ *   be set by various middlewares or AfterCacheableContentIsGeneratedEvent
  */
 final class AfterCachedPageIsPersistedEvent
 {

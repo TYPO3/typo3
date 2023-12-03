@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -390,7 +391,9 @@ alert(yes);', $body);
 
         $request = (new InternalRequest('https://website.local/en/'))->withPageId($pid);
         if ($nocache) {
-            $request = $request->withAttribute('noCache', true);
+            $cacheInstruction = new CacheInstruction();
+            $cacheInstruction->disableCache('EXT:frontend: Testing disables caching.');
+            $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
         }
         $this->executeFrontendSubRequest($request);
         self::assertSame($expectedRootLine, $GLOBALS['TSFE']->rootLine);

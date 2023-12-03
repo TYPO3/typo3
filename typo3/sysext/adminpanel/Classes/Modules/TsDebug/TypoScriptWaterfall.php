@@ -26,6 +26,7 @@ use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 
 /**
  * Class TypoScriptWaterfall
@@ -53,7 +54,9 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
     public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         if ($this->getConfigurationOption('forceTemplateParsing')) {
-            $request = $request->withAttribute('noCache', true);
+            $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
+            $cacheInstruction->disableCache('EXT:adminpanel: "Force TS rendering" disables cache.');
+            $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
         }
         $this->getTimeTracker()->LR = $this->getConfigurationOption('LR');
         return $request;

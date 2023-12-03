@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -50,10 +52,25 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // The cache information attribute may be set by previous middlewares already. Make sure we have one from now on.
+        $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
+        $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
+
+        // Make sure frontend.preview is given from now on.
+        if (!$this->context->hasAspect('frontend.preview')) {
+            $this->context->setAspect('frontend.preview', new PreviewAspect());
+        }
+        // If the frontend is showing a preview, caching MUST be disabled.
+        if ($this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)) {
+            // @todo: To disentangle this, the preview aspect could be dropped and middlewares that set isPreview true
+            //        could directly set $cacheInstruction->disableCache() instead.
+            $cacheInstruction->disableCache('EXT:frontend: Disabled cache due to enabled frontend.preview aspect isPreview.');
+        }
+
         $GLOBALS['TYPO3_REQUEST'] = $request;
         /** @var Site $site */
-        $site = $request->getAttribute('site', null);
-        $pageArguments = $request->getAttribute('routing', null);
+        $site = $request->getAttribute('site');
+        $pageArguments = $request->getAttribute('routing');
         if (!$pageArguments instanceof PageArguments) {
             // Page Arguments must be set in order to validate. This middleware only works if PageArguments
             // is available, and is usually combined with the Page Resolver middleware
@@ -71,17 +88,6 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
             $request->getAttribute('language', $site->getDefaultLanguage()),
             $pageArguments
         );
-        if ($pageArguments->getArguments()['no_cache'] ?? $request->getParsedBody()['no_cache'] ?? false) {
-            $controller->set_no_cache('&no_cache=1 has been supplied, so caching is disabled! URL: "' . (string)$request->getUri() . '"');
-        }
-        // Usually only set by the PageArgumentValidator
-        if ($request->getAttribute('noCache', false)) {
-            $controller->no_cache = true;
-        }
-        // If the frontend is showing a preview, caching MUST be disabled.
-        if ($this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)) {
-            $controller->set_no_cache('Preview active', true);
-        }
         $directResponse = $controller->determineId($request);
         if ($directResponse) {
             return $directResponse;

@@ -24,7 +24,6 @@ use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Admin Panel Page Title module for showing the Page title providers
@@ -62,13 +61,12 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
         $data = [
             'cacheEnabled' => true,
         ];
-        if ($this->isNoCacheEnabled()) {
+        if (!$this->isCachingAllowed($request)) {
             $data = [
                 'orderedProviders' => [],
                 'usedProvider' => null,
                 'skippedProviders' => [],
             ];
-
             $logRecords = GeneralUtility::makeInstance(InMemoryLogWriter::class)->getLogEntries();
             foreach ($logRecords as $logEntry) {
                 if ($logEntry->getComponent() === self::LOG_COMPONENT) {
@@ -100,13 +98,8 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
         return $view->render();
     }
 
-    protected function isNoCacheEnabled(): bool
+    protected function isCachingAllowed(ServerRequestInterface $request): bool
     {
-        return (bool)$this->getTypoScriptFrontendController()->no_cache;
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
+        return $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
     }
 }

@@ -88,6 +88,7 @@ namespace PHPSTORM_META {
         'moduleData',
         'frontend.controller',
         'frontend.typoscript',
+        'frontend.cache.instruction',
     );
     override(\Psr\Http\Message\ServerRequestInterface::getAttribute(), map([
         'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
@@ -99,6 +100,7 @@ namespace PHPSTORM_META {
         'moduleData' => \TYPO3\CMS\Backend\Module\ModuleData::class,
         'frontend.controller' => \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
         'frontend.typoscript' => \TYPO3\CMS\Core\TypoScript\FrontendTypoScript::class,
+        'frontend.cache.instruction' => \TYPO3\CMS\Frontend\Cache\CacheInstruction::class,
     ]));
 
     expectedArguments(
