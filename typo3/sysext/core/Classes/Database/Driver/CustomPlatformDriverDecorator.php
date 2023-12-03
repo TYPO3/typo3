@@ -17,10 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver;
-use Doctrine\DBAL\Driver\API\ExceptionConverter;
-use Doctrine\DBAL\Driver\Connection as DriverConnection;
+use Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDb1027Platform as DoctrineMariaDB1027Platform;
 use Doctrine\DBAL\Platforms\MariaDb1043Platform as DoctrineMariaDB1043Platform;
@@ -34,7 +31,6 @@ use Doctrine\DBAL\Platforms\PostgreSQL100Platform as DoctrinePostgreSQL100Platfo
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as DoctrinePostgreSQL94Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
-use Doctrine\DBAL\VersionAwarePlatformDriver;
 use TYPO3\CMS\Core\Database\Platform\MariaDB1027Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDB1043Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform;
@@ -51,42 +47,19 @@ use TYPO3\CMS\Core\Database\Platform\SQLitePlatform;
 /**
  * @internal Not part of public core API.
  */
-final class CustomPlatformDriverDecorator implements Driver, VersionAwarePlatformDriver
+final class CustomPlatformDriverDecorator extends AbstractDriverMiddleware
 {
-    public function __construct(private Driver $wrappedDriver) {}
-
-    public function connect(#[\SensitiveParameter] array $params): DriverConnection
-    {
-        return $this->wrappedDriver->connect($params);
-    }
-
     /**
      * Note: The method signature will change with doctrine/dbal 4.0 getting the database platform passed.
      */
     public function getDatabasePlatform(): AbstractPlatform
     {
-        return $this->elevatePlatform($this->wrappedDriver->getDatabasePlatform());
-    }
-
-    public function getExceptionConverter(): ExceptionConverter
-    {
-        return $this->wrappedDriver->getExceptionConverter();
-    }
-
-    /**
-     * @internal This will be removed with doctrine/dbal 4.0. Added just to satisfy interface requirements for now.
-     */
-    public function getSchemaManager(Connection $conn, AbstractPlatform $platform): \Doctrine\DBAL\Schema\AbstractSchemaManager
-    {
-        return $this->wrappedDriver->getSchemaManager($conn, $platform);
+        return $this->elevatePlatform(parent::getDatabasePlatform());
     }
 
     public function createDatabasePlatformForVersion($version)
     {
-        if ($this->wrappedDriver instanceof VersionAwarePlatformDriver) {
-            return $this->elevatePlatform($this->wrappedDriver->createDatabasePlatformForVersion($version));
-        }
-        return $this->elevatePlatform($this->wrappedDriver->getDatabasePlatform());
+        return $this->elevatePlatform(parent::createDatabasePlatformForVersion($version));
     }
 
     /**
