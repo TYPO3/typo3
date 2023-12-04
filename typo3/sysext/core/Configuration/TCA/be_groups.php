@@ -171,6 +171,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSiteLanguages',
+                'dbFieldLength' => 255,
             ],
         ],
         'custom_options' => [

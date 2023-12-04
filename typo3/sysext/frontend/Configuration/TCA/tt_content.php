@@ -218,6 +218,7 @@ return [
                 ],
                 'default' => 'text',
                 'authMode' => 'explicitAllow',
+                'dbFieldLength' => 255,
             ],
         ],
         'editlock' => [
@@ -382,6 +383,7 @@ return [
                     ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_class_extra_large', 'value' => 'extra-large'],
                 ],
                 'default' => '',
+                'dbFieldLength' => 60,
             ],
         ],
         'space_after_class' => [
@@ -399,6 +401,7 @@ return [
                     ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_class_extra_large', 'value' => 'extra-large'],
                 ],
                 'default' => '',
+                'dbFieldLength' => 60,
             ],
         ],
         'bullets_type' => [
@@ -524,6 +527,7 @@ return [
                     ],
                 ],
                 'default' => '',
+                'dbFieldLength' => 255,
             ],
         ],
         'header_link' => [
@@ -874,6 +878,7 @@ return [
                 ],
                 'default' => '',
                 'authMode' => 'explicitAllow',
+                'dbFieldLength' => 255,
             ],
         ],
         'file_collections' => [
@@ -930,6 +935,7 @@ return [
                     ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting.modification_date', 'value' => 'modification_date'],
                     ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting.title', 'value' => 'title'],
                 ],
+                'dbFieldLength' => 64,
             ],
         ],
         'filelink_sorting_direction' => [
@@ -943,6 +949,7 @@ return [
                     ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting_direction.ascending', 'value' => 'asc'],
                     ['label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting_direction.descending', 'value' => 'desc'],
                 ],
+                'dbFieldLength' => 4,
             ],
         ],
         'target' => [
@@ -1063,6 +1070,7 @@ return [
                 'itemsProcConfig' => [
                     'table' => 'tt_content',
                 ],
+                'dbFieldLength' => 64,
             ],
         ],
         'table_class' => [
@@ -1077,6 +1085,7 @@ return [
                     ['label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_class.bordered', 'value' => 'bordered'],
                 ],
                 'default' => '',
+                'dbFieldLength' => 60,
             ],
         ],
         'table_caption' => [

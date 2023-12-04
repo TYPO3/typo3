@@ -414,6 +414,7 @@ $tca = [
                 ],
                 'default' => '',
                 'readOnly' => true,
+                'dbFieldLength' => 3,
             ],
         ],
         'duration' => [
@@ -447,6 +448,7 @@ $tca = [
                 ],
                 'default' => '',
                 'readOnly' => true,
+                'dbFieldLength' => 4,
             ],
         ],
         'width' => [

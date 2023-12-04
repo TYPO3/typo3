@@ -233,10 +233,10 @@
                 <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="t3ver_oid" type="integer">0</field>
-                <field index="CType">textpic</field>
                 <field index="header">Test content</field>
                 <field index="image" type="integer">1</field>
                 <field index="header_link">file:1</field>
+                <field index="CType">textpic</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="header_link" type="array">
@@ -296,8 +296,6 @@
             <fieldlist index="data" type="array">
                 <field index="uid">1</field>
                 <field index="pid">0</field>
-                <field index="storage">1</field>
-                <field index="type">2</field>
                 <field index="identifier">/user_upload/typo3_image2.jpg</field>
                 <field index="identifier_hash">f90bb9a35622f35b5279195e324eddbaec8164b2</field>
                 <field index="folder_hash">19669f1e02c2f16705ec7587044c66443be70725</field>
@@ -308,6 +306,8 @@
                 <field index="modification_date">1389878273</field>
                 <field index="metadata">0</field>
                 <field index="size">1958</field>
+                <field index="storage">1</field>
+                <field index="type">2</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">
@@ -340,7 +340,6 @@
                 <field index="pid">0</field>
                 <field index="description" type="NULL"></field>
                 <field index="name">fileadmin</field>
-                <field index="driver">Local</field>
                 <field index="is_public">1</field>
                 <field index="is_browsable">1</field>
                 <field index="is_default">0</field>
@@ -364,6 +363,7 @@
 		&lt;/sheet&gt;
 	&lt;/data&gt;
 &lt;/T3FlexForms&gt;</field>
+                <field index="driver">Local</field>
             </fieldlist>
             <related index="rels" type="array"/>
         </tablerow>
@@ -373,12 +373,12 @@
                 <field index="pid">0</field>
                 <field index="sys_language_uid">0</field>
                 <field index="l10n_parent">0</field>
-                <field index="file">1</field>
                 <field index="title">Dummy image</field>
                 <field index="alternative">Photo of program code</field>
                 <field index="description">This is a dummy image.</field>
                 <field index="width">400</field>
                 <field index="height">300</field>
+                <field index="file">1</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="file" type="array">
@@ -398,12 +398,12 @@
                 <field index="pid">0</field>
                 <field index="sys_language_uid">1</field>
                 <field index="l10n_parent">1</field>
-                <field index="file">1</field>
                 <field index="title">Beispiel Bild</field>
                 <field index="alternative">Foto von Programmcode</field>
                 <field index="description">Nur ein Beispielbild.</field>
                 <field index="width">400</field>
                 <field index="height">300</field>
+                <field index="file">1</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="l10n_parent" type="array">

@@ -73,6 +73,7 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
                 'size' => 5,
+                'dbFieldLength' => 512,
                 'fieldControl' => [
                     'editPopup' => [
                         'disabled' => false,
@@ -293,6 +294,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSiteLanguages',
+                'dbFieldLength' => 255,
             ],
         ],
         'TSconfig' => [

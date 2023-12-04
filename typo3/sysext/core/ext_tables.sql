@@ -3,19 +3,6 @@
 #
 CREATE TABLE be_groups (
 	title varchar(50) DEFAULT '' NOT NULL,
-	non_exclude_fields text,
-	explicit_allowdeny text,
-	allowed_languages varchar(255) DEFAULT '' NOT NULL,
-	custom_options text,
-	pagetypes_select text,
-	tables_select text,
-	tables_modify text,
-	groupMods text,
-	availableWidgets text,
-	mfa_providers text,
-	file_mountpoints text,
-	file_permissions text,
-	subgroup text,
 );
 
 #
@@ -36,14 +23,10 @@ CREATE TABLE be_sessions (
 #
 CREATE TABLE be_users (
 	username varchar(50) DEFAULT '' NOT NULL,
-	usergroup text,
+	# @todo: Analyzer does not handle default yet.
 	lang varchar(10) DEFAULT 'default' NOT NULL,
 	realName varchar(80) DEFAULT '' NOT NULL,
-	userMods text,
-	allowed_languages varchar(255) DEFAULT '' NOT NULL,
 	uc mediumblob,
-	file_mountpoints text,
-	file_permissions text,
 	workspace_id int(11) DEFAULT '0' NOT NULL,
 	mfa mediumblob,
 	KEY username (username)
@@ -59,16 +42,11 @@ CREATE TABLE pages (
 	perms_group tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	perms_everybody tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	title varchar(255) DEFAULT '' NOT NULL,
-	doktype int(11) unsigned DEFAULT '0' NOT NULL,
 	url varchar(255) DEFAULT '' NOT NULL,
-	shortcut_mode int(10) unsigned DEFAULT '0' NOT NULL,
 	subtitle varchar(255) DEFAULT '' NOT NULL,
-	layout int(11) unsigned DEFAULT '0' NOT NULL,
 	target varchar(80) DEFAULT '' NOT NULL,
-	cache_timeout int(10) unsigned DEFAULT '0' NOT NULL,
 	cache_tags varchar(255) DEFAULT '' NOT NULL,
 	SYS_LASTCHANGED int(10) unsigned DEFAULT '0' NOT NULL,
-	module varchar(255) DEFAULT '' NOT NULL,
 	author varchar(255) DEFAULT '' NOT NULL,
 	nav_title varchar(255) DEFAULT '' NOT NULL,
 
@@ -76,10 +54,6 @@ CREATE TABLE pages (
 	shortcut int(10) unsigned DEFAULT '0' NOT NULL,
 	content_from_pid int(10) unsigned DEFAULT '0' NOT NULL,
 	mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
-
-	backend_layout varchar(64) DEFAULT '' NOT NULL,
-	backend_layout_next_level varchar(64) DEFAULT '' NOT NULL,
-	tsconfig_includes text,
 
 	KEY determineSiteRoot (is_siteroot),
 	KEY language_identifier (l10n_parent,sys_language_uid),
@@ -136,7 +110,6 @@ CREATE TABLE sys_filemounts (
 #
 CREATE TABLE sys_file_storage (
 	name varchar(255) DEFAULT '' NOT NULL,
-	driver tinytext,
 	is_public tinyint(4) DEFAULT '0' NOT NULL,
 	processingfolder tinytext
 );
@@ -146,10 +119,6 @@ CREATE TABLE sys_file_storage (
 #
 CREATE TABLE sys_file (
 	last_indexed int(11) DEFAULT '0' NOT NULL,
-
-	# management information
-	storage int(11) DEFAULT '0' NOT NULL,
-	type varchar(10) DEFAULT '' NOT NULL,
 
 	# file info data
 	identifier text,
@@ -173,7 +142,6 @@ CREATE TABLE sys_file (
 # Table structure for table 'sys_file_metadata'
 #
 CREATE TABLE sys_file_metadata (
-	file int(11) DEFAULT '0' NOT NULL,
 	title tinytext,
 	alternative text,
 
@@ -240,6 +208,7 @@ CREATE TABLE sys_file_reference (
 #
 CREATE TABLE sys_file_collection (
 	title tinytext,
+	# @todo: db analyzer would remove default. needs another look.
 	type varchar(30) DEFAULT 'static' NOT NULL,
 );
 

@@ -50,6 +50,7 @@ return [
                 'foreign_table' => 'fe_groups',
                 'size' => 6,
                 'minitems' => 1,
+                'dbFieldLength' => 512,
             ],
         ],
         'name' => [

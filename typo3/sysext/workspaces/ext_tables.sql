@@ -21,8 +21,6 @@ CREATE TABLE sys_preview (
 #
 CREATE TABLE sys_workspace (
 	title varchar(30) DEFAULT '' NOT NULL,
-	file_mountpoints text,
-	stagechg_notification tinyint(3) DEFAULT '0' NOT NULL,
 );
 
 

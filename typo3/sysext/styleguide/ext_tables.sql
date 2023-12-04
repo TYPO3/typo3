@@ -51,11 +51,6 @@ CREATE TABLE tx_styleguide_displaycond (
     input_18 text,
     input_19 text,
     input_20 text,
-
-    select_1 text,
-    select_2 text,
-    select_3 text,
-    select_4 text,
 );
 
 
@@ -120,59 +115,6 @@ CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
     parenttable text,
 );
 
-CREATE TABLE tx_styleguide_elements_select (
-    select_single_1 text,
-    select_single_2 text,
-    select_single_3 text,
-    select_single_4 text,
-    select_single_5 text,
-    select_single_7 text,
-    select_single_8 text,
-    select_single_10 text,
-    select_single_11 text,
-    select_single_12 text,
-    select_single_13 text,
-    select_single_14 text,
-    select_single_15 text,
-    select_single_16 text,
-    select_single_17 text,
-    select_single_18 text,
-    select_single_19 text,
-    select_single_20 text,
-
-    select_singlebox_1 text,
-    select_singlebox_2 text,
-    select_singlebox_3 text,
-
-    select_checkbox_1 text,
-    select_checkbox_2 text,
-    select_checkbox_3 text,
-    select_checkbox_4 text,
-    select_checkbox_5 text,
-    select_checkbox_6 text,
-    select_checkbox_7 text,
-
-    select_multiplesidebyside_1 text,
-    select_multiplesidebyside_2 text,
-    select_multiplesidebyside_3 text,
-    select_multiplesidebyside_5 text,
-    select_multiplesidebyside_6 text,
-    select_multiplesidebyside_7 text,
-    select_multiplesidebyside_8 text,
-    select_multiplesidebyside_9 text,
-    select_multiplesidebyside_10 text,
-
-    select_tree_1 text,
-    select_tree_2 text,
-    select_tree_3 text,
-    select_tree_4 text,
-    select_tree_5 text,
-    select_tree_6 text,
-
-    select_requestUpdate_1 text
-);
-
-
 # MM tables for fields defined in flex form data structures
 # are NOT auto created by DefaultTcaSchema
 CREATE TABLE tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm (
@@ -184,12 +126,6 @@ CREATE TABLE tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm (
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign)
 );
-
-
-CREATE TABLE tx_styleguide_elements_t3editor (
-    t3editor_reload_1 int(11) DEFAULT '0' NOT NULL,
-);
-
 
 CREATE TABLE tx_styleguide_elements_t3editor_flex_1_inline_1_child (
     parentid int(11) DEFAULT '0' NOT NULL,
@@ -214,12 +150,10 @@ CREATE TABLE tx_styleguide_inline_11_child (
 CREATE TABLE tx_styleguide_inline_1n_inline_1_child (
     input_1 text,
     input_3 text,
-    select_tree_1 text
 );
 
 CREATE TABLE tx_styleguide_inline_1n_inline_2_child (
     input_1 text,
-    select_tree_1 text,
 );
 
 CREATE TABLE tx_styleguide_inline_1nreusabletable_child (
@@ -236,7 +170,6 @@ CREATE TABLE tx_styleguide_inline_1n1n_childchild (
 
 CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
     dummy_1 text,
-    select_tree_1 text,
 );
 
 CREATE TABLE tx_styleguide_inline_expandsingle_child (
@@ -272,8 +205,6 @@ CREATE TABLE tx_styleguide_inline_mn (
 
 
 CREATE TABLE tx_styleguide_inline_mn_mm (
-    parentid int(11) DEFAULT '0' NOT NULL,
-    childid int(11) DEFAULT '0' NOT NULL,
     parentsort int(10) DEFAULT '0' NOT NULL,
     childsort int(10) DEFAULT '0' NOT NULL,
 );
@@ -306,8 +237,6 @@ CREATE TABLE tx_styleguide_inline_mnsymmetric (
 
 
 CREATE TABLE tx_styleguide_inline_mnsymmetric_mm (
-    hotelid int(11) DEFAULT '0' NOT NULL,
-    branchid int(11) DEFAULT '0' NOT NULL,
     hotelsort int(10) DEFAULT '0' NOT NULL,
     branchsort int(10) DEFAULT '0' NOT NULL
 );
@@ -326,21 +255,9 @@ CREATE TABLE tx_styleguide_inline_mnsymmetricgroup_mm (
     branchsort int(10) DEFAULT '0' NOT NULL
 );
 
-CREATE TABLE tx_styleguide_inline_usecombination_mm (
-    select_parent int(11) unsigned DEFAULT '0' NOT NULL,
-    select_child int(11) unsigned DEFAULT '0' NOT NULL
-);
-
-
 CREATE TABLE tx_styleguide_inline_usecombination_child (
     input_1 varchar(255) DEFAULT '' NOT NULL
 );
-
-CREATE TABLE tx_styleguide_inline_usecombinationbox_mm (
-    select_parent int(11) unsigned DEFAULT '0' NOT NULL,
-    select_child int(11) unsigned DEFAULT '0' NOT NULL
-);
-
 
 CREATE TABLE tx_styleguide_inline_usecombinationbox_child (
     input_1 varchar(255) DEFAULT '' NOT NULL
@@ -366,12 +283,6 @@ CREATE TABLE tx_styleguide_required (
     notrequired_1 text,
 
     input_1 text,
-
-    select_1 text,
-    select_2 text,
-    select_3 text,
-    select_4 text,
-    select_5 text,
 
     rte_1 text,
 
@@ -408,35 +319,23 @@ CREATE TABLE tx_styleguide_staticdata (
 
 
 CREATE TABLE tx_styleguide_type (
-    record_type text,
     input_1 text,
 );
 
 
 CREATE TABLE tx_styleguide_typeforeign (
-    foreign_table int(11) DEFAULT '0' NOT NULL,
     input_1 text,
 );
 
 
 CREATE TABLE tx_styleguide_valuesdefault (
     input_1 text,
-
-    select_1 text,
-    select_2 text
 );
 
 CREATE TABLE tx_styleguide_l10nreadonly (
     input text,
     none text,
     language int(11) DEFAULT '0' NOT NULL,
-    select_single text,
-    select_single_box text,
-    select_checkbox text,
-    select_tree text,
-    select_tree_mm text,
-    select_multiplesidebyside text,
-    select_multiplesidebyside_mm text,
 );
 
 CREATE TABLE tx_styleguide_l10nreadonly_inline_child (

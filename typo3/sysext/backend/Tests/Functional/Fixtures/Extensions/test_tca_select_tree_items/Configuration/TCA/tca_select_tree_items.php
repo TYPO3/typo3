@@ -17,6 +17,7 @@ return [
                 'foreign_table' => 'foreign_table',
                 'items' => [],
                 'maxitems' => 1,
+                'dbFieldLength' => 255,
             ],
         ],
     ],

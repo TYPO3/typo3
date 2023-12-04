@@ -769,6 +769,7 @@ return [
                     ],
                 ],
                 'maxitems' => 1,
+                'dbFieldLength' => 64,
             ],
         ],
         'backend_layout_next_level' => [
@@ -789,6 +790,7 @@ return [
                     ],
                 ],
                 'maxitems' => 1,
+                'dbFieldLength' => 64,
             ],
         ],
         'tsconfig_includes' => [

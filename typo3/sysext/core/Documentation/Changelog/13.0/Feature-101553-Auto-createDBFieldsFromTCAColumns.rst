@@ -29,6 +29,31 @@ definitions in :file:`ext_tables.sql` files in case they feel the core does
 not define them in a way the extension author wants: Explicit definition in
 :file:`ext_tables.sql` always take precedence over auto-magic.
 
+New TCA config option :php:`dbFieldLength`
+------------------------------------------
+
+For fields of type :php:`select` a new TCA config option :php:`dbFieldLength` has
+been introduced. It contains an integer value that is applied to :sql:`varchar` fields
+(not :sql:`text`) and defines the length of the DB field. It will not be respected for
+fields that resolve to an integer type. Developers who wish to optimize field
+length can use :php:`dbFieldLength` for :php:`type=select` fields to increase or
+decrease the default length the core comes up with.
+
+Example:
+
+.. code-block:: php
+
+    // will result in SQL text field
+    'config' => [
+        'itemsProcFunc => 'something',
+    ],
+
+    // will result in SQL varchar field length for 200 characters
+    'config' => [
+        'itemsProcFunc => 'something',
+        'dbFieldLength' => 200,
+    ],
+
 
 Impact
 ======
@@ -67,6 +92,8 @@ Columns are auto-created for these :php:`TCA` :php:`columns` types:
 * :php:`type = 'radio'` - new with core v13
 * :php:`type = 'link'` - new with core v13
 * :php:`type = 'inline'` - new with core v13
+* :php:`type = 'number'` - new with core v13
+* :php:`type = 'select'` - new with core v13
 
 See :ref:`Breaking: DateTime column definitions <breaking-99937-1691166389>`
 for a change in the :sql:`datetime` column definition calculation.

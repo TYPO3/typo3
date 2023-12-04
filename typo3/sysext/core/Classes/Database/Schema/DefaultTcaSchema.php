@@ -1036,6 +1036,128 @@ class DefaultTcaSchema
             }
             // Cleanup
             unset($tableConnectionPlatform, $type, $nullable, $lowerRange);
+
+            // Add fields for all tables, defining select columns (TCA type=select)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'select'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                if (($fieldConfig['config']['MM'] ?? '') !== '') {
+                    // MM relation, this is a "parent count" field. Have an int.
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::INTEGER,
+                        [
+                            'notnull' => true,
+                            'default' => 0,
+                            'unsigned' => true,
+                        ]
+                    );
+                    continue;
+                }
+
+                $dbFieldLength = (int)($fieldConfig['config']['dbFieldLength'] ?? 0);
+
+                // If itemsProcFunc is not set, check the item values
+                if (($fieldConfig['config']['itemsProcFunc'] ?? '') === '') {
+                    $items = $fieldConfig['config']['items'] ?? [];
+                    $itemsContainsOnlyIntegers = true;
+                    foreach ($items as $item) {
+                        if (!MathUtility::canBeInterpretedAsInteger($item['value'])) {
+                            $itemsContainsOnlyIntegers = false;
+                            break;
+                        }
+                    }
+                    $itemsAreAllPositive = true;
+                    foreach ($items as $item) {
+                        if ($item['value'] < 0) {
+                            $itemsAreAllPositive = false;
+                            break;
+                        }
+                    }
+                    // @todo: The dependency to renderType is unfortunate here. It's only purpose is to potentially have int fields
+                    //        instead of string when this is a 'single' relation / value. However, renderType should usually not
+                    //        influence DB layer at all. Maybe 'selectSingle' should be changed to an own 'type' instead to make
+                    //        this more explicit. Maybe DataHandler could benefit from this as well?
+                    if (($fieldConfig['config']['renderType'] ?? '') === 'selectSingle' || ($fieldConfig['config']['maxitems'] ?? 0) === 1) {
+                        // With 'selectSingle' or with 'maxitems = 1', only a single value can be selected.
+                        if (
+                            !is_array($fieldConfig['config']['fileFolderConfig'] ?? false)
+                            && ($items === [] || $itemsContainsOnlyIntegers === true)
+                        ) {
+                            // If the item list is empty, or if it contains only int values, an int field is enough.
+                            // Also, the config must not be a 'fileFolderConfig' field which takes string values.
+                            $tables[$tablePosition]->addColumn(
+                                $this->quote($fieldName),
+                                Types::INTEGER,
+                                [
+                                    'notnull' => true,
+                                    'default' => 0,
+                                    'unsigned' => $itemsAreAllPositive,
+                                ]
+                            );
+                            continue;
+                        }
+                        // If int is no option, have a string field.
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote($fieldName),
+                            Types::STRING,
+                            [
+                                'notnull' => true,
+                                'default' => '',
+                                'length' => $dbFieldLength > 0 ? $dbFieldLength : 255,
+                            ]
+                        );
+                        continue;
+                    }
+                    if ($itemsContainsOnlyIntegers) {
+                        // Multiple values can be selected and will be stored comma separated. When manual item values are
+                        // all integers, or if there is a foreign_table, we end up with a comma separated list of integers.
+                        // Using string / varchar 255 here should be long enough to store plenty of values, and can be
+                        // changed by setting 'dbFieldLength'.
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote($fieldName),
+                            Types::STRING,
+                            [
+                                // @todo: nullable = true is not a good default here. This stems from the fact that this
+                                //        if triggers a lot of TEXT->VARCHAR() field changes during upgrade, where TEXT
+                                //        is always nullable, but varchar() is not. As such, we for now declare this
+                                //        nullable, but could have a look at it later again when a value upgrade
+                                //        for such cases is in place that updates existing null fields to empty string.
+                                'notnull' => false,
+                                'default' => '',
+                                'length' => $dbFieldLength > 0 ? $dbFieldLength : 255,
+                            ]
+                        );
+                        continue;
+                    }
+                }
+
+                if ($dbFieldLength > 0) {
+                    // If nothing else matches, but there is a dbFieldLength set, have varchar with that length.
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::STRING,
+                        [
+                                'notnull' => true,
+                                'default' => '',
+                                'length' => $dbFieldLength,
+                            ]
+                    );
+                } else {
+                    // Final fallback creates a (nullable) text field.
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote($fieldName),
+                        Types::TEXT,
+                        [
+                            'notnull' => false,
+                        ]
+                    );
+                }
+            }
+
         }
 
         return $tables;

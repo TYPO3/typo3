@@ -2,6 +2,7 @@
 # Table structure for table 'sys_file_metadata'
 #
 CREATE TABLE sys_file_metadata (
+	# @todo: status is odd. It should be an int field, but can not since it is often created as empty string. default should be 1 "ok".
 	status varchar(24) DEFAULT '',
 	creator_tool varchar(255) DEFAULT '',
 	download_name varchar(255) DEFAULT '',
@@ -13,13 +14,6 @@ CREATE TABLE sys_file_metadata (
 	location_city varchar(45) DEFAULT '',
 	latitude decimal(24,14) DEFAULT '0.00000000000000',
 	longitude decimal(24,14) DEFAULT '0.00000000000000',
-	ranking int(11) unsigned DEFAULT '0',
-
-	# px,mm,cm,m,p, ...
-	unit char(3) DEFAULT '',
-
-	# RGB,sRGB,YUV, ...
-	color_space varchar(4) DEFAULT '',
 
 	# TEXT ASSET
 	# text document include x pages
@@ -28,7 +22,4 @@ CREATE TABLE sys_file_metadata (
 	# TEXT + AUDIO + VIDEO
 	# correspond to the language of the document
 	language varchar(45) DEFAULT '',
-
-	# FE permissions
-	fe_groups tinytext
 );

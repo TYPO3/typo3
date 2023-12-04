@@ -101,6 +101,7 @@ return [
                 ],
                 'itemsProcFunc' => \TYPO3\CMS\IndexedSearch\Hook\AvailableTcaTables::class . '->populateTables',
                 'maxitems' => 1,
+                'dbFieldLength' => 255,
             ],
         ],
         'alternative_source_pid' => [

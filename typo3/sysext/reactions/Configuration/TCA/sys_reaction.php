@@ -57,6 +57,7 @@ return [
                 'items' => [
                     ['label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.reaction_type.select', 'value' => ''],
                 ],
+                'dbFieldLength' => 255,
             ],
         ],
         'name' => [
@@ -130,6 +131,7 @@ return [
                 'default' => '',
                 'items' => [],
                 'itemsProcFunc' => \TYPO3\CMS\Reactions\Form\ReactionItemsProcFunc::class . '->validateAllowedTablesForExternalCreation',
+                'dbFieldLength' => 255,
             ],
         ],
         'disabled' => [

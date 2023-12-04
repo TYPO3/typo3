@@ -119,6 +119,7 @@ $tca = [
                     ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.yearly', 'value' => 'yearly'],
                     ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.never', 'value' => 'never'],
                 ],
+                'dbFieldLength' => 10,
             ],
         ],
         'sitemap_priority' => [
@@ -269,6 +270,7 @@ $tca = [
                     ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary', 'value' => 'summary'],
                     ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary_large_image', 'value' => 'summary_large_image'],
                 ],
+                'dbFieldLength' => 255,
             ],
         ],
     ],

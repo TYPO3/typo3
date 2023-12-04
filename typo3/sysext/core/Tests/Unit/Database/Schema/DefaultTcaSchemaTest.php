@@ -2097,6 +2097,299 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
     }
 
+    /**
+     * @test
+     */
+    public function enrichAddsSelectText(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'items' => [
+                    [
+                        'label' => 'someLabel',
+                        'value' => 'someValue',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('text'),
+            [
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectTextWithItemProcFunc(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'itemsProcFunc' => 'Foo->bar',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('text'),
+            [
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectTextWithoutAnyItemsOrTable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('string'),
+            [
+                'notnull' => false,
+                'default' => '',
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectStringWithLengthWithoutAnyItemsOrTable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'dbFieldLength' => 15,
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('string'),
+            [
+                'notnull' => false,
+                'default' => '',
+                'length' => 15,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectSingleWithMMTable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'MM' => 'aTable',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('integer'),
+            [
+                'notnull' => true,
+                'default' => 0,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectSingleWithOnlyForeignTable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'aTable',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('integer'),
+            [
+                'notnull' => true,
+                'default' => 0,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectSingleWithForeignTableAndIntegerItems(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'aTable',
+                'items' => [
+                    [
+                        'label' => 'someLabel',
+                        'value' => 17,
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('integer'),
+            [
+                'notnull' => true,
+                'default' => 0,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectSingleWithForeignTableAndSignedIntegerItems(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'aTable',
+                'items' => [
+                    [
+                        'label' => 'someLabel',
+                        'value' => -17,
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('integer'),
+            [
+                'notnull' => true,
+                'default' => 0,
+                'unsigned' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectSingleWithForeignTableAndStringItems(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'aTable',
+                'items' => [
+                    [
+                        'label' => 'someLabel',
+                        'value' => 'someValue',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('string'),
+            [
+                'notnull' => true,
+                'default' => '',
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSelectMultipleWithForeignTableAndIntItems(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingleBox',
+                'foreign_table' => 'aTable',
+                'items' => [
+                    [
+                        'label' => 'someLabel',
+                        'value' => '35',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('string'),
+            [
+                'notnull' => false,
+                'default' => '',
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
     private function mockDefaultConnectionPlatformInConnectionPool(string $databasePlatformClass = MariaDBPlatform::class): void
     {
         $connectionPool = $this->getMockBuilder(ConnectionPool::class)->onlyMethods(['getConnectionForTable'])->getMock();

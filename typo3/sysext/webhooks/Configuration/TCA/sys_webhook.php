@@ -68,6 +68,7 @@ return [
                     ],
                 ],
                 'itemsProcFunc' => \TYPO3\CMS\Webhooks\Tca\ItemsProcFunc\WebhookTypesItemsProcFunc::class . '->getWebhookTypes',
+                'dbFieldLength' => 255,
             ],
         ],
         'name' => [
@@ -142,6 +143,7 @@ return [
                         'value' => 'GET',
                     ],
                 ],
+                'dbFieldLength' => 10,
             ],
         ],
         'verify_ssl' => [

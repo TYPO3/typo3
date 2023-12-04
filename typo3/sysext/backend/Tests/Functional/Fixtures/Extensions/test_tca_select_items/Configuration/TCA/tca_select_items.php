@@ -37,6 +37,7 @@ return [
                 'maxitems' => 999,
                 'foreign_table' => 'foreign_table',
                 'items' => [],
+                'dbFieldLength' => 255,
             ],
         ],
     ],
