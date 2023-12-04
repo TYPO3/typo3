@@ -334,6 +334,10 @@
         <source>Chamic languages</source>
         <target>csami nyelvek</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>Montenegrói</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>korzikai</target>

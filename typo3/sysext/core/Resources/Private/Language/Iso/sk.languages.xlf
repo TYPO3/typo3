@@ -334,6 +334,10 @@
         <source>Chamic languages</source>
         <target>čamaské jazyky</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>Rezorty</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>korzičtina</target>
@@ -1853,6 +1857,10 @@
       <trans-unit id="wak" resname="wak" approved="yes">
         <source>Wakashan languages</source>
         <target>wakašské jazyky</target>
+      </trans-unit>
+      <trans-unit id="wal" resname="wal" approved="yes">
+        <source>Walamo</source>
+        <target>Všeobecný</target>
       </trans-unit>
       <trans-unit id="war" resname="war" approved="yes">
         <source>Waray</source>
