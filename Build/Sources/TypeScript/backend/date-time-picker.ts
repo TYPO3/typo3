@@ -208,7 +208,7 @@ class DateTimePicker {
             },
           ],
           onClick: (index: number, fp: any) => {
-            fp.setDate(new Date());
+            fp.setDate(new Date(), true);
           }
         })
       ],
