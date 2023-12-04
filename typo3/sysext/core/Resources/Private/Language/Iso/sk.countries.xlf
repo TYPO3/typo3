@@ -556,7 +556,7 @@
       </trans-unit>
       <trans-unit id="GM.official_name" resname="GM.official_name" approved="yes">
         <source>Republic of the Gambia</source>
-        <target>Republic of the Gambia</target>
+        <target>Slovenská republika</target>
       </trans-unit>
       <trans-unit id="GN.name" resname="GN.name" approved="yes">
         <source>Guinea</source>
@@ -960,11 +960,11 @@
       </trans-unit>
       <trans-unit id="MK.name" resname="MK.name" approved="yes">
         <source>North Macedonia</source>
-        <target>North Macedonia</target>
+        <target>Severné Macedónsko</target>
       </trans-unit>
       <trans-unit id="MK.official_name" resname="MK.official_name" approved="yes">
         <source>Republic of North Macedonia</source>
-        <target>Republic of North Macedonia</target>
+        <target>Slovenská republika Macedónsko</target>
       </trans-unit>
       <trans-unit id="ML.name" resname="ML.name" approved="yes">
         <source>Mali</source>
@@ -1438,9 +1438,13 @@
         <source>Syrian Arab Republic</source>
         <target>Sýrska arabská republika</target>
       </trans-unit>
+      <trans-unit id="SZ.name" resname="SZ.name" approved="yes">
+        <source>Eswatini</source>
+        <target>Eswatini</target>
+      </trans-unit>
       <trans-unit id="SZ.official_name" resname="SZ.official_name" approved="yes">
         <source>Kingdom of Eswatini</source>
-        <target>Kingdom of Eswatini</target>
+        <target>Veľká Británia Eswatini</target>
       </trans-unit>
       <trans-unit id="TC.name" resname="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>
@@ -1514,9 +1518,13 @@
         <source>Kingdom of Tonga</source>
         <target>Tongské kráľovstvo</target>
       </trans-unit>
+      <trans-unit id="TR.name" resname="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>Türkiye</target>
+      </trans-unit>
       <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Republic of Türkiye</target>
+        <target>Slovenská republika Türkiye</target>
       </trans-unit>
       <trans-unit id="TT.name" resname="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>
