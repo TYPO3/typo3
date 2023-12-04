@@ -804,6 +804,17 @@ class Typo3DbQueryParser
                 $defaultLanguageRecordsSubSelect->getSQL()
             )
         );
+        // Records in translation with no default language
+        if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_ON_WITH_FLOATING) {
+            $andConditions[] = $this->queryBuilder->expr()->and(
+                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, $languageAspect->getContentId()),
+                $this->queryBuilder->expr()->eq($tableAlias . '.' . $transOrigPointerField, 0),
+                $this->queryBuilder->expr()->notIn(
+                    $tableAlias . '.' . $transOrigPointerField,
+                    $defaultLanguageRecordsSubSelect->getSQL()
+                )
+            );
+        }
         if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_MIXED) {
             // returns records from current language which have a default language
             // together with not translated default language records

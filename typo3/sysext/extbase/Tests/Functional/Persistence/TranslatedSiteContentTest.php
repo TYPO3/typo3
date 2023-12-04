@@ -246,6 +246,10 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                         'header' => '[Translate to Dansk:] Regular Element #3',
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
                 ],
             ],
         ];
@@ -454,6 +458,11 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                         'header' => '[Translate to Dansk:] Regular Element #3',
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
+                    // Fallback chain allows Danish records, also without default languages
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                    ],
                 ],
             ],
             [
@@ -567,20 +576,21 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             ],
             // Expected behaviour:
             // Non translated default language elements are not shown, because of strict mode
+            // Also, records in the PL without a default language (l10n_parent=0) are also shown
             [
                 'fallbackType' => 'strict',
                 'fallbackChain' => [],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
                 'fallbackType' => 'strict',
                 'fallbackChain' => ['EN'],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
                 'fallbackType' => 'strict',
                 'fallbackChain' => ['DK', 'EN'],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
         ];
     }
