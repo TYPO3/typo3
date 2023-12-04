@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Force-deletes all records in the database which have a deleted=1 flag
  */
+#[AsCommand('cleanup:deletedrecords', 'Permanently deletes all records marked as "deleted" in the database.')]
 class DeletedRecordsCommand extends Command
 {
     public function __construct(private readonly ConnectionPool $connectionPool)

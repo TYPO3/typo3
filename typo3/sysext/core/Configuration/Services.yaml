@@ -369,10 +369,6 @@ services:
     arguments:
       $messageBus: '@messenger.bus.default'
       $receiverLocator: !tagged_locator { tag: 'messenger.receiver', index_by: 'identifier' }
-    tags:
-      - name: 'console.command'
-        command: 'messenger:consume'
-        description: 'Consume messages'
 
   TYPO3\CMS\Core\Messenger\EventListener\StopWorkerOnTimeLimitListener:
     arguments:

@@ -21,18 +21,6 @@ services:
   TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook:
     public: true
 
-  TYPO3\CMS\Redirects\Command\CheckIntegrityCommand:
-    tags:
-      - name: 'console.command'
-        command: 'redirects:checkintegrity'
-        description: 'Check integrity of redirects'
-
-  TYPO3\CMS\Redirects\Command\CleanupRedirectsCommand:
-    tags:
-      - name: 'console.command'
-        command: 'redirects:cleanup'
-        description: 'Cleanup old redirects periodically for given constraints like days, hit count or domains.'
-
   TYPO3\CMS\Redirects\Configuration\CheckIntegrityConfiguration:
     arguments:
       $extensionConfiguration: '@extension.configuration.redirects'

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  *
  * @internal
  */
+#[AsCommand('styleguide:generate', 'Generate page tree for Styleguide TCA backend and/or Styleguide frontend')]
 final class GeneratorCommand extends Command
 {
     protected function configure(): void

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 
+#[AsCommand('redirects:checkintegrity', 'Check integrity of redirects')]
 class CheckIntegrityCommand extends Command
 {
     private const REGISTRY_NAMESPACE = 'tx_redirects';

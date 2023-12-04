@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Core function for locking the TYPO3 Backend
  */
+#[AsCommand('backend:lock', 'Lock the TYPO3 Backend')]
 class LockBackendCommand extends Command
 {
     /**

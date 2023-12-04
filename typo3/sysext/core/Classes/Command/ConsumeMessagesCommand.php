@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Command;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Core\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 /**
  * Heavily stripped-down version of the symfony command with the same name.
  */
+#[AsCommand('messenger:consume', 'Consume messages')]
 class ConsumeMessagesCommand extends Command
 {
     public function __construct(

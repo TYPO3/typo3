@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Lowlevel\Command;
 
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -44,6 +45,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @todo: The entire logic smells fishy and needs a major overhaul.
  */
+#[AsCommand('cleanup:missingrelations', 'Find all record references pointing to a non-existing record')]
 class MissingRelationsCommand extends Command
 {
     public function __construct(

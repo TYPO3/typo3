@@ -7,18 +7,6 @@ services:
   TYPO3\CMS\Backend\:
     resource: '../Classes/*'
 
-  TYPO3\CMS\Backend\Command\LockBackendCommand:
-    tags:
-      - { name: 'console.command', command: 'backend:lock', description: 'Lock the TYPO3 Backend' }
-
-  TYPO3\CMS\Backend\Command\UnlockBackendCommand:
-    tags:
-      - { name: 'console.command', command: 'backend:unlock', description: 'Unlock the TYPO3 Backend' }
-
-  TYPO3\CMS\Backend\Command\ReferenceIndexUpdateCommand:
-    tags:
-      - { name: 'console.command', command: 'referenceindex:update', description: 'Update the reference index of TYPO3' }
-
   TYPO3\CMS\Backend\Command\ResetPasswordCommand:
     tags:
       - { name: 'console.command', command: 'backend:resetpassword', description: 'Trigger a password reset for a backend user', schedulable: false }

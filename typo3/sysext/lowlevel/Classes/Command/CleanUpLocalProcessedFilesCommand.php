@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,6 +28,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lowlevel\Service\CleanUpLocalProcessedFilesService;
 
+#[AsCommand('cleanup:localprocessedfiles', 'Delete processed files and their database records.')]
 class CleanUpLocalProcessedFilesCommand extends Command
 {
     public function __construct(

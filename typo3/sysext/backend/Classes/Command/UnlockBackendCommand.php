@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Core\Environment;
 /**
  * Core function for unlocking the TYPO3 Backend
  */
+#[AsCommand('backend:unlock', 'Unlock the TYPO3 Backend')]
 class UnlockBackendCommand extends Command
 {
     /**

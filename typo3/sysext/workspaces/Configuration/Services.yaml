@@ -34,24 +34,6 @@ services:
   TYPO3\CMS\Workspaces\Hook\DataHandlerHook:
     public: true
 
-  TYPO3\CMS\Workspaces\Command\WorkspaceVersionRecordsCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:versions'
-        description: 'Find all versioned records and possibly cleans up invalid records in the database.'
-
-  TYPO3\CMS\Workspaces\Command\CleanupPreviewLinksCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:previewlinks'
-        description: 'Clean up expired preview links from shared workspace previews.'
-
-  TYPO3\CMS\Workspaces\Command\AutoPublishCommand:
-    tags:
-      - name: 'console.command'
-        command: 'workspace:autopublish'
-        description: 'Publish a workspace with a publication date.'
-
   TYPO3\CMS\Workspaces\MessageHandler\StageChangeNotificationHandler:
     tags:
       - name: 'messenger.message_handler'

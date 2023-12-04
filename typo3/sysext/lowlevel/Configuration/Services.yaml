@@ -14,36 +14,6 @@ services:
         description: 'Show entries from the sys_log database table of the last 24 hours.'
         schedulable: false
 
-  TYPO3\CMS\Lowlevel\Command\MissingRelationsCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:missingrelations'
-        description: 'Find all record references pointing to a non-existing record'
-
-  TYPO3\CMS\Lowlevel\Command\DeletedRecordsCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:deletedrecords'
-        description: 'Permanently deletes all records marked as "deleted" in the database.'
-
-  TYPO3\CMS\Lowlevel\Command\OrphanRecordsCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:orphanrecords'
-        description: 'Find and delete records that have lost their connection with the page tree.'
-
-  TYPO3\CMS\Lowlevel\Command\CleanFlexFormsCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:flexforms'
-        description: 'Clean up database FlexForm fields that do not match the chosen data structure.'
-
-  TYPO3\CMS\Lowlevel\Command\CleanUpLocalProcessedFilesCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:localprocessedfiles'
-        description: 'Delete processed files and their database records.'
-
   TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry:
     public: true
 

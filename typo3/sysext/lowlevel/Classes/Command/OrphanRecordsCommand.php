@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Finds (and fixes) all records that have an invalid / deleted page ID
  */
+#[AsCommand('cleanup:orphanrecords', 'Find and delete records that have lost their connection with the page tree.')]
 class OrphanRecordsCommand extends Command
 {
     public function __construct(private readonly ConnectionPool $connectionPool)
