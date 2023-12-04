@@ -95,7 +95,9 @@ export class TableWizardElement extends LitElement {
       text += row.reduce((result, word, index) => {
         // Do not add delimiter at the end of each row
         const delimiter = (count - 1) === index ? '' : this.delimiter;
-
+        // Substitute newlines by `<br>`
+        word = word.replace(/\r?\n/g, '<br>');
+        // Build enclosed representation of column value
         return result + this.enclosure + word + this.enclosure + delimiter;
       }, '') + '\n';
     });
