@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\EventListener;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
+use TYPO3\CMS\IndexedSearch\Event\EnableIndexingEvent;
 use TYPO3\CMS\IndexedSearch\Indexer;
 
 /**
@@ -35,10 +37,11 @@ use TYPO3\CMS\IndexedSearch\Indexer;
 class FrontendGenerationPageIndexingTrigger
 {
     public function __construct(
-        protected ExtensionConfiguration $extensionConfiguration,
-        protected TimeTracker $timeTracker,
-        protected PageTitleProviderManager $pageTitleProviderManager,
-        protected Indexer $indexer
+        protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly TimeTracker $timeTracker,
+        protected readonly PageTitleProviderManager $pageTitleProviderManager,
+        protected readonly Indexer $indexer,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**
@@ -59,7 +62,7 @@ class FrontendGenerationPageIndexingTrigger
 
         // Indexer configuration from Extension Manager interface:
         $disableFrontendIndexing = (bool)$this->extensionConfiguration->get('indexed_search', 'disableFrontendIndexing');
-        $forceIndexing = $tsfe->applicationData['forceIndexing'] ?? false;
+        $forceIndexing = $this->eventDispatcher->dispatch(new EnableIndexingEvent($event->getRequest()))->isIndexingEnabled();
 
         $this->timeTracker->push('Index page');
         if ($disableFrontendIndexing && !$forceIndexing) {

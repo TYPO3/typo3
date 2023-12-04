@@ -1101,4 +1101,9 @@ return [
             'Breaking-102229-RemovedFlexFormTools-traverseFlexFormXMLData.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->applicationData' => [
+        'restFiles' => [
+            'Breaking-102600-TSFE-applicationDataRemoved.rst',
+        ],
+    ],
 ];

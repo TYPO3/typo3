@@ -300,12 +300,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public string $linkVars = '';
 
-    /**
-     * 'Global' Storage for various applications. Keys should be 'tx_'.extKey for
-     * extensions.
-     */
-    public array $applicationData = [];
-
     public array $register = [];
 
     /**
