@@ -118,4 +118,162 @@ final class DatetimeElementTest extends UnitTestCase
 
         self::assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
     }
+
+    /**
+     * Data provider for renderAppliesCorrectTimestampConversionOnHourAndMinuteNullable
+     *
+     * On NULLABLE input fields, we can distinguish a "00:00" (or "0") input from "" (NULL).
+     * This is where the expectation is, that an entered "00:00" input will be
+     * properly restored as a timezone input.
+     */
+    public static function renderAppliesCorrectTimestampConversionOnHourAndMinuteNullableDataProvider(): array
+    {
+        // Three elements: input (UTC), timezone of output, expected output
+        // NOTE: Timezone is always UTC because for HOUR+MINUTE input we
+        //       always go from 1970-01-01, and timezones are irrelevant
+        //       (if timezones were factored in, the timestamps of "expected"
+        //       would not match, because DatetimeElement() performs timezone
+        //       offsetting on 'datetime', but NOT on 'time' or 'timesec').
+        return [
+            'zero-start date in UTC, midnight' => [
+                3519, 'UTC', '1970-01-01T00:58:39+00:00',
+            ],
+            'zero-start date in UTC, midday' => [
+                53919, 'UTC', '1970-01-01T14:58:39+00:00',
+            ],
+            'zero-start date in UTC, origin' => [
+                0, 'UTC', '1970-01-01T00:00:00+00:00',
+            ],
+            'zero-start date in UTC, origin + 1 sec' => [
+                1, 'UTC', '1970-01-01T00:00:01+00:00',
+            ],
+            'zero-start date in UTC, origin + 1 min' => [
+                60, 'UTC', '1970-01-01T00:01:00+00:00',
+            ],
+        ];
+    }
+
+    #[DataProvider('renderAppliesCorrectTimestampConversionOnHourAndMinuteNullableDataProvider')]
+    #[Test]
+    public function renderAppliesCorrectTimestampConversionOnHourAndMinuteNullable(int $input, string $serverTimezone, string $expectedOutput): void
+    {
+        date_default_timezone_set($serverTimezone);
+        $data = [
+            'tableName' => 'table_foo',
+            'fieldName' => 'field_bar',
+            'databaseRow' => [
+                'uid' => 5,
+            ],
+            'parameterArray' => [
+                'tableName' => 'table_foo',
+                'fieldName' => 'field_bar',
+                'fieldConf' => [
+                    'label' => 'foo',
+                    'config' => [
+                        'type' => 'datetime',
+                        'dbType' => 'datetime',
+                        'format' => 'time',
+                        'nullable' => true,
+                    ],
+                ],
+                'itemFormElName' => 'myItemFormElName',
+                'itemFormElValue' => $input,
+            ],
+        ];
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->method('render')->willReturn('');
+        $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $fieldInformationMock = $this->createMock(FieldInformation::class);
+        $fieldInformationMock->method('render')->willReturn(['html' => '']);
+        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+
+        $subject = new DatetimeElement($iconFactoryMock);
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($data);
+        $result = $subject->render();
+
+        self::assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
+    }
+
+    /**
+     * Data provider for renderAppliesCorrectTimestampConversionOnHourAndMinuteNotNullable
+     *
+     * On NOT NULLABLE input fields, we can NOT distinguish a "00:00" or empty input from
+     * a stored "0" value. We cannot know, if this TCA has allowed to save an entry that
+     * was meant as "00:00" or meant as "empty input".
+     *
+     * Thus, the expectation here is to present a "0" input as an EMPTY input. Integrations/
+     * Developers are required to use NULLABLE input fields if they want to differentiate
+     * between "entered, and 00:00" or "not entered". This is the way.
+     */
+    public static function renderAppliesCorrectTimestampConversionOnHourAndMinuteNotNullableDataProvider(): array
+    {
+        // For notation description, see renderAppliesCorrectTimestampConversionOnHourAndMinuteDataNullableProvider
+        return [
+            'zero-start date in UTC, midnight' => [
+                3519, 'UTC', '1970-01-01T00:58:39+00:00',
+            ],
+            'zero-start date in UTC, midday' => [
+                53919, 'UTC', '1970-01-01T14:58:39+00:00',
+            ],
+            'zero-start date in UTC, origin' => [
+                // This is the important difference between NotNullable and Nullable!
+                0, 'UTC', '0',
+            ],
+            'zero-start date in UTC, origin + 1 sec' => [
+                1, 'UTC', '1970-01-01T00:00:01+00:00',
+            ],
+            'zero-start date in UTC, origin + 1 min' => [
+                60, 'UTC', '1970-01-01T00:01:00+00:00',
+            ],
+        ];
+    }
+
+    #[DataProvider('renderAppliesCorrectTimestampConversionOnHourAndMinuteNotNullableDataProvider')]
+    #[Test]
+    public function renderAppliesCorrectTimestampConversionOnHourAndMinuteNotNullable(string|int $input, string $serverTimezone, string $expectedOutput): void
+    {
+        date_default_timezone_set($serverTimezone);
+        $data = [
+            'tableName' => 'table_foo',
+            'fieldName' => 'field_bar',
+            'databaseRow' => [
+                'uid' => 5,
+            ],
+            'parameterArray' => [
+                'tableName' => 'table_foo',
+                'fieldName' => 'field_bar',
+                'fieldConf' => [
+                    'label' => 'foo',
+                    'config' => [
+                        'type' => 'datetime',
+                        'dbType' => 'datetime',
+                        'format' => 'time',
+                        'nullable' => false,
+                    ],
+                ],
+                'itemFormElName' => 'myItemFormElName',
+                'itemFormElValue' => $input,
+            ],
+        ];
+        $iconFactoryMock = $this->createMock(IconFactory::class);
+        $iconMock = $this->createMock(Icon::class);
+        $iconMock->method('render')->willReturn('');
+        $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $fieldInformationMock = $this->createMock(FieldInformation::class);
+        $fieldInformationMock->method('render')->willReturn(['html' => '']);
+        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+
+        $subject = new DatetimeElement($iconFactoryMock);
+        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->setData($data);
+        $result = $subject->render();
+
+        self::assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
+    }
 }

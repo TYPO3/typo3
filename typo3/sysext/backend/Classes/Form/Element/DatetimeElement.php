@@ -183,10 +183,21 @@ class DatetimeElement extends AbstractFormElement
                 $attributes['data-date-max-date'] = (string)((int)$config['range']['upper'] * 1000);
             }
         }
-        if (($format === 'time' || $format === 'timesec') && MathUtility::canBeInterpretedAsInteger($itemValue) && (int)$itemValue !== 0) {
-            // time(sec) is stored as elapsed seconds in DB, hence we interpret it as UTC time on 1970-01-01
-            // and pass on the ISO format to JS.
-            $itemValue = gmdate('c', (int)$itemValue);
+        if (($format === 'time' || $format === 'timesec') && MathUtility::canBeInterpretedAsInteger($itemValue)) {
+            if (
+                // When "00:00" is entered and saved, it will be stored as "0" in the database.
+                // That means "00:00" is not differentiable from an empty value
+                // (unless the database field is NULLABLE – this case is handled by the subsequent condition).
+                // To not introduce a Breaking Change or different behavior, a non-NULLABLE
+                // stored "00:00" casts to "0" and is not displayed in the input field.
+                (int)$itemValue !== 0 ||
+                // If the databse field is NULLABLE we can interpret "0" as "00:00".
+                (($config['nullable'] ?? false) && (int)$itemValue === 0)
+            ) {
+                // time(sec) is stored as elapsed seconds in DB, hence we interpret it as UTC time on 1970-01-01
+                // and pass on the ISO format to JS.
+                $itemValue = gmdate('c', (int)$itemValue);
+            }
         }
 
         $fieldWizardResult = $this->renderFieldWizard();
