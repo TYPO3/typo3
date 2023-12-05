@@ -46,5 +46,5 @@ language key):
 
 .. code-block:: typoscript
 
-   config.language = dk
+   config.language = da
 

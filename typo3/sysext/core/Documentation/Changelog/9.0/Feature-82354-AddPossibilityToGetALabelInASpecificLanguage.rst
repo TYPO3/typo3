@@ -31,12 +31,12 @@ Basic Usage
 
 .. code-block:: php
 
-    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('someKey', 'extensionName', [], 'dk');
+    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('someKey', 'extensionName', [], 'da');
 
 
 .. code-block:: html
 
-   <f:translate key="someKey" languageKey="dk" />
+   <f:translate key="someKey" languageKey="da" />
 
 
 .. index:: Fluid, PHP-API

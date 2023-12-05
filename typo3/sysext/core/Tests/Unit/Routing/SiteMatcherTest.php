@@ -211,8 +211,8 @@ final class SiteMatcherTest extends UnitTestCase
         yield ['https://example.org/fr/page', '3-fr', 'fr-FR'];
         yield ['https://example.org/de', '1-main', 'de-DE'];
         yield ['https://example.org/deterministic', '1-main', 'en-US'];
-        yield ['https://example.org/dk', '2-dk', 'da-DK'];
-        yield ['https://example.org/dkother', '1-main', 'en-US'];
+        yield ['https://example.org/da', '2-da', 'da-DK'];
+        yield ['https://example.org/daother', '1-main', 'en-US'];
     }
 
     /**
@@ -236,12 +236,12 @@ final class SiteMatcherTest extends UnitTestCase
                 ],
             ],
         ]);
-        $dkSite = new Site('2-dk', 21, [
+        $daSite = new Site('2-da', 21, [
             'base' => 'https://example.org/',
             'languages' => [
                 [
                     'languageId' => 0,
-                    'base' => 'https://example.org/dk/',
+                    'base' => 'https://example.org/da/',
                     'locale' => 'da-DK',
                 ],
             ],
@@ -258,7 +258,7 @@ final class SiteMatcherTest extends UnitTestCase
         ]);
 
         $featuresMock = $this->createFeaturesMock();
-        $finderMock = $this->createSiteFinder($mainSite, $dkSite, $frSite);
+        $finderMock = $this->createSiteFinder($mainSite, $daSite, $frSite);
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
         $subject = new SiteMatcher($featuresMock, $finderMock, $requestContextFactory);
 

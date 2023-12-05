@@ -35,7 +35,7 @@ final class SlugHelperTest extends AbstractDataHandlerActionTestCase
             'title' => 'Dansk',
             'enabled' => true,
             'languageId' => 1,
-            'base' => '/dk/',
+            'base' => '/da/',
             'locale' => 'da_DK.UTF-8',
             'flag' => 'dk',
             'fallbackType' => 'fallback',

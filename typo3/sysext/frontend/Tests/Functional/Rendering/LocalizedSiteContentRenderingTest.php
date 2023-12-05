@@ -112,7 +112,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
 
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
-        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+        'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
         'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF8'],
         'PL' => ['id' => 3, 'title' => 'Polski', 'locale' => 'pl_PL.UTF8'],
     ];
@@ -143,7 +143,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
@@ -219,11 +219,11 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
                         'image' => [],
                     ],
                     303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                     308 => [
-                        'header' => '[DK] UnHidden Element #4',
+                        'header' => '[DA] UnHidden Element #4',
                         'image' => [],
                     ],
                 ],
@@ -271,8 +271,8 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                     303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                 ],
                 'fallbackType' => 'strict',
@@ -284,7 +284,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
 
     /**
      * Page is translated to Dutch, so changing fallbackChain does not matter currently.
-     * Page title is always [DK]Page, the content language is always "1"
+     * Page title is always [DA]Page, the content language is always "1"
      * @test
      * @dataProvider dutchDataProvider
      */
@@ -295,13 +295,13 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
+                $this->buildLanguageConfiguration('DA', '/da/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/dk/?id=' . static::VALUE_PageId)
+            new InternalRequest('https://website.local/da/?id=' . static::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSections();
@@ -336,7 +336,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
                 ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
         }
 
-        self::assertEquals('[DK]Page', $responseStructure->getScopePath('page/title'));
+        self::assertEquals('[DA]Page', $responseStructure->getScopePath('page/title'));
         self::assertEquals(1, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
         self::assertEquals(1, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
         self::assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
@@ -407,7 +407,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'free',
-                    'fallbackChain' => ['DK', 'EN'],
+                    'fallbackChain' => ['DA', 'EN'],
                 ],
                 'visibleRecords' => [
                     300 => [
@@ -419,15 +419,15 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
                         'image' => [],
                     ],
                     303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                     308 => [
-                        'header' => '[DK] UnHidden Element #4',
+                        'header' => '[DA] UnHidden Element #4',
                         'image' => [],
                     ],
                 ],
-                'pageTitle' => '[DK]Page',
+                'pageTitle' => '[DA]Page',
                 'languageId' => 2,
                 'contentId' => 1,
                 'fallbackType' => 'free',
@@ -501,11 +501,11 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
                 'overlayMode' => 'mixed',
             ],
             //Dutch elements are shown because of the content fallback 1,0 - first Dutch, then default language
-            //note that '[DK] Without default language' is NOT shown - due to overlays (fetch default language and overlay it with translations)
+            //note that '[DA] Without default language' is NOT shown - due to overlays (fetch default language and overlay it with translations)
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'fallback',
-                    'fallbackChain' => ['DK', 'EN'],
+                    'fallbackChain' => ['DA', 'EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -521,7 +521,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                 ],
-                'pageTitle' => '[DK]Page',
+                'pageTitle' => '[DA]Page',
                 'languageId' => 2,
                 'contentId' => 1,
                 'fallbackType' => 'fallback',
@@ -571,7 +571,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'strict',
-                    'fallbackChain' => ['DK', 'EN'],
+                    'fallbackChain' => ['DA', 'EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -583,11 +583,11 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                     303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                 ],
-                'pageTitle' => '[DK]Page',
+                'pageTitle' => '[DA]Page',
                 'languageId' => 2,
                 'contentId' => 1,
                 'fallbackType' => 'strict',
@@ -626,7 +626,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
                 $this->buildLanguageConfiguration('DE', '/de/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
@@ -705,7 +705,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         yield 'free with multiple fallbacks' => [
             'languageConfiguration' => [
                 'fallbackType' => 'free',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
             ],
             'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             'fallbackType' => 'free',
@@ -725,11 +725,11 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             'overlayMode' => 'mixed',
         ];
         // Expected behaviour:
-        // Element #3 is not translated in PL, but it is translated in DK. The DK version is shown as it has a fallback chain defined.
+        // Element #3 is not translated in PL, but it is translated in DA. The DA version is shown as it has a fallback chain defined.
         yield 'fallback with multiple languages' => [
             'languageConfiguration' => [
                 'fallbackType' => 'fallback',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
             ],
             'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
             'fallbackType' => 'fallback',
@@ -761,7 +761,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
         yield 'strict with multiple fallbacks' => [
             'languageConfiguration' => [
                 'fallbackType' => 'strict',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
             ],
             'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             'fallbackType' => 'strict',
@@ -793,7 +793,7 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
                 $this->buildLanguageConfiguration('PL', '/pl/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
@@ -842,8 +842,8 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             'Hidden Element #4',
             '[Translate to Dansk:] Regular Element #1',
             '[Translate to Dansk:] Regular Element #3',
-            '[DK] Without default language',
-            '[DK] UnHidden Element #4',
+            '[DA] Without default language',
+            '[DA] UnHidden Element #4',
             '[DE] Without default language',
             '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
             '[Translate to Polski:] Regular Element #1',
@@ -863,8 +863,8 @@ final class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionT
             'Kasper',
             '[Kasper] Image translated to Dansk',
             '[T3BOARD] Image added in Dansk (without parent)',
-            '[T3BOARD] Image added to DK element without default language',
-            '[T3BOARD] image translated to DE from DK',
+            '[T3BOARD] Image added to DA element without default language',
+            '[T3BOARD] image translated to DE from DA',
             'Kasper2',
         ];
         return array_diff($allElements, $visibleTitles);
