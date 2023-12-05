@@ -4232,8 +4232,8 @@ select.icon-select option{padding-inline-start:22px}
 .form-multigroup-wrap .form-wizards-wrap{width:100%}
 textarea.formengine-textarea{resize:none}
 .input-group>.form-control-clearable-wrapper{flex:1 1 auto;width:1%;min-width:0}
-.form-control:not(.hidden)+.form-control-clearable-wrapper{flex-grow:0;width:auto}
-.form-control.hidden+.close{display:none}
+.form-control:not(.hidden):not([hidden])+.form-control-clearable-wrapper{flex-grow:0;width:auto}
+.form-control.hidden+.close,.form-control[hidden]+.close{display:none}
 .sticky-form-actions{position:sticky;top:0;z-index:2;padding:calc(1rem / 2) 1rem;background:#fff}
 .modal-body .sticky-form-actions{margin-inline:calc(var(--bs-modal-padding) * -1);margin-bottom:var(--bs-modal-padding);padding:calc(var(--bs-modal-padding)/ 2) var(--bs-modal-padding);border-bottom:var(--bs-modal-border-width) solid var(--bs-modal-border-color)}
 .modal-body .sticky-form-actions:first-child{transform:translateY(calc(var(--bs-modal-padding) * -1));margin-bottom:0}

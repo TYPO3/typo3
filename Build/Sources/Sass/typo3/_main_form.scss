@@ -433,11 +433,12 @@ textarea {
     min-width: 0;
 }
 
-.form-control:not(.hidden) + .form-control-clearable-wrapper {
+.form-control:not(.hidden):not([hidden]) + .form-control-clearable-wrapper {
     flex-grow: 0;
     width: auto;
 }
 
+.form-control[hidden] + .close,
 .form-control.hidden + .close {
     display: none;
 }
