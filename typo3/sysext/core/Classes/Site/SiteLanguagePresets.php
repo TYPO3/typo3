@@ -84,7 +84,7 @@ class SiteLanguagePresets
             'title' => 'Danish',
             'navigationTitle' => 'Dansk',
             'locale' => 'da_DK',
-            'base' => '/dk/',
+            'base' => '/da/',
             'flag' => 'dk',
         ],
         'de-DE' => [

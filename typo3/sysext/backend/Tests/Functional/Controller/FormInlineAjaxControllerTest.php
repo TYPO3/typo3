@@ -41,7 +41,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
      */
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
-        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+        'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
     ];
 
     /**
@@ -62,7 +62,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
             ]
         );
 

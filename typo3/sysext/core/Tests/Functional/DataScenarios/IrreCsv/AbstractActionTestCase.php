@@ -64,8 +64,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             $this->buildSiteConfiguration(1, '/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', ['EN']),
-                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+                $this->buildLanguageConfiguration('DA', '/da/', ['EN']),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
             ]
         );
         $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Extensions/test_irre_csv/Configuration/TypoScript/JsonRenderer.typoscript']);

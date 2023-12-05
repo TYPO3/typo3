@@ -31,7 +31,7 @@ Basic Usage
 
 .. code-block:: php
 
-    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('someKey', 'extensionName', [], 'dk');
+    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('someKey', 'extensionName', [], 'da');
 
 
 .. code-block:: html

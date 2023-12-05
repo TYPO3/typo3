@@ -94,7 +94,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 
         // with feature flag disable, you'll get default language object here too (Post 2).
         $post2translated = $this->postRepository->findByUid(11);
-        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -134,7 +134,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $post2translated = $this->postRepository->findByUid(11);
-        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -158,7 +158,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
 
         $post2 = $this->postRepository->findByUid(2);
-        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -173,7 +173,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         //this is needed because of https://forge.typo3.org/issues/59992
         $this->persistenceManager->clearState();
         $post2translated = $this->postRepository->findByUid(11);
-        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -197,7 +197,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
 
         $post2 = $this->postRepository->findByUid(2);
-        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -213,7 +213,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $post2translated = $this->postRepository->findByUid(11);
-        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -289,7 +289,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
-        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -363,7 +363,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
-        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
@@ -493,11 +493,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => [
                     [
-                        'title' => 'Post 5 - DK',
+                        'title' => 'Post 5 - DA',
                         AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -509,11 +509,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags' => [],
                     ],
                     [
-                        'title' => 'Post 2 - DK',
+                        'title' => 'Post 2 - DA',
                         AbstractDomainObject::PROPERTY_UID => 2,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 11,
                         'content' => 'C - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -522,7 +522,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'secondAuthor.firstname' => 'Translated John',
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                        'tags.0.name' => 'Tag 3 DK',
+                        'tags.0.name' => 'Tag 3 DA',
                         'tags.0.' . AbstractDomainObject::PROPERTY_UID => 3,
                         'tags.0.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 18,
                         'tags.1.name' => 'Tag4',
@@ -531,7 +531,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags.2.name' => 'Tag5',
                         'tags.2.' . AbstractDomainObject::PROPERTY_UID => 5,
                         'tags.2.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 5,
-                        'tags.3.name' => 'Tag 6 DK',
+                        'tags.3.name' => 'Tag 6 DA',
                         'tags.3.' . AbstractDomainObject::PROPERTY_UID => 6,
                         'tags.3.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 19,
                         'tags.4.name' => 'Tag7',
@@ -543,7 +543,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         AbstractDomainObject::PROPERTY_UID => 6,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 6,
                         'content' => 'F - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -559,7 +559,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         AbstractDomainObject::PROPERTY_UID => 1,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 1,
                         'content' => 'G - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -568,13 +568,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'secondAuthor.firstname' => 'Never translate me henry',
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_UID => 3,
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 3,
-                        'tags.0.name' => 'Tag 1 DK',
+                        'tags.0.name' => 'Tag 1 DA',
                         'tags.0.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'tags.0.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 16,
-                        'tags.1.name' => 'Tag 2 DK',
+                        'tags.1.name' => 'Tag 2 DA',
                         'tags.1.' . AbstractDomainObject::PROPERTY_UID => 2,
                         'tags.1.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 17,
-                        'tags.2.name' => 'Tag 3 DK',
+                        'tags.2.name' => 'Tag 3 DA',
                         'tags.2.' . AbstractDomainObject::PROPERTY_UID => 3,
                         'tags.2.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 18,
 
@@ -584,7 +584,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         AbstractDomainObject::PROPERTY_UID => 3,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 3,
                         'content' => 'I - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -600,15 +600,15 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
             'only fetch records with l10n_parent and try overlays' => [
                 'language' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                // here we have only 4 items instead of 5 as post "Post DK only" uid:15 has no language 0 parent,
+                // here we have only 4 items instead of 5 as post "Post DA only" uid:15 has no language 0 parent,
                 // so with overlay enabled it's not shown
                 'expected' => [
                     [
-                        'title' => 'Post 5 - DK',
+                        'title' => 'Post 5 - DA',
                         AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -620,11 +620,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags' => [],
                     ],
                     [
-                        'title' => 'Post 2 - DK',
+                        'title' => 'Post 2 - DA',
                         AbstractDomainObject::PROPERTY_UID => 2,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 11,
                         'content' => 'C - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -633,7 +633,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'secondAuthor.firstname' => 'Translated John',
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                        'tags.0.name' => 'Tag 3 DK',
+                        'tags.0.name' => 'Tag 3 DA',
                         'tags.0.' . AbstractDomainObject::PROPERTY_UID => 3,
                         'tags.0.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 18,
                         'tags.1.name' => 'Tag4',
@@ -642,7 +642,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags.2.name' => 'Tag5',
                         'tags.2.' . AbstractDomainObject::PROPERTY_UID => 5,
                         'tags.2.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 5,
-                        'tags.3.name' => 'Tag 6 DK',
+                        'tags.3.name' => 'Tag 6 DA',
                         'tags.3.' . AbstractDomainObject::PROPERTY_UID => 6,
                         'tags.3.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 19,
                         'tags.4.name' => 'Tag7',
@@ -650,11 +650,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags.4.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 7,
                     ],
                     [
-                        'title' => 'Post 7 - DK',
+                        'title' => 'Post 7 - DA',
                         AbstractDomainObject::PROPERTY_UID => 7,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 14,
                         'content' => 'S - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -666,11 +666,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags' => [],
                     ],
                     [
-                        'title' => 'Post 4 - DK',
+                        'title' => 'Post 4 - DA',
                         AbstractDomainObject::PROPERTY_UID => 4,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 12,
                         'content' => 'U - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -688,11 +688,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => [
                     [
-                        'title' => 'Post 5 - DK',
+                        'title' => 'Post 5 - DA',
                         AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -704,11 +704,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags' => [],
                     ],
                     [
-                        'title' => 'Post DK only',
+                        'title' => 'Post DA only',
                         AbstractDomainObject::PROPERTY_UID => 15,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 15,
                         'content' => 'B - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -720,11 +720,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags' => [],
                     ],
                     [
-                        'title' => 'Post 2 - DK',
+                        'title' => 'Post 2 - DA',
                         AbstractDomainObject::PROPERTY_UID => 2,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 11,
                         'content' => 'C - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -733,7 +733,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'secondAuthor.firstname' => 'Translated John',
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                        'tags.0.name' => 'Tag 3 DK',
+                        'tags.0.name' => 'Tag 3 DA',
                         'tags.0.' . AbstractDomainObject::PROPERTY_UID => 3,
                         'tags.0.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 18,
                         'tags.1.name' => 'Tag4',
@@ -742,7 +742,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags.2.name' => 'Tag5',
                         'tags.2.' . AbstractDomainObject::PROPERTY_UID => 5,
                         'tags.2.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 5,
-                        'tags.3.name' => 'Tag 6 DK',
+                        'tags.3.name' => 'Tag 6 DA',
                         'tags.3.' . AbstractDomainObject::PROPERTY_UID => 6,
                         'tags.3.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 19,
                         'tags.4.name' => 'Tag7',
@@ -750,11 +750,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags.4.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 7,
                     ],
                     [
-                        'title' => 'Post 7 - DK',
+                        'title' => 'Post 7 - DA',
                         AbstractDomainObject::PROPERTY_UID => 7,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 14,
                         'content' => 'S - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -766,11 +766,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags' => [],
                     ],
                     [
-                        'title' => 'Post 4 - DK',
+                        'title' => 'Post 4 - DA',
                         AbstractDomainObject::PROPERTY_UID => 4,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 12,
                         'content' => 'U - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -874,7 +874,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         AbstractDomainObject::PROPERTY_UID => 6,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 6,
                         'content' => 'F - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -885,11 +885,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                     ],
                     [
-                        'title' => 'Post 5 - DK',
+                        'title' => 'Post 5 - DA',
                         AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -906,11 +906,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 'overlay' => LanguageAspect::OVERLAYS_ON,
                 'expected' => [
                     [
-                        'title' => 'Post 5 - DK',
+                        'title' => 'Post 5 - DA',
                         AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -927,11 +927,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
                 'expected' => [
                     [
-                        'title' => 'Post 5 - DK',
+                        'title' => 'Post 5 - DA',
                         AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -942,11 +942,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                     ],
                     [
-                        'title' => 'Post DK only',
+                        'title' => 'Post DA only',
                         AbstractDomainObject::PROPERTY_UID => 15,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 15,
                         'content' => 'B - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -963,11 +963,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => [
                     [
-                        'title' => 'Post 5 - DK',
+                        'title' => 'Post 5 - DA',
                         AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -978,11 +978,11 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                     ],
                     [
-                        'title' => 'Post DK only',
+                        'title' => 'Post DA only',
                         AbstractDomainObject::PROPERTY_UID => 15,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 15,
                         'content' => 'B - content',
-                        'blog.title' => 'Blog 1 DK',
+                        'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                         'author.firstname' => 'Translated John',
@@ -1001,8 +1001,8 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
      * This test check posts returned by repository, when filtering by property
      *
      * "Post 6" is not translated
-     * "Post 5" is translated as "Post 5 - DK"
-     * "Post DK only" has no translation parent
+     * "Post 5" is translated as "Post 5 - DA"
+     * "Post DA only" has no translation parent
      *
      * @test
      * @dataProvider queryPostsByPropertyDataProvider
@@ -1018,7 +1018,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
             $query->logicalOr(
                 $query->like('title', 'Post 5%'),
                 $query->like('title', 'Post 6%'),
-                $query->like('title', 'Post DK only')
+                $query->like('title', 'Post DA only')
             )
         );
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -1037,7 +1037,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                  AbstractDomainObject::PROPERTY_LOCALIZED_UID => 1,
              ],
              [
-                 'title' => 'Blog 1 DK',
+                 'title' => 'Blog 1 DA',
                  AbstractDomainObject::PROPERTY_UID => 1,
                  AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
              ],
@@ -1058,12 +1058,12 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                  'overlay' => LanguageAspect::OVERLAYS_ON,
                  'expected' => [
                      [
-                         'title' => 'Blog 1 DK',
+                         'title' => 'Blog 1 DA',
                          AbstractDomainObject::PROPERTY_UID => 1,
                          AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                      ],
                      [
-                         'title' => 'Blog 1 DK',
+                         'title' => 'Blog 1 DA',
                          AbstractDomainObject::PROPERTY_UID => 1,
                          AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
                      ],

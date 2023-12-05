@@ -33,7 +33,7 @@ final class TranslationDiffSourceTest extends FunctionalTestCase
     private const PAGE_DATAHANDLER = 88;
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
-        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+        'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
     ];
 
     protected function setUp(): void
@@ -46,7 +46,7 @@ final class TranslationDiffSourceTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );

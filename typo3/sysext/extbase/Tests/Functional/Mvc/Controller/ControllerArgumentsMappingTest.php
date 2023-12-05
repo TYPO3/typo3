@@ -84,7 +84,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
             [
                 'language' => 1,
                 'blogUid' => 1,
-                'blogTitle' => 'Blog 1 DK',
+                'blogTitle' => 'Blog 1 DA',
             ],
         ];
     }

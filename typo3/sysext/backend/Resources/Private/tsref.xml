@@ -1065,17 +1065,17 @@ Inserting an email-field after the name field would be like this:
     15.specialEval = EMAIL
   }
 
-Or translating the form to danish (setting config.language to 'dk'):
+Or translating the form to danish (setting config.language to 'da'):
 
   dataArray {
-    10.label.lang.dk = Navn:
-    10.value.lang.dk = [Indtast dit navn]
-    20.label.lang.dk = Øjenfarve
+    10.label.lang.da = Navn:
+    10.value.lang.da = [Indtast dit navn]
+    20.label.lang.da = Øjenfarve
     20.valueArray {
-      10.label.lang.dk = Blå
-      20.label.lang.dk = Rød
+      10.label.lang.da = Blå
+      20.label.lang.da = Rød
     }
-    40.value.lang.dk = Send
+    40.value.lang.da = Send
   }
 ]]></description>
             <default><![CDATA[

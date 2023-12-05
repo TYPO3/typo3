@@ -3,5 +3,5 @@
 ,1,0,256,0,0,0,0,0,0,0,0,"Root page","/","{}"
 ,88,1,256,0,0,0,0,0,0,0,0,"Subpage","/subpage/","{}"
 ,89,88,256,0,0,0,0,0,0,0,0,"Default language Page","/subpage/default-language-page/","{}"
-,90,88,256,0,1,89,0,0,0,0,0,"[DK]Page","/subpage/dk-page/","{""title"":""parent""}"
+,90,88,256,0,1,89,0,0,0,0,0,"[DA]Page","/subpage/da-page/","{""title"":""parent""}"
 ,91,88,256,0,3,89,0,0,0,0,0,"[PL]Page","/subpage/pl-page/","{""title"":""parent""}"

@@ -171,8 +171,8 @@ final class ActionTest extends AbstractActionTestCase
             $this->buildSiteConfiguration(1, '/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', [], 'free'),
-                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+                $this->buildLanguageConfiguration('DA', '/da/', [], 'free'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
             ]
         );
 
@@ -199,8 +199,8 @@ final class ActionTest extends AbstractActionTestCase
             $this->buildSiteConfiguration(1, '/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', [], 'free'),
-                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+                $this->buildLanguageConfiguration('DA', '/da/', [], 'free'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
             ]
         );
 
@@ -227,8 +227,8 @@ final class ActionTest extends AbstractActionTestCase
             $this->buildSiteConfiguration(1, '/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', [], 'free'),
-                $this->buildLanguageConfiguration('DE', '/de/', ['DK', 'EN']),
+                $this->buildLanguageConfiguration('DA', '/da/', [], 'free'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
             ]
         );
 
@@ -256,7 +256,7 @@ final class ActionTest extends AbstractActionTestCase
             $this->buildSiteConfiguration(1, '/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', ['EN']),
+                $this->buildLanguageConfiguration('DA', '/da/', ['EN']),
                 $this->buildLanguageConfiguration('DE', '/de/', [], 'free'),
             ]
         );

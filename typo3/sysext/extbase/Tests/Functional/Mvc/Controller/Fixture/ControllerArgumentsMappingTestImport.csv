@@ -5,4 +5,4 @@
 "tx_blogexample_domain_model_blog"
 ,"uid","pid","title","sys_language_uid","l18n_parent","administrator","subtitle","description","t3_origuid","deleted","hidden","posts","logo"
 ,1,20,"Blog 1",0,0,0,,,0,0,0,10,0
-,2,20,"Blog 1 DK",1,1,0,,,1,0,0,6,0
+,2,20,"Blog 1 DA",1,1,0,,,1,0,0,6,0

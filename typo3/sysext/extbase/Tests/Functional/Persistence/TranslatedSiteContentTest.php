@@ -47,7 +47,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
     private const TABLE_Content = 'tt_content';
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
-        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+        'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
         'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF8'],
         'PL' => ['id' => 3, 'title' => 'Polski', 'locale' => 'pl_PL.UTF8'],
     ];
@@ -75,8 +75,8 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             'Hidden Element #4',
             '[Translate to Dansk:] Regular Element #1',
             '[Translate to Dansk:] Regular Element #3',
-            '[DK] Without default language',
-            '[DK] UnHidden Element #4',
+            '[DA] Without default language',
+            '[DA] UnHidden Element #4',
             '[DE] Without default language',
             '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
             '[Translate to Polski:] Regular Element #1',
@@ -96,8 +96,8 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             'Kasper',
             '[Kasper] Image translated to Dansk',
             '[T3BOARD] Image added in Dansk (without parent)',
-            '[T3BOARD] Image added to DK element without default language',
-            '[T3BOARD] image translated to DE from DK',
+            '[T3BOARD] Image added to DA element without default language',
+            '[T3BOARD] image translated to DE from DA',
             'Kasper2',
         ];
         return array_diff($allElements, $visibleTitles);
@@ -192,7 +192,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
     {
         // Expected behaviour:
         // Page is translated to Danish, so changing sys_language_mode does NOT change the results
-        // Page title is always [DK]Page, and both sys_language_content and sys_language_uid are always 1
+        // Page title is always [DA]Page, and both sys_language_content and sys_language_uid are always 1
         return [
             [
                 'fallbackType' => 'free',
@@ -207,11 +207,11 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                     303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                     308 => [
-                        'header' => '[DK] UnHidden Element #4',
+                        'header' => '[DA] UnHidden Element #4',
                         'image' => [],
                     ],
                 ],
@@ -247,8 +247,8 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                     303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                 ],
             ],
@@ -266,13 +266,13 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', [], $fallbackType),
+                $this->buildLanguageConfiguration('DA', '/da/', [], $fallbackType),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://website.local/dk/?id=' . static::VALUE_PageId)
+            new InternalRequest('https://website.local/da/?id=' . static::VALUE_PageId)
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSection('Extbase:list()');
@@ -339,7 +339,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             ],
             [
                 'fallbackType' => 'free',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
@@ -350,11 +350,11 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
                     303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                     308 => [
-                        'header' => '[DK] UnHidden Element #4',
+                        'header' => '[DA] UnHidden Element #4',
                         'image' => [],
                     ],
                 ],
@@ -385,10 +385,10 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                 ],
             ],
             // danish elements are shown because of the fallback chain 1,0 - first danish, then default language
-            // note that '[DK] Without default language' is NOT shown - due to overlays (fetch default language and overlay it with translations)
+            // note that '[DA] Without default language' is NOT shown - due to overlays (fetch default language and overlay it with translations)
             [
                 'fallbackType' => 'fallback',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
@@ -412,7 +412,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             ],
             [
                 'fallbackType' => 'fallback',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
@@ -448,7 +448,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             ],
             [
                 'fallbackType' => 'strict',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
@@ -460,8 +460,8 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                     ],
                     // Fallback chain allows Danish records, also without default languages
                     303 => [
-                        'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language'],
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                 ],
             ],
@@ -489,7 +489,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
                 $this->buildLanguageConfiguration('DE', '/de/', $fallbackChain, $fallbackType),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
@@ -551,7 +551,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             ],
             [
                 'fallbackType' => 'free',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
@@ -567,11 +567,11 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
             ],
             // Expected behaviour:
-            // Element #3 is not translated in PL and it is translated in DK. It's not shown as fallback chain is not related to single CE level
+            // Element #3 is not translated in PL and it is translated in DA. It's not shown as fallback chain is not related to single CE level
             // but on page level - and this page is translated to Polish, so no fallback is happening
             [
                 'fallbackType' => 'fallback',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
             ],
             // Expected behaviour:
@@ -589,7 +589,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             ],
             [
                 'fallbackType' => 'strict',
-                'fallbackChain' => ['DK', 'EN'],
+                'fallbackChain' => ['DA', 'EN'],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
         ];
@@ -608,7 +608,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
                 $this->buildLanguageConfiguration('PL', '/pl/', $fallbackChain, $fallbackType),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),

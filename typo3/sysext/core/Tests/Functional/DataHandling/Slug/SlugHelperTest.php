@@ -32,7 +32,7 @@ final class SlugHelperTest extends FunctionalTestCase
 
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
-        'DK' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'dk_DA.UTF8'],
+        'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
         'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF-8'],
         'CH' => ['id' => 3, 'title' => 'Schweizer Deutsch', 'locale' => 'de_CH.UTF-8'],
     ];
@@ -47,7 +47,7 @@ final class SlugHelperTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
                 $this->buildLanguageConfiguration('DE', '/de/'),
                 $this->buildLanguageConfiguration('CH', '/de-CH/', ['DE', 'EN']),
             ],

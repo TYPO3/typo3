@@ -39,7 +39,7 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
         'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8'],
         'NL' => ['id' => 3, 'title' => 'Dutch', 'locale' => 'nl_NL.UTF8'],
         'FR' => ['id' => 4, 'title' => 'French', 'locale' => 'fr_FR.UTF8'],
-        'DK' => ['id' => 5, 'title' => 'Danish', 'locale' => 'da_DK.UTF8'],
+        'DA' => ['id' => 5, 'title' => 'Danish', 'locale' => 'da_DK.UTF8'],
     ];
 
     protected function setUp(): void
@@ -55,7 +55,7 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
                 $this->buildLanguageConfiguration('DE-CH', '/de-ch', ['DE'], 'fallback'),
                 $this->buildLanguageConfiguration('NL', '/nl'),
                 $this->buildLanguageConfiguration('FR', '/fr'),
-                $this->buildLanguageConfiguration('DK', '/dk', ['EN'], 'free'),
+                $this->buildLanguageConfiguration('DA', '/da', ['EN'], 'free'),
             ]
         );
 
