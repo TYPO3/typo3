@@ -1332,8 +1332,8 @@ final class ContentObjectRendererTest extends UnitTestCase
                 'someValue' => 42,
             ],
         ]);
-        $GLOBALS['TSFE']->fe_user = $frontendUser;
-
+        $request = (new ServerRequest())->withAttribute('frontend.user', $frontendUser);
+        $this->subject->setRequest($request);
         self::assertEquals(42, $this->subject->getData('session:myext|mydata|someValue'));
     }
 

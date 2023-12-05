@@ -1106,4 +1106,9 @@ return [
             'Breaking-102600-TSFE-applicationDataRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fe_user' => [
+        'restFiles' => [
+            'Breaking-102605-TSFE-fe_userRemoved.rst',
+        ],
+    ],
 ];

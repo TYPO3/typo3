@@ -33,7 +33,6 @@ use TYPO3\CMS\FrontendLogin\Event\LoginErrorOccurredEvent;
 use TYPO3\CMS\FrontendLogin\Event\LogoutConfirmedEvent;
 use TYPO3\CMS\FrontendLogin\Event\ModifyLoginFormViewEvent;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
-use TYPO3\CMS\FrontendLogin\Service\UserService;
 
 /**
  * Used for plugin login
@@ -52,9 +51,8 @@ class LoginController extends ActionController
     protected UserAspect $userAspect;
 
     public function __construct(
-        protected RedirectHandler $redirectHandler,
-        protected UserService $userService,
-        protected Context $context,
+        protected readonly RedirectHandler $redirectHandler,
+        protected readonly Context $context,
         protected readonly PageRepository $pageRepository
     ) {
         $this->userAspect = $context->getAspect('frontend.user');
@@ -126,19 +124,16 @@ class LoginController extends ActionController
         if (!$this->userAspect->isLoggedIn()) {
             return new ForwardResponse('login');
         }
-
         $this->eventDispatcher->dispatch(new LoginConfirmedEvent($this, $this->view));
         if (($redirectResponse = $this->handleRedirect()) !== null) {
             return $redirectResponse;
         }
-
         $this->view->assignMultiple(
             [
-                'user' => $this->userService->getFeUserData(),
+                'user' => $this->request->getAttribute('frontend.user')->user,
                 'showLoginMessage' => $showLoginMessage,
             ]
         );
-
         return $this->htmlResponse();
     }
 
@@ -150,10 +145,9 @@ class LoginController extends ActionController
         if (($redirectResponse = $this->handleRedirect()) !== null) {
             return $redirectResponse;
         }
-
         $this->view->assignMultiple(
             [
-                'user' => $this->userService->getFeUserData(),
+                'user' => $this->request->getAttribute('frontend.user')->user,
                 'noRedirect' => $this->isRedirectDisabled(),
                 'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl(
                     $this->request,
@@ -163,7 +157,6 @@ class LoginController extends ActionController
                 ),
             ]
         );
-
         return $this->htmlResponse();
     }
 

@@ -1100,7 +1100,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     protected function getFrontendUser(): FrontendUserAuthentication
     {
-        return $this->getTypoScriptFrontendController()->fe_user;
+        return $this->request->getAttribute('frontend.user');
     }
 
     protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController

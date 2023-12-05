@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * This class provides access to some methods of the ServerRequest object.
@@ -84,5 +85,13 @@ class RequestWrapper
     public function getPageArguments(): ?PageArguments
     {
         return ($routing = $this->request->getAttribute('routing')) instanceof PageArguments ? $routing : null;
+    }
+
+    /**
+     * @internal Exposing the full FE user object may change
+     */
+    public function getFrontendUser(): ?FrontendUserAuthentication
+    {
+        return $this->request->getAttribute('frontend.user');
     }
 }

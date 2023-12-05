@@ -3936,7 +3936,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->getValueFromRecursiveData(GeneralUtility::trimExplode('|', $key), $this->getRequest());
                         break;
                     case 'tsfe':
-                        $retVal = $this->getValueFromRecursiveData(GeneralUtility::trimExplode('|', $key), $this->getTypoScriptFrontendController());
+                        // @todo: This needs a bigger cleanup / deprecation when TypoScriptFrontendController continues to remove properties.
+                        $valueParts = GeneralUtility::trimExplode('|', $key);
+                        if (($valueParts[0] ?? '') === 'fe_user') {
+                            $frontendUser = $this->getRequest()->getAttribute('frontend.user');
+                            array_shift($valueParts);
+                            $retVal = $this->getValueFromRecursiveData($valueParts, $frontendUser);
+                        } else {
+                            $retVal = $this->getValueFromRecursiveData($valueParts, $this->getTypoScriptFrontendController());
+                        }
                         break;
                     case 'getenv':
                         $retVal = getenv($key);
@@ -4081,7 +4089,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'session':
                         $keyParts = GeneralUtility::trimExplode('|', $key, true);
                         $sessionKey = array_shift($keyParts);
-                        $retVal = $this->getTypoScriptFrontendController()->fe_user->getSessionData($sessionKey);
+                        $retVal = $this->getRequest()->getAttribute('frontend.user')->getSessionData($sessionKey);
                         foreach ($keyParts as $keyPart) {
                             if (is_object($retVal)) {
                                 $retVal = $retVal->{$keyPart};

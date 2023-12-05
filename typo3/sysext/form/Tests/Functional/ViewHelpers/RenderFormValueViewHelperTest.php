@@ -78,9 +78,12 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
 
     private function buildExtbaseRequest(): Request
     {
+        $frontendUser = new FrontendUserAuthentication();
+        $frontendUser->initializeUserSessionManager();
         $serverRequest = (new ServerRequest())
             ->withAttribute('extbase', new ExtbaseRequestParameters())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.user', $frontendUser);
 
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
@@ -133,7 +136,5 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
     {
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->id = 1;
-        $GLOBALS['TSFE']->fe_user = new FrontendUserAuthentication();
-        $GLOBALS['TSFE']->fe_user->initializeUserSessionManager();
     }
 }

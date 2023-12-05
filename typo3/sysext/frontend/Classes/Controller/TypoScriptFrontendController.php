@@ -75,7 +75,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
@@ -197,13 +196,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal
      */
     public $MP = '';
-
-    /**
-     * The frontend user
-     *
-     * @var FrontendUserAuthentication
-     */
-    public $fe_user;
 
     /**
      * A central data array consisting of various keys, initialized and
@@ -412,15 +404,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param Site $site The resolved site to work with
      * @param SiteLanguage $siteLanguage The resolved language to work with
      * @param PageArguments $pageArguments The PageArguments object containing Page ID, type and GET parameters
-     * @param FrontendUserAuthentication $frontendUser a FrontendUserAuthentication object
      */
-    public function __construct(Context $context, Site $site, SiteLanguage $siteLanguage, PageArguments $pageArguments, FrontendUserAuthentication $frontendUser)
+    public function __construct(Context $context, Site $site, SiteLanguage $siteLanguage, PageArguments $pageArguments)
     {
         $this->initializeContext($context);
         $this->site = $site;
         $this->language = $siteLanguage;
         $this->setPageArguments($pageArguments);
-        $this->fe_user = $frontendUser;
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         $this->initCaches();

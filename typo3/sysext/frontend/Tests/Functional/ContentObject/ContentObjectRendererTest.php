@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -223,8 +222,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
             GeneralUtility::makeInstance(Context::class),
             $site,
             $site->getDefaultLanguage(),
-            new PageArguments(1, '0', []),
-            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
+            new PageArguments(1, '0', [])
         );
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
@@ -1204,8 +1202,7 @@ And another one';
             GeneralUtility::makeInstance(Context::class),
             $site,
             $site->getDefaultLanguage(),
-            new PageArguments(1, '0', []),
-            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
+            new PageArguments(1, '0', [])
         );
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
         $subject->setCurrentFile($fileReference);

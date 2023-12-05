@@ -182,11 +182,8 @@ class PreviewSimulator implements MiddlewareInterface
     }
 
     /**
-     * Simulate user group for preview functionality
-     * When previewing a page with a usergroup restriction, the parameter ADMCMD_simUser = <groupId> will be added
-     * to the preview url. Simulation happens.
-     * legacy: via TSFE member variables (->fe_user->user[<groupColumn>])
-     * new: via Context::UserAspect
+     * Simulate user group for preview functionality. When previewing a page with a user group restriction,
+     * the parameter ADMCMD_simUser = <groupId> will be added to the preview url. Simulation happens.
      * This functionality needs to be loaded after BackendAuthenticator as it is only relevant for
      * logged in backend users and needs to be done before any page resolving starts.
      */
@@ -196,7 +193,6 @@ class PreviewSimulator implements MiddlewareInterface
         if (!$simulateUserGroup) {
             return false;
         }
-
         $frontendUser = $request->getAttribute('frontend.user');
         $frontendUser->user[$frontendUser->usergroup_column] = $simulateUserGroup;
         $frontendUser->userGroups[$simulateUserGroup] = [

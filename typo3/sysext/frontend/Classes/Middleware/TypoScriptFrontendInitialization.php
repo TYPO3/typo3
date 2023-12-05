@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -64,18 +63,13 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
                 ['code' => PageAccessFailureReasons::INVALID_PAGE_ARGUMENTS]
             );
         }
-        $frontendUser = $request->getAttribute('frontend.user');
-        if (!$frontendUser instanceof FrontendUserAuthentication) {
-            throw new \RuntimeException('The PSR-7 Request attribute "frontend.user" needs to be available as FrontendUserAuthentication object (as created by the FrontendUserAuthenticator middleware).', 1590740612);
-        }
 
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
             $this->context,
             $site,
             $request->getAttribute('language', $site->getDefaultLanguage()),
-            $pageArguments,
-            $frontendUser
+            $pageArguments
         );
         if ($pageArguments->getArguments()['no_cache'] ?? $request->getParsedBody()['no_cache'] ?? false) {
             $controller->set_no_cache('&no_cache=1 has been supplied, so caching is disabled! URL: "' . (string)$request->getUri() . '"');

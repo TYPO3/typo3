@@ -41,10 +41,8 @@ final class FormRuntimeTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->loadDefaultYamlConfigurations();
         $this->initializeTSFE();
-
         $this->formFactory = $this->get(ArrayFormFactory::class);
         $this->request = $this->buildExtbaseRequest();
     }
@@ -82,9 +80,12 @@ final class FormRuntimeTest extends FunctionalTestCase
 
     private function buildExtbaseRequest(): Request
     {
+        $frontendUser = new FrontendUserAuthentication();
+        $frontendUser->initializeUserSessionManager();
         $serverRequest = (new ServerRequest())
             ->withAttribute('extbase', new ExtbaseRequestParameters())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.user', $frontendUser);
 
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
@@ -135,7 +136,5 @@ final class FormRuntimeTest extends FunctionalTestCase
     {
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->id = 1;
-        $GLOBALS['TSFE']->fe_user = new FrontendUserAuthentication();
-        $GLOBALS['TSFE']->fe_user->initializeUserSessionManager();
     }
 }

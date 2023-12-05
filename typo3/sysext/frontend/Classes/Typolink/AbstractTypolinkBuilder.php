@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -233,8 +232,7 @@ abstract class AbstractTypolinkBuilder
             GeneralUtility::makeInstance(Context::class),
             $site,
             $language,
-            $pageArguments,
-            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
+            $pageArguments
         );
         $this->typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         return $this->typoScriptFrontendController;

@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This class creates and manages instances of the various form protection classes.
@@ -116,7 +115,7 @@ class FormProtectionFactory
             ];
         }
         if ($type === 'frontend') {
-            $user = $request ? $request->getAttribute('frontend.user') : (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController ? $GLOBALS['TSFE']->fe_user : null);
+            $user = $request?->getAttribute('frontend.user');
             if ($user && isset($user->user['uid'])) {
                 return [
                     FrontendFormProtection::class,

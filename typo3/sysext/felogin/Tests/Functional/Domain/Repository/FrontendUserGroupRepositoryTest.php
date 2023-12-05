@@ -18,43 +18,21 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Domain\Repository;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserGroupRepository;
-use TYPO3\CMS\FrontendLogin\Service\UserService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FrontendUserGroupRepositoryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['felogin'];
-    protected FrontendUserGroupRepository $repository;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->fe_user = new FrontendUserAuthentication();
-
-        $this->repository = new FrontendUserGroupRepository(new UserService(), new ConnectionPool());
-
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_groups.csv');
-    }
-
-    /**
-     * @test
-     */
-    public function getTable(): void
-    {
-        self::assertSame('fe_groups', $this->repository->getTable());
-    }
 
     /**
      * @test
      */
     public function findRedirectPageIdByGroupId(): void
     {
-        self::assertNull($this->repository->findRedirectPageIdByGroupId(99));
-        self::assertSame(10, $this->repository->findRedirectPageIdByGroupId(1));
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_groups.csv');
+        $subject = new FrontendUserGroupRepository(new ConnectionPool());
+        self::assertNull($subject->findRedirectPageIdByGroupId(99));
+        self::assertSame(10, $subject->findRedirectPageIdByGroupId(1));
     }
 }

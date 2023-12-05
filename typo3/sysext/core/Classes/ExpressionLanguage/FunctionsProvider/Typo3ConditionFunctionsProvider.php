@@ -70,10 +70,9 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
                 $retVal = null;
                 $keyParts = explode('|', $str);
                 $sessionKey = array_shift($keyParts);
-                // @todo: Provide session data differently and refrain from using TSFE.
-                $tsfe = $arguments['tsfe'] ?? null;
-                if ($tsfe && is_object($tsfe->fe_user)) {
-                    $retVal = $tsfe->fe_user->getSessionData($sessionKey);
+                $frontendUser = $arguments['request']->getFrontendUser();
+                if ($frontendUser) {
+                    $retVal = $frontendUser->getSessionData($sessionKey);
                     foreach ($keyParts as $keyPart) {
                         if (is_object($retVal)) {
                             $retVal = $retVal->{$keyPart};

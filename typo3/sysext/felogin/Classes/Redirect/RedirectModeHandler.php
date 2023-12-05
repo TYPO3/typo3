@@ -22,7 +22,6 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserGroupRepository;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
-use TYPO3\CMS\FrontendLogin\Service\UserService;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 
 /**
@@ -33,11 +32,10 @@ use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 class RedirectModeHandler
 {
     public function __construct(
-        protected UriBuilder $uriBuilder,
-        protected RedirectUrlValidator $redirectUrlValidator,
-        private UserService $userService,
-        private FrontendUserRepository $frontendUserRepository,
-        private FrontendUserGroupRepository $frontendUserGroupRepository
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly RedirectUrlValidator $redirectUrlValidator,
+        private readonly FrontendUserRepository $frontendUserRepository,
+        private readonly FrontendUserGroupRepository $frontendUserGroupRepository
     ) {}
 
     /**
@@ -45,14 +43,12 @@ class RedirectModeHandler
      */
     public function redirectModeGroupLogin(RequestInterface $request): string
     {
-        $groups = $this->userService->getFeUserGroupData();
-
+        $groups = $request->getAttribute('frontend.user')->userGroups;
         if (empty($groups)) {
             return '';
         }
         $groupUids = array_keys($groups);
-
-        // take the first group with a redirect page
+        // Take the first group with a redirect page
         foreach ($groupUids as $groupUid) {
             $redirectPageId = (int)$this->frontendUserGroupRepository
                 ->findRedirectPageIdByGroupId($groupUid);
@@ -68,14 +64,11 @@ class RedirectModeHandler
      */
     public function redirectModeUserLogin(RequestInterface $request): string
     {
-        $redirectPageId = $this->frontendUserRepository->findRedirectIdPageByUserId(
-            $this->userService->getFeUserData()['uid']
-        );
-
+        $userUid = (int)$request->getAttribute('frontend.user')->user['uid'];
+        $redirectPageId = $this->frontendUserRepository->findRedirectIdPageByUserId($userUid);
         if ($redirectPageId === null) {
             return '';
         }
-
         return $this->buildUriForPageUid($request, $redirectPageId);
     }
 
@@ -88,7 +81,6 @@ class RedirectModeHandler
         if ($redirectPageLogin !== 0) {
             $redirectUrl = $this->buildUriForPageUid($request, $redirectPageLogin);
         }
-
         return $redirectUrl;
     }
 
@@ -102,7 +94,6 @@ class RedirectModeHandler
             // Avoid forced logout, when trying to login immediately after a logout
             $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getReferrer($request));
         }
-
         return $redirectUrl ?? '';
     }
 
@@ -155,7 +146,6 @@ class RedirectModeHandler
         if ($redirectPageLoginError > 0) {
             $redirectUrl = $this->buildUriForPageUid($request, $redirectPageLoginError);
         }
-
         return $redirectUrl;
     }
 
@@ -168,7 +158,6 @@ class RedirectModeHandler
         if ($redirectPageLogout > 0) {
             $redirectUrl = $this->buildUriForPageUid($request, $redirectPageLogout);
         }
-
         return $redirectUrl;
     }
 
@@ -177,7 +166,6 @@ class RedirectModeHandler
         $this->uriBuilder->reset();
         $this->uriBuilder->setRequest($request);
         $this->uriBuilder->setTargetPageUid($pageUid);
-
         return $this->uriBuilder->build();
     }
 
@@ -185,11 +173,9 @@ class RedirectModeHandler
     {
         $referrer = '';
         $requestReferrer = (string)($request->getParsedBody()['referer'] ?? $request->getQueryParams()['referer'] ?? '');
-
         if ($this->redirectUrlValidator->isValid($request, $requestReferrer)) {
             $referrer = $requestReferrer;
         }
-
         return $referrer;
     }
 }

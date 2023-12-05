@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Messaging\Renderer\FlashMessageRendererInterface;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * A class which collects and renders flash messages.
@@ -170,7 +169,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
             return;
         }
         if ($severity === null) {
-            $this->storeFlashMessagesInSession(null);
+            $this->storeFlashMessagesInSession();
         } else {
             $messages = $this->getFlashMessagesFromSession();
             foreach ($messages as $index => $message) {
@@ -205,11 +204,17 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * Gets user object by context.
      * This class is also used in install tool, where $GLOBALS['BE_USER'] is not set and can be null.
+     *
+     * @todo: This construct needs to be removed. Methods that use this should be changed to
+     *        get the user hand over explicitly from the caller! A patch should make this global
+     *        access a b/w compat fallback only and adapt consuming methods accordingly.
      */
     protected function getUserByContext(): ?AbstractUserAuthentication
     {
-        if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController && $GLOBALS['TSFE']->fe_user instanceof FrontendUserAuthentication) {
-            return $GLOBALS['TSFE']->fe_user;
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null)
+            && $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user') instanceof FrontendUserAuthentication
+        ) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         }
         return $GLOBALS['BE_USER'] ?? null;
     }

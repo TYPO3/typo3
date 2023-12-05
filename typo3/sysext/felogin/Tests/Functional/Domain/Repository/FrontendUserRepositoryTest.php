@@ -19,35 +19,17 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Domain\Repository;
 
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
-use TYPO3\CMS\FrontendLogin\Service\UserService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FrontendUserRepositoryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['felogin'];
-    protected FrontendUserRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->fe_user = new FrontendUserAuthentication();
-
-        $this->repository = new FrontendUserRepository(new UserService(), new Context(), new ConnectionPool());
-
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_users.csv');
-    }
-
-    /**
-     * @test
-     */
-    public function getTable(): void
-    {
-        self::assertSame('fe_users', $this->repository->getTable());
     }
 
     /**
@@ -55,15 +37,14 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
      */
     public function findUserByUsernameOrEmailOnPages(): void
     {
-        self::assertNull($this->repository->findUserByUsernameOrEmailOnPages(''));
-        self::assertNull($this->repository->findUserByUsernameOrEmailOnPages('non-existent-email-or-username'));
-        self::assertNull($this->repository->findUserByUsernameOrEmailOnPages('user-with-username-without-email'));
-        self::assertNull($this->repository->findUserByUsernameOrEmailOnPages('foobar', [99]));
-
-        $userByUsername = $this->repository->findUserByUsernameOrEmailOnPages('foobar');
+        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        self::assertNull($subject->findUserByUsernameOrEmailOnPages(''));
+        self::assertNull($subject->findUserByUsernameOrEmailOnPages('non-existent-email-or-username'));
+        self::assertNull($subject->findUserByUsernameOrEmailOnPages('user-with-username-without-email'));
+        self::assertNull($subject->findUserByUsernameOrEmailOnPages('foobar', [99]));
+        $userByUsername = $subject->findUserByUsernameOrEmailOnPages('foobar');
         self::assertSame(1, $userByUsername['uid'] ?? 0);
-
-        $userByEmail = $this->repository->findUserByUsernameOrEmailOnPages('foo@bar.baz');
+        $userByEmail = $subject->findUserByUsernameOrEmailOnPages('foo@bar.baz');
         self::assertSame(1, $userByEmail['uid'] ?? 0);
     }
 
@@ -72,8 +53,9 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
      */
     public function existsUserWithHash(): void
     {
-        self::assertFalse($this->repository->existsUserWithHash('non-existent-hash'));
-        self::assertTrue($this->repository->existsUserWithHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
+        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        self::assertFalse($subject->existsUserWithHash('non-existent-hash'));
+        self::assertTrue($subject->existsUserWithHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
     }
 
     /**
@@ -81,9 +63,10 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
      */
     public function findOneByForgotPasswordHash(): void
     {
-        self::assertNull($this->repository->findOneByForgotPasswordHash(''));
-        self::assertNull($this->repository->findOneByForgotPasswordHash('non-existent-hash'));
-        self::assertIsArray($this->repository->findOneByForgotPasswordHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
+        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        self::assertNull($subject->findOneByForgotPasswordHash(''));
+        self::assertNull($subject->findOneByForgotPasswordHash('non-existent-hash'));
+        self::assertIsArray($subject->findOneByForgotPasswordHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
     }
 
     /**
@@ -91,8 +74,9 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
      */
     public function findRedirectIdPageByUserId(): void
     {
-        self::assertNull($this->repository->findRedirectIdPageByUserId(99));
-        self::assertSame(10, $this->repository->findRedirectIdPageByUserId(1));
+        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        self::assertNull($subject->findRedirectIdPageByUserId(99));
+        self::assertSame(10, $subject->findRedirectIdPageByUserId(1));
     }
 
     /**
@@ -102,23 +86,16 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
     {
         $uid = 1;
         $newPasswordHash = 'new-hash';
-
-        $this->repository->updateForgotHashForUserByUid($uid, $newPasswordHash);
-
-        $queryBuilder = $this->getConnectionPool()
-            ->getConnectionForTable('fe_users')
-            ->createQueryBuilder();
-
-        $query = $queryBuilder
+        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        $subject->updateForgotHashForUserByUid($uid, $newPasswordHash);
+        $queryBuilder = $this->getConnectionPool()->getConnectionForTable('fe_users')->createQueryBuilder();
+        $result = $queryBuilder
             ->select('felogin_forgotHash')
             ->from('fe_users')
-            ->where($queryBuilder->expr()->eq(
-                'uid',
-                $queryBuilder->createNamedParameter($uid)
-            ))
-        ;
-
-        self::assertSame($newPasswordHash, $query->executeQuery()->fetchOne());
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid)))
+            ->executeQuery()
+            ->fetchOne();
+        self::assertSame($newPasswordHash, $result);
     }
 
     /**
@@ -126,23 +103,15 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
      */
     public function updatePasswordAndInvalidateHash(): void
     {
-        $this->repository->updatePasswordAndInvalidateHash('cf8edd6fa435b4a9fcbb953f81bd84f2', 'new-password');
-
-        $queryBuilder = $this->getConnectionPool()
-            ->getConnectionForTable('fe_users')
-            ->createQueryBuilder();
-
-        $query = $queryBuilder
+        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        $subject->updatePasswordAndInvalidateHash('cf8edd6fa435b4a9fcbb953f81bd84f2', 'new-password');
+        $queryBuilder = $this->getConnectionPool()->getConnectionForTable('fe_users')->createQueryBuilder();
+        $user = $queryBuilder
             ->select('*')
             ->from('fe_users')
-            ->where($queryBuilder->expr()->eq(
-                'uid',
-                $queryBuilder->createNamedParameter(1)
-            ))
-        ;
-
-        $user = $query->executeQuery()->fetchAssociative();
-
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1)))
+            ->executeQuery()
+            ->fetchAssociative();
         self::assertSame('new-password', $user['password']);
         self::assertSame('', $user['felogin_forgotHash']);
     }

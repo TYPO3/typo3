@@ -19,48 +19,31 @@ namespace TYPO3\CMS\FrontendLogin\Domain\Repository;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\FrontendLogin\Service\UserService;
 
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
 class FrontendUserGroupRepository
 {
-    protected Connection $connection;
-    protected string $table;
+    protected readonly Connection $connection;
 
-    public function __construct(UserService $userService, ConnectionPool $connectionPool)
+    public function __construct(ConnectionPool $connectionPool)
     {
-        $this->table = $userService->getFeUserGroupTable();
-        $this->connection = $connectionPool->getConnectionForTable($this->getTable());
-    }
-
-    public function getTable(): string
-    {
-        return $this->table;
+        $this->connection = $connectionPool->getConnectionForTable('fe_groups');
     }
 
     public function findRedirectPageIdByGroupId(int $groupId): ?int
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
-
         $query = $queryBuilder
             ->select('felogin_redirectPid')
-            ->from($this->getTable())
+            ->from('fe_groups')
             ->where(
-                $queryBuilder->expr()->neq(
-                    'felogin_redirectPid',
-                    $this->connection->quote('')
-                ),
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($groupId, Connection::PARAM_INT)
-                )
+                $queryBuilder->expr()->neq('felogin_redirectPid', $this->connection->quote('')),
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($groupId, Connection::PARAM_INT))
             )
-            ->setMaxResults(1)
-        ;
-
+            ->setMaxResults(1);
         $column = $query->executeQuery()->fetchOne();
         return $column === false ? null : (int)$column;
     }

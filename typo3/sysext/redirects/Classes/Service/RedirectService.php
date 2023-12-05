@@ -372,7 +372,6 @@ class RedirectService implements LoggerAwareInterface
      *
      * Instantiating is done by the middleware stack (see Configuration/RequestMiddlewares.php)
      *
-     * - TSFE->fe_user
      * - TSFE->sys_page
      * - TSFE->config
      * - TSFE->cObj
@@ -392,8 +391,7 @@ class RedirectService implements LoggerAwareInterface
             GeneralUtility::makeInstance(Context::class),
             $site,
             $site->getDefaultLanguage(),
-            new PageArguments($site->getRootPageId(), '0', []),
-            $originalRequest->getAttribute('frontend.user')
+            new PageArguments($site->getRootPageId(), '0', [])
         );
         $controller->determineId($originalRequest);
         $controller->calculateLinkVars($queryParams);
