@@ -143,7 +143,6 @@ class LinkElement extends AbstractFormElement
                 'form-control-clearable',
                 't3js-clearable',
                 't3js-form-field-link-input',
-                'hidden',
                 'hasDefaultValue',
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
@@ -198,6 +197,10 @@ class LinkElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
         $linkExplanation = $this->getLinkExplanation((string)$itemValue);
+        $hasExplanation = ($linkExplanation['text'] ?? '') !== '';
+        if ($hasExplanation) {
+            $attributes['hidden'] = 'hidden';
+        }
         $explanation = htmlspecialchars($linkExplanation['text'] ?? '');
         $toggleButtonTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.toggleLinkExplanation');
 
@@ -207,9 +210,9 @@ class LinkElement extends AbstractFormElement
         $expansionHtml[] =      '<div class="form-wizards-element">';
         $expansionHtml[] =          '<div class="input-group t3js-form-field-link">';
         $expansionHtml[] =              '<span class="t3js-form-field-link-icon input-group-addon">' . ($linkExplanation['icon'] ?? '') . '</span>';
-        $expansionHtml[] =              '<input class="form-control t3js-form-field-link-explanation" title="' . $explanation . '" value="' . $explanation . '" readonly>';
+        $expansionHtml[] =              '<input class="form-control t3js-form-field-link-explanation" title="' . $explanation . '" value="' . $explanation . '"' . ' readonly' . ($hasExplanation ? '' : ' hidden') . '>';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $expansionHtml[] =              '<button class="btn btn-default t3js-form-field-link-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
+        $expansionHtml[] =              '<button class="btn btn-default t3js-form-field-link-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '"' . ($hasExplanation ? '' : ' disabled') . '>';
         $expansionHtml[] =                  $this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL)->render();
         $expansionHtml[] =              '</button>';
         $expansionHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';

@@ -18,6 +18,7 @@ enum Selectors {
   inputFieldSelector = '.t3js-form-field-link-input',
   explanationSelector = '.t3js-form-field-link-explanation',
   iconSelector = '.t3js-form-field-link-icon',
+  containerSelector = '.t3js-form-field-link',
 }
 
 /**
@@ -34,64 +35,86 @@ enum Selectors {
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 class LinkElement extends HTMLElement {
-  private element: HTMLSelectElement = null;
-  private container: HTMLElement = null;
-  private toggleSelector: HTMLButtonElement = null;
-  private explanationField: HTMLInputElement = null;
-  private icon: HTMLSpanElement = null;
+  constructor() {
+    super();
 
-  public connectedCallback(): void {
+    this.addEventListener('click', (e: Event) => this.handleClick(e));
+    this.addEventListener('change', (e: Event) => this.handleChange(e));
+  }
+
+  private get element(): HTMLSelectElement {
     const recordFieldId = this.getAttribute('recordFieldId');
     if (recordFieldId === null) {
-      return;
+      throw new Error('Missing recordFieldId attribute on <typo3-formengine-element-link>');
     }
 
-    this.element = this.querySelector<HTMLSelectElement>(selector`#${recordFieldId}`);
-    if (!this.element) {
-      return;
+    const element = this.querySelector<HTMLSelectElement>(selector`#${recordFieldId}`);
+    if (element === null) {
+      throw new Error(`recordFieldId #${recordFieldId} not found in <typo3-formengine-element-link>`);
     }
 
-    this.container = <HTMLElement>this.element.closest('.t3js-form-field-link');
-    this.toggleSelector = <HTMLButtonElement>this.container.querySelector(Selectors.toggleSelector);
-    this.explanationField = <HTMLInputElement>this.container.querySelector(Selectors.explanationSelector);
-    this.icon = <HTMLSpanElement>this.container.querySelector(Selectors.iconSelector);
-    this.toggleVisibility(this.explanationField.value === '');
-    this.registerEventHandler();
+    return element;
   }
 
-  /**
-   * @param {boolean} explanationShown
-   */
-  private toggleVisibility(explanationShown: boolean): void {
-    this.explanationField.classList.toggle('hidden', explanationShown);
-    this.element.classList.toggle('hidden', !explanationShown);
+  private get container(): HTMLElement {
+    return this.element.closest<HTMLElement>(Selectors.containerSelector);
   }
 
-  private registerEventHandler(): void {
-    this.toggleSelector.addEventListener('click', (e: Event): void => {
+  private get toggleSelector(): HTMLButtonElement {
+    return this.container.querySelector<HTMLButtonElement>(Selectors.toggleSelector);
+  }
+
+  private get explanationField(): HTMLInputElement {
+    return this.container.querySelector<HTMLInputElement>(Selectors.explanationSelector);
+  }
+
+  private get icon(): HTMLSpanElement {
+    return this.container.querySelector<HTMLSpanElement>(Selectors.iconSelector);
+  }
+
+  private handleClick(e: Event): void {
+    const initiator = e.target as Element;
+    const isToggleButton = initiator.closest(Selectors.toggleSelector) !== null;
+    if (isToggleButton) {
       e.preventDefault();
+      const explanationHidden = this.explanationField.hasAttribute('hidden');
+      if (explanationHidden) {
+        this.showExplanation();
+      } else {
+        this.hideExplanation();
+      }
+    }
+  }
 
-      const explanationShown = !this.explanationField.classList.contains('hidden');
-      this.toggleVisibility(explanationShown);
-    });
-
-    this.container.querySelector(Selectors.inputFieldSelector).addEventListener('change', (): void => {
-      const explanationShown = !this.explanationField.classList.contains('hidden');
-      if (explanationShown) {
-        this.toggleVisibility(explanationShown);
+  private handleChange(e: Event): void {
+    const initiator = e.target as Element;
+    const isInputField = initiator.closest(Selectors.inputFieldSelector) !== null;
+    if (isInputField) {
+      const explanationVisible = !this.explanationField.hasAttribute('hidden');
+      if (explanationVisible) {
+        this.hideExplanation();
       }
       this.disableToggle();
       this.clearIcon();
-    });
+    }
+  }
+
+  private showExplanation(): void {
+    this.explanationField.removeAttribute('hidden');
+    this.element.setAttribute('hidden', '');
+  }
+
+  private hideExplanation(): void {
+    this.explanationField.setAttribute('hidden', '');
+    this.element.removeAttribute('hidden');
   }
 
   private disableToggle(): void {
-    this.toggleSelector.classList.add('disabled');
-    this.toggleSelector.setAttribute('disabled', 'disabled');
+    this.toggleSelector.setAttribute('disabled', '');
   }
 
   private clearIcon(): void {
-    this.icon.innerHTML = '';
+    this.icon.replaceChildren();
   }
 }
 
