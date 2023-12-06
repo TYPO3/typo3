@@ -45,7 +45,7 @@ class Nonce implements SigningSecretInterface
             $payload = self::decodeJwt($jwt, self::createSigningKeyFromEncryptionKey(Nonce::class), true);
             return GeneralUtility::makeInstance(
                 self::class,
-                StringUtility::base64urlDecode($payload['nonce'] ?? ''),
+                StringUtility::base64urlDecode($payload['nonce'] ?? '', true),
                 \DateTimeImmutable::createFromFormat(\DateTimeImmutable::RFC3339, $payload['time'] ?? null)
             );
         } catch (\Throwable $t) {
