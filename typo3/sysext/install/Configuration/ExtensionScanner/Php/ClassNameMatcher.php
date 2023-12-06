@@ -2410,4 +2410,11 @@ return [
             'Feature-101174-InformationStatus.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface' => [
+        'restFiles' => [
+            'Breaking-102614-RemovedHookForManipulatingGetDataResult.rst',
+            'Deprecation-102614-UnusedInterfaceForGetDataHook.rst',
+            'Feature-102614-PSR-14EventForModifyingGetDataResult.rst',
+        ],
+    ],
 ];

@@ -181,8 +181,8 @@ final class ContentObjectRendererTest extends UnitTestCase
         }
         $container = new Container();
         $container->set(ContentObjectFactory::class, $contentObjectFactoryMock);
+        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
         GeneralUtility::setContainer($container);
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         $this->subject->start([], 'tt_content');
     }

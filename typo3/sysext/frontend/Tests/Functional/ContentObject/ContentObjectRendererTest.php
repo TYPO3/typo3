@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -1290,5 +1291,36 @@ And another one';
         );
         self::assertEquals('aTable', $modifiedContentObjectRenderer->getCurrentTable());
         self::assertEquals('foo current val', $modifiedContentObjectRenderer->getCurrentVal());
+    }
+
+    /**
+     * @test
+     */
+    public function afterGetDataResolvedEventIsCalled(): void
+    {
+        $afterGetDataResolvedEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'after-get-data-resolved-listener',
+            static function (AfterGetDataResolvedEvent $event) use (&$afterGetDataResolvedEvent) {
+                $afterGetDataResolvedEvent = $event;
+                $event->setResult('modified-result');
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(AfterGetDataResolvedEvent::class, 'after-get-data-resolved-listener');
+
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject->start(['foo' => 'bar'], 'aTable');
+        $subject->getData('field:title', ['title' => 'title']);
+
+        self::assertInstanceOf(AfterGetDataResolvedEvent::class, $afterGetDataResolvedEvent);
+        self::assertEquals($subject, $afterGetDataResolvedEvent->getContentObjectRenderer());
+        self::assertEquals('field:title', $afterGetDataResolvedEvent->getParameterString());
+        self::assertEquals(['title' => 'title'], $afterGetDataResolvedEvent->getAlternativeFieldArray());
+        self::assertEquals('modified-result', $afterGetDataResolvedEvent->getResult());
     }
 }

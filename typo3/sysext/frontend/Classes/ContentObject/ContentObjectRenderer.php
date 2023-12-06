@@ -67,6 +67,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
@@ -4174,17 +4175,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         break;
                 }
             }
-
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'] ?? [] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof ContentObjectGetDataHookInterface) {
-                    throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetDataHookInterface::class, 1195044480);
-                }
-                $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
-                $retVal = $hookObject->getDataExtension($string, $fieldArray, $secVal, $retVal, $ref);
-            }
         }
-        return $retVal;
+
+        return GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new AfterGetDataResolvedEvent($string, $fieldArray, $retVal, $this)
+        )->getResult();
     }
 
     /**

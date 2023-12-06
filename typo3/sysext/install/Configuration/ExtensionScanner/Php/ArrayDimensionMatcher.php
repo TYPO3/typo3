@@ -1062,4 +1062,10 @@ return [
             'Feature-102581-PSR-14EventForModifyingContentObjectRenderer.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'getData\']' => [
+        'restFiles' => [
+            'Breaking-102614-RemovedHookForManipulatingGetDataResult.rst',
+            'Feature-102614-PSR-14EventForModifyingGetDataResult.rst',
+        ],
+    ],
 ];
