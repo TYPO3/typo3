@@ -233,6 +233,18 @@ class ExpressionBuilder
      */
     public function in(string $fieldName, $value): string
     {
+        if ($value === []) {
+            throw new \InvalidArgumentException(
+                'ExpressionBuilder::in() can not be used with an empty array value.',
+                1701857902
+            );
+        }
+        if ($value === '') {
+            throw new \InvalidArgumentException(
+                'ExpressionBuilder::in() can not be used with an empty string value.',
+                1701857903
+            );
+        }
         return $this->comparison(
             $this->connection->quoteIdentifier($fieldName),
             'IN',
@@ -249,6 +261,18 @@ class ExpressionBuilder
      */
     public function notIn(string $fieldName, $value): string
     {
+        if ($value === []) {
+            throw new \InvalidArgumentException(
+                'ExpressionBuilder::notIn() can not be used with an empty array value.',
+                1701857904
+            );
+        }
+        if ($value === '') {
+            throw new \InvalidArgumentException(
+                'ExpressionBuilder::notIn() can not be used with an empty string value.',
+                1701857905
+            );
+        }
         return $this->comparison(
             $this->connection->quoteIdentifier($fieldName),
             'NOT IN',

@@ -209,6 +209,26 @@ final class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
+    public function inThrowsExceptionWithEmptyArray(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1701857902);
+        $this->subject->in('aField', []);
+    }
+
+    /**
+     * @test
+     */
+    public function inThrowsExceptionWithEmptyString(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1701857903);
+        $this->subject->in('aField', '');
+    }
+
+    /**
+     * @test
+     */
     public function notInWithStringQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -226,6 +246,26 @@ final class ExpressionBuilderTest extends UnitTestCase
         $result = $this->subject->notIn('aField', [1, 2, 3]);
 
         self::assertSame('aField NOT IN (1, 2, 3)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function notInThrowsExceptionWithEmptyArray(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1701857904);
+        $this->subject->notIn('aField', []);
+    }
+
+    /**
+     * @test
+     */
+    public function notInThrowsExceptionWithEmptyString(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1701857905);
+        $this->subject->notIn('aField', '');
     }
 
     /**
