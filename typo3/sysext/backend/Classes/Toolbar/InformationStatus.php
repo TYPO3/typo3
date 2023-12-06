@@ -33,10 +33,10 @@ enum InformationStatus: string
      */
     public function isGreaterThan(InformationStatus $status): bool
     {
-        return $this->getOrderRepresentaion($this) > $this->getOrderRepresentaion($status);
+        return $this->getOrderRepresentation($this) > $this->getOrderRepresentation($status);
     }
 
-    private function getOrderRepresentaion(InformationStatus $status): int
+    private function getOrderRepresentation(InformationStatus $status): int
     {
         return match ($status) {
             self::NOTICE => -2,
