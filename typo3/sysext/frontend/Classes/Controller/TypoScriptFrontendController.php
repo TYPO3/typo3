@@ -103,16 +103,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * The page id (int)
+     * The page id (int).
+     *
+     * Read-only! Extensions may read but never write this property!
      */
     public int $id;
 
     protected Site $site;
     protected SiteLanguage $language;
-
-    /**
-     * @internal
-     */
     protected PageArguments $pageArguments;
 
     /**
@@ -145,19 +143,24 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * [2] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
      * [1] => [uid = 2, pid = 0, title = An organizational page, probably with is_siteroot=1 and a site config, ...]
      *
+     * Read-only! Extensions may read but never write this property!
+     *
      * @var array<int, array<string, mixed>>
      */
     public array $rootLine = [];
 
     /**
-     * The pagerecord
-     * @var array
+     * The page record.
+     *
+     * Read-only! Extensions may read but never write this property!
      */
-    public $page = [];
+    public ?array $page = [];
 
     /**
      * This will normally point to the same value as id, but can be changed to
      * point to another page from which content will then be displayed instead.
+     *
+     * Read-only! Extensions may read but never write this property!
      */
     public int $contentPid = 0;
 
@@ -175,11 +178,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected ?array $originalShortcutPage = null;
 
     /**
-     * sys_page-object, pagefunctions
-     *
-     * @var PageRepository|string
+     * Read-only! Extensions may read but never write this property!
      */
-    public $sys_page = '';
+    public ?PageRepository $sys_page = null;
 
     /**
      * Is set to > 0 if the page could not be resolved. This will then result in early returns when resolving the page.
@@ -192,10 +193,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected array $pageAccessFailureHistory = [];
 
     /**
-     * @var string
      * @internal
      */
-    public $MP = '';
+    public string $MP = '';
 
     /**
      * A central data array consisting of various keys, initialized and
@@ -227,26 +227,27 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *             [0] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
      *             [1] => [uid = 5, pid = 3, title = Here you are, ...]
      *
+     * 'INTincScript': (internal) List of INT instructions
+     * 'INTincScript_ext': (internal) Further state for INT instructions
+     *
+     * Read-only! Extensions may read but never write this property!
+     *
      * @var array<string, mixed>
      */
-    public $config = [];
+    public array $config = [];
 
     /**
      * Is set to the time-to-live time of cached pages. Default is 60*60*24, which is 24 hours.
-     *
-     * @internal
      */
     protected int $cacheTimeOutDefault = 0;
 
     /**
      * Set if cached content was fetched from the cache.
-     * @internal
      */
     protected bool $pageContentWasLoadedFromCache = false;
 
     /**
-     * Set to the expire time of cached content
-     * @internal
+     * Set to the expiry time of cached content
      */
     protected int $cacheExpires = 0;
 
@@ -268,21 +269,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * additionalHeaderData['myStyleSheet'], see reserved keys above) or num-keys
      * (like additionalHeaderData[] = '...')
      *
-     * @var array
+     * @internal
      */
-    public $additionalHeaderData = [];
+    public array $additionalHeaderData = [];
 
     /**
      * Used to accumulate additional HTML-code for the footer-section of the template
-     * @var array
+     * @internal
      */
-    public $additionalFooterData = [];
+    public array $additionalFooterData = [];
 
     /**
      * Absolute Reference prefix
-     * @var string
+     *
+     * Read-only! Extensions may read but never write this property!
      */
-    public $absRefPrefix = '';
+    public string $absRefPrefix = '';
 
     /**
      * A string prepared for insertion in all links on the page as url-parameters.
@@ -292,17 +294,23 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public string $linkVars = '';
 
+    /**
+     * @internal
+     */
     public array $register = [];
 
     /**
-     * Stack used for storing array and retrieving register arrays (see
-     * LOAD_REGISTER and RESTORE_REGISTER)
+     * Stack used for storing array and retrieving register arrays.
+     * See LOAD_REGISTER and RESTORE_REGISTER.
+     * @internal
      */
     public array $registerStack = [];
 
     /**
      * Used by RecordContentObject and ContentContentObject to ensure the a records is NOT
      * rendered twice through it!
+     *
+     * @internal
      */
     public array $recordRegister = [];
 
@@ -311,37 +319,37 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * class ContentObjectRenderer has an equal value, but that is pointing to the
      * record delivered in the $data-array of the ContentObjectRenderer instance, if
      * the cObjects CONTENT or RECORD created that instance
+     *
+     * @internal
      */
     public string $currentRecord = '';
 
     /**
      * Used to generate page-unique keys. Point is that uniqid() functions is very
      * slow, so a unique key is made based on this, see function uniqueHash()
-     * @internal
      */
     protected int $uniqueCounter = 0;
 
-    /**
-     * @internal
-     */
     protected string $uniqueString = '';
 
     /**
      * Page content render object
      *
-     * @var ContentObjectRenderer
+     * Read-only! Extensions may read but never write this property!
      */
-    public $cObj;
+    public ContentObjectRenderer $cObj;
 
     /**
      * All page content is accumulated in this variable. See RequestHandler
-     * @var string
+     * @internal
      */
-    public $content = '';
+    public string $content = '';
 
     /**
      * Info-array of the last resulting image resource of content object
      * IMG_RESOURCE (if any), containing width, height and so on.
+     *
+     * @internal
      */
     public ?array $lastImgResourceInfo = null;
 
@@ -356,21 +364,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public ?ResourceMutex $lock = null;
 
     protected ?PageRenderer $pageRenderer = null;
-
-    /**
-     * The page cache object, use this to save pages to the cache and to
-     * retrieve them again
-     *
-     * @var FrontendInterface
-     */
-    protected $pageCache;
-
+    protected FrontendInterface $pageCache;
     protected array $pageCacheTags = [];
 
     /**
      * Content type HTTP header being sent in the request.
      * @todo Ticket: #63642 Should be refactored to a request/response model later
-     * @internal Should only be used by TYPO3 core for now
      */
     protected string $contentType = 'text/html; charset=utf-8';
 
@@ -404,6 +403,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param Site $site The resolved site to work with
      * @param SiteLanguage $siteLanguage The resolved language to work with
      * @param PageArguments $pageArguments The PageArguments object containing Page ID, type and GET parameters
+     * @internal Extensions should usually not need to create own instances of TSFE
      */
     public function __construct(Context $context, Site $site, SiteLanguage $siteLanguage, PageArguments $pageArguments)
     {
@@ -424,10 +424,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
     }
 
-    /**
-     * Initializes the page renderer object
-     */
-    protected function initPageRenderer()
+    protected function initPageRenderer(): void
     {
         if ($this->pageRenderer !== null) {
             return;
@@ -445,23 +442,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * @param string $contentType
      * @internal Must only be used by TYPO3 core
      */
-    public function setContentType($contentType)
+    public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
     }
 
-    /********************************************
-     *
-     * Initializing, resolving page id
-     *
-     ********************************************/
-    /**
-     * Initializes the caching system.
-     */
-    protected function initCaches()
+    protected function initCaches(): void
     {
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->pageCache = $cacheManager->getCache('pages');
@@ -498,6 +486,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * - originalMountPointPage
      * - pageAccessFailureHistory['direct_access']
      * - pageNotFound
+     *
+     * @internal
      */
     public function determineId(ServerRequestInterface $request): ?ResponseInterface
     {
@@ -643,7 +633,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @throws PageNotFoundException
      * @throws ShortcutTargetPageNotFoundException
      */
-    protected function getPageAndRootline(ServerRequestInterface $request)
+    protected function getPageAndRootline(ServerRequestInterface $request): void
     {
         $requestedPageRowWithoutGroupCheck = [];
         $this->page = $this->sys_page->getPage($this->id);
@@ -892,8 +882,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string|null $failureReasonCode the error code to be attached (optional), see PageAccessFailureReasons list for details
      * @return array Summary of why page access was not allowed.
+     * @internal
      */
-    public function getPageAccessFailureReasons(string $failureReasonCode = null)
+    public function getPageAccessFailureReasons(string $failureReasonCode = null): array
     {
         $output = [];
         if ($failureReasonCode) {
@@ -926,12 +917,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         return $output;
     }
-
-    /********************************************
-     *
-     * Template and caching related functions.
-     *
-     *******************************************/
 
     protected function setPageArguments(PageArguments $pageArguments): void
     {
@@ -1370,7 +1355,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @see getFromCache()
      * @see setPageCacheContent()
-     * @internal
      */
     protected function populatePageDataFromCache(array $cachedData): void
     {
@@ -1410,7 +1394,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Also, a backend user MUST be logged in for the shift-reload to be detected due to DoS-attack-security reasons.
      *
      * @return bool If shift-reload in client browser has been clicked, disable getting cached page and regenerate the page content.
-     * @internal
      */
     protected function shouldAcquireCacheData(ServerRequestInterface $request): bool
     {
@@ -1463,18 +1446,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return $this->id . '_' . sha1(serialize($hashParameters));
     }
 
-    /********************************************
-     *
-     * Further initialization and data processing
-     *
-     *******************************************/
     /**
      * Setting the language key that will be used by the current page.
      * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
-     *
-     * @internal
      */
-    protected function settingLanguage(ServerRequestInterface $request)
+    protected function settingLanguage(ServerRequestInterface $request): void
     {
         // Get values from site language
         $languageAspect = LanguageAspectFactory::createFromSiteLanguage($this->language);
@@ -1576,7 +1552,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Updating content of the two rootLines IF the language key is set!
      */
-    protected function updateRootLinesWithTranslations()
+    protected function updateRootLinesWithTranslations(): void
     {
         try {
             $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
@@ -1590,8 +1566,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * and the setting "config.linkVars".
      *
      * @param array $queryParams $_GET (usually called with a PSR-7 $request->getQueryParams())
+     * @internal
      */
-    public function calculateLinkVars(array $queryParams)
+    public function calculateLinkVars(array $queryParams): void
     {
         $this->linkVars = GeneralUtility::makeInstance(LinkVarsCalculator::class)
             ->getAllowedLinkVarsFromRequest(
@@ -1607,7 +1584,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * If the current page is of type mountpoint and should be overlaid with the contents of the mountpoint page
      * and is accessed directly, the user will be redirected to the mountpoint context.
      * @internal
-     * @param ServerRequestInterface $request
      */
     public function getRedirectUriForMountPoint(ServerRequestInterface $request): ?string
     {
@@ -1625,7 +1601,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * the user will be redirected to shortcut target.
      *
      * @internal
-     * @param ServerRequestInterface $request
      */
     public function getRedirectUriForShortcut(ServerRequestInterface $request): ?string
     {
@@ -1672,13 +1647,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         ]);
     }
 
-    /********************************************
-     *
-     * Page generation; cache handling
-     *
-     *******************************************/
     /**
      * Returns TRUE if the page content should be generated.
+     *
+     * @internal
      */
     public function isGeneratePage(): bool
     {
@@ -1730,7 +1702,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @see ContentObjectRenderer::lastChanged()
      * @see setRegisterValueForSysLastChanged()
      */
-    protected function setSysLastChanged()
+    protected function setSysLastChanged(): void
     {
         // We only update the info if browsing the live workspace
         $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
@@ -1757,7 +1729,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Set the SYS_LASTCHANGED register value, is also called when a translated page is in use,
      * so the register reflects the state of the translated page, not the page in the default language.
      *
-     * @internal
      * @see setSysLastChanged()
      */
     protected function setRegisterValueForSysLastChanged(array $page): void
@@ -1771,10 +1742,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Adds tags to this page's cache entry, you can then f.e. remove cache
      * entries by tag
-     *
-     * @param array $tags An array of tag
      */
-    public function addCacheTags(array $tags)
+    public function addCacheTags(array $tags): void
     {
         $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
     }
@@ -1807,10 +1776,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $temp_copy_TSFE->getPageAndRootline($request);
         return $temp_copy_TSFE->id;
     }
+
     /**
      * Sets up TypoScript "config." options and set properties in $TSFE.
+     *
+     * @internal
      */
-    public function preparePageContentGeneration(ServerRequestInterface $request)
+    public function preparePageContentGeneration(ServerRequestInterface $request): void
     {
         $this->getTimeTracker()->push('Prepare page content generation');
         // calculate the absolute path prefix
@@ -1840,10 +1812,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Does processing of the content after the page content was generated.
-     *
      * This includes caching the page, indexing the page (if configured) and setting sysLastChanged
+     *
+     * @internal
      */
-    public function generatePage_postProcessing(ServerRequestInterface $request)
+    public function generatePage_postProcessing(ServerRequestInterface $request): void
     {
         $this->setAbsRefPrefix();
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
@@ -1869,7 +1842,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Generate the page title, can be called multiple times,
      * as PageTitleProvider might have been modified by an uncached plugin etc.
      *
-     * @return string the generated page title
+     * @internal
      */
     public function generatePageTitle(): string
     {
@@ -1950,6 +1923,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Processes the INTinclude-scripts
+     *
+     * @internal
      */
     public function INTincScript(ServerRequestInterface $request): void
     {
@@ -1993,7 +1968,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * In case the replacement adds additional placeholders, it loops
      * until no new placeholders are found any more.
      */
-    protected function recursivelyReplaceIntPlaceholdersInContent(ServerRequestInterface $request)
+    protected function recursivelyReplaceIntPlaceholdersInContent(ServerRequestInterface $request): void
     {
         do {
             $nonCacheableData = $this->config['INTincScript'];
@@ -2014,7 +1989,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param array $nonCacheableData $GLOBALS['TSFE']->config['INTincScript'] or part of it
      * @see INTincScript()
      */
-    protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData, ServerRequestInterface $request)
+    protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData, ServerRequestInterface $request): void
     {
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('Split content');
@@ -2070,7 +2045,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @internal this method should be renamed as it does not only handle JS, but all additional header data
      */
-    public function INTincScript_loadJSCode()
+    public function INTincScript_loadJSCode(): void
     {
         // Prepare code and placeholders for additional header and footer files (and make sure that this isn't called twice)
         if ($this->isINTincScript() && !isset($this->config['INTincScript_ext'])) {
@@ -2091,14 +2066,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Determines if there are any INTincScripts to include = "non-cacheable" parts
      *
      * @return bool Returns TRUE if scripts are found
+     * @internal
      */
-    public function isINTincScript()
+    public function isINTincScript(): bool
     {
         return !empty($this->config['INTincScript']) && is_array($this->config['INTincScript']);
     }
 
     /**
      * Add HTTP headers to the response object.
+     *
+     * @internal
      */
     public function applyHttpHeadersToResponse(ResponseInterface $response): ResponseInterface
     {
@@ -2191,27 +2169,27 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Rules are:
      * no_cache cannot be set: If it is, the page might contain dynamic content and should never be cached.
      * There can be no USER_INT objects on the page ("isINTincScript()") because they implicitly indicate dynamic content
-     * There can be no logged in user because user sessions are based on a cookie and thereby does not offer client caching a chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache headers in page sections where user logins change the page content. (unless using such as realurl to apply a prefix in case of login sections)
+     * There can be no logged-in user because user sessions are based on a cookie and thereby does not offer client caching a
+     * chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change
+     * when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache
+     * headers in page sections where user logins change the page content. (unless using such as realurl to apply a prefix
+     * in case of login sections)
      *
-     * @return bool
+     * @internal
      */
-    public function isStaticCacheble()
+    public function isStaticCacheble(): bool
     {
         return !$this->no_cache && !$this->isINTincScript() && !$this->context->getAspect('frontend.user')->isUserOrGroupSet();
     }
 
-    /********************************************
-     *
-     * Various internal API functions
-     *
-     *******************************************/
     /**
      * Creates an instance of ContentObjectRenderer in $this->cObj
      * This instance is used to start the rendering of the TypoScript template structure
      *
      * @param ServerRequestInterface|null $request
+     * @internal
      */
-    public function newCObj(ServerRequestInterface $request = null)
+    public function newCObj(ServerRequestInterface $request = null): void
     {
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
         $this->cObj->setRequest($request);
@@ -2221,11 +2199,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Converts relative paths in the HTML source to absolute paths for fileadmin/, typo3conf/ext/ and media/ folders.
      *
-     * @internal
      * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      * @see INTincScript()
      */
-    protected function setAbsRefPrefix()
+    protected function setAbsRefPrefix(): void
     {
         if (!$this->absRefPrefix) {
             return;
@@ -2263,8 +2240,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $typoScriptProperty Deprecated object or property
      * @param string $explanation Message or additional information
+     * @internal
      */
-    public function logDeprecatedTyposcript($typoScriptProperty, $explanation = '')
+    public function logDeprecatedTyposcript(string $typoScriptProperty, string $explanation = ''): void
     {
         $explanationText = $explanation !== '' ? ' - ' . $explanation : '';
         $this->getTimeTracker()->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, LogLevel::WARNING);
@@ -2277,8 +2255,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $str Some string to include in what is hashed. Not significant at all.
      * @return string MD5 hash of ->uniqueString, input string and uniqueCounter
+     * @internal
      */
-    public function uniqueHash($str = '')
+    public function uniqueHash(string $str = ''): string
     {
         return md5($this->uniqueString . '_' . $str . $this->uniqueCounter++);
     }
@@ -2289,7 +2268,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $reason An optional reason to be written to the log.
      * @param bool $internalRequest Whether the request is internal or not (true should only be used by core calls).
      */
-    public function set_no_cache($reason = '', $internalRequest = false)
+    public function set_no_cache(string $reason = '', bool $internalRequest = false): void
     {
         $warning = '';
         $context = [];
@@ -2325,10 +2304,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Disables caching of the current page.
-     *
-     * @internal
      */
-    protected function disableCache()
+    protected function disableCache(): void
     {
         $this->no_cache = true;
     }
@@ -2337,8 +2314,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Sets the cache-timeout in seconds
      *
      * @param int $seconds Cache-timeout in seconds
+     * @internal
      */
-    public function set_cache_timeout_default($seconds)
+    public function set_cache_timeout_default(int $seconds): void
     {
         $seconds = (int)$seconds;
         if ($seconds > 0) {
@@ -2348,6 +2326,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Get the cache timeout for the current page.
+     * @internal
      */
     public function get_cache_timeout(): int
     {
@@ -2361,18 +2340,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             );
     }
 
-    /*********************************************
-     *
-     * Localization and character set conversion
-     *
-     *********************************************/
     /**
      * Split Label function for front-end applications.
      *
      * @param string $input Key string. Accepts the "LLL:" prefix.
      * @return string Label value, if any.
      */
-    public function sL($input)
+    public function sL(string $input): string
     {
         if ($this->languageService === null) {
             $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($this->language);
@@ -2382,6 +2356,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Returns the originally requested page uid when TSFE was instantiated initially.
+     * @internal
      */
     public function getRequestedId(): int
     {
@@ -2440,41 +2415,43 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->logger->error($message, $context);
     }
 
-    /**
-     * Returns the current BE user.
-     * @todo: Add PHP return type declaration and ensure, that classes using TSFE in BE/CLI context always instantiate
-     *        a FrontendBackendUserAuthentication object in $GLOBALS['BE_USER'].
-     *
-     * @return FrontendBackendUserAuthentication|null
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): ?FrontendBackendUserAuthentication
     {
         return $GLOBALS['BE_USER'] ?? null;
     }
 
-    /**
-     * @return TimeTracker
-     */
-    protected function getTimeTracker()
+    protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
     }
 
+    /**
+     * @internal
+     */
     public function getLanguage(): SiteLanguage
     {
         return $this->language;
     }
 
+    /**
+     * @internal
+     */
     public function getSite(): Site
     {
         return $this->site;
     }
 
+    /**
+     * @internal
+     */
     public function getContext(): Context
     {
         return $this->context;
     }
 
+    /**
+     * @internal
+     */
     public function getPageArguments(): PageArguments
     {
         return $this->pageArguments;

@@ -1111,4 +1111,44 @@ return [
             'Breaking-102605-TSFE-fe_userRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->additionalHeaderData' => [
+        'restFiles' => [
+            'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->additionalFooterData' => [
+        'restFiles' => [
+            'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->register' => [
+        'restFiles' => [
+            'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->registerStack' => [
+        'restFiles' => [
+            'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->recordRegister' => [
+        'restFiles' => [
+            'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->currentRecord' => [
+        'restFiles' => [
+            'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->content' => [
+        'restFiles' => [
+            'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->lastImgResourceInfo' => [
+        'restFiles' => [
+            'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
+        ],
+    ],
 ];

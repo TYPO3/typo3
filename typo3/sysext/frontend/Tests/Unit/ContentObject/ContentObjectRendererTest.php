@@ -2721,8 +2721,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendController
             ->expects(self::exactly($times))
             ->method('addCacheTags')
-            ->with($tags)
-            ->willReturn(null);
+            ->with($tags);
         $subject
             ->expects(self::exactly($times + 1))
             ->method('getTypoScriptFrontendController')
@@ -3740,8 +3739,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendController
             ->expects(self::exactly($times))
             ->method('addCacheTags')
-            ->with($tags)
-            ->willReturn(null);
+            ->with($tags);
         $subject
             ->expects(self::exactly($times))
             ->method('getTypoScriptFrontendController')
