@@ -12,13 +12,14 @@ Description
 ===========
 
 The class :php:`\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus` has
-marked been marked as deprecated in favour of the new nativ
+been marked as deprecated in favour of the new nativ
 :doc:`enum <../13.0/Feature-101174-InformationStatus>`
 :php:`\TYPO3\CMS\Backend\Toolbar\InformationStatus`.
 
-Additionally, passing a :php:`string` as :php:`$status` to either :php:`addSystemInformation()`
-or :php:`addSystemMessage()` of class :php:`TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem`
-has been deprecaed as well. An instance of the new enum has to be provided.
+Additionally, passing a :php:`string` as :php:`$status` to either
+:php:`addSystemInformation()` or :php:`addSystemMessage()` of
+class :php:`TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem`
+has been deprecated as well. An instance of the new enum has to be provided.
 
 Impact
 ======

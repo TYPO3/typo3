@@ -35,7 +35,7 @@ Migration
 The hook is removed without deprecation in order to allow extensions
 to work with TYPO3 v12 (using the hook) and v13+ (using the new Event)
 when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Events <../13.0/Feature-102581-PSR-14EventForModifyingContentObjectRenderer>`
+Use the :doc:`PSR-14 Event <../13.0/Feature-102581-PSR-14EventForModifyingContentObjectRenderer>`
 to allow greater influence in the functionality.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

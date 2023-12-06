@@ -35,7 +35,7 @@ Migration
 
 The PHP interface is still available for TYPO3 v13.x, so extensions can
 provide a version which is compatible with TYPO3 v12 (using the hook)
-and TYPO3 v13.x (using the new :doc:`PSR-14 Events <../13.0/Feature-102581-PSR-14EventForModifyingContentObjectRenderer>`),
+and TYPO3 v13.x (using the new :doc:`PSR-14 Event <../13.0/Feature-102581-PSR-14EventForModifyingContentObjectRenderer>`),
 at the same time. Remove any usage of the PHP interface and use the new PSR-14
 Event to avoid any further problems in TYPO3 v14+.
 
