@@ -1547,7 +1547,7 @@ return [
         'connect_timeout' => 10,
         'proxy' => null,
         'ssl_key' => null,
-        'timeout' => 20,
+        'timeout' => 0,
         'verify' => true,
         'version' => '1.1',
         'handler' => [], // Array of callables
