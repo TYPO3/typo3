@@ -189,11 +189,12 @@ class StringUtility
      *  + position #63: `_` (underscore) -> `/`
      *
      * @param string $value base64url decoded string
-     * @return string raw value
+     * @param bool $strict enforces to only allow characters contained in the base64(url) alphabet
+     * @return string|false raw value, or `false` if non-base64(url) characters were given in strict mode
      */
-    public static function base64urlDecode(string $value): string
+    public static function base64urlDecode(string $value, bool $strict = false): string|false
     {
-        return base64_decode(strtr($value, ['-' => '+', '_' => '/']));
+        return base64_decode(strtr($value, ['-' => '+', '_' => '/']), $strict);
     }
 
     /**

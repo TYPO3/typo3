@@ -389,6 +389,32 @@ final class StringUtilityTest extends UnitTestCase
         self::assertSame($rawValue, StringUtility::base64urlDecode($encodedValue));
     }
 
+    public static function base64urlStrictDataProvider(): \Generator
+    {
+        yield ['', ''];
+        yield ['YQ', 'a'];
+        yield ['YWE', 'aa'];
+        yield ['YWE-', 'aa>'];
+        yield ['YWE_', 'aa?'];
+        yield ['YWFh', 'aaa'];
+        yield ['YWFhYQ', 'aaaa'];
+        yield ['YWFhYQ!', false];
+        yield ['Y!W!E', false];
+        // `Y W E` is interesting - plain `base64_decode` strips inner spaces
+        yield ['Y W E', 'aa'];
+        yield ["Y\nW\nE", 'aa'];
+        yield ["Y\tW\tE", 'aa'];
+    }
+
+    /**
+     * @test
+     * @dataProvider base64urlStrictDataProvider
+     */
+    public function base64urlStrictDecodeWorks(string $encodedValue, string|bool $expectation): void
+    {
+        self::assertSame($expectation, StringUtility::base64urlDecode($encodedValue, true));
+    }
+
     public static function explodeEscapedDataProvider(): array
     {
         return [
