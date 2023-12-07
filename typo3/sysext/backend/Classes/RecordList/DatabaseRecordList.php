@@ -2379,12 +2379,12 @@ class DatabaseRecordList
             }
         }
         if ($table === 'pages' && $this->showOnlyTranslatedRecords) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+            $queryBuilder->andWhere($queryBuilder->expr()->in(
+                $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                $queryBuilder->quoteArrayBasedValueListToIntegerList(
                     array_keys($this->languagesAllowedForUser)
                 )
-            );
+            ));
         }
         // Former prepareQueryBuilder
         if ($maxResult > 0) {
