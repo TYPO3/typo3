@@ -31,9 +31,6 @@ class ImageResourceContentObject extends AbstractContentObject
     public function render($conf = [])
     {
         $lastImgResourceInfo = $this->cObj->getImgResource($conf['file'] ?? '', $conf['file.'] ?? []);
-        if ($this->hasTypoScriptFrontendController()) {
-            $this->getTypoScriptFrontendController()->lastImgResourceInfo = $lastImgResourceInfo;
-        }
         if (!is_array($lastImgResourceInfo)) {
             return '';
         }

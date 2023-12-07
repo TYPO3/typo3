@@ -346,14 +346,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public string $content = '';
 
     /**
-     * Info-array of the last resulting image resource of content object
-     * IMG_RESOURCE (if any), containing width, height and so on.
-     *
-     * @internal
-     */
-    public ?array $lastImgResourceInfo = null;
-
-    /**
      * Internal calculations for labels
      */
     protected ?LanguageService $languageService = null;
