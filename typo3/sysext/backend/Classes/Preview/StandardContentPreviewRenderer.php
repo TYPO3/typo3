@@ -145,7 +145,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 break;
             case 'list':
                 if (!empty($record['list_type'])) {
-                    $label = BackendUtility::getLabelFromItemListMerged((int)$record['pid'], 'tt_content', 'list_type', $record['list_type']);
+                    $label = BackendUtility::getLabelFromItemListMerged((int)$record['pid'], 'tt_content', 'list_type', $record['list_type'], $record);
                     if (!empty($label)) {
                         $out .= $this->linkEditContent('<strong>' . htmlspecialchars($languageService->sL($label)) . '</strong>', $record);
                     } else {
