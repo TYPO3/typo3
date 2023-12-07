@@ -1068,4 +1068,10 @@ return [
             'Feature-102614-PSR-14EventForModifyingGetDataResult.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'getImageSourceCollection\']' => [
+        'restFiles' => [
+            'Breaking-102624-RemovedHookForManipulatingImageSourceCollection.rst',
+            'Feature-102624-PSR-14EventForModifyingImageSourceCollection.rst',
+        ],
+    ],
 ];

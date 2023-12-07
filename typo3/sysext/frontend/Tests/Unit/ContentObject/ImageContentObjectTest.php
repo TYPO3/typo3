@@ -19,7 +19,10 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\Locale;
@@ -29,8 +32,8 @@ use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent;
 use TYPO3\CMS\Frontend\ContentObject\ImageContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -48,6 +51,10 @@ final class ImageContentObjectTest extends UnitTestCase
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $GLOBALS['TSFE'] = $tsfe;
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
+
+        $container = new Container();
+        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
+        GeneralUtility::setContainer($container);
         $this->subject = $this->getAccessibleMock(ImageContentObject::class, null, [
             new MarkerBasedTemplateService(
                 new NullFrontend('hash'),
@@ -143,7 +150,6 @@ final class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedSources(): void
     {
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -236,7 +242,6 @@ final class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyDefault(string $layoutKey, array $configuration): void
     {
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -356,7 +361,6 @@ final class ImageContentObjectTest extends UnitTestCase
         string $doctype,
         string $expectedHtml
     ): void {
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -396,13 +400,12 @@ final class ImageContentObjectTest extends UnitTestCase
     }
 
     /**
-     * Make sure the hook in get sourceCollection is called
+     * Make sure the PSR-14 Event in get sourceCollection is called
      *
      * @test
      */
-    public function getImageSourceCollectionHookCalled(): void
+    public function modifyImageSourceCollectionEventIsCalled(): void
     {
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $cObj = $this->getAccessibleMock(
             ContentObjectRenderer::class,
             ['getResourceFactory', 'stdWrap', 'getImgResource']
@@ -421,20 +424,23 @@ final class ImageContentObjectTest extends UnitTestCase
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $cObj->method('getResourceFactory')->willReturn($resourceFactory);
 
-        $className = StringUtility::getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
-        $getImageSourceCollectionHookMock = $this->getMockBuilder(
-            ContentObjectOneSourceCollectionHookInterface::class
-        )
-            ->onlyMethods(['getOneSourceCollection'])
-            ->setMockClassName($className)
-            ->getMock();
-        GeneralUtility::addInstance($className, $getImageSourceCollectionHookMock);
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'][] = $className;
+        $modifyImageSourceCollectionEvent = null;
 
-        $getImageSourceCollectionHookMock
-            ->expects(self::once())
-            ->method('getOneSourceCollection')
-            ->willReturnCallback($this->isGetOneSourceCollectionCalledCallback(...));
+        /** @var Container $container */
+        $container = GeneralUtility::getContainer();
+
+        $container->set(
+            'modify-image-source-collection-listener',
+            static function (ModifyImageSourceCollectionEvent $event) use (&$modifyImageSourceCollectionEvent) {
+                $modifyImageSourceCollectionEvent = $event;
+                $event->setSourceCollection('---modified-source-collection---');
+            }
+        );
+
+        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
+        $listenerProdiver->addListener(ModifyImageSourceCollectionEvent::class, 'modify-image-source-collection-listener');
+        $container->set(ListenerProvider::class, $listenerProdiver);
+        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProdiver));
 
         $configuration = [
             'layoutKey' => 'data',
@@ -457,7 +463,14 @@ final class ImageContentObjectTest extends UnitTestCase
         $this->subject->setContentObjectRenderer($cObj);
         $result = $this->subject->_call('getImageSourceCollection', 'data', $configuration, StringUtility::getUniqueId('testImage-'));
 
-        self::assertSame($result, 'isGetOneSourceCollectionCalledCallback');
+        self::assertEquals('---modified-source-collection---', $result);
+
+        self::assertInstanceOf(ModifyImageSourceCollectionEvent::class, $modifyImageSourceCollectionEvent);
+        self::assertEquals('---modified-source-collection---', $modifyImageSourceCollectionEvent->getSourceCollection());
+        self::assertEquals('', $modifyImageSourceCollectionEvent->getFullSourceCollection());
+        self::assertEquals('(max-device-width: 600px)', $modifyImageSourceCollectionEvent->getSourceConfiguration()['mediaQuery']);
+        self::assertStringStartsWith('testImage-', $modifyImageSourceCollectionEvent->getSourceRenderConfiguration()['file']);
+        self::assertEquals($cObj, $modifyImageSourceCollectionEvent->getContentObjectRenderer());
     }
 
     /**

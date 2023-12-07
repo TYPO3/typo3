@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent;
 
 /**
  * Contains IMAGE class object.
@@ -165,6 +167,7 @@ class ImageContentObject extends AbstractContentObject
             $tsfe = $this->getTypoScriptFrontendController();
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $srcLayoutOptionSplitted = $typoScriptService->explodeConfigurationForOptionSplit((array)$conf['layout.'][$layoutKey . '.'], count($activeSourceCollections));
+            $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
 
             // render sources
             foreach ($activeSourceCollections as $key => $sourceConfiguration) {
@@ -229,18 +232,9 @@ class ImageContentObject extends AbstractContentObject
 
                     $oneSourceCollection = $this->markerTemplateService->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
 
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'] ?? [] as $className) {
-                        $hookObject = GeneralUtility::makeInstance($className);
-                        if (!$hookObject instanceof ContentObjectOneSourceCollectionHookInterface) {
-                            throw new \UnexpectedValueException(
-                                '$hookObject must implement interface ' . ContentObjectOneSourceCollectionHookInterface::class,
-                                1380017853
-                            );
-                        }
-                        $oneSourceCollection = $hookObject->getOneSourceCollection((array)$sourceRenderConfiguration, (array)$sourceConfiguration, $oneSourceCollection, $this->cObj);
-                    }
-
-                    $sourceCollection .= $oneSourceCollection;
+                    $sourceCollection .= $eventDispatcher->dispatch(
+                        new ModifyImageSourceCollectionEvent($oneSourceCollection, $sourceCollection, (array)$sourceConfiguration, $sourceRenderConfiguration, $this->cObj)
+                    )->getSourceCollection();
                 }
             }
         }

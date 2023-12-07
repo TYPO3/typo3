@@ -2417,4 +2417,11 @@ return [
             'Feature-102614-PSR-14EventForModifyingGetDataResult.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface' => [
+        'restFiles' => [
+            'Breaking-102624-RemovedHookForManipulatingImageSourceCollection.rst',
+            'Deprecation-102624-UnusedInterfaceForGetImageSourceCollectionHook.rst',
+            'Feature-102624-PSR-14EventForModifyingImageSourceCollection.rst',
+        ],
+    ],
 ];
