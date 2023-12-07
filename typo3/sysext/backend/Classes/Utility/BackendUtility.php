@@ -32,9 +32,9 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
@@ -1161,7 +1161,7 @@ class BackendUtility
             }
             if (($row['shortcut_mode'] ?? 0) != PageRepository::SHORTCUT_MODE_NONE) {
                 $label .= ', ' . $lang->sL($GLOBALS['TCA']['pages']['columns']['shortcut_mode']['label']) . ' '
-                    . $lang->sL(self::getLabelFromItemlist('pages', 'shortcut_mode', $row['shortcut_mode']));
+                    . $lang->sL(self::getLabelFromItemlist('pages', 'shortcut_mode', $row['shortcut_mode'], $row));
             }
             $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['shortcut']['label']) . ' ' . $label;
         } elseif ($row['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
@@ -1198,7 +1198,7 @@ class BackendUtility
             $fe_groups = [];
             foreach (GeneralUtility::intExplode(',', (string)$row['fe_group']) as $fe_group) {
                 if ($fe_group < 0) {
-                    $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', (string)$fe_group));
+                    $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', (string)$fe_group, $row));
                 } else {
                     $lRec = self::getRecordWSOL('fe_groups', $fe_group, 'title');
                     if (is_array($lRec)) {
@@ -1269,18 +1269,34 @@ class BackendUtility
      * @param string $key items-array value to match
      * @return string Label for item entry
      */
-    public static function getLabelFromItemlist($table, $col, $key)
+    public static function getLabelFromItemlist($table, $col, $key, array $row = [])
     {
-        // Check, if there is an "items" array:
-        if (is_array($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'] ?? false)) {
-            // Traverse the items-array...
-            foreach ($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'] as $v) {
-                // ... and return the first found label where the value was equal to $key
-                if ((string)$v['value'] === (string)$key) {
-                    return $v['label'];
-                }
+        $columnConfig = $GLOBALS['TCA'][$table]['columns'][$col]['config'] ?? [];
+
+        if (isset($columnConfig['items']) && !is_array($columnConfig['items'])) {
+            return '';
+        }
+
+        $items = $columnConfig['items'] ?? [];
+
+        if ($columnConfig['itemsProcFunc'] ?? false) {
+            $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
+            $items = $processingService->getProcessingItems(
+                $table,
+                $row['pid'] ?? 0,
+                $col,
+                $row,
+                $columnConfig,
+                $items
+            );
+        }
+
+        foreach ($items as $itemConfiguration) {
+            if ((string)$itemConfiguration['value'] === (string)$key) {
+                return $itemConfiguration['label'];
             }
         }
+
         return '';
     }
 
@@ -1292,7 +1308,7 @@ class BackendUtility
      * @param string $key item value
      * @return string Label for item entry
      */
-    public static function getLabelFromItemListMerged(int $pageId, $table, $column, $key)
+    public static function getLabelFromItemListMerged(int $pageId, $table, $column, $key, array $row = [])
     {
         $pageTsConfig = static::getPagesTSconfig($pageId);
         $label = '';
@@ -1312,7 +1328,7 @@ class BackendUtility
             }
         }
         if (empty($label)) {
-            $tcaValue = self::getLabelFromItemlist($table, $column, $key);
+            $tcaValue = self::getLabelFromItemlist($table, $column, $key, $row);
             if (!empty($tcaValue)) {
                 $label = $tcaValue;
             }
@@ -1322,7 +1338,6 @@ class BackendUtility
 
     /**
      * Splits the given key with commas and returns the list of all the localized items labels, separated by a comma.
-     * NOTE: this does not take itemsProcFunc into account
      *
      * @param string $table Table name, present in TCA
      * @param string $column Field name
@@ -1330,15 +1345,26 @@ class BackendUtility
      * @param array $columnTsConfig page TSconfig for $column (TCEMAIN.<table>.<column>)
      * @return string Comma-separated list of localized labels
      */
-    public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = [])
+    public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = [], array $row = [])
     {
-        // Check if there is an "items" array
-        if (
-            !isset($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])
-            || !is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])
-            || $keyList === ''
-        ) {
+        $columnConfig = $GLOBALS['TCA'][$table]['columns'][$column]['config'] ?? [];
+
+        if ($keyList === '' || (isset($columnConfig['items']) && !is_array($columnConfig['items']))) {
             return '';
+        }
+
+        $items = $columnConfig['items'] ?? [];
+
+        if ($columnConfig['itemsProcFunc'] ?? false) {
+            $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
+            $items = $processingService->getProcessingItems(
+                $table,
+                $row['pid'] ?? 0,
+                $column,
+                $row,
+                $columnConfig,
+                $items
+            );
         }
 
         $keys = GeneralUtility::trimExplode(',', $keyList, true);
@@ -1356,7 +1382,7 @@ class BackendUtility
             }
             if ($label === null) {
                 // Otherwise lookup the label in TCA items list
-                foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $itemConfiguration) {
+                foreach ($items as $itemConfiguration) {
                     if ($key === (string)$itemConfiguration['value']) {
                         $label = $itemConfiguration['label'];
                         break;
@@ -1554,8 +1580,11 @@ class BackendUtility
         $lang = static::getLanguageService();
         switch ((string)($theColConf['type'] ?? '')) {
             case 'radio':
-                $l = self::getLabelFromItemlist($table, $col, $value);
-                $l = $lang->sL($l);
+                $l = $lang->sL(self::getLabelFromItemlist($table, $col, $value, static::getRecordWSOL($table, (int)$uid) ?? []));
+                if ($l === '' && !empty($value)) {
+                    // Use plain database value when label is empty
+                    $l = $value;
+                }
                 break;
             case 'inline':
             case 'file':
@@ -1583,7 +1612,7 @@ class BackendUtility
                             $columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'];
                         }
                     }
-                    $l = self::getLabelsFromItemsList($table, $col, (string)$value, $columnTsConfig);
+                    $l = self::getLabelsFromItemsList($table, $col, (string)$value, $columnTsConfig, static::getRecordWSOL($table, (int)$uid) ?? []);
                     if (!empty($theColConf['foreign_table']) && !$l && !empty($GLOBALS['TCA'][$theColConf['foreign_table']])) {
                         if ($noRecordLookup) {
                             $l = $value;

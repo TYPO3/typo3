@@ -20,8 +20,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -871,6 +875,29 @@ final class BackendUtilityTest extends UnitTestCase
                 ],
                 'expectedLabel' => null,
             ],
+            'item from itemsProcFunc' => [
+                'table' => 'tt_content',
+                'col' => 'menu_type',
+                'key' => '1',
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'type' => 'radio',
+                                'items' => [],
+                                'itemsProcFunc' => static function (array $parameters, $pObj) {
+                                    $parameters['items'] = [
+                                        ['label' => 'Item 1', 'value' => '0'],
+                                        ['label' => 'Item 2', 'value' => '1'],
+                                        ['label' => 'Item 3', 'value' => '2'],
+                                    ];
+                                },
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedLabel' => 'Item 2',
+            ],
         ];
     }
 
@@ -886,6 +913,16 @@ final class BackendUtilityTest extends UnitTestCase
         ?string $expectedLabel = ''
     ): void {
         $GLOBALS['TCA'][$table] = $tca;
+
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
+        $cacheMock->method('get')->willReturnMap([
+            ['pageTsConfig-pid-to-hash-0', 'hash'],
+            ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode())],
+        ]);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
+
         $label = BackendUtility::getLabelFromItemlist($table, $col, $key);
         self::assertEquals($label, $expectedLabel);
     }
@@ -997,6 +1034,28 @@ final class BackendUtilityTest extends UnitTestCase
                 ],
                 'aFooLabel, aBarDiffLabel, aNewLabel', // expected
             ],
+            'itemsProcFunc is evaluated' => [
+                'foobar', // table
+                'someColumn', // col
+                'foo,bar', // keyList
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'itemsProcFunc' => static function (array $parameters, $pObj) {
+                                    $parameters['items'] = [
+                                        ['label' => 'aFooLabel', 'value' => 'foo'],
+                                        ['label' => 'aBarLabel', 'value' => 'bar'],
+                                    ];
+                                },
+                            ],
+                        ],
+                    ],
+                ],
+                [],
+                'aFooLabel, aBarLabel', // expected
+            ],
         ];
     }
 
@@ -1015,6 +1074,15 @@ final class BackendUtilityTest extends UnitTestCase
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $GLOBALS['LANG']->method('sL')->willReturnArgument(0);
+
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
+        $cacheMock->method('get')->willReturnMap([
+             ['pageTsConfig-pid-to-hash-0', 'hash'],
+             ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode())],
+        ]);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList, $pageTsConfig);

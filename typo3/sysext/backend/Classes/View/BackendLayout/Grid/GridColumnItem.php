@@ -176,7 +176,7 @@ class GridColumnItem extends AbstractGridObject
         $contentTypeLabels = $this->context->getContentTypeLabels();
         $ctype = $this->record['CType'] ?? '';
         return $contentTypeLabels[$ctype] ??
-            BackendUtility::getLabelFromItemListMerged((int)$this->record['pid'], 'tt_content', 'CType', $ctype);
+            BackendUtility::getLabelFromItemListMerged((int)$this->record['pid'], 'tt_content', 'CType', $ctype, $this->record);
     }
 
     public function getIcons(): string
