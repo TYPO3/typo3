@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class SiteInlineAjaxController extends AbstractFormEngineAjaxController
 {
     /**

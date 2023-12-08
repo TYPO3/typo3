@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Beuser\Controller;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownHeader;
@@ -48,7 +48,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class PermissionController
 {
     private const SESSION_PREFIX = 'tx_Beuser_';

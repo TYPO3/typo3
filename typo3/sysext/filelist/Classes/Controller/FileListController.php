@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -67,7 +67,7 @@ use TYPO3\CMS\Filelist\Type\ViewMode;
  *
  * @internal this is a concrete TYPO3 controller implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
-#[Controller]
+#[AsController]
 class FileListController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

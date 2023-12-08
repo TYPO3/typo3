@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller\PageTsConfig;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -43,7 +43,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-#[Controller]
+#[AsController]
 final class PageTsConfigRecordsOverviewController
 {
     public function __construct(

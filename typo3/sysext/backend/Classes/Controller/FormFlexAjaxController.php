@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Handle FormEngine flex field ajax calls
  */
-#[Controller]
+#[AsController]
 class FormFlexAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(

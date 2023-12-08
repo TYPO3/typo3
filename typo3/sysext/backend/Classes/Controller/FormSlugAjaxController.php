@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class FormSlugAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Redirects\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
@@ -40,7 +40,7 @@ use TYPO3\CMS\Redirects\Repository\RedirectRepository;
  *
  * @internal This class is a specific TYPO3 Backend controller implementation and is not part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class ManagementController
 {
     public function __construct(

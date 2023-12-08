@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Extended controller for link browser
  */
-#[Controller]
+#[AsController]
 class LinkBrowserController extends AbstractLinkBrowserController
 {
     public function __construct(

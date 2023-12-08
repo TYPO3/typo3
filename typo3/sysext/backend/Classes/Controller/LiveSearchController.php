@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchRepository;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
  * Returns the results for any live searches, e.g. in the toolbar
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class LiveSearchController
 {
     public function __construct(

@@ -2424,4 +2424,9 @@ return [
             'Feature-102624-PSR-14EventForModifyingImageSourceCollection.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Attribute\Controller' => [
+        'restFiles' => [
+            'Deprecation-102631-DeprecatedCommandAttributeForAutoConfiguringBackendControllers.rst',
+        ],
+    ],
 ];

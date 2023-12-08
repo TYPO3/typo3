@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Reports\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -34,7 +34,7 @@ use TYPO3\CMS\Reports\RequestAwareReportInterface;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class ReportController
 {
     public function __construct(

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Handle FormEngine inline ajax calls
  */
-#[Controller]
+#[AsController]
 class FormInlineAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Styleguide\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -42,7 +42,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  *
  * @internal
  */
-#[Controller]
+#[AsController]
 final class BackendController
 {
     /**

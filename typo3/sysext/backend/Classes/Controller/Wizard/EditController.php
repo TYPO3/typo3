@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class EditController
 {
     protected const JAVASCRIPT_HELPER = 'EXT:backend/Resources/Public/JavaScript/helper.js';

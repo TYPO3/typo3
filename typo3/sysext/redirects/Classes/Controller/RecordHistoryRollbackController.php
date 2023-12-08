@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Redirects\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
@@ -32,7 +32,7 @@ use TYPO3\CMS\Redirects\Service\SlugService;
 /**
  * @internal
  */
-#[Controller]
+#[AsController]
 class RecordHistoryRollbackController
 {
     protected ?LanguageService $languageService = null;

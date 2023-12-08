@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Info\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class for displaying translation status of pages in the tree in Web -> Info
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-#[Controller]
+#[AsController]
 class TranslationStatusController extends InfoModuleController
 {
     /**

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Impexp\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -45,7 +45,7 @@ use TYPO3\CMS\Impexp\Import;
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class ImportController
 {
     protected const NO_UPLOAD = 0;

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Viewpage\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -50,7 +50,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class ViewModuleController
 {
     public function __construct(

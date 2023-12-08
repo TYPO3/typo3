@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Security\ContentSecurityPolicy;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ScopeRepository;
  * Content-Security-Policy backend module view, loading the CSP lit-element and providing the current context.
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class CspModuleController
 {
     public function __construct(

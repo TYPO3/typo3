@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Scheduler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller as BackendController;
+use TYPO3\CMS\Backend\Attribute\AsController as BackendController;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;

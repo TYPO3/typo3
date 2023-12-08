@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Info\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
@@ -44,7 +44,7 @@ use TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent;
  * This class creates the framework to which other extensions can add their third-level modules
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-#[Controller]
+#[AsController]
 class InfoModuleController
 {
     protected ModuleInterface $currentModule;

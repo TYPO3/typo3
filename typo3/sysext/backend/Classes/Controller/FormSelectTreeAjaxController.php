@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Backend controller for selectTree ajax operations
  */
-#[Controller]
+#[AsController]
 class FormSelectTreeAjaxController
 {
     public function __construct(
