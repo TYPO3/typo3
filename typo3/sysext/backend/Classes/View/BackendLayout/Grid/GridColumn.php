@@ -195,10 +195,10 @@ class GridColumn extends AbstractGridObject
     public function getTitle(): string
     {
         $columnNumber = $this->getColumnNumber();
-        $colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', (string)$columnNumber) ?? '';
+        $colTitle = '';
         foreach ($this->context->getBackendLayout()->getUsedColumns() as $colPos => $title) {
             if ($colPos === $columnNumber) {
-                $colTitle = (string)$this->getLanguageService()->sL($title);
+                $colTitle = $this->getLanguageService()->sL($title);
             }
         }
         return $colTitle;
