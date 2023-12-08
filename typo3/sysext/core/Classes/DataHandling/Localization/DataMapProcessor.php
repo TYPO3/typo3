@@ -170,6 +170,11 @@ class DataMapProcessor
     {
         foreach ($dataMap as $tableName => $idValues) {
             foreach ($idValues as $id => $values) {
+                // `l10n_state` should be serialized JSON at this point,
+                // in case it's not, it most probably was ignored in `collectItems()`
+                if (is_array($values['l10n_state'] ?? null)) {
+                    unset($dataMap[$tableName][$id]['l10n_state'], $values['l10n_state']);
+                }
                 if (empty($values)) {
                     unset($dataMap[$tableName][$id]);
                 }
