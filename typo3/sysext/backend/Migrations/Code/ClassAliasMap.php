@@ -52,4 +52,5 @@ return [
     'TYPO3\\CMS\\Recordlist\\Tree\\View\\LinkParameterProviderInterface' => \TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface::class,
     'TYPO3\\CMS\\Recordlist\\View\\RecordSearchBoxComponent' => \TYPO3\CMS\Backend\View\RecordSearchBoxComponent::class,
     'TYPO3\\CMS\\Recordlist\\View\\FolderUtilityRenderer' => \TYPO3\CMS\Backend\View\FolderUtilityRenderer::class,
+    'TYPO3\\CMS\\Backend\\Attribute\\Controller' => \TYPO3\CMS\Backend\Attribute\AsController::class,
 ];
