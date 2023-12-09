@@ -641,6 +641,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
 
 		-
+			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\:\\:rename\\(\\) should return \\$this\\(TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\) but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
+
+		-
 			message: "#^Strict comparison using \\=\\=\\= between int and false will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Folder.php

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f95b4be4f445146ebb45162cda4aed7",
+    "content-hash": "d59a3d500e83b2d30c3beb89702dcbea",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6617,16 +6617,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.47",
+            "version": "1.10.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "84dbb33b520ea28b6cf5676a3941f4bae1c1ff39"
+                "reference": "087ed4b5f4a7a6e8f3bbdfbfe98ce5c181380bc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/84dbb33b520ea28b6cf5676a3941f4bae1c1ff39",
-                "reference": "84dbb33b520ea28b6cf5676a3941f4bae1c1ff39",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/087ed4b5f4a7a6e8f3bbdfbfe98ce5c181380bc6",
+                "reference": "087ed4b5f4a7a6e8f3bbdfbfe98ce5c181380bc6",
                 "shasum": ""
             },
             "require": {
@@ -6675,7 +6675,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-01T15:19:17+00:00"
+            "time": "2023-12-08T14:34:28+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
@@ -8945,5 +8945,5 @@
     "platform-overrides": {
         "php": "8.1.1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
