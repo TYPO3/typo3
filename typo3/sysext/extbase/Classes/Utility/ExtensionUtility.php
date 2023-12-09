@@ -52,23 +52,10 @@ class ExtensionUtility
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
-        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] ?? false)) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = [];
-        }
-        foreach ($controllerActions as $controllerClassName => $actionsList) {
-            $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
 
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName] = [
-                'className' => $controllerClassName,
-                'alias' => $controllerAlias,
-                'actions' => GeneralUtility::trimExplode(',', (string)$actionsList),
-            ];
-
-            if (!empty($nonCacheableControllerActions[$controllerClassName])) {
-                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName]['nonCacheableActions']
-                    = GeneralUtility::trimExplode(',', (string)$nonCacheableControllerActions[$controllerClassName]);
-            }
-        }
+        $controllerActions = self::actionCommaListToArray($controllerActions);
+        $nonCacheableControllerActions = self::actionCommaListToArray($nonCacheableControllerActions);
+        self::registerControllerActions($extensionName, $pluginName, $controllerActions, $nonCacheableControllerActions);
 
         switch ($pluginType) {
             case self::PLUGIN_TYPE_PLUGIN:
@@ -98,6 +85,32 @@ tt_content.' . $pluginSignature . ' {
         ExtensionManagementUtility::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginContent, 'defaultContentRendering');
+    }
+
+    /**
+     * @param array<string, string[]> $controllerActions
+     * @param array<string, string[]> $nonCacheableControllerActions
+     * @internal
+     */
+    public static function registerControllerActions(string $extensionName, string $pluginName, array $controllerActions, array $nonCacheableControllerActions): void
+    {
+        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] ?? false)) {
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = [];
+        }
+        foreach ($controllerActions as $controllerClassName => $actionsList) {
+            $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
+
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName] = [
+                'className' => $controllerClassName,
+                'alias' => $controllerAlias,
+                'actions' => $actionsList,
+            ];
+
+            if (!empty($nonCacheableControllerActions[$controllerClassName])) {
+                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName]['nonCacheableActions']
+                    = $nonCacheableControllerActions[$controllerClassName];
+            }
+        }
     }
 
     /**
@@ -197,6 +210,22 @@ tt_content.' . $pluginSignature . ' {
             $controllerClassNameWithoutControllerSuffix,
             $positionOfControllerNamespacePart + $strLen + 1
         );
+    }
+
+    /**
+     * @param array<string, string|string[]> $controllerActions
+     * @return array<string, string[]>
+     */
+    protected static function actionCommaListToArray(array $controllerActions): array
+    {
+        foreach ($controllerActions as $controllerClassName => $actionsList) {
+            if (is_array($actionsList)) {
+                continue;
+            }
+            $actionsListArray = GeneralUtility::trimExplode(',', (string)$actionsList);
+            $controllerActions[$controllerClassName] = $actionsListArray;
+        }
+        return $controllerActions;
     }
 
     /**
