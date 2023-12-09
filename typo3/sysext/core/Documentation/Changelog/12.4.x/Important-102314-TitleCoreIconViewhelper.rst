@@ -25,13 +25,14 @@ make sense of.
 Example
 =======
 
-.. code-block:: html
+..  code-block:: html
 
-	<core:icon title="Open actions menu" identifier="actions-menu" />
+    <core:icon title="Open actions menu" identifier="actions-menu" />
 
 This will be rendered as:
 
-.. code-block:: html
+..  code-block:: html
+
     <span title="Open actions menu" class="t3js-icon icon icon-size-small icon-state-default icon-actions-menu" data-identifier="actions-menu" aria-hidden="true">
         <span class="icon-markup">
             <img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-menu.svg" width="16" height="16">

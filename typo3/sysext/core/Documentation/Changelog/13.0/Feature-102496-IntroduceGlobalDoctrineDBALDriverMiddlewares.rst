@@ -24,7 +24,7 @@ Furthermore, you can look up the implementation of the
 :php:`\TYPO3\CMS\Adminpanel\Log\DoctrineSqlLoggingMiddleware` in ext:adminpanel
 as an example.
 
-With :ref:`Feature: #100089 - Introduce Doctrine DBAL v3 driver middlewares <_feature-100089-1677961107>` this
+With :ref:`Feature: #100089 - Introduce Doctrine DBAL v3 driver middlewares <feature-100089-1677961107>` this
 has been introduced as a configuration per connection.
 
 Now it's also possible to register global driver middlewares once, which are applied
