@@ -24,6 +24,7 @@ use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherVariableProvider;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;

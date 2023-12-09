@@ -3906,11 +3906,6 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Functional/Framework/FormHandling/FormDataFactory.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Unit\\\\Domain\\\\Finishers\\\\FormElementInterface not found\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Unit/Domain/Finishers/AbstractFinisherTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Configuration\\\\InheritancesResolverService\\:\\:getResolvedConfiguration\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 9
 			path: ../../typo3/sysext/form/Tests/Unit/Mvc/Configuration/InheritancesResolverServiceTest.php
