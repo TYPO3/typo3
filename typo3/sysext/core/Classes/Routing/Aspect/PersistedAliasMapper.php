@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Routing\Aspect;
 
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\ContextAwareInterface;
-use TYPO3\CMS\Core\Context\ContextAwareTrait;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -51,12 +49,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *           routeFieldName: 'path_segment'
  *           routeValuePrefix: '/'
  */
-class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface, SiteAwareInterface, UnresolvedValueInterface
+class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface, SiteAwareInterface, UnresolvedValueInterface
 {
     use AspectTrait;
     use SiteLanguageAccessorTrait;
     use SiteAccessorTrait;
-    use ContextAwareTrait;
     use UnresolvedValueTrait;
 
     /**
@@ -256,7 +253,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
             ->getQueryBuilderForTable($this->tableName)
             ->from($this->tableName);
         $queryBuilder->setRestrictions(
-            GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
+            GeneralUtility::makeInstance(FrontendRestrictionContainer::class, GeneralUtility::makeInstance(Context::class))
         );
         // Frontend Groups are not available at this time (initialized via TSFE->determineId)
         // So this must be excluded to allow access restricted records

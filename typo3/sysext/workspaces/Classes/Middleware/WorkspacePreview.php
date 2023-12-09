@@ -117,7 +117,7 @@ class WorkspacePreview implements MiddlewareInterface
             // Register the backend user as aspect
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
             $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
-            $cacheInstruction->disableCache('ext:workspaces: Disabled FE cache with BE_USER previewing live workspace');
+            $cacheInstruction->disableCache('EXT:workspaces: Disabled FE cache with BE_USER previewing live workspace');
             $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
             $setCookieOnCurrentRequest = false;
         }

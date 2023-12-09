@@ -144,10 +144,11 @@ final class RedirectHandlerTest extends UnitTestCase
 
     protected function getContextMockWithUserLoggedIn(bool $userLoggedIn = true): Context
     {
-        $mockUserAuthentication = $this->getMockBuilder(FrontendUserAuthentication::class)
-            ->disableOriginalConstructor()->getMock();
+        $mockUserAuthentication = $this->getMockBuilder(FrontendUserAuthentication::class)->disableOriginalConstructor()->getMock();
         $mockUserAuthentication->user['uid'] = $userLoggedIn ? 1 : 0;
-        return new Context(['frontend.user' => new UserAspect($mockUserAuthentication)]);
+        $context = new Context();
+        $context->setAspect('frontend.user', new UserAspect($mockUserAuthentication));
+        return $context;
     }
 
     public static function getLoginFormRedirectUrlDataProvider(): array

@@ -48,13 +48,8 @@ final class TreeControllerTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = ['workspaces'];
 
     private TreeController&MockObject&AccessibleObjectInterface $subject;
-
     private BackendUserAuthentication $backendUser;
-
-    /**
-     * @var Context
-     */
-    private $context;
+    private Context $context;
 
     protected function setUp(): void
     {

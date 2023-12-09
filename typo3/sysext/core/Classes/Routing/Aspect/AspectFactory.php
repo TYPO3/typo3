@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing\Aspect;
 
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\ContextAwareInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteAwareInterface;
@@ -30,25 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AspectFactory
 {
-    /**
-     * @var array
-     */
-    protected $availableAspects;
-
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    /**
-     * AspectFactory constructor.
-     */
-    public function __construct(Context $context = null)
-    {
-        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->availableAspects = $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'] ?? [];
-    }
-
     /**
      * Create aspects from the given settings.
      *
@@ -77,22 +56,14 @@ class AspectFactory
     protected function create(string $type, array $settings): AspectInterface
     {
         if (empty($type)) {
-            throw new \InvalidArgumentException(
-                'Aspect type cannot be empty',
-                1538079481
-            );
+            throw new \InvalidArgumentException('Aspect type cannot be empty', 1538079481);
         }
-        if (!isset($this->availableAspects[$type])) {
-            throw new \OutOfRangeException(
-                sprintf('No aspect found for %s', $type),
-                1538079482
-            );
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'][$type])) {
+            throw new \OutOfRangeException(sprintf('No aspect found for %s', $type), 1538079482);
         }
         unset($settings['type']);
-        $className = $this->availableAspects[$type];
-        /** @var AspectInterface $aspect */
-        $aspect = GeneralUtility::makeInstance($className, $settings);
-        return $aspect;
+        $className = $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'][$type];
+        return GeneralUtility::makeInstance($className, $settings);
     }
 
     /**
@@ -106,9 +77,6 @@ class AspectFactory
         }
         if ($aspect instanceof SiteAwareInterface) {
             $aspect->setSite($site);
-        }
-        if ($aspect instanceof ContextAwareInterface) {
-            $aspect->setContext($this->context);
         }
         return $aspect;
     }

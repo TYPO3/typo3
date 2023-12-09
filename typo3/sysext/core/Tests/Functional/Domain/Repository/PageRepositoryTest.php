@@ -83,10 +83,9 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function getMenuPageOverlay(): void
     {
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
-
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getMenu([2, 3]);
         self::assertEquals('Attrappe 1-2-5', $rows[5]['title']);
         self::assertEquals('Dummy 1-2-7', $rows[7]['title']);
@@ -113,9 +112,9 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function getMenuPageOverlayWithMountPoint(): void
     {
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getMenu([1000]);
         self::assertEquals('root translation', $rows[1003]['title']);
         self::assertEquals('1001', $rows[1003]['uid']);
@@ -181,9 +180,9 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function getPagesOverlayByIdSingle(): void
     {
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getPagesOverlay([1]);
         self::assertIsArray($rows);
         self::assertCount(1, $rows);
@@ -201,9 +200,9 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function getPagesOverlayByIdMultiple(): void
     {
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getPagesOverlay([1, 5, 15]);
         self::assertIsArray($rows);
         self::assertCount(2, $rows);
@@ -228,9 +227,9 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function getPagesOverlayByIdMultipleSomeNotOverlaid(): void
     {
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getPagesOverlay([1, 4, 5, 8]);
         self::assertIsArray($rows);
         self::assertCount(2, $rows);
@@ -254,9 +253,9 @@ final class PageRepositoryTest extends FunctionalTestCase
         $subject = new PageRepository();
         $origRow = $subject->getPage(1);
 
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getPagesOverlay([$origRow]);
         self::assertIsArray($rows);
         self::assertCount(1, $rows);
@@ -278,9 +277,9 @@ final class PageRepositoryTest extends FunctionalTestCase
         $subject = new PageRepository();
         $origRow = $subject->getPage(6, true);
 
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getPagesOverlay([$origRow]);
         self::assertIsArray($rows);
         self::assertCount(1, $rows);
@@ -302,9 +301,9 @@ final class PageRepositoryTest extends FunctionalTestCase
         $orig1 = $subject->getPage(1);
         $orig2 = $subject->getPage(5);
 
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getPagesOverlay([1 => $orig1, 5 => $orig2]);
         self::assertIsArray($rows);
         self::assertCount(2, $rows);
@@ -336,9 +335,9 @@ final class PageRepositoryTest extends FunctionalTestCase
         $orig2 = $subject->getPage(7);
         $orig3 = $subject->getPage(9);
 
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $rows = $subject->getPagesOverlay([$orig1, $orig2, $orig3]);
         self::assertIsArray($rows);
         self::assertCount(3, $rows);
@@ -402,9 +401,9 @@ final class PageRepositoryTest extends FunctionalTestCase
     public function getMountPointInfoForTranslation(): void
     {
         $mpVar = '1001-1003';
-        $subject = new PageRepository(new Context([
-            'language' => new LanguageAspect(1),
-        ]));
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
+        $subject = new PageRepository($context);
         $mountPointInfo = $subject->getMountPointInfo(1003);
         self::assertEquals($mpVar, $mountPointInfo['MPvar']);
 
@@ -424,10 +423,9 @@ final class PageRepositoryTest extends FunctionalTestCase
         // initialization
         $wsid = 987654321;
         // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->determineId()
-        $subject = new PageRepository(new Context([
-            'workspace' => new WorkspaceAspect($wsid),
-        ]));
-
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect($wsid));
+        $subject = new PageRepository($context);
         $pageRec = $subject->getPage(11);
 
         self::assertEquals(11, $pageRec['uid']);
@@ -445,9 +443,9 @@ final class PageRepositoryTest extends FunctionalTestCase
         $wsid = 987654321;
 
         // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->determineId()
-        $subject = new PageRepository(new Context([
-            'workspace' => new WorkspaceAspect($wsid),
-        ]));
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect($wsid));
+        $subject = new PageRepository($context);
 
         $pageRec = $subject->getWorkspaceVersionOfRecord($wsid, 'pages', 11);
 
@@ -502,9 +500,9 @@ final class PageRepositoryTest extends FunctionalTestCase
             ],
         ];
 
-        $subject = new PageRepository(new Context([
-            'workspace' => new WorkspaceAspect(13),
-        ]));
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(13));
+        $subject = new PageRepository($context);
 
         $conditions = $subject->enableFields($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
@@ -533,9 +531,9 @@ final class PageRepositoryTest extends FunctionalTestCase
             ],
         ];
 
-        $subject = new PageRepository(new Context([
-            'workspace' => new WorkspaceAspect(2),
-        ]));
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(2));
+        $subject = new PageRepository($context);
 
         $conditions = $subject->enableFields($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
@@ -575,11 +573,9 @@ final class PageRepositoryTest extends FunctionalTestCase
         // do not use cache_treelist
         $user = new BackendUserAuthentication();
         $user->user = ['uid' => PHP_INT_MAX];
-        $subject = new PageRepository(
-            new Context([
-                'backend.user' => new UserAspect($user),
-            ])
-        );
+        $context = new Context();
+        $context->setAspect('backend.user', new UserAspect($user));
+        $subject = new PageRepository($context);
         // empty array does not do anything
         $result = $subject->getPageIdsRecursive([], 1);
         self::assertEquals([], $result);
@@ -605,11 +601,9 @@ final class PageRepositoryTest extends FunctionalTestCase
         // do not use cache_treelist
         $user = new BackendUserAuthentication();
         $user->user = ['uid' => PHP_INT_MAX];
-        $subject = new PageRepository(
-            new Context([
-                'backend.user' => new UserAspect($user),
-            ])
-        );
+        $context = new Context();
+        $context->setAspect('backend.user', new UserAspect($user));
+        $subject = new PageRepository($context);
         // Negative numbers or "0" do not return anything
         $result = $subject->getDescendantPageIdsRecursive(-1, 1);
         self::assertEquals([], $result);

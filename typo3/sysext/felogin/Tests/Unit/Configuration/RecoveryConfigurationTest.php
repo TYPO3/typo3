@@ -142,7 +142,8 @@ final class RecoveryConfigurationTest extends UnitTestCase
         $timestamp = time();
         $expected = $timestamp + 3600 * $this->settings['forgotLinkHashValidTime'];
 
-        $context = new Context(['date' => new DateTimeAspect(new \DateTimeImmutable('@' . $timestamp))]);
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $timestamp)));
         $this->setupSubject($context);
 
         $actual = $this->subject->getLifeTimeTimestamp();
@@ -159,9 +160,8 @@ final class RecoveryConfigurationTest extends UnitTestCase
         $expectedTimestamp = $timestamp + 3600 * $this->settings['forgotLinkHashValidTime'];
         $expected = "{$expectedTimestamp}|some hash";
 
-        $context = new Context([
-            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $timestamp)),
-        ]);
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $timestamp)));
         $this->setupSubject($context);
 
         self::assertSame(

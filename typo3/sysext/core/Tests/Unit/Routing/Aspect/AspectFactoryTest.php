@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing\Aspect;
 
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\AspectInterface;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedMappableAspectInterface;
@@ -41,8 +40,7 @@ final class AspectFactoryTest extends UnitTestCase
      */
     public function createAspectsThrowsExceptionOnMissingType(): void
     {
-        $contextMock = $this->createMock(Context::class);
-        $aspectFactory = new AspectFactory($contextMock);
+        $aspectFactory = new AspectFactory();
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1538079481);
         $aspectFactory->createAspects(
@@ -57,8 +55,7 @@ final class AspectFactoryTest extends UnitTestCase
      */
     public function createAspectsThrowsExceptionOnUnregisteredType(): void
     {
-        $contextMock = $this->createMock(Context::class);
-        $aspectFactory = new AspectFactory($contextMock);
+        $aspectFactory = new AspectFactory();
         $this->expectException(\OutOfRangeException::class);
         $this->expectExceptionCode(1538079482);
         $aspectFactory->createAspects(
@@ -136,8 +133,7 @@ final class AspectFactoryTest extends UnitTestCase
      */
     public function aspectsAreCreatedAndSorted(array $settings, array $expectation): void
     {
-        $contextMock = $this->createMock(Context::class);
-        $aspectFactory = new AspectFactory($contextMock);
+        $aspectFactory = new AspectFactory();
         $aspects = $aspectFactory->createAspects(
             $settings,
             $this->createMock(SiteLanguage::class),

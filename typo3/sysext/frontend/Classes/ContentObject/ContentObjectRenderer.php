@@ -5250,10 +5250,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * If the language aspect has NO overlays enabled, it behaves as in "free mode" (= only fetch the records
      * for the current language.
      *
-     * @param ExpressionBuilder $expressionBuilder
-     * @param string $table
-     * @param array $conf
-     * @param Context $context
      * @return string|\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression|null
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */

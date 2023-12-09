@@ -41,20 +41,9 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  */
 class PageSlugCandidateProvider
 {
-    /**
-     * @var Site
-     */
-    protected $site;
-
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    /**
-     * @var EnhancerFactory
-     */
-    protected $enhancerFactory;
+    protected Site $site;
+    protected Context $context;
+    protected EnhancerFactory $enhancerFactory;
 
     public function __construct(Context $context, Site $site, ?EnhancerFactory $enhancerFactory)
     {

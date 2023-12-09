@@ -58,18 +58,6 @@ class Context implements SingletonInterface
     protected array $aspects = [];
 
     /**
-     * Sets up the context with pre-defined aspects
-     */
-    public function __construct(array $defaultAspects = [])
-    {
-        foreach ($defaultAspects as $name => $defaultAspect) {
-            if ($defaultAspect instanceof AspectInterface) {
-                $this->aspects[$name] = $defaultAspect;
-            }
-        }
-    }
-
-    /**
      * Checks if an aspect exists in the context
      */
     public function hasAspect(string $name): bool

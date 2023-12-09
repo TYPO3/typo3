@@ -181,11 +181,10 @@ final class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'columns' => [],
             ],
         ];
-        $context = new Context([
-            'visibility' => new VisibilityAspect($hiddenPagePreview, $hiddenRecordPreview),
-            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), $frontendUserGroups),
-            'workspace' => new WorkspaceAspect($workspaceId),
-        ]);
+        $context = new Context();
+        $context->setAspect('visibility', new VisibilityAspect($hiddenPagePreview, $hiddenRecordPreview));
+        $context->setAspect('frontend.user', new UserAspect(new FrontendUserAuthentication(), $frontendUserGroups));
+        $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
         $GLOBALS['SIM_ACCESS_TIME'] = 42;

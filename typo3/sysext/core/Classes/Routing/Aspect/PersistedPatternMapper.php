@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Routing\Aspect;
 
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\ContextAwareInterface;
-use TYPO3\CMS\Core\Context\ContextAwareTrait;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -33,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Very useful for building an a path segment from a combined value of the database.
+ * Very useful for building a path segment from a combined value of the database.
  * Please note: title is not prepared for slugs and used raw.
  *
  * Example:
@@ -54,12 +52,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal might change its options in the future, be aware that there might be modifications.
  */
-class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, ContextAwareInterface, SiteLanguageAwareInterface, SiteAwareInterface, UnresolvedValueInterface
+class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface, SiteAwareInterface, UnresolvedValueInterface
 {
     use AspectTrait;
     use SiteLanguageAccessorTrait;
     use SiteAccessorTrait;
-    use ContextAwareTrait;
     use UnresolvedValueTrait;
 
     protected const PATTERN_RESULT = '#\{(?P<fieldName>[^}]+)\}#';
@@ -250,7 +247,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
             ->getQueryBuilderForTable($this->tableName)
             ->from($this->tableName);
         $queryBuilder->setRestrictions(
-            GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
+            GeneralUtility::makeInstance(FrontendRestrictionContainer::class, GeneralUtility::makeInstance(Context::class))
         );
         // Frontend Groups are not available at this time (initialized via TSFE->determineId)
         // So this must be excluded to allow access restricted records

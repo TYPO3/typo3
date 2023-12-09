@@ -65,10 +65,9 @@ final class Typo3DbBackendTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
 
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context([
-            'workspace' => new WorkspaceAspect(1),
-            'language' => new LanguageAspect(0, 0),
-        ]);
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(1));
+        $context->setAspect('language', new LanguageAspect(0, 0));
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);

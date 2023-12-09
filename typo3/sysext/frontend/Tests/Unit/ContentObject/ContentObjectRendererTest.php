@@ -1578,10 +1578,9 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeContext(): void
     {
-        $context = new Context([
-            'workspace' => new WorkspaceAspect(3),
-            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), [0, -1]),
-        ]);
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(3));
+        $context->setAspect('frontend.user', new UserAspect(new FrontendUserAuthentication(), [0, -1]));
         GeneralUtility::setSingletonInstance(Context::class, $context);
         self::assertEquals(3, $this->subject->getData('context:workspace:id'));
         self::assertEquals('0,-1', $this->subject->getData('context:frontend.user:groupIds'));

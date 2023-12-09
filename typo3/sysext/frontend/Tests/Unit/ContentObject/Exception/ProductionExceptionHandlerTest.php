@@ -64,11 +64,9 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $randomMock = $this->createMock(Random::class);
         $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
 
-        $exceptionHandler = new ProductionExceptionHandler(
-            new Context(['date' => new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp))]),
-            $randomMock,
-            new NullLogger()
-        );
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp)));
+        $exceptionHandler = new ProductionExceptionHandler($context, $randomMock, new NullLogger());
 
         self::assertEquals(
             'Oops, an error occurred! Code: ' . date('YmdHis', $currentTimestamp) . $random,
@@ -87,11 +85,9 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $randomMock = $this->createMock(Random::class);
         $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
 
-        $exceptionHandler = new ProductionExceptionHandler(
-            new Context(['date' => new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp))]),
-            $randomMock,
-            new NullLogger()
-        );
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp)));
+        $exceptionHandler = new ProductionExceptionHandler($context, $randomMock, new NullLogger());
         $exceptionHandler->setConfiguration([
             'errorMessage' => 'Custom error message: {code}',
         ]);
@@ -113,8 +109,10 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $randomMock = $this->createMock(Random::class);
         $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
 
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp)));
         $exceptionHandler = new ProductionExceptionHandler(
-            new Context(['date' => new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp))]),
+            $context,
             $randomMock,
             new NullLogger()
         );

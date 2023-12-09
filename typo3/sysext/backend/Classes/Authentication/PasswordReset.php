@@ -313,7 +313,6 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * Update the password in the database if the password matches and the token is valid.
      *
-     * @param Context $context current context
      * @return bool whether the password was reset or not
      */
     public function resetPassword(ServerRequestInterface $request, Context $context): bool

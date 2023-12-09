@@ -53,11 +53,8 @@ final class WorkspaceTest extends FunctionalTestCase
      */
     private function setupSubjectInFrontend(int $workspaceId = 1): void
     {
-        $context = new Context(
-            [
-                'workspace' => new WorkspaceAspect($workspaceId),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray([]);
@@ -83,12 +80,9 @@ final class WorkspaceTest extends FunctionalTestCase
         $backendUser = new BackendUserAuthentication();
         $backendUser->workspace = $workspaceId;
         $GLOBALS['BE_USER'] = $backendUser;
-        $context = new Context(
-            [
-                'backend.user' => new UserAspect($backendUser),
-                'workspace' => new WorkspaceAspect($workspaceId),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('backend.user', new UserAspect($backendUser));
+        $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray([]);

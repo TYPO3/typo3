@@ -106,8 +106,8 @@ final class RecordAccessVoterTest extends FunctionalTestCase
     public function accessGrantedTest(string $table, array $record, bool $access): void
     {
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
-        $context = new Context(['frontend.user' => new UserAspect(null, [3, 4])]);
-
+        $context = new Context();
+        $context->setAspect('frontend.user', new UserAspect(null, [3, 4]));
         self::assertEquals($access, $this->subject->accessGranted($table, $record, $context));
     }
 
@@ -117,17 +117,21 @@ final class RecordAccessVoterTest extends FunctionalTestCase
     public function accessGrantedRespectsVisibilityAspect(): void
     {
         // Page is available even if the "disabled" flag is set
+        $context = new Context();
+        $context->setAspect('visibility', new VisibilityAspect(includeHiddenPages: true));
         self::assertTrue($this->subject->accessGranted(
             'pages',
             ['uid' => 1, 'hidden' => 1],
-            new Context(['visibility' => new VisibilityAspect(includeHiddenPages: true)])
+            $context
         ));
 
         // Content is available even if the "disabled" flag is set
+        $context = new Context();
+        $context->setAspect('visibility', new VisibilityAspect(includeHiddenContent: true));
         self::assertTrue($this->subject->accessGranted(
             'tt_content',
             ['uid' => 1, 'hidden' => 1],
-            new Context(['visibility' => new VisibilityAspect(includeHiddenContent: true)])
+            $context
         ));
     }
 
@@ -172,10 +176,8 @@ final class RecordAccessVoterTest extends FunctionalTestCase
      */
     public function groupAccessGrantedTest(string $table, array $record, bool $access): void
     {
-        $context = new Context([
-            'frontend.user' => new UserAspect(null, [3, 4]),
-        ]);
-
+        $context = new Context();
+        $context->setAspect('frontend.user', new UserAspect(null, [3, 4]));
         self::assertEquals($access, $this->subject->groupAccessGranted($table, $record, $context));
     }
 

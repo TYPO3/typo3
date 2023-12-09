@@ -40,10 +40,7 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
         FrontendGroupRestriction::class,
     ];
 
-    /**
-     * @var Context
-     */
-    protected $context;
+    protected Context $context;
 
     /**
      * FrontendRestrictionContainer constructor.

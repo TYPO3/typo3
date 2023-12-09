@@ -231,11 +231,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context(
-            [
-                'language' => new LanguageAspect(1, overlayType: LanguageAspect::OVERLAYS_OFF),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1, overlayType: LanguageAspect::OVERLAYS_OFF));
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
@@ -256,11 +253,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context(
-            [
-                'language' => new LanguageAspect(1, overlayType: LanguageAspect::OVERLAYS_OFF),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1, overlayType: LanguageAspect::OVERLAYS_OFF));
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
@@ -282,11 +276,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context(
-            [
-                'language' => new LanguageAspect(1),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
@@ -312,11 +303,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context(
-            [
-                'language' => new LanguageAspect(id: 1, contentId: 1, overlayType: LanguageAspect::OVERLAYS_MIXED),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(id: 1, contentId: 1, overlayType: LanguageAspect::OVERLAYS_MIXED));
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
@@ -339,11 +327,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context(
-            [
-                'language' => new LanguageAspect(id: 1, contentId: 1, overlayType: LanguageAspect::OVERLAYS_MIXED),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(id: 1, contentId: 1, overlayType: LanguageAspect::OVERLAYS_MIXED));
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
@@ -369,11 +354,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context(
-            [
-                'language' => new LanguageAspect(1),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
@@ -401,11 +383,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context(
-            [
-                'language' => new LanguageAspect(1),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
@@ -427,11 +406,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
-        $context = new Context(
-            [
-                'language' => new LanguageAspect(1),
-            ]
-        );
+        $context = new Context();
+        $context->setAspect('language', new LanguageAspect(1));
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
@@ -670,7 +646,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
         $dateAspect = new DateTimeAspect(new \DateTimeImmutable('3.1.2016'));
-        $context = new Context(['date' => $dateAspect]);
+        $context = new Context();
+        $context->setAspect('date', $dateAspect);
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $querySettings = new Typo3QuerySettings(new Context(), $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);

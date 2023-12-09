@@ -273,7 +273,7 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
      */
     public function recordVisibilityIsConsideredForResolving(Context $context, array $parameters, bool $expectation): void
     {
-        $this->subject->setContext($context);
+        GeneralUtility::setSingletonInstance(Context::class, $context);
         $expectedResult = $expectation ? $parameters['uid'] : null;
         self::assertSame($expectedResult, $this->subject->resolve($parameters['slug']));
     }
@@ -284,7 +284,7 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
      */
     public function recordVisibilityIsConsideredForGeneration(Context $context, array $parameters, bool $expectation): void
     {
-        $this->subject->setContext($context);
+        GeneralUtility::setSingletonInstance(Context::class, $context);
         $expectedResult = $expectation ? $parameters['slug'] : null;
         self::assertSame($expectedResult, $this->subject->generate($parameters['uid']));
     }

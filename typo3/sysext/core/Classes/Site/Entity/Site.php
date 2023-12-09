@@ -348,8 +348,6 @@ class Site implements SiteInterface
 
     /**
      * Returns the applicable router for this site. This might be configurable in the future.
-     *
-     * @param Context|null $context
      */
     public function getRouter(Context $context = null): RouterInterface
     {

@@ -2435,4 +2435,14 @@ return [
             'Feature-102631-IntroduceAsControllerAttributeToAutoconfigureBackendControllers.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Context\ContextAwareInterface' => [
+        'restFiles' => [
+            'Breaking-102645-MoreStrictContextHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Context\ContextAwareTrait' => [
+        'restFiles' => [
+            'Breaking-102645-MoreStrictContextHandling.rst',
+        ],
+    ],
 ];
