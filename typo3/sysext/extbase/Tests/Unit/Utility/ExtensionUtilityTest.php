@@ -205,6 +205,45 @@ final class ExtensionUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function configurePluginWorksForMultipleControllerActionsAsArrayWithCacheableActionAsDefault(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
+        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
+            FirstController::class => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
+            SecondController::class => ['index', 'show', 'delete'],
+            ThirdController::class => ['create'],
+        ], [
+            FirstController::class => ['new', 'create', 'edit', 'update'],
+            ThirdController::class => ['create'],
+        ]);
+        $expectedResult = [
+            'controllers' => [
+                FirstController::class => [
+                    'className' => FirstController::class,
+                    'alias' => 'First',
+                    'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
+                    'nonCacheableActions' => ['new', 'create', 'edit', 'update'],
+                ],
+                SecondController::class => [
+                    'className' => SecondController::class,
+                    'alias' => 'Second',
+                    'actions' => ['index', 'show', 'delete'],
+                ],
+                ThirdController::class => [
+                    'className' => ThirdController::class,
+                    'alias' => 'Third',
+                    'actions' => ['create'],
+                    'nonCacheableActions' => ['create'],
+                ],
+            ],
+            'pluginType' => 'list_type',
+        ];
+        self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
+    }
+
+    /**
+     * @test
+     */
     public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
