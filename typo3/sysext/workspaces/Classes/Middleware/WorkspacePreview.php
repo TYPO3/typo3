@@ -61,6 +61,8 @@ class WorkspacePreview implements MiddlewareInterface
      */
     protected $previewKey = 'ADMCMD_prev';
 
+    public function __construct(private readonly Context $context) {}
+
     /**
      * Initializes a possible preview user (by checking for GET/cookie of name "ADMCMD_prev")
      *
@@ -68,10 +70,6 @@ class WorkspacePreview implements MiddlewareInterface
      * backend user is in a different workspace.
      *
      * Additionally, if a workspace is previewed, an additional message text is shown.
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @throws \Exception
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -102,7 +100,7 @@ class WorkspacePreview implements MiddlewareInterface
                 if ($previewUser !== null) {
                     $GLOBALS['BE_USER'] = $previewUser;
                     // Register the preview user as aspect
-                    $this->setBackendUserAspect($context, $previewUser);
+                    $this->setBackendUserAspect($previewUser);
                     // If the GET parameter is set, and we have a valid Preview User, the cookie needs to be
                     // set and the GET parameter should be removed.
                     $setCookieOnCurrentRequest = $request->getQueryParams()[$this->previewKey] ?? false;
@@ -117,7 +115,7 @@ class WorkspacePreview implements MiddlewareInterface
             // We need to set the workspace to "live" here
             $GLOBALS['BE_USER']->setTemporaryWorkspace(0);
             // Register the backend user as aspect
-            $this->setBackendUserAspect($context, $GLOBALS['BE_USER']);
+            $this->setBackendUserAspect($GLOBALS['BE_USER']);
             $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
             $cacheInstruction->disableCache('ext:workspaces: Disabled FE cache with BE_USER previewing live workspace');
             $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
@@ -299,7 +297,7 @@ class WorkspacePreview implements MiddlewareInterface
         $content = '';
         if (!isset($tsfe->config['config']['disablePreviewNotification']) || (int)$tsfe->config['config']['disablePreviewNotification'] !== 1) {
             // get the title of the current workspace
-            $currentWorkspaceId = $tsfe->getContext()->getPropertyFromAspect('workspace', 'id', 0);
+            $currentWorkspaceId = $this->context->getPropertyFromAspect('workspace', 'id', 0);
             $currentWorkspaceTitle = $this->getWorkspaceTitle($currentWorkspaceId);
             $currentWorkspaceTitle = htmlspecialchars($currentWorkspaceTitle);
             if ($tsfe->config['config']['message_preview_workspace'] ?? false) {
@@ -390,10 +388,10 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Register or override the backend user as aspect, as well as the workspace information the user object is holding
      */
-    protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user = null)
+    protected function setBackendUserAspect(BackendUserAuthentication $user = null)
     {
-        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
-        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
+        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
     }
 
     protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController

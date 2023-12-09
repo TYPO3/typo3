@@ -450,7 +450,7 @@ abstract class AbstractMenuContentObject
             $banned,
             $this->excludedDoktypes,
             $this->getCurrentSite(),
-            $this->getTypoScriptFrontendController()->getContext(),
+            GeneralUtility::makeInstance(Context::class),
             $this->getTypoScriptFrontendController()->page
         );
         $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);

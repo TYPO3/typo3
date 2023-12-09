@@ -19,31 +19,15 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 
 use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\LanguageStore;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
-use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Page\ImportMap;
-use TYPO3\CMS\Core\Page\ImportMapFactory;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Tests\Unit\Page\PageRendererFactoryTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -52,68 +36,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractMenuContentObjectTest extends UnitTestCase
 {
-    use PageRendererFactoryTrait;
-
     protected AbstractMenuContentObject&MockObject&AccessibleObjectInterface $subject;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com', 'GET'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
-        $site = new Site('test', 1, [
-            'base' => 'https://www.example.com',
-            'languages' => [
-                [
-                    'languageId' => 0,
-                    'title' => 'English',
-                    'locale' => 'en_UK',
-                    'base' => '/',
-                ],
-            ],
-        ]);
-        $packageManagerMock = $this->createMock(PackageManager::class);
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
-        $cacheFrontendMock->method('get')->willReturn(false);
-        $cacheFrontendMock->method('set')->willReturn(null);
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerMock), $cacheManagerMock), $cacheFrontendMock);
-        $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromSiteLanguage')->willReturn($languageService);
-        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryMock);
-        $importMapMock = $this->createMock(ImportMap::class);
-        $importMapMock->method('render')->willReturn('')->withAnyParameters();
-        $importMapFactoryMock = $this->createMock(ImportMapFactory::class);
-        $importMapFactoryMock->method('create')->willReturn($importMapMock);
-        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryMock);
-        GeneralUtility::setSingletonInstance(
-            PageRenderer::class,
-            new PageRenderer(...$this->getPageRendererConstructorArgs()),
-        );
-        $frontendUserMock = $this->createMock(FrontendUserAuthentication::class);
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setConstructorArgs([new Context(), $site, $site->getDefaultLanguage(), new PageArguments(1, '1', []), $frontendUserMock])
-            ->onlyMethods(['initCaches'])
-            ->getMock();
-        $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
-        $GLOBALS['TSFE']->page = [];
-    }
-
-    /**
-     * Reset singleton instances
-     */
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();
     }
 
-    ////////////////////////////////
-    // Tests concerning sectionIndex
-    ////////////////////////////////
     /**
      * Prepares a test for the method sectionIndex
      */
@@ -136,6 +66,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn(null);
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
         $result = $this->subject->_call('sectionIndex', 'field');
         self::assertEquals([], $result);
@@ -149,6 +80,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
         $pageRepository->expects(self::once())->method('getPage')->with(10)->willReturn(null);
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
         $result = $this->subject->_call('sectionIndex', 'field');
@@ -165,6 +97,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
 
@@ -184,6 +117,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $statementMock->expects(self::exactly(2))->method('fetchAssociative')->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
 
         $this->prepareSectionIndexTest();
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('mconf', [
             'sectionIndex.' => [
                 'type' => 'all',
@@ -253,6 +187,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $statementMock->method('fetchAssociative')->willReturn($dataRow, false);
 
         $this->prepareSectionIndexTest();
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('mconf', [
             'sectionIndex.' => [
                 'type' => 'header',
@@ -316,6 +251,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $statementMock->method('fetchAssociative')->willReturn([]);
 
         $this->prepareSectionIndexTest();
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('mconf', ['sectionIndex.' => $configuration]);
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
@@ -635,6 +571,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
             ->onlyMethods(['createLink'])
             ->getMock();
         $cObject->expects(self::once())->method('createLink')->with('|', $expected);
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('parent_cObj', $cObject);
         $this->subject->_set('mconf', $mconf);
         $this->subject->_call('menuTypoLink', $page, $oTarget, $addParams, $typeOverride, $overrideId);

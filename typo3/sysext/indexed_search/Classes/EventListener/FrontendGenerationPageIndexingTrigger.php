@@ -20,6 +20,7 @@ namespace TYPO3\CMS\IndexedSearch\EventListener;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -42,6 +43,7 @@ class FrontendGenerationPageIndexingTrigger
         protected readonly PageTitleProviderManager $pageTitleProviderManager,
         protected readonly Indexer $indexer,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Context $context,
     ) {}
 
     /**
@@ -74,8 +76,7 @@ class FrontendGenerationPageIndexingTrigger
             $this->timeTracker->setTSlogMessage('Index page? No, The "No Search" flag has been set in the page properties!');
             return;
         }
-        /** @var LanguageAspect $languageAspect */
-        $languageAspect = $tsfe->getContext()->getAspect('language');
+        $languageAspect = $this->context->getAspect('language');
         if ($languageAspect->getId() !== $languageAspect->getContentId()) {
             $this->timeTracker->setTSlogMessage('Index page? No, languageId was different from contentId which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
             return;
@@ -104,7 +105,7 @@ class FrontendGenerationPageIndexingTrigger
             // MP variable, if any (Mount Points)
             'MP' => $tsfe->MP,
             // Group list
-            'gr_list' => implode(',', $tsfe->getContext()->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])),
+            'gr_list' => implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])),
             // page arguments array
             'staticPageArguments' => $pageArguments->getStaticArguments(),
             // The creation date of the TYPO3 page

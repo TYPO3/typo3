@@ -353,7 +353,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         return empty($conf['linkAccessRestrictedPages'])
             && (($tsfe = $this->getTypoScriptFrontendController())->config['config']['typolinkLinkAccessRestrictedPages'] ?? false)
             && $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
-            && !GeneralUtility::makeInstance(RecordAccessVoter::class)->groupAccessGranted('pages', $page, $tsfe->getContext());
+            && !GeneralUtility::makeInstance(RecordAccessVoter::class)->groupAccessGranted('pages', $page, GeneralUtility::makeInstance(Context::class));
     }
 
     /**

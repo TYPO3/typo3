@@ -32,6 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseRecordLinkBuilderTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     public static function attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider(): array
     {
         return [
@@ -152,15 +154,13 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
 
         // Arrange
         $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
-        $context = new Context();
         $pageRepositoryMock = $this->createMock(PageRepository::class);
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray($typoScriptConfig);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $contentObjectRendererMock->method('getRequest')->willReturn($request);
-
-        $frontendControllerMock->method('getContext')->willReturn($context);
+        GeneralUtility::setSingletonInstance(Context::class, new Context());
         $frontendControllerMock->sys_page = $pageRepositoryMock;
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
 

@@ -3974,7 +3974,9 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_formattedDate(string $expected, mixed $pattern, string $locale = null, string $givenDate = null): void
     {
-        $this->frontendControllerMock->getContext()->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('2023-02-02 13:05:00')));
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('2023-02-02 13:05:00')));
+        GeneralUtility::setSingletonInstance(Context::class, $context);
         $subject = new ContentObjectRenderer($this->frontendControllerMock);
         $conf = ['formattedDate' => $pattern];
         if ($locale !== null) {

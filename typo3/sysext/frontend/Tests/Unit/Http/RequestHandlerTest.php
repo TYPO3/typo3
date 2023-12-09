@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Http;
 
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -164,6 +165,7 @@ final class RequestHandlerTest extends UnitTestCase
                 new TimeTracker(false),
                 new FilePathSanitizer(),
                 new TypoScriptService(),
+                new Context(),
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
@@ -330,6 +332,7 @@ final class RequestHandlerTest extends UnitTestCase
                 new TimeTracker(false),
                 new FilePathSanitizer(),
                 new TypoScriptService(),
+                new Context(),
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
@@ -389,6 +392,7 @@ final class RequestHandlerTest extends UnitTestCase
                 new TimeTracker(false),
                 new FilePathSanitizer(),
                 new TypoScriptService(),
+                new Context(),
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
@@ -514,6 +518,7 @@ final class RequestHandlerTest extends UnitTestCase
                 new TimeTracker(false),
                 new FilePathSanitizer(),
                 new TypoScriptService(),
+                new Context(),
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);

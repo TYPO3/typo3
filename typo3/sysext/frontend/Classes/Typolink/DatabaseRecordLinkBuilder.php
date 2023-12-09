@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Typolink;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
@@ -58,7 +59,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
             $record = $tsfe->sys_page->getRawRecord($databaseTable, $linkDetails['uid']);
         } else {
             $record = $tsfe->sys_page->checkRecord($databaseTable, $linkDetails['uid']);
-            $languageAspect = $tsfe->getContext()->getAspect('language');
+            $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
             $languageField = (string)($GLOBALS['TCA'][$databaseTable]['ctrl']['languageField'] ?? '');
 
             if (is_array($record) && $languageField !== '') {

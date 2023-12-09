@@ -71,29 +71,29 @@ all properties not listed above:
 
 The following methods have been marked :php:`@internal`:
 
-* :php:`TypoScriptFrontendController->__construct` (extensions should not create own TSFE instances)
+* :php:`TypoScriptFrontendController->__construct` - extensions should not create own instances of TSFE
 * :php:`TypoScriptFrontendController->determineId()`
-* :php:`TypoScriptFrontendController->getPageAccessFailureReasons`
-* :php:`TypoScriptFrontendController->calculateLinkVars`
-* :php:`TypoScriptFrontendController->isGeneratePage`
-* :php:`TypoScriptFrontendController->preparePageContentGeneration`
-* :php:`TypoScriptFrontendController->generatePage_postProcessing`
-* :php:`TypoScriptFrontendController->generatePageTitle`
-* :php:`TypoScriptFrontendController->INTincScript`
-* :php:`TypoScriptFrontendController->INTincScript_loadJSCode`
-* :php:`TypoScriptFrontendController->isINTincScript`
-* :php:`TypoScriptFrontendController->applyHttpHeadersToResponse`
-* :php:`TypoScriptFrontendController->isStaticCacheble`
-* :php:`TypoScriptFrontendController->newCObj`
-* :php:`TypoScriptFrontendController->logDeprecatedTyposcript`
-* :php:`TypoScriptFrontendController->uniqueHash`
-* :php:`TypoScriptFrontendController->set_cache_timeout_default`
-* :php:`TypoScriptFrontendController->get_cache_timeout`
-* :php:`TypoScriptFrontendController->getRequestedId`
-* :php:`TypoScriptFrontendController->getLanguage`
-* :php:`TypoScriptFrontendController->getSite`
-* :php:`TypoScriptFrontendController->getContext`
-* :php:`TypoScriptFrontendController->getPageArguments`
+* :php:`TypoScriptFrontendController->getPageAccessFailureReasons()`
+* :php:`TypoScriptFrontendController->calculateLinkVars()`
+* :php:`TypoScriptFrontendController->isGeneratePage()`
+* :php:`TypoScriptFrontendController->preparePageContentGeneration()`
+* :php:`TypoScriptFrontendController->generatePage_postProcessing()`
+* :php:`TypoScriptFrontendController->generatePageTitle()`
+* :php:`TypoScriptFrontendController->INTincScript()`
+* :php:`TypoScriptFrontendController->INTincScript_loadJSCode()`
+* :php:`TypoScriptFrontendController->isINTincScript()`
+* :php:`TypoScriptFrontendController->applyHttpHeadersToResponse()`
+* :php:`TypoScriptFrontendController->isStaticCacheble()`
+* :php:`TypoScriptFrontendController->newCObj()`
+* :php:`TypoScriptFrontendController->logDeprecatedTyposcript()`
+* :php:`TypoScriptFrontendController->uniqueHash()`
+* :php:`TypoScriptFrontendController->set_cache_timeout_default()`
+* :php:`TypoScriptFrontendController->get_cache_timeout()`
+* :php:`TypoScriptFrontendController->getRequestedId()` - Use :php:`Request->getAttribute('routing')->getPageId()` instead
+* :php:`TypoScriptFrontendController->getLanguage()`
+* :php:`TypoScriptFrontendController->getSite()`
+* :php:`TypoScriptFrontendController->getContext()` - Use dependency injection or :php:`GeneralUtility::makeInstance()` instead
+* :php:`TypoScriptFrontendController->getPageArguments()`
 
 Impact
 ======

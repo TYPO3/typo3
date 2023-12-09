@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\Response;
@@ -75,6 +76,7 @@ class RequestHandler implements RequestHandlerInterface
         private readonly TimeTracker $timeTracker,
         private readonly FilePathSanitizer $filePathSanitizer,
         private readonly TypoScriptService $typoScriptService,
+        private readonly Context $context,
     ) {}
 
     /**
@@ -904,10 +906,9 @@ class RequestHandler implements RequestHandlerInterface
      */
     protected function displayPreviewInfoMessage(TypoScriptFrontendController $controller)
     {
-        $context = $controller->getContext();
-        $isInWorkspace = $context->getPropertyFromAspect('workspace', 'isOffline', false);
-        $isInPreviewMode = $context->hasAspect('frontend.preview')
-            && $context->getPropertyFromAspect('frontend.preview', 'isPreview');
+        $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
+        $isInPreviewMode = $this->context->hasAspect('frontend.preview')
+            && $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
         if (!$isInPreviewMode || $isInWorkspace || ($controller->config['config']['disablePreviewNotification'] ?? false)) {
             return;
         }

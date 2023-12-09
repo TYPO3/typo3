@@ -357,11 +357,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected string $contentType = 'text/html; charset=utf-8';
 
     /**
-     * Originally requested id from PageArguments
-     */
-    protected int $requestedId = 0;
-
-    /**
      * The context for keeping the current state, mostly related to current page information,
      * backend user / frontend user access, workspaceId
      */
@@ -396,7 +391,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->setPageArguments($pageArguments);
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
-        $this->initCaches();
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        $this->pageCache = $cacheManager->getCache('pages');
     }
 
     protected function initPageRenderer(): void
@@ -422,12 +418,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
-    }
-
-    protected function initCaches(): void
-    {
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $this->pageCache = $cacheManager->getCache('pages');
     }
 
     /**
@@ -498,7 +488,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 // re-get the page and rootline if the id was not found.
                 $this->getPageAndRootline($request);
             }
-        } catch (ShortcutTargetPageNotFoundException $e) {
+        } catch (ShortcutTargetPageNotFoundException) {
             $this->pageNotFound = 1;
         }
         $timeTracker->pull();
@@ -661,7 +651,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         }
                     }
                 }
-            } catch (RootLineException $e) {
+            } catch (RootLineException) {
                 $this->rootLine = [];
             }
             // If still no page...
@@ -741,7 +731,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->MP .= ',' . $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
             }
             $this->id = (int)$this->page['uid'];
-            $pageDoktype = (int)($this->page['doktype'] ?? 0);
         }
         // Gets the rootLine
         try {
@@ -900,7 +889,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->pageArguments = $pageArguments;
         $this->id = $pageArguments->getPageId();
         // We store the originally requested id
-        $this->requestedId = $this->id;
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
             $this->MP = (string)($pageArguments->getArguments()['MP'] ?? '');
             // Ensure no additional arguments are given via the &MP=123-345,908-172 (e.g. "/")
@@ -2327,15 +2315,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Returns the originally requested page uid when TSFE was instantiated initially.
-     * @internal
-     */
-    public function getRequestedId(): int
-    {
-        return $this->requestedId;
-    }
-
-    /**
      * Release the page specific lock.
      *
      * @throws \InvalidArgumentException
@@ -2411,14 +2390,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getSite(): Site
     {
         return $this->site;
-    }
-
-    /**
-     * @internal
-     */
-    public function getContext(): Context
-    {
-        return $this->context;
     }
 
     /**

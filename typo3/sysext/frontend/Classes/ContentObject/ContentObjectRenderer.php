@@ -1888,12 +1888,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $locale = $conf['formattedDate.']['locale'] ?? $this->getTypoScriptFrontendController()->getLanguage()->getLocale();
 
         if ($content === '' || $content === '0') {
-            $content = $this->getTypoScriptFrontendController()->getContext()->getAspect('date')->getDateTime();
+            $content = GeneralUtility::makeInstance(Context::class)->getAspect('date')->getDateTime();
         } else {
             // format this to a timestamp now
             $content = strtotime((MathUtility::canBeInterpretedAsInteger($content) ? '@' : '') . $content);
             if ($content === false) {
-                $content = $this->getTypoScriptFrontendController()->getContext()->getAspect('date')->getDateTime();
+                $content = GeneralUtility::makeInstance(Context::class)->getAspect('date')->getDateTime();
             }
         }
         return (new DateFormatter())->format($content, $pattern, $locale);
