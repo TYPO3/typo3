@@ -28,13 +28,13 @@ Compatibility Table
 ===============   ===============   ===============   ===================================   =======================
 Name              Previous Key      New Key           CSS Class                             Additional Effects
 ===============   ===============   ===============   ===================================   =======================
-Default           0                 default           csc-frame csc-frame-default           -
-Invisible         1                 (dropped)         -                                     -
-Ruler Before      5                 ruler-before      csc-frame csc-frame-ruler-before      -
-Ruler After       6                 ruler-after       csc-frame csc-frame-ruler-after       -
-Indent            10                indent            csc-frame csc-frame-indent            -
-Indent, 33/66%    11                indent-left       csc-frame csc-frame-indent-left       -
-Indent, 66/33%    12                indent-right      csc-frame csc-frame-indent-right      -
+Default           0                 default           csc-frame csc-frame-default           \-
+Invisible         1                 (dropped)         \-                                    \-
+Ruler Before      5                 ruler-before      csc-frame csc-frame-ruler-before      \-
+Ruler After       6                 ruler-after       csc-frame csc-frame-ruler-after       \-
+Indent            10                indent            csc-frame csc-frame-indent            \-
+Indent, 33/66%    11                indent-left       csc-frame csc-frame-indent-left       \-
+Indent, 66/33%    12                indent-right      csc-frame csc-frame-indent-right      \-
 No Frame          66                none              (none)                                No Frame is rendered
 ===============   ===============   ===============   ===================================   =======================
 
