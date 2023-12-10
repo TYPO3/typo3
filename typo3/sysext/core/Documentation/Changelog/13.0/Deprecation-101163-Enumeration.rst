@@ -43,7 +43,7 @@ should be converted into:
 
 ..  code-block:: php
 
-    enum State: string;
+    enum State: string
     {
         case STATE_DEFAULT = 'somestate';
         case STATE_DISABLED = 'disabled';
