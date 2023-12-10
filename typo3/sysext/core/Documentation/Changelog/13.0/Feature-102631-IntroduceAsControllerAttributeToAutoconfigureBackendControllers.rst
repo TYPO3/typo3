@@ -2,9 +2,9 @@
 
 .. _feature-102631-1702031335:
 
-======================================================================================
-Feature: #102631 - Introduce AsCommand attribute to autoconfigure backend controllers
-======================================================================================
+========================================================================================
+Feature: #102631 - Introduce AsController attribute to autoconfigure backend controllers
+========================================================================================
 
 See :issue:`102631`
 
@@ -30,7 +30,7 @@ can be set on the class:
 .. note::
 
     The attribute is a drop-in replacement for the
-    :doc:`deprecated <../13.0/Deprecation-102631-DeprecatedCommandAttributeForAutoConfiguringBackendControllers>`
+    :ref:`deprecated <deprecation-102631-1702031387>`
     :php:`\TYPO3\CMS\Core\Attribute\Controller` attribute.
 
 Impact

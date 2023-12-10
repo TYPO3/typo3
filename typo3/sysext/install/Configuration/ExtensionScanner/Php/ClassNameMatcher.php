@@ -2431,7 +2431,8 @@ return [
     ],
     'TYPO3\CMS\Backend\Attribute\Controller' => [
         'restFiles' => [
-            'Deprecation-102631-DeprecatedCommandAttributeForAutoConfiguringBackendControllers.rst',
+            'Deprecation-102631-DeprecatedControllerAttributeForAutoConfiguringBackendControllers.rst',
+            'Feature-102631-IntroduceAsControllerAttributeToAutoconfigureBackendControllers.rst',
         ],
     ],
 ];

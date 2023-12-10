@@ -2,18 +2,18 @@
 
 .. _deprecation-102631-1702031387:
 
-============================================================================================
-Deprecation: #102631 - Deprecated Command attribute for auto configuring backend controllers
-============================================================================================
+===============================================================================================
+Deprecation: #102631 - Deprecated Controller attribute for auto configuring backend controllers
+===============================================================================================
 
 See :issue:`102631`
 
 Description
 ===========
 
-In order to unify PHP attribute naming, the former :doc:`introduced <../12.1/Feature-99055-BackendControllerServiceTagAttribute>`
+In order to unify PHP attribute naming, the former :ref:`introduced <feature-99055-1668096727>`
 :php:`\TYPO3\CMS\Backend\Attribute\Controller` attribute has been deprecated
-and is replaced by the :doc:`new <../13.0/Feature-102631-IntroduceAsCommandAttributeToAutoconfigureBackendControllers>`
+and is replaced by the :ref:`new <feature-102631-1702031335>`
 :php:`\TYPO3\CMS\Backend\Attribute\AsController` attribute.
 
 Impact
