@@ -135,6 +135,9 @@
 			<trans-unit id="frontendDeleteActionOkBody" xml:space="preserve">
 				<source>The page tree and all related records were deleted.</source>
 			</trans-unit>
+			<trans-unit id="itemGroupLabel" xml:space="preserve">
+				<source>Item group from locallang</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

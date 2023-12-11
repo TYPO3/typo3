@@ -319,6 +319,7 @@ abstract class AbstractItemProvider
         // This way, workspaceOL() does not need to be called for each record.
         $workspaceId = $this->getBackendUser()->workspace;
         $doOverlaysForRecords = BackendUtility::getPossibleWorkspaceVersionIdsOfLiveRecordIds($foreignTable, array_column($allForeignRows, 'uid'), $workspaceId);
+        $itemGroupField = $result['processedTca']['columns'][$fieldName]['config']['foreign_table_item_group'] ?? '';
 
         foreach ($allForeignRows as $foreignRow) {
             // Only do workspace overlays when a versioned record exists.
@@ -354,6 +355,7 @@ abstract class AbstractItemProvider
                     'label' => $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
                     'value' => $foreignRow['uid'],
                     'icon' => $icon,
+                    'group' => $foreignRow[$itemGroupField] ?? null,
                 ];
                 if ($includeFullRows) {
                     // @todo: This is part of the category tree performance hack
@@ -576,6 +578,10 @@ abstract class AbstractItemProvider
         } else {
             $fieldList = BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.');
             $fieldList = GeneralUtility::trimExplode(',', $fieldList, true);
+        }
+
+        if ($result['processedTca']['columns'][$localFieldName]['config']['foreign_table_item_group'] ?? false) {
+            $fieldList[] = $foreignTableName . '.' . $result['processedTca']['columns'][$localFieldName]['config']['foreign_table_item_group'];
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

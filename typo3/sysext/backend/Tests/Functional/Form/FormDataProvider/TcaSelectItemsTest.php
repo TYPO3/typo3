@@ -234,6 +234,68 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function addDataAddsItemGroupsFromForeignTable(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'effectivePid' => 1,
+            'databaseRow' => [
+                'aField' => 'invalid',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                [
+                                    'label' => 'anotherLabel',
+                                    'value' => 'anotherValue',
+                                    'icon' => 'an-icon-reference',
+                                    'group' => 'example-group',
+                                    'description' => null,
+                                ],
+                            ],
+                            'itemGroups' => [
+                                'example-group' => 'My Example Group',
+                                'itemgroup1' => 'Item group foreign table 1',
+                                'itemgroup2' => 'Item group foreign table 2',
+                            ],
+                            'foreign_table' => 'foreign_table',
+                            'foreign_table_item_group' => 'itemgroup',
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expectedItemGroups = [
+            'none', // Invalid database value gets special "none" group
+            'example-group', // Header item for 'example-group'
+            'example-group', // Item 'anotherValue'
+            'itemgroup1', // Header item for 'itemgroup1' <- dynamic from database value
+            'itemgroup1', // Item uid=1
+            'itemgroup2', // Header item for 'itemgroup2' <- dynamic from database value
+            'itemgroup2', // Item uid=2
+            'itemgroup2', // Item uid=6
+            'itemgroup3', // Header item for 'itemgroup3' <- dynamic from database value
+            'itemgroup3', // Item uid=3
+            'itemgroup3', // Item uid=4
+            'itemgroup3', // Item uid=5
+        ];
+
+        $result = (new TcaSelectItems())->addData($input);
+        $resultItems = $result['processedTca']['columns']['aField']['config']['items'];
+        $resultItemGroups = array_column($resultItems, 'group');
+
+        self::assertSame($expectedItemGroups, $resultItemGroups);
+    }
+
+    /**
+     * @test
+     */
     public function addDataKeepsIconFromItem(): void
     {
         $input = [

@@ -347,6 +347,29 @@ return [
                 'size' => 4,
             ],
         ],
+        'select_single_21' => [
+            'label' => 'select_single_21',
+            'description' => 'itemGroups, foreign_table',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'allowNonIdValues' => true,
+                'items' => [
+                    ['label' => 'static item 1', 'value' => 'static-1', 'group' => 'group1'],
+                    ['label' => 'static item 2', 'value' => 'static-2', 'group' => 'group1'],
+                    ['label' => 'static item 3', 'value' => 'static-3', 'group' => 'undefined'],
+                ],
+                'itemGroups' => [
+                    'group1' => 'Group 1 with items',
+                    'group2' => 'Group 2 with no items',
+                    'group3' => 'Group 3 from foreign table',
+                    // Group 4 uses locallang label
+                    'group4' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:itemGroupLabel',
+                ],
+                'foreign_table' => 'tx_styleguide_elements_select_single_21_foreign',
+                'foreign_table_item_group' => 'item_group',
+            ],
+        ],
         'select_singlebox_1' => [
             'label' => 'select_singlebox_1 description',
             'description' => 'field description',
@@ -1075,7 +1098,7 @@ return [
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
                     select_single_7, select_single_12, select_single_8, select_single_13, select_single_10,
                     select_single_11, select_single_14, select_single_15,select_single_16,select_single_17,
-                    select_single_18, select_single_19, select_single_20,
+                    select_single_18, select_single_19, select_single_20, select_single_21,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1, select_singlebox_2,select_singlebox_3,
                 --div--;renderType=selectCheckBox,

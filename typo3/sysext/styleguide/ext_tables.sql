@@ -115,6 +115,10 @@ CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
     parenttable text,
 );
 
+CREATE TABLE tx_styleguide_elements_select_single_21_foreign (
+    title varchar(255) DEFAULT '' NOT NULL,
+);
+
 # MM tables for fields defined in flex form data structures
 # are NOT auto created by DefaultTcaSchema
 CREATE TABLE tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm (
