@@ -431,7 +431,13 @@ class LinkElement extends AbstractFormElement
                 ];
         }
 
-        $data['additionalAttributes'] = '<div class="form-text">' . implode(' - ', $additionalAttributes) . '</div>';
+        $data['additionalAttributes'] = '
+            <div class="callout callout-info mt-3 mb-0">
+                <div class="callout-body">
+                    ' . implode(' - ', $additionalAttributes) . '
+                </div>
+            </div>
+        ';
 
         return $this->eventDispatcher->dispatch(
             new ModifyLinkExplanationEvent($data, $linkData, $linkParts, $this->data)
