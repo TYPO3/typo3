@@ -328,7 +328,7 @@ final class SysTemplateTreeBuilder
             $parentNode->addChild($includeStaticFileFileInclude);
             $includeStaticFileFileIncludeContent = (string)file_get_contents($includeStaticFileFileIncludePath);
             // @todo: There is no array_unique() for DB based include_static_file content?!
-            $includeStaticFileFileIncludeArray = array_unique(GeneralUtility::trimExplode(',', $includeStaticFileFileIncludeContent));
+            $includeStaticFileFileIncludeArray = array_unique(GeneralUtility::trimExplode(',', $includeStaticFileFileIncludeContent, true));
             foreach ($includeStaticFileFileIncludeArray as $includeStaticFileFileIncludeString) {
                 $this->handleSingleIncludeStaticFile($includeStaticFileFileInclude, $includeStaticFileFileIncludeString);
             }
