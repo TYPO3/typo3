@@ -57,7 +57,7 @@ class ImportExportUtility
         $this->import = GeneralUtility::makeInstance(Import::class);
         $this->import->setPid($pid);
 
-        $this->eventDispatcher->dispatch(new BeforeImportEvent($this->import));
+        $this->eventDispatcher->dispatch(new BeforeImportEvent($this->import, $file));
 
         try {
             $this->import->loadFile($file, true);

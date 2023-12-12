@@ -24,10 +24,21 @@ use TYPO3\CMS\Impexp\Import;
  */
 final class BeforeImportEvent
 {
-    public function __construct(private readonly Import $import) {}
+    public function __construct(
+        private readonly Import $import,
+        private readonly string $file
+    ) {}
 
     public function getImport(): Import
     {
         return $this->import;
+    }
+
+    /**
+     * The file being about to be imported
+     */
+    public function getFile(): string
+    {
+        return $this->file;
     }
 }
