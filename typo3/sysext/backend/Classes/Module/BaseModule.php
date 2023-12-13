@@ -35,7 +35,7 @@ abstract class BaseModule
     protected array $position = [];
     protected array $appearance = [];
     protected string $access = '';
-    protected string $workspaceAccess = '*';
+    protected string $workspaceAccess = '';
     protected string $parent = '';
     protected ?ModuleInterface $parentModule = null;
     /** @var array<string, ModuleInterface> */

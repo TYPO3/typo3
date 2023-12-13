@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Backend\Exception\NoAccessibleModuleException;
 use TYPO3\CMS\Backend\Middleware\BackendModuleValidator;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -122,7 +123,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function invalidModuleThrowsException(): void
+    public function invalidModuleIsHandledWithRedirect(): void
     {
         $module = $this->get(ModuleFactory::class)->createModule(
             'some_module',
@@ -132,19 +133,22 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
             ]
         );
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1642450334);
-
-        $this->subject->process(
+        $response = $this->subject->process(
             $this->request->withAttribute('route', new Route('/some/route', ['module' => $module])),
             $this->requestHandler
+        );
+
+        self::assertEquals(302, $response->getStatusCode());
+        self::assertStringContainsString(
+            $this->get(ModuleProvider::class)->getFirstAccessibleModule($GLOBALS['BE_USER'])->getPath(),
+            $response->getHeaderLine('location')
         );
     }
 
     /**
      * @test
      */
-    public function insufficientAccessPermissionsThrowsException(): void
+    public function invalidModuleThrowsException(): void
     {
         $GLOBALS['BE_USER']->user['admin'] = 0;
 
@@ -157,8 +161,8 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
             ]
         );
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1642450334);
+        $this->expectException(NoAccessibleModuleException::class);
+        $this->expectExceptionCode(1702480600);
 
         $this->subject->process(
             $this->request->withAttribute('route', new Route('/some/route', ['module' => $module])),
