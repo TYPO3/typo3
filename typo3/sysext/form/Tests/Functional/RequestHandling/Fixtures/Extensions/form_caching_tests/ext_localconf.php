@@ -12,22 +12,22 @@ call_user_func(static function () {
     ExtensionUtility::configurePlugin(
         'FormCachingTests',
         'AllActionsCached',
-        [FormCachingTestsController::class => 'someRender,somePerform'],
-        [FormCachingTestsController::class => '']
+        [FormCachingTestsController::class => ['someRender', 'somePerform']],
+        [FormCachingTestsController::class => ['']]
     );
 
     ExtensionUtility::configurePlugin(
         'FormCachingTests',
         'RenderActionIsCached',
-        [FormCachingTestsController::class => 'someRender,somePerform'],
-        [FormCachingTestsController::class => 'somePerform']
+        [FormCachingTestsController::class => ['someRender', 'somePerform']],
+        [FormCachingTestsController::class => ['somePerform']]
     );
 
     ExtensionUtility::configurePlugin(
         'FormCachingTests',
         'AllActionsUncached',
-        [FormCachingTestsController::class => 'someRender,somePerform'],
-        [FormCachingTestsController::class => 'someRender,somePerform']
+        [FormCachingTestsController::class => ['someRender', 'somePerform']],
+        [FormCachingTestsController::class => ['someRender', 'somePerform']],
     );
 
     ExtensionManagementUtility::addTypoScriptSetup('

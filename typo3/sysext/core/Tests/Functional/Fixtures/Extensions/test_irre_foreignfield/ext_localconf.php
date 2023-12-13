@@ -12,10 +12,10 @@ ExtensionUtility::configurePlugin(
     'TestIrreForeignfield',
     'Test',
     [
-        QueueController::class => 'index',
-        ContentController::class => 'list, show, new, create, edit, update, delete',
+        QueueController::class => ['index'],
+        ContentController::class => ['list', 'show', 'new', 'create', 'edit', 'update', 'delete'],
     ],
     [
-        ContentController::class => 'create, update, delete',
+        ContentController::class => ['create', 'update', 'delete'],
     ]
 );

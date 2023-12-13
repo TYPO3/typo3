@@ -32,7 +32,7 @@ final class ExtensionUtilityTest extends UnitTestCase
     public function configurePluginWorksForMinimalisticSetup(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
-        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => 'index']);
+        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => ['index']]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = EXTBASEPLUGIN', $staticTypoScript);
         self::assertStringContainsString('
@@ -47,7 +47,7 @@ final class ExtensionUtilityTest extends UnitTestCase
     public function configurePluginCreatesCorrectDefaultTypoScriptSetup(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
-        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => 'index']);
+        ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => ['index']]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = EXTBASEPLUGIN', $staticTypoScript);
     }
@@ -59,7 +59,7 @@ final class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            FirstController::class => 'index',
+            FirstController::class => ['index'],
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = EXTBASEPLUGIN', $staticTypoScript);
@@ -87,7 +87,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1239891990);
         ExtensionUtility::configurePlugin('', 'SomePlugin', [
-            'FirstController' => 'index',
+            'FirstController' => ['index'],
         ]);
     }
 
@@ -99,7 +99,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1239891988);
         ExtensionUtility::configurePlugin('MyExtension', '', [
-            'FirstController' => 'index',
+            'FirstController' => ['index'],
         ]);
     }
 
@@ -110,9 +110,9 @@ final class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            FirstController::class => 'index,show,new, create,delete,edit,update',
+            FirstController::class => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
         ], [
-            FirstController::class => 'index,show',
+            FirstController::class => ['index', 'show'],
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = EXTBASEPLUGIN', $staticTypoScript);
@@ -140,9 +140,9 @@ final class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            FirstController::class => 'index,show,new, create,delete,edit,update',
+            FirstController::class => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
         ], [
-            FirstController::class => 'new,show',
+            FirstController::class => ['new', 'show'],
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = EXTBASEPLUGIN', $staticTypoScript);
@@ -170,12 +170,12 @@ final class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            FirstController::class => 'index,show,new,create,delete,edit,update',
-            SecondController::class => 'index,show,delete',
-            ThirdController::class => 'create',
+            FirstController::class => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
+            SecondController::class => ['index', 'show', 'delete'],
+            ThirdController::class => ['create'],
         ], [
-            FirstController::class => 'new,create,edit,update',
-            ThirdController::class => 'create',
+            FirstController::class => ['new', 'create', 'edit', 'update'],
+            ThirdController::class => ['create'],
         ]);
         $expectedResult = [
             'controllers' => [
@@ -248,13 +248,13 @@ final class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            FirstController::class => 'index,show,new,create,delete,edit,update',
-            SecondController::class => 'index,show,delete',
-            ThirdController::class => 'create',
+            FirstController::class => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
+            SecondController::class => ['index', 'show', 'delete'],
+            ThirdController::class => ['create'],
         ], [
-            FirstController::class => 'index,new,create,edit,update',
-            SecondController::class => 'delete',
-            ThirdController::class => 'create',
+            FirstController::class => ['index', 'new', 'create', 'edit', 'update'],
+            SecondController::class => ['delete'],
+            ThirdController::class => ['create'],
         ]);
         $expectedResult = [
             'controllers' => [

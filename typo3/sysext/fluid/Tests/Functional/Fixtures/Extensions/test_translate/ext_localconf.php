@@ -11,8 +11,6 @@ ExtensionUtility::configurePlugin(
     'TestTranslate',
     'Test',
     [
-        TranslateController::class => 'translate',
+        TranslateController::class => ['translate'],
     ],
-    [
-    ]
 );

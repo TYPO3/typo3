@@ -21,12 +21,12 @@ ExtensionUtility::configurePlugin(
     'Felogin',
     'Login',
     [
-        LoginController::class => 'login, overview',
-        PasswordRecoveryController::class => 'recovery,showChangePassword,changePassword',
+        LoginController::class => ['login', 'overview'],
+        PasswordRecoveryController::class => ['recovery', 'showChangePassword', 'changePassword'],
     ],
     [
-        LoginController::class => 'login, overview',
-        PasswordRecoveryController::class => 'recovery,showChangePassword,changePassword',
+        LoginController::class => ['login', 'overview'],
+        PasswordRecoveryController::class => ['recovery', 'showChangePassword', 'changePassword'],
     ],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );

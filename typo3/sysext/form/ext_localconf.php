@@ -47,8 +47,8 @@ call_user_func(static function () {
     ExtensionUtility::configurePlugin(
         'Form',
         'Formframework',
-        [FormFrontendController::class => 'render, perform'],
-        [FormFrontendController::class => 'perform'],
+        [FormFrontendController::class => ['render', 'perform']],
+        [FormFrontendController::class => ['perform']],
         ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
     );
 });

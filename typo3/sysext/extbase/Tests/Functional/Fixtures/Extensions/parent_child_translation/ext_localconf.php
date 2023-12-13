@@ -9,10 +9,10 @@ ExtensionUtility::configurePlugin(
     'ParentChildTranslation',
     'ParentChildTranslation',
     [
-        MainController::class => 'list',
+        MainController::class => ['list'],
     ],
     // non-cacheable actions
     [
-        MainController::class => 'list',
+        MainController::class => ['list'],
     ]
 );
