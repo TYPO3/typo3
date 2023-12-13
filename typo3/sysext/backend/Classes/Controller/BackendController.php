@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
 use TYPO3\CMS\Backend\Module\MenuModule;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -253,11 +254,15 @@ class BackendController
         $moduleParameters = [];
         try {
             $redirect = RouteRedirect::createFromRequest($request);
-            if ($request->getMethod() === 'GET' && $redirect !== null) {
+            if ($redirect !== null && $request->getMethod() === 'GET') {
                 // Only redirect to existing non-ajax routes with no restriction to a specific method
                 $redirect->resolve(GeneralUtility::makeInstance(Router::class));
-                $startModule = $redirect->getName();
-                $moduleParameters = $redirect->getParameters();
+                if ($this->moduleProvider->accessGranted($redirect->getName(), $this->getBackendUser())) {
+                    // Only add start module from request in case user has access.
+                    // Access might temporarily be blocked due to being in a workspace.
+                    $startModule = $redirect->getName();
+                    $moduleParameters = $redirect->getParameters();
+                }
             }
         } finally {
             // No valid redirect, check for the start module
@@ -288,7 +293,7 @@ class BackendController
         if ($startModule) {
             if ($this->moduleProvider->isModuleRegistered($startModule)) {
                 // startModule may be an alias, resolve original module name
-                $startModule = $this->moduleProvider->getModule($startModule, $this->getBackendUser())->getIdentifier();
+                $startModule = $this->moduleProvider->getModule($startModule, $this->getBackendUser())?->getIdentifier();
             }
             if (is_array($moduleParameters)) {
                 $parameters = $moduleParameters;
@@ -296,8 +301,13 @@ class BackendController
                 $parameters = [];
                 parse_str($moduleParameters, $parameters);
             }
-            $deepLink = $this->uriBuilder->buildUriFromRoute($startModule, $parameters);
-            return [$startModule, (string)$deepLink];
+            try {
+                $deepLink = $this->uriBuilder->buildUriFromRoute($startModule, $parameters);
+                return [$startModule, (string)$deepLink];
+            } catch (RouteNotFoundException $e) {
+                // It might be, that the user does not have access to the
+                // $startModule, e.g. for modules with workspace restrictions.
+            }
         }
         return [null, null];
     }

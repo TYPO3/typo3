@@ -21,6 +21,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Backend\Exception\ModuleAccessDeniedException;
+use TYPO3\CMS\Backend\Exception\NoAccessibleModuleException;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -66,17 +68,32 @@ class BackendModuleValidator implements MiddlewareInterface
         // (either the last used or the first in the list) and store this selection for the user.
         /** @var $module ModuleInterface */
         if ($module->getParentModule() && $module->hasSubModules()) {
+            $selectedSubModule = null;
             // Note: "action" is a special setting, which is evaluated here individually
             $subModuleIdentifier = (string)($backendUser->getModuleData($module->getIdentifier())['action'] ?? '');
-            if ($module->hasSubModule($subModuleIdentifier)) {
+            if ($module->hasSubModule($subModuleIdentifier)
+                && $this->moduleProvider->accessGranted($subModuleIdentifier, $backendUser)
+            ) {
+                // Use the selected sub module if user has access to it. By checking access here,
+                // we prevent that the user can no longer access the parent module, since it would
+                // always run into the ModuleAccessDeniedException.
                 $selectedSubModule = $module->getSubModule($subModuleIdentifier);
             } else {
-                $subModules = $module->getSubModules();
-                $selectedSubModule = reset($subModules);
+                // Try to fetch the first accessible sub module. We check access here to prevent
+                // that the user can no longer access the parent module, since it would always run
+                // into the ModuleAccessDeniedException.
+                foreach ($module->getSubModules() as $subModule) {
+                    if ($this->moduleProvider->accessGranted($subModule->getIdentifier(), $backendUser)) {
+                        $selectedSubModule = $subModule;
+                        break;
+                    }
+                }
             }
-            // Overwrite the requested module and the route target
-            $module = $selectedSubModule;
-            $route->setOptions(array_replace_recursive($route->getOptions(), $module->getDefaultRouteOptions()['_default']));
+            if ($selectedSubModule !== null) {
+                // Overwrite the requested module and the route target if an accessible sub module has been found
+                $module = $selectedSubModule;
+                $route->setOptions(array_replace_recursive($route->getOptions(), $module->getDefaultRouteOptions()['_default']));
+            }
         } elseif (($routeIdentifier = $route->getOption('_identifier')) !== null
             && $routeIdentifier === $module->getParentModule()?->getIdentifier()
         ) {
@@ -93,7 +110,17 @@ class BackendModuleValidator implements MiddlewareInterface
         }
 
         // Validate the requested module
-        $this->validateModuleAccess($request, $module);
+        try {
+            $this->validateModuleAccess($request, $module);
+        } catch (ModuleAccessDeniedException $e) {
+            // Since the user might request a module which is just temporarily blocked, e.g. due to workspace
+            // restrictions, do not throw an exception but redirect to the first accessible module - if any.
+            if (($module = $this->moduleProvider->getFirstAccessibleModule($backendUser)) !== null) {
+                return new RedirectResponse($this->uriBuilder->buildUriFromRoute($module->getIdentifier()));
+            }
+            // User does not have access to any module.. ¯\_(ツ)_/¯
+            throw new NoAccessibleModuleException('You don\'t have access to any module.', 1702480600);
+        }
 
         // This module request (which is usually opened inside the list_frame)
         // has been issued from a toplevel browser window (e.g. a link was opened in a new tab).
@@ -161,13 +188,14 @@ class BackendModuleValidator implements MiddlewareInterface
      * Checks whether the current user is allowed to access the requested module. Does
      * also evaluate page access permissions, in case an "id" is given in the request.
      *
+     * @throws ModuleAccessDeniedException
      * @throws \RuntimeException
      */
     protected function validateModuleAccess(ServerRequestInterface $request, ModuleInterface $module): void
     {
         $backendUserAuthentication = $GLOBALS['BE_USER'];
         if (!$this->moduleProvider->accessGranted($module->getIdentifier(), $backendUserAuthentication)) {
-            throw new \RuntimeException('You don\'t have access to this module.', 1642450334);
+            throw new ModuleAccessDeniedException('You don\'t have access to this module.', 1642450334);
         }
 
         $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;

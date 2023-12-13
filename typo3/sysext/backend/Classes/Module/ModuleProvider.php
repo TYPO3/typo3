@@ -199,6 +199,11 @@ class ModuleProvider
 
         if ($respectWorkspaceRestrictions && ExtensionManagementUtility::isLoaded('workspaces')) {
             $workspaceAccess = $module->getWorkspaceAccess();
+            if ($workspaceAccess === '' && $module->hasParentModule()) {
+                // In case workspace access is not set explicitly use the information
+                // from the parent module as this access restriction is inherited.
+                $workspaceAccess = $module->getParentModule()->getWorkspaceAccess();
+            }
             if ($workspaceAccess !== '' && $workspaceAccess !== '*') {
                 if (($workspaceAccess === 'live' && $user->workspace !== 0)
                     || ($workspaceAccess === 'offline' && $user->workspace === 0)
