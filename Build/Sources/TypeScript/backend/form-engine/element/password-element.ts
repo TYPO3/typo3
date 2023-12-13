@@ -28,7 +28,7 @@ import { selector } from '@typo3/core/literals';
  */
 class PasswordElement extends HTMLElement {
   private element: HTMLInputElement = null;
-  private passwordPolicyInfo: HTMLElement = null;
+  private passwordPolicyInfo: HTMLElement|null = null;
   private passwordPolicySet: boolean = false;
 
   public connectedCallback(): void {
@@ -49,7 +49,7 @@ class PasswordElement extends HTMLElement {
   }
 
   private registerEventHandler(): void {
-    if (this.passwordPolicySet) {
+    if (this.passwordPolicySet && this.passwordPolicyInfo !== null) {
       this.element.addEventListener('focusin', (): void => {
         this.passwordPolicyInfo.classList.remove('hidden');
       });
