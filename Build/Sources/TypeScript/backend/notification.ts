@@ -198,12 +198,17 @@ export class NotificationMessage extends LitElement {
         icon = 'actions-info';
     }
 
+    const randomSuffix = (Math.random() + 1).toString(36).substring(2);
+
     /* eslint-disable @typescript-eslint/indent */
     return html`
       <div
         id="${ifDefined(this.notificationId || undefined)}"
         class="alert alert-${className} alert-dismissible"
-        role="alert">
+        role="alertdialog"
+        aria-labelledby="alert-title-${randomSuffix}"
+        aria-describedby="alert-message-${randomSuffix}"
+      >
         <button type="button" class="close" @click="${async () => this.close()}">
           <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>
           <span class="visually-hidden">Close</span>
@@ -215,8 +220,8 @@ export class NotificationMessage extends LitElement {
             </span>
           </div>
           <div class="media-body">
-            <h4 class="alert-title">${this.notificationTitle}</h4>
-            <p class="alert-message">${this.notificationMessage ? this.notificationMessage : ''}</p>
+            <h4 class="alert-title" id="alert-title-${randomSuffix}">${this.notificationTitle}</h4>
+            <p class="alert-message" id="alert-message-${randomSuffix}">${this.notificationMessage ? this.notificationMessage : ''}</p>
           </div>
         </div>
         ${this.actions.length === 0 ? '' : html`
