@@ -66,3 +66,4 @@ editor:
         - mergeTableCells
         - tableProperties
         - tableCellProperties
+        - toggleTableCaption
