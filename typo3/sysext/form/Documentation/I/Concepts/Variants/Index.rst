@@ -94,7 +94,7 @@ incomplete - example:
    variants:
      -
        identifier: variant-1
-       condition: 'formValues["checkbox-1"] == 1'
+       condition: 'traverse(formValues, "checkbox-1") == 1'
        # If the condition matches, the label property of the form
        # element is set to the value 'Bar'
        label: Bar
@@ -164,7 +164,7 @@ current renderable without having to duplicate it.
 
 For example:
 
-:yaml:`formValues[renderable.getIdentifier()] == "special value"`.
+:yaml:`traverse(formValues, renderable.getIdentifier()) == "special value"`.
 
 
 ``formValues`` (array)
@@ -175,7 +175,7 @@ key within this array represents a form element identifier.
 
 For example:
 
-:yaml:`formValues["text-1"] == "yes"`.
+:yaml:`traverse(formValues, "text-1") == "yes"`.
 
 
 ``stepIdentifier`` (string)
@@ -260,7 +260,7 @@ Create a variant with conditions through the PHP API::
    /** @var TYPO3\CMS\Form\Domain\Model\Renderable\RenderableVariantInterface $variant */
    $variant = $formElement->createVariant([
        'identifier' => 'variant-1',
-       'condition' => 'formValues["checkbox-1"] == 1',
+       'condition' => 'traverse(formValues, "checkbox-1") == 1',
        'label' => 'foo',
    ]);
 
@@ -371,7 +371,7 @@ In this example a bunch of validators are added to the field
            variants:
              -
                identifier: validation-1
-               condition: 'formValues["checkbox-1"] == 1'
+               condition: 'traverse(formValues, "checkbox-1") == 1'
                properties:
                  fluidAdditionalAttributes:
                    required: required
@@ -509,7 +509,7 @@ In this example the second step :yaml:`page-2` is disabled if the field
        variants:
          -
            identifier: variant-2
-           condition: 'formValues["checkbox-1"] == 1'
+           condition: 'traverse(formValues, "checkbox-1") == 1'
            renderingOptions:
              enabled: false
        renderables:
