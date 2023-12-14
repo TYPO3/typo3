@@ -43,7 +43,7 @@
                             <f:if condition="{f:count(subject: item.allowedValues)} || {item.dataType} == 'dropdown'">
                                 <f:then>
                                     <div class="form-group">
-                                        <div class="form-description">{item.description -> f:format.raw()}</div>
+                                        <div class="form-description">{item.description -> f:sanitize.html()}</div>
                                         <select data-path="{sectionName}/{item.key}" class="t3-install-form-input-text form-select t3js-localConfiguration-pathValue" {f:if(condition: '!{isWritable}', then: 'disabled')}>
                                             <f:for each="{item.allowedValues}" key="optionKey" as="optionLabel">
                                                 <option value="{optionKey}" {f:if(condition: '{item.value} == {optionKey}', then: 'selected="selected"')}>{optionLabel} ({optionKey})</option>
@@ -65,7 +65,7 @@
                                                 {f:if(condition: '!{isWritable}', then: 'disabled')}
                                             />
                                             <label class="form-check-label" for="{sectionName}_{item.key}">
-                                                {item.description -> f:format.raw()}
+                                                {item.description -> f:sanitize.html()}
                                             </label>
                                         </div>
                                     </f:if>
@@ -73,7 +73,7 @@
                                     <f:if condition="{item.type} == 'input'">
                                         <div class="form-group">
                                             <f:if condition="{item.description}">
-                                                <div class="form-description">{item.description -> f:format.raw()}</div>
+                                                <div class="form-description">{item.description -> f:sanitize.html()}</div>
                                             </f:if>
                                             <input
                                                 type="text"
@@ -89,7 +89,7 @@
                                     <f:if condition="{item.type} == 'password'">
                                         <div class="form-group">
                                             <f:if condition="{item.description}">
-                                                <div class="form-description">{item.description -> f:format.raw()}</div>
+                                                <div class="form-description">{item.description -> f:sanitize.html()}</div>
                                             </f:if>
                                             <input
                                                 type="password"
@@ -105,7 +105,7 @@
                                     <f:if condition="{item.type} == 'number'">
                                         <div class="form-group">
                                             <f:if condition="{item.description}">
-                                                <div class="form-description">{item.description -> f:format.raw()}</div>
+                                                <div class="form-description">{item.description -> f:sanitize.html()}</div>
                                             </f:if>
                                             <input
                                                 type="number"
@@ -122,7 +122,7 @@
                                     <f:if condition="{item.type} == 'textarea'">
                                         <div class="form-group">
                                             <f:if condition="{item.description}">
-                                                <div class="form-description">{item.description -> f:format.raw()}</div>
+                                                <div class="form-description">{item.description -> f:sanitize.html()}</div>
                                             </f:if>
                                             <textarea
                                                 rows="5"
