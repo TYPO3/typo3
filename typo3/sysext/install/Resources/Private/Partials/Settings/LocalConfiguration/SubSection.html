@@ -42,7 +42,7 @@
                     <f:if condition="{f:count(subject: item.allowedValues)} || {item.dataType} == 'dropdown'">
                         <f:then>
                             <div class="form-group">
-                                <span class="help-block">{item.description -> f:format.raw()}</span>
+                                <span class="help-block">{item.description -> f:sanitize.html()}</span>
                                 <select data-path="{sectionName}/{item.key}" class="t3-install-form-input-text form-select t3js-localConfiguration-pathValue">
                                     <f:for each="{item.allowedValues}" key="optionKey" as="optionLabel">
                                         <option value="{optionKey}" {f:if(condition: '{item.value} == {optionKey}', then: 'selected="selected"')}>{optionLabel} ({optionKey})</option>
@@ -63,14 +63,14 @@
                                     />
                                     <label class="form-check-label" for="{sectionName}_{item.key}">
                                         <span class="form-check-label-text">
-                                            {item.description -> f:format.raw()}
+                                            {item.description -> f:sanitize.html()}
                                         </span>
                                     </label>
                                 </div>
                             </f:if>
                             <f:if condition="{item.type} == 'input'">
                                 <div class="form-group">
-                                    <span class="help-block">{item.description -> f:format.raw()}</span>
+                                    <span class="help-block">{item.description -> f:sanitize.html()}</span>
                                     <input
                                         type="text"
                                         value="{item.value}"
@@ -83,7 +83,7 @@
 
                             <f:if condition="{item.type} == 'password'">
                                 <div class="form-group">
-                                    <span class="help-block">{item.description -> f:format.raw()}</span>
+                                    <span class="help-block">{item.description -> f:sanitize.html()}</span>
                                     <input
                                         type="password"
                                         value="{item.value}"
@@ -96,7 +96,7 @@
 
                             <f:if condition="{item.type} == 'number'">
                                 <div class="form-group">
-                                    <span class="help-block">{item.description -> f:format.raw()}</span>
+                                    <span class="help-block">{item.description -> f:sanitize.html()}</span>
                                     <input
                                         type="number"
                                         value="{item.value}"
@@ -108,7 +108,7 @@
                             </f:if>
 
                             <f:if condition="{item.type} == 'textarea'">
-                                <span class="help-block">{item.description -> f:format.raw()}</span>
+                                <span class="help-block">{item.description -> f:sanitize.html()}</span>
                                 <div class="form-group">
                             <textarea
                                 rows="5"
