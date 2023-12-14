@@ -47,7 +47,7 @@ const defaultPlugins: PluginModuleDescriptor[] = [
   { module: '@ckeditor/ckeditor5-clipboard', exports: ['PastePlainText'] },
   { module: '@ckeditor/ckeditor5-paste-from-office', exports: ['PasteFromOffice'] },
   { module: '@ckeditor/ckeditor5-remove-format', exports: ['RemoveFormat'] },
-  { module: '@ckeditor/ckeditor5-table', exports: ['Table', 'TableToolbar', 'TableProperties', 'TableCellProperties'] },
+  { module: '@ckeditor/ckeditor5-table', exports: ['Table', 'TableToolbar', 'TableProperties', 'TableCellProperties', 'TableCaption'] },
   { module: '@ckeditor/ckeditor5-typing', exports: ['TextTransformation'] },
   { module: '@ckeditor/ckeditor5-source-editing', exports: ['SourceEditing'] },
   { module: '@ckeditor/ckeditor5-alignment', exports: ['Alignment'] },

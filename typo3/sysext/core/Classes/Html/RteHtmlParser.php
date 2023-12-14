@@ -43,7 +43,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     /**
      * List of elements that are not wrapped into a "p" tag while doing the transformation.
      */
-    protected string $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE,FIGURE';
+    protected string $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE,FIGURE,FIGCAPTION';
 
     /**
      * List of all tags that are allowed by default

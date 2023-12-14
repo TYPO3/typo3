@@ -77,3 +77,13 @@ editor:
         - { name: 'center', className: 'text-center' }
         - { name: 'right', className: 'text-end' }
         - { name: 'justify', className: 'text-justify' }
+
+    table:
+      defaultHeadings: { rows: 1 }
+      contentToolbar:
+        - tableColumn
+        - tableRow
+        - mergeTableCells
+        - tableProperties
+        - tableCellProperties
+        - toggleTableCaption
