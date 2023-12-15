@@ -39,8 +39,12 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -70,6 +74,7 @@ class BackendController
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $viewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly FlashMessageService $flashMessageService,
     ) {
         $this->modules = $this->moduleProvider->getModulesForModuleMenu($this->getBackendUser());
     }
@@ -248,6 +253,8 @@ class BackendController
     protected function getStartupModule(ServerRequestInterface $request): array
     {
         $startModule = null;
+        $startModuleIdentifier = null;
+        $inaccessibleRedirectModule = null;
         $moduleParameters = [];
         try {
             $redirect = RouteRedirect::createFromRequest($request);
@@ -257,29 +264,33 @@ class BackendController
                 if ($this->moduleProvider->accessGranted($redirect->getName(), $this->getBackendUser())) {
                     // Only add start module from request in case user has access.
                     // Access might temporarily be blocked due to being in a workspace.
-                    $startModule = $redirect->getName();
+                    $startModuleIdentifier = $redirect->getName();
                     $moduleParameters = $redirect->getParameters();
+                } elseif ($this->moduleProvider->isModuleRegistered($redirect->getName())) {
+                    // A redirect is set, however, the user is not allowed to access the module.
+                    // Store the requested module to later inform the user about the forced redirect.
+                    $inaccessibleRedirectModule = $this->moduleProvider->getModule($redirect->getName());
                 }
             }
         } finally {
             // No valid redirect, check for the start module
-            if (!$startModule) {
+            if (!$startModuleIdentifier) {
                 $backendUser = $this->getBackendUser();
                 // start module on first login, will be removed once used the first time
                 if (isset($backendUser->uc['startModuleOnFirstLogin'])) {
-                    $startModule = $backendUser->uc['startModuleOnFirstLogin'];
+                    $startModuleIdentifier = $backendUser->uc['startModuleOnFirstLogin'];
                     unset($backendUser->uc['startModuleOnFirstLogin']);
                     $backendUser->writeUC();
                 } elseif (isset($backendUser->uc['startModule']) && $this->moduleProvider->accessGranted($backendUser->uc['startModule'], $backendUser)) {
-                    $startModule = $backendUser->uc['startModule'];
+                    $startModuleIdentifier = $backendUser->uc['startModule'];
                 } elseif ($firstAccessibleModule = $this->moduleProvider->getFirstAccessibleModule($backendUser)) {
-                    $startModule = $firstAccessibleModule->getIdentifier();
+                    $startModuleIdentifier = $firstAccessibleModule->getIdentifier();
                 }
 
                 // check if the start module has additional parameters, so a redirect to a specific
                 // action is possible
-                if (is_string($startModule) && str_contains($startModule, '->')) {
-                    [$startModule, $startModuleParameters] = explode('->', $startModule, 2);
+                if (is_string($startModuleIdentifier) && str_contains($startModuleIdentifier, '->')) {
+                    [$startModuleIdentifier, $startModuleParameters] = explode('->', $startModuleIdentifier, 2);
                     // if no GET parameters are set, check if there are parameters given from the UC
                     if (!$moduleParameters && $startModuleParameters) {
                         $moduleParameters = $startModuleParameters;
@@ -287,10 +298,11 @@ class BackendController
                 }
             }
         }
-        if ($startModule) {
-            if ($this->moduleProvider->isModuleRegistered($startModule)) {
-                // startModule may be an alias, resolve original module name
-                $startModule = $this->moduleProvider->getModule($startModule, $this->getBackendUser())?->getIdentifier();
+        if ($startModuleIdentifier) {
+            if ($this->moduleProvider->isModuleRegistered($startModuleIdentifier)) {
+                // startModuleIdentifier may be an alias, resolve original module
+                $startModule = $this->moduleProvider->getModule($startModuleIdentifier, $this->getBackendUser());
+                $startModuleIdentifier = $startModule?->getIdentifier();
             }
             if (is_array($moduleParameters)) {
                 $parameters = $moduleParameters;
@@ -299,8 +311,11 @@ class BackendController
                 parse_str($moduleParameters, $parameters);
             }
             try {
-                $deepLink = $this->uriBuilder->buildUriFromRoute($startModule, $parameters);
-                return [$startModule, (string)$deepLink];
+                $deepLink = $this->uriBuilder->buildUriFromRoute($startModuleIdentifier, $parameters);
+                if ($startModule !== null && $inaccessibleRedirectModule !== null) {
+                    $this->enqueueRedirectMessage($startModule, $inaccessibleRedirectModule);
+                }
+                return [$startModuleIdentifier, (string)$deepLink];
             } catch (RouteNotFoundException $e) {
                 // It might be, that the user does not have access to the
                 // $startModule, e.g. for modules with workspace restrictions.
@@ -335,6 +350,25 @@ class BackendController
         $uc = json_decode((string)json_encode($backendUser->uc), true);
         $collapseState = $uc['BackendComponents']['States']['typo3-module-menu']['collapsed'] ?? false;
         return $collapseState === true || $collapseState === 'true';
+    }
+
+    protected function enqueueRedirectMessage(ModuleInterface $requestedModule, ModuleInterface $redirectedModule): void
+    {
+        $languageService = $this->getLanguageService();
+        $this->flashMessageService
+            ->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE)
+            ->enqueue(
+                new FlashMessage(
+                    sprintf(
+                        $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.noAccess.message'),
+                        $languageService->sL($redirectedModule->getTitle()),
+                        $languageService->sL($requestedModule->getTitle())
+                    ),
+                    $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.noAccess.title'),
+                    ContextualFeedbackSeverity::INFO,
+                    true
+                )
+            );
     }
 
     protected function getBackendUser(): BackendUserAuthentication

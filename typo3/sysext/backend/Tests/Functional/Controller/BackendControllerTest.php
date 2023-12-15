@@ -25,11 +25,17 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendControllerTest extends FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = ['workspaces'];
+
     public function setUp(): void
     {
         parent::setUp();
@@ -70,5 +76,30 @@ final class BackendControllerTest extends FunctionalTestCase
         $subject->mainAction($request);
 
         self::assertInstanceOf(AfterBackendPageRenderEvent::class, $state['after-backend-page-render-listener']);
+    }
+
+    /**
+     * @test
+     */
+    public function flashMessageIsDispatchedForForcedRedirect(): void
+    {
+        // Set workspace to disable the site configuration module
+        $GLOBALS['BE_USER']->workspace = 1;
+
+        $request = (new ServerRequest('https://example.com/typo3/main'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(['redirect' => 'site_configuration'])
+            ->withAttribute('route', new Route('/main', ['packageName' => 'typo3/cms-backend', '_identifier' => 'main']));
+
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(BackendController::class)->mainAction($request);
+
+        $flashMessage = $this->get(FlashMessageService::class)
+            ->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE)
+            ->getAllMessages()[0] ?? null;
+
+        self::assertInstanceOf(FlashMessage::class, $flashMessage);
+        self::assertEquals('No module access', $flashMessage->getTitle());
+        self::assertEquals(ContextualFeedbackSeverity::INFO, $flashMessage->getSeverity());
     }
 }

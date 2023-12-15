@@ -31,7 +31,12 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -44,7 +49,8 @@ class BackendModuleValidator implements MiddlewareInterface
 {
     public function __construct(
         protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleProvider $moduleProvider
+        protected readonly ModuleProvider $moduleProvider,
+        protected readonly FlashMessageService $flashMessageService,
     ) {}
 
     /**
@@ -55,6 +61,8 @@ class BackendModuleValidator implements MiddlewareInterface
     {
         /** @var Route $route */
         $route = $request->getAttribute('route');
+        $selectedSubModule = null;
+        $inaccessibleSubModule = null;
         $ensureToPersistUserSettings = false;
         $backendUser = $GLOBALS['BE_USER'] ?? null;
         if (!$backendUser
@@ -68,17 +76,21 @@ class BackendModuleValidator implements MiddlewareInterface
         // (either the last used or the first in the list) and store this selection for the user.
         /** @var $module ModuleInterface */
         if ($module->getParentModule() && $module->hasSubModules()) {
-            $selectedSubModule = null;
             // Note: "action" is a special setting, which is evaluated here individually
             $subModuleIdentifier = (string)($backendUser->getModuleData($module->getIdentifier())['action'] ?? '');
-            if ($module->hasSubModule($subModuleIdentifier)
-                && $this->moduleProvider->accessGranted($subModuleIdentifier, $backendUser)
-            ) {
-                // Use the selected sub module if user has access to it. By checking access here,
-                // we prevent that the user can no longer access the parent module, since it would
-                // always run into the ModuleAccessDeniedException.
-                $selectedSubModule = $module->getSubModule($subModuleIdentifier);
-            } else {
+            if ($module->hasSubModule($subModuleIdentifier)) {
+                if ($this->moduleProvider->accessGranted($subModuleIdentifier, $backendUser)) {
+                    // Use the selected sub module if user has access to it. By checking access here,
+                    // we prevent that the user can no longer access the parent module, since it would
+                    // always run into the ModuleAccessDeniedException.
+                    $selectedSubModule = $module->getSubModule($subModuleIdentifier);
+                } else {
+                    // Stored sub module exists but is currently not accessible. Store the
+                    // requested module to later inform the user about the forced redirect.
+                    $inaccessibleSubModule = $module->getSubModule($subModuleIdentifier);
+                }
+            }
+            if ($selectedSubModule === null) {
                 // Try to fetch the first accessible sub module. We check access here to prevent
                 // that the user can no longer access the parent module, since it would always run
                 // into the ModuleAccessDeniedException.
@@ -112,11 +124,15 @@ class BackendModuleValidator implements MiddlewareInterface
         // Validate the requested module
         try {
             $this->validateModuleAccess($request, $module);
+            if ($selectedSubModule !== null && $inaccessibleSubModule !== null) {
+                $this->enqueueRedirectMessage($inaccessibleSubModule, $selectedSubModule);
+            }
         } catch (ModuleAccessDeniedException $e) {
             // Since the user might request a module which is just temporarily blocked, e.g. due to workspace
             // restrictions, do not throw an exception but redirect to the first accessible module - if any.
-            if (($module = $this->moduleProvider->getFirstAccessibleModule($backendUser)) !== null) {
-                return new RedirectResponse($this->uriBuilder->buildUriFromRoute($module->getIdentifier()));
+            if (($firstAccessibleModule = $this->moduleProvider->getFirstAccessibleModule($backendUser)) !== null) {
+                $this->enqueueRedirectMessage($module, $firstAccessibleModule);
+                return new RedirectResponse($this->uriBuilder->buildUriFromRoute($firstAccessibleModule->getIdentifier()));
             }
             // User does not have access to any module.. ¯\_(ツ)_/¯
             throw new NoAccessibleModuleException('You don\'t have access to any module.', 1702480600);
@@ -212,5 +228,29 @@ class BackendModuleValidator implements MiddlewareInterface
                 }
             }
         }
+    }
+
+    protected function enqueueRedirectMessage(ModuleInterface $requestedModule, ModuleInterface $redirectedModule): void
+    {
+        $languageService = $this->getLanguageService();
+        $this->flashMessageService
+            ->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE)
+            ->enqueue(
+                new FlashMessage(
+                    sprintf(
+                        $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.noAccess.message'),
+                        $languageService->sL($redirectedModule->getTitle()),
+                        $languageService->sL($requestedModule->getTitle())
+                    ),
+                    $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.noAccess.title'),
+                    ContextualFeedbackSeverity::INFO,
+                    true
+                )
+            );
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
