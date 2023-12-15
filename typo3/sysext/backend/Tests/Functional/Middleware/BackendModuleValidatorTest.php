@@ -29,6 +29,10 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendModuleValidatorTest extends FunctionalTestCase
@@ -48,6 +52,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         $this->subject = new BackendModuleValidator(
             $this->get(UriBuilder::class),
             $this->get(ModuleProvider::class),
+            $this->get(FlashMessageService::class),
         );
         $this->request = new ServerRequest('/some/uri');
         $this->requestHandler = new class () implements RequestHandlerInterface {
@@ -143,6 +148,33 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
             $this->get(ModuleProvider::class)->getFirstAccessibleModule($GLOBALS['BE_USER'])->getPath(),
             $response->getHeaderLine('location')
         );
+    }
+
+    /**
+     * @test
+     */
+    public function flashMessageIsDispatchedForForcedRedirect(): void
+    {
+        $module = $this->get(ModuleFactory::class)->createModule(
+            'some_module',
+            [
+                'packageName' => 'typo3/cms-testing',
+                'path' => '/some/module',
+            ]
+        );
+
+        $this->subject->process(
+            $this->request->withAttribute('route', new Route('/some/route', ['module' => $module])),
+            $this->requestHandler
+        );
+
+        $flashMessage = $this->get(FlashMessageService::class)
+            ->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE)
+            ->getAllMessages()[0] ?? null;
+
+        self::assertInstanceOf(FlashMessage::class, $flashMessage);
+        self::assertEquals('No module access', $flashMessage->getTitle());
+        self::assertEquals(ContextualFeedbackSeverity::INFO, $flashMessage->getSeverity());
     }
 
     /**

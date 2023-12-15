@@ -142,6 +142,12 @@ Have a nice day.</source>
 			<trans-unit id="modulemenu.label" resname="modulemenu.label">
 				<source>Module Menu</source>
 			</trans-unit>
+			<trans-unit id="module.noAccess.title" resname="module.noAccess.title">
+				<source>No module access</source>
+			</trans-unit>
+			<trans-unit id="module.noAccess.message" resname="module.noAccess.message">
+				<source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
+			</trans-unit>
 			<trans-unit id="clearcache.title" resname="clearcache.title">
 				<source>Page cache</source>
 			</trans-unit>
