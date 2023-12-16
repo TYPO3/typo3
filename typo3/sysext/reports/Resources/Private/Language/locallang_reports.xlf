@@ -141,9 +141,6 @@
 			<trans-unit id="status_trustedHostsPattern" resname="status_trustedHostsPattern">
 				<source>Trusted Hosts Pattern</source>
 			</trans-unit>
-			<trans-unit id="status_adminUserAccount" resname="status_adminUserAccount">
-				<source>Admin User Account</source>
-			</trans-unit>
 			<trans-unit id="status_encryptionKey" resname="status_encryptionKey">
 				<source>Encryption Key</source>
 			</trans-unit>

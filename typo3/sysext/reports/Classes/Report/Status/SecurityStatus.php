@@ -18,12 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Reports\Report\Status;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
@@ -52,7 +48,6 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
     {
         $statuses = [
             'trustedHostsPattern' => $this->getTrustedHostsPatternStatus(),
-            'adminUserAccount' => $this->getAdminAccountStatus(),
             'fileDenyPattern' => $this->getFileDenyPatternStatus(),
             'htaccessUpload' => $this->getHtaccessUploadStatus(),
             'exceptionHandler' => $this->getExceptionHandlerStatus(),
@@ -137,64 +132,6 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         }
 
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_trustedHostsPattern'), $value, $message, $severity);
-    }
-
-    /**
-     * Checks whether a BE user account named admin with default password exists.
-     *
-     * @return ReportStatus An object representing whether a default admin account exists
-     */
-    protected function getAdminAccountStatus(): ReportStatus
-    {
-        $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
-        $message = '';
-        $severity = ContextualFeedbackSeverity::OK;
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $row = $queryBuilder
-            ->select('uid', 'username', 'password')
-            ->from('be_users')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'username',
-                    $queryBuilder->createNamedParameter('admin')
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-
-        if (!empty($row)) {
-            try {
-                $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->get($row['password'], 'BE');
-                if ($hashInstance->checkPassword('password', $row['password'])) {
-                    // If the password for 'admin' user is 'password': bad idea!
-                    // We're checking since the (very) old installer created instances like this in dark old times.
-                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                    $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
-                    $severity = ContextualFeedbackSeverity::ERROR;
-                    $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
-                        'record_edit',
-                        [
-                            'edit[be_users][' . $row['uid'] . ']' => 'edit',
-                            'returnUrl' => (string)$uriBuilder->buildUriFromRoute('system_reports'),
-                        ]
-                    );
-                    $message = sprintf(
-                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_admin'),
-                        '<a href="' . htmlspecialchars($editUserAccountUrl) . '">',
-                        '</a>'
-                    );
-                }
-            } catch (InvalidPasswordHashException $e) {
-                // No hash class handling for current hash could be found. Not good, but ok in this case.
-            }
-        }
-
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_adminUserAccount'), $value, $message, $severity);
     }
 
     /**
