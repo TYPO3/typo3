@@ -385,6 +385,14 @@ class EnvironmentController extends AbstractController
     }
 
     /**
+     * Convert to jpg from webp
+     */
+    public function imageProcessingReadWebpAction(): ResponseInterface
+    {
+        return $this->convertImageFormatsToJpg('webp');
+    }
+
+    /**
      * Convert to jpg from gif
      */
     public function imageProcessingReadGifAction(): ResponseInterface
