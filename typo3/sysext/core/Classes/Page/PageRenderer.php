@@ -2174,17 +2174,19 @@ class PageRenderer implements SingletonInterface
             $tagAttributes['nonce'] = $this->nonce->consume();
         }
         $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
-        return '<style ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '>' . LF
-            . '/*<![CDATA[*/' . LF . '<!-- ' . LF
-            . $cssInlineFix
-            . '-->' . LF . '/*]]>*/' . LF . '</style>' . LF;
+        return $this->wrapInlineStyle($cssInlineFix, $tagAttributes);
     }
 
     protected function wrapInlineStyle(string $content, array $attributes = []): string
     {
+        $styleTag = "<style%s>\n%s\n</style>\n";
+        if ($this->docType !== DocType::html5 || $this->docType->isXmlCompliant()) {
+            $styleTag = "<style%s>\n/*<![CDATA[*/\n<!-- \n%s-->\n/*]]>*/\n</style>\n";
+        }
+
         $attributesList = GeneralUtility::implodeAttributes($attributes, true);
         return sprintf(
-            "<style%s>\n/*<![CDATA[*/\n<!-- \n%s-->\n/*]]>*/\n</style>\n",
+            $styleTag,
             $attributesList !== '' ? ' ' . $attributesList : '',
             $content
         );
@@ -2192,17 +2194,19 @@ class PageRenderer implements SingletonInterface
 
     protected function wrapInlineScript(string $content, array $attributes = []): string
     {
+        $scriptTag = "<script%s>\n%s\n</script>\n";
         // * Whenever HTML5 is used, remove the "text/javascript" type from the wrap
         //   since this is not needed and may lead to validation errors in the future.
         // * Whenever XHTML gets disabled, remove the "text/javascript" type from the wrap
         //   since this is not needed and may lead to validation errors in the future.
         if ($this->docType !== DocType::html5 || $this->docType->isXmlCompliant()) {
             $attributes['type'] = 'text/javascript';
+            $scriptTag = "<script%s>\n/*<![CDATA[*/\n%s/*]]>*/\n</script>\n";
         }
 
         $attributesList = GeneralUtility::implodeAttributes($attributes, true);
         return sprintf(
-            "<script%s>\n/*<![CDATA[*/\n%s/*]]>*/\n</script>\n",
+            $scriptTag,
             $attributesList !== '' ? ' ' . $attributesList : '',
             $content
         );

@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -451,5 +452,26 @@ final class PageRendererTest extends FunctionalTestCase
 
         self::assertStringContainsString($expectedCssFile, $renderedString);
         self::assertStringContainsString($expectedCssLibrary, $renderedString);
+    }
+
+    #[Test]
+    public function pageRendererRendersCDataBasedOnDocType(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $subject = $this->createPageRenderer();
+        $subject->setLanguage(new Locale());
+
+        $subject->addCssInlineBlock(StringUtility::getUniqueId(), 'body {margin:20px;}');
+        $subject->addJsInlineCode(StringUtility::getUniqueId(), 'var x = "' . StringUtility::getUniqueId('jsInline-') . '"');
+        $renderedString = $subject->render();
+        self::assertStringNotContainsString('<![CDATA[', $renderedString);
+
+        $subject->addCssInlineBlock(StringUtility::getUniqueId(), 'body {margin:20px;}');
+        $subject->addJsInlineCode(StringUtility::getUniqueId(), 'var x = "' . StringUtility::getUniqueId('jsInline-') . '"');
+        $subject->setDocType(DocType::none);
+        $renderedString = $subject->render();
+        self::assertMatchesRegularExpression('/<!\[CDATA\[(.|\n)*var\sx\s=(.|\n)*]]>/', $renderedString);
+        self::assertMatchesRegularExpression('/<!\[CDATA\[(.|\n)*body\s{margin:20px;}(.|\n)*]]>/', $renderedString);
     }
 }
