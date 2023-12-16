@@ -29,7 +29,7 @@ return [
     ],
     'GFX' => [ // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
         'thumbnails' => true,
-        'imagefile_ext' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai,svg',
+        'imagefile_ext' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai,svg,webp',
         'processor_enabled' => true,
         'processor_path' => '/usr/bin/',
         'processor' => 'ImageMagick',
@@ -89,7 +89,7 @@ return [
         'loginCopyrightWarrantyProvider' => '',
         'loginCopyrightWarrantyURL' => '',
         'textfile_ext' => 'txt,ts,typoscript,html,htm,css,tmpl,js,sql,xml,csv,xlf,yaml,yml',
-        'mediafile_ext' => 'gif,jpg,jpeg,bmp,png,pdf,svg,ai,mp3,wav,mp4,ogg,flac,opus,webm,youtube,vimeo',
+        'mediafile_ext' => 'gif,jpg,jpeg,bmp,png,webp,pdf,svg,ai,mp3,wav,mp4,ogg,flac,opus,webm,youtube,vimeo',
         'binPath' => '',
         'binSetup' => '',
         'setMemoryLimit' => 0,

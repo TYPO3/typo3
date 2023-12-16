@@ -92,16 +92,17 @@ class GraphicalFunctions
      *
      * @var list<non-empty-string>
      */
-    protected array $webImageExt = ['gif', 'jpg', 'jpeg', 'png'];
+    protected array $webImageExt = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
 
     /**
-     * @var array{jpg: string, jpeg: string, gif: string, png: string}
+     * @var array{jpg: string, jpeg: string, gif: string, png: string, webp: string}
      */
-    public $cmds = [
+    public array $cmds = [
         'jpg' => '',
         'jpeg' => '',
         'gif' => '',
         'png' => '',
+        'webp' => '',
     ];
 
     /**
@@ -181,6 +182,11 @@ class GraphicalFunctions
     protected int $jpegQuality = 85;
 
     /**
+     * @var int<1, 101>
+     */
+    protected int $webpQuality = 85;
+
+    /**
      * Reads configuration information from $GLOBALS['TYPO3_CONF_VARS']['GFX']
      * and sets some values in internal variables.
      */
@@ -190,7 +196,14 @@ class GraphicalFunctions
         $this->colorspace = $this->getColorspaceFromConfiguration();
 
         $this->processorEnabled = (bool)$gfxConf['processor_enabled'];
-        $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
+        $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 1, 100, 85);
+        if (isset($gfxConf['webp_quality'])) {
+            if ($gfxConf['webp_quality'] === 'lossless') {
+                $this->webpQuality = 101;
+            } else {
+                $this->webpQuality = MathUtility::forceIntegerInRange($gfxConf['webp_quality'], 1, 101, $this->webpQuality);
+            }
+        }
         $this->addFrameSelection = (bool)$gfxConf['processor_allowFrameSelection'];
         $this->imageFileExt = GeneralUtility::trimExplode(',', $gfxConf['imagefile_ext']);
 
@@ -352,9 +365,19 @@ class GraphicalFunctions
         $params = $this->modifyImageMagickStripProfileParameters($params, $options);
         $command .= ($params ? ' ' . $params : $this->cmds[$targetFileExtension] ?? '');
 
-        // Add quality parameter for jpg, jpeg if not already set
+        // Add quality parameter for jpg, jpeg or webp if not already set
         if (!str_contains($command, '-quality') && ($targetFileExtension === 'jpg' || $targetFileExtension === 'jpeg')) {
             $command .= ' -quality ' . $this->jpegQuality;
+        }
+        // Add quality parameter for webp if not already set
+        if ($targetFileExtension === 'webp') {
+            if (!str_contains($command, '-quality') && !str_contains($command, 'webp:lossless')) {
+                if ($this->webpQuality === 101) {
+                    $command .= ' -define webp:lossless=true';
+                } else {
+                    $command .= ' -quality ' . $this->webpQuality;
+                }
+            }
         }
         // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
         if (!str_contains($command, '-colorspace')) {
@@ -626,6 +649,35 @@ class GraphicalFunctions
             return 'png';
         }
         return 'jpg';
+    }
+
+    /**
+     * @internal
+     */
+    public function isProcessingEnabled(): bool
+    {
+        return $this->processorEnabled;
+    }
+
+    /**
+     * convert -list format returns all formats, ideally with a line like this:
+     * "WEBP P rw- WebP Image Format (libwepb v1.3.2, ENCODER ABI 0x020F)"
+     * only if we have "rw" included, TYPO3 can fully support to read and write webp images.
+     *
+     * @internal
+     */
+    public function webpSupportAvailable(): bool
+    {
+        $cmd = CommandUtility::imageMagickCommand('convert', '-list format');
+        CommandUtility::exec($cmd, $output);
+        $this->IM_commands[] = ['', $cmd];
+        foreach ($output as $outputLine) {
+            $outputLine = trim($outputLine);
+            if (str_starts_with($outputLine, 'WEBP') && str_contains($outputLine, ' rw')) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

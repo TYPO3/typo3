@@ -303,6 +303,27 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 			<trans-unit id="status_xclassUsageFound_message_detail" resname="status_xclassUsageFound_message_detail">
 				<source>%2$s registers an XCLASS of %1$s</source>
 			</trans-unit>
+			<trans-unit id="status_imageprocessing" resname="status_imageprocessing">
+				<source>Image Processing</source>
+			</trans-unit>
+			<trans-unit id="status_imageprocessing_webp" resname="status_imageprocessing_webp">
+				<source>WebP support and availability</source>
+			</trans-unit>
+			<trans-unit id="status_imageprocessing_disabled" resname="status_imageprocessing_disabled">
+				<source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
+			</trans-unit>
+			<trans-unit id="status_imageprocessing_webp_not_configured" resname="status_imageprocessing_webp_not_configured">
+				<source>Support for WebP image generation is not configured in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
+			</trans-unit>
+			<trans-unit id="status_imageprocessing_webp_available" resname="status_imageprocessing_webp_available">
+				<source>Support for WebP image generation is not configured in $TYPO3_CONF_VARS[GFX][imagefile_ext], but ImageMagick/GraphicsMagick supports generation of WebP image files.</source>
+			</trans-unit>
+			<trans-unit id="status_imageprocessing_webp_not_available" resname="status_imageprocessing_webp_not_available">
+				<source>Support for WebP image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext], but ImageMagick/GraphicsMagick does NOT support generation of WebP image files, update your system environment or disable webp support in TYPO3 Configuration.</source>
+			</trans-unit>
+			<trans-unit id="status_imageprocessing_webp_available_and_configured" resname="status_imageprocessing_webp_available_and_configured">
+				<source>Support for WebP image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext] and ImageMagick/GraphicsMagick supports generation of WebP image files - all fine!</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
