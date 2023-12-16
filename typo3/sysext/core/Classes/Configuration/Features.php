@@ -62,6 +62,7 @@ class Features
     protected array $alwaysActiveFeatures = [
         // Enabled since v13.0 at any time.
         'security.usePasswordPolicyForFrontendUsers',
+        'security.backend.enforceContentSecurityPolicy',
         // Enabled since v12.0 at any time.
         'subrequestPageErrors',
         'yamlImportsFollowDeclarationOrder',
@@ -73,7 +74,6 @@ class Features
         'simplifiedControllerActionDispatching',
         'unifiedPageTranslationHandling',
         'felogin.extbase',
-        'security.backend.enforceContentSecurityPolicy',
     ];
 
     /**
