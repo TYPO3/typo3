@@ -538,8 +538,8 @@ class PageInformationController extends InfoModuleController
         $this->backendLayoutView->addBackendLayoutItems($configuration);
         $backendLayouts = [];
         foreach ($configuration['items'] ?? [] as $backendLayout) {
-            if (($backendLayout[0] ?? false) && ($backendLayout[1] ?? false)) {
-                $backendLayouts[$backendLayout[1]] = $backendLayout[0];
+            if (($backendLayout['label'] ?? false) && ($backendLayout['value'] ?? false)) {
+                $backendLayouts[$backendLayout['value']] = $backendLayout['label'];
             }
         }
         return $backendLayouts;
