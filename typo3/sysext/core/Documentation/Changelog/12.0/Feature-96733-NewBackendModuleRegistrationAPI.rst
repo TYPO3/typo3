@@ -130,7 +130,8 @@ Module configuration options
 | access (:php:`string`)                                   | Can be `user` (editor permissions), `admin`, or                  |
 |                                                          | `systemMaintainer`.                                              |
 +----------------------------------------------------------+------------------------------------------------------------------+
-| workspaces (:php:`string`)                               | Can be `*` (= always), `live` or `offline`                       |
+| workspaces (:php:`string`)                               | Can be `*` (= always), `live` or `offline`. If not set, the      |
+|                                                          | value of the parent module - if any - is used.                   |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | position (:php:`array`)                                  | The module position. Allowed values are `before => <identifier>` |
 |                                                          | and `after => <identifier>`. To define modules on top or at the  |

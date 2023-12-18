@@ -38,7 +38,7 @@ class BackendModuleProvider extends AbstractProvider
                 'access' => $module->getAccess(),
                 'aliases' => $module->getAliases(),
                 'position' => $module->getPosition(),
-                'workspaces' => $module->getWorkspaceAccess(),
+                'workspaces' => $module->getWorkspaceAccess() ?: $module->getParentModule()?->getWorkspaceAccess(),
                 'isStandalone' => $module->isStandalone() ? 'true' : 'false',
                 'submodules' => $module->hasSubModules() ? implode(',', array_keys($module->getSubModules())) : '',
                 'path' => $module->getPath(),
