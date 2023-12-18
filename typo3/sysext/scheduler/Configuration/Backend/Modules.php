@@ -20,7 +20,7 @@ return [
     ],
     'scheduler_manage' => [
         'parent' => 'scheduler',
-        'access' => 'inherit',
+        'access' => 'admin',
         'path' => '/module/scheduler/manage',
         'labels' => ['title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'],
         'routes' => [
@@ -32,7 +32,7 @@ return [
     ],
     'scheduler_availabletasks' => [
         'parent' => 'scheduler',
-        'access' => 'inherit',
+        'access' => 'admin',
         'path' => '/module/scheduler/available-tasks',
         'labels' => ['title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info'],
         'routes' => [
@@ -43,7 +43,7 @@ return [
     ],
     'scheduler_setupcheck' => [
         'parent' => 'scheduler',
-        'access' => 'inherit',
+        'access' => 'admin',
         'path' => '/module/scheduler/check-setup',
         'labels' => ['title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check'],
         'routes' => [
