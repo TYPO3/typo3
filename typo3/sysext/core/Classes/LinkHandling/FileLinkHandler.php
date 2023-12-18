@@ -86,10 +86,10 @@ class FileLinkHandler implements LinkHandlingInterface
      */
     protected function resolveFile(array $data): ?FileInterface
     {
-        if (isset($data['uid'])) {
+        if (is_numeric($data['uid'] ?? false)) {
             return $this->getResourceFactory()->getFileObject($data['uid']);
         }
-        if (isset($data['identifier'])) {
+        if (is_string($data['identifier'] ?? false) && $data['identifier'] !== '') {
             return $this->getResourceFactory()->getFileObjectFromCombinedIdentifier($data['identifier']);
         }
         return null;
