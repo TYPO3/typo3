@@ -360,9 +360,11 @@ class ResourceFactory implements SingletonInterface
      */
     public function getStorageObjectFromCombinedIdentifier($identifier)
     {
-        $parts = GeneralUtility::trimExplode(':', $identifier);
-        $storageUid = count($parts) === 2 ? $parts[0] : null;
-        return $this->storageRepository->findByUid($storageUid);
+        [$storageId, $objectIdentifier] = array_pad(GeneralUtility::trimExplode(':', $identifier), 2, null);
+        if (!MathUtility::canBeInterpretedAsInteger($storageId) && $objectIdentifier === null) {
+            return $this->storageRepository->findByUid(0);
+        }
+        return $this->storageRepository->findByUid((int)$storageId);
     }
 
     /**
@@ -375,13 +377,19 @@ class ResourceFactory implements SingletonInterface
      */
     public function getObjectFromCombinedIdentifier($identifier)
     {
-        [$storageId, $objectIdentifier] = GeneralUtility::trimExplode(':', $identifier);
-        $storage = $this->storageRepository->findByUid($storageId);
-        if ($storage->hasFile($objectIdentifier)) {
-            return $storage->getFile($objectIdentifier);
+        [$storageId, $objectIdentifier] = array_pad(GeneralUtility::trimExplode(':', $identifier), 2, null);
+        if (!MathUtility::canBeInterpretedAsInteger($storageId) && $objectIdentifier === null) {
+            $objectIdentifier = $storageId;
+            $storageId = 0;
         }
-        if ($storage->hasFolder($objectIdentifier)) {
-            return $storage->getFolder($objectIdentifier);
+        if (MathUtility::canBeInterpretedAsInteger($storageId)) {
+            $storage = $this->storageRepository->findByUid($storageId);
+            if ($storage->hasFile($objectIdentifier)) {
+                return $storage->getFile($objectIdentifier);
+            }
+            if ($storage->hasFolder($objectIdentifier)) {
+                return $storage->getFolder($objectIdentifier);
+            }
         }
         throw new ResourceDoesNotExistException('Object with identifier "' . $identifier . '" does not exist in storage', 1329647780);
     }
