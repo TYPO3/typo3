@@ -1403,52 +1403,6 @@ class Indexer
     }
 
     /**
-     * Stores file gr_list for a file IF it does not exist already
-     *
-     * @param int $hash phash value of file
-     */
-    public function submitFile_grlist($hash)
-    {
-        // Testing if there is a gr_list record for a non-logged in user and if so, there is no need to place another one.
-        if (!IndexedSearchUtility::isTableUsed('index_grlist')) {
-            return;
-        }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_grlist');
-        $count = (int)$queryBuilder->count('*')
-            ->from('index_grlist')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'phash',
-                    $queryBuilder->createNamedParameter($hash, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->eq(
-                        'hash_gr_list',
-                        $queryBuilder->createNamedParameter(
-                            IndexedSearchUtility::md5inthash($this->defaultGrList),
-                            Connection::PARAM_INT
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'hash_gr_list',
-                        $queryBuilder->createNamedParameter(
-                            IndexedSearchUtility::md5inthash($this->conf['gr_list']),
-                            Connection::PARAM_INT
-                        )
-                    )
-                )
-            )
-            ->executeQuery()
-            ->fetchOne();
-
-        if ($count === 0) {
-            $this->submit_grlist($hash, $hash);
-        }
-    }
-
-    /**
      * Stores file section for a file IF it does not exist
      *
      * @param int $hash phash value of file
