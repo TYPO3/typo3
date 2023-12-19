@@ -93,13 +93,14 @@ class UserPassLogin {
    */
   public resetPassword = (): void => {
     const passwordField: HTMLInputElement = document.querySelector(this.options.passwordField);
-    if (passwordField.value !== '') {
-      const userIndent: HTMLInputElement = document.querySelector(Login.options.useridentField);
-      if (userIndent) {
-        userIndent.value = passwordField.value;
-      }
-      passwordField.value = '';
+    if (passwordField === null || passwordField.value === '') {
+      return;
     }
+    const userIndent: HTMLInputElement = document.querySelector(Login.options.useridentField);
+    if (userIndent) {
+      userIndent.value = passwordField.value;
+    }
+    passwordField.value = '';
   };
 
   public showCapsLockWarning = (event: Event): void => {
