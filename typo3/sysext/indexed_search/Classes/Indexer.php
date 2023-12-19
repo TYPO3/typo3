@@ -268,7 +268,7 @@ class Indexer
         /** @var Lexer $lexer */
         $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
         $this->lexerObj = $lexer;
-        $this->lexerObj->debug = $this->indexerConfig['debugMode'];
+        $this->lexerObj->debug = (bool)($this->indexerConfig['debugMode'] ?? false);
         // Initialize metaphone hook:
         // Make sure that the hook is loaded _after_ indexed_search as this may overwrite the hook depending on the configuration.
         if ($this->enableMetaphoneSearch && ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone'] ?? false)) {
@@ -1230,7 +1230,7 @@ class Indexer
             $connection->insert('index_fulltext', $fields);
         }
         // PROCESSING index_debug
-        if ($this->indexerConfig['debugMode']) {
+        if ($this->indexerConfig['debugMode'] ?? false) {
             $fields = [
                 'phash' => $this->hash['phash'],
                 'debuginfo' => json_encode([
@@ -1392,7 +1392,7 @@ class Indexer
             $connection->insert('index_fulltext', $fields);
         }
         // PROCESSING index_debug
-        if ($this->indexerConfig['debugMode']) {
+        if ($this->indexerConfig['debugMode'] ?? false) {
             $fields = [
                 'phash' => $hash['phash'],
                 'debuginfo' => json_encode([
