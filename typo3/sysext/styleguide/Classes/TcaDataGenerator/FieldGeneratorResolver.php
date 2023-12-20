@@ -117,8 +117,8 @@ final class FieldGeneratorResolver
         // type=select
         FieldGenerator\TypeSelectRenderTypeSingleForeignTable::class,
         FieldGenerator\TypeSelectRenderTypeSingleForeignTableForType::class,
-        FieldGenerator\TypeSelectRenderTypeMultipleForeignTableStaticData::class,
         FieldGenerator\TypeSelectRenderTypeSelectTree::class,
+        FieldGenerator\TypeSelectStaticData::class,
         FieldGenerator\TypeSelect::class,
 
         FieldGenerator\TypeInlineFalSelectSingle12Foreign::class,

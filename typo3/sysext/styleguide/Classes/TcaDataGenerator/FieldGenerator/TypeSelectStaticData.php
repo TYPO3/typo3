@@ -17,42 +17,27 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
-use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
- * Generate data for type=select fields
+ * Generate data for type=select fields with foreign_table=tx_styleguide_staticdata and MM
  *
  * @internal
  */
-final class TypeSelectRenderTypeMultipleForeignTableStaticData extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeSelectStaticData extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=select
-     */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_styleguide_staticdata',
             ],
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
     public function generate(array $data): string
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $staticDataRecords = $recordFinder->findUidsOfStaticdata();
-        // Select first two
-        return implode(',', array_slice($staticDataRecords, 0, 2));
+        // "Parent count" field - just use zero as string here.
+        return '0';
     }
 }

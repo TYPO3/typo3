@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
-use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Generate data for type=select fields
@@ -28,9 +26,6 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  */
 final class TypeSelectRenderTypeSelectTree extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=select
-     */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
@@ -41,32 +36,9 @@ final class TypeSelectRenderTypeSelectTree extends AbstractFieldGenerator implem
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
     public function generate(array $data): string
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $uidOfStyleguideRootPage = $recordFinder->findPidOfMainTableRecord('tx_styleguide');
-        $uidOfElementsBasicPage = $recordFinder->findPidOfMainTableRecord('tx_styleguide_elements_basic');
-        $uidOfElementsGroupPage = $recordFinder->findPidOfMainTableRecord('tx_styleguide_elements_group');
-        $result = [];
-        // Don't add first page if not selectable
-        if (!isset($data['fieldConfig']['config']['treeConfig']['appearance']['nonSelectableLevels'])) {
-            $result[] = $uidOfStyleguideRootPage;
-        }
-        // Don't add sub pages if maxlevels is set
-        if (!isset($data['fieldConfig']['config']['treeConfig']['appearance']['maxLevels'])
-            || (isset($data['fieldConfig']['config']['treeConfig']['appearance']['maxLevels'])
-                && $data['fieldConfig']['config']['treeConfig']['appearance']['maxLevels'] > 1)
-        ) {
-            $result[] = $uidOfElementsBasicPage;
-            $result[] = $uidOfElementsGroupPage;
-        }
-        return implode(',', $result);
+        // "Parent count" field - just use zero as string here.
+        return '0';
     }
 }
