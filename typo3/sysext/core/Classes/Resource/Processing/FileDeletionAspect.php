@@ -61,7 +61,7 @@ final class FileDeletionAspect
     /**
      * Cleanup database record for a deleted file
      */
-    private function removeFromRepository(FileInterface $fileObject)
+    private function removeFromRepository(FileInterface $fileObject): void
     {
         // remove file from repository
         if ($fileObject instanceof File) {
@@ -75,7 +75,7 @@ final class FileDeletionAspect
                 ->delete(
                     'sys_file_reference',
                     [
-                        'uid_local' => (int)$fileObject->getUid(),
+                        'uid_local' => $fileObject->getUid(),
                     ]
                 );
         } elseif ($fileObject instanceof ProcessedFile) {
@@ -83,7 +83,7 @@ final class FileDeletionAspect
                 ->delete(
                     'sys_file_processedfile',
                     [
-                        'uid' => (int)$fileObject->getUid(),
+                        'uid' => $fileObject->getUid(),
                     ]
                 );
         }
@@ -92,17 +92,23 @@ final class FileDeletionAspect
     /**
      * Remove all category references of the deleted file.
      */
-    private function cleanupCategoryReferences(File $fileObject)
+    private function cleanupCategoryReferences(File $fileObject): void
     {
         // Retrieve the file metadata uid which is different from the file uid.
         $metadataProperties = $fileObject->getMetaData()->get();
-        $metaDataUid = $metadataProperties['_ORIG_uid'] ?? $metadataProperties['uid'];
+        $metaDataUid = (int)($metadataProperties['_ORIG_uid'] ?? $metadataProperties['uid'] ?? 0);
+
+        if ($metaDataUid <= 0) {
+            // No metadata record exists for the given file. The file might not
+            // have been indexed or the meta data record was deleted manually.
+            return;
+        }
 
         GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_category_record_mm')
             ->delete(
                 'sys_category_record_mm',
                 [
-                    'uid_foreign' => (int)$metaDataUid,
+                    'uid_foreign' => $metaDataUid,
                     'tablenames' => 'sys_file_metadata',
                 ]
             );
@@ -111,7 +117,7 @@ final class FileDeletionAspect
     /**
      * Remove all processed files that belong to the given File object
      */
-    private function cleanupProcessedFiles(FileInterface $fileObject)
+    private function cleanupProcessedFiles(FileInterface $fileObject): void
     {
         // only delete processed files of File objects
         if (!$fileObject instanceof File) {
