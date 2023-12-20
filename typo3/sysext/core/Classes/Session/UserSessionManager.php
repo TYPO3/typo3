@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * The UserSessionManager can be retrieved using its static factory method create():
  *
  * ```
- * use TYPO3\CMS\Core\Session\UserSessionManager
+ * use TYPO3\CMS\Core\Session\UserSessionManager;
  *
  * $loginType = 'BE'; // or 'FE' for frontend
  * $userSessionManager = UserSessionManager::create($loginType);
