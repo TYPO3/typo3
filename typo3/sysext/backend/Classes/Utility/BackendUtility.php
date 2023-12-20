@@ -1623,7 +1623,7 @@ class BackendUtility
         $lang = static::getLanguageService();
         switch ((string)($theColConf['type'] ?? '')) {
             case 'radio':
-                $l = $lang->sL(self::getLabelFromItemlist($table, $col, $value, static::getRecordWSOL($table, (int)$uid) ?? []));
+                $l = $lang->sL(self::getLabelFromItemlist($table, $col, $value, ['uid' => (int)$uid, 'pid' => (int)$pid]));
                 if ($l === '' && !empty($value)) {
                     // Use plain database value when label is empty
                     $l = $value;
@@ -1655,7 +1655,7 @@ class BackendUtility
                             $columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'];
                         }
                     }
-                    $l = self::getLabelsFromItemsList($table, $col, (string)$value, $columnTsConfig, static::getRecordWSOL($table, (int)$uid) ?? []);
+                    $l = self::getLabelsFromItemsList($table, $col, (string)$value, $columnTsConfig, ['uid' => (int)$uid, 'pid' => (int)$pid]);
                     if (!empty($theColConf['foreign_table']) && !$l && !empty($GLOBALS['TCA'][$theColConf['foreign_table']])) {
                         if ($noRecordLookup) {
                             $l = $value;
