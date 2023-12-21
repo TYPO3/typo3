@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -50,8 +50,8 @@ final class TranslationDiffSourceTest extends FunctionalTestCase
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
     /**

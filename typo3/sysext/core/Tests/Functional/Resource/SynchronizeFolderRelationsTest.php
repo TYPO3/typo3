@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\SynchronizeFolderRelations;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SynchronizeFolderRelationsTest extends FunctionalTestCase
@@ -37,12 +36,12 @@ final class SynchronizeFolderRelationsTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $this->subject = new SynchronizeFolderRelations(
-            GeneralUtility::makeInstance(ConnectionPool::class),
-            GeneralUtility::makeInstance(FlashMessageService::class)
+            $this->get(ConnectionPool::class),
+            $this->get(FlashMessageService::class)
         );
     }
 
@@ -62,7 +61,7 @@ final class SynchronizeFolderRelationsTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/FilemountsResult.csv');
 
         // Check for generated flash messages
-        $flashMessages = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
+        $flashMessages = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
         self::assertNotEmpty($flashMessages);
 
         // Check flash message content
@@ -86,7 +85,7 @@ final class SynchronizeFolderRelationsTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/FileCollectionResult.csv');
 
         // Check for generated flash messages
-        $flashMessages = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
+        $flashMessages = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
         self::assertNotEmpty($flashMessages);
 
         // Check flash message content

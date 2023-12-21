@@ -21,9 +21,9 @@ use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem;
 use TYPO3\CMS\Backend\Controller\ShortcutController;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -39,8 +39,8 @@ final class ShortcutControllerTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_be_shortcuts.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $this->subject = new ShortcutController(
             $this->get(ShortcutToolbarItem::class),

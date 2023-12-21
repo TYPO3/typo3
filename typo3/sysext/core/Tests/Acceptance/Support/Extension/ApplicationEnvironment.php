@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
@@ -100,7 +102,7 @@ final class ApplicationEnvironment extends BackendEnvironment
         $GLOBALS['BE_USER']->user['admin'] = 1;
         $GLOBALS['BE_USER']->user['uid'] = 1;
         $GLOBALS['BE_USER']->workspace = 0;
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
 
         $faviconLinkPath = '../../../../favicon.ico';
         if (!is_file($faviconLinkPath)) {

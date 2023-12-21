@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Log;
 
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\Log\DummyWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -47,8 +47,8 @@ final class LoggerAwareChannelTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         DummyWriter::$logs = [];
     }
 

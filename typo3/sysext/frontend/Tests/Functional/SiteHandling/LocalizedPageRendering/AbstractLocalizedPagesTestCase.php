@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRendering;
 
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -37,7 +37,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         $this->withDatabaseSnapshot(function () use ($pathToYamlFile) {
             $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
             $backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
             $factory = DataHandlerFactory::fromYamlFile($pathToYamlFile);
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);

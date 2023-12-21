@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional\Repository;
 
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -698,7 +698,7 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
             $this->importCSVDataSet($groupFixtureFile);
         }
         $this->importCSVDataSet($fixtureFile);
-        $this->setUpBackendUser($uid);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser($uid);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 }

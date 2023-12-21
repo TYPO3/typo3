@@ -21,11 +21,11 @@ use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Controller\Event\ModifyAllowedItemsEvent;
 use TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent;
 use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -40,8 +40,8 @@ final class BrowseLinksControllerTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
     /**

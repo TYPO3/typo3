@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedAliasMapper;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -73,7 +73,7 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
         $this->withDatabaseSnapshot(function () {
             $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
             $backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
             $scenarioFile = __DIR__ . '/Fixtures/AspectScenario.yaml';
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
             $writer = DataHandlerWriter::withBackendUser($backendUser);

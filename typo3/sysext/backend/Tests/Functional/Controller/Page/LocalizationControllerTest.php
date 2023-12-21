@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -59,8 +59,8 @@ final class LocalizationControllerTest extends FunctionalTestCase
      */
     public function recordsGetTranslatedFromDefaultLanguage(): void
     {
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 0,
@@ -79,8 +79,8 @@ final class LocalizationControllerTest extends FunctionalTestCase
     public function recordsGetTranslatedFromDifferentTranslation(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 1,
@@ -98,8 +98,8 @@ final class LocalizationControllerTest extends FunctionalTestCase
      */
     public function recordsGetCopiedFromDefaultLanguage(): void
     {
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 0,
@@ -118,8 +118,8 @@ final class LocalizationControllerTest extends FunctionalTestCase
     public function recordsGetCopiedFromAnotherLanguage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 1,
@@ -146,8 +146,8 @@ final class LocalizationControllerTest extends FunctionalTestCase
      */
     public function copyingNewContentFromLanguageIntoExistingLocalizationHasSameOrdering(): void
     {
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $params = [
             'pageId' => 1,
             'srcLanguageId' => 0,
@@ -191,8 +191,8 @@ final class LocalizationControllerTest extends FunctionalTestCase
     public function defaultLanguageIsFoundAsOriginLanguage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         // Create another content element in default language
         $data = [
             'tt_content' => [
@@ -223,8 +223,8 @@ final class LocalizationControllerTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-default-language-deleted-element.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language-deleted-source.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $request = (new ServerRequest())->withQueryParams([
             'pageId' => 2, // page uid, the records are stored on
             'languageId' => 1,  // current language id
@@ -241,7 +241,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
     {
         // Delete record 2 within workspace 1
         $backendUser = $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $backendUser->workspace = 1;
         $actionService = new ActionService();
         $actionService->deleteRecord('tt_content', 2);
@@ -283,7 +283,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
     {
         // Move record 2 to page 2 within workspace 1
         $backendUser = $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $backendUser->workspace = 1;
         $actionService = new ActionService();
         $actionService->moveRecord('tt_content', 2, 2);

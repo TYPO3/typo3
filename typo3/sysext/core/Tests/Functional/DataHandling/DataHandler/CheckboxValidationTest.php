@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -62,7 +62,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/CheckboxRecordsEval.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $this->backendUserAuthentication = $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUserAuthentication);
     }
 
     /**

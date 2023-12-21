@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Utility;
 
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -57,7 +57,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $this->withDatabaseSnapshot(function () {
             $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
             $backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
             $factory = DataHandlerFactory::fromYamlFile(__DIR__ . '/Fixtures/RootlineScenario.yaml');
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);

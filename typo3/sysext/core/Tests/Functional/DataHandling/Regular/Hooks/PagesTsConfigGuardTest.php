@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\Hooks;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,6 +41,7 @@ final class PagesTsConfigGuardTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefault.csv');
         $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/be_groups.csv');
         $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/be_users.csv');
+
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),
@@ -63,9 +64,9 @@ final class PagesTsConfigGuardTest extends FunctionalTestCase
      */
     public function pagesTsConfigIsConsideredForAdminUser(): void
     {
-        $backendUser = $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
         $identifier = StringUtility::getUniqueId('NEW');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $dataMap = [
             'pages' => [
@@ -87,9 +88,9 @@ final class PagesTsConfigGuardTest extends FunctionalTestCase
      */
     public function pagesTsConfigIsIgnoredForNonAdminUser(): void
     {
-        $backendUser = $this->setUpBackendUser(9);
-        Bootstrap::initializeLanguageObject();
         $identifier = StringUtility::getUniqueId('NEW');
+        $backendUser = $this->setUpBackendUser(9);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $dataMap = [
             'pages' => [

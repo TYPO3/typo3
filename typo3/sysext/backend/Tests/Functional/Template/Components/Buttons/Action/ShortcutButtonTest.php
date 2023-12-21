@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Template\Components\Buttons\Action;
 
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShortcutButtonTest extends FunctionalTestCase
@@ -45,8 +45,8 @@ final class ShortcutButtonTest extends FunctionalTestCase
     public function buttonIsNotRenderedForUserWithInsufficientPermissions(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users_no_bookmarks.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         self::assertEmpty(
             (new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->render()
         );
@@ -59,8 +59,8 @@ final class ShortcutButtonTest extends FunctionalTestCase
     public function rendersCorrectMarkup(ShortcutButton $button, string $expectedMarkupFile): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'SCRIPT_NAME' => '/typo3/index.php']);
         $request = new ServerRequest('http://example.com/typo3/index.php', 'GET', null, $serverParams);
         $GLOBALS['TYPO3_REQUEST'] = $request

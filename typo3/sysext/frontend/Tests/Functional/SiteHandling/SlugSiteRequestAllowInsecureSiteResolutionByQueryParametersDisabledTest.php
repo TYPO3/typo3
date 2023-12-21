@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -48,7 +48,7 @@ final class SlugSiteRequestAllowInsecureSiteResolutionByQueryParametersDisabledT
         $this->withDatabaseSnapshot(function () {
             $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
             $backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
             $scenarioFile = __DIR__ . '/Fixtures/SlugScenario.yaml';
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
             $writer = DataHandlerWriter::withBackendUser($backendUser);

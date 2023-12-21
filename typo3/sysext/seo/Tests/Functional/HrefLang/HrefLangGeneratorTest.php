@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\HrefLang;
 
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -62,7 +62,7 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
         $this->withDatabaseSnapshot(function () {
             $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
             $backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
             $factory = DataHandlerFactory::fromYamlFile(__DIR__ . '/../Fixtures/HrefLangScenario.yml');
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);

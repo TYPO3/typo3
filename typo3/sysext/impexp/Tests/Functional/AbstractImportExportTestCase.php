@@ -19,10 +19,10 @@ namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -46,7 +46,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
         $backendUser->workspace = 0;
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('route', new Route('/record/importexport/export', []))

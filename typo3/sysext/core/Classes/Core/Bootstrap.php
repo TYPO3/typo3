@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\Cache\ComposerPackageArtifact;
 use TYPO3\CMS\Core\Package\Cache\PackageCacheInterface;
@@ -529,15 +528,5 @@ class Bootstrap
     public static function initializeBackendAuthentication()
     {
         $GLOBALS['BE_USER']->backendCheckLogin();
-    }
-
-    /**
-     * Initialize language object
-     *
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public static function initializeLanguageObject()
-    {
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
     }
 }

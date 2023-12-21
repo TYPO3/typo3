@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -50,7 +50,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
             function () {
                 $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
                 $this->backendUser = $this->setUpBackendUser(1);
-                Bootstrap::initializeLanguageObject();
+                $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
                 $scenarioFile = __DIR__ . '/../Fixtures/DefaultViewScenario.yaml';
                 $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
                 $writer = DataHandlerWriter::withBackendUser($this->backendUser);

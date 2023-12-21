@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\RequestHandling;
 use Symfony\Component\Mailer\SentMessage;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Form\Tests\Functional\Framework\FormHandling\FormDataFactory;
@@ -87,7 +87,7 @@ final class RequestHandlingTest extends FunctionalTestCase
         $this->withDatabaseSnapshot(function () {
             $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
             $backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
             $factory = DataHandlerFactory::fromYamlFile($this->databaseScenarioFile);
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);

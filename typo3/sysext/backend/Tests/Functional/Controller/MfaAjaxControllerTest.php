@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Controller\MfaAjaxController;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaAjaxControllerTest extends FunctionalTestCase
@@ -34,8 +34,8 @@ final class MfaAjaxControllerTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users_mfa.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $this->subject = new MfaAjaxController($this->get(MfaProviderRegistry::class));
 

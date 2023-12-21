@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TcaGroupTest extends FunctionalTestCase
@@ -29,8 +29,8 @@ final class TcaGroupTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaGroup.csv');
     }

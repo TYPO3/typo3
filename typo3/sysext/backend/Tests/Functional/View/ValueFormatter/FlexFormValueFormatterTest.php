@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\View\ValueFormatter;
 
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlexFormValueFormatterTest extends FunctionalTestCase
@@ -27,8 +27,8 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet('typo3/sysext/backend/Tests/Functional/Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
     /**

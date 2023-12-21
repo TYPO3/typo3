@@ -17,11 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -31,15 +30,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class SecurityTest extends FunctionalTestCase
 {
-    /**
-     * @var BackendUserAuthentication
-     */
-    private $backendUser;
-
-    /**
-     * @var ActionService
-     */
-    private $actionService;
+    private ActionService $actionService;
 
     protected array $coreExtensionsToLoad = ['rte_ckeditor'];
 
@@ -48,11 +39,11 @@ final class SecurityTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/DataSet/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
-        $this->backendUser = $this->setUpBackendUser(1);
-        $this->backendUser->workspace = 0;
+        $backendUser = $this->setUpBackendUser(1);
+        $backendUser->workspace = 0;
         GeneralUtility::makeInstance(Context::class)
             ->setAspect('workspace', new WorkspaceAspect(0));
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $this->actionService = GeneralUtility::makeInstance(ActionService::class);
     }

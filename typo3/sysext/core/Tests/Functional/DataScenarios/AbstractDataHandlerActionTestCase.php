@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -61,7 +61,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         // Note late static binding - Workspace related tests override the constant
         $this->setWorkspaceId(static::VALUE_WorkspaceId);
         $this->actionService = new ActionService();
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
     }
 
     protected function tearDown(): void

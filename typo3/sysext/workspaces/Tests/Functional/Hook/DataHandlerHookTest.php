@@ -21,8 +21,8 @@ use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -43,7 +43,7 @@ final class DataHandlerHookTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->backendUser = $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
         $this->actionService = new ActionService();
         $this->setWorkspaceId(0);
     }

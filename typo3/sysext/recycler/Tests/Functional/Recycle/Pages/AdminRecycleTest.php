@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
 
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase;
 
 final class AdminRecycleTest extends AbstractRecycleTestCase
@@ -29,8 +29,8 @@ final class AdminRecycleTest extends AbstractRecycleTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/Database/be_groups.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/Database/be_users.csv');
         // Set up "admin" user
-        $this->setUpBackendUser(1);
-        Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
     /**

@@ -25,10 +25,10 @@ use TYPO3\CMS\Backend\Tests\Functional\Tree\Repository\Fixtures\Tree\NormalizeTr
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -59,12 +59,15 @@ final class TreeControllerTest extends FunctionalTestCase
             $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
             // Admin user for importing dataset
             $this->backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
             $scenarioFile = __DIR__ . '/Fixtures/PagesWithBEPermissions.yaml';
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
             $writer = DataHandlerWriter::withBackendUser($this->backendUser);
             $writer->invokeFactory($factory);
             static::failIfArrayIsNotEmpty($writer->getErrors());
+        }, function () {
+            $this->backendUser = $this->setUpBackendUser(1);
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
         });
 
         // Regular editor, non admin
@@ -709,8 +712,6 @@ final class TreeControllerTest extends FunctionalTestCase
      */
     public function pageTreeItemsModificationEventIsTriggered(): void
     {
-        Bootstrap::initializeLanguageObject();
-
         $afterPageTreeItemsPreparedEvent = null;
 
         /** @var Container $container */

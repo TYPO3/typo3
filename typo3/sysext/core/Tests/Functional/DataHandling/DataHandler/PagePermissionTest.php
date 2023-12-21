@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -52,8 +52,8 @@ final class PagePermissionTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
         $this->actionService = new ActionService();
-        Bootstrap::initializeLanguageObject();
     }
 
     /**
