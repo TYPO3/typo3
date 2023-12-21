@@ -190,7 +190,7 @@ class SuggestWizardController
      */
     protected function isTableHidden(array $tableConfig)
     {
-        return (bool)$tableConfig['ctrl']['hideTable'];
+        return (bool)($tableConfig['ctrl']['hideTable'] ?? false);
     }
 
     /**
