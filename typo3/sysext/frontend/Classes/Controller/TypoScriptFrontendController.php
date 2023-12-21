@@ -26,20 +26,11 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\AbstractServerErrorException;
-use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
-use TYPO3\CMS\Core\Exception\Page\RootLineException;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\ImmediateResponseException;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -52,10 +43,7 @@ use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -71,16 +59,11 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConst
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
-use TYPO3\CMS\Frontend\Event\AfterPageAndLanguageIsResolvedEvent;
-use TYPO3\CMS\Frontend\Event\AfterPageWithRootLineIsResolvedEvent;
-use TYPO3\CMS\Frontend\Event\BeforePageIsResolvedEvent;
 use TYPO3\CMS\Frontend\Event\ModifyTypoScriptConstantsEvent;
 use TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -156,32 +139,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public int $contentPid = 0;
 
     /**
-     * Gets set when we are processing a page of type mountpoint with enabled overlay in getPageAndRootline()
-     * Used later in checkPageForMountpointRedirect() to determine the final target URL where the user
-     * should be redirected to.
-     */
-    protected ?array $originalMountPointPage = null;
-
-    /**
-     * Gets set when we are processing a page of type shortcut in the early stages
-     * of the request, used later in the request to resolve the shortcut and redirect again.
-     */
-    protected ?array $originalShortcutPage = null;
-
-    /**
      * Read-only! Extensions may read but never write this property!
      */
     public ?PageRepository $sys_page = null;
-
-    /**
-     * Is set to > 0 if the page could not be resolved. This will then result in early returns when resolving the page.
-     */
-    protected int $pageNotFound = 0;
-
-    /**
-     * Array containing a history of why a requested page was not accessible.
-     */
-    protected array $pageAccessFailureHistory = [];
 
     /**
      * @internal
@@ -388,7 +348,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->context = $context;
         $this->site = $site;
         $this->language = $siteLanguage;
-        $this->setPageArguments($pageArguments);
+        $this->pageArguments = $pageArguments;
+        $this->id = $pageArguments->getPageId();
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
@@ -418,482 +379,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
-    }
-
-    /**
-     * Resolves the page id and sets up several related properties.
-     *
-     * At this point, the Context object already contains relevant preview
-     * settings (if a backend user is logged in etc).
-     *
-     * If $this->id is not set at all, the method does its best to set the
-     * value to an integer. Resolving is based on this options:
-     *
-     * - Finding the domain record start page
-     * - First visible page
-     * - Relocating the id below the site if outside the site / domain
-     *
-     * The following properties may be set up or updated:
-     *
-     * - id
-     * - sys_page
-     * - sys_page->where_groupAccess
-     * - sys_page->where_hid_del
-     * - register['SYS_LASTCHANGED']
-     * - pageNotFound
-     *
-     * Via getPageAndRootline()
-     *
-     * - rootLine
-     * - page
-     * - MP
-     * - originalShortcutPage
-     * - originalMountPointPage
-     * - pageAccessFailureHistory['direct_access']
-     * - pageNotFound
-     *
-     * @internal
-     */
-    public function determineId(ServerRequestInterface $request): ?ResponseInterface
-    {
-        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-
-        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
-        $eventDispatcher->dispatch(new BeforePageIsResolvedEvent($this, $request));
-
-        $timeTracker = $this->getTimeTracker();
-        $timeTracker->push('determineId rootLine/');
-        try {
-            // Sets ->page and ->rootline information based on ->id. ->id may change during this operation.
-            // If the found Page ID is not within the site, then pageNotFound is set.
-            $this->getPageAndRootline($request);
-            // Checks if the rootPageId of the site is in the resolved rootLine.
-            // This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
-            $siteRootWithinRootlineFound = false;
-            foreach ($this->rootLine as $pageInRootLine) {
-                if ((int)$pageInRootLine['uid'] === $this->site->getRootPageId()) {
-                    $siteRootWithinRootlineFound = true;
-                    break;
-                }
-            }
-            // Page is 'not found' in case the id was outside the domain, code 3
-            // This can only happen if there was a shortcut. So $this->page is now the shortcut target
-            // But the original page is in $this->originalShortcutPage.
-            // This only happens if people actually call TYPO3 with index.php?id=123 where 123 is in a different
-            // page tree. This is not allowed.
-            $directlyRequestedId = (int)($request->getQueryParams()['id'] ?? 0);
-            if (!$siteRootWithinRootlineFound && $directlyRequestedId && (int)($this->originalShortcutPage['uid'] ?? 0) !== $directlyRequestedId) {
-                $this->pageNotFound = 3;
-                $this->id = $this->site->getRootPageId();
-                // re-get the page and rootline if the id was not found.
-                $this->getPageAndRootline($request);
-            }
-        } catch (ShortcutTargetPageNotFoundException) {
-            $this->pageNotFound = 1;
-        }
-        $timeTracker->pull();
-
-        $event = new AfterPageWithRootLineIsResolvedEvent($this, $request);
-        $event = $eventDispatcher->dispatch($event);
-        if ($event->getResponse()) {
-            return $event->getResponse();
-        }
-
-        $response = null;
-        try {
-            $this->evaluatePageNotFound($this->pageNotFound, $request);
-
-            // Setting language and fetch translated page
-            $this->settingLanguage($request);
-            // Check the "content_from_pid" field of the resolved page
-            $this->contentPid = $this->resolveContentPid($request);
-
-            // Update SYS_LASTCHANGED at the very last, when $this->page might be changed
-            // by settingLanguage() and the $this->page was finally resolved
-            $this->setRegisterValueForSysLastChanged($this->page);
-        } catch (PropagateResponseException $e) {
-            $response = $e->getResponse();
-        }
-
-        $event = new AfterPageAndLanguageIsResolvedEvent($this, $request, $response);
-        $eventDispatcher->dispatch($event);
-        return $event->getResponse();
-    }
-
-    /**
-     * If $this->pageNotFound is set, then throw an exception to stop further page generation process
-     */
-    protected function evaluatePageNotFound(int $pageNotFoundNumber, ServerRequestInterface $request): void
-    {
-        if (!$pageNotFoundNumber) {
-            return;
-        }
-        $response = match ($pageNotFoundNumber) {
-            1 => GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
-                $request,
-                'ID was not an accessible page',
-                $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_PAGE_NOT_RESOLVED)
-            ),
-            2 => GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
-                $request,
-                'Subsection was found and not accessible',
-                $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_SUBSECTION_NOT_RESOLVED)
-            ),
-            3 => GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                $request,
-                'ID was outside the domain',
-                $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH)
-            ),
-            default => GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                $request,
-                'Unspecified error',
-                $this->getPageAccessFailureReasons()
-            ),
-        };
-        throw new PropagateResponseException($response, 1533931329);
-    }
-
-    /**
-     * Loads the page and root line records based on $this->id
-     *
-     * A final page and the matching root line are determined and loaded by
-     * the algorithm defined by this method.
-     *
-     * First it loads the initial page from the page repository for $this->id.
-     * If that can't be loaded directly, it gets the root line for $this->id.
-     * It walks up the root line towards the root page until the page
-     * repository can deliver a page record. (The loading restrictions of
-     * the root line records are more liberal than that of the page record.)
-     *
-     * Now the page type is evaluated and handled if necessary. If the page is
-     * a short cut, it is replaced by the target page. If the page is a mount
-     * point in overlay mode, the page is replaced by the mounted page.
-     *
-     * After this potential replacements are done, the root line is loaded
-     * (again) for this page record. It walks up the root line up to
-     * the first viewable record.
-     *
-     * (While upon the first accessibility check of the root line it was done
-     * by loading page by page from the page repository, this time the method
-     * checkRootlineForIncludeSection() is used to find the most distant
-     * accessible page within the root line.)
-     *
-     * Having found the final page id, the page record and the root line are
-     * loaded for last time by this method.
-     *
-     * Exceptions may be thrown for DOKTYPE_SPACER and not loadable page records
-     * or root lines.
-     *
-     * May set or update these properties:
-     *
-     * @see TypoScriptFrontendController::$id
-     * @see TypoScriptFrontendController::$MP
-     * @see TypoScriptFrontendController::$page
-     * @see TypoScriptFrontendController::$pageNotFound
-     * @see TypoScriptFrontendController::$pageAccessFailureHistory
-     * @see TypoScriptFrontendController::$originalMountPointPage
-     * @see TypoScriptFrontendController::$originalShortcutPage
-     *
-     * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
-     * @throws PageNotFoundException
-     * @throws ShortcutTargetPageNotFoundException
-     */
-    protected function getPageAndRootline(ServerRequestInterface $request): void
-    {
-        $requestedPageRowWithoutGroupCheck = [];
-        $this->page = $this->sys_page->getPage($this->id);
-        if (empty($this->page)) {
-            // If no page, we try to find the page above in the rootLine.
-            // Page is 'not found' in case the id itself was not an accessible page. code 1
-            $this->pageNotFound = 1;
-            $requestedPageIsHidden = false;
-            try {
-                $hiddenField = $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled'] ?? '';
-                $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages') || $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
-                if (!empty($hiddenField) && !$includeHiddenPages) {
-                    // Page is "hidden" => 404 (deliberately done in default language, as this cascades to language overlays)
-                    $rawPageRecord = $this->sys_page->getPage_noCheck($this->id);
-
-                    // If page record could not be resolved throw exception
-                    if ($rawPageRecord === []) {
-                        $message = 'The requested page does not exist!';
-                        try {
-                            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                                $request,
-                                $message,
-                                $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
-                            );
-                            throw new PropagateResponseException($response, 1674144383);
-                        } catch (PageNotFoundException $e) {
-                            throw new PageNotFoundException($message, 1674539331);
-                        }
-                    }
-
-                    $requestedPageIsHidden = (bool)$rawPageRecord[$hiddenField];
-                }
-
-                $requestedPageRowWithoutGroupCheck = $this->sys_page->getPage($this->id, true);
-                if (!empty($requestedPageRowWithoutGroupCheck)) {
-                    $this->pageAccessFailureHistory['direct_access'][] = $requestedPageRowWithoutGroupCheck;
-                }
-                $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
-                if (!empty($this->rootLine)) {
-                    $c = count($this->rootLine) - 1;
-                    while ($c > 0) {
-                        // Add to page access failure history:
-                        $this->pageAccessFailureHistory['direct_access'][] = $this->rootLine[$c];
-                        // Decrease to next page in rootline and check the access to that, if OK, set as page record and ID value.
-                        $c--;
-                        $this->id = (int)$this->rootLine[$c]['uid'];
-                        $this->page = $this->sys_page->getPage($this->id);
-                        if (!empty($this->page)) {
-                            break;
-                        }
-                    }
-                }
-            } catch (RootLineException) {
-                $this->rootLine = [];
-            }
-            // If still no page...
-            if ($requestedPageIsHidden || (empty($requestedPageRowWithoutGroupCheck) && empty($this->page))) {
-                $message = 'The requested page does not exist!';
-                try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        $message,
-                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
-                    );
-                    throw new PropagateResponseException($response, 1533931330);
-                } catch (PageNotFoundException $e) {
-                    throw new PageNotFoundException($message, 1301648780);
-                }
-            }
-        }
-        // Spacer and sysfolders is not accessible in frontend
-        $pageDoktype = (int)($this->page['doktype'] ?? 0);
-        $isSpacerOrSysfolder = $pageDoktype === PageRepository::DOKTYPE_SPACER || $pageDoktype === PageRepository::DOKTYPE_SYSFOLDER;
-        // Page itself is not accessible, but the parent page is a spacer/sysfolder
-        if ($isSpacerOrSysfolder && !empty($requestedPageRowWithoutGroupCheck)) {
-            try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
-                    $request,
-                    'Subsection was found and not accessible',
-                    $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_SUBSECTION_NOT_RESOLVED)
-                );
-                throw new PropagateResponseException($response, 1633171038);
-            } catch (PageNotFoundException $e) {
-                throw new PageNotFoundException('Subsection was found and not accessible', 1633171172);
-            }
-        }
-
-        if ($isSpacerOrSysfolder) {
-            $message = 'The requested page does not exist!';
-            try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                    $request,
-                    $message,
-                    $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_INVALID_PAGETYPE)
-                );
-                throw new PropagateResponseException($response, 1533931343);
-            } catch (PageNotFoundException $e) {
-                throw new PageNotFoundException($message, 1301648781);
-            }
-        }
-        // Is the ID a link to another page??
-        if ($pageDoktype === PageRepository::DOKTYPE_SHORTCUT) {
-            // We need to clear MP if the page is a shortcut. Reason is if the shortcut goes to another page, then we LEAVE the rootline which the MP expects.
-            $this->MP = '';
-            // saving the page so that we can check later - when we know
-            // about languages - whether we took the correct shortcut or
-            // whether a translation of the page overwrites the shortcut
-            // target and we need to follow the new target
-            $this->settingLanguage($request);
-            $this->originalShortcutPage = $this->page;
-            $this->page = $this->sys_page->resolveShortcutPage($this->page, true);
-            $this->id = (int)$this->page['uid'];
-            $pageDoktype = (int)($this->page['doktype'] ?? 0);
-        }
-        // If the page is a mountpoint which should be overlaid with the contents of the mounted page,
-        // it must never be accessible directly, but only in the mountpoint context. Therefore we change
-        // the current ID and the user is redirected by checkPageForMountpointRedirect().
-        if ($pageDoktype === PageRepository::DOKTYPE_MOUNTPOINT && $this->page['mount_pid_ol']) {
-            $this->originalMountPointPage = $this->page;
-            $this->page = $this->sys_page->getPage($this->page['mount_pid']);
-            if (empty($this->page)) {
-                $message = 'This page (ID ' . $this->originalMountPointPage['uid'] . ') is of type "Mount point" and '
-                    . 'mounts a page which is not accessible (ID ' . $this->originalMountPointPage['mount_pid'] . ').';
-                throw new PageNotFoundException($message, 1402043263);
-            }
-            // If the current page is a shortcut, the MP parameter will be replaced
-            if ($this->MP === '' || !empty($this->originalShortcutPage)) {
-                $this->MP = $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
-            } else {
-                $this->MP .= ',' . $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
-            }
-            $this->id = (int)$this->page['uid'];
-        }
-        // Gets the rootLine
-        try {
-            $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
-        } catch (RootLineException $e) {
-            $this->rootLine = [];
-        }
-        // If not rootline we're off...
-        if (empty($this->rootLine)) {
-            $message = 'The requested page didn\'t have a proper connection to the tree-root!';
-            $this->logPageAccessFailure($message, $request);
-            try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
-                    $request,
-                    $message,
-                    $this->getPageAccessFailureReasons(PageAccessFailureReasons::ROOTLINE_BROKEN)
-                );
-                throw new PropagateResponseException($response, 1533931350);
-            } catch (AbstractServerErrorException $e) {
-                $this->logger->error($message, ['exception' => $e]);
-                $exceptionClass = get_class($e);
-                throw new $exceptionClass($message, 1301648167);
-            }
-        }
-        // Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
-        if ($this->checkRootlineForIncludeSection()) {
-            if (empty($this->rootLine)) {
-                $message = 'The requested page does not exist!';
-                try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        $message,
-                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
-                    );
-                    throw new PropagateResponseException($response, 1533931351);
-                } catch (AbstractServerErrorException $e) {
-                    $this->logger->warning($message);
-                    $exceptionClass = get_class($e);
-                    throw new $exceptionClass($message, 1301648234);
-                }
-            } else {
-                $el = reset($this->rootLine);
-                $this->id = (int)$el['uid'];
-                $this->page = $this->sys_page->getPage($this->id);
-                try {
-                    $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
-                } catch (RootLineException $e) {
-                    $this->rootLine = [];
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks if visibility of the page is blocked upwards in the root line.
-     *
-     * If any page in the root line is blocking visibility, true is returned.
-     *
-     * All pages from the blocking page downwards are removed from the root
-     * line, so that the remaining pages can be used to relocate the page up
-     * to lowest visible page.
-     *
-     * The blocking feature of a page must be turned on by setting the page
-     * record field 'extendToSubpages' to 1 in case of hidden, starttime,
-     * endtime or fe_group restrictions.
-     *
-     * Additionally, this method checks for backend user sections in root line
-     * and if found, evaluates if a backend user is logged in and has access.
-     *
-     * Recyclers are also checked and trigger page not found if found in root
-     * line.
-     *
-     * @todo Find a better name, i.e. checkVisibilityByRootLine
-     * @todo Invert boolean return value. Return true if visible.
-     */
-    protected function checkRootlineForIncludeSection(): bool
-    {
-        $c = count($this->rootLine);
-        $removeTheRestFlag = false;
-        $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
-        for ($a = 0; $a < $c; $a++) {
-            if (!$accessVoter->accessGrantedForPageInRootLine($this->rootLine[$a], $this->context)) {
-                // Add to page access failure history and mark the page as not found
-                // Keep the rootline however to trigger an access denied error instead of a service unavailable error
-                $this->pageAccessFailureHistory['sub_section'][] = $this->rootLine[$a];
-                $this->pageNotFound = 2;
-            }
-
-            if ((int)$this->rootLine[$a]['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION) {
-                // If there is a backend user logged in, check if they have read access to the page:
-                if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
-                    // If there was no page selected, the user apparently did not have read access to the
-                    // current page (not position in rootline) and we set the remove-flag...
-                    if (!$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
-                        $removeTheRestFlag = true;
-                    }
-                } else {
-                    // Don't go here, if there is no backend user logged in.
-                    $removeTheRestFlag = true;
-                }
-            }
-            if ($removeTheRestFlag) {
-                // Page is 'not found' in case a subsection was found and not accessible, code 2
-                $this->pageNotFound = 2;
-                unset($this->rootLine[$a]);
-            }
-        }
-        return $removeTheRestFlag;
-    }
-
-    /**
-     * Analysing $this->pageAccessFailureHistory into a summary array telling which features disabled display and on which pages and conditions.
-     * That data can be used inside a page-not-found handler
-     *
-     * @param string|null $failureReasonCode the error code to be attached (optional), see PageAccessFailureReasons list for details
-     * @return array Summary of why page access was not allowed.
-     * @internal
-     */
-    public function getPageAccessFailureReasons(string $failureReasonCode = null): array
-    {
-        $output = [];
-        if ($failureReasonCode) {
-            $output['code'] = $failureReasonCode;
-        }
-        $combinedRecords = array_merge(
-            is_array($this->pageAccessFailureHistory['direct_access'] ?? false) ? $this->pageAccessFailureHistory['direct_access'] : [['fe_group' => 0]],
-            is_array($this->pageAccessFailureHistory['sub_section'] ?? false) ? $this->pageAccessFailureHistory['sub_section'] : []
-        );
-        if (!empty($combinedRecords)) {
-            $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
-            foreach ($combinedRecords as $k => $pagerec) {
-                // If $k=0 then it is the very first page the original ID was pointing at and that will get a full check of course
-                // If $k>0 it is parent pages being tested. They are only significant for the access to the first page IF they had the
-                // extendToSubpages flag set, hence checked only then!
-                if (!$k || $pagerec['extendToSubpages']) {
-                    if ($pagerec['hidden'] ?? false) {
-                        $output['hidden'][$pagerec['uid']] = true;
-                    }
-                    if (isset($pagerec['starttime']) && $pagerec['starttime'] > $GLOBALS['SIM_ACCESS_TIME']) {
-                        $output['starttime'][$pagerec['uid']] = $pagerec['starttime'];
-                    }
-                    if (isset($pagerec['endtime']) && $pagerec['endtime'] != 0 && $pagerec['endtime'] <= $GLOBALS['SIM_ACCESS_TIME']) {
-                        $output['endtime'][$pagerec['uid']] = $pagerec['endtime'];
-                    }
-                    if (!$accessVoter->groupAccessGranted('pages', $pagerec, $this->context)) {
-                        $output['fe_group'][$pagerec['uid']] = $pagerec['fe_group'];
-                    }
-                }
-            }
-        }
-        return $output;
-    }
-
-    protected function setPageArguments(PageArguments $pageArguments): void
-    {
-        $this->pageArguments = $pageArguments;
-        $this->id = $pageArguments->getPageId();
-        // We store the originally requested id
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
-            $this->MP = (string)($pageArguments->getArguments()['MP'] ?? '');
-            // Ensure no additional arguments are given via the &MP=123-345,908-172 (e.g. "/")
-            $this->MP = preg_replace('/[^0-9,-]/', '', $this->MP);
-        }
     }
 
     /**
@@ -1410,121 +895,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Setting the language key that will be used by the current page.
-     * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
-     */
-    protected function settingLanguage(ServerRequestInterface $request): void
-    {
-        // Get values from site language
-        $languageAspect = LanguageAspectFactory::createFromSiteLanguage($this->language);
-
-        $languageId = $languageAspect->getId();
-        $languageContentId = $languageAspect->getContentId();
-
-        $pageTranslationVisibility = new PageTranslationVisibility((int)($this->page['l18n_cfg'] ?? 0));
-        // If the incoming language is set to another language than default
-        if ($languageAspect->getId() > 0) {
-            // Request the translation for the requested language
-            $olRec = $this->sys_page->getPageOverlay($this->page, $languageAspect);
-            $overlaidLanguageId = (int)($olRec['sys_language_uid'] ?? 0);
-            if ($overlaidLanguageId !== $languageAspect->getId()) {
-                // If requested translation is not available
-                if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'Page is not available in the requested language.',
-                        ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE]
-                    );
-                    throw new PropagateResponseException($response, 1533931388);
-                }
-                switch ($languageAspect->getLegacyLanguageMode()) {
-                    case 'strict':
-                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                            $request,
-                            'Page is not available in the requested language (strict).',
-                            ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
-                        );
-                        throw new PropagateResponseException($response, 1533931395);
-                    case 'content_fallback':
-                        // Setting content uid (but leaving the sys_language_uid) when a content_fallback
-                        // value was found.
-                        foreach ($languageAspect->getFallbackChain() as $orderValue) {
-                            if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
-                                $languageContentId = 0;
-                                break;
-                            }
-                            if (MathUtility::canBeInterpretedAsInteger($orderValue) && $overlaidLanguageId === (int)$orderValue) {
-                                $languageContentId = (int)$orderValue;
-                                break;
-                            }
-                            if ($orderValue === 'pageNotFound') {
-                                // The existing fallbacks have not been found, but instead of continuing
-                                // page rendering with default language, a "page not found" message should be shown
-                                // instead.
-                                $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                                    $request,
-                                    'Page is not available in the requested language (fallbacks did not apply).',
-                                    ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
-                                );
-                                throw new PropagateResponseException($response, 1533931402);
-                            }
-                        }
-                        break;
-                    default:
-                        // Default is that everything defaults to the default language...
-                        $languageId = ($languageContentId = 0);
-                }
-            }
-
-            // Define the language aspect again now
-            $languageAspect = GeneralUtility::makeInstance(
-                LanguageAspect::class,
-                $languageId,
-                $languageContentId,
-                $languageAspect->getOverlayType(),
-                $languageAspect->getFallbackChain()
-            );
-
-            // Setting the $this->page if an overlay record was found (which it is only if a language is used)
-            // Doing this ensures that page properties like the page title are resolved in the correct language
-            $this->page = $olRec;
-        }
-
-        // Set the language aspect
-        $this->context->setAspect('language', $languageAspect);
-
-        // Setting sys_language_uid inside sys-page by creating a new page repository
-        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        // If default language is not available
-        if ((!$languageAspect->getContentId() || !$languageAspect->getId())
-            && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
-        ) {
-            $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                $request,
-                'Page is not available in default language.',
-                ['code' => PageAccessFailureReasons::LANGUAGE_DEFAULT_NOT_AVAILABLE]
-            );
-            throw new PropagateResponseException($response, 1533931423);
-        }
-
-        if ($languageAspect->getId() > 0) {
-            $this->updateRootLinesWithTranslations();
-        }
-    }
-
-    /**
-     * Updating content of the two rootLines IF the language key is set!
-     */
-    protected function updateRootLinesWithTranslations(): void
-    {
-        try {
-            $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
-        } catch (RootLineException $e) {
-            $this->rootLine = [];
-        }
-    }
-
-    /**
      * Calculates and sets the internal linkVars based upon the current request parameters
      * and the setting "config.linkVars".
      *
@@ -1542,63 +912,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Returns URI of target page, if the current page is an overlaid mountpoint.
-     *
-     * If the current page is of type mountpoint and should be overlaid with the contents of the mountpoint page
-     * and is accessed directly, the user will be redirected to the mountpoint context.
-     * @internal
-     */
-    public function getRedirectUriForMountPoint(ServerRequestInterface $request): ?string
-    {
-        if (!empty($this->originalMountPointPage) && (int)$this->originalMountPointPage['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT) {
-            return $this->getUriToCurrentPageForRedirect($request);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns URI of target page, if the current page is a Shortcut.
-     *
-     * If the current page is of type shortcut and accessed directly via its URL,
-     * the user will be redirected to shortcut target.
-     *
-     * @internal
-     */
-    public function getRedirectUriForShortcut(ServerRequestInterface $request): ?string
-    {
-        if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
-            // Check if the shortcut page is actually on the current site, if not, this is a "page not found"
-            // because the request was www.mydomain.com/?id=23 where page ID 23 (which is a shortcut) is on another domain/site.
-            if ((int)($request->getQueryParams()['id'] ?? 0) > 0) {
-                try {
-                    $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($this->originalShortcutPage['l10n_parent'] ?: $this->originalShortcutPage['uid']);
-                } catch (SiteNotFoundException $e) {
-                    $site = null;
-                }
-                if ($site !== $this->site) {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
-                        $request,
-                        'ID was outside the domain',
-                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH)
-                    );
-                    throw new ImmediateResponseException($response, 1638022483);
-                }
-            }
-            return $this->getUriToCurrentPageForRedirect($request);
-        }
-
-        return null;
-    }
-
-    /**
      * Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
+     *
+     * @internal
      */
-    protected function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string
+    public function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string
     {
         $this->calculateLinkVars($request->getQueryParams());
-        $parameter = $this->page['uid'];
-        $type = (int)($this->pageArguments->getPageType() ?: 0);
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageRecord = $pageInformation->getPageRecord();
+        $parameter = $pageRecord['uid'];
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $request->getAttribute('routing');
+        $type = (int)($pageArguments->getPageType() ?: 0);
         if ($type) {
             $parameter .= ',' . $type;
         }
@@ -1689,20 +1015,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Set the SYS_LASTCHANGED register value, is also called when a translated page is in use,
-     * so the register reflects the state of the translated page, not the page in the default language.
-     *
-     * @see setSysLastChanged()
-     */
-    protected function setRegisterValueForSysLastChanged(array $page): void
-    {
-        $this->register['SYS_LASTCHANGED'] = (int)$page['tstamp'];
-        if ($this->register['SYS_LASTCHANGED'] < (int)$page['SYS_LASTCHANGED']) {
-            $this->register['SYS_LASTCHANGED'] = (int)$page['SYS_LASTCHANGED'];
-        }
-    }
-
-    /**
      * Adds tags to this page's cache entry, you can then f.e. remove cache
      * entries by tag
      */
@@ -1714,30 +1026,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getPageCacheTags(): array
     {
         return $this->pageCacheTags;
-    }
-
-    /**
-     * Check the value of "content_from_pid" of the current page record, and see if the current request
-     * should actually show content from another page.
-     *
-     * By using $TSFE->getPageAndRootline() on the cloned object, all rootline restrictions (extendToSubPages)
-     * are evaluated as well.
-     *
-     * @param ServerRequestInterface $request
-     * @return int the current page ID or another one if resolved properly - usually set to $this->contentPid
-     */
-    protected function resolveContentPid(ServerRequestInterface $request): int
-    {
-        if (!isset($this->page['content_from_pid']) || empty($this->page['content_from_pid'])) {
-            return $this->id;
-        }
-        // make REAL copy of TSFE object - not reference!
-        $temp_copy_TSFE = clone $this;
-        // Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
-        $temp_copy_TSFE->id = (int)$this->page['content_from_pid'];
-        $temp_copy_TSFE->MP = '';
-        $temp_copy_TSFE->getPageAndRootline($request);
-        return $temp_copy_TSFE->id;
     }
 
     /**
@@ -2352,18 +1640,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ];
         }
         return $additionalHeaders;
-    }
-
-    /**
-     * Log the page access failure with additional request information
-     */
-    protected function logPageAccessFailure(string $message, ServerRequestInterface $request): void
-    {
-        $context = ['pageId' => $this->id];
-        if (($normalizedParams = $request->getAttribute('normalizedParams')) instanceof NormalizedParams) {
-            $context['requestUrl'] = $normalizedParams->getRequestUrl();
-        }
-        $this->logger->error($message, $context);
     }
 
     protected function getBackendUser(): ?FrontendBackendUserAuthentication

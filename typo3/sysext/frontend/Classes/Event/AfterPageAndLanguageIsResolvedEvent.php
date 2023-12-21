@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\Event;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * A PSR-14 event fired in the frontend process after a given page has been resolved including
@@ -31,19 +31,24 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 final class AfterPageAndLanguageIsResolvedEvent
 {
     public function __construct(
-        private TypoScriptFrontendController $controller,
-        private ServerRequestInterface $request,
+        private readonly ServerRequestInterface $request,
+        private PageInformation $pageInformation,
         private ?ResponseInterface $response
     ) {}
-
-    public function getController(): TypoScriptFrontendController
-    {
-        return $this->controller;
-    }
 
     public function getRequest(): ServerRequestInterface
     {
         return $this->request;
+    }
+
+    public function getPageInformation(): PageInformation
+    {
+        return $this->pageInformation;
+    }
+
+    public function setPageInformation(PageInformation $pageInformation): void
+    {
+        $this->pageInformation = $pageInformation;
     }
 
     public function getResponse(): ?ResponseInterface

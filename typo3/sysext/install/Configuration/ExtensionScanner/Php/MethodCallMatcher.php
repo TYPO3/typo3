@@ -6255,4 +6255,25 @@ return [
             'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Event\BeforePageIsResolvedEvent->getController' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-102715-FrontendDetermineIdRelatedEventsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Event\AfterPageWithRootLineIsResolvedEvent->getController' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-102715-FrontendDetermineIdRelatedEventsChanged.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Event\AfterPageAndLanguageIsResolvedEvent->getController' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-102715-FrontendDetermineIdRelatedEventsChanged.rst',
+        ],
+    ],
 ];

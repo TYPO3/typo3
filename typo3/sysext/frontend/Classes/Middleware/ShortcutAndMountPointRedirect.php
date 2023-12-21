@@ -24,9 +24,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -86,7 +88,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
             return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                 $request,
                 'Page of type "External URL" could not be resolved properly',
-                $controller->getPageAccessFailureReasons(PageAccessFailureReasons::INVALID_EXTERNAL_URL)
+                ['code' => PageAccessFailureReasons::INVALID_EXTERNAL_URL]
             );
         }
 
@@ -95,12 +97,68 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
 
     protected function getRedirectUri(ServerRequestInterface $request): ?string
     {
-        $controller = $request->getAttribute('frontend.controller');
-        $redirectToUri = $controller->getRedirectUriForShortcut($request);
+        $redirectToUri = $this->getRedirectUriForShortcut($request);
         if ($redirectToUri !== null) {
             return $redirectToUri;
         }
-        return $controller->getRedirectUriForMountPoint($request);
+        return $this->getRedirectUriForMountPoint($request);
+    }
+
+    /**
+     * Returns URI of target page, if the current page is a Shortcut.
+     *
+     * If the current page is of type shortcut and accessed directly via its URL,
+     * the user will be redirected to shortcut target.
+     */
+    protected function getRedirectUriForShortcut(ServerRequestInterface $request): ?string
+    {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $originalShortcutPageRecord = $pageInformation->getOriginalShortcutPageRecord();
+        if (!empty($originalShortcutPageRecord)
+            && $originalShortcutPageRecord['doktype'] == PageRepository::DOKTYPE_SHORTCUT
+        ) {
+            // Check if the shortcut page is actually on the current site, if not, this is a "page not found"
+            // because the request was www.mydomain.com/?id=23 where page ID 23 (which is a shortcut) is on another domain/site.
+            if ((int)($request->getQueryParams()['id'] ?? 0) > 0) {
+                try {
+                    $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+                    $targetSite = $siteFinder->getSiteByPageId($originalShortcutPageRecord['l10n_parent'] ?: $originalShortcutPageRecord['uid']);
+                } catch (SiteNotFoundException) {
+                    $targetSite = null;
+                }
+                $site = $request->getAttribute('site');
+                if ($targetSite !== $site) {
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $request,
+                        'ID was outside the domain',
+                        ['code' => PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH]
+                    );
+                    throw new ImmediateResponseException($response, 1638022483);
+                }
+            }
+            $controller = $request->getAttribute('frontend.controller');
+            return $controller->getUriToCurrentPageForRedirect($request);
+        }
+        return null;
+    }
+
+    /**
+     * Returns URI of target page, if the current page is an overlaid mountpoint.
+     *
+     * If the current page is of type mountpoint and should be overlaid with the contents of the mountpoint page
+     * and is accessed directly, the user will be redirected to the mountpoint context.
+     */
+    protected function getRedirectUriForMountPoint(ServerRequestInterface $request): ?string
+    {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $originalMountPointPageRecord = $pageInformation->getOriginalMountPointPageRecord();
+        if (!empty($originalMountPointPageRecord)
+            && (int)$originalMountPointPageRecord['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT
+        ) {
+            $controller = $request->getAttribute('frontend.controller');
+            return $controller->getUriToCurrentPageForRedirect($request);
+        }
+        return null;
     }
 
     /**

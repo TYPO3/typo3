@@ -15,6 +15,10 @@ services:
     arguments:
       $cache: '@cache.assets'
 
+  # @todo: Remove "shared: false" again when this middleware is stateless
+  TYPO3\CMS\Frontend\Middleware\TypoScriptFrontendInitialization:
+    shared: false
+
   TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor:
     public: true
 

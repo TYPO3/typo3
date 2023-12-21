@@ -39,6 +39,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Middleware\TypoScriptFrontendInitialization;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
@@ -389,23 +391,35 @@ class RedirectService implements LoggerAwareInterface
     {
         $cacheInstruction = $originalRequest->getAttribute('frontend.cache.instruction', new CacheInstruction());
         $originalRequest = $originalRequest->withAttribute('frontend.cache.instruction', $cacheInstruction);
+        $pageArguments = new PageArguments($site->getRootPageId(), '0', []);
+        $pageInformation = new PageInformation();
+        $pageInformation->setId($site->getRootPageId());
+        $pageInformation->setPageRepository(GeneralUtility::makeInstance(PageRepository::class));
+        $pageInformation->setMountPoint('');
+        $tsfeInitMiddleware = GeneralUtility::makeInstance(TypoScriptFrontendInitialization::class);
+        // @todo: Evil hack.
+        $tsfeInitMiddleware->determineId($originalRequest, $pageInformation);
+        $originalRequest = $originalRequest->withAttribute('frontend.page.information', $pageInformation);
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
             GeneralUtility::makeInstance(Context::class),
             $site,
             $site->getDefaultLanguage(),
-            new PageArguments($site->getRootPageId(), '0', [])
+            $pageArguments
         );
-        $controller->determineId($originalRequest);
+        // b/w compat layer
+        $controller->id = $pageInformation->getId();
+        $controller->sys_page = $pageInformation->getPageRepository();
+        $controller->page = $pageInformation->getPageRecord();
+        $controller->MP = $pageInformation->getMountPoint();
+        $controller->contentPid = $pageInformation->getContentFromPid();
+        $controller->rootLine = $pageInformation->getRootLine();
         $controller->calculateLinkVars($queryParams);
         $newRequest = $controller->getFromCache($originalRequest);
         $controller->releaseLocks();
         $controller->newCObj($newRequest);
         if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $GLOBALS['TSFE'] = $controller;
-        }
-        if (!$GLOBALS['TSFE']->sys_page instanceof PageRepository) {
-            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         }
         return $controller;
     }

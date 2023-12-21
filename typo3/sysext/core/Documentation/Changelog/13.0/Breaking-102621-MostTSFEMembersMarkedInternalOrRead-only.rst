@@ -46,13 +46,13 @@ marked :php:`@internal`, which the core will deprecate with a compatibility laye
 
 The following public class properties have been marked "read only":
 
-* :php:`TypoScriptFrontendController->id`
-* :php:`TypoScriptFrontendController->rootLine`
-* :php:`TypoScriptFrontendController->page`
-* :php:`TypoScriptFrontendController->contentPid`
-* :php:`TypoScriptFrontendController->sys_page`
-* :php:`TypoScriptFrontendController->config` - Reading :php:`$tsfe->config['config']`
-  and :php:`$tsfe->config['rootLine']` is allowed
+* :php:`TypoScriptFrontendController->id` - Use :php:`$request->getAttribute('frontend.page.information')->getId()` instead
+* :php:`TypoScriptFrontendController->rootLine` - Use :php:`$request->getAttribute('frontend.page.information')->getRootLine()` instead
+* :php:`TypoScriptFrontendController->page` - Use :php:`$request->getAttribute('frontend.page.information')->getPageRecord()` instead
+* :php:`TypoScriptFrontendController->contentPid` - Avoid usages altogether, available as :php:`@internal` call using
+  :php:`$request->getAttribute('frontend.page.information')->getContentFromPid()`
+* :php:`TypoScriptFrontendController->sys_page` - Avoid usages altogether, create own instances when needed
+* :php:`TypoScriptFrontendController->config` - Reading :php:`$tsfe->config['config']` and :php:`$tsfe->config['rootLine']` is allowed
 * :php:`TypoScriptFrontendController->absRefPrefix`
 * :php:`TypoScriptFrontendController->cObj`
 

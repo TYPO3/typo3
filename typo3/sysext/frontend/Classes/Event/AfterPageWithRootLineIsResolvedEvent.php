@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\Event;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * A PSR-14 event fired in the frontend process after a given page has been resolved with permissions, rootline etc.
@@ -32,14 +32,9 @@ final class AfterPageWithRootLineIsResolvedEvent
     private ?ResponseInterface $response = null;
 
     public function __construct(
-        private TypoScriptFrontendController $controller,
-        private ServerRequestInterface $request
+        private readonly ServerRequestInterface $request,
+        private PageInformation $pageInformation,
     ) {}
-
-    public function getController(): TypoScriptFrontendController
-    {
-        return $this->controller;
-    }
 
     public function getRequest(): ServerRequestInterface
     {
@@ -54,5 +49,15 @@ final class AfterPageWithRootLineIsResolvedEvent
     public function getResponse(): ?ResponseInterface
     {
         return $this->response;
+    }
+
+    public function getPageInformation(): PageInformation
+    {
+        return $this->pageInformation;
+    }
+
+    public function setPageInformation(PageInformation $pageInformation): void
+    {
+        $this->pageInformation = $pageInformation;
     }
 }
