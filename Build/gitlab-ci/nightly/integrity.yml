@@ -1,4 +1,4 @@
-annotations php 8.1:
+annotations php 8.2:
   stage: integrity
   tags:
     - metal2
@@ -6,8 +6,8 @@ annotations php 8.1:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s checkAnnotations -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s checkAnnotations -p 8.2
 
 cgl:
   stage: integrity
@@ -17,9 +17,9 @@ cgl:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s cgl -n -p 8.1
-    - Build/Scripts/runTests.sh -s cglHeader -n -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s cgl -n -p 8.2
+    - Build/Scripts/runTests.sh -s cglHeader -n -p 8.2
 
 grunt clean:
   stage: integrity
@@ -47,20 +47,20 @@ integration various:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerValidate -p 8.1
-    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.1
-    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.1
-    - Build/Scripts/runTests.sh -s checkPermissions -p 8.1
-    - Build/Scripts/runTests.sh -s checkRst -p 8.1
-    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.1
-    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.1
-    - Build/Scripts/runTests.sh -s checkBom -p 8.1
-    - Build/Scripts/runTests.sh -s checkComposer -p 8.1
-    - Build/Scripts/runTests.sh -s checkTestClassFinal -p 8.1
-    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.1
-    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.1
+    - Build/Scripts/runTests.sh -s composerValidate -p 8.2
+    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.2
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.2
+    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.2
+    - Build/Scripts/runTests.sh -s checkPermissions -p 8.2
+    - Build/Scripts/runTests.sh -s checkRst -p 8.2
+    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.2
+    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.2
+    - Build/Scripts/runTests.sh -s checkBom -p 8.2
+    - Build/Scripts/runTests.sh -s checkComposer -p 8.2
+    - Build/Scripts/runTests.sh -s checkTestClassFinal -p 8.2
+    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.2
+    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.2
 
 iso database max:
   stage: integrity
@@ -74,10 +74,10 @@ iso database max:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s checkIsoDatabase -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s checkIsoDatabase -p 8.2
 
-lint php 8.1:
+lint php 8.2:
   stage: integrity
   tags:
     - metal2
@@ -85,7 +85,7 @@ lint php 8.1:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s lintPhp -p 8.1
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.2
 
 lint scss ts html:
   stage: integrity
@@ -103,7 +103,7 @@ lint scss ts html:
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
 
-phpstan php 8.1 locked:
+phpstan php 8.2 locked:
   stage: integrity
   tags:
     - metal2
@@ -111,10 +111,10 @@ phpstan php 8.1 locked:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s phpstan -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s phpstan -p 8.2
 
-phpstan php 8.1 max:
+phpstan php 8.2 max:
   stage: integrity
   tags:
     - metal2
@@ -126,5 +126,5 @@ phpstan php 8.1 max:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s phpstan -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s phpstan -p 8.2

@@ -117,7 +117,7 @@ final class DateViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * No deprecation notice using PHP 8.1 should be thrown when format is null
+     * No deprecation notice using PHP 8.1+ should be thrown when format is null
      * @test
      */
     public function viewHelperUsesSystemFormatWhenFormatWithNullValueIsGiven(): void

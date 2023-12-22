@@ -1,4 +1,4 @@
-annotations php 8.1 pre-merge:
+annotations php 8.2 pre-merge:
   stage: main
   tags:
     - metal2
@@ -7,8 +7,8 @@ annotations php 8.1 pre-merge:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s checkAnnotations -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s checkAnnotations -p 8.2
 
 cgl pre-merge:
   stage: main
@@ -19,9 +19,9 @@ cgl pre-merge:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s cglGit -n -p 8.1
-    - Build/Scripts/runTests.sh -s cglHeaderGit -n -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s cglGit -n -p 8.2
+    - Build/Scripts/runTests.sh -s cglHeaderGit -n -p 8.2
 
 grunt clean pre-merge:
   stage: main
@@ -51,20 +51,20 @@ integration various pre-merge:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerValidate -p 8.1
-    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.1
-    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.1
-    - Build/Scripts/runTests.sh -s checkPermissions -p 8.1
-    - Build/Scripts/runTests.sh -s checkRst -p 8.1
-    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.1
-    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.1
-    - Build/Scripts/runTests.sh -s checkBom -p 8.1
-    - Build/Scripts/runTests.sh -s checkComposer -p 8.1
-    - Build/Scripts/runTests.sh -s checkTestClassFinal -p 8.1
-    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.1
-    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.1
+    - Build/Scripts/runTests.sh -s composerValidate -p 8.2
+    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.2
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.2
+    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.2
+    - Build/Scripts/runTests.sh -s checkPermissions -p 8.2
+    - Build/Scripts/runTests.sh -s checkRst -p 8.2
+    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.2
+    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.2
+    - Build/Scripts/runTests.sh -s checkBom -p 8.2
+    - Build/Scripts/runTests.sh -s checkComposer -p 8.2
+    - Build/Scripts/runTests.sh -s checkTestClassFinal -p 8.2
+    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.2
+    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.2
 
 lint scss ts html pre-merge:
   stage: main
@@ -83,7 +83,7 @@ lint scss ts html pre-merge:
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
 
-phpstan php 8.1 pre-merge:
+phpstan php 8.2 pre-merge:
   stage: main
   tags:
     - metal2
@@ -92,6 +92,6 @@ phpstan php 8.1 pre-merge:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s phpstan -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s phpstan -p 8.2
 

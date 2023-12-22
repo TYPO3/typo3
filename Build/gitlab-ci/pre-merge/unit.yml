@@ -11,10 +11,10 @@ unit javascript pre-merge:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitJavascript
 
-unit php 8.1 deprecated pre-merge:
+unit php 8.2 random pre-merge:
   stage: main
   tags:
     - metal2
@@ -23,19 +23,8 @@ unit php 8.1 deprecated pre-merge:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
-unit php 8.1 random pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.1
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.2
 
 unit php 8.2 deprecated pre-merge:
   stage: main

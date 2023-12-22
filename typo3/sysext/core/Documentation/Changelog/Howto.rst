@@ -166,7 +166,7 @@ Like other documentation, changelog files are done in ReST, see
 -   Types "Deprecation" and "Breaking" contain an "Affected installations"
     section that describes when and if a TYPO3 instance is affected by a change.
     Example: "Extension xy is in use" or "TypoScript functionality xy is used"
-    or "System is based on PHP 8.1".
+    or "System is based on PHP 8.2".
 
 -   Types "Deprecation" and "Breaking" contain a "Migration" section to
     describe best practices on how to cope with a specific change.
