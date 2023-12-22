@@ -22,9 +22,9 @@
 		"doctrine/instantiator": "^1.5 || ^2.0",
 		"phpdocumentor/reflection-docblock": "^5.2",
 		"phpdocumentor/type-resolver": "^1.7.1",
-		"symfony/dependency-injection": "^6.4 || ^7.0",
-		"symfony/property-access": "^6.4 || ^7.0",
-		"symfony/property-info": "^6.4 || ^7.0",
+		"symfony/dependency-injection": "^7.0",
+		"symfony/property-access": "^7.0",
+		"symfony/property-info": "^7.0",
 		"typo3/cms-core": "13.0.*@dev"
 	},
 	"suggest": {
