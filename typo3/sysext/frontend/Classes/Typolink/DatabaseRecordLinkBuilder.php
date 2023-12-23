@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Typolink;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
@@ -55,10 +56,11 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $linkHandlerConfiguration = $linkHandlerConfiguration[$configurationKey]['configuration.'];
         $databaseTable = $linkHandlerConfiguration['table'];
 
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         if ($configuration[$configurationKey]['forceLink'] ?? false) {
-            $record = $tsfe->sys_page->getRawRecord($databaseTable, $linkDetails['uid']);
+            $record = $pageRepository->getRawRecord($databaseTable, $linkDetails['uid']);
         } else {
-            $record = $tsfe->sys_page->checkRecord($databaseTable, $linkDetails['uid']);
+            $record = $pageRepository->checkRecord($databaseTable, $linkDetails['uid']);
             $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
             $languageField = (string)($GLOBALS['TCA'][$databaseTable]['ctrl']['languageField'] ?? '');
 
@@ -67,7 +69,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
                 // If a record is already in a localized version OR if the record is set to "All Languages"
                 // we allow the generation of the link
                 if ($languageIdOfRecord === 0 && $languageAspect->doOverlays()) {
-                    $overlay = $tsfe->sys_page->getLanguageOverlay(
+                    $overlay = $pageRepository->getLanguageOverlay(
                         $databaseTable,
                         $record,
                         $languageAspect

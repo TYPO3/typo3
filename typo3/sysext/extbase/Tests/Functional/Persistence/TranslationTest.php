@@ -20,14 +20,12 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
@@ -50,10 +48,6 @@ final class TranslationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $pageRepository = new PageRepository($context);
-        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
-        $frontendControllerMock->sys_page = $pageRepository;
-        $GLOBALS['TSFE'] = $frontendControllerMock;
 
         // ConfigurationManager is used by PersistenceManager to retrieve configuration.
         // We set a proper extensionName and pluginName for the ConfigurationManager singleton

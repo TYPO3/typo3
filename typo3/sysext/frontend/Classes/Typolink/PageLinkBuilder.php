@@ -299,10 +299,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 $mountPointPairs['closest'] = $temp_MP;
             }
         }
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         // Look for overlay Mount Point:
-        $mount_info = $tsfe->sys_page->getMountPointInfo($page['uid'], $page);
+        $mount_info = $pageRepository->getMountPointInfo($page['uid'], $page);
         if (is_array($mount_info) && $mount_info['overlay']) {
-            $page = $tsfe->sys_page->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
+            $page = $pageRepository->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
             if (empty($page)) {
                 throw new UnableToLinkException('Mount point "' . $mount_info['mount_pid'] . '" was not available, so "' . $linkText . '" was not linked.', 1490987337, null, $linkText);
             }
@@ -364,7 +365,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     protected function modifyUrlForAccessRestrictedPage(string $url, array $page, string $overridePageType): string
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        $thePage = $tsfe->sys_page->getPage($tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $thePage = $pageRepository->getPage($tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
         $addParams = str_replace(
             [
                 '###RETURN_URL###',
@@ -678,10 +680,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($id <= 0) {
             return;
         }
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         // First level, check id
         if (!$level) {
             // Find mount point if any:
-            $mount_info = $this->getTypoScriptFrontendController()->sys_page->getMountPointInfo($id);
+            $mount_info = $pageRepository->getMountPointInfo($id);
             // Overlay mode:
             if (is_array($mount_info) && $mount_info['overlay']) {
                 $MP_array[] = $mount_info['MPvar'];
@@ -719,7 +722,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 // Find mount point if any:
                 $next_id = (int)$row['uid'];
                 $next_MP_array = $MP_array;
-                $mount_info = $this->getTypoScriptFrontendController()->sys_page->getMountPointInfo($next_id, $row);
+                $mount_info = $pageRepository->getMountPointInfo($next_id, $row);
                 // Overlay mode:
                 if (is_array($mount_info) && $mount_info['overlay']) {
                     $next_MP_array[] = $mount_info['MPvar'];

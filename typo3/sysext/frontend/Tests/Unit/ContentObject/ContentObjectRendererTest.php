@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
@@ -138,8 +139,6 @@ final class ContentObjectRendererTest extends UnitTestCase
         ]);
 
         $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
-        $pageRepositoryMock =
-            $this->getAccessibleMock(PageRepository::class, ['getRawRecord', 'getMountPointInfo']);
         $this->frontendControllerMock =
             $this->getAccessibleMock(
                 TypoScriptFrontendController::class,
@@ -151,7 +150,6 @@ final class ContentObjectRendererTest extends UnitTestCase
         $this->frontendControllerMock->_set('context', GeneralUtility::makeInstance(Context::class));
         $this->frontendControllerMock->config = [];
         $this->frontendControllerMock->page = [];
-        $this->frontendControllerMock->sys_page = $pageRepositoryMock;
         $this->frontendControllerMock->_set('language', $site->getLanguageById(2));
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
 
@@ -1492,7 +1490,9 @@ final class ContentObjectRendererTest extends UnitTestCase
     public function getDataWithTypeDbReturnsCorrectTitle()
     {
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
-        $GLOBALS['TSFE']->sys_page->expects(self::once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        $pageRepository = $this->createMock(PageRepository::class);
+        GeneralUtility::addInstance(PageRepository::class, $pageRepository);
+        $pageRepository->expects(self::once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
         self::assertSame('someTitle', $this->subject->getData('db:tt_content:106:title'));
     }
 
@@ -1539,7 +1539,11 @@ final class ContentObjectRendererTest extends UnitTestCase
     public function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiers(string $identifier, InvocationOrder $expectsMethodCall): void
     {
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
-        $GLOBALS['TSFE']->sys_page->expects($expectsMethodCall)->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        $pageRepository = $this->createMock(PageRepository::class);
+        if ($expectsMethodCall instanceof InvokedCount && !$expectsMethodCall->isNever()) {
+            GeneralUtility::addInstance(PageRepository::class, $pageRepository);
+        }
+        $pageRepository->expects($expectsMethodCall)->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
         self::assertSame('', $this->subject->getData($identifier));
     }
 

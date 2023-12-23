@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Page;
 
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-
 /**
  * This DTO carries various Frontend rendering related page information. It is
  * set up by a Frontend middleware and attached to as 'frontend.page.information'
@@ -29,7 +27,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 final class PageInformation
 {
     private int $id;
-    private PageRepository $pageRepository;
     private array $pageRecord;
     private string $mountPoint = '';
     private int $contentFromPid;
@@ -85,22 +82,6 @@ final class PageInformation
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @internal Only to be set by core
-     */
-    public function setPageRepository(PageRepository $pageRepository): void
-    {
-        $this->pageRepository = $pageRepository;
-    }
-
-    /**
-     * @internal Only to be read by core
-     */
-    public function getPageRepository(): PageRepository
-    {
-        return $this->pageRepository;
     }
 
     /**

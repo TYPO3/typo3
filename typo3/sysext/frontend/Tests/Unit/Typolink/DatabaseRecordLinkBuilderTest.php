@@ -161,7 +161,7 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $contentObjectRendererMock->method('getRequest')->willReturn($request);
         GeneralUtility::setSingletonInstance(Context::class, new Context());
-        $frontendControllerMock->sys_page = $pageRepositoryMock;
+        GeneralUtility::addInstance(PageRepository::class, $pageRepositoryMock);
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
 
         $pageRepositoryMock

@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
@@ -469,15 +470,22 @@ class ResourceFactory implements SingletonInterface
      * @param bool $raw Whether to get raw results without performing overlays
      * @return array|null
      */
-    protected function getFileReferenceData($uid, $raw = false)
+    protected function getFileReferenceData(int $uid, bool $raw = false): ?array
     {
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
         if (!$raw
-            && ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+            && $request instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($request)->isBackend()
         ) {
             $fileReferenceData = BackendUtility::getRecordWSOL('sys_file_reference', $uid);
-        } elseif (!$raw && is_object($GLOBALS['TSFE'] ?? false)) {
-            $fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);
+        } elseif (!$raw
+            && $request instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($request)->isFrontend()
+        ) {
+            $fileReferenceData = GeneralUtility::makeInstance(PageRepository::class)->checkRecord('sys_file_reference', $uid);
+            if (!is_array($fileReferenceData)) {
+                $fileReferenceData = null;
+            }
         } else {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));

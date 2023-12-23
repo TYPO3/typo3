@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,14 +85,7 @@ abstract class AbstractContentObject
 
     protected function getPageRepository(): PageRepository
     {
-        if (!$this->hasTypoScriptFrontendController()) {
-            return GeneralUtility::makeInstance(PageRepository::class);
-        }
-        /** do not lose the used {@link \TYPO3\CMS\Core\Context\Context} of TSFE, if it is currently not fully initialized */
-        if (!$this->getTypoScriptFrontendController()->sys_page instanceof PageRepository) {
-            return GeneralUtility::makeInstance(PageRepository::class, GeneralUtility::makeInstance(Context::class));
-        }
-        return $this->getTypoScriptFrontendController()->sys_page;
+        return GeneralUtility::makeInstance(PageRepository::class);
     }
 
     protected function getPageRenderer(): PageRenderer

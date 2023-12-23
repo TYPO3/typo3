@@ -1009,7 +1009,8 @@ class IndexSearchRepository
             // filtering out ALL pages that are not accessible due to restriction containers.
             // Does NOT look for "no_search" field!
             $siteIdNumbers = GeneralUtility::intExplode(',', $this->searchRootPageIdList);
-            $pageIdList = $this->getTypoScriptFrontendController()->sys_page->getPageIdsRecursive($siteIdNumbers, 9999);
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+            $pageIdList = $pageRepository->getPageIdsRecursive($siteIdNumbers, 9999);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'ISEC.page_id',

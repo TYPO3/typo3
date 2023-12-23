@@ -394,7 +394,6 @@ class RedirectService implements LoggerAwareInterface
         $pageArguments = new PageArguments($site->getRootPageId(), '0', []);
         $pageInformation = new PageInformation();
         $pageInformation->setId($site->getRootPageId());
-        $pageInformation->setPageRepository(GeneralUtility::makeInstance(PageRepository::class));
         $pageInformation->setMountPoint('');
         $tsfeInitMiddleware = GeneralUtility::makeInstance(TypoScriptFrontendInitialization::class);
         // @todo: Evil hack.
@@ -409,7 +408,7 @@ class RedirectService implements LoggerAwareInterface
         );
         // b/w compat layer
         $controller->id = $pageInformation->getId();
-        $controller->sys_page = $pageInformation->getPageRepository();
+        $controller->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $controller->page = $pageInformation->getPageRecord();
         $controller->MP = $pageInformation->getMountPoint();
         $controller->contentPid = $pageInformation->getContentFromPid();

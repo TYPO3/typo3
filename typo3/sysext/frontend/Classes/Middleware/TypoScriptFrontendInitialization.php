@@ -120,7 +120,6 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         //        extraction of 'determineId()' to a (stateless) service class.
         $pageInformation = new PageInformation();
         $pageInformation->setId($pageArguments->getPageId());
-        $pageInformation->setPageRepository(GeneralUtility::makeInstance(PageRepository::class));
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ?? false) {
             $mountPoint = (string)($pageArguments->getArguments()['MP'] ?? '');
             // Ensure no additional arguments are given via the &MP=123-345,908-172 (e.g. "/")
@@ -144,7 +143,7 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         );
         // b/w compat layer
         $controller->id = $pageInformation->getId();
-        $controller->sys_page = $pageInformation->getPageRepository();
+        $controller->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $controller->page = $pageInformation->getPageRecord();
         $controller->MP = $pageInformation->getMountPoint();
         $controller->contentPid = $pageInformation->getContentFromPid();
@@ -292,7 +291,7 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
     {
         $requestedPageRowWithoutGroupCheck = [];
         $id = $pageInformation->getId();
-        $pageRepository = $pageInformation->getPageRepository();
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $mountPoint = $pageInformation->getMountPoint();
         $pageRecord = $pageRepository->getPage($id);
         $pageInformation->setPageRecord($pageRecord);
@@ -406,7 +405,7 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
             // or if a translation of the page overwrites the shortcut target, and we need to follow the new target.
             $pageInformation = $this->settingLanguage($request, $pageInformation);
             // Reset vars to new state that may have been created by settingLanguage()
-            $pageRepository = $pageInformation->getPageRepository();
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $pageRecord = $pageInformation->getPageRecord();
             $pageInformation->setOriginalShortcutPageRecord($pageRecord);
             $pageRecord = $pageRepository->resolveShortcutPage($pageRecord, true);
@@ -553,12 +552,12 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         $languageContentId = $languageAspect->getContentId();
 
         $pageRecord = $pageInformation->getPageRecord();
-        $pageRepository = $pageInformation->getPageRepository();
 
         $pageTranslationVisibility = new PageTranslationVisibility((int)($pageRecord['l18n_cfg'] ?? 0));
         // If the incoming language is set to another language than default
         if ($languageAspect->getId() > 0) {
             // Request the translation for the requested language
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $olRec = $pageRepository->getPageOverlay($pageRecord, $languageAspect);
             $overlaidLanguageId = (int)($olRec['sys_language_uid'] ?? 0);
             if ($overlaidLanguageId !== $languageAspect->getId()) {
@@ -624,8 +623,6 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
 
         // Set the language aspect
         $this->context->setAspect('language', $languageAspect);
-        // Setting sys_language_uid inside sys-page by creating a new page repository
-        $pageInformation->setPageRepository(GeneralUtility::makeInstance(PageRepository::class));
         // If default language is not available
         if ((!$languageAspect->getContentId() || !$languageAspect->getId())
             && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()

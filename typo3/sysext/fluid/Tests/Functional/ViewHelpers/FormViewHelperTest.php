@@ -19,13 +19,11 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -251,7 +249,6 @@ final class FormViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $GLOBALS['TSFE']->id = 1;
-        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form addQueryString="untrusted" />');
         $context->setRequest(new Request($request));

@@ -23,7 +23,6 @@ use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -225,7 +224,6 @@ final class ContentObjectRendererTest extends FunctionalTestCase
             $site->getDefaultLanguage(),
             new PageArguments(1, '0', [])
         );
-        $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
 
         $result = $subject->getQuery($table, $conf, true);

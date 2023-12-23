@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
@@ -882,16 +883,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($pidList === '') {
             $pidList = 'this';
         }
-        $tsfe = $this->getTypoScriptFrontendController();
+        $pageRepository = $this->getPageRepository();
         $listArr = null;
         if (trim($pidList)) {
+            $tsfe = $this->getTypoScriptFrontendController();
             $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $pidList));
             $listArr = $this->checkPidArray($listArr);
         }
         $pidList = [];
         if (is_array($listArr) && !empty($listArr)) {
             foreach ($listArr as $uid) {
-                $page = $tsfe->sys_page->getPage($uid);
+                $page = $pageRepository->getPage($uid);
                 if (!$page['is_siteroot']) {
                     $pidList[] = $page['pid'];
                 }
@@ -4032,7 +4034,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if (!isset($selectParts[1])) {
                             break;
                         }
-                        $dbRecord = $tsfe->sys_page->getRawRecord($selectParts[0], $selectParts[1]);
+                        $pageRepository = $this->getPageRepository();
+                        $dbRecord = $pageRepository->getRawRecord($selectParts[0], $selectParts[1]);
                         if (is_array($dbRecord) && isset($selectParts[2])) {
                             $retVal = $dbRecord[$selectParts[2]] ?? '';
                         }
@@ -4818,14 +4821,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         $statement = $this->exec_getQuery($tableName, $queryConfiguration);
 
-        $tsfe = $this->getTypoScriptFrontendController();
+        $pageRepository = $this->getPageRepository();
         while ($row = $statement->fetchAssociative()) {
             // Versioning preview:
-            $tsfe->sys_page->versionOL($tableName, $row, true);
+            $pageRepository->versionOL($tableName, $row, true);
 
             // Language overlay:
             if (is_array($row)) {
-                $row = $tsfe->sys_page->getLanguageOverlay($tableName, $row);
+                $row = $pageRepository->getLanguageOverlay($tableName, $row);
             }
 
             // Might be unset in the language overlay
@@ -4919,7 +4922,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $storagePid = $this->getTypoScriptFrontendController()->id;
                     }
                 });
-                $expandedPidList = $this->getTypoScriptFrontendController()->sys_page->getPageIdsRecursive($pidList, $conf['recursive']);
+                $pageRepository = $this->getPageRepository();
+                $expandedPidList = $pageRepository->getPageIdsRecursive($pidList, $conf['recursive']);
                 $conf['pidInList'] = implode(',', $expandedPidList);
             }
         }
@@ -5209,7 +5213,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // Enablefields
-        $constraints[] = QueryHelper::stripLogicalOperatorPrefix($tsfe->sys_page->enableFields($table, -1, $enableFieldsIgnore));
+        $pageRepository = $this->getPageRepository();
+        $constraints[] = QueryHelper::stripLogicalOperatorPrefix($pageRepository->enableFields($table, -1, $enableFieldsIgnore));
 
         // MAKE WHERE:
         if ($constraints !== []) {
@@ -5370,7 +5375,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // to check that again.
             return $pageIds;
         }
-
+        $pageRepository = $this->getPageRepository();
         $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
         if ($this->checkPid_badDoktypeList) {
             $restrictionContainer->add(GeneralUtility::makeInstance(
@@ -5379,7 +5384,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 GeneralUtility::intExplode(',', (string)$this->checkPid_badDoktypeList, true)
             ));
         }
-        return $tsfe->sys_page->filterAccessiblePageIds($pageIds, $restrictionContainer);
+        return $pageRepository->filterAccessiblePageIds($pageIds, $restrictionContainer);
     }
 
     /**
@@ -5459,14 +5464,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return $markerValues;
     }
 
-    /**
-     * Get instance of FAL resource factory
-     *
-     * @return ResourceFactory
-     */
-    protected function getResourceFactory()
+    protected function getResourceFactory(): ResourceFactory
     {
         return GeneralUtility::makeInstance(ResourceFactory::class);
+    }
+
+    protected function getPageRepository(): PageRepository
+    {
+        return GeneralUtility::makeInstance(PageRepository::class);
     }
 
     /**

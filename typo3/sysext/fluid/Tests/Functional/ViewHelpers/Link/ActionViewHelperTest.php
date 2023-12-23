@@ -18,13 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -160,7 +158,6 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('frontent.controller', $GLOBALS['TSFE']);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE']->id = 1;
-        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $GLOBALS['TSFE']->config = $tsfeConfigArray;
         $view = new StandaloneView();
         $view->setRequest($request);
@@ -279,7 +276,6 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = new Request($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE']->id = 1;
-        $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $GLOBALS['TSFE']->config = $tsfeConfigArray;
         $view = new StandaloneView();
         $view->setRequest($request);

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Typolink;
 
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -234,7 +233,6 @@ abstract class AbstractTypolinkBuilder
             $language,
             $pageArguments
         );
-        $this->typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         return $this->typoScriptFrontendController;
     }
 }

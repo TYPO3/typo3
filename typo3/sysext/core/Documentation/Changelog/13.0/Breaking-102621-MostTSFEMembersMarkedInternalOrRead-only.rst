@@ -51,7 +51,7 @@ The following public class properties have been marked "read only":
 * :php:`TypoScriptFrontendController->page` - Use :php:`$request->getAttribute('frontend.page.information')->getPageRecord()` instead
 * :php:`TypoScriptFrontendController->contentPid` - Avoid usages altogether, available as :php:`@internal` call using
   :php:`$request->getAttribute('frontend.page.information')->getContentFromPid()`
-* :php:`TypoScriptFrontendController->sys_page` - Avoid usages altogether, create own instances when needed
+* :php:`TypoScriptFrontendController->sys_page` - Avoid altogether, create own instance using :php:`GeneralUtility::makeInstance(PageRepository::class)`
 * :php:`TypoScriptFrontendController->config` - Reading :php:`$tsfe->config['config']` and :php:`$tsfe->config['rootLine']` is allowed
 * :php:`TypoScriptFrontendController->absRefPrefix`
 * :php:`TypoScriptFrontendController->cObj`
