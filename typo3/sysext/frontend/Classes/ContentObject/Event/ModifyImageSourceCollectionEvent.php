@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Event;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * Listeners are able to modify the initialized ContentObjectRenderer instance
+ * Listeners are able to enrich the final source collection result
  */
 final class ModifyImageSourceCollectionEvent
 {

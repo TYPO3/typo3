@@ -43,7 +43,7 @@ registration:
     final class ModifyImageSourceCollectionEventListener
     {
         #[AsEventListener]
-        public function __invoke(AfterGetDataResolvedEvent $event): void
+        public function __invoke(ModifyImageSourceCollectionEvent $event): void
         {
             $event->setSourceCollection('<source src="bar-file.jpg" media="(max-device-width: 600px)">');
         }
