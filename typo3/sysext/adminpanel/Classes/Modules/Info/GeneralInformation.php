@@ -22,27 +22,28 @@ use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * General information module displaying info about the current
- * request
+ * General information module displaying info about the current request
  *
  * @internal
  */
 class GeneralInformation extends AbstractSubModule implements DataProviderInterface
 {
+    public function __construct(
+        private readonly TimeTracker $timeTracker,
+        private readonly Context $context,
+    ) {}
+
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
-        /** @var UserAspect $frontendUserAspect */
-        $frontendUserAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
-        $tsfe = $this->getTypoScriptFrontendController();
+        $frontendUserAspect = $this->context->getAspect('frontend.user');
+        $tsfe = $request->getAttribute('frontend.controller');
         return new ModuleData(
             [
                 'post' => $request->getParsedBody(),
@@ -56,7 +57,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
                     'noCache' => !$this->isCachingAllowed($request),
                     'noCacheReasons' => $request->getAttribute('frontend.cache.instruction')->getDisabledCacheReasons(),
                     'countUserInt' => count($tsfe->config['INTincScript'] ?? []),
-                    'totalParsetime' => $this->getTimeTracker()->getParseTime(),
+                    'totalParsetime' => $this->timeTracker->getParseTime(),
                     'feUser' => [
                         'uid' => $frontendUserAspect->get('id') ?: 0,
                         'username' => $frontendUserAspect->get('username') ?: '',
@@ -145,7 +146,8 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     {
         $documentSize = 0;
         if (!$this->isCachingAllowed($request)) {
-            $documentSize = mb_strlen($this->getTypoScriptFrontendController()->content, 'UTF-8');
+            $tsfe = $request->getAttribute('frontend.controller');
+            $documentSize = mb_strlen($tsfe->content, 'UTF-8');
         }
         return GeneralUtility::formatSize($documentSize);
     }
@@ -153,15 +155,5 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     protected function isCachingAllowed(ServerRequestInterface $request): bool
     {
         return $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
-    }
-
-    protected function getTimeTracker(): TimeTracker
-    {
-        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

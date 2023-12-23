@@ -25,8 +25,9 @@ use TYPO3\CMS\Core\Domain\Page;
  */
 final class ModifyUrlForCanonicalTagEvent
 {
+    private string $url = '';
+
     public function __construct(
-        private string $url,
         private readonly ServerRequestInterface $request,
         private readonly Page $page
     ) {}

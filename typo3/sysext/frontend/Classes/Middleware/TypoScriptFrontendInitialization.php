@@ -143,9 +143,7 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         );
         // b/w compat layer
         $controller->id = $pageInformation->getId();
-        $controller->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $controller->page = $pageInformation->getPageRecord();
-        $controller->MP = $pageInformation->getMountPoint();
         $controller->contentPid = $pageInformation->getContentFromPid();
         $controller->rootLine = $pageInformation->getRootLine();
 

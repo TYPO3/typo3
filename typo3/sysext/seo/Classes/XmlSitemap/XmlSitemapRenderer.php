@@ -57,7 +57,7 @@ final class XmlSitemapRenderer
         $templatePaths->setFormat('xml');
         $sitemapType = $typoScriptConfiguration['sitemapType'] ?? 'xmlSitemap';
         $view = GeneralUtility::makeInstance(TemplateView::class, $renderingContext);
-        $view->assign('type', $request->getAttribute('frontend.controller')->getPageArguments()->getPageType());
+        $view->assign('type', $request->getAttribute('routing')->getPageType());
         $view->assign('sitemapType', $sitemapType);
         $configConfiguration = $configurationArrayWithoutDots['config'] ?? [];
         if (!empty($sitemapName = ($request->getQueryParams()['sitemap'] ?? null))) {

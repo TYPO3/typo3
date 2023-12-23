@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -141,11 +140,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Read-only! Extensions may read but never write this property!
      */
     public ?PageRepository $sys_page = null;
-
-    /**
-     * @internal
-     */
-    public string $MP = '';
 
     /**
      * A central data array consisting of various keys, initialized and
@@ -336,6 +330,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function __construct(Context $context, Site $site, SiteLanguage $siteLanguage, PageArguments $pageArguments)
     {
+        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $this->context = $context;
         $this->site = $site;
         $this->language = $siteLanguage;
@@ -614,7 +609,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // constant condition verdicts, the setup condition verdicts, plus various not TypoScript related details like
         // obviously the page id.
         $this->lock = GeneralUtility::makeInstance(ResourceMutex::class);
-        $this->newHash = $this->createHashBase($sysTemplateRows, $constantConditionList, $setupConditionList);
+        $this->newHash = $this->createHashBase($request, $sysTemplateRows, $constantConditionList, $setupConditionList);
         if ($isCachingAllowed) {
             if ($this->shouldAcquireCacheData($request)) {
                 // Try to get a page cache row.
@@ -731,7 +726,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 }
             }
 
-            $type = (int)($this->pageArguments->getPageType() ?: 0);
+            /** @var PageArguments $pageArguments */
+            $pageArguments = $request->getAttribute('routing');
+            $type = (int)($pageArguments->getPageType() ?: 0);
             $typoScriptPageTypeName = $setupArray['types.'][$type] ?? '';
             $typoScriptPageTypeSetup = $setupArray[$typoScriptPageTypeName . '.'] ?? null;
             if (!is_array($typoScriptPageTypeSetup)) {
@@ -849,28 +846,31 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * the other requests wait until this finished and re-use the result.
      *
      * This hash is unique to the TS template and constant and setup condition verdict,
-     * the variables ->id, ->type, list of frontend user groups, ->MP (Mount Points) and cHash array.
+     * the variables ->id, ->type, list of frontend user groups, mount points and cHash array.
      *
      * @return string Page cache entry identifier also used as page generation lock
      */
-    protected function createHashBase(array $sysTemplateRows, array $constantConditionList, array $setupConditionList): string
+    protected function createHashBase(ServerRequestInterface $request, array $sysTemplateRows, array $constantConditionList, array $setupConditionList): string
     {
         // Fetch the list of user groups
-        /** @var UserAspect $userAspect */
         $userAspect = $this->context->getAspect('frontend.user');
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $site = $request->getAttribute('site');
+        $language = $request->getAttribute('language', $site->getDefaultLanguage());
+        $pageArguments = $request->getAttribute('routing');
         $hashParameters = [
-            'id' => $this->id,
-            'type' => (int)($this->pageArguments->getPageType() ?: 0),
-            'groupIds' => (string)implode(',', $userAspect->getGroupIds()),
-            'MP' => (string)$this->MP,
-            'site' => $this->site->getIdentifier(),
+            'id' => $pageInformation->getId(),
+            'type' => (int)($pageArguments->getPageType() ?: 0),
+            'groupIds' => implode(',', $userAspect->getGroupIds()),
+            'MP' => $pageInformation->getMountPoint(),
+            'site' => $site->getIdentifier(),
             // Ensure the language base is used for the hash base calculation as well, otherwise TypoScript and page-related rendering
             // is not cached properly as we don't have any language-specific conditions anymore
-            'siteBase' => (string)$this->language->getBase(),
+            'siteBase' => (string)$language->getBase(),
             // additional variation trigger for static routes
-            'staticRouteArguments' => $this->pageArguments->getStaticArguments(),
+            'staticRouteArguments' => $pageArguments->getStaticArguments(),
             // dynamic route arguments (if route was resolved)
-            'dynamicArguments' => $this->getRelevantParametersForCachingFromPageArguments($this->pageArguments),
+            'dynamicArguments' => $this->getRelevantParametersForCachingFromPageArguments($pageArguments),
             'sysTemplateRows' => $sysTemplateRows,
             'constantConditionList' => $constantConditionList,
             'setupConditionList' => $setupConditionList,

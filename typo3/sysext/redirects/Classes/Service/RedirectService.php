@@ -23,7 +23,6 @@ use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -395,6 +394,7 @@ class RedirectService implements LoggerAwareInterface
         $mergedQueryParams = array_merge($queryParams, $queryParamsFromRequest);
         $originalRequest = $originalRequest->withQueryParams($mergedQueryParams);
         $pageArguments = new PageArguments($site->getRootPageId(), '0', []);
+        $originalRequest = $originalRequest->withAttribute('routing', $pageArguments);
         $pageInformation = new PageInformation();
         $pageInformation->setId($site->getRootPageId());
         $pageInformation->setMountPoint('');
@@ -411,9 +411,7 @@ class RedirectService implements LoggerAwareInterface
         );
         // b/w compat layer
         $controller->id = $pageInformation->getId();
-        $controller->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $controller->page = $pageInformation->getPageRecord();
-        $controller->MP = $pageInformation->getMountPoint();
         $controller->contentPid = $pageInformation->getContentFromPid();
         $controller->rootLine = $pageInformation->getRootLine();
         $newRequest = $controller->getFromCache($originalRequest);

@@ -18,11 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch\EventListener;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
@@ -83,7 +85,7 @@ class FrontendGenerationPageIndexingTrigger
         }
         // Init and start indexing
         $this->indexer->forceIndexing = $forceIndexing;
-        $this->indexer->init($this->initializeIndexerConfiguration($tsfe, $languageAspect));
+        $this->indexer->init($this->initializeIndexerConfiguration($event->getRequest(), $tsfe, $languageAspect));
         $this->indexer->indexTypo3PageContent();
         $this->timeTracker->pull();
     }
@@ -92,24 +94,26 @@ class FrontendGenerationPageIndexingTrigger
      * Setting up internal configuration from config array based on TypoScriptFrontendController
      * Information about page for which the indexing takes place
      */
-    protected function initializeIndexerConfiguration(TypoScriptFrontendController $tsfe, LanguageAspect $languageAspect): array
+    protected function initializeIndexerConfiguration(ServerRequestInterface $request, TypoScriptFrontendController $tsfe, LanguageAspect $languageAspect): array
     {
-        $pageArguments = $tsfe->getPageArguments();
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $request->getAttribute('routing');
+        $pageInformation = $request->getAttribute('frontend.page.information');
         $configuration = [
             // Page id
-            'id' => $tsfe->id,
+            'id' => $pageInformation->getId(),
             // Page type
             'type' => $pageArguments->getPageType(),
             // site language id of the language of the indexing.
             'sys_language_uid' => $languageAspect->getId(),
             // MP variable, if any (Mount Points)
-            'MP' => $tsfe->MP,
+            'MP' => $pageInformation->getMountPoint(),
             // Group list
             'gr_list' => implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])),
             // page arguments array
             'staticPageArguments' => $pageArguments->getStaticArguments(),
             // The creation date of the TYPO3 page
-            'crdate' => $tsfe->page['crdate'],
+            'crdate' => $pageInformation->getPageRecord()['crdate'],
             'rootline_uids' => [],
         ];
 

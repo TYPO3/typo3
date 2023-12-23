@@ -576,22 +576,24 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function getClosestMountPointValueForPage(int $pageId): string
     {
-        $tsfe = $this->getTypoScriptFrontendController();
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) || !$tsfe->MP) {
+        $request = $this->contentObjectRenderer->getRequest();
+        $mountPoint = $request->getAttribute('frontend.page.information')?->getMountPoint() ?? '';
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) || !$mountPoint) {
             return '';
         }
         // Same page as current.
-        if ($tsfe->id === $pageId) {
-            return $tsfe->MP;
+        if (($request->getAttribute('frontend.page.information')?->getId() ?? 0) === $pageId) {
+            return $mountPoint;
         }
 
-        // Find closest mount point
+        // Find the closest mount point
         // Gets rootline of linked-to page
         try {
             $tCR_rootline = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
-        } catch (RootLineException $e) {
+        } catch (RootLineException) {
             $tCR_rootline = [];
         }
+        $tsfe = $this->getTypoScriptFrontendController();
         $inverseLocalRootLine = array_reverse($tsfe->config['rootLine'] ?? []);
         $rl_mpArray = [];
         $startMPaccu = false;

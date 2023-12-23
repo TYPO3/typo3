@@ -175,7 +175,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         $GLOBALS['TSFE']->id = 123;
         $GLOBALS['TSFE']->page['no_index'] = 1;
 
-        (new CanonicalGenerator())->generate(['request' => new ServerRequest('https://example.com'), 'page' => ['uid' => 123]]);
+        $this->get(CanonicalGenerator::class)->generate(['request' => new ServerRequest('https://example.com'), 'page' => ['uid' => 123]]);
 
         self::assertInstanceOf(ModifyUrlForCanonicalTagEvent::class, $modifyUrlForCanonicalTagEvent);
         self::assertEmpty('', $modifyUrlForCanonicalTagEvent->getUrl());

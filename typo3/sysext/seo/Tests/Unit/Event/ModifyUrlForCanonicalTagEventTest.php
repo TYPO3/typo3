@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Seo\Tests\Unit\Event;
 
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,12 +29,12 @@ final class ModifyUrlForCanonicalTagEventTest extends UnitTestCase
      */
     public function gettersReturnInitializedObjects(): void
     {
-        $url = (string)new Uri('https://example.com');
-        $request = (new ServerRequest($url));
+        $request = (new ServerRequest(''));
         $page = new Page(['uid' => 123]);
-        $event = new ModifyUrlForCanonicalTagEvent($url, $request, $page);
+        $event = new ModifyUrlForCanonicalTagEvent($request, $page);
+        $event->setUrl('https://example.com');
 
-        self::assertEquals($url, $event->getUrl());
+        self::assertEquals('https://example.com', $event->getUrl());
         self::assertEquals($request, $event->getRequest());
         self::assertEquals($page, $event->getPage());
     }

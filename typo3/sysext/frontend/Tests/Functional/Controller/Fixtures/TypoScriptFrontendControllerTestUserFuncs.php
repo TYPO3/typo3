@@ -44,15 +44,4 @@ final class TypoScriptFrontendControllerTestUserFuncs
     {
         return $GLOBALS['TSFE']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page');
     }
-
-    /**
-     * A USER_INT method referenced in PageExposingTsfeMpParameter.typoscript
-     */
-    public function pageExposingMpParameterUserInt(): string
-    {
-        if ($GLOBALS['TSFE']->MP === '') {
-            return 'empty';
-        }
-        return 'foo' . $GLOBALS['TSFE']->MP . 'bar';
-    }
 }

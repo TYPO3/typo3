@@ -160,50 +160,6 @@ alert(yes);', $body);
         self::assertStringContainsString('Pagetree Overview', $body);
     }
 
-    public static function mountPointParameterContainsOnlyValidMPValuesDataProvider(): array
-    {
-        return [
-            'no MP Parameter given' => [
-                '',
-                'empty',
-            ],
-            'single MP parameter given' => [
-                '592-182',
-                'foo592-182bar',
-            ],
-            'invalid characters included' => [
-                '12-13,a34-45/',
-                'foo12-13,34-45bar',
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider mountPointParameterContainsOnlyValidMPValuesDataProvider
-     */
-    public function mountPointParameterContainsOnlyValidMPValues(string $inputMp, string $expected): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
-        $this->setUpFrontendRootPage(
-            2,
-            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
-        );
-        $this->writeSiteConfiguration(
-            'test',
-            $this->buildSiteConfiguration(2, 'https://website.local/'),
-            [$this->buildDefaultLanguageConfiguration('EN', '/en/')]
-        );
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://website.local/en/'))
-                ->withPageId(88)
-                ->withQueryParameter('MP', $inputMp)
-        );
-        $body = (string)$response->getBody();
-        self::assertStringContainsString($expected, $body);
-    }
-
     public static function getFromCacheSetsConfigRootlineToLocalRootlineDataProvider(): array
     {
         $page1 = [
@@ -381,7 +337,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageExposingTsfeMpParameter.typoscript']
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageHelloWorld.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
