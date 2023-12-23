@@ -68,7 +68,6 @@ use TYPO3\CMS\Frontend\Event\ModifyTypoScriptConstantsEvent;
 use TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
-use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 
 /**
  * Main controller class of the TypoScript based frontend.
@@ -236,14 +235,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Read-only! Extensions may read but never write this property!
      */
     public string $absRefPrefix = '';
-
-    /**
-     * A string prepared for insertion in all links on the page as url-parameters.
-     * Based on configuration in TypoScript where you defined which GET parameters you
-     * would like to pass on.
-     * @internal if needed, generate linkVars via LinkVarsCalculator
-     */
-    public string $linkVars = '';
 
     /**
      * @internal
@@ -895,30 +886,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Calculates and sets the internal linkVars based upon the current request parameters
-     * and the setting "config.linkVars".
-     *
-     * @param array $queryParams $_GET (usually called with a PSR-7 $request->getQueryParams())
-     * @internal
-     */
-    public function calculateLinkVars(array $queryParams): void
-    {
-        $this->linkVars = GeneralUtility::makeInstance(LinkVarsCalculator::class)
-            ->getAllowedLinkVarsFromRequest(
-                (string)($this->config['config']['linkVars'] ?? ''),
-                $queryParams,
-                $this->context
-            );
-    }
-
-    /**
      * Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
      *
      * @internal
      */
     public function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string
     {
-        $this->calculateLinkVars($request->getQueryParams());
         $pageInformation = $request->getAttribute('frontend.page.information');
         $pageRecord = $pageInformation->getPageRecord();
         $parameter = $pageRecord['uid'];
@@ -1049,8 +1022,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->absRefPrefix = $normalizedParams->getSiteUrl();
         }
 
-        // linkVars
-        $this->calculateLinkVars($request->getQueryParams());
         // We need to set the doctype to "something defined" otherwise (because this method is called also during USER_INT renderings)
         $this->config['config']['doctype'] ??= 'html5';
         $docType = DocType::createFromConfigurationKey($this->config['config']['doctype']);

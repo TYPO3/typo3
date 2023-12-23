@@ -79,6 +79,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
+use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 
@@ -3945,6 +3946,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $frontendUser = $this->getRequest()->getAttribute('frontend.user');
                             array_shift($valueParts);
                             $retVal = $this->getValueFromRecursiveData($valueParts, $frontendUser);
+                        } elseif (($valueParts[0] ?? '') === 'linkVars') {
+                            $tsfe = $this->getTypoScriptFrontendController();
+                            $typoScriptConfigLinkVars = (string)($tsfe->config['config']['linkVars'] ?? '');
+                            $retVal = GeneralUtility::makeInstance(LinkVarsCalculator::class)
+                                ->getAllowedLinkVarsFromRequest(
+                                    $typoScriptConfigLinkVars,
+                                    $this->getRequest()->getQueryParams(),
+                                    GeneralUtility::makeInstance(Context::class)
+                                );
                         } else {
                             $retVal = $this->getValueFromRecursiveData($valueParts, $this->getTypoScriptFrontendController());
                         }

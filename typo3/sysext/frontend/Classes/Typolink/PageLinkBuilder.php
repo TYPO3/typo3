@@ -252,11 +252,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $addQueryParams = '';
         }
         parse_str($addQueryParams, $queryParameters);
-        // get config.linkVars and prepend them before the actual GET parameters
-        $tsfe = $this->getTypoScriptFrontendController();
-        if ($tsfe->linkVars) {
+        $linkVars = $this->calculateGlobalQueryParameters();
+        if ($linkVars !== '') {
             $globalQueryParameters = [];
-            parse_str($tsfe->linkVars, $globalQueryParameters);
+            parse_str($linkVars, $globalQueryParameters);
             $queryParameters = array_replace_recursive($globalQueryParameters, $queryParameters);
         }
         // Disable "?id=", for pages with no site configuration, this is added later-on anyway
@@ -283,6 +282,25 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             unset($queryParameters['L']);
         }
         return $queryParameters;
+    }
+
+    /**
+     * Get "global" query parameters that should be added.
+     * Depends on given request query parameters plus config.linkVars TypoScript setting
+     * plus eventually special arguments for logged in Backend users.
+     */
+    protected function calculateGlobalQueryParameters(): string
+    {
+        // @todo: The link builders should get the request hand over explicitly.
+        $requestQueryParams = $this->contentObjectRenderer->getRequest()->getQueryParams();
+        $tsfe = $this->getTypoScriptFrontendController();
+        $typoScriptConfigLinkVars = (string)($tsfe->config['config']['linkVars'] ?? '');
+        return GeneralUtility::makeInstance(LinkVarsCalculator::class)
+            ->getAllowedLinkVarsFromRequest(
+                $typoScriptConfigLinkVars,
+                $requestQueryParams,
+                GeneralUtility::makeInstance(Context::class)
+            );
     }
 
     /**

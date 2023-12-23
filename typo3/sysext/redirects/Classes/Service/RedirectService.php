@@ -391,6 +391,9 @@ class RedirectService implements LoggerAwareInterface
     {
         $cacheInstruction = $originalRequest->getAttribute('frontend.cache.instruction', new CacheInstruction());
         $originalRequest = $originalRequest->withAttribute('frontend.cache.instruction', $cacheInstruction);
+        $queryParamsFromRequest = $originalRequest->getQueryParams();
+        $mergedQueryParams = array_merge($queryParams, $queryParamsFromRequest);
+        $originalRequest = $originalRequest->withQueryParams($mergedQueryParams);
         $pageArguments = new PageArguments($site->getRootPageId(), '0', []);
         $pageInformation = new PageInformation();
         $pageInformation->setId($site->getRootPageId());
@@ -413,7 +416,6 @@ class RedirectService implements LoggerAwareInterface
         $controller->MP = $pageInformation->getMountPoint();
         $controller->contentPid = $pageInformation->getContentFromPid();
         $controller->rootLine = $pageInformation->getRootLine();
-        $controller->calculateLinkVars($queryParams);
         $newRequest = $controller->getFromCache($originalRequest);
         $controller->releaseLocks();
         $controller->newCObj($newRequest);

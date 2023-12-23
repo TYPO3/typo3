@@ -76,7 +76,7 @@ class TypoLinkCodecService
      * @return array{url: string, target: string, class: string, title: string, additionalParams: string}
      * @todo Remove the |null and make the signature strict typed in v13 as string
      */
-    public function decode($typoLink)
+    public function decode($typoLink): array
     {
         $typoLink = trim((string)$typoLink);
         if ($typoLink !== '') {
@@ -84,16 +84,13 @@ class TypoLinkCodecService
         } else {
             $parts = [];
         }
-
         // The order of the entries is crucial!!
-        $typoLinkParts = [
+        return [
             'url' => isset($parts[0]) ? trim($parts[0]) : '',
             'target' => isset($parts[1]) && $parts[1] !== static::$emptyValueSymbol ? trim($parts[1]) : '',
             'class' => isset($parts[2]) && $parts[2] !== static::$emptyValueSymbol ? trim($parts[2]) : '',
             'title' => isset($parts[3]) && $parts[3] !== static::$emptyValueSymbol ? trim($parts[3]) : '',
             'additionalParams' => isset($parts[4]) && $parts[4] !== static::$emptyValueSymbol ? trim($parts[4]) : '',
         ];
-
-        return $typoLinkParts;
     }
 }

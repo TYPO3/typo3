@@ -1194,17 +1194,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Checks if getData() works with type "tsfe"
-     *
-     * @test
-     */
-    public function getDataWithTypeTsfe(): void
-    {
-        $GLOBALS['TSFE']->linkVars = 'foo';
-        self::assertEquals($GLOBALS['TSFE']->linkVars, $this->subject->getData('tsfe:linkVars'));
-    }
-
-    /**
      * Checks if getData() works with type "getenv"
      *
      * @test
