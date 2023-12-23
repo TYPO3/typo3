@@ -12,7 +12,9 @@ Description
 ===========
 
 The abstract class :php:`\TYPO3\CMS\Core\Type\Enumeration` is deprecated
-in favor of PHP built-in backed enums.
+in favor of PHP built-in backed `enums`_.
+
+..  _enums: https://www.php.net/manual/en/language.types.enumerations.php
 
 Impact
 ======
@@ -50,5 +52,7 @@ should be converted into:
     }
 
 Existing method calls must be adapted.
+
+See also :ref:`feature-101396-1689843367`.
 
 .. index:: Backend, FullyScanned, ext:core

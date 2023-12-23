@@ -11,11 +11,13 @@ See :issue:`101396`
 Description
 ===========
 
-With PHP 8.1, native support for enums has been introduced. This is quite handy
+With PHP 8.1, native support for `enums`_ has been introduced. This is quite handy
 if a database field has a specific set of values which can be represented by a
 PHP enum.
 
-It is now possible to use those enums in entities like this:
+..  _enums: https://www.php.net/manual/en/language.types.enumerations.php
+
+It is now possible to use backed enums in entities like this:
 
 ..  code-block:: php
 
@@ -23,7 +25,7 @@ It is now possible to use those enums in entities like this:
 
     declare(strict_types=1);
 
-    namespace Vendor\Extension\Domain\Model\Enum;
+    namespace MyVendor\MyExtension\Domain\Model\Enum;
 
     enum Level: string
     {
@@ -37,7 +39,9 @@ It is now possible to use those enums in entities like this:
 
     declare(strict_types=1);
 
-    namespace Vendor\Extension\Domain\Model;
+    namespace MyVendor\MyExtension\Domain\Model;
+
+    use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
     class LogEntry extends AbstractEntity
     {
@@ -47,7 +51,7 @@ It is now possible to use those enums in entities like this:
 Impact
 ======
 
-To implement enums, it is no longer necessary to extend the TYPO3 core class
-:php:`\TYPO3\CMS\Core\Type\Enumeration`.
+To implement enums, it is no longer necessary to extend the now deprecated TYPO3
+Core class :php:`\TYPO3\CMS\Core\Type\Enumeration`.
 
 .. index:: PHP-API, ext:extbase
