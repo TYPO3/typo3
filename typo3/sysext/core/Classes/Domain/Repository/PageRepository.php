@@ -656,122 +656,142 @@ class PageRepository implements LoggerAwareInterface
 
     /**
      * Creates language-overlay for records in general (where translation is found
-     * in records from the same table)
+     * in records from the same DB table)
+     *
+     * The record receives a language overlay and a workspace overlay of the language overlay.
      *
      * @param string $table Table name
      * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
-     * @param LanguageAspect $languageAspect
-     * @throws \UnexpectedValueException
      * @return array|null Returns the input record, possibly overlaid with a translation. But if overlays are not mixed ("fallback to default language") then it will return NULL if no translation is found.
      */
-    protected function getRecordOverlay(string $table, array $row, LanguageAspect $languageAspect)
+    protected function getRecordOverlay(string $table, array $row, LanguageAspect $languageAspect): ?array
     {
         // Early return when no overlays are needed
-        if ($languageAspect->getOverlayType() === $languageAspect::OVERLAYS_OFF) {
+        if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF) {
             return $row;
         }
 
         $tableControl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
+        $languageField = $tableControl['languageField'] ?? '';
+        $transOrigPointerField = $tableControl['transOrigPointerField'] ?? '';
 
-        if (!empty($tableControl['languageField'])
-            // Return record for ALL languages untouched
-            // @todo: Fix call stack to prevent this situation in the first place
-            && (int)($row[$tableControl['languageField']] ?? 0) !== -1
-            && !empty($tableControl['transOrigPointerField'])
-            && ($row['uid'] ?? 0) > 0
-            && (($row['pid'] ?? 0) > 0 || in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true))
-        ) {
-            // Will try to overlay a record only if the sys_language_content value is larger than zero.
-            if ($languageAspect->getContentId() > 0) {
-                // Must be default language, otherwise no overlaying
-                if ((int)($row[$tableControl['languageField']] ?? 0) === 0) {
-                    // Select overlay record:
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable($table);
-                    $queryBuilder->setRestrictions(
-                        GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
-                    );
-                    if ($this->versioningWorkspaceId > 0) {
-                        // If not in live workspace, remove query based "enable fields" checks, it will be done in versionOL()
-                        // @see functional workspace test createLocalizedNotHiddenWorkspaceContentHiddenInLive()
-                        $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
-                        $queryBuilder->getRestrictions()->removeByType(StartTimeRestriction::class);
-                        $queryBuilder->getRestrictions()->removeByType(EndTimeRestriction::class);
-                        // We keep the WorkspaceRestriction in this case, because we need to get the LIVE record
-                        // of the language record before doing the version overlay of the language again. WorkspaceRestriction
-                        // does this for us, PLUS we need to ensure to get a possible LIVE record first (that's why
-                        // the "orderBy" query is there, so the LIVE record is found first), as there might only be a
-                        // versioned record (e.g. new version) or both (common for modifying, moving etc).
-                        if ($this->hasTableWorkspaceSupport($table)) {
-                            $queryBuilder->orderBy('t3ver_wsid', 'ASC');
-                        }
-                    }
+        // Only try overlays for tables with localization support
+        if (empty($languageField)) {
+            return $row;
+        }
+        if (empty($transOrigPointerField)) {
+            return $row;
+        }
+        $incomingLanguageId = (int)($row[$languageField] ?? 0);
 
-                    $pid = $row['pid'];
-                    // When inside a workspace, the already versioned $row of the default language is coming in
-                    // For moved versioned records, the PID MIGHT be different. However, the idea of this function is
-                    // to get the language overlay of the LIVE default record, and afterwards get the versioned record
-                    // the found (live) language record again, see the versionOL() call a few lines below.
-                    // This means, we need to modify the $pid value for moved records, as they might be on a different
-                    // page and use the PID of the LIVE version.
-                    if (isset($row['_ORIG_pid']) && $this->hasTableWorkspaceSupport($table) && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
-                        $pid = $row['_ORIG_pid'];
-                    }
-                    $olrow = $queryBuilder->select('*')
-                        ->from($table)
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'pid',
-                                $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                $tableControl['languageField'],
-                                $queryBuilder->createNamedParameter($languageAspect->getContentId(), Connection::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                $tableControl['transOrigPointerField'],
-                                $queryBuilder->createNamedParameter($row['uid'], Connection::PARAM_INT)
-                            )
-                        )
-                        ->setMaxResults(1)
-                        ->executeQuery()
-                        ->fetchAssociative();
+        // Return record for ALL languages untouched
+        if ($incomingLanguageId === -1) {
+            return $row;
+        }
 
-                    $this->versionOL($table, $olrow);
-                    // Merge record content by traversing all fields:
-                    if (is_array($olrow)) {
-                        if (isset($olrow['_ORIG_uid'])) {
-                            $row['_ORIG_uid'] = $olrow['_ORIG_uid'];
-                        }
-                        if (isset($olrow['_ORIG_pid'])) {
-                            $row['_ORIG_pid'] = $olrow['_ORIG_pid'];
-                        }
-                        foreach ($row as $fN => $fV) {
-                            if ($fN !== 'uid' && $fN !== 'pid' && array_key_exists($fN, $olrow)) {
-                                $row[$fN] = $olrow[$fN];
-                            } elseif ($fN === 'uid') {
-                                $row['_LOCALIZED_UID'] = $olrow['uid'];
-                            }
-                        }
-                    } elseif (in_array($languageAspect->getOverlayType(), [LanguageAspect::OVERLAYS_ON_WITH_FLOATING, LanguageAspect::OVERLAYS_ON])
-                        && (int)($row[$tableControl['languageField']] ?? 0) === 0
-                    ) {
-                        // Unset, if non-translated records should be hidden. ONLY done if the source
-                        // record really is default language and not [All] in which case it is allowed.
-                        $row = null;
-                    }
-                } elseif ($languageAspect->getContentId() != ($row[$tableControl['languageField']] ?? null)) {
-                    $row = null;
-                }
-            } else {
-                // When default language is displayed, we never want to return a record carrying
-                // another language!
-                if ((int)($row[$tableControl['languageField']] ?? 0) > 0) {
-                    $row = null;
+        $recordUid = (int)($row['uid'] ?? 0);
+        $incomingRecordPid = (int)($row['pid'] ?? 0);
+
+        // @todo: Fix call stack to prevent this situation in the first place
+        if ($recordUid <= 0) {
+            return $row;
+        }
+        if ($incomingRecordPid <= 0 && !in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true)) {
+            return $row;
+        }
+        // When default language is displayed, we never want to return a record carrying
+        // another language.
+        if ($languageAspect->getContentId() === 0 && $incomingLanguageId > 0) {
+            return null;
+        }
+
+        // Will try to overlay a record only if the contentId value is larger than zero,
+        // contentId is used for regular records, whereas getId() is used for "pages" only.
+        if ($languageAspect->getContentId() === 0) {
+            return $row;
+        }
+        // Must be default language, otherwise no overlaying
+        if ($incomingLanguageId === 0) {
+            // Select overlay record:
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $queryBuilder->setRestrictions(
+                GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
+            );
+            if ($this->versioningWorkspaceId > 0) {
+                // If not in live workspace, remove query based "enable fields" checks, it will be done in versionOL()
+                // @see functional workspace test createLocalizedNotHiddenWorkspaceContentHiddenInLive()
+                $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+                $queryBuilder->getRestrictions()->removeByType(StartTimeRestriction::class);
+                $queryBuilder->getRestrictions()->removeByType(EndTimeRestriction::class);
+                // We keep the WorkspaceRestriction in this case, because we need to get the LIVE record
+                // of the language record before doing the version overlay of the language again. WorkspaceRestriction
+                // does this for us, PLUS we need to ensure to get a possible LIVE record first (that's why
+                // the "orderBy" query is there, so the LIVE record is found first), as there might only be a
+                // versioned record (e.g. new version) or both (common for modifying, moving etc).
+                if ($this->hasTableWorkspaceSupport($table)) {
+                    $queryBuilder->orderBy('t3ver_wsid', 'ASC');
                 }
             }
+
+            $pid = $incomingRecordPid;
+            // When inside a workspace, the already versioned $row of the default language is coming in
+            // For moved versioned records, the PID MIGHT be different. However, the idea of this function is
+            // to get the language overlay of the LIVE default record, and afterward get the versioned record
+            // the found (live) language record again, see the versionOL() call a few lines below.
+            // This means, we need to modify the $pid value for moved records, as they might be on a different
+            // page and use the PID of the LIVE version.
+            if (isset($row['_ORIG_pid']) && $this->hasTableWorkspaceSupport($table) && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
+                $pid = $row['_ORIG_pid'];
+            }
+            $olrow = $queryBuilder->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $languageField,
+                        $queryBuilder->createNamedParameter($languageAspect->getContentId(), Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $transOrigPointerField,
+                        $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
+                    )
+                )
+                ->setMaxResults(1)
+                ->executeQuery()
+                ->fetchAssociative();
+
+            $this->versionOL($table, $olrow);
+            // Merge record content by traversing all fields:
+            if (is_array($olrow)) {
+                if (isset($olrow['_ORIG_uid'])) {
+                    $row['_ORIG_uid'] = $olrow['_ORIG_uid'];
+                }
+                if (isset($olrow['_ORIG_pid'])) {
+                    $row['_ORIG_pid'] = $olrow['_ORIG_pid'];
+                }
+                foreach ($row as $fN => $fV) {
+                    if ($fN !== 'uid' && $fN !== 'pid' && array_key_exists($fN, $olrow)) {
+                        $row[$fN] = $olrow[$fN];
+                    } elseif ($fN === 'uid') {
+                        $row['_LOCALIZED_UID'] = $olrow['uid'];
+                    }
+                }
+                return $row;
+            }
+            // No overlay found.
+            // Unset, if non-translated records should be hidden. ONLY done if the source
+            // record really is default language and not [All] in which case it is allowed.
+            if (in_array($languageAspect->getOverlayType(), [LanguageAspect::OVERLAYS_ON_WITH_FLOATING, LanguageAspect::OVERLAYS_ON], true)) {
+                return null;
+            }
+        } elseif ($languageAspect->getContentId() !== $incomingLanguageId) {
+            return null;
         }
-        return is_array($row) ? $row : null;
+        return $row;
     }
 
     /************************************************
@@ -1445,97 +1465,96 @@ class PageRepository implements LoggerAwareInterface
         }
         // If show_hidden was not changed during the previous evaluation, do it here.
         $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? null;
+        if (!is_array($ctrl)) {
+            throw new \InvalidArgumentException('There is no entry in the $TCA array for the table "' . $table . '". This means that the function enableFields() is called with an invalid table name as argument.', 1283790586);
+        }
+
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table)
             ->expr();
         $constraints = [];
-        if (is_array($ctrl)) {
-            // Delete field check:
-            if ($ctrl['delete'] ?? false) {
-                $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
-            }
-            if ($this->hasTableWorkspaceSupport($table)) {
-                // this should work exactly as WorkspaceRestriction and WorkspaceRestriction should be used instead
-                if ($this->versioningWorkspaceId === 0) {
-                    // Filter out placeholder records (new/deleted items)
-                    // in case we are NOT in a version preview (that means we are online!)
-                    $constraints[] = $expressionBuilder->lte(
-                        $table . '.t3ver_state',
-                        VersionState::DEFAULT_STATE->value
-                    );
-                    $constraints[] = $expressionBuilder->eq($table . '.t3ver_wsid', 0);
-                } else {
-                    // show only records of live and of the current workspace
-                    // in case we are in a versioning preview
-                    $constraints[] = $expressionBuilder->or(
-                        $expressionBuilder->eq($table . '.t3ver_wsid', 0),
-                        $expressionBuilder->eq($table . '.t3ver_wsid', (int)$this->versioningWorkspaceId)
-                    );
-                }
-
-                // Filter out versioned records
-                if (empty($ignore_array['pid'])) {
-                    // Always filter out versioned records that have an "offline" record
-                    $constraints[] = $expressionBuilder->or(
-                        $expressionBuilder->eq($table . '.t3ver_oid', 0),
-                        $expressionBuilder->eq($table . '.t3ver_state', VersionState::MOVE_POINTER->value)
-                    );
-                }
+        // Delete field check:
+        if ($ctrl['delete'] ?? false) {
+            $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
+        }
+        if ($this->hasTableWorkspaceSupport($table)) {
+            // this should work exactly as WorkspaceRestriction and WorkspaceRestriction should be used instead
+            if ($this->versioningWorkspaceId === 0) {
+                // Filter out placeholder records (new/deleted items)
+                // in case we are NOT in a version preview (that means we are online!)
+                $constraints[] = $expressionBuilder->lte(
+                    $table . '.t3ver_state',
+                    VersionState::DEFAULT_STATE->value
+                );
+                $constraints[] = $expressionBuilder->eq($table . '.t3ver_wsid', 0);
+            } else {
+                // show only records of live and of the current workspace
+                // in case we are in a versioning preview
+                $constraints[] = $expressionBuilder->or(
+                    $expressionBuilder->eq($table . '.t3ver_wsid', 0),
+                    $expressionBuilder->eq($table . '.t3ver_wsid', (int)$this->versioningWorkspaceId)
+                );
             }
 
-            // Enable fields:
-            if (is_array($ctrl['enablecolumns'] ?? false)) {
-                // In case of versioning-preview, enableFields are ignored (checked in
-                // versionOL())
-                if ($this->versioningWorkspaceId === 0 || !$this->hasTableWorkspaceSupport($table)) {
-                    if (($ctrl['enablecolumns']['disabled'] ?? false) && !$show_hidden && !($ignore_array['disabled'] ?? false)) {
-                        $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
-                        $constraints[] = $expressionBuilder->eq($field, 0);
-                    }
-                    if (($ctrl['enablecolumns']['starttime'] ?? false) && !$showInaccessible && !($ignore_array['starttime'] ?? false)) {
-                        $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
-                        $constraints[] = $expressionBuilder->lte(
-                            $field,
-                            $this->context->getPropertyFromAspect('date', 'accessTime', 0)
-                        );
-                    }
-                    if (($ctrl['enablecolumns']['endtime'] ?? false) && !$showInaccessible && !($ignore_array['endtime'] ?? false)) {
-                        $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
-                        $constraints[] = $expressionBuilder->or(
-                            $expressionBuilder->eq($field, 0),
-                            $expressionBuilder->gt(
-                                $field,
-                                $this->context->getPropertyFromAspect('date', 'accessTime', 0)
-                            )
-                        );
-                    }
-                    if (($ctrl['enablecolumns']['fe_group'] ?? false) && !($ignore_array['fe_group'] ?? false)) {
-                        $field = $table . '.' . $ctrl['enablecolumns']['fe_group'];
-                        $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
-                            $this->getMultipleGroupsWhereClause($field, $table)
-                        );
-                    }
-                    // Call hook functions for additional enableColumns
-                    // It is used by the extension ingmar_accessctrl which enables assigning more
-                    // than one usergroup to content and page records
-                    $_params = [
-                        'table' => $table,
-                        'show_hidden' => $show_hidden,
-                        'showInaccessible' => $showInaccessible,
-                        'ignore_array' => $ignore_array,
-                        'ctrl' => $ctrl,
-                    ];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] ?? [] as $_funcRef) {
-                        $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
-                            GeneralUtility::callUserFunction($_funcRef, $_params, $this)
-                        );
-                    }
-                }
+            // Filter out versioned records
+            if (empty($ignore_array['pid'])) {
+                // Always filter out versioned records that have an "offline" record
+                $constraints[] = $expressionBuilder->or(
+                    $expressionBuilder->eq($table . '.t3ver_oid', 0),
+                    $expressionBuilder->eq($table . '.t3ver_state', VersionState::MOVE_POINTER->value)
+                );
             }
-        } else {
-            throw new \InvalidArgumentException('There is no entry in the $TCA array for the table "' . $table . '". This means that the function enableFields() is called with an invalid table name as argument.', 1283790586);
         }
 
+        // Enable fields:
+        if (is_array($ctrl['enablecolumns'] ?? false)) {
+            // In case of versioning-preview, enableFields are ignored (checked in
+            // versionOL())
+            if ($this->versioningWorkspaceId === 0 || !$this->hasTableWorkspaceSupport($table)) {
+                if (($ctrl['enablecolumns']['disabled'] ?? false) && !$show_hidden && !($ignore_array['disabled'] ?? false)) {
+                    $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
+                    $constraints[] = $expressionBuilder->eq($field, 0);
+                }
+                if (($ctrl['enablecolumns']['starttime'] ?? false) && !$showInaccessible && !($ignore_array['starttime'] ?? false)) {
+                    $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
+                    $constraints[] = $expressionBuilder->lte(
+                        $field,
+                        $this->context->getPropertyFromAspect('date', 'accessTime', 0)
+                    );
+                }
+                if (($ctrl['enablecolumns']['endtime'] ?? false) && !$showInaccessible && !($ignore_array['endtime'] ?? false)) {
+                    $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
+                    $constraints[] = $expressionBuilder->or(
+                        $expressionBuilder->eq($field, 0),
+                        $expressionBuilder->gt(
+                            $field,
+                            $this->context->getPropertyFromAspect('date', 'accessTime', 0)
+                        )
+                    );
+                }
+                if (($ctrl['enablecolumns']['fe_group'] ?? false) && !($ignore_array['fe_group'] ?? false)) {
+                    $field = $table . '.' . $ctrl['enablecolumns']['fe_group'];
+                    $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
+                        $this->getMultipleGroupsWhereClause($field, $table)
+                    );
+                }
+                // Call hook functions for additional enableColumns
+                // It is used by the extension ingmar_accessctrl which enables assigning more
+                // than one usergroup to content and page records
+                $_params = [
+                    'table' => $table,
+                    'show_hidden' => $show_hidden,
+                    'showInaccessible' => $showInaccessible,
+                    'ignore_array' => $ignore_array,
+                    'ctrl' => $ctrl,
+                ];
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] ?? [] as $_funcRef) {
+                    $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
+                        GeneralUtility::callUserFunction($_funcRef, $_params, $this)
+                    );
+                }
+            }
+        }
         return empty($constraints) ? '' : ' AND ' . $expressionBuilder->and(...$constraints);
     }
 
@@ -1609,64 +1628,71 @@ class PageRepository implements LoggerAwareInterface
      */
     public function versionOL($table, &$row, $unsetMovePointers = false, $bypassEnableFieldsCheck = false)
     {
-        if ($this->versioningWorkspaceId > 0 && is_array($row) && $row !== [] && isset($row['uid'], $row['t3ver_oid'])) {
-            // implode(',',array_keys($row)) = Using fields from original record to make
-            // sure no additional fields are selected. This is best for eg. getPageOverlay()
-            // Computed properties are excluded since those would lead to SQL errors.
-            $fieldNames = implode(',', array_keys($this->purgeComputedProperties($row)));
-            // will overlay any incoming moved record with the live record, which in turn
-            // will be overlaid with its workspace version again to fetch both PID fields.
-            $incomingRecordIsAMoveVersion = (int)$row['t3ver_oid'] > 0 && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
-            if ($incomingRecordIsAMoveVersion) {
-                // Fetch the live version again if the given $row is a move pointer, so we know the original PID
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fieldNames, true))
-                    ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['t3ver_oid'], Connection::PARAM_INT)))
-                    ->executeQuery()
-                    ->fetchAssociative();
-            }
-            if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], $fieldNames, $bypassEnableFieldsCheck)) {
-                if (is_array($wsAlt)) {
-                    $rowVersionState = VersionState::tryFrom($wsAlt['t3ver_state'] ?? 0);
-                    if ($rowVersionState === VersionState::MOVE_POINTER) {
-                        // For move pointers, store the actual live PID in the _ORIG_pid
-                        // The only place where PID is actually different in a workspace
-                        $wsAlt['_ORIG_pid'] = $row['pid'];
-                    }
-                    // For versions of single elements or page+content, preserve online UID
-                    // (this will produce true "overlay" of element _content_, not any references)
-                    // For new versions there is no online counterpart
-                    if ($rowVersionState !== VersionState::NEW_PLACEHOLDER) {
-                        $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
-                    }
-                    $wsAlt['uid'] = $row['uid'];
-                    // Changing input record to the workspace version alternative:
-                    $row = $wsAlt;
+        if ($this->versioningWorkspaceId <= 0) {
+            return;
+        }
+        if (!is_array($row) || $row === []) {
+            return;
+        }
+        if (!isset($row['uid'], $row['t3ver_oid'])) {
+            return;
+        }
+        // implode(',',array_keys($row)) = Using fields from original record to make
+        // sure no additional fields are selected. This is best for eg. getPageOverlay()
+        // Computed properties are excluded since those would lead to SQL errors.
+        $fieldNames = implode(',', array_keys($this->purgeComputedProperties($row)));
+        // will overlay any incoming moved record with the live record, which in turn
+        // will be overlaid with its workspace version again to fetch both PID fields.
+        $incomingRecordIsAMoveVersion = (int)$row['t3ver_oid'] > 0 && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER;
+        if ($incomingRecordIsAMoveVersion) {
+            // Fetch the live version again if the given $row is a move pointer, so we know the original PID
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fieldNames, true))
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['t3ver_oid'], Connection::PARAM_INT)))
+                ->executeQuery()
+                ->fetchAssociative();
+        }
+        if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], $fieldNames, $bypassEnableFieldsCheck)) {
+            if (is_array($wsAlt)) {
+                $rowVersionState = VersionState::tryFrom($wsAlt['t3ver_state'] ?? 0);
+                if ($rowVersionState === VersionState::MOVE_POINTER) {
+                    // For move pointers, store the actual live PID in the _ORIG_pid
+                    // The only place where PID is actually different in a workspace
+                    $wsAlt['_ORIG_pid'] = $row['pid'];
+                }
+                // For versions of single elements or page+content, preserve online UID
+                // (this will produce true "overlay" of element _content_, not any references)
+                // For new versions there is no online counterpart
+                if ($rowVersionState !== VersionState::NEW_PLACEHOLDER) {
+                    $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+                }
+                $wsAlt['uid'] = $row['uid'];
+                // Changing input record to the workspace version alternative:
+                $row = $wsAlt;
+                // Unset record if it turned out to be deleted in workspace
+                if ($rowVersionState === VersionState::DELETE_PLACEHOLDER) {
+                    $row = false;
+                }
+                // Check if move-pointer in workspace (unless if a move-placeholder is the
+                // reason why it appears!):
+                // You have to specifically set $unsetMovePointers in order to clear these
+                // because it is normally a display issue if it should be shown or not.
+                if ($rowVersionState === VersionState::MOVE_POINTER && !$incomingRecordIsAMoveVersion && $unsetMovePointers) {
                     // Unset record if it turned out to be deleted in workspace
-                    if ($rowVersionState === VersionState::DELETE_PLACEHOLDER) {
-                        $row = false;
-                    }
-                    // Check if move-pointer in workspace (unless if a move-placeholder is the
-                    // reason why it appears!):
-                    // You have to specifically set $unsetMovePointers in order to clear these
-                    // because it is normally a display issue if it should be shown or not.
-                    if ($rowVersionState === VersionState::MOVE_POINTER && !$incomingRecordIsAMoveVersion && $unsetMovePointers) {
-                        // Unset record if it turned out to be deleted in workspace
-                        $row = false;
-                    }
-                } else {
-                    // No version found, then check if online version is dummy-representation
-                    // Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if
-                    // enablefields for BOTH the version AND the online record deselects it. See
-                    // note for $bypassEnableFieldsCheck
-                    if ($wsAlt <= -1 || VersionState::tryFrom($row['t3ver_state'] ?? 0)->indicatesPlaceholder()) {
-                        // Unset record if it turned out to be "hidden"
-                        $row = false;
-                    }
+                    $row = false;
+                }
+            } else {
+                // No version found, then check if online version is dummy-representation
+                // Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if
+                // enablefields for BOTH the version AND the online record deselects it. See
+                // note for $bypassEnableFieldsCheck
+                if ($wsAlt <= -1 || VersionState::tryFrom($row['t3ver_state'] ?? 0)->indicatesPlaceholder()) {
+                    // Unset record if it turned out to be "hidden"
+                    $row = false;
                 }
             }
         }
@@ -1687,100 +1713,102 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*', $bypassEnableFieldsCheck = false)
     {
-        if ($workspace !== 0 && $this->hasTableWorkspaceSupport($table)) {
-            $workspace = (int)$workspace;
-            $uid = (int)$uid;
-            // Select workspace version of record, only testing for deleted.
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        // No look up in database because versioning not enabled / or workspace not offline
+        $workspace = (int)$workspace;
+        if ($workspace === 0) {
+            return false;
+        }
+        if (!$this->hasTableWorkspaceSupport($table)) {
+            return false;
+        }
+        $uid = (int)$uid;
+        // Select workspace version of record, only testing for deleted.
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-            $newrow = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->or(
-                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
-                        $queryBuilder->expr()->and(
-                            $queryBuilder->expr()->eq(
-                                'uid',
-                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
-                            )
+        $newrow = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->or(
+                    // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
-                            't3ver_oid',
-                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                            't3ver_state',
+                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                         )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     )
                 )
-                ->setMaxResults(1)
-                ->executeQuery()
-                ->fetchAssociative();
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
 
-            // If version found, check if it could have been selected with enableFields on
-            // as well:
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
-            // Remove the workspace restriction because we are testing a version record
-            $queryBuilder->getRestrictions()->removeByType(WorkspaceRestriction::class);
-            $queryBuilder->select('uid')
-                ->from($table)
-                ->setMaxResults(1);
+        // If version found, check if it could have been selected with enableFields on
+        // as well:
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
+        // Remove the workspace restriction because we are testing a version record
+        $queryBuilder->getRestrictions()->removeByType(WorkspaceRestriction::class);
+        $queryBuilder->select('uid')
+            ->from($table)
+            ->setMaxResults(1);
 
-            if (is_array($newrow)) {
-                $queryBuilder->where(
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->or(
-                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
-                        $queryBuilder->expr()->and(
-                            $queryBuilder->expr()->eq(
-                                'uid',
-                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
-                            )
+        if (is_array($newrow)) {
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->or(
+                    // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
-                            't3ver_oid',
-                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                            't3ver_state',
+                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                         )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     )
-                );
-                if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
-                    // Return offline version, tested for its enableFields.
-                    return $newrow;
-                }
-                // Return -1 because offline version was de-selected due to its enableFields.
-                return -1;
-            }
-            // OK, so no workspace version was found. Then check if online version can be
-            // selected with full enable fields and if so, return 1:
-            $queryBuilder->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+                )
             );
             if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
-                // Means search was done, but no version found.
-                return 1;
+                // Return offline version, tested for its enableFields.
+                return $newrow;
             }
-            // Return -2 because the online record was de-selected due to its enableFields.
-            return -2;
+            // Return -1 because offline version was de-selected due to its enableFields.
+            return -1;
         }
-        // No look up in database because versioning not enabled / or workspace not
-        // offline
-        return false;
+        // OK, so no workspace version was found. Then check if online version can be
+        // selected with full enable fields and if so, return 1:
+        $queryBuilder->where(
+            $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+        );
+        if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
+            // Means search was done, but no version found.
+            return 1;
+        }
+        // Return -2 because the online record was de-selected due to its enableFields.
+        return -2;
     }
 
     /**
