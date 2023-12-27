@@ -46,7 +46,7 @@ class FolderHashesRestriction implements QueryRestrictionInterface
                 continue;
             }
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
-            $quotedHashes = array_map([$connection, 'quote'], $this->folderHashes);
+            $quotedHashes = array_map($connection->quote(...), $this->folderHashes);
             $constraints[] = $expressionBuilder->in($tableAlias . '.folder_hash', $quotedHashes);
         }
 

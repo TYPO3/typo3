@@ -95,7 +95,7 @@ class I18nSanitizerBuilder implements BuilderInterface
     protected function createAttrs(string ...$names): array
     {
         return array_map(
-            function (string $name) {
+            static function (string $name): Behavior\Attr {
                 return new Behavior\Attr($name);
             },
             $names

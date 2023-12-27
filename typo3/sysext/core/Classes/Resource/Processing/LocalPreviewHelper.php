@@ -50,7 +50,7 @@ class LocalPreviewHelper
 
         return array_filter(
             $configuration,
-            static function ($value, $name) {
+            static function (string|int|bool|array|null $value, string $name): bool {
                 return !empty($value) && in_array($name, ['width', 'height'], true);
             },
             ARRAY_FILTER_USE_BOTH

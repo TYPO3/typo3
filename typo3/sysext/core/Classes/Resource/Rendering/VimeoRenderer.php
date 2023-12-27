@@ -189,7 +189,7 @@ class VimeoRenderer implements FileRendererInterface
         if (isset($options['data']) && is_array($options['data'])) {
             array_walk(
                 $options['data'],
-                static function (&$value, $key) use (&$attributes) {
+                static function (string $value, string|int $key) use (&$attributes): void {
                     $attributes['data-' . $key] = $value;
                 }
             );

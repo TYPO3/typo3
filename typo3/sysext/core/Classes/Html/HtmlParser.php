@@ -49,7 +49,7 @@ class HtmlParser
     public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = false)
     {
         $tags = array_unique(GeneralUtility::trimExplode(',', $tag, true));
-        array_walk($tags, static function (&$tag) {
+        array_walk($tags, static function (string &$tag): void {
             $tag = preg_quote($tag, '/');
         });
         $regexStr = '/\\<\\/?(' . implode('|', $tags) . ')(\\s*\\>|\\s[^\\>]*\\>)/si';
@@ -159,7 +159,7 @@ class HtmlParser
     public function splitTags($tag, $content)
     {
         $tags = GeneralUtility::trimExplode(',', $tag, true);
-        array_walk($tags, static function (&$tag) {
+        array_walk($tags, static function (string &$tag): void {
             $tag = preg_quote($tag, '/');
         });
         $regexStr = '/\\<(' . implode('|', $tags) . ')(\\s[^>]*)?\\/?>/si';
@@ -207,7 +207,7 @@ class HtmlParser
             $first->getIndex() + 1,
             $last->getIndex() - $first->getIndex() - 1
         );
-        return implode('', array_map('strval', $sequence));
+        return implode('', array_map(strval(...), $sequence));
     }
 
     /**
@@ -229,7 +229,7 @@ class HtmlParser
             0,
             $first->getIndex() + 1
         );
-        return implode('', array_map('strval', $sequence));
+        return implode('', array_map(strval(...), $sequence));
     }
 
     /**
@@ -835,9 +835,7 @@ class HtmlParser
             if ($cacheKey && isset($this->caseShift_cache[$cacheKey])) {
                 $str = $this->caseShift_cache[$cacheKey];
             } else {
-                array_walk($str, static function (&$value) {
-                    $value = strtoupper($value);
-                });
+                array_walk($str, strtoupper(...));
                 if ($cacheKey) {
                     $this->caseShift_cache[$cacheKey] = $str;
                 }

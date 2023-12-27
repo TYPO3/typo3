@@ -109,6 +109,6 @@ class LogLevel extends \Psr\Log\LogLevel
     public static function atLeast($level): array
     {
         $level = self::normalizeLevel($level);
-        return array_filter(self::$levels, static fn($intLevel) => $intLevel <= $level, ARRAY_FILTER_USE_KEY);
+        return array_filter(self::$levels, static fn(int $intLevel): bool => $intLevel <= $level, ARRAY_FILTER_USE_KEY);
     }
 }

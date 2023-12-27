@@ -179,7 +179,7 @@ class FileExtensionFilter
             return ['disallowedFileExtensions' => $this->disallowedFileExtensions];
         }
 
-        return ['allowedFileExtensions' => array_filter($this->allowedFileExtensions, function ($fileExtension) {
+        return ['allowedFileExtensions' => array_filter($this->allowedFileExtensions, function (string $fileExtension): bool {
             return !in_array($fileExtension, $this->disallowedFileExtensions, true);
         })];
     }
@@ -199,7 +199,7 @@ class FileExtensionFilter
         }
 
         if (is_array($returnValue)) {
-            $returnValue = array_map('strtolower', $returnValue);
+            $returnValue = array_map(strtolower(...), $returnValue);
         }
 
         return $returnValue;

@@ -321,7 +321,7 @@ class Message implements MessageInterface
         foreach ($headers as $name => $headerValues) {
             $this->validateHeaderName($name);
             // check if all values are correct
-            array_walk($headerValues, static function ($value, $key, Message $messageObject) {
+            array_walk($headerValues, static function (string $value, string $key, Message $messageObject): void {
                 if (!$messageObject->isValidHeaderValue($value)) {
                     throw new \InvalidArgumentException('Invalid header value for header "' . $key . '"', 1436717268);
                 }
@@ -372,7 +372,7 @@ class Message implements MessageInterface
      */
     protected function validateHeaderValues(array $values): void
     {
-        array_walk($values, static function ($value, $key, Message $messageObject) {
+        array_walk($values, static function (string $value, string $key, Message $messageObject): void {
             if (!$messageObject->isValidHeaderValue($value)) {
                 throw new \InvalidArgumentException('Invalid header value for header "' . $key . '"', 1436717269);
             }

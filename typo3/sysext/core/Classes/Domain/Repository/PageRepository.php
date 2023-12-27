@@ -534,9 +534,7 @@ class PageRepository implements LoggerAwareInterface
     protected function getLanguageFallbackChain(?LanguageAspect $languageAspect): array
     {
         $languageAspect = $languageAspect ?? $this->context->getAspect('language');
-        return array_filter($languageAspect->getFallbackChain(), static function ($item) {
-            return MathUtility::canBeInterpretedAsInteger($item);
-        });
+        return array_filter($languageAspect->getFallbackChain(), MathUtility::canBeInterpretedAsInteger(...));
     }
 
     /**

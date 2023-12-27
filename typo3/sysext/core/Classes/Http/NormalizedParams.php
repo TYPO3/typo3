@@ -347,7 +347,7 @@ class NormalizedParams
 
     private static function encodeFileSystemPathComponentForUrlPath(string $path): string
     {
-        return implode('/', array_map('rawurlencode', explode('/', $path)));
+        return implode('/', array_map(rawurlencode(...), explode('/', $path)));
     }
 
     /**

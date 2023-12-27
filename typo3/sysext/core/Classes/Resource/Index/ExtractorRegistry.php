@@ -84,7 +84,7 @@ class ExtractorRegistry implements SingletonInterface
     {
         return array_filter(
             $this->getExtractors(),
-            function (ExtractorInterface $extractor) use ($driverType) {
+            function (ExtractorInterface $extractor) use ($driverType): bool {
                 return empty($extractor->getDriverRestrictions())
                     || in_array($driverType, $extractor->getDriverRestrictions(), true);
             }

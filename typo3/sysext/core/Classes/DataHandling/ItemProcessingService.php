@@ -67,12 +67,12 @@ class ItemProcessingService
         // If it does, display an error message and return items unchanged.
         try {
             $params['items'] = array_map(
-                fn(array $item) => SelectItem::fromTcaItemArray($item, $params['config']['type']),
+                static fn(array $item): SelectItem => SelectItem::fromTcaItemArray($item, $params['config']['type']),
                 $params['items']
             );
             GeneralUtility::callUserFunction($tcaConfig['itemsProcFunc'], $params, $this);
             $params['items'] = array_map(
-                fn($item) => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $params['config']['type']),
+                static fn($item): SelectItem => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $params['config']['type']),
                 $params['items']
             );
         } catch (\Exception $exception) {

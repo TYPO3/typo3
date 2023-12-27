@@ -64,6 +64,9 @@ class RecordStateFactory
             ->withVersionLink($this->resolveVersionLink($aspectFieldValues));
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     protected function resolveAspectFieldNames(): array
     {
         return [
@@ -78,7 +81,7 @@ class RecordStateFactory
     protected function resolveAspectFieldValues(array $data): array
     {
         return array_map(
-            static function ($aspectFieldName) use ($data) {
+            static function (?string $aspectFieldName) use ($data): int {
                 return (int)($data[$aspectFieldName] ?? 0);
             },
             $this->resolveAspectFieldNames()

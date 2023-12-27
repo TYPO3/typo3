@@ -290,7 +290,7 @@ class PackageManager implements SingletonInterface
                 implode(
                     '|',
                     array_map(
-                        static function ($packageKey) {
+                        static function (string $packageKey): string {
                             return preg_quote($packageKey, '/');
                         },
                         array_merge(
@@ -435,7 +435,7 @@ class PackageManager implements SingletonInterface
         }
         $this->composerNameToPackageKeyMap = array_filter(
             $this->composerNameToPackageKeyMap,
-            static function ($aliasedKey) use ($packageKey) {
+            static function (string $aliasedKey) use ($packageKey): bool {
                 return $aliasedKey !== $packageKey;
             }
         );

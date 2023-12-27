@@ -82,7 +82,7 @@ class RequestTokenMiddleware implements MiddlewareInterface, LoggerAwareInterfac
         $cookiePrefixLength = strlen($cookiePrefix);
         $cookies = array_filter(
             $request->getCookieParams(),
-            static fn($name) => is_string($name) && str_starts_with($name, $cookiePrefix),
+            static fn(mixed $name): bool => is_string($name) && str_starts_with($name, $cookiePrefix),
             ARRAY_FILTER_USE_KEY
         );
         $items = [];

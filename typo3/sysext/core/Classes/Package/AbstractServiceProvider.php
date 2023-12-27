@@ -88,7 +88,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         if (file_exists($routesFileNameForPackage)) {
             $definedRoutesInPackage = require $routesFileNameForPackage;
             if (is_array($definedRoutesInPackage)) {
-                array_walk($definedRoutesInPackage, static function (&$options) use ($packageName, $path) {
+                array_walk($definedRoutesInPackage, static function (array &$options) use ($packageName, $path): void {
                     // Add packageName and absolutePackagePath to all routes
                     $options['packageName'] = $packageName;
                     $options['absolutePackagePath'] = $path;
@@ -126,7 +126,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         if (file_exists($modulesFileNameForPackage)) {
             $definedModulesInPackage = require $modulesFileNameForPackage;
             if (is_array($definedModulesInPackage)) {
-                array_walk($definedModulesInPackage, static function (&$module) use ($packageName, $path) {
+                array_walk($definedModulesInPackage, static function (array &$module) use ($packageName, $path): void {
                     // Add packageName and absolutePackagePath to all modules
                     $module['packageName'] = $packageName;
                     $module['absolutePackagePath'] = $path;

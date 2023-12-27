@@ -152,7 +152,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     protected function storeFlashMessagesInSession(array $flashMessages = null)
     {
         if (is_array($flashMessages)) {
-            $flashMessages = array_map('json_encode', $flashMessages);
+            $flashMessages = array_map(json_encode(...), $flashMessages);
         }
         $user = $this->getUserByContext();
         $user?->setAndSaveSessionData($this->identifier, $flashMessages);

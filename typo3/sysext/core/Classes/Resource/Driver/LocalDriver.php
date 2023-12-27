@@ -129,7 +129,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
                 $temporaryBaseUri = rtrim(PathUtility::stripPathSitePrefix($this->absoluteBasePath), '/');
                 if ($temporaryBaseUri !== '') {
                     $uriParts = explode('/', $temporaryBaseUri);
-                    $uriParts = array_map('rawurlencode', $uriParts);
+                    $uriParts = array_map(rawurlencode(...), $uriParts);
                     $temporaryBaseUri = implode('/', $uriParts) . '/';
                 }
                 $this->baseUri = $temporaryBaseUri;
@@ -179,7 +179,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $publicUrl = null;
         if ($this->baseUri !== null) {
             $uriParts = explode('/', ltrim($identifier, '/'));
-            $uriParts = array_map('rawurlencode', $uriParts);
+            $uriParts = array_map(rawurlencode(...), $uriParts);
             $identifier = implode('/', $uriParts);
             $publicUrl = $this->baseUri . $identifier;
         }
@@ -228,7 +228,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             GeneralUtility::mkdir($this->getAbsolutePath($newIdentifier));
         } else {
             $parts = GeneralUtility::trimExplode('/', $newFolderName);
-            $parts = array_map([$this, 'sanitizeFileName'], $parts);
+            $parts = array_map($this->sanitizeFileName(...), $parts);
             $newFolderName = implode('/', $parts);
             $newIdentifier = $this->canonicalizeAndCheckFolderIdentifier(
                 $parentFolderIdentifier . $newFolderName . '/'

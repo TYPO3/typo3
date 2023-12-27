@@ -218,6 +218,7 @@ class PageRenderer implements SingletonInterface
         $this->locale = new Locale();
         $this->setDocType(DocType::html5);
         $this->templateFile = 'EXT:core/Resources/Private/Templates/PageRenderer.html';
+        $this->bodyContent = '';
         $this->jsFiles = [];
         $this->jsFooterFiles = [];
         $this->jsInline = [];
@@ -1332,8 +1333,8 @@ class PageRenderer implements SingletonInterface
             // @internal
             'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
         ];
-        $markerArray = array_map(static fn($item) => (trim((string)$item)), $markerArray);
-        return $markerArray;
+
+        return array_map(trim(...), $markerArray);
     }
 
     /**
@@ -1367,7 +1368,7 @@ class PageRenderer implements SingletonInterface
             // @internal
             'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
         ];
-        $markerArray = array_map(static fn($item) => (trim((string)$item)), $markerArray);
+        $markerArray = array_map(trim(...), $markerArray);
         return $markerArray;
     }
 

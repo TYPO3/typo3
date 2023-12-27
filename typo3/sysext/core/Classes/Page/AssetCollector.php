@@ -136,7 +136,7 @@ class AssetCollector implements SingletonInterface
     private function ensureAllValuesAreSerializable(array $additionalInformation): array
     {
         // Currently just filtering all non-scalar values
-        return array_filter($additionalInformation, 'is_scalar');
+        return array_filter($additionalInformation, is_scalar(...));
     }
 
     public function removeJavaScript(string $identifier): self

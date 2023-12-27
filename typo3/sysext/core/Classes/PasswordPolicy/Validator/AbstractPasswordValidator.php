@@ -61,7 +61,7 @@ abstract class AbstractPasswordValidator
      */
     final public function getRequirements(): array
     {
-        return array_map('htmlspecialchars', $this->requirements);
+        return array_map(htmlspecialchars(...), $this->requirements);
     }
 
     /**

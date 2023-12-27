@@ -148,7 +148,7 @@ class FileReference implements FileInterface
                 true,
                 false
             );
-            array_walk($this->mergedProperties, [$this, 'restoreNonNullValuesCallback']);
+            array_walk($this->mergedProperties, $this->restoreNonNullValuesCallback(...));
         }
 
         return $this->mergedProperties;

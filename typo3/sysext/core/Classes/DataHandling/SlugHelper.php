@@ -547,7 +547,7 @@ class SlugHelper
 
         return array_filter(
             array_map(
-                function (array $record) {
+                function (array $record): ?array {
                     BackendUtility::workspaceOL(
                         $this->tableName,
                         $record,

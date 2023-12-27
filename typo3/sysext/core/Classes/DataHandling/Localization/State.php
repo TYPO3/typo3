@@ -72,7 +72,7 @@ class State
         return array_keys(
             array_filter(
                 $GLOBALS['TCA'][$tableName]['columns'] ?? [],
-                static function (array $fieldConfiguration) {
+                static function (array $fieldConfiguration): bool {
                     return !empty(
                         $fieldConfiguration['config']
                             ['behaviour']['allowLanguageSynchronization']
@@ -212,7 +212,7 @@ class State
         }
         return array_filter(
             $fieldNames,
-            function ($fieldName) use ($desiredState) {
+            function (string $fieldName) use ($desiredState): bool {
                 return $this->states[$fieldName] === $desiredState;
             }
         );

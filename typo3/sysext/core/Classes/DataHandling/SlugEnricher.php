@@ -88,7 +88,7 @@ class SlugEnricher
         return $this->slugFieldNamesPerTable[$tableName] = array_keys(
             array_filter(
                 $GLOBALS['TCA'][$tableName]['columns'] ?? [],
-                static function (array $settings) {
+                static function (array $settings): bool {
                     return ($settings['config']['type'] ?? null) === 'slug';
                 }
             )

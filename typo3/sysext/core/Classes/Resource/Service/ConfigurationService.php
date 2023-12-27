@@ -42,7 +42,7 @@ class ConfigurationService
      */
     protected function makeSerializable(array $configuration): array
     {
-        return array_map(function ($value) {
+        return array_map(function (mixed $value): mixed {
             if (is_array($value)) {
                 return $this->makeSerializable($value);
             }

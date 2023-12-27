@@ -447,7 +447,7 @@ class Rfc822AddressesParser
             return false;
         }
         // Trim the whitespace from all of the address strings.
-        array_map('trim', $addresses);
+        array_map(trim(...), $addresses);
         // Validate each mailbox.
         // Format could be one of: name <geezer@domain.com>
         //                         geezer@domain.com

@@ -137,7 +137,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
     {
         $configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_WRITER, $logger->getName());
         foreach ($configuration as $severityLevel => $writer) {
-            $writer = array_filter($writer, static fn(array $options) => !($options['disabled'] ?? false));
+            $writer = array_filter($writer, static fn(array $options): bool => !($options['disabled'] ?? false));
             foreach ($writer as $logWriterClassName => $logWriterOptions) {
                 try {
                     unset($logWriterOptions['disabled']);
