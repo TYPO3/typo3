@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use Psr\Log\LogLevel;
@@ -64,6 +67,9 @@ final class ErrorHandlerTest extends UnitTestCase
         };
     }
 
+    #[WithoutErrorHandler]
+    #[Test]
+    #[DataProvider('errorTests')]
     /**
      * @test
      * @dataProvider errorTests
