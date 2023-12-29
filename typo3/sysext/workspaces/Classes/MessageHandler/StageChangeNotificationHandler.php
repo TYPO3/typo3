@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\MessageHandler;
 
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use TYPO3\CMS\Workspaces\Messages\StageChangeMessage;
 use TYPO3\CMS\Workspaces\Notification\StageChangeNotification;
 
 /**
  * @internal
  */
+#[AsMessageHandler]
 final class StageChangeNotificationHandler
 {
     public function __construct(private readonly StageChangeNotification $notificationService) {}

@@ -11,6 +11,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 
 return static function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
@@ -32,6 +33,22 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
                     'method' => $attribute->method ?? ($reflector instanceof \ReflectionMethod ? $reflector->getName() : null),
                     'before' => $attribute->before,
                     'after' => $attribute->after,
+                ]
+            );
+        }
+    );
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsMessageHandler::class,
+        static function (ChildDefinition $definition, AsMessageHandler $attribute, \Reflector $reflector): void {
+            $definition->addTag(
+                'messenger.message_handler',
+                [
+                    'bus' => $attribute->bus,
+                    'fromTransport' => $attribute->fromTransport,
+                    'handles' => $attribute->handles,
+                    'method' => $attribute->method ?? ($reflector instanceof \ReflectionMethod ? $reflector->getName() : null),
+                    'priority' => $attribute->priority,
                 ]
             );
         }

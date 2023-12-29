@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Webhooks\MessageHandler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Messaging\WebhookMessageInterface;
 use TYPO3\CMS\Webhooks\Model\WebhookInstruction;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Webhooks\Repository\WebhookRepository;
  * A Message Handler to deal with a webhook message.
  * It sends the message to all registered HTTP endpoints.
  */
+#[AsMessageHandler]
 class WebhookMessageHandler
 {
     private string $algo = 'sha256';

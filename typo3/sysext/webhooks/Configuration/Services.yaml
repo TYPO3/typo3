@@ -17,10 +17,6 @@ services:
   TYPO3\CMS\Webhooks\Listener\MessageListener:
     public: true
 
-  TYPO3\CMS\Webhooks\MessageHandler\WebhookMessageHandler:
-    tags:
-      - name: 'messenger.message_handler'
-
   TYPO3\CMS\Webhooks\Repository\WebhookRepository:
     public: true # Required in test context
     arguments:

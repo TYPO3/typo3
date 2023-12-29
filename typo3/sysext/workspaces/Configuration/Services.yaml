@@ -33,7 +33,3 @@ services:
 
   TYPO3\CMS\Workspaces\Hook\DataHandlerHook:
     public: true
-
-  TYPO3\CMS\Workspaces\MessageHandler\StageChangeNotificationHandler:
-    tags:
-      - name: 'messenger.message_handler'
