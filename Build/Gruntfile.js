@@ -454,6 +454,14 @@ module.exports = function (grunt) {
             dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/common.js'
           },
           {
+            src: '<%= paths.node_modules %>@lezer/highlight/dist/index.js',
+            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/highlight.js'
+          },
+          {
+            src: '<%= paths.node_modules %>@lezer/javascript/dist/index.js',
+            dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/@lezer/javascript.js'
+          },
+          {
             src: '<%= paths.node_modules %>crelt/index.es.js',
             dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/crelt.js'
           },
