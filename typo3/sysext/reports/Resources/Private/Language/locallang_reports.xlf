@@ -90,12 +90,6 @@
 			<trans-unit id="status_memcachedConfiguration" resname="status_memcachedConfiguration">
 				<source>Memcached Configuration</source>
 			</trans-unit>
-			<trans-unit id="status_PhpSafeMode" resname="status_PhpSafeMode">
-				<source>PHP safe_mode</source>
-			</trans-unit>
-			<trans-unit id="status_PhpMagicQuotesGpc" resname="status_PhpMagicQuotesGpc">
-				<source>PHP magic_quotes_gpc</source>
-			</trans-unit>
 			<trans-unit id="status_CreatedFilePermissions" resname="status_CreatedFilePermissions">
 				<source>Permissions of created files</source>
 			</trans-unit>
@@ -171,69 +165,6 @@
 			<trans-unit id="status_installTool" resname="status_installTool">
 				<source>Install Tool</source>
 			</trans-unit>
-			<trans-unit id="status_phpVersion" resname="status_phpVersion">
-				<source>PHP Version</source>
-			</trans-unit>
-			<trans-unit id="status_phpTooOld" resname="status_phpTooOld">
-				<source>Your PHP installation is too old.</source>
-			</trans-unit>
-			<trans-unit id="status_phpMemory" resname="status_phpMemory">
-				<source>PHP Memory Limit</source>
-			</trans-unit>
-			<trans-unit id="status_phpMemoryRecommendation" resname="status_phpMemoryRecommendation">
-				<source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</source>
-			</trans-unit>
-			<trans-unit id="status_phpMemoryRequirement" resname="status_phpMemoryRequirement">
-				<source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</source>
-			</trans-unit>
-			<trans-unit id="status_phpMemoryEditLimit" resname="status_phpMemoryEditLimit">
-				<source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
-			</trans-unit>
-			<trans-unit id="status_phpMemoryContactAdmin" resname="status_phpMemoryContactAdmin">
-				<source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
-			</trans-unit>
-			<trans-unit id="status_phpMemoryUnlimited" resname="status_phpMemoryUnlimited">
-				<source>unlimited</source>
-			</trans-unit>
-			<trans-unit id="status_phpPeakMemory" resname="status_phpPeakMemory">
-				<source>PHP peak memory usage</source>
-			</trans-unit>
-			<trans-unit id="status_phpPeakMemoryTooHigh" resname="status_phpPeakMemoryTooHigh">
-				<source>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</source>
-			</trans-unit>
-			<trans-unit id="status_phpPeakMemoryClearFlag" resname="status_phpPeakMemoryClearFlag">
-				<source>Clear this flag</source>
-			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobals" resname="status_phpRegisterGlobals">
-				<source>PHP Register Globals</source>
-			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsEnabled" resname="status_phpRegisterGlobalsEnabled">
-				<source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
-			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsSecurity" resname="status_phpRegisterGlobalsSecurity">
-				<source>Your site may not be secure when %s is enabled.</source>
-			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsHowToChange" resname="status_phpRegisterGlobalsHowToChange">
-				<source>how to change configuration settings</source>
-			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsPHPManual" resname="status_phpRegisterGlobalsPHPManual">
-				<source>The PHP manual has instructions for %s.</source>
-			</trans-unit>
-			<trans-unit id="status_webServer" resname="status_webServer">
-				<source>Web Server</source>
-			</trans-unit>
-			<trans-unit id="status_webServer_infoText" resname="status_webServer_infoText">
-				<source>For your Web Server some notifications have been found</source>
-			</trans-unit>
-			<trans-unit id="status_webServer_threadStackSize" resname="status_webServer_threadStackSize" xml:space="preserve">
-				<source><![CDATA[Fluid uses complex regular expressions which require a lot of stack space during the first processing.
-On Windows the default stack size for Apache is a lot smaller than on unix.
-You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
-<br />&lt;IfModule mpm_winnt_module&gt;
-<br />ThreadStackSize 8388608
-<br />&lt;/IfModule&gt;
-<br />Restart Apache after this change.]]></source>
-			</trans-unit>
 			<trans-unit id="status_phpModules" resname="status_phpModules">
 				<source>PHP Modules</source>
 			</trans-unit>
@@ -254,12 +185,6 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 			</trans-unit>
 			<trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily">
 				<source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
-			</trans-unit>
-			<trans-unit id="status_configuration_PhpSafeModeEnabled" resname="status_configuration_PhpSafeModeEnabled">
-				<source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
-			</trans-unit>
-			<trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled" resname="status_configuration_PhpMagicQuotesGpcEnabled">
-				<source>PHP INI setting magic_quotes_gpc "On" is deprecated since PHP 5.3. You are advised to set it to "Off" until it gets completely removed.</source>
 			</trans-unit>
 			<trans-unit id="status_updateTaskTitle" resname="status_updateTaskTitle">
 				<source>System Status Update</source>
