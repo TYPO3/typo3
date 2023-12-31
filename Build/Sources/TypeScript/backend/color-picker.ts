@@ -44,7 +44,7 @@ class ColorPicker {
     element.classList.add('t3js-colorpicker-initialized');
 
     // On element change, set the formatted value from alwan
-    alwan.on('color', (e: Alwan.alwanEvent): void => {
+    alwan.on('color', (e): void => {
       element.value = e.hex;
       element.dispatchEvent(new Event('blur'));
     });
