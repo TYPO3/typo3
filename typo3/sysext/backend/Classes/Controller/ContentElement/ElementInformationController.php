@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
-use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\History\RecordHistory;
@@ -397,16 +396,13 @@ class ElementInformationController
             }
             // Show the user who created the record
             $recordHistory = GeneralUtility::makeInstance(RecordHistory::class);
-            $ownerInformation = $recordHistory->getCreationInformationForRecord($this->type, $this->row);
-            $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['actiontype'] === 'BE' ? $ownerInformation['userid'] : 0);
+            $ownerInformation = $recordHistory->getCreationInformationForRecord($this->table, $this->row);
+            $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['usertype'] === 'BE' ? $ownerInformation['userid'] : 0);
             if ($ownerUid) {
                 $creatorRecord = BackendUtility::getRecord('be_users', $ownerUid);
                 if ($creatorRecord) {
-                    $avatar = GeneralUtility::makeInstance(Avatar::class);
-                    $creatorRecord['icon'] = $avatar->render($creatorRecord);
-                    $rowValue = $creatorRecord;
                     $keyLabelPair['creatorRecord'] = [
-                        'value' => $rowValue,
+                        'value' => $creatorRecord,
                         'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationUserId')), ':'),
                     ];
                 }
