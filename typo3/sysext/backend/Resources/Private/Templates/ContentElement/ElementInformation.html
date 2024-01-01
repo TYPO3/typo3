@@ -1,5 +1,6 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
@@ -55,15 +56,20 @@
                     </f:for>
                 </div>
                 <f:if condition="{extraFields.creatorRecord}">
-                    <div class="row mt-2">
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <strong>{extraFields.creatorRecord.fieldLabel}</strong>
+                        </div>
                         <div class="col-md-12">
                             <div class="media">
                                 <div class="media-left">
-                                    {extraFields.creatorRecord.value.icon -> f:format.raw()}
+                                    <be:avatar backendUser="{extraFields.creatorRecord.value.uid}" showIcon="true" />
                                 </div>
                                 <div class="media-body">
-                                    <strong>{extraFields.creatorRecord.value.username}</strong><br>
-                                    {extraFields.creatorRecord.value.realName}
+                                    <f:if condition="{extraFields.creatorRecord.value.realName}">
+                                        <f:then>{extraFields.creatorRecord.value.realName}<br>({extraFields.creatorRecord.value.username})</f:then>
+                                        <f:else>{extraFields.creatorRecord.value.username}</f:else>
+                                    </f:if>
                                 </div>
                             </div>
                         </div>
