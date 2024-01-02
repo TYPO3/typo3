@@ -19,8 +19,13 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -181,5 +186,41 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         self::assertMatchesRegularExpression($expected, (new TemplateView($context))->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderReturnsCorrectAltAttribute(): void
+    {
+        $imageServiceMock = $this->createMock(ImageService::class);
+        $imageServiceMock->method('getImage')->willReturn(new File([], $this->get(ResourceFactory::class)->getDefaultStorage()));
+
+        $metaDataRepository = $this->createMock(MetaDataRepository::class);
+        $metaDataRepository->method('findByFileUid')->willReturn(['alternative' => 'alt text']);
+
+        GeneralUtility::setSingletonInstance(ImageService::class, $imageServiceMock);
+        GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepository);
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+
+        // No alt attribute given - use metadata
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" />'
+        );
+        self::assertStringContainsString(
+            'alt="alt text"',
+            (new TemplateView($context))->render()
+        );
+
+        // Enforce empty alt attribute - omit metadata fallback
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" alt="" />'
+        );
+        self::assertStringContainsString(
+            'alt=""',
+            (new TemplateView($context))->render()
+        );
+
     }
 }
