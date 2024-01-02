@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import '@typo3/backend/input/clearable';
+import RegularEvent from '@typo3/core/event/regular-event';
+import DocumentService from '@typo3/core/document-service';
 
 /**
  * Module: @typo3/beuser/backend-user-listing
@@ -19,20 +20,20 @@ import '@typo3/backend/input/clearable';
  * @exports @typo3/beuser/backend-user-listing
  */
 class BackendUserListing {
-  constructor() {
-    let searchField: HTMLInputElement;
-    if ((searchField = document.getElementById('tx_Beuser_username') as HTMLInputElement) !== null) {
-      const searchResultShown = ('' !== searchField.value);
+  private readonly searchField: HTMLInputElement = document.querySelector('#tx_Beuser_username');
+  private readonly activeSearch: boolean = this.searchField ? (this.searchField.value !== '') : false;
 
-      // make search field clearable
-      searchField.clearable({
-        onClear: (input: HTMLInputElement): void => {
-          if (searchResultShown) {
-            input.closest('form').submit();
+  constructor() {
+    DocumentService.ready().then((): void => {
+      // Respond to browser related clearable event
+      if (this.searchField) {
+        new RegularEvent('search', (): void => {
+          if (this.searchField.value === '' && this.activeSearch) {
+            this.searchField.closest('form').submit();
           }
-        },
-      });
-    }
+        }).bindTo(this.searchField);
+      }
+    });
   }
 }
 
