@@ -133,6 +133,11 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
                 }
             }
 
+            if (is_callable([$image, 'getOriginalFile'])) {
+                // Get the original file from the file reference
+                $image = $image->getOriginalFile();
+            }
+
             $processedFile = $image->process($this->arguments['context'], $processingInstructions);
             $imageUri = $processedFile->getPublicUrl();
 
