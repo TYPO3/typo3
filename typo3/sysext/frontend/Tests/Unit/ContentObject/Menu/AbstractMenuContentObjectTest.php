@@ -127,7 +127,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context])->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->willReturn(['_PAGES_OVERLAY_LANGUAGE' => 1]);
+        $pageRepository->expects(self::once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
         $pageRepository->expects(self::once())->method('getLanguageOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);
         $this->subject->_set('sys_page', $pageRepository);
 
@@ -195,7 +195,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         ]);
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->willReturn(['_PAGES_OVERLAY_LANGUAGE' => 1]);
+        $pageRepository->expects(self::once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
         $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
         $this->subject->_set('sys_page', $pageRepository);
 

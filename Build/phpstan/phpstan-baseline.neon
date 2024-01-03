@@ -1886,11 +1886,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
 
 		-
-			message: "#^Offset '_PAGES_OVERLAY_UID' on array on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:\\$I \\(array\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/TextMenuContentObject.php

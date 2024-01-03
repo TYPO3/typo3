@@ -92,14 +92,11 @@ class PageRepository implements LoggerAwareInterface
      */
     protected array $computedPropertyNames = [
         '_LOCALIZED_UID',
+        '_REQUESTED_OVERLAY_LANGUAGE',
         '_MP_PARAM',
         '_ORIG_uid',
         '_ORIG_pid',
         '_SHORTCUT_ORIGINAL_PAGE_UID',
-        '_PAGES_OVERLAY',
-        '_PAGES_OVERLAY_UID',
-        '_PAGES_OVERLAY_LANGUAGE',
-        '_PAGES_OVERLAY_REQUESTEDLANGUAGE',
     ];
 
     /**
@@ -405,6 +402,7 @@ class PageRepository implements LoggerAwareInterface
                         // If an overlay is found, return it
                         if (is_array($result)) {
                             $localizedRecord = $result;
+                            $localizedRecord['_REQUESTED_OVERLAY_LANGUAGE'] = $languageAspect->getContentId();
                             break;
                         }
                     }
@@ -538,13 +536,13 @@ class PageRepository implements LoggerAwareInterface
         // Checks if the default language version can be shown
         // Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
         $pageTranslationVisibility = new PageTranslationVisibility((int)($page['l18n_cfg'] ?? 0));
-        if ((!$languageUid || !($page['_PAGES_OVERLAY'] ?? false))
+        if ((!$languageUid || !isset($page['_LOCALIZED_UID']))
             && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
         ) {
             return false;
         }
         if ($languageUid > 0 && $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
-            if (!($page['_PAGES_OVERLAY'] ?? false) || (int)($page['_PAGES_OVERLAY_LANGUAGE'] ?? 0) !== $languageUid) {
+            if (!isset($page['_LOCALIZED_UID']) || (int)($page['sys_language_uid'] ?? 0) !== $languageUid) {
                 return false;
             }
         } elseif ($languageUid > 0) {
@@ -637,10 +635,8 @@ class PageRepository implements LoggerAwareInterface
                 // Found a result for the current language id
                 $this->versionOL('pages', $row);
                 if (is_array($row)) {
-                    $row['_PAGES_OVERLAY'] = true;
-                    $row['_PAGES_OVERLAY_UID'] = $row['uid'];
-                    $row['_PAGES_OVERLAY_LANGUAGE'] = $row[$languageField];
-                    $row['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] = $languageUids[0];
+                    $row['_LOCALIZED_UID'] = (int)$row['uid'];
+                    $row['_REQUESTED_OVERLAY_LANGUAGE'] = $languageUids[0];
                     // Unset vital fields that are NOT allowed to be overlaid:
                     unset($row['uid'], $row['pid']);
                     $overlays[$pageId] = $row;
@@ -777,7 +773,9 @@ class PageRepository implements LoggerAwareInterface
                     if ($fN !== 'uid' && $fN !== 'pid' && array_key_exists($fN, $olrow)) {
                         $row[$fN] = $olrow[$fN];
                     } elseif ($fN === 'uid') {
-                        $row['_LOCALIZED_UID'] = $olrow['uid'];
+                        $row['_LOCALIZED_UID'] = (int)$olrow['uid'];
+                        // will be overridden again outside of this method if there is a multi-level chain
+                        $row['_REQUESTED_OVERLAY_LANGUAGE'] = $olrow[$languageField];
                     }
                 }
                 return $row;

@@ -151,7 +151,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             // generating a link would cause a 404 error when using this like if one of those conditions apply:
             //  - The page is set to be hidden if it is not translated (evaluated in TSFE)
             //  - The site configuration has a "strict" fallback set (evaluated in the Router - very early)
-            if ($siteLanguageOfTargetPage->getLanguageId() > 0 && !isset($page['_PAGES_OVERLAY']) && ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
+            if ($siteLanguageOfTargetPage->getLanguageId() > 0 && !isset($page['_LOCALIZED_UID']) && ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
                 throw new UnableToLinkException('Fallback to default language of page "' . ($linkDetails['typoLinkParameter'] ?? 'unknown') . '" is disabled, so "' . $linkText . '" was not linked.', 1551621996, null, $linkText);
             }
         }

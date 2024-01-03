@@ -958,7 +958,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Setting the SYS_LASTCHANGED value in the pagerecord: This value will thus be set to the highest tstamp of records rendered on the page.
      * This includes all records with no regard to hidden records, userprotection and so on.
      *
-     * The important part is that this actually updates a translated "pages" record (_PAGES_OVERLAY_UID) if
+     * The important part is that this actually updates a translated "pages" record (_LOCALIZED_UID) if
      * the Frontend is called with a translation.
      *
      * @see ContentObjectRenderer::lastChanged()
@@ -974,7 +974,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->page['SYS_LASTCHANGED'] < (int)($this->register['SYS_LASTCHANGED'] ?? 0)) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('pages');
-            $pageId = $this->page['_PAGES_OVERLAY_UID'] ?? $this->id;
+            $pageId = $this->page['_LOCALIZED_UID'] ?? $this->id;
             $connection->update(
                 'pages',
                 [

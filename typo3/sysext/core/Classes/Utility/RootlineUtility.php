@@ -209,7 +209,7 @@ class RootlineUtility
             $this->pageRepository->versionOL('pages', $row, false, true);
             if (is_array($row)) {
                 $row = $this->pageRepository->getLanguageOverlay('pages', $row, $this->context->getAspect('language'));
-                $row = $this->enrichWithRelationFields($row['_PAGES_OVERLAY_UID'] ??  $uid, $row);
+                $row = $this->enrichWithRelationFields($row['_LOCALIZED_UID'] ?? $uid, $row);
                 $this->runtimeCache->set('rootline-recordcache-' . $currentCacheIdentifier, $row, [self::RUNTIME_CACHE_TAG]);
             }
         }

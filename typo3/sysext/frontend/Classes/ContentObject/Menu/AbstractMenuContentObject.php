@@ -582,7 +582,7 @@ abstract class AbstractMenuContentObject
                 $lRecs = $pageRepository->getPageOverlay($currentPageWithNoOverlay, $languageAspect);
                 // getPageOverlay() might return the original record again, if so this is emptied
                 // this should be fixed in PageRepository in the future.
-                if (!empty($lRecs) && !isset($lRecs['_PAGES_OVERLAY'])) {
+                if (!empty($lRecs) && !isset($lRecs['_LOCALIZED_UID'])) {
                     $lRecs = [];
                 }
             } else {
@@ -603,7 +603,7 @@ abstract class AbstractMenuContentObject
             $menuItems[] = array_merge(
                 array_merge($currentPageWithNoOverlay, $lRecs),
                 [
-                    '_PAGES_OVERLAY_REQUESTEDLANGUAGE' => $sUid,
+                    '_REQUESTED_OVERLAY_LANGUAGE' => $sUid,
                     'ITEM_STATE' => $iState,
                     '_ADD_GETVARS' => $this->conf['addQueryString'] ?? false,
                     '_SAFE' => true,
@@ -1104,8 +1104,8 @@ abstract class AbstractMenuContentObject
             return false;
         }
         $languageId = $this->getCurrentLanguageAspect()->getId();
-        // PageID should not be banned (check for default language pages as well)
-        if (($data['_PAGES_OVERLAY_UID'] ?? 0) > 0 && in_array((int)($data['_PAGES_OVERLAY_UID'] ?? 0), $banUidArray, true)) {
+        // PageID should not be banned (check for default language and translated IDs)
+        if (($data['_LOCALIZED_UID'] ?? 0) > 0 && in_array((int)$data['_LOCALIZED_UID'], $banUidArray, true)) {
             return false;
         }
         if (in_array((int)($data['uid'] ?? 0), $banUidArray, true)) {
@@ -1127,7 +1127,7 @@ abstract class AbstractMenuContentObject
                 if (empty($olRec)) {
                     // If no page translation record then page can NOT be accessed in
                     // the language pointed to, therefore we protect the link by linking to the default language
-                    $data['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] = '0';
+                    $data['_REQUESTED_OVERLAY_LANGUAGE'] = '0';
                 }
             }
         }
@@ -1460,12 +1460,12 @@ abstract class AbstractMenuContentObject
                 continue;
             }
             // No valid subpage if the alternative language should be shown and the page settings
-            // are requiring a valid overlay but it doesn't exists
-            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $languageId > 0 && !($theRec['_PAGES_OVERLAY'] ?? false)) {
+            // are requiring a valid overlay, but it doesn't exist
+            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $languageId > 0 && !isset($theRec['_LOCALIZED_UID'])) {
                 continue;
             }
             // No valid subpage if the subpage is banned by excludeUidList (check for default language pages as well)
-            if (($theRec['_PAGES_OVERLAY_UID'] ?? 0) > 0 && in_array((int)($theRec['_PAGES_OVERLAY_UID'] ?? 0), $bannedUids, true)) {
+            if (isset($theRec['_LOCALIZED_UID']) && in_array($theRec['_LOCALIZED_UID'], $bannedUids, true)) {
                 continue;
             }
             if (in_array((int)($theRec['uid'] ?? 0), $bannedUids, true)) {
@@ -1640,9 +1640,9 @@ abstract class AbstractMenuContentObject
 
         // Ensure that the typolink gets an info which language was actually requested. The $page record could be the record
         // from page translation language=1 as fallback but page translation language=2 was requested. Search for
-        // "_PAGES_OVERLAY_REQUESTEDLANGUAGE" for more details
-        if (isset($page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'])) {
-            $conf['language'] = $page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'];
+        // "_REQUESTED_OVERLAY_LANGUAGE" for more details
+        if (isset($page['_REQUESTED_OVERLAY_LANGUAGE'])) {
+            $conf['language'] = $page['_REQUESTED_OVERLAY_LANGUAGE'];
         }
         if ($oTarget) {
             $conf['target'] = $oTarget;
@@ -1706,8 +1706,8 @@ abstract class AbstractMenuContentObject
         $result = [];
         while ($row = $statement->fetchAssociative()) {
             $this->sys_page->versionOL('tt_content', $row);
-            if ($this->getCurrentLanguageAspect()->doOverlays() && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
-                $languageAspect = new LanguageAspect($basePageRow['_PAGES_OVERLAY_LANGUAGE'], $basePageRow['_PAGES_OVERLAY_LANGUAGE'], $this->getCurrentLanguageAspect()->getOverlayType());
+            if ($this->getCurrentLanguageAspect()->doOverlays() && $basePageRow['sys_language_uid'] > 0) {
+                $languageAspect = new LanguageAspect($basePageRow['sys_language_uid'], $basePageRow['sys_language_uid'], $this->getCurrentLanguageAspect()->getOverlayType());
                 $row = $this->sys_page->getLanguageOverlay(
                     'tt_content',
                     $row,

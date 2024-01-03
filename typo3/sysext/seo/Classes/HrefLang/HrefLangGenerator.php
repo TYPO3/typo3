@@ -62,7 +62,7 @@ class HrefLangGenerator
                 if ($language['languageId'] === 0) {
                     // No need to fetch default language
                     $page = ($tsfe->page['_TRANSLATION_SOURCE'] ?? null)?->toArray(true) ?? $tsfe->page;
-                } elseif ($language['languageId'] === ($tsfe->page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? false)) {
+                } elseif ($language['languageId'] === ($tsfe->page['_REQUESTED_OVERLAY_LANGUAGE'] ?? false)) {
                     // No need to fetch current language
                     $page = $tsfe->page;
                 } else {
@@ -121,7 +121,7 @@ class HrefLangGenerator
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $pageRecord = $pageRepository->getPage($pageId);
         // Overlay was requested but did not apply
-        if ($languageId > 0 && !($pageRecord['_PAGES_OVERLAY'] ?? false)) {
+        if ($languageId > 0 && !isset($pageRecord['_LOCALIZED_UID'])) {
             return [];
         }
         return $pageRecord;

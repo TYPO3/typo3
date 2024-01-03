@@ -511,11 +511,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         if (is_array($row) && $fetchLocalizedRecord) {
             if ($tableName === 'pages') {
                 $row = $pageRepository->getLanguageOverlay($tableName, $row);
-                // DataMapper only checks for _LOCALIZED_UID when setting '_localizedUid' property
-                // and not _PAGES_OVERLAY_UID.
-                if (isset($row['_PAGES_OVERLAY_UID'])) {
-                    $row['_LOCALIZED_UID'] = $row['_PAGES_OVERLAY_UID'];
-                }
             } else {
                 if (!$querySettings->getRespectSysLanguage()
                     && $languageOfCurrentRecord > 0
@@ -547,7 +542,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] ?? 0) > 0
                 && $languageOfCurrentRecord > 0
             ) {
-                $row['_LOCALIZED_UID'] = $row['uid'];
+                $row['_LOCALIZED_UID'] = (int)$row['uid'];
                 $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
             }
         }

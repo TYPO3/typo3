@@ -118,7 +118,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $rows = $subject->getMenu([1000]);
         self::assertEquals('root translation', $rows[1003]['title']);
         self::assertEquals('1001', $rows[1003]['uid']);
-        self::assertEquals('1002', $rows[1003]['_PAGES_OVERLAY_UID']);
+        self::assertEquals('1002', $rows[1003]['_LOCALIZED_UID']);
         self::assertEquals('1001-1003', $rows[1003]['_MP_PARAM']);
         self::assertCount(2, $rows);
     }
@@ -132,8 +132,8 @@ final class PageRepositoryTest extends FunctionalTestCase
         $row = $subject->getPageOverlay(1, 1);
         $this->assertOverlayRow($row);
         self::assertEquals('Wurzel 1', $row['title']);
-        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('901', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
     }
 
     /**
@@ -158,8 +158,8 @@ final class PageRepositoryTest extends FunctionalTestCase
         $this->assertOverlayRow($row);
         self::assertEquals(1, $row['uid']);
         self::assertEquals('Wurzel 1', $row['title']);
-        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('901', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
     }
 
     /**
@@ -191,8 +191,8 @@ final class PageRepositoryTest extends FunctionalTestCase
         $row = $rows[0];
         $this->assertOverlayRow($row);
         self::assertEquals('Wurzel 1', $row['title']);
-        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('901', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
     }
 
     /**
@@ -212,14 +212,14 @@ final class PageRepositoryTest extends FunctionalTestCase
         $row = $rows[0];
         $this->assertOverlayRow($row);
         self::assertEquals('Wurzel 1', $row['title']);
-        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('901', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
 
         $row = $rows[1];
         $this->assertOverlayRow($row);
         self::assertEquals('Attrappe 1-2-5', $row['title']);
-        self::assertEquals('904', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('904', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
     }
 
     /**
@@ -264,8 +264,8 @@ final class PageRepositoryTest extends FunctionalTestCase
         $row = $rows[0];
         $this->assertOverlayRow($row);
         self::assertEquals('Wurzel 1', $row['title']);
-        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('901', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
         self::assertEquals(new Page($origRow), $row['_TRANSLATION_SOURCE']);
     }
 
@@ -288,8 +288,8 @@ final class PageRepositoryTest extends FunctionalTestCase
         $row = $rows[0];
         $this->assertOverlayRow($row);
         self::assertEquals('Attrappe 1-2-6', $row['title']);
-        self::assertEquals('905', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('905', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
     }
 
     /**
@@ -313,15 +313,15 @@ final class PageRepositoryTest extends FunctionalTestCase
         $row = $rows[1];
         $this->assertOverlayRow($row);
         self::assertEquals('Wurzel 1', $row['title']);
-        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('901', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
         self::assertEquals(new Page($orig1), $row['_TRANSLATION_SOURCE']);
 
         $row = $rows[5];
         $this->assertOverlayRow($row);
         self::assertEquals('Attrappe 1-2-5', $row['title']);
-        self::assertEquals('904', $row['_PAGES_OVERLAY_UID']);
-        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('904', $row['_LOCALIZED_UID']);
+        self::assertEquals(1, $row['sys_language_uid']);
         self::assertEquals(new Page($orig2), $row['_TRANSLATION_SOURCE']);
     }
 
@@ -548,21 +548,14 @@ final class PageRepositoryTest extends FunctionalTestCase
     protected function assertOverlayRow($row): void
     {
         self::assertIsArray($row);
-
-        self::assertArrayHasKey('_PAGES_OVERLAY', $row);
-        self::assertArrayHasKey('_PAGES_OVERLAY_UID', $row);
-        self::assertArrayHasKey('_PAGES_OVERLAY_LANGUAGE', $row);
-
-        self::assertTrue($row['_PAGES_OVERLAY']);
+        self::assertArrayHasKey('_LOCALIZED_UID', $row);
     }
 
     protected function assertNotOverlayRow($row): void
     {
         self::assertIsArray($row);
 
-        self::assertFalse(isset($row['_PAGES_OVERLAY']));
-        self::assertFalse(isset($row['_PAGES_OVERLAY_UID']));
-        self::assertFalse(isset($row['_PAGES_OVERLAY_LANGUAGE']));
+        self::assertFalse(isset($row['_LOCALIZED_UID']));
     }
 
     /**

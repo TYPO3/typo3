@@ -76,7 +76,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
                     );
                     // If the record is not translated (overlays enabled), even though it should have been done
                     // We avoid linking to it
-                    if (empty($overlay['_LOCALIZED_UID'])) {
+                    if (!isset($overlay['_LOCALIZED_UID'])) {
                         $record = 0;
                     }
                 }

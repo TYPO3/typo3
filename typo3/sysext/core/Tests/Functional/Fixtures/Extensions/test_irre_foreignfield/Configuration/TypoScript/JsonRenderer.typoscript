@@ -8,7 +8,7 @@ config {
 
 	watcher {
 		tableFields {
-			pages = uid,_PAGES_OVERLAY_UID,pid,sorting,title,tx_testirreforeignfield_hotels
+			pages = uid,_LOCALIZED_UID,pid,sorting,title,tx_testirreforeignfield_hotels
 			tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_testirreforeignfield_hotels,tx_testdatahandler_categories,tx_testdatahandler_category
 			tx_testirreforeignfield_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
 			tx_testirreforeignfield_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices

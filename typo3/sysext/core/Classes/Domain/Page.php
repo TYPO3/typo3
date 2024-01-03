@@ -27,14 +27,11 @@ class Page implements \ArrayAccess
     protected array $specialPropertyNames = [
         '_language',
         '_LOCALIZED_UID',
+        '_REQUESTED_OVERLAY_LANGUAGE',
         '_MP_PARAM',
         '_ORIG_uid',
         '_ORIG_pid',
         '_SHORTCUT_ORIGINAL_PAGE_UID',
-        '_PAGES_OVERLAY',
-        '_PAGES_OVERLAY_UID',
-        '_PAGES_OVERLAY_LANGUAGE',
-        '_PAGES_OVERLAY_REQUESTEDLANGUAGE',
         '_TRANSLATION_SOURCE',
     ];
 
@@ -57,7 +54,7 @@ class Page implements \ArrayAccess
 
     public function getLanguageId(): int
     {
-        return $this->specialProperties['_language'] ?? $this->specialProperties['_PAGES_OVERLAY_LANGUAGE'] ?? $this->properties['sys_language_uid'];
+        return $this->specialProperties['_language'] ?? $this->properties['sys_language_uid'];
     }
 
     public function getPageId(): int
@@ -73,7 +70,7 @@ class Page implements \ArrayAccess
 
     public function getRequestedLanguage(): ?int
     {
-        return $this->specialProperties['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? null;
+        return $this->specialProperties['_REQUESTED_OVERLAY_LANGUAGE'] ?? null;
     }
 
     public function toArray(bool $includeSpecialProperties = false): array
