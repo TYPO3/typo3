@@ -46,7 +46,7 @@ class DumpAutoloadCommand extends Command
     /**
      * This command is not needed in composer mode.
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return !Environment::isComposerMode();
     }

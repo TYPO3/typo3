@@ -124,7 +124,7 @@ class FluidEmail extends Email
         ];
     }
 
-    public function ensureValidity()
+    public function ensureValidity(): void
     {
         $this->generateTemplatedBody();
         parent::ensureValidity();

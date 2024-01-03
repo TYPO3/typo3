@@ -43,7 +43,7 @@ final class HtmlDumper extends \Symfony\Component\VarDumper\Dumper\HtmlDumper
     /**
      * Transforms inline style and JavaScript elements to have a nonce attribute.
      */
-    protected function getDumpHeader()
+    protected function getDumpHeader(): string
     {
         if ($this->dumpHeader !== null) {
             return $this->dumpHeader;

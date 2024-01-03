@@ -28,7 +28,7 @@ use TYPO3\CMS\Backend\Routing\Route as Typo3Route;
  */
 class RouteCollection extends SymfonyRouteCollection
 {
-    public function add(string $name, Typo3Route|SymfonyRoute $route, int $priority = 0)
+    public function add(string $name, Typo3Route|SymfonyRoute $route, int $priority = 0): void
     {
         if ($route instanceof Typo3Route) {
             $symfonyRoute = new SymfonyRoute($route->getPath(), [], [], $route->getOptions());
