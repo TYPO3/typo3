@@ -261,9 +261,12 @@ class BackendController
             if ($redirect !== null && $request->getMethod() === 'GET') {
                 // Only redirect to existing non-ajax routes with no restriction to a specific method
                 $redirect->resolve(GeneralUtility::makeInstance(Router::class));
-                if ($this->moduleProvider->accessGranted($redirect->getName(), $this->getBackendUser())) {
-                    // Only add start module from request in case user has access.
-                    // Access might temporarily be blocked due to being in a workspace.
+                if ($this->isSpecialNoModuleRoute($redirect->getName())
+                    || $this->moduleProvider->accessGranted($redirect->getName(), $this->getBackendUser())
+                ) {
+                    // Only add start module from request in case user has access or it's a no module route,
+                    // e.g. to FormEngine where permissions are checked by the corresponding component.
+                    // Access might temporarily be blocked. e.g. due to being in a workspace.
                     $startModuleIdentifier = $redirect->getName();
                     $moduleParameters = $redirect->getParameters();
                 } elseif ($this->moduleProvider->isModuleRegistered($redirect->getName())) {
@@ -369,6 +372,14 @@ class BackendController
                     true
                 )
             );
+    }
+
+    /**
+     * Check if given route identifier is a special "no module" route
+     */
+    protected function isSpecialNoModuleRoute(string $routeIdentifier): bool
+    {
+        return in_array($routeIdentifier, ['record_edit', 'file_edit'], true);
     }
 
     protected function getBackendUser(): BackendUserAuthentication
