@@ -121,7 +121,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$height') === 'small'
                 && $definition->getArgument('$width') === 'small'
             ;
-        }))->willReturn($definition);
+        }));
         $this->widgetRegistryDefinition->expects(self::once())->method('addMethodCall')->with(
             'registerWidget',
             [
