@@ -530,9 +530,6 @@ class ShortcutRepository
             case 'file_edit':
                 $icon = $this->iconFactory->getIcon('mimetypes-text-html', IconSize::SMALL)->render();
                 break;
-            case 'wizard_rte':
-                $icon = $this->iconFactory->getIcon('mimetypes-word', IconSize::SMALL)->render();
-                break;
             default:
                 $iconIdentifier = '';
                 if ($module = $this->moduleProvider->getModule($moduleName, null, false)) {
@@ -564,7 +561,7 @@ class ShortcutRepository
      */
     protected function isSpecialRoute(string $routeIdentifier): bool
     {
-        return in_array($routeIdentifier, ['record_edit', 'file_edit', 'wizard_rte'], true);
+        return in_array($routeIdentifier, ['record_edit', 'file_edit'], true);
     }
 
     protected function getBackendUser(): BackendUserAuthentication
