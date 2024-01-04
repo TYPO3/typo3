@@ -31,7 +31,7 @@ final class InputHiddenElementTest extends UnitTestCase
     public function renderReturnsElementsAsAdditionalHiddenFields(): void
     {
         $data = [
-                'parameterArray' => [
+            'parameterArray' => [
                 'itemFormElName' => 'foo',
                 'itemFormElValue' => 'bar',
             ],

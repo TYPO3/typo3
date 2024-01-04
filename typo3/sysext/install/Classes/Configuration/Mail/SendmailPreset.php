@@ -43,7 +43,7 @@ class SendmailPreset extends AbstractPreset
         'MAIL/transport_smtp_encrypt' => '',
         'MAIL/transport_smtp_username' => '',
         'MAIL/transport_smtp_password' => '',
-        ];
+    ];
 
     /**
      * Get configuration values to activate prefix

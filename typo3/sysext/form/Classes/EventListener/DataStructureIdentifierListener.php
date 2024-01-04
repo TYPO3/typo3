@@ -145,11 +145,11 @@ class DataStructureIdentifierListener
                 $translationFile = 'LLL:EXT:form/Resources/Private/Language/Database.xlf';
                 $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'] = [
                     'label' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers',
-                        'onChange' => 'reload',
-                        'config' => [
-                            'type' => 'check',
-                        ],
-                    ];
+                    'onChange' => 'reload',
+                    'config' => [
+                        'type' => 'check',
+                    ],
+                ];
 
                 $newSheets = [];
 
@@ -162,10 +162,10 @@ class DataStructureIdentifierListener
                         $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'],
                         [
                             'description' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers.empty',
-                                'config' => [
-                                    'readOnly' => true,
-                                ],
-                            ]
+                            'config' => [
+                                'readOnly' => true,
+                            ],
+                        ]
                     );
                 }
 

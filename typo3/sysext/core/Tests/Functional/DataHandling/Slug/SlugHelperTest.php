@@ -96,13 +96,13 @@ final class SlugHelperTest extends FunctionalTestCase
                 ],
             ],
             'swiss page / german fallback parent' => [
-                 '/german-parent/swiss-page',
-                 [
-                     'uid' => '13',
-                     'title' => 'Swiss Page',
-                     'sys_language_uid' => 3,
-                 ],
-             ],
+                '/german-parent/swiss-page',
+                [
+                    'uid' => '13',
+                    'title' => 'Swiss Page',
+                    'sys_language_uid' => 3,
+                ],
+            ],
         ];
     }
 

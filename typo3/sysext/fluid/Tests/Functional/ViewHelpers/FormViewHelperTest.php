@@ -62,7 +62,7 @@ final class FormViewHelperTest extends FunctionalTestCase
                     'fieldNamePrefix' => 'fieldNamePrefix<>&"\'',
                 ],
                 // first element having "@extension" in name attribute
-               '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;&#039;[__referrer][@extension]" value="" />',
+                '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;&#039;[__referrer][@extension]" value="" />',
             ],
         ];
     }

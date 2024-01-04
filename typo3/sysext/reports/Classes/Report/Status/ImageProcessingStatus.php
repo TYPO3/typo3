@@ -54,7 +54,7 @@ class ImageProcessingStatus implements StatusProviderInterface
             $severity = ContextualFeedbackSeverity::INFO;
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_disabled');
             $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_disabled');
-        // ImageMagick / GraphicsMagick is not enabled, all good
+            // ImageMagick / GraphicsMagick is not enabled, all good
         } elseif (!in_array('webp', $imageProcessing->getImageFileExt(), true)) {
             // webp is not enabled in TYPO3's Configuration
             $severity = ContextualFeedbackSeverity::INFO;

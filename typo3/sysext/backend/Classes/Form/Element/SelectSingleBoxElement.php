@@ -211,7 +211,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         $attributes['value'] = $value;
         $html = [
             '<option ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>',
-                htmlspecialchars($this->appendValueToLabelInDebugMode($label, $value), ENT_COMPAT, 'UTF-8', false),
+            htmlspecialchars($this->appendValueToLabelInDebugMode($label, $value), ENT_COMPAT, 'UTF-8', false),
             '</option>',
 
         ];

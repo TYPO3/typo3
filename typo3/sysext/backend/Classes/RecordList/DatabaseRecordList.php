@@ -1379,13 +1379,13 @@ class DatabaseRecordList
         }
         $view = $this->backendViewFactory->create($this->request);
         return $view->assignMultiple([
-                'currentUrl' => $this->listURL('', $table, 'pointer'),
-                'currentPage' => $currentPage,
-                'totalPages' => $totalPages,
-                'firstElement' => ((($currentPage - 1) * $itemsPerPage) + 1),
-                'lastElement' => $lastElementNumber,
-                'colspan' => $paginationColumns,
-            ])
+            'currentUrl' => $this->listURL('', $table, 'pointer'),
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+            'firstElement' => ((($currentPage - 1) * $itemsPerPage) + 1),
+            'lastElement' => $lastElementNumber,
+            'colspan' => $paginationColumns,
+        ])
             ->render('ListNavigation');
     }
 
@@ -1531,9 +1531,9 @@ class DatabaseRecordList
             if (\trim($userTsConfig['options.']['showHistory.'][$table] ?? $userTsConfig['options.']['showHistory'] ?? '1')) {
                 if (!$isDeletePlaceHolder) {
                     $moduleUrl = $this->uriBuilder->buildUriFromRoute('record_history', [
-                            'element' => $table . ':' . $row['uid'],
-                            'returnUrl' => $this->listURL(),
-                        ]) . '#latest';
+                        'element' => $table . ':' . $row['uid'],
+                        'returnUrl' => $this->listURL(),
+                    ]) . '#latest';
                     $historyAction = '<a class="btn btn-default" href="' . htmlspecialchars($moduleUrl) . '" title="'
                         . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:history')) . '">'
                         . $this->iconFactory->getIcon('actions-document-history-open', IconSize::SMALL)->render() . '</a>';
@@ -1984,9 +1984,9 @@ class DatabaseRecordList
                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute(
                     'record_edit',
                     [
-                            'justLocalized' => $table . ':' . $row['uid'] . ':' . $lUid_OnPage,
-                            'returnUrl' => $this->listURL(),
-                        ]
+                        'justLocalized' => $table . ':' . $row['uid'] . ':' . $lUid_OnPage,
+                        'returnUrl' => $this->listURL(),
+                    ]
                 );
                 $params = [];
                 $params['redirect'] = $redirectUrl;

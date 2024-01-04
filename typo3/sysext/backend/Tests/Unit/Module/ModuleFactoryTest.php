@@ -93,7 +93,7 @@ final class ModuleFactoryTest extends UnitTestCase
                 'aliases' => ['web_list', 'web_list_x'],
             ],
             'content' => [
-              'aliases' => ['web'],
+                'aliases' => ['web'],
             ],
             'web_info' => [
                 'parent' => 'content',

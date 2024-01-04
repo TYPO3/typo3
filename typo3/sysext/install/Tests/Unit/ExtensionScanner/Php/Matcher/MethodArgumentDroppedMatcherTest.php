@@ -216,7 +216,7 @@ final class MethodArgumentDroppedMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

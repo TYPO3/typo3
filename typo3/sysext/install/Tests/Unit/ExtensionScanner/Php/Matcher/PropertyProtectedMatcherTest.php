@@ -114,7 +114,7 @@ final class PropertyProtectedMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

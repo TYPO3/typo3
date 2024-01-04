@@ -32,91 +32,91 @@ return [
         'timeRestriction' => ['showitem' => 'starttime, endtime'],
         'language' => ['showitem' => 'sys_language_uid, l10n_parent'],
     ],
-   'columns' => [
+    'columns' => [
 
-       'sys_language_uid' => [
-           'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-           'config' => [
-               'type' => 'language',
-           ],
-       ],
-       'l10n_parent' => [
-           'displayCond' => 'FIELD:sys_language_uid:>:0',
-           'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-           'config' => [
-               'type' => 'select',
-               'renderType' => 'selectSingle',
-               'items' => [
-                   ['label' => '', 'value' => 0],
-               ],
-               'foreign_table' => 'tx_styleguide_ctrl_common',
-               'foreign_table_where' => 'AND {#tx_styleguide_ctrl_common}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_ctrl_common}.{#sys_language_uid} IN (-1,0)',
-               'default' => 0,
-           ],
-       ],
-       'l10n_diffsource' => [
-           'config' => [
-               'type' => 'passthrough',
-               'default' => '',
-           ],
-       ],
-       'hidden' => [
-           'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-           'config' => [
-               'type' => 'check',
-               'renderType' => 'checkboxToggle',
-               'items' => [
-                   [
-                       'label' => '',
-                       'invertStateDisplay' => true,
-                   ],
-               ],
-           ],
-       ],
-       'starttime' => [
-           'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
-           'config' => [
-               'type' => 'datetime',
-               'eval' => 'int',
-               'default' => 0,
-               'behaviour' => [
-                   'allowLanguageSynchronization' => true,
-               ],
-           ],
-       ],
-       'endtime' => [
-           'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
-           'config' => [
-               'type' => 'datetime',
-               'eval' => 'int',
-               'default' => 0,
-               'range' => [
-                   'upper' => mktime(0, 0, 0, 1, 1, 2106),
-               ],
-               'behaviour' => [
-                   'allowLanguageSynchronization' => true,
-               ],
-           ],
-       ],
-       'title' => [
-           'label' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:minimalTableTitleField',
-           'config' => [
-               'type' => 'input',
-               'width' => 200,
-               'eval' => 'trim',
-               'required' => true,
-           ],
-       ],
-       'description' => [
-           'label' => 'description',
-           'config' => [
-               'type' => 'text',
-           ],
-       ],
-   ],
-   'types' => [
-      '0' => [
-         'showitem' => '
+        'sys_language_uid' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'language',
+            ],
+        ],
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['label' => '', 'value' => 0],
+                ],
+                'foreign_table' => 'tx_styleguide_ctrl_common',
+                'foreign_table_where' => 'AND {#tx_styleguide_ctrl_common}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_ctrl_common}.{#sys_language_uid} IN (-1,0)',
+                'default' => 0,
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => '',
+            ],
+        ],
+        'hidden' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        'label' => '',
+                        'invertStateDisplay' => true,
+                    ],
+                ],
+            ],
+        ],
+        'starttime' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+            'config' => [
+                'type' => 'datetime',
+                'eval' => 'int',
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ],
+        ],
+        'endtime' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+            'config' => [
+                'type' => 'datetime',
+                'eval' => 'int',
+                'default' => 0,
+                'range' => [
+                    'upper' => mktime(0, 0, 0, 1, 1, 2106),
+                ],
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ],
+        ],
+        'title' => [
+            'label' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:minimalTableTitleField',
+            'config' => [
+                'type' => 'input',
+                'width' => 200,
+                'eval' => 'trim',
+                'required' => true,
+            ],
+        ],
+        'description' => [
+            'label' => 'description',
+            'config' => [
+                'type' => 'text',
+            ],
+        ],
+    ],
+    'types' => [
+        '0' => [
+            'showitem' => '
             title, description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
                 --palette--;;language,
@@ -124,6 +124,6 @@ return [
                 hidden,--palette--;;timeRestriction,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
          ',
-      ],
-   ],
+        ],
+    ],
 ];

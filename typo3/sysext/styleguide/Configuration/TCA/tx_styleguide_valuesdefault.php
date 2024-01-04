@@ -194,7 +194,7 @@ return [
             ],
         ],
 
-         // @todo add default value examples for type=none
+        // @todo add default value examples for type=none
 
         'select_1' => [
             'label' => 'select_1 default=2, renderType=selectSingle, three items, second pre-selected',

@@ -115,7 +115,7 @@ final class ArrayDimensionMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

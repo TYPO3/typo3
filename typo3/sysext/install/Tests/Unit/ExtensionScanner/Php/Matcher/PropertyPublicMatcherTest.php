@@ -114,7 +114,7 @@ final class PropertyPublicMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

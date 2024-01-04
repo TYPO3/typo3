@@ -116,9 +116,9 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
     public function queryArgumentsAreKept(): void
     {
         $queryParams = [
-          'loginProvider'  => '123456789',
-          'redirect' => 'web_list',
-          'redirectParams' => 'id=123',
+            'loginProvider'  => '123456789',
+            'redirect' => 'web_list',
+            'redirectParams' => 'id=123',
         ];
         $request = $this->request->withQueryParams($queryParams);
         $GLOBALS['TYPO3_REQUEST'] = $request;
@@ -162,9 +162,9 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
     public function resetPasswordFormUrlContainsQueryParameters(): void
     {
         $queryParams = [
-          't'  => 'some-token-123',
-          'i' => 'some-identifier-456',
-          'e' => '1618401660',
+            't'  => 'some-token-123',
+            'i' => 'some-identifier-456',
+            'e' => '1618401660',
         ];
         $request = $this->request->withQueryParams($queryParams);
         $GLOBALS['TYPO3_REQUEST'] = $request;

@@ -98,7 +98,7 @@ final class PolicyProvider
             $siteLanguage = $siteLanguage instanceof SiteLanguage ? $siteLanguage : $site->getDefaultLanguage();
             $uri = $siteLanguage->getBase();
             $uri = $uri->withPath(rtrim($uri->getPath(), '/') . '/');
-        // otherwise fall back to current request URI
+            // otherwise fall back to current request URI
         } else {
             $uri = new Uri($normalizedParams->getSitePath());
         }

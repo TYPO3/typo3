@@ -4320,7 +4320,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 if (method_exists($value, 'get' . ucfirst($currentKey))) {
                     $getterMethod = 'get' . ucfirst($currentKey);
                     $value = $value->$getterMethod(...)();
-                // server request attribute, such as "routing"
+                    // server request attribute, such as "routing"
                 } elseif ($value instanceof ServerRequestInterface) {
                     $value = $value->getAttribute($currentKey);
                 } else {

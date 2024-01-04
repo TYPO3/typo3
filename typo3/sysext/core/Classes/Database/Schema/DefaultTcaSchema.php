@@ -1141,10 +1141,10 @@ class DefaultTcaSchema
                         $this->quote($fieldName),
                         Types::STRING,
                         [
-                                'notnull' => true,
-                                'default' => '',
-                                'length' => $dbFieldLength,
-                            ]
+                            'notnull' => true,
+                            'default' => '',
+                            'length' => $dbFieldLength,
+                        ]
                     );
                 } else {
                     // Final fallback creates a (nullable) text field.

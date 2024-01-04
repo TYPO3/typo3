@@ -141,8 +141,8 @@ final class HookTest extends FunctionalTestCase
         );
 
         $this->assertHookInvocationsCount($hookFixture, [
-                'processDatamap_beforeStart',
-                'processDatamap_afterAllOperations',
+            'processDatamap_beforeStart',
+            'processDatamap_afterAllOperations',
         ], 1);
 
         $this->assertHookInvocationsPayload($hookFixture, [
