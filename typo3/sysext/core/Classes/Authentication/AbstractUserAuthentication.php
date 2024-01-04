@@ -916,7 +916,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $restrictionContainer->add(GeneralUtility::makeInstance(RootLevelRestriction::class, [$this->user_table]));
         }
 
-        if ($this->checkPid && $this->checkPid_value !== null) {
+        if ($this->checkPid && $this->checkPid_value !== null && $this->checkPid_value !== '') {
             $restrictionContainer->add(
                 GeneralUtility::makeInstance(
                     PageIdListRestriction::class,
