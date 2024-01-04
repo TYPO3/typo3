@@ -1151,4 +1151,9 @@ return [
             'Breaking-102621-MostTSFEMembersMarkedInternalOrRead-only.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce->b64' => [
+        'restFiles' => [
+            'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

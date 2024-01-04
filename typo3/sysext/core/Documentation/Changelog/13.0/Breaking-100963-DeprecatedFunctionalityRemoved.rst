@@ -277,6 +277,7 @@ The following public class properties have been dropped:
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->BE_USER`
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->thisScript`
 - :php:`\TYPO3\CMS\Core\Localization\LanguageService->debugKey`
+- :php:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce->b64`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkLD`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkTarget`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkUrl`

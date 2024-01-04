@@ -24,19 +24,12 @@ final class ConsumableNonce extends ConsumableString
 {
     private const MIN_BYTES = 40;
 
-    /**
-     * @internal backward compatibility for Nonce::$b64
-     * @deprecated will be removed in TYPO3 v13.0, use ConsumableNonce::consume() or ConsumableNonce::$value instead
-     */
-    public readonly string $b64;
-
     public function __construct(string $nonce = null)
     {
         if ($nonce === null || strlen($nonce) < self::MIN_BYTES) {
             $nonce = random_bytes(self::MIN_BYTES);
             $nonce = StringUtility::base64urlEncode($nonce);
         }
-        $this->b64 = $nonce;
-        parent::__construct($this->b64);
+        parent::__construct($nonce);
     }
 }

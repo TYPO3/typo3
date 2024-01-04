@@ -49,7 +49,6 @@ final class ConsumableNonceTest extends UnitTestCase
     {
         $value = str_repeat('a', 40);
         $subject = new ConsumableNonce($value);
-        self::assertSame($value, $subject->b64);
         self::assertSame($value, $subject->value);
         self::assertSame($value, $subject->consume());
     }
