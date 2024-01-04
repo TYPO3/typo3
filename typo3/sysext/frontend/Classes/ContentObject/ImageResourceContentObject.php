@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
-use TYPO3\CMS\Core\Utility\PathUtility;
-
 /**
  * Contains IMG_RESOURCE class object.
  */
@@ -30,11 +28,12 @@ class ImageResourceContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        $lastImgResourceInfo = $this->cObj->getImgResource($conf['file'] ?? '', $conf['file.'] ?? []);
-        if (!is_array($lastImgResourceInfo)) {
+        $imageResource = $this->cObj->getImgResource($conf['file'] ?? '', $conf['file.'] ?? []);
+        if ($imageResource === null) {
             return '';
         }
-        $imageResource = PathUtility::stripPathSitePrefix($lastImgResourceInfo[3] ?? '');
-        return isset($conf['stdWrap.']) ? $this->cObj->stdWrap($imageResource, $conf['stdWrap.']) : $imageResource;
+        return isset($conf['stdWrap.'])
+            ? $this->cObj->stdWrap($imageResource->getPublicUrl(), $conf['stdWrap.'])
+            : $imageResource->getPublicUrl();
     }
 }

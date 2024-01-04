@@ -84,11 +84,11 @@ final class GifBuilderTest extends FunctionalTestCase
 
         $gifBuilder = new GifBuilder();
         $gifBuilder->start($conf, []);
-        $gifFileName = $gifBuilder->gifBuild();
+        $imageResource = $gifBuilder->gifBuild();
 
-        self::assertFileDoesNotExist(Environment::getProjectPath() . '/' . $gifFileName);
-        self::assertFileExists(Environment::getPublicPath() . '/' . $gifFileName);
-        self::assertStringEndsWith('.' . $fileExtension, $gifFileName);
+        self::assertFileDoesNotExist(Environment::getProjectPath() . '/' . $imageResource->getPublicUrl());
+        self::assertFileExists(Environment::getPublicPath() . '/' . $imageResource->getPublicUrl());
+        self::assertEquals($fileExtension, $imageResource->getExtension());
     }
 
     /**
@@ -256,15 +256,15 @@ final class GifBuilderTest extends FunctionalTestCase
         $gifBuilder = new GifBuilder();
         $gifBuilder->start($conf, []);
         $setup1 = $gifBuilder->setup;
-        $fileName1 = $gifBuilder->gifBuild();
+        $imageResource1 = $gifBuilder->gifBuild();
 
         // Recreate a fresh GifBuilder instance, to catch inconsistencies in hashing for different instances
         $gifBuilder = new GifBuilder();
         $gifBuilder->start($conf, []);
         $setup2 = $gifBuilder->setup;
-        $fileName2 = $gifBuilder->gifBuild();
+        $imageResource2 = $gifBuilder->gifBuild();
 
         self::assertSame($setup1, $setup2, 'The Setup resulting from two equal configurations must be equal');
-        self::assertSame($fileName1, $fileName2);
+        self::assertSame($imageResource1->getPublicUrl(), $imageResource2->getPublicUrl());
     }
 }

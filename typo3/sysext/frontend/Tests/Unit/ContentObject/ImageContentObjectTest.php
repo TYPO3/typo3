@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -185,7 +186,7 @@ final class ImageContentObjectTest extends UnitTestCase
             ->expects(self::once())
             ->method('getImgResource')
             ->with(self::equalTo('testImageName'))
-            ->willReturn([100, 100, null, 'bar']);
+            ->willReturn(new ImageResource(100, 100, '', 'bar', 'bar'));
 
         $this->subject->setContentObjectRenderer($cObj);
         $result = $this->subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
@@ -383,7 +384,7 @@ final class ImageContentObjectTest extends UnitTestCase
             ->expects(self::exactly(2))
             ->method('getImgResource')
             ->with(self::equalTo('testImageName'))
-            ->willReturn([100, 100, null, 'bar-file.jpg']);
+            ->willReturn(new ImageResource(100, 100, '', 'bar-file.jpg', 'bar-file.jpg'));
 
         $subject = $this->getAccessibleMock(ImageContentObject::class, null, [
             new MarkerBasedTemplateService(
@@ -419,7 +420,7 @@ final class ImageContentObjectTest extends UnitTestCase
 
         $cObj
             ->method('getImgResource')
-            ->willReturn([100, 100, null, 'bar-file.jpg']);
+            ->willReturn(new ImageResource(100, 100, '', 'bar-file.jpg', 'bar-file.jpg'));
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $cObj->method('getResourceFactory')->willReturn($resourceFactory);

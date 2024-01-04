@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Html\SanitizerInitiator;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -58,7 +59,6 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
-use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -69,6 +69,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
@@ -334,13 +335,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $stdWrapHookObjects = [];
 
     /**
-     * Containing hook objects for getImgResource
-     *
-     * @var array
-     */
-    protected $getImgResourceHookObjects;
-
-    /**
      * @var File|FileReference|Folder|string|null Current file objects (during iterations over files)
      */
     protected $currentFile;
@@ -491,27 +485,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function getCurrentTable()
     {
         return $this->table;
-    }
-
-    /**
-     * Gets the 'getImgResource' hook objects.
-     * The first call initializes the accordant objects.
-     *
-     * @return array The 'getImgResource' hook objects (if any)
-     */
-    protected function getGetImgResourceHookObjects()
-    {
-        if (!isset($this->getImgResourceHookObjects)) {
-            $this->getImgResourceHookObjects = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'] ?? [] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof ContentObjectGetImageResourceHookInterface) {
-                    throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetImageResourceHookInterface::class, 1218636383);
-                }
-                $this->getImgResourceHookObjects[] = $hookObject;
-            }
-        }
-        return $this->getImgResourceHookObjects;
     }
 
     /**
@@ -3664,7 +3637,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string|File|FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
      * @param array $fileArray TypoScript properties for the imgResource type
-     * @return array|null Returns info-array
+     * @return ImageResource|null
      * @see cImage()
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder
      */
@@ -3680,22 +3653,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         $imageResource = null;
         if ($file === 'GIFBUILDER') {
-            $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-            $gifCreator->start($fileArray, $this->data);
-            $theImage = $gifCreator->gifBuild();
-            if ($theImage !== '') {
-                $fullPath = Environment::getPublicPath() . '/' . $theImage;
-                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullPath);
-                if ($imageInfo->getWidth() > 0) {
-                    $imageResource = [
-                        0 => $imageInfo->getWidth(),
-                        1 => $imageInfo->getHeight(),
-                        2 => $imageInfo->getExtension(),
-                        3 => $fullPath,
-                        'origFile' => $theImage,
-                    ];
-                }
-            }
+            $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
+            $gifBuilder->start($fileArray, $this->data);
+            $imageResource = $gifBuilder->gifBuild();
         } else {
             if ($file instanceof File) {
                 $fileObject = $file;
@@ -3764,37 +3724,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Must render mask images and include in hash-calculating
                     // - otherwise we cannot be sure the filename is unique for the setup!
                     if (is_array($maskArray)) {
-                        $processingConfiguration['maskImages']['maskImage'] = $this->getImgResource($maskArray['mask'] ?? '', $maskArray['mask.'] ?? [])['processedFile'] ?? null;
-                        $processingConfiguration['maskImages']['backgroundImage'] = $this->getImgResource($maskArray['bgImg'] ?? '', $maskArray['bgImg.'] ?? [])['processedFile'] ?? null;
-                        $processingConfiguration['maskImages']['maskBottomImage'] = $this->getImgResource($maskArray['bottomImg'] ?? '', $maskArray['bottomImg.'] ?? [])['processedFile'] ?? null;
-                        $processingConfiguration['maskImages']['maskBottomImageMask'] = $this->getImgResource($maskArray['bottomImg_mask'] ?? '', $maskArray['bottomImg_mask.'] ?? [])['processedFile'] ?? null;
+                        $processingConfiguration['maskImages']['maskImage'] = $this->getImgResource($maskArray['mask'] ?? '', $maskArray['mask.'] ?? [])?->getProcessedFile();
+                        $processingConfiguration['maskImages']['backgroundImage'] = $this->getImgResource($maskArray['bgImg'] ?? '', $maskArray['bgImg.'] ?? [])?->getProcessedFile();
+                        $processingConfiguration['maskImages']['maskBottomImage'] = $this->getImgResource($maskArray['bottomImg'] ?? '', $maskArray['bottomImg.'] ?? [])?->getProcessedFile();
+                        $processingConfiguration['maskImages']['maskBottomImageMask'] = $this->getImgResource($maskArray['bottomImg_mask'] ?? '', $maskArray['bottomImg_mask.'] ?? [])?->getProcessedFile();
                     }
                     $processedFileObject = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
                     if ($processedFileObject->isProcessed()) {
-                        $imageResource = [
-                            0 => (int)$processedFileObject->getProperty('width'),
-                            1 => (int)$processedFileObject->getProperty('height'),
-                            2 => $processedFileObject->getExtension(),
-                            3 => Environment::getPublicPath() . '/' . $processedFileObject->getPublicUrl(),
-                            'origFile' => $fileObject->getPublicUrl(),
-                            'origFile_mtime' => $fileObject->getModificationTime(),
-                            // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
-                            // in order for the setup-array to create a unique filename hash.
-                            'originalFile' => $fileObject,
-                            'processedFile' => $processedFileObject,
-                        ];
+                        $imageResource = ImageResource::createFromProcessedFile($processedFileObject);
                     }
                 }
             }
         }
-        // Hook 'getImgResource': Post-processing of image resources
-        if (isset($imageResource)) {
-            /** @var ContentObjectGetImageResourceHookInterface $hookObject */
-            foreach ($this->getGetImgResourceHookObjects() as $hookObject) {
-                $imageResource = $hookObject->getImgResourcePostProcess($file, (array)$fileArray, $imageResource, $this);
-            }
-        }
-        return $imageResource;
+
+        return GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new AfterImageResourceResolvedEvent($file, $fileArray, $imageResource)
+        )->getImageResource();
     }
 
     /**

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
@@ -179,32 +180,13 @@ class ImageService implements SingletonInterface
      */
     protected function setCompatibilityValues(ProcessedFile $processedImage): void
     {
-        $publicUrl = $processedImage->getPublicUrl();
-        if ($publicUrl !== null) {
+        $imageResource = ImageResource::createFromProcessedFile($processedImage);
+        if ($imageResource->getPublicUrl() !== null) {
             // only add the processed image to AssetCollector if the public url is not NULL
-            $imageInfoValues = $this->getCompatibilityImageResourceValues($processedImage);
             GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
-                $publicUrl,
-                $imageInfoValues
+                $imageResource->getPublicUrl(),
+                $imageResource->getLegacyImageResourceInformation()
             );
         }
-    }
-
-    /**
-     * Calculates the compatibility values
-     * This is duplicate code taken from ContentObjectRenderer::getImgResource()
-     * Ideally we should get rid of this code in both places.
-     */
-    protected function getCompatibilityImageResourceValues(ProcessedFile $processedImage): array
-    {
-        $originalFile = $processedImage->getOriginalFile();
-        return [
-            0 => $processedImage->getProperty('width'),
-            1 => $processedImage->getProperty('height'),
-            2 => $processedImage->getExtension(),
-            3 => $processedImage->getPublicUrl(),
-            'origFile' => $originalFile->getPublicUrl(),
-            'origFile_mtime' => $originalFile->getModificationTime(),
-        ];
     }
 }

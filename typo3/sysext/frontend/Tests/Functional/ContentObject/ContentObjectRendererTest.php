@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -1247,8 +1248,8 @@ And another one';
         $expectedWidth = 512;
         $expectedHeight = 341;
 
-        self::assertEquals($expectedWidth, $result[0]);
-        self::assertEquals($expectedHeight, $result[1]);
+        self::assertEquals($expectedWidth, $result->getWidth());
+        self::assertEquals($expectedHeight, $result->getHeight());
     }
 
     /**
@@ -1320,5 +1321,36 @@ And another one';
         self::assertEquals('field:title', $afterGetDataResolvedEvent->getParameterString());
         self::assertEquals(['title' => 'title'], $afterGetDataResolvedEvent->getAlternativeFieldArray());
         self::assertEquals('modified-result', $afterGetDataResolvedEvent->getResult());
+    }
+
+    /**
+     * @test
+     */
+    public function afterImageResourceResolvedEventIsCalled(): void
+    {
+        $afterImageResourceResolvedEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'after-image-resource-resolved-listener',
+            static function (AfterImageResourceResolvedEvent $event) use (&$afterImageResourceResolvedEvent) {
+                $afterImageResourceResolvedEvent = $event;
+                $modifiedImageResource = $afterImageResourceResolvedEvent->getImageResource()?->withPublicUrl('modified-public-url');
+                $event->setImageResource($modifiedImageResource);
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(AfterImageResourceResolvedEvent::class, 'after-image-resource-resolved-listener');
+
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject->start(['foo' => 'bar'], 'aTable');
+        $subject->getImgResource('GIFBUILDER', ['foo' => 'bar']);
+
+        self::assertInstanceOf(AfterImageResourceResolvedEvent::class, $afterImageResourceResolvedEvent);
+        self::assertEquals('GIFBUILDER', $afterImageResourceResolvedEvent->getFile());
+        self::assertEquals(['foo' => 'bar'], $afterImageResourceResolvedEvent->getFileArray());
+        self::assertEquals('modified-public-url', $afterImageResourceResolvedEvent->getImageResource()->getPublicUrl());
     }
 }

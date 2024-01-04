@@ -16,14 +16,12 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent;
 
 /**
@@ -65,23 +63,20 @@ class ImageContentObject extends AbstractContentObject
     protected function cImage($file, array $conf): string
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        $info = $this->cObj->getImgResource($file, $conf['file.'] ?? []);
-        if (!is_array($info)) {
+        $imageResource = $this->cObj->getImgResource($file, $conf['file.'] ?? []);
+        if ($imageResource === null) {
             return '';
         }
         // $info['originalFile'] will be set, when the file is processed by FAL.
         // In that case the URL is final and we must not add a prefix
-        if (!isset($info['originalFile']) && is_file($info['3'])) {
-            $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode(PathUtility::stripPathSitePrefix($info['3'])));
+        if ($imageResource->getOriginalFile() === null && is_file($imageResource->getFullPath())) {
+            $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode($imageResource->getPublicUrl()));
         } else {
-            $source = PathUtility::stripPathSitePrefix($info[3]);
+            $source = $imageResource->getPublicUrl();
         }
-        // Remove file objects for AssetCollector, as it only allows to store scalar values
-        $infoOriginalFile = $info['originalFile'] ?? null;
-        unset($info['originalFile'], $info['processedFile']);
         GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
             $source,
-            $info
+            $imageResource->getLegacyImageResourceInformation()
         );
 
         $layoutKey = (string)$this->cObj->stdWrapValue('layoutKey', $conf);
@@ -95,8 +90,8 @@ class ImageContentObject extends AbstractContentObject
         }
 
         $imageTagValues = [
-            'width' =>  (int)$info[0],
-            'height' => (int)$info[1],
+            'width' =>  $imageResource->getWidth(),
+            'height' => $imageResource->getHeight(),
             'src' => htmlspecialchars($source),
             'params' => $params,
             'altParams' => $altParam,
@@ -110,7 +105,7 @@ class ImageContentObject extends AbstractContentObject
         if ($linkWrap !== '') {
             $theValue = $this->linkWrap($theValue, $linkWrap);
         } elseif ($conf['imageLinkWrap'] ?? false) {
-            $originalFile = !empty($infoOriginalFile) ? $infoOriginalFile : urldecode($info['origFile']);
+            $originalFile = urldecode($imageResource->getFullPath());
             $theValue = $this->cObj->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
         }
         $wrap = $this->cObj->stdWrapValue('wrap', $conf);
@@ -211,23 +206,19 @@ class ImageContentObject extends AbstractContentObject
                         unset($sourceRenderConfiguration['file.'][$dimensionKey . '.']);
                     }
                 }
-                $sourceInfo = $this->cObj->getImgResource($sourceRenderConfiguration['file'], $sourceRenderConfiguration['file.']);
-                if ($sourceInfo) {
-                    $sourceConfiguration['width'] = $sourceInfo[0];
-                    $sourceConfiguration['height'] = $sourceInfo[1];
+                $imageResource = $this->cObj->getImgResource($sourceRenderConfiguration['file'], $sourceRenderConfiguration['file.']);
+                if ($imageResource !== null) {
+                    $sourceConfiguration['width'] = $imageResource->getWidth();
+                    $sourceConfiguration['height'] = $imageResource->getHeight();
 
                     $urlPrefix = '';
-                    $publicUrl = str_starts_with($sourceInfo[3], Environment::getPublicPath())
-                        ? PathUtility::stripPathSitePrefix($sourceInfo[3])
-                        : $sourceInfo[3];
-
                     // Prepend 'absRefPrefix' to file path only if file was not processed
                     // by FAL, e.g. GIFBUILDER
-                    if (!isset($sourceInfo['originalFile']) && is_file(Environment::getPublicPath() . '/' . $publicUrl)) {
+                    if ($imageResource->getOriginalFile() === null && is_file($imageResource->getFullPath())) {
                         $urlPrefix = $tsfe->absRefPrefix;
                     }
 
-                    $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $publicUrl);
+                    $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $imageResource->getPublicUrl());
                     $sourceConfiguration['selfClosingTagSlash'] = $this->getPageRenderer()->getDocType()->isXmlCompliant() ? ' /' : '';
 
                     $oneSourceCollection = $this->markerTemplateService->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);

@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\FileProcessingAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -275,40 +276,35 @@ class GifBuilder
                         }
                         break;
                     case 'IMAGE':
-                        $fileInfo = $this->getResource($conf['file'] ?? '', $conf['file.'] ?? []);
-                        if ($fileInfo) {
-                            $this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', PathUtility::basename($fileInfo[3]));
-                            if (($fileInfo['processedFile'] ?? null) instanceof ProcessedFile) {
+                        $imageResource = $this->getResource($conf['file'] ?? '', $conf['file.'] ?? []);
+                        if ($imageResource !== null) {
+                            $this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', PathUtility::basename($imageResource->getFullPath()));
+                            if ($imageResource->getProcessedFile() instanceof ProcessedFile) {
                                 // Use processed file, if a FAL file has been processed by GIFBUILDER (e.g. scaled/cropped)
-                                $this->setup[$theKey . '.']['file'] = $fileInfo['processedFile']->getForLocalProcessing(false);
-                            } elseif (!isset($fileInfo['origFile']) && ($fileInfo['originalFile'] ?? null) instanceof File) {
+                                $this->setup[$theKey . '.']['file'] = $imageResource->getProcessedFile()->getForLocalProcessing(false);
+                            } elseif ($imageResource->getOriginalFile() instanceof File) {
                                 // Use FAL file with getForLocalProcessing to circumvent problems with umlauts, if it is a FAL file (origFile not set)
-                                $originalFile = $fileInfo['originalFile'];
-                                $this->setup[$theKey . '.']['file'] = $originalFile->getForLocalProcessing(false);
+                                $this->setup[$theKey . '.']['file'] = $imageResource->getOriginalFile()->getForLocalProcessing(false);
                             } else {
                                 // Use normal path from fileInfo if it is a non-FAL file (even non-FAL files have originalFile set, but only non-FAL files have origFile set)
-                                $this->setup[$theKey . '.']['file'] = $fileInfo[3];
+                                $this->setup[$theKey . '.']['file'] = $imageResource->getFullPath();
                             }
 
-                            // only pass necessary parts of fileInfo further down, to not incorporate facts as
+                            // only pass necessary parts of ImageResource further down, to not incorporate facts as
                             // CropScaleMask runs in this request, that may not occur in subsequent calls and change
                             // the md5 of the generated file name
-                            $essentialFileInfo = $fileInfo;
-                            unset($essentialFileInfo['originalFile'], $essentialFileInfo['processedFile']);
-
-                            $this->setup[$theKey . '.']['BBOX'] = $essentialFileInfo;
-                            $this->objBB[$theKey] = $essentialFileInfo;
+                            $this->setup[$theKey . '.']['BBOX'] = $imageResource->getLegacyImageResourceInformation();
+                            $this->objBB[$theKey] = $imageResource->getLegacyImageResourceInformation();
                             if ($conf['mask'] ?? false) {
-                                $maskInfo = $this->getResource($conf['mask'], $conf['mask.'] ?? []);
-                                if ($maskInfo) {
+                                $maskResource = $this->getResource($conf['mask'], $conf['mask.'] ?? []);
+                                if ($maskResource !== null) {
                                     // the same selection criteria as regarding fileInfo above apply here
-                                    if (($maskInfo['processedFile'] ?? null) instanceof ProcessedFile) {
-                                        $this->setup[$theKey . '.']['mask'] = $maskInfo['processedFile']->getForLocalProcessing(false);
-                                    } elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof File) {
-                                        $originalFile = $maskInfo['originalFile'];
-                                        $this->setup[$theKey . '.']['mask'] = $originalFile->getForLocalProcessing(false);
+                                    if ($maskResource->getProcessedFile() instanceof ProcessedFile) {
+                                        $this->setup[$theKey . '.']['mask'] = $maskResource->getProcessedFile()->getForLocalProcessing(false);
+                                    } elseif ($maskResource->getOriginalFile() instanceof File) {
+                                        $this->setup[$theKey . '.']['mask'] = $maskResource->getOriginalFile()->getForLocalProcessing(false);
                                     } else {
-                                        $this->setup[$theKey . '.']['mask'] = $maskInfo[3];
+                                        $this->setup[$theKey . '.']['mask'] = $maskResource->getFullPath();
                                     }
                                 } else {
                                     $this->setup[$theKey . '.']['mask'] = '';
@@ -417,25 +413,22 @@ class GifBuilder
     }
 
     /**
-     * Initiates the image file generation if ->setup is TRUE and if the file did not exist already.
-     * Gets filename from fileName() and if file exists in typo3temp/assets/images/ dir it will - of course - not be rendered again.
-     * Otherwise rendering means calling ->make(), then ->output(), then destroys the image
+     * Initiates the image file generation if ->setup is TRUE and if the file did not
+     * exist already. Gets filename from fileName() and if file exists in typo3temp/assets/images/
+     * dir it will- of course - not be rendered again. Otherwise rendering means calling ->make(),
+     * then ->output(), then destroys the image and returns the ImageResource DTO.
      *
-     * @return string The filename for the created GIF/PNG file, relative to the public path.
+     * @return ImageResource|null Returns the ImageResource DTO with file information from ContentObjectRenderer::getImgResource() - or NULL
      * @see make()
      * @see fileName()
      */
-    public function gifBuild()
+    public function gifBuild(): ?ImageResource
     {
         if (!$this->setup || !class_exists(\GdImage::class)) {
-            return '';
+            return null;
         }
 
-        // Relative to Environment::getPublicPath()
-        $gifFileName = $this->fileName();
-        $relativeFileName = 'typo3temp/assets/images/' . $gifFileName;
-        $fullFileName = Environment::getPublicPath() . '/' . $relativeFileName;
-
+        $fullFileName = Environment::getPublicPath() . '/typo3temp/assets/images/' . $this->fileName();
         if (!file_exists($fullFileName)) {
             // Create temporary directory if not done
             GeneralUtility::mkdir_deep(dirname($fullFileName));
@@ -444,7 +437,13 @@ class GifBuilder
             $this->output($gdImage, $fullFileName);
             imagedestroy($gdImage);
         }
-        return $relativeFileName;
+
+        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullFileName);
+        if ($imageInfo->getWidth() > 0) {
+            return ImageResource::createFromImageInfo($imageInfo);
+        }
+
+        return null;
     }
 
     /**
@@ -1344,10 +1343,10 @@ class GifBuilder
      *
      * @param string|File $file Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource" - can also be a FAL file
      * @param array $fileArray TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
-     * @return array|null Returns an array with file information from ContentObjectRenderer::getImgResource()
+     * @return ImageResource|null Returns the ImageResource DTO with file information from ContentObjectRenderer::getImgResource() - or NULL
      * @see ContentObjectRenderer::getImgResource()
      */
-    protected function getResource(string|File $file, array $fileArray): ?array
+    protected function getResource(string|File $file, array $fileArray): ?ImageResource
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $deferProcessing = !$context->hasAspect('fileProcessing') || $context->getPropertyFromAspect('fileProcessing', 'deferProcessing');

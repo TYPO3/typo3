@@ -1074,4 +1074,10 @@ return [
             'Feature-102624-PSR-14EventForModifyingImageSourceCollection.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'getImgResource\']' => [
+        'restFiles' => [
+            'Breaking-102755-ImprovedGetImageResourceFunctionality.rst',
+            'Feature-102755-PSR-14EventForModifyingGetImageResourceResult.rst',
+        ],
+    ],
 ];
