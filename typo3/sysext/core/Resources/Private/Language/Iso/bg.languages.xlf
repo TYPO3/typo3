@@ -318,6 +318,10 @@
         <source>Cheyenne</source>
         <target>Чейенски</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>Черногорски</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>Корсикански</target>
@@ -461,6 +465,10 @@
       <trans-unit id="fi" resname="fi" approved="yes">
         <source>Finnish</source>
         <target>Фински</target>
+      </trans-unit>
+      <trans-unit id="fil" resname="fil" approved="yes">
+        <source>Filipino; Pilipino</source>
+        <target>филипински</target>
       </trans-unit>
       <trans-unit id="fiu" resname="fiu" approved="yes">
         <source>Finno-Ugrian languages</source>

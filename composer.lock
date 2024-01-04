@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bef16b007137faad31df5fb41e821df",
+    "content-hash": "801ee0fe2ce90a2175eca1fbc5ec8281",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8393,16 +8393,16 @@
         },
         {
             "name": "sokil/php-isocodes-db-i18n",
-            "version": "4.0.17",
+            "version": "4.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sokil/php-isocodes-db-i18n.git",
-                "reference": "e96a9c40123f68ef944d719d1e5662ca969b54bc"
+                "reference": "92437f9584a5fa79922bd0d11018035e6c4211d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sokil/php-isocodes-db-i18n/zipball/e96a9c40123f68ef944d719d1e5662ca969b54bc",
-                "reference": "e96a9c40123f68ef944d719d1e5662ca969b54bc",
+                "url": "https://api.github.com/repos/sokil/php-isocodes-db-i18n/zipball/92437f9584a5fa79922bd0d11018035e6c4211d4",
+                "reference": "92437f9584a5fa79922bd0d11018035e6c4211d4",
                 "shasum": ""
             },
             "require": {
@@ -8427,9 +8427,9 @@
             "description": "Database and internationalisation filed for ISO country, subdivision, language, currency and script definitions and their translations. Based on pythons pycountry and Debian's iso-codes.",
             "support": {
                 "issues": "https://github.com/sokil/php-isocodes-db-i18n/issues",
-                "source": "https://github.com/sokil/php-isocodes-db-i18n/tree/4.0.17"
+                "source": "https://github.com/sokil/php-isocodes-db-i18n/tree/4.0.18"
             },
-            "time": "2023-12-03T11:17:08+00:00"
+            "time": "2024-01-03T09:34:57+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -8945,5 +8945,5 @@
     "platform-overrides": {
         "php": "8.1.1"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

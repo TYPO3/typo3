@@ -364,7 +364,7 @@
       </trans-unit>
       <trans-unit id="CZ.official_name" resname="CZ.official_name" approved="yes">
         <source>Czech Republic</source>
-        <target>Cehia</target>
+        <target>Republica Cehă</target>
       </trans-unit>
       <trans-unit id="DE.name" resname="DE.name" approved="yes">
         <source>Germany</source>
@@ -408,7 +408,7 @@
       </trans-unit>
       <trans-unit id="DZ.official_name" resname="DZ.official_name" approved="yes">
         <source>People's Democratic Republic of Algeria</source>
-        <target>Republica populară Democratică Algeria</target>
+        <target>Republica populară democrată Algeria</target>
       </trans-unit>
       <trans-unit id="EC.name" resname="EC.name" approved="yes">
         <source>Ecuador</source>
@@ -516,7 +516,7 @@
       </trans-unit>
       <trans-unit id="GB.official_name" resname="GB.official_name" approved="yes">
         <source>United Kingdom of Great Britain and Northern Ireland</source>
-        <target>Regatul Unit al Marii Britanii și Insulelor Nordice</target>
+        <target>Regatul unit al Marii Britanii și Irlandei de nord</target>
       </trans-unit>
       <trans-unit id="GD.name" resname="GD.name" approved="yes">
         <source>Grenada</source>
@@ -556,7 +556,7 @@
       </trans-unit>
       <trans-unit id="GM.official_name" resname="GM.official_name" approved="yes">
         <source>Republic of the Gambia</source>
-        <target>Republic of the Gambia</target>
+        <target>Republica Gambia</target>
       </trans-unit>
       <trans-unit id="GN.name" resname="GN.name" approved="yes">
         <source>Guinea</source>
@@ -624,7 +624,7 @@
       </trans-unit>
       <trans-unit id="HK.official_name" resname="HK.official_name" approved="yes">
         <source>Hong Kong Special Administrative Region of China</source>
-        <target>Regiunea Chineză cu administrare specială Hong Kong</target>
+        <target>Regiunea administrativă specială Hong Kong din China</target>
       </trans-unit>
       <trans-unit id="HM.name" resname="HM.name" approved="yes">
         <source>Heard Island and McDonald Islands</source>
@@ -796,7 +796,7 @@
       </trans-unit>
       <trans-unit id="KP.name" resname="KP.name" approved="yes">
         <source>Korea, Democratic People's Republic of</source>
-        <target>Republica democrată populară Coreea</target>
+        <target>Coreea, Republica democrată populară</target>
       </trans-unit>
       <trans-unit id="KP.official_name" resname="KP.official_name" approved="yes">
         <source>Democratic People's Republic of Korea</source>
@@ -888,7 +888,7 @@
       </trans-unit>
       <trans-unit id="LU.official_name" resname="LU.official_name" approved="yes">
         <source>Grand Duchy of Luxembourg</source>
-        <target>Marele Ducat al Luxemburgului</target>
+        <target>Marele ducat al Luxemburgului</target>
       </trans-unit>
       <trans-unit id="LV.name" resname="LV.name" approved="yes">
         <source>Latvia</source>
@@ -960,11 +960,11 @@
       </trans-unit>
       <trans-unit id="MK.name" resname="MK.name" approved="yes">
         <source>North Macedonia</source>
-        <target>North Macedonia</target>
+        <target>Macedonia de nord</target>
       </trans-unit>
       <trans-unit id="MK.official_name" resname="MK.official_name" approved="yes">
         <source>Republic of North Macedonia</source>
-        <target>Republic of North Macedonia</target>
+        <target>Republica Macedonia de nord</target>
       </trans-unit>
       <trans-unit id="ML.name" resname="ML.name" approved="yes">
         <source>Mali</source>
@@ -996,11 +996,11 @@
       </trans-unit>
       <trans-unit id="MP.name" resname="MP.name" approved="yes">
         <source>Northern Mariana Islands</source>
-        <target>Insulele Mariane de Nord</target>
+        <target>Insulele Mariane de nord</target>
       </trans-unit>
       <trans-unit id="MP.official_name" resname="MP.official_name" approved="yes">
         <source>Commonwealth of the Northern Mariana Islands</source>
-        <target>Comitatul Insulelor Mariane Nordice</target>
+        <target>Comitatul Insulelor Mariane nordice</target>
       </trans-unit>
       <trans-unit id="MQ.name" resname="MQ.name" approved="yes">
         <source>Martinique</source>
@@ -1392,7 +1392,7 @@
       </trans-unit>
       <trans-unit id="SO.official_name" resname="SO.official_name" approved="yes">
         <source>Federal Republic of Somalia</source>
-        <target>Republica Federală Somalia</target>
+        <target>Republica federală Somalia</target>
       </trans-unit>
       <trans-unit id="SR.name" resname="SR.name" approved="yes">
         <source>Suriname</source>
@@ -1404,11 +1404,11 @@
       </trans-unit>
       <trans-unit id="SS.name" resname="SS.name" approved="yes">
         <source>South Sudan</source>
-        <target>Sudanul de Sud</target>
+        <target>Sudanul de sud</target>
       </trans-unit>
       <trans-unit id="SS.official_name" resname="SS.official_name" approved="yes">
         <source>Republic of South Sudan</source>
-        <target>Republica Sudanului de Sud</target>
+        <target>Republica Sudanului de sud</target>
       </trans-unit>
       <trans-unit id="ST.name" resname="ST.name" approved="yes">
         <source>Sao Tome and Principe</source>
@@ -1436,11 +1436,15 @@
       </trans-unit>
       <trans-unit id="SY.name" resname="SY.name" approved="yes">
         <source>Syrian Arab Republic</source>
-        <target>Republica Araba Siria</target>
+        <target>Republica arabă Siriană</target>
+      </trans-unit>
+      <trans-unit id="SZ.name" resname="SZ.name" approved="yes">
+        <source>Eswatini</source>
+        <target>Eswatini</target>
       </trans-unit>
       <trans-unit id="SZ.official_name" resname="SZ.official_name" approved="yes">
         <source>Kingdom of Eswatini</source>
-        <target>Kingdom of Eswatini</target>
+        <target>Regatul Eswatini</target>
       </trans-unit>
       <trans-unit id="TC.name" resname="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>
@@ -1488,11 +1492,11 @@
       </trans-unit>
       <trans-unit id="TL.name" resname="TL.name" approved="yes">
         <source>Timor-Leste</source>
-        <target>Timorul de Est</target>
+        <target>Timorul de est</target>
       </trans-unit>
       <trans-unit id="TL.official_name" resname="TL.official_name" approved="yes">
         <source>Democratic Republic of Timor-Leste</source>
-        <target>Republica democrată Timorul de Est</target>
+        <target>Republica democrată Timorul de est</target>
       </trans-unit>
       <trans-unit id="TM.name" resname="TM.name" approved="yes">
         <source>Turkmenistan</source>
@@ -1514,9 +1518,13 @@
         <source>Kingdom of Tonga</source>
         <target>Regatul Tonga</target>
       </trans-unit>
+      <trans-unit id="TR.name" resname="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>Turcia</target>
+      </trans-unit>
       <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Republic of Türkiye</target>
+        <target>Republica Turcia</target>
       </trans-unit>
       <trans-unit id="TT.name" resname="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>
@@ -1532,19 +1540,19 @@
       </trans-unit>
       <trans-unit id="TW.name" resname="TW.name" approved="yes">
         <source>Taiwan, Province of China</source>
-        <target>Taiwan</target>
+        <target>Taiwan, Provincie chineză</target>
       </trans-unit>
       <trans-unit id="TW.official_name" resname="TW.official_name" approved="yes">
         <source>Taiwan, Province of China</source>
-        <target>Taiwan</target>
+        <target>Taiwan, Provincie chineză</target>
       </trans-unit>
       <trans-unit id="TZ.name" resname="TZ.name" approved="yes">
         <source>Tanzania, United Republic of</source>
-        <target>Republica Unită Tanzania</target>
+        <target>Republica unită Tanzania</target>
       </trans-unit>
       <trans-unit id="TZ.official_name" resname="TZ.official_name" approved="yes">
         <source>United Republic of Tanzania</source>
-        <target>Republica Unită Tanzania</target>
+        <target>Republica unită Tanzania</target>
       </trans-unit>
       <trans-unit id="UA.name" resname="UA.name" approved="yes">
         <source>Ukraine</source>
@@ -1560,7 +1568,7 @@
       </trans-unit>
       <trans-unit id="UM.name" resname="UM.name" approved="yes">
         <source>United States Minor Outlying Islands</source>
-        <target>Insulele de Coasta ale Statelor Unite</target>
+        <target>Insulele periferice minore ale Statelor Unite</target>
       </trans-unit>
       <trans-unit id="US.name" resname="US.name" approved="yes">
         <source>United States</source>
@@ -1576,7 +1584,7 @@
       </trans-unit>
       <trans-unit id="UY.official_name" resname="UY.official_name" approved="yes">
         <source>Eastern Republic of Uruguay</source>
-        <target>Republica Estică Uruguay</target>
+        <target>Republica estică Uruguay</target>
       </trans-unit>
       <trans-unit id="UZ.name" resname="UZ.name" approved="yes">
         <source>Uzbekistan</source>
@@ -1644,7 +1652,7 @@
       </trans-unit>
       <trans-unit id="WS.official_name" resname="WS.official_name" approved="yes">
         <source>Independent State of Samoa</source>
-        <target>Statul Independent Samoa</target>
+        <target>Statul independent Samoa</target>
       </trans-unit>
       <trans-unit id="YE.name" resname="YE.name" approved="yes">
         <source>Yemen</source>

@@ -8,27 +8,27 @@
       </trans-unit>
       <trans-unit id="AD.official_name" resname="AD.official_name" approved="yes">
         <source>Principality of Andorra</source>
-        <target>ព្រះ​រាជាណាចក្រ​អង់ដូរ៉ា​</target>
+        <target>ក្សត្របុរីអង់ដូរ៉ា</target>
       </trans-unit>
       <trans-unit id="AE.name" resname="AE.name" approved="yes">
         <source>United Arab Emirates</source>
-        <target>អារ៉ាប់​រួម</target>
+        <target>អេមីរ៉ាតអារ៉ាប់រួម</target>
       </trans-unit>
       <trans-unit id="AF.name" resname="AF.name" approved="yes">
         <source>Afghanistan</source>
-        <target>អាហ្គានីស្ថាន</target>
+        <target>អាហ្វហ្កានីស្ថាន</target>
       </trans-unit>
       <trans-unit id="AF.official_name" resname="AF.official_name" approved="yes">
         <source>Islamic Republic of Afghanistan</source>
-        <target>សាធារណ​រដ្ឋ​អ៊ីស្លាម​ប៉ាគីស្ថាន</target>
+        <target>សាធារណរដ្ឋអ៊ីស្លាមអាហ្វហ្កានីស្ថាន</target>
       </trans-unit>
       <trans-unit id="AG.name" resname="AG.name" approved="yes">
         <source>Antigua and Barbuda</source>
-        <target>អង់ទីហ្គា និង បារប៊ុយដា</target>
+        <target>អង់ទីហ្កា និង បាប៊ុយដា</target>
       </trans-unit>
       <trans-unit id="AI.name" resname="AI.name" approved="yes">
         <source>Anguilla</source>
-        <target>អង់ហ្ស៊ីឡា</target>
+        <target>អង់ហ្កីឡា</target>
       </trans-unit>
       <trans-unit id="AL.name" resname="AL.name" approved="yes">
         <source>Albania</source>
@@ -56,7 +56,7 @@
       </trans-unit>
       <trans-unit id="AQ.name" resname="AQ.name" approved="yes">
         <source>Antarctica</source>
-        <target>អង់តាទីកា</target>
+        <target>អង់តាក់ទិច</target>
       </trans-unit>
       <trans-unit id="AR.name" resname="AR.name" approved="yes">
         <source>Argentina</source>
@@ -68,7 +68,7 @@
       </trans-unit>
       <trans-unit id="AS.name" resname="AS.name" approved="yes">
         <source>American Samoa</source>
-        <target>អាមេរិក​សាមូអា</target>
+        <target>សាម័រអាមេរិក</target>
       </trans-unit>
       <trans-unit id="AT.name" resname="AT.name" approved="yes">
         <source>Austria</source>
@@ -88,35 +88,35 @@
       </trans-unit>
       <trans-unit id="AX.name" resname="AX.name" approved="yes">
         <source>Åland Islands</source>
-        <target>កោះ​អាឡង់</target>
+        <target>កោះ​អាល់ឡង់</target>
       </trans-unit>
       <trans-unit id="AZ.name" resname="AZ.name" approved="yes">
         <source>Azerbaijan</source>
-        <target>អាហ្ស៊ែរបែហ្សង់</target>
+        <target>អាស៊ែបៃហ្សង់</target>
       </trans-unit>
       <trans-unit id="AZ.official_name" resname="AZ.official_name" approved="yes">
         <source>Republic of Azerbaijan</source>
-        <target>សាធារណរដ្ឋ​​អាហ្ស៊ែរបែហ្សង់</target>
+        <target>សាសាធារណរដ្ឋអាស៊ែបៃហ្សង់</target>
       </trans-unit>
       <trans-unit id="BA.name" resname="BA.name" approved="yes">
         <source>Bosnia and Herzegovina</source>
-        <target>បូស្ន៊ី និង ​ហឺហ្ស៊េហ្គោវីណា</target>
+        <target>បូស្ន៊ី និង ហឺហ្ស៊េហ្កោវីណា</target>
       </trans-unit>
       <trans-unit id="BA.official_name" resname="BA.official_name" approved="yes">
         <source>Republic of Bosnia and Herzegovina</source>
-        <target>សាធារណ​រដ្ឋ​បូស្ន៊ី និង ​ហឺហ្ស៊េហ្គោវីណា</target>
+        <target>សាធារណ​រដ្ឋ​បូស្ន៊ី និង ​ហឺហ្ស៊េហ្កោវីណា</target>
       </trans-unit>
       <trans-unit id="BB.name" resname="BB.name" approved="yes">
         <source>Barbados</source>
-        <target>បារបាដូស</target>
+        <target>បាបាដុស</target>
       </trans-unit>
       <trans-unit id="BD.name" resname="BD.name" approved="yes">
         <source>Bangladesh</source>
-        <target>បង់ក្លាដេស</target>
+        <target>បង់ក្លាដែស</target>
       </trans-unit>
       <trans-unit id="BD.official_name" resname="BD.official_name" approved="yes">
         <source>People's Republic of Bangladesh</source>
-        <target>សាធារណ​រដ្ឋ​ប្រជាមានិត​បង់ក្លាដេស</target>
+        <target>សាធារណរដ្ឋប្រជាមានិតបង់ក្លាដែស</target>
       </trans-unit>
       <trans-unit id="BE.name" resname="BE.name" approved="yes">
         <source>Belgium</source>
@@ -128,15 +128,15 @@
       </trans-unit>
       <trans-unit id="BF.name" resname="BF.name" approved="yes">
         <source>Burkina Faso</source>
-        <target>ប៊ូរគីណាហ្វាសូ</target>
+        <target>បួគីណាហ្វាសូ</target>
       </trans-unit>
       <trans-unit id="BG.name" resname="BG.name" approved="yes">
         <source>Bulgaria</source>
-        <target>ប៊ុលហ្គារី</target>
+        <target>ប៊ុលហ្ការី</target>
       </trans-unit>
       <trans-unit id="BG.official_name" resname="BG.official_name" approved="yes">
         <source>Republic of Bulgaria</source>
-        <target>សាធារណរដ្ឋ​ប៊ុលហ្គារី​</target>
+        <target>សាធារណរដ្ឋប៊ុលហ្ការី</target>
       </trans-unit>
       <trans-unit id="BH.name" resname="BH.name" approved="yes">
         <source>Bahrain</source>
@@ -164,23 +164,23 @@
       </trans-unit>
       <trans-unit id="BL.name" resname="BL.name" approved="yes">
         <source>Saint Barthélemy</source>
-        <target>សាន​បាទេលេមី</target>
+        <target>សាំងបាថូឡូមី</target>
       </trans-unit>
       <trans-unit id="BM.name" resname="BM.name" approved="yes">
         <source>Bermuda</source>
-        <target>ប៊េរមូដា</target>
+        <target>ប៊ែម៊ុដា</target>
       </trans-unit>
       <trans-unit id="BN.name" resname="BN.name" approved="yes">
         <source>Brunei Darussalam</source>
-        <target>ប្រ៊ុយណេ​ដារុយសាឡឹម</target>
+        <target>ព្រុយណេដារ៉ូសាឡឹម</target>
       </trans-unit>
       <trans-unit id="BO.name" resname="BO.name" approved="yes">
         <source>Bolivia, Plurinational State of</source>
-        <target>Bolivia, Plurinational State of</target>
+        <target>បូលីវី (រដ្ឋពហុជាតិ)</target>
       </trans-unit>
       <trans-unit id="BO.official_name" resname="BO.official_name" approved="yes">
         <source>Plurinational State of Bolivia</source>
-        <target>Plurinational State of Bolivia</target>
+        <target>រដ្ឋពហុជាតិបូលីវី</target>
       </trans-unit>
       <trans-unit id="BQ.name" resname="BQ.name" approved="yes">
         <source>Bonaire, Sint Eustatius and Saba</source>
@@ -196,27 +196,27 @@
       </trans-unit>
       <trans-unit id="BR.official_name" resname="BR.official_name" approved="yes">
         <source>Federative Republic of Brazil</source>
-        <target>សហព័ន្ធ​​សាធារណរដ្ឋ​ប្រេស៊ីល</target>
+        <target>សាធារណរដ្ឋសហព័ន្ធប្រេស៊ីល</target>
       </trans-unit>
       <trans-unit id="BS.name" resname="BS.name" approved="yes">
         <source>Bahamas</source>
-        <target>បាហាម៉ាស</target>
+        <target>បាហាម៉ា</target>
       </trans-unit>
       <trans-unit id="BS.official_name" resname="BS.official_name" approved="yes">
         <source>Commonwealth of the Bahamas</source>
-        <target>ចក្រភព​បាហាម៉ាស</target>
+        <target>សហសុខុមាលភាពបាហាម៉ា</target>
       </trans-unit>
       <trans-unit id="BT.name" resname="BT.name" approved="yes">
         <source>Bhutan</source>
-        <target>ប៊ូតាន</target>
+        <target>ប៊ូតង់</target>
       </trans-unit>
       <trans-unit id="BT.official_name" resname="BT.official_name" approved="yes">
         <source>Kingdom of Bhutan</source>
-        <target>ព្រះរាជាណាចក្រ​ប៊ូតាន</target>
+        <target>ព្រះរាជាណាចក្រ​ប៊ូតង់</target>
       </trans-unit>
       <trans-unit id="BV.name" resname="BV.name" approved="yes">
         <source>Bouvet Island</source>
-        <target>កោះ​ប៊ូវ៉ែ</target>
+        <target>កោះ​ប៊ូវ៉ែត</target>
       </trans-unit>
       <trans-unit id="BW.name" resname="BW.name" approved="yes">
         <source>Botswana</source>
@@ -228,15 +228,15 @@
       </trans-unit>
       <trans-unit id="BY.name" resname="BY.name" approved="yes">
         <source>Belarus</source>
-        <target>បេឡារុស្ស</target>
+        <target>បេឡារុស</target>
       </trans-unit>
       <trans-unit id="BY.official_name" resname="BY.official_name" approved="yes">
         <source>Republic of Belarus</source>
-        <target>សាធារណរដ្ឋ​​បេឡារុស្ស</target>
+        <target>សាធារណរដ្ឋ​​បេឡារុស</target>
       </trans-unit>
       <trans-unit id="BZ.name" resname="BZ.name" approved="yes">
         <source>Belize</source>
-        <target>បេលីហ្ស</target>
+        <target>បេលី</target>
       </trans-unit>
       <trans-unit id="CA.name" resname="CA.name" approved="yes">
         <source>Canada</source>
@@ -248,7 +248,7 @@
       </trans-unit>
       <trans-unit id="CD.name" resname="CD.name" approved="yes">
         <source>Congo, The Democratic Republic of the</source>
-        <target>សាធារណរដ្ឋ​ប្រជាធិបតេយ្យ​កុងហ្គោ</target>
+        <target>កុងហ្គោ (សាធារណរដ្ឋប្រជាធិបតេយ្យ)</target>
       </trans-unit>
       <trans-unit id="CF.name" resname="CF.name" approved="yes">
         <source>Central African Republic</source>
@@ -268,15 +268,15 @@
       </trans-unit>
       <trans-unit id="CH.official_name" resname="CH.official_name" approved="yes">
         <source>Swiss Confederation</source>
-        <target>សម្ព័ន្ធ​ស្វីស</target>
+        <target>សហព័ន្ធស្វ៊ីស</target>
       </trans-unit>
       <trans-unit id="CI.name" resname="CI.name" approved="yes">
         <source>Côte d'Ivoire</source>
-        <target>កូតេឌីវ័រ</target>
+        <target>កូតឌីវ័រ</target>
       </trans-unit>
       <trans-unit id="CI.official_name" resname="CI.official_name" approved="yes">
         <source>Republic of Côte d'Ivoire</source>
-        <target>សាធារណរដ្ឋ​កូតេឌីវ័រ</target>
+        <target>សាធារណរដ្ឋកូតឌីវ័រ</target>
       </trans-unit>
       <trans-unit id="CK.name" resname="CK.name" approved="yes">
         <source>Cook Islands</source>
@@ -284,19 +284,19 @@
       </trans-unit>
       <trans-unit id="CL.name" resname="CL.name" approved="yes">
         <source>Chile</source>
-        <target>ឈីលី</target>
+        <target>ស៊ីលី</target>
       </trans-unit>
       <trans-unit id="CL.official_name" resname="CL.official_name" approved="yes">
         <source>Republic of Chile</source>
-        <target>សាធារណរដ្ឋ​ឈីលី​</target>
+        <target>សាធារណរដ្ឋ​ស៊ី​លី</target>
       </trans-unit>
       <trans-unit id="CM.name" resname="CM.name" approved="yes">
         <source>Cameroon</source>
-        <target>កាមេរ៉ូន</target>
+        <target>កាមេរូន</target>
       </trans-unit>
       <trans-unit id="CM.official_name" resname="CM.official_name" approved="yes">
         <source>Republic of Cameroon</source>
-        <target>សាធារណរដ្ឋ​កាមេរ៉ូន</target>
+        <target>សាធារណរដ្ឋ​កាមេរូន</target>
       </trans-unit>
       <trans-unit id="CN.name" resname="CN.name" approved="yes">
         <source>China</source>
@@ -332,19 +332,19 @@
       </trans-unit>
       <trans-unit id="CV.name" resname="CV.name" approved="yes">
         <source>Cabo Verde</source>
-        <target>កាបវែរ</target>
+        <target>កាប់វែរ</target>
       </trans-unit>
       <trans-unit id="CV.official_name" resname="CV.official_name" approved="yes">
         <source>Republic of Cabo Verde</source>
-        <target>សាធារណរដ្ឋ​កាបវែរ</target>
+        <target>សាធារណរដ្ឋ​កាប់វែរ</target>
       </trans-unit>
       <trans-unit id="CW.name" resname="CW.name" approved="yes">
         <source>Curaçao</source>
-        <target>Curaçao</target>
+        <target>កួរ៉ាកាវ</target>
       </trans-unit>
       <trans-unit id="CW.official_name" resname="CW.official_name" approved="yes">
         <source>Curaçao</source>
-        <target>Curaçao</target>
+        <target>កួរ៉ាកាវ</target>
       </trans-unit>
       <trans-unit id="CX.name" resname="CX.name" approved="yes">
         <source>Christmas Island</source>
@@ -352,19 +352,19 @@
       </trans-unit>
       <trans-unit id="CY.name" resname="CY.name" approved="yes">
         <source>Cyprus</source>
-        <target>ស៊ីពរ៍</target>
+        <target>ស៊ីប</target>
       </trans-unit>
       <trans-unit id="CY.official_name" resname="CY.official_name" approved="yes">
         <source>Republic of Cyprus</source>
-        <target>សាធារណរដ្ឋ​ស៊ីពរ៍​</target>
+        <target>សាធារណរដ្ឋ​ស៊ីប</target>
       </trans-unit>
       <trans-unit id="CZ.name" resname="CZ.name" approved="yes">
         <source>Czechia</source>
-        <target>ឆេក</target>
+        <target>ឆែក</target>
       </trans-unit>
       <trans-unit id="CZ.official_name" resname="CZ.official_name" approved="yes">
         <source>Czech Republic</source>
-        <target>សាធារណរដ្ឋ​ឆេក</target>
+        <target>សាធារណរដ្ឋ​ឆែក</target>
       </trans-unit>
       <trans-unit id="DE.name" resname="DE.name" approved="yes">
         <source>Germany</source>
@@ -372,15 +372,15 @@
       </trans-unit>
       <trans-unit id="DE.official_name" resname="DE.official_name" approved="yes">
         <source>Federal Republic of Germany</source>
-        <target>សហព័ន្ធ​សាធារណ​រដ្ឋ​អាល្លឺម៉ង់</target>
+        <target>សាធារណរដ្ឋសហព័ន្ធអាល្លឺម៉ង់</target>
       </trans-unit>
       <trans-unit id="DJ.name" resname="DJ.name" approved="yes">
         <source>Djibouti</source>
-        <target>ហ្ស៊ីបូទី</target>
+        <target>ជីប៊ូទី</target>
       </trans-unit>
       <trans-unit id="DJ.official_name" resname="DJ.official_name" approved="yes">
         <source>Republic of Djibouti</source>
-        <target>សាធារណរដ្ឋ​ហ្ស៊ីបូទី</target>
+        <target>សាធារណរដ្ឋ​ជីប៊ូទី</target>
       </trans-unit>
       <trans-unit id="DK.name" resname="DK.name" approved="yes">
         <source>Denmark</source>
@@ -392,11 +392,11 @@
       </trans-unit>
       <trans-unit id="DM.name" resname="DM.name" approved="yes">
         <source>Dominica</source>
-        <target>ដូមីនីកា</target>
+        <target>ដូមីនីក</target>
       </trans-unit>
       <trans-unit id="DM.official_name" resname="DM.official_name" approved="yes">
         <source>Commonwealth of Dominica</source>
-        <target>ចក្រភព​ដូមីនីកា</target>
+        <target>សហសុខុមាលភាព​ដូមីនីក</target>
       </trans-unit>
       <trans-unit id="DO.name" resname="DO.name" approved="yes">
         <source>Dominican Republic</source>
@@ -408,15 +408,15 @@
       </trans-unit>
       <trans-unit id="DZ.official_name" resname="DZ.official_name" approved="yes">
         <source>People's Democratic Republic of Algeria</source>
-        <target>សាធារណ​រដ្ឋ​ប្រជាមានិត​ប្រជាធិបតេយ្យ​​អាល់ហ្សេរី​</target>
+        <target>សាធារណរដ្ឋប្រជាធិបតេយ្យប្រជាមានិតអាល់ហ្សេរី</target>
       </trans-unit>
       <trans-unit id="EC.name" resname="EC.name" approved="yes">
         <source>Ecuador</source>
-        <target>អេក្វាឌ័រ</target>
+        <target>អេក្វាទ័រ</target>
       </trans-unit>
       <trans-unit id="EC.official_name" resname="EC.official_name" approved="yes">
         <source>Republic of Ecuador</source>
-        <target>សាធារណរដ្ឋ​អេក្វាឌ័រ​</target>
+        <target>សាធារណរដ្ឋអេក្វាទ័រ</target>
       </trans-unit>
       <trans-unit id="EE.name" resname="EE.name" approved="yes">
         <source>Estonia</source>
@@ -432,7 +432,7 @@
       </trans-unit>
       <trans-unit id="EG.official_name" resname="EG.official_name" approved="yes">
         <source>Arab Republic of Egypt</source>
-        <target>សាធារណរដ្ឋ​អារាប់​​អេហ្ស៊ីប</target>
+        <target>សាធារណរដ្ឋអារ៉ាប់អេហ្ស៊ីប</target>
       </trans-unit>
       <trans-unit id="EH.name" resname="EH.name" approved="yes">
         <source>Western Sahara</source>
@@ -440,11 +440,11 @@
       </trans-unit>
       <trans-unit id="ER.name" resname="ER.name" approved="yes">
         <source>Eritrea</source>
-        <target>អេរីទ្រា</target>
+        <target>អេរីត្រេ</target>
       </trans-unit>
       <trans-unit id="ER.official_name" resname="ER.official_name" approved="yes">
         <source>the State of Eritrea</source>
-        <target>រដ្ឋ​អេរីទ្រា</target>
+        <target>រដ្ឋអេរីត្រេ</target>
       </trans-unit>
       <trans-unit id="ES.name" resname="ES.name" approved="yes">
         <source>Spain</source>
@@ -460,7 +460,7 @@
       </trans-unit>
       <trans-unit id="ET.official_name" resname="ET.official_name" approved="yes">
         <source>Federal Democratic Republic of Ethiopia</source>
-        <target>​​សហព័ន្ធ​សាធារណរដ្ឋ​ប្រជាធិបតេយ្យ​អេត្យូពី</target>
+        <target>សាធារណរដ្ឋ​ប្រជាធិបតេយ្យ​សហព័ន្ធ​អេត្យូពី</target>
       </trans-unit>
       <trans-unit id="FI.name" resname="FI.name" approved="yes">
         <source>Finland</source>
@@ -472,11 +472,11 @@
       </trans-unit>
       <trans-unit id="FJ.name" resname="FJ.name" approved="yes">
         <source>Fiji</source>
-        <target>ហ្វីហ្ស៊ី</target>
+        <target>ហ្វ៊ីជី</target>
       </trans-unit>
       <trans-unit id="FJ.official_name" resname="FJ.official_name" approved="yes">
         <source>Republic of Fiji</source>
-        <target>សាធារណរដ្ឋ​​ហ្វីជី</target>
+        <target>សាធារណរដ្ឋ​​ហ្វ៊ីជី</target>
       </trans-unit>
       <trans-unit id="FK.name" resname="FK.name" approved="yes">
         <source>Falkland Islands (Malvinas)</source>
@@ -484,11 +484,11 @@
       </trans-unit>
       <trans-unit id="FM.name" resname="FM.name" approved="yes">
         <source>Micronesia, Federated States of</source>
-        <target>​មីក្រូណេស៊ី​ រដ្ឋ​សហព័ន្ថ​នៃ</target>
+        <target>មីក្រូណេស៊ី (រដ្ឋសហព័ន្ធ)</target>
       </trans-unit>
       <trans-unit id="FM.official_name" resname="FM.official_name" approved="yes">
         <source>Federated States of Micronesia</source>
-        <target>​រដ្ឋ​សហព័ន្ថ​មីក្រូណេស៊ី</target>
+        <target>រដ្ឋសហព័ន្ធមីក្រូណេស៊ី</target>
       </trans-unit>
       <trans-unit id="FO.name" resname="FO.name" approved="yes">
         <source>Faroe Islands</source>
@@ -512,51 +512,51 @@
       </trans-unit>
       <trans-unit id="GB.name" resname="GB.name" approved="yes">
         <source>United Kingdom</source>
-        <target>ចក្រភព​អង់គ្លេស</target>
+        <target>សហរាជាណាចក្រ</target>
       </trans-unit>
       <trans-unit id="GB.official_name" resname="GB.official_name" approved="yes">
         <source>United Kingdom of Great Britain and Northern Ireland</source>
-        <target>ចក្រភព​អង់គ្លេស ​និងអៀរឡង់​ខាងជើង​</target>
+        <target>សហរាជាណាចក្រអង់គ្លេស ​និងអៀរឡង់​ខាងជើង​</target>
       </trans-unit>
       <trans-unit id="GD.name" resname="GD.name" approved="yes">
         <source>Grenada</source>
-        <target>ហ្គ្រីណាដា</target>
+        <target>ហ្គ្រើណាដ</target>
       </trans-unit>
       <trans-unit id="GE.name" resname="GE.name" approved="yes">
         <source>Georgia</source>
-        <target>ហ្សកហ្ស៊ី</target>
+        <target>ហ្ស៊កហ្ស៊ី</target>
       </trans-unit>
       <trans-unit id="GF.name" resname="GF.name" approved="yes">
         <source>French Guiana</source>
-        <target>ហ្គូអ៊ីយ៉ាណា​បារាំង</target>
+        <target>ហ្កីណាបារាំង</target>
       </trans-unit>
       <trans-unit id="GG.name" resname="GG.name" approved="yes">
         <source>Guernsey</source>
-        <target>Guernsey</target>
+        <target>ហ្គេនស៊ី</target>
       </trans-unit>
       <trans-unit id="GH.name" resname="GH.name" approved="yes">
         <source>Ghana</source>
-        <target>ហ្គាណា</target>
+        <target>ហ្កាណា</target>
       </trans-unit>
       <trans-unit id="GH.official_name" resname="GH.official_name" approved="yes">
         <source>Republic of Ghana</source>
-        <target>សាធារណរដ្ឋ​ហ្គាណា</target>
+        <target>សាធារណរដ្ឋ​ហ្កាណា</target>
       </trans-unit>
       <trans-unit id="GI.name" resname="GI.name" approved="yes">
         <source>Gibraltar</source>
-        <target>ហ្គីប្រាល់តា</target>
+        <target>ហ្ស៊ីប្រាល់តា</target>
       </trans-unit>
       <trans-unit id="GL.name" resname="GL.name" approved="yes">
         <source>Greenland</source>
-        <target>ហ្គ្រីនលែន</target>
+        <target>ហ្គ្រោអង់ឡង់</target>
       </trans-unit>
       <trans-unit id="GM.name" resname="GM.name" approved="yes">
         <source>Gambia</source>
-        <target>ហ្គាំប៊ី</target>
+        <target>ហ្កំប៊ី</target>
       </trans-unit>
       <trans-unit id="GM.official_name" resname="GM.official_name" approved="yes">
         <source>Republic of the Gambia</source>
-        <target>Republic of the Gambia</target>
+        <target>សាធារណរដ្ឋហ្កំប៊ី</target>
       </trans-unit>
       <trans-unit id="GN.name" resname="GN.name" approved="yes">
         <source>Guinea</source>
@@ -564,11 +564,11 @@
       </trans-unit>
       <trans-unit id="GN.official_name" resname="GN.official_name" approved="yes">
         <source>Republic of Guinea</source>
-        <target>សារធារណរដ្ឋ​ហ្គីណេ</target>
+        <target>សាធារណរដ្ឋហ្គីណេ</target>
       </trans-unit>
       <trans-unit id="GP.name" resname="GP.name" approved="yes">
         <source>Guadeloupe</source>
-        <target>ហ្គូអាដឺលូប៉េ</target>
+        <target>ក្វាដឡូប</target>
       </trans-unit>
       <trans-unit id="GQ.name" resname="GQ.name" approved="yes">
         <source>Equatorial Guinea</source>
@@ -588,35 +588,35 @@
       </trans-unit>
       <trans-unit id="GS.name" resname="GS.name" approved="yes">
         <source>South Georgia and the South Sandwich Islands</source>
-        <target>ហ្សកហ្ស៊ី​ខាង​ត្បូង និង កោះសាំងវិច​ខាង​ត្បូង</target>
+        <target>ប្រជុំកោះហ្ស៊កហ្ស៊ី​ខាង​ត្បូង និង សាន់វិច​ខាង​ត្បូង</target>
       </trans-unit>
       <trans-unit id="GT.name" resname="GT.name" approved="yes">
         <source>Guatemala</source>
-        <target>ហ្គាតេម៉ាឡា</target>
+        <target>ក្វាតេម៉ាឡា</target>
       </trans-unit>
       <trans-unit id="GT.official_name" resname="GT.official_name" approved="yes">
         <source>Republic of Guatemala</source>
-        <target>សាធារណរដ្ឋ​ហ្គាតេម៉ាឡា</target>
+        <target>សាធារណរដ្ឋក្វាតេម៉ាឡា</target>
       </trans-unit>
       <trans-unit id="GU.name" resname="GU.name" approved="yes">
         <source>Guam</source>
-        <target>ហ្គាម</target>
+        <target>ហ្កាំ</target>
       </trans-unit>
       <trans-unit id="GW.name" resname="GW.name" approved="yes">
         <source>Guinea-Bissau</source>
-        <target>ហ្គីណេប៊ីសៅ</target>
+        <target>ហ្គីណេប៊ីស្សូ</target>
       </trans-unit>
       <trans-unit id="GW.official_name" resname="GW.official_name" approved="yes">
         <source>Republic of Guinea-Bissau</source>
-        <target>សាធារណរដ្ឋ​ហ្គីណេប៊ីសៅ</target>
+        <target>សាធារណរដ្ឋ​ហ្គីណេប៊ីស្សូ</target>
       </trans-unit>
       <trans-unit id="GY.name" resname="GY.name" approved="yes">
         <source>Guyana</source>
-        <target>ហ្គីយ៉ាណា</target>
+        <target>ហ្គីយ៉ាន</target>
       </trans-unit>
       <trans-unit id="GY.official_name" resname="GY.official_name" approved="yes">
         <source>Republic of Guyana</source>
-        <target>សាធារណរដ្ឋ​ហ្គីយ៉ាណា​</target>
+        <target>សាធារណរដ្ឋហ្គីយ៉ាន</target>
       </trans-unit>
       <trans-unit id="HK.name" resname="HK.name" approved="yes">
         <source>Hong Kong</source>
@@ -624,27 +624,27 @@
       </trans-unit>
       <trans-unit id="HK.official_name" resname="HK.official_name" approved="yes">
         <source>Hong Kong Special Administrative Region of China</source>
-        <target>ហុងកុង​តំបន់​ត្រួតត្រា​ពិសេស​របស់​ចិន</target>
+        <target>តំបន់រដ្ឋបាលពិសេសហុងកុងនៃប្រទេសចិន</target>
       </trans-unit>
       <trans-unit id="HM.name" resname="HM.name" approved="yes">
         <source>Heard Island and McDonald Islands</source>
-        <target>កោះ​ហ៊ើដ និង កោះ​ម៉ាកដូណាល់</target>
+        <target>កោះហឺដ និងកោះមេកដូណាល់</target>
       </trans-unit>
       <trans-unit id="HN.name" resname="HN.name" approved="yes">
         <source>Honduras</source>
-        <target>ហុងឌូរ៉ាស់</target>
+        <target>ហុងឌូរ៉ាស</target>
       </trans-unit>
       <trans-unit id="HN.official_name" resname="HN.official_name" approved="yes">
         <source>Republic of Honduras</source>
-        <target>សាធារណរដ្ឋ​ហុងឌូរ៉ាស់</target>
+        <target>សាធារណរដ្ឋ​ហុងឌូរ៉ាស</target>
       </trans-unit>
       <trans-unit id="HR.name" resname="HR.name" approved="yes">
         <source>Croatia</source>
-        <target>ក្រូអាត</target>
+        <target>ក្រូអាស៊ី</target>
       </trans-unit>
       <trans-unit id="HR.official_name" resname="HR.official_name" approved="yes">
         <source>Republic of Croatia</source>
-        <target>សាធារណរដ្ឋ​ក្រូអាត</target>
+        <target>សាធារណរដ្ឋក្រូអាស៊ី</target>
       </trans-unit>
       <trans-unit id="HT.name" resname="HT.name" approved="yes">
         <source>Haiti</source>
@@ -664,11 +664,11 @@
       </trans-unit>
       <trans-unit id="ID.name" resname="ID.name" approved="yes">
         <source>Indonesia</source>
-        <target>ឥណ្ឌូនេស៊ី</target>
+        <target>ឥណ្ឌូណេស៊ី</target>
       </trans-unit>
       <trans-unit id="ID.official_name" resname="ID.official_name" approved="yes">
         <source>Republic of Indonesia</source>
-        <target>សាធារណរដ្ឋ​ឥណ្ឌូនេស៊ី</target>
+        <target>សាធារណរដ្ឋឥណ្ឌូណេស៊ី</target>
       </trans-unit>
       <trans-unit id="IE.name" resname="IE.name" approved="yes">
         <source>Ireland</source>
@@ -680,11 +680,11 @@
       </trans-unit>
       <trans-unit id="IL.official_name" resname="IL.official_name" approved="yes">
         <source>State of Israel</source>
-        <target>រដ្ន​អ៊ីស្រាអែល</target>
+        <target>រដ្ឋអ៊ីស្រាអែល</target>
       </trans-unit>
       <trans-unit id="IM.name" resname="IM.name" approved="yes">
         <source>Isle of Man</source>
-        <target>Isle of Man</target>
+        <target>កោះម៉ង់</target>
       </trans-unit>
       <trans-unit id="IN.name" resname="IN.name" approved="yes">
         <source>India</source>
@@ -696,7 +696,7 @@
       </trans-unit>
       <trans-unit id="IO.name" resname="IO.name" approved="yes">
         <source>British Indian Ocean Territory</source>
-        <target>អាណាចក្រ​​មហា​សមុទ្រ​ឥណ្ឌា ចក្រភព​អង់គ្លេស</target>
+        <target>ដែនដីអង់គ្លេសឯមហាសមុទ្រឥណ្ឌា</target>
       </trans-unit>
       <trans-unit id="IQ.name" resname="IQ.name" approved="yes">
         <source>Iraq</source>
@@ -708,7 +708,7 @@
       </trans-unit>
       <trans-unit id="IR.name" resname="IR.name" approved="yes">
         <source>Iran, Islamic Republic of</source>
-        <target>​អ៊ីរ៉ង់ សាធារណ​រដ្ឋ​អ៊ីស្លាម​នៃ</target>
+        <target>​អ៊ីរ៉ង់ (សាធារណ​រដ្ឋ​អ៊ីស្លាម​)</target>
       </trans-unit>
       <trans-unit id="IR.official_name" resname="IR.official_name" approved="yes">
         <source>Islamic Republic of Iran</source>
@@ -732,19 +732,19 @@
       </trans-unit>
       <trans-unit id="JE.name" resname="JE.name" approved="yes">
         <source>Jersey</source>
-        <target>Jersey</target>
+        <target>ហ្ស៊េស៊ី</target>
       </trans-unit>
       <trans-unit id="JM.name" resname="JM.name" approved="yes">
         <source>Jamaica</source>
-        <target>ចាម៉ៃកា</target>
+        <target>ហ្សាម៉ាអ៊ីក</target>
       </trans-unit>
       <trans-unit id="JO.name" resname="JO.name" approved="yes">
         <source>Jordan</source>
-        <target>ហ្ស៊កដង់</target>
+        <target>ហ្ស៊កដានី</target>
       </trans-unit>
       <trans-unit id="JO.official_name" resname="JO.official_name" approved="yes">
         <source>Hashemite Kingdom of Jordan</source>
-        <target>ព្រះរាជាណាចក្រ​ហ្ស៊កដង់​</target>
+        <target>ព្រះរាជាណាចក្រហ្ស៊កដានី</target>
       </trans-unit>
       <trans-unit id="JP.name" resname="JP.name" approved="yes">
         <source>Japan</source>
@@ -760,11 +760,11 @@
       </trans-unit>
       <trans-unit id="KG.name" resname="KG.name" approved="yes">
         <source>Kyrgyzstan</source>
-        <target>គៀរហ្គីស្តង់</target>
+        <target>កៀហ្ស៊ីស៊ីស្ថាន</target>
       </trans-unit>
       <trans-unit id="KG.official_name" resname="KG.official_name" approved="yes">
         <source>Kyrgyz Republic</source>
-        <target>សាធារណ​រដ្ឋ​គៀរហ្គីស្តង់</target>
+        <target>សាធារណរដ្ឋកៀហ្ស៊ីស៊ីស្ថាន</target>
       </trans-unit>
       <trans-unit id="KH.name" resname="KH.name" approved="yes">
         <source>Cambodia</source>
@@ -776,27 +776,27 @@
       </trans-unit>
       <trans-unit id="KI.name" resname="KI.name" approved="yes">
         <source>Kiribati</source>
-        <target>គិរិបាទី</target>
+        <target>គិរីបាទី</target>
       </trans-unit>
       <trans-unit id="KI.official_name" resname="KI.official_name" approved="yes">
         <source>Republic of Kiribati</source>
-        <target>សាធារណរដ្ឋ​គិរិបាទី</target>
+        <target>សាធារណរដ្ឋគិរីបាទី</target>
       </trans-unit>
       <trans-unit id="KM.name" resname="KM.name" approved="yes">
         <source>Comoros</source>
-        <target>កុំម៉ូរ៉ូស</target>
+        <target>កូម័រ</target>
       </trans-unit>
       <trans-unit id="KM.official_name" resname="KM.official_name" approved="yes">
         <source>Union of the Comoros</source>
-        <target>សហភាព​​កុំម៉ូរ៉ូស​</target>
+        <target>សហភាព​​កូម័រ</target>
       </trans-unit>
       <trans-unit id="KN.name" resname="KN.name" approved="yes">
         <source>Saint Kitts and Nevis</source>
-        <target>សង់ឃីត និង នេវីស</target>
+        <target>សាំងគ្រីស្តូហ្វ និងនេវីស</target>
       </trans-unit>
       <trans-unit id="KP.name" resname="KP.name" approved="yes">
         <source>Korea, Democratic People's Republic of</source>
-        <target>កូរ៉េ សាធារណ​រដ្ឋ​ប្រជាមានិត​ប្រជាធិបតេយ្យ​​នៃ</target>
+        <target>កូរ៉េ (សាធារណ​រដ្ឋ​ប្រជាមានិត​ប្រជាធិបតេយ្យ​​)</target>
       </trans-unit>
       <trans-unit id="KP.official_name" resname="KP.official_name" approved="yes">
         <source>Democratic People's Republic of Korea</source>
@@ -804,27 +804,27 @@
       </trans-unit>
       <trans-unit id="KR.name" resname="KR.name" approved="yes">
         <source>Korea, Republic of</source>
-        <target>កូរ៉េ សាធារណរដ្ឋ​នៃរ៉េ</target>
+        <target>កូរ៉េ (សាធារណរដ្ឋ)</target>
       </trans-unit>
       <trans-unit id="KW.name" resname="KW.name" approved="yes">
         <source>Kuwait</source>
-        <target>គុយវ៉ែត</target>
+        <target>គូវ៉ែត</target>
       </trans-unit>
       <trans-unit id="KW.official_name" resname="KW.official_name" approved="yes">
         <source>State of Kuwait</source>
-        <target>រដ្ឋ​គុយវ៉ែត</target>
+        <target>រដ្ឋគូវ៉ែត</target>
       </trans-unit>
       <trans-unit id="KY.name" resname="KY.name" approved="yes">
         <source>Cayman Islands</source>
-        <target>កោះ​កៃម៉ាន</target>
+        <target>កោះ​កៃម៉ង់</target>
       </trans-unit>
       <trans-unit id="KZ.name" resname="KZ.name" approved="yes">
         <source>Kazakhstan</source>
-        <target>កាហ្សាក់ស្តង់</target>
+        <target>កាហ្សាក់ស្ថាន</target>
       </trans-unit>
       <trans-unit id="KZ.official_name" resname="KZ.official_name" approved="yes">
         <source>Republic of Kazakhstan</source>
-        <target>សាធារណរដ្ឋ​កាហ្សាក់ស្តង់</target>
+        <target>សាធារណរដ្ឋកាហ្សាក់ស្ថាន</target>
       </trans-unit>
       <trans-unit id="LA.name" resname="LA.name" approved="yes">
         <source>Lao People's Democratic Republic</source>
@@ -840,15 +840,15 @@
       </trans-unit>
       <trans-unit id="LC.name" resname="LC.name" approved="yes">
         <source>Saint Lucia</source>
-        <target>សង់លូស៊ីយ៉ា</target>
+        <target>សាំងលូស៊ី</target>
       </trans-unit>
       <trans-unit id="LI.name" resname="LI.name" approved="yes">
         <source>Liechtenstein</source>
-        <target>លិចទេនស្តែន</target>
+        <target>លិចតិនស្តាញ</target>
       </trans-unit>
       <trans-unit id="LI.official_name" resname="LI.official_name" approved="yes">
         <source>Principality of Liechtenstein</source>
-        <target>ព្រះរាជាណាចក្រ​លិចទេនស្តែន​</target>
+        <target>ក្សត្របុរីលិចតិនស្តាញ</target>
       </trans-unit>
       <trans-unit id="LK.name" resname="LK.name" approved="yes">
         <source>Sri Lanka</source>
@@ -856,7 +856,7 @@
       </trans-unit>
       <trans-unit id="LK.official_name" resname="LK.official_name" approved="yes">
         <source>Democratic Socialist Republic of Sri Lanka</source>
-        <target>សាធារណរដ្ឋ​សង្គមនិយម​ប្រជាធិបតេយ្យ​​ស្រីលង្កា</target>
+        <target>សាធារណរដ្ឋសង្គមនិយមប្រជាធិបតេយ្យស្រីលង្កា</target>
       </trans-unit>
       <trans-unit id="LR.name" resname="LR.name" approved="yes">
         <source>Liberia</source>
@@ -884,27 +884,27 @@
       </trans-unit>
       <trans-unit id="LU.name" resname="LU.name" approved="yes">
         <source>Luxembourg</source>
-        <target>លុចហ្សំបួរ</target>
+        <target>លុចសំបួ</target>
       </trans-unit>
       <trans-unit id="LU.official_name" resname="LU.official_name" approved="yes">
         <source>Grand Duchy of Luxembourg</source>
-        <target>ព្រះរាជាណាចក្រ​លុចហ្សំបួរ</target>
+        <target>ចក្រពត្តិលុចសំបួ</target>
       </trans-unit>
       <trans-unit id="LV.name" resname="LV.name" approved="yes">
         <source>Latvia</source>
-        <target>ឡាតវីយ៉ា</target>
+        <target>ឡេតូនី</target>
       </trans-unit>
       <trans-unit id="LV.official_name" resname="LV.official_name" approved="yes">
         <source>Republic of Latvia</source>
-        <target>សាធារណរដ្ឋ​ឡាតវីយ៉ា</target>
+        <target>សាធារណរដ្ឋឡេតូនី</target>
       </trans-unit>
       <trans-unit id="LY.name" resname="LY.name" approved="yes">
         <source>Libya</source>
-        <target>លីបេរីយ៉ា</target>
+        <target>លីប៊ី</target>
       </trans-unit>
       <trans-unit id="LY.official_name" resname="LY.official_name" approved="yes">
         <source>Libya</source>
-        <target>លីបេរីយ៉ា</target>
+        <target>លីប៊ី</target>
       </trans-unit>
       <trans-unit id="MA.name" resname="MA.name" approved="yes">
         <source>Morocco</source>
@@ -920,51 +920,51 @@
       </trans-unit>
       <trans-unit id="MC.official_name" resname="MC.official_name" approved="yes">
         <source>Principality of Monaco</source>
-        <target>ព្រះរាជាណាចក្រ​​ម៉ូណាកូ</target>
+        <target>ក្សត្របុរីម៉ូណាកូ</target>
       </trans-unit>
       <trans-unit id="MD.name" resname="MD.name" approved="yes">
         <source>Moldova, Republic of</source>
-        <target>សាធារណ​រដ្ឋ​​ម៉ាសេដូនី</target>
+        <target>ម៉ុលដាវី (សាធារណរដ្ឋ)</target>
       </trans-unit>
       <trans-unit id="MD.official_name" resname="MD.official_name" approved="yes">
         <source>Republic of Moldova</source>
-        <target>សាធារណរដ្ឋ​ម៉ុលដូវ៉ា</target>
+        <target>សាធារណរដ្ឋម៉ុលដាវី</target>
       </trans-unit>
       <trans-unit id="ME.name" resname="ME.name" approved="yes">
         <source>Montenegro</source>
-        <target>​ម៉ុងតេណេក្រូ</target>
+        <target>ម៉ុងតេណេហ្គ្រោ</target>
       </trans-unit>
       <trans-unit id="ME.official_name" resname="ME.official_name" approved="yes">
         <source>Montenegro</source>
-        <target>​ម៉ុងតេណេក្រូ</target>
+        <target>ម៉ុងតេណេហ្គ្រោ</target>
       </trans-unit>
       <trans-unit id="MF.name" resname="MF.name" approved="yes">
         <source>Saint Martin (French part)</source>
-        <target>សាន​ម៉ាទីន (ផ្នែក​របស់​បារាំង)</target>
+        <target>សាំងម៉ាតាន់ (ប៉ែកបារាំង)</target>
       </trans-unit>
       <trans-unit id="MG.name" resname="MG.name" approved="yes">
         <source>Madagascar</source>
-        <target>ម៉ាដាហ្គាស្ការ</target>
+        <target>ម៉ាដាហ្កាស្កា</target>
       </trans-unit>
       <trans-unit id="MG.official_name" resname="MG.official_name" approved="yes">
         <source>Republic of Madagascar</source>
-        <target>សាធារណរដ្ឋ​ម៉ាដាហ្គាស្ការ</target>
+        <target>សាធារណរដ្ឋម៉ាដាហ្កាស្កា</target>
       </trans-unit>
       <trans-unit id="MH.name" resname="MH.name" approved="yes">
         <source>Marshall Islands</source>
-        <target>កោះ​ម៉ាស្យល</target>
+        <target>កោះម៉ាសាល់</target>
       </trans-unit>
       <trans-unit id="MH.official_name" resname="MH.official_name" approved="yes">
         <source>Republic of the Marshall Islands</source>
-        <target>សាធារណរដ្ឋ​កោះ​ម៉ាស្យល</target>
+        <target>សាធារណរដ្ឋកោះម៉ាសាល់</target>
       </trans-unit>
       <trans-unit id="MK.name" resname="MK.name" approved="yes">
         <source>North Macedonia</source>
-        <target>North Macedonia</target>
+        <target>ម៉ាសេដ្វានខាងជើង</target>
       </trans-unit>
       <trans-unit id="MK.official_name" resname="MK.official_name" approved="yes">
         <source>Republic of North Macedonia</source>
-        <target>Republic of North Macedonia</target>
+        <target>សាធារណរដ្ឋម៉ាសេដ្វានខាងជើង</target>
       </trans-unit>
       <trans-unit id="ML.name" resname="ML.name" approved="yes">
         <source>Mali</source>
@@ -992,7 +992,7 @@
       </trans-unit>
       <trans-unit id="MO.official_name" resname="MO.official_name" approved="yes">
         <source>Macao Special Administrative Region of China</source>
-        <target>ម៉ាកាវ​តំបន់​ត្រួតត្រា​ពិសេស​របស់​ចិន</target>
+        <target>តំបន់រដ្ឋបាលពិសេសម៉ាកាវនៃប្រទេសចិន</target>
       </trans-unit>
       <trans-unit id="MP.name" resname="MP.name" approved="yes">
         <source>Northern Mariana Islands</source>
@@ -1000,11 +1000,11 @@
       </trans-unit>
       <trans-unit id="MP.official_name" resname="MP.official_name" approved="yes">
         <source>Commonwealth of the Northern Mariana Islands</source>
-        <target>ចក្រភព​កោះ​ម៉ារៀណា​ភាគ​ខាង​ជើង</target>
+        <target>សហសុខុមាលភាព​កោះ​ម៉ារៀណា​ភាគ​ខាង​ជើង</target>
       </trans-unit>
       <trans-unit id="MQ.name" resname="MQ.name" approved="yes">
         <source>Martinique</source>
-        <target>ម៉ារទីនីគ</target>
+        <target>ម៉ាសជីនិក</target>
       </trans-unit>
       <trans-unit id="MR.name" resname="MR.name" approved="yes">
         <source>Mauritania</source>
@@ -1016,23 +1016,23 @@
       </trans-unit>
       <trans-unit id="MS.name" resname="MS.name" approved="yes">
         <source>Montserrat</source>
-        <target>ម៉ុងសេរ៉ា</target>
+        <target>ម៉ុងស៊ែរ៉ា</target>
       </trans-unit>
       <trans-unit id="MT.name" resname="MT.name" approved="yes">
         <source>Malta</source>
-        <target>ម៉ាល់តា</target>
+        <target>ម៉ាល់ត៍</target>
       </trans-unit>
       <trans-unit id="MT.official_name" resname="MT.official_name" approved="yes">
         <source>Republic of Malta</source>
-        <target>សាធារណរដ្ឋ​ម៉ាល់តា</target>
+        <target>សាធារណរដ្ឋម៉ាល់ត៍</target>
       </trans-unit>
       <trans-unit id="MU.name" resname="MU.name" approved="yes">
         <source>Mauritius</source>
-        <target>ម៉ូរីទុស</target>
+        <target>ម៉ូរីស</target>
       </trans-unit>
       <trans-unit id="MU.official_name" resname="MU.official_name" approved="yes">
         <source>Republic of Mauritius</source>
-        <target>សាធារណរដ្ឋ​ម៉ូរីទុស</target>
+        <target>សាធារណរដ្ឋម៉ូរីស</target>
       </trans-unit>
       <trans-unit id="MV.name" resname="MV.name" approved="yes">
         <source>Maldives</source>
@@ -1052,11 +1052,11 @@
       </trans-unit>
       <trans-unit id="MX.name" resname="MX.name" approved="yes">
         <source>Mexico</source>
-        <target>ម៉ិចស៊ិក</target>
+        <target>មុិកស៊ិក</target>
       </trans-unit>
       <trans-unit id="MX.official_name" resname="MX.official_name" approved="yes">
         <source>United Mexican States</source>
-        <target>សហរដ្ឋ​ម៉ិចស៊ិក</target>
+        <target>រដ្ឋសហមុិកស៊ិក</target>
       </trans-unit>
       <trans-unit id="MY.name" resname="MY.name" approved="yes">
         <source>Malaysia</source>
@@ -1064,11 +1064,11 @@
       </trans-unit>
       <trans-unit id="MZ.name" resname="MZ.name" approved="yes">
         <source>Mozambique</source>
-        <target>ម៉ូហ្សាំប៊ិក</target>
+        <target>ម៉ូសំប៊ិក</target>
       </trans-unit>
       <trans-unit id="MZ.official_name" resname="MZ.official_name" approved="yes">
         <source>Republic of Mozambique</source>
-        <target>សាធារណរដ្ឋ​ម៉ូហ្សាំប៊ិក</target>
+        <target>សាធារណរដ្ឋម៉ូសំប៊ិក</target>
       </trans-unit>
       <trans-unit id="NA.name" resname="NA.name" approved="yes">
         <source>Namibia</source>
@@ -1084,15 +1084,15 @@
       </trans-unit>
       <trans-unit id="NE.name" resname="NE.name" approved="yes">
         <source>Niger</source>
-        <target>នីហ្សេរ</target>
+        <target>នីហ្សេ</target>
       </trans-unit>
       <trans-unit id="NE.official_name" resname="NE.official_name" approved="yes">
         <source>Republic of the Niger</source>
-        <target>សាធារណរដ្ឋ​នីហ្សេរ</target>
+        <target>សាធារណរដ្ឋនីហ្សេ</target>
       </trans-unit>
       <trans-unit id="NF.name" resname="NF.name" approved="yes">
         <source>Norfolk Island</source>
-        <target>កោះណរហ្វក</target>
+        <target>កោះន័រហ្វូក</target>
       </trans-unit>
       <trans-unit id="NG.name" resname="NG.name" approved="yes">
         <source>Nigeria</source>
@@ -1100,23 +1100,23 @@
       </trans-unit>
       <trans-unit id="NG.official_name" resname="NG.official_name" approved="yes">
         <source>Federal Republic of Nigeria</source>
-        <target>សហព័ន្ធ​សាធារណរដ្ឋ​​នីហ្សេរីយ៉ា</target>
+        <target>សាធារណរដ្ឋសហព័ន្ធនីហ្សេរីយ៉ា</target>
       </trans-unit>
       <trans-unit id="NI.name" resname="NI.name" approved="yes">
         <source>Nicaragua</source>
-        <target>នីការ៉ាហ្គ័រ</target>
+        <target>នីការ៉ាហ្កា</target>
       </trans-unit>
       <trans-unit id="NI.official_name" resname="NI.official_name" approved="yes">
         <source>Republic of Nicaragua</source>
-        <target>សាធារណរដ្ឋ​នីការ៉ាហ្គ័រ</target>
+        <target>សាធារណរដ្ឋ​នីការ៉ាហ្កា</target>
       </trans-unit>
       <trans-unit id="NL.name" resname="NL.name" approved="yes">
         <source>Netherlands</source>
-        <target>​ហូល្លង់</target>
+        <target>ហូឡង់</target>
       </trans-unit>
       <trans-unit id="NL.official_name" resname="NL.official_name" approved="yes">
         <source>Kingdom of the Netherlands</source>
-        <target>ព្រះរាជាណាចក្រ​​​ហូល្លង់</target>
+        <target>ព្រះរាជាណាចក្រហូឡង់</target>
       </trans-unit>
       <trans-unit id="NO.name" resname="NO.name" approved="yes">
         <source>Norway</source>
@@ -1132,27 +1132,27 @@
       </trans-unit>
       <trans-unit id="NP.official_name" resname="NP.official_name" approved="yes">
         <source>Federal Democratic Republic of Nepal</source>
-        <target>​​សហព័ន្ធ​សាធារណរដ្ឋ​ប្រជាធិបតេយ្យណេប៉ាល់</target>
+        <target>សាធារណរដ្ឋប្រជាធិបតេយ្យសហព័ន្ធនេប៉ាល់</target>
       </trans-unit>
       <trans-unit id="NR.name" resname="NR.name" approved="yes">
         <source>Nauru</source>
-        <target>ណូរុ</target>
+        <target>ណូរូ</target>
       </trans-unit>
       <trans-unit id="NR.official_name" resname="NR.official_name" approved="yes">
         <source>Republic of Nauru</source>
-        <target>សាធារណរដ្ឋ​ណូរុ</target>
+        <target>សាធារណរដ្ឋណូរូ</target>
       </trans-unit>
       <trans-unit id="NU.name" resname="NU.name" approved="yes">
         <source>Niue</source>
-        <target>នីវ</target>
+        <target>នីវេ</target>
       </trans-unit>
       <trans-unit id="NU.official_name" resname="NU.official_name" approved="yes">
         <source>Niue</source>
-        <target>នីវ</target>
+        <target>នីវេ</target>
       </trans-unit>
       <trans-unit id="NZ.name" resname="NZ.name" approved="yes">
         <source>New Zealand</source>
-        <target>នូវែលហ្សេឡង់</target>
+        <target>នូវែលសេឡង់</target>
       </trans-unit>
       <trans-unit id="OM.name" resname="OM.name" approved="yes">
         <source>Oman</source>
@@ -1160,7 +1160,7 @@
       </trans-unit>
       <trans-unit id="OM.official_name" resname="OM.official_name" approved="yes">
         <source>Sultanate of Oman</source>
-        <target>អ៊ីស្លាម​អូម៉ង់</target>
+        <target>រាជាណាចក្រស៊ុលតង់អូម៉ង់</target>
       </trans-unit>
       <trans-unit id="PA.name" resname="PA.name" approved="yes">
         <source>Panama</source>
@@ -1172,31 +1172,31 @@
       </trans-unit>
       <trans-unit id="PE.name" resname="PE.name" approved="yes">
         <source>Peru</source>
-        <target>ប៉េរ៉ូ</target>
+        <target>ប៉េរូ</target>
       </trans-unit>
       <trans-unit id="PE.official_name" resname="PE.official_name" approved="yes">
         <source>Republic of Peru</source>
-        <target>សាធារណរដ្ឋ​ប៉េរ៉ូ</target>
+        <target>សាធារណរដ្ឋ​ប៉េរូ</target>
       </trans-unit>
       <trans-unit id="PF.name" resname="PF.name" approved="yes">
         <source>French Polynesia</source>
-        <target>ប៉ូលីនេស៊ី​បារាំង</target>
+        <target>ប៉ូលីណេស៊ី​បារាំង</target>
       </trans-unit>
       <trans-unit id="PG.name" resname="PG.name" approved="yes">
         <source>Papua New Guinea</source>
-        <target>ប៉ាពូញូវហ្គីណេ</target>
+        <target>ប៉ាពូអាស៊ីនូវែលហ្គីណេ</target>
       </trans-unit>
       <trans-unit id="PG.official_name" resname="PG.official_name" approved="yes">
         <source>Independent State of Papua New Guinea</source>
-        <target>Independent State of Papua New Guinea</target>
+        <target>រដ្ឋឯករាជ្យប៉ាពូអាស៊ីនូវែលហ្គីណេ</target>
       </trans-unit>
       <trans-unit id="PH.name" resname="PH.name" approved="yes">
         <source>Philippines</source>
-        <target>ហ្វីលីពីន</target>
+        <target>ហ្វ៊ីលីពីន</target>
       </trans-unit>
       <trans-unit id="PH.official_name" resname="PH.official_name" approved="yes">
         <source>Republic of the Philippines</source>
-        <target>សាធារណរដ្ឋ​ហ្វីលីពីន​</target>
+        <target>សាធារណរដ្ឋហ្វ៊ីលីពីន</target>
       </trans-unit>
       <trans-unit id="PK.name" resname="PK.name" approved="yes">
         <source>Pakistan</source>
@@ -1216,11 +1216,11 @@
       </trans-unit>
       <trans-unit id="PM.name" resname="PM.name" approved="yes">
         <source>Saint Pierre and Miquelon</source>
-        <target>សង់ព្យែរ និង មីគុយអេឡុង</target>
+        <target>សាំងព្យែរ និង ម៊ាំងឡង់</target>
       </trans-unit>
       <trans-unit id="PN.name" resname="PN.name" approved="yes">
         <source>Pitcairn</source>
-        <target>ពីតខាយរិន</target>
+        <target>ពិតគៀរ</target>
       </trans-unit>
       <trans-unit id="PR.name" resname="PR.name" approved="yes">
         <source>Puerto Rico</source>
@@ -1228,7 +1228,7 @@
       </trans-unit>
       <trans-unit id="PS.name" resname="PS.name" approved="yes">
         <source>Palestine, State of</source>
-        <target>រដ្ឋប៉ាឡេស្ទីន</target>
+        <target>ប៉ាឡេស្ទីន (រដ្ឋ)</target>
       </trans-unit>
       <trans-unit id="PS.official_name" resname="PS.official_name" approved="yes">
         <source>the State of Palestine</source>
@@ -1236,11 +1236,11 @@
       </trans-unit>
       <trans-unit id="PT.name" resname="PT.name" approved="yes">
         <source>Portugal</source>
-        <target>ព័រទុយហ្គាល់</target>
+        <target>ព័រទុយហ្កាល់</target>
       </trans-unit>
       <trans-unit id="PT.official_name" resname="PT.official_name" approved="yes">
         <source>Portuguese Republic</source>
-        <target>សាធារណរដ្ឋ​ព័រទុយហ្គាល់</target>
+        <target>សាធារណរដ្ឋព័រទុយហ្កាល់</target>
       </trans-unit>
       <trans-unit id="PW.name" resname="PW.name" approved="yes">
         <source>Palau</source>
@@ -1252,23 +1252,23 @@
       </trans-unit>
       <trans-unit id="PY.name" resname="PY.name" approved="yes">
         <source>Paraguay</source>
-        <target>ប៉ារ៉ាហ្គាយ</target>
+        <target>ប៉ារ៉ាហ្កាយ</target>
       </trans-unit>
       <trans-unit id="PY.official_name" resname="PY.official_name" approved="yes">
         <source>Republic of Paraguay</source>
-        <target>សាធារណរដ្ឋ​ប៉ារ៉ាហ្គាយ</target>
+        <target>សាធារណរដ្ឋប៉ារ៉ាហ្កាយ</target>
       </trans-unit>
       <trans-unit id="QA.name" resname="QA.name" approved="yes">
         <source>Qatar</source>
-        <target>កាតារ</target>
+        <target>កាតា</target>
       </trans-unit>
       <trans-unit id="QA.official_name" resname="QA.official_name" approved="yes">
         <source>State of Qatar</source>
-        <target>រដ្ឋ​កាតារ</target>
+        <target>រដ្ឋ​កាតា</target>
       </trans-unit>
       <trans-unit id="RE.name" resname="RE.name" approved="yes">
         <source>Réunion</source>
-        <target>រេអុយញ៉ុង</target>
+        <target>រ៉េអ៊ីនញ៊ុង</target>
       </trans-unit>
       <trans-unit id="RO.name" resname="RO.name" approved="yes">
         <source>Romania</source>
@@ -1276,11 +1276,11 @@
       </trans-unit>
       <trans-unit id="RS.name" resname="RS.name" approved="yes">
         <source>Serbia</source>
-        <target>ស៊ែរប៊ី</target>
+        <target>ស៊ែប៊ី</target>
       </trans-unit>
       <trans-unit id="RS.official_name" resname="RS.official_name" approved="yes">
         <source>Republic of Serbia</source>
-        <target>សាធារណរដ្ឋស៊ែរប៊ី</target>
+        <target>សាធារណរដ្ឋស៊ែប៊ី</target>
       </trans-unit>
       <trans-unit id="RU.name" resname="RU.name" approved="yes">
         <source>Russian Federation</source>
@@ -1296,15 +1296,15 @@
       </trans-unit>
       <trans-unit id="SA.name" resname="SA.name" approved="yes">
         <source>Saudi Arabia</source>
-        <target>អារ៉ាប៊ីសាអ៊ូឌីត</target>
+        <target>អារ៉ាប៊ីសាអូឌីត</target>
       </trans-unit>
       <trans-unit id="SA.official_name" resname="SA.official_name" approved="yes">
         <source>Kingdom of Saudi Arabia</source>
-        <target>ព្រះរាជាណាចក្រ​អារ៉ាប៊ីសាអ៊ូឌីត</target>
+        <target>ព្រះរាជាណាចក្រ​អារ៉ាប៊ីសាអូឌីត</target>
       </trans-unit>
       <trans-unit id="SB.name" resname="SB.name" approved="yes">
         <source>Solomon Islands</source>
-        <target>កោះ​សូឡូម៉ូន</target>
+        <target>កោះ​សូឡូម៉ុង</target>
       </trans-unit>
       <trans-unit id="SC.name" resname="SC.name" approved="yes">
         <source>Seychelles</source>
@@ -1332,27 +1332,27 @@
       </trans-unit>
       <trans-unit id="SG.name" resname="SG.name" approved="yes">
         <source>Singapore</source>
-        <target>សាំងហ្គាពួរ</target>
+        <target>សិង្ហបុរី</target>
       </trans-unit>
       <trans-unit id="SG.official_name" resname="SG.official_name" approved="yes">
         <source>Republic of Singapore</source>
-        <target>សាធារណរដ្ឋ​សាំងហ្គាពួរ</target>
+        <target>សាធារណរដ្ឋសិង្ហបុរី</target>
       </trans-unit>
       <trans-unit id="SH.name" resname="SH.name" approved="yes">
         <source>Saint Helena, Ascension and Tristan da Cunha</source>
-        <target>Saint Helena, Ascension and Tristan da Cunha</target>
+        <target>សាំងហេឡិន, អាសង់ស្យុង និងទ្រីស្ថានដឹគូនៀ</target>
       </trans-unit>
       <trans-unit id="SI.name" resname="SI.name" approved="yes">
         <source>Slovenia</source>
-        <target>ស្លូវ៉ានី</target>
+        <target>ស្លូវេនី</target>
       </trans-unit>
       <trans-unit id="SI.official_name" resname="SI.official_name" approved="yes">
         <source>Republic of Slovenia</source>
-        <target>សាធារណរដ្ឋ​ស្លូវ៉ានី</target>
+        <target>សាធារណរដ្ឋស្លូវេនី</target>
       </trans-unit>
       <trans-unit id="SJ.name" resname="SJ.name" approved="yes">
         <source>Svalbard and Jan Mayen</source>
-        <target>ស្វាល់បាត និង ហ្សង់ម៉ាយេន</target>
+        <target>ស្វាលបាដ និង ហ្សង់ម៉ាយេន</target>
       </trans-unit>
       <trans-unit id="SK.name" resname="SK.name" approved="yes">
         <source>Slovakia</source>
@@ -1364,27 +1364,27 @@
       </trans-unit>
       <trans-unit id="SL.name" resname="SL.name" approved="yes">
         <source>Sierra Leone</source>
-        <target>សេរ៉ាឡេអូន</target>
+        <target>សៀរ៉ាឡេអូន</target>
       </trans-unit>
       <trans-unit id="SL.official_name" resname="SL.official_name" approved="yes">
         <source>Republic of Sierra Leone</source>
-        <target>សាធារណរដ្ឋ​សេរ៉ាឡេអូន</target>
+        <target>សាធារណរដ្ឋសៀរ៉ាឡេអូន</target>
       </trans-unit>
       <trans-unit id="SM.name" resname="SM.name" approved="yes">
         <source>San Marino</source>
-        <target>សាន់ម៉ារីណូ</target>
+        <target>សាំងម៉ារ៊ាំង</target>
       </trans-unit>
       <trans-unit id="SM.official_name" resname="SM.official_name" approved="yes">
         <source>Republic of San Marino</source>
-        <target>សាធារណរដ្ឋ​សាន់ម៉ារីណូ</target>
+        <target>សាធារណរដ្ឋសាំងម៉ារ៊ាំង</target>
       </trans-unit>
       <trans-unit id="SN.name" resname="SN.name" approved="yes">
         <source>Senegal</source>
-        <target>សេណេហ្គាល់</target>
+        <target>សេណេហ្កាល់</target>
       </trans-unit>
       <trans-unit id="SN.official_name" resname="SN.official_name" approved="yes">
         <source>Republic of Senegal</source>
-        <target>សាធារណរដ្ឋ​សេណេហ្គាល់</target>
+        <target>សាធារណរដ្ឋ​សេណេហ្កាល់</target>
       </trans-unit>
       <trans-unit id="SO.name" resname="SO.name" approved="yes">
         <source>Somalia</source>
@@ -1392,15 +1392,15 @@
       </trans-unit>
       <trans-unit id="SO.official_name" resname="SO.official_name" approved="yes">
         <source>Federal Republic of Somalia</source>
-        <target>Federal Republic of Somalia</target>
+        <target>សាធារណរដ្ឋសហព័ន្ធសូម៉ាលី</target>
       </trans-unit>
       <trans-unit id="SR.name" resname="SR.name" approved="yes">
         <source>Suriname</source>
-        <target>ស៊ូរីណាមី</target>
+        <target>សូរីណាម</target>
       </trans-unit>
       <trans-unit id="SR.official_name" resname="SR.official_name" approved="yes">
         <source>Republic of Suriname</source>
-        <target>សាធារណរដ្ឋ​ស៊ូរីណាមី</target>
+        <target>សាធារណរដ្ឋសូរីណាម</target>
       </trans-unit>
       <trans-unit id="SS.name" resname="SS.name" approved="yes">
         <source>South Sudan</source>
@@ -1412,11 +1412,11 @@
       </trans-unit>
       <trans-unit id="ST.name" resname="ST.name" approved="yes">
         <source>Sao Tome and Principe</source>
-        <target>សៅតូម និង ព្រីនស៊ីព</target>
+        <target>សៅតូម៉េ និង ប្រាំងស៊ីប</target>
       </trans-unit>
       <trans-unit id="ST.official_name" resname="ST.official_name" approved="yes">
         <source>Democratic Republic of Sao Tome and Principe</source>
-        <target>សាធារណ​រដ្ឋ​ប្រជាធិបតេយ្យ​​សៅតូម និង ព្រីនស៊ីព</target>
+        <target>សាធារណរដ្ឋប្រជាធិបតេយ្យសៅតូម៉េ និង ប្រាំងស៊ីប</target>
       </trans-unit>
       <trans-unit id="SV.name" resname="SV.name" approved="yes">
         <source>El Salvador</source>
@@ -1428,23 +1428,27 @@
       </trans-unit>
       <trans-unit id="SX.name" resname="SX.name" approved="yes">
         <source>Sint Maarten (Dutch part)</source>
-        <target>សាន​ម៉ាទីន (ផ្នែក​របស់ហុល្លង់)</target>
+        <target>សាំងម៉ាតាន់ (ប៉ែកហូឡង់)</target>
       </trans-unit>
       <trans-unit id="SX.official_name" resname="SX.official_name" approved="yes">
         <source>Sint Maarten (Dutch part)</source>
-        <target>សាន​ម៉ាទីន (ផ្នែក​របស់ហុល្លង់)</target>
+        <target>សាំងម៉ាតាន់ (ប៉ែកហូឡង់)</target>
       </trans-unit>
       <trans-unit id="SY.name" resname="SY.name" approved="yes">
         <source>Syrian Arab Republic</source>
-        <target>សាធារណរដ្ឋ​ស៊ីរីយ៉ា​​អារាប់</target>
+        <target>សាធារណរដ្ឋអារ៉ាប់ស៊ីរី</target>
+      </trans-unit>
+      <trans-unit id="SZ.name" resname="SZ.name" approved="yes">
+        <source>Eswatini</source>
+        <target>ស្វាស៊ីឡង់</target>
       </trans-unit>
       <trans-unit id="SZ.official_name" resname="SZ.official_name" approved="yes">
         <source>Kingdom of Eswatini</source>
-        <target>Kingdom of Eswatini</target>
+        <target>ព្រះរាជាណាចក្រស្វាស៊ីឡង់</target>
       </trans-unit>
       <trans-unit id="TC.name" resname="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>
-        <target>កោះ​ទួក និង កៃកូស</target>
+        <target>កោះតួក និងគែគី</target>
       </trans-unit>
       <trans-unit id="TD.name" resname="TD.name" approved="yes">
         <source>Chad</source>
@@ -1456,7 +1460,7 @@
       </trans-unit>
       <trans-unit id="TF.name" resname="TF.name" approved="yes">
         <source>French Southern Territories</source>
-        <target>អាណាចក្រ​ខាង​ត្បូង​បារាំង</target>
+        <target>ដែនដីភាគខាងត្បូងបារាំង</target>
       </trans-unit>
       <trans-unit id="TG.name" resname="TG.name" approved="yes">
         <source>Togo</source>
@@ -1476,47 +1480,51 @@
       </trans-unit>
       <trans-unit id="TJ.name" resname="TJ.name" approved="yes">
         <source>Tajikistan</source>
-        <target>តាហ្ស៊ីគីស្តង់</target>
+        <target>តាហ្ស៊ីគីស្ថាន</target>
       </trans-unit>
       <trans-unit id="TJ.official_name" resname="TJ.official_name" approved="yes">
         <source>Republic of Tajikistan</source>
-        <target>សាធារណរដ្ឋ​តាហ្ស៊ីគីស្តង់​</target>
+        <target>សាធារណរដ្ឋតាហ្ស៊ីគីស្ថាន</target>
       </trans-unit>
       <trans-unit id="TK.name" resname="TK.name" approved="yes">
         <source>Tokelau</source>
-        <target>តូកេឡាអ៊ូ</target>
+        <target>តួគីឡាអ៊ូ</target>
       </trans-unit>
       <trans-unit id="TL.name" resname="TL.name" approved="yes">
         <source>Timor-Leste</source>
-        <target>ទីម័រ</target>
+        <target>ទីម័រខាងកើត</target>
       </trans-unit>
       <trans-unit id="TL.official_name" resname="TL.official_name" approved="yes">
         <source>Democratic Republic of Timor-Leste</source>
-        <target>សាធារណរដ្ឋ​ប្រជាធិបតេយ្យ​​ទីម័រ</target>
+        <target>សាធារណរដ្ឋ​ប្រជាធិបតេយ្យ​​ទីម័រខាងកើត</target>
       </trans-unit>
       <trans-unit id="TM.name" resname="TM.name" approved="yes">
         <source>Turkmenistan</source>
-        <target>ទួគមេនីស្តង់</target>
+        <target>តួកមេនីស្ថាន</target>
       </trans-unit>
       <trans-unit id="TN.name" resname="TN.name" approved="yes">
         <source>Tunisia</source>
-        <target>ទុយណេស៊ី</target>
+        <target>ទុយនីស៊ី</target>
       </trans-unit>
       <trans-unit id="TN.official_name" resname="TN.official_name" approved="yes">
         <source>Republic of Tunisia</source>
-        <target>សាធារណរដ្ឋ​ទុយណេស៊ី</target>
+        <target>សាធារណរដ្ឋ​ទុយនេស៊ី</target>
       </trans-unit>
       <trans-unit id="TO.name" resname="TO.name" approved="yes">
         <source>Tonga</source>
-        <target>តុងហ្គោ</target>
+        <target>តុងហ្កា</target>
       </trans-unit>
       <trans-unit id="TO.official_name" resname="TO.official_name" approved="yes">
         <source>Kingdom of Tonga</source>
-        <target>ព្រះរាជាណាចក្រ​តុងហ្គោ</target>
+        <target>ព្រះរាជាណាចក្រ​តុងហ្កា</target>
+      </trans-unit>
+      <trans-unit id="TR.name" resname="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>តួកគីយេ</target>
       </trans-unit>
       <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Republic of Türkiye</target>
+        <target>សាធារណរដ្ឋតួកគីយេ</target>
       </trans-unit>
       <trans-unit id="TT.name" resname="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>
@@ -1528,23 +1536,23 @@
       </trans-unit>
       <trans-unit id="TV.name" resname="TV.name" approved="yes">
         <source>Tuvalu</source>
-        <target>ទុយវ៉ាលុយ</target>
+        <target>ទូវ៉ាលូ</target>
       </trans-unit>
       <trans-unit id="TW.name" resname="TW.name" approved="yes">
         <source>Taiwan, Province of China</source>
-        <target>តៃវ៉ាន់​ ខេត្ត​នៃ​ប្រទេស​ចិន</target>
+        <target>តៃវ៉ាន់​ (ខេត្តនៃចិន)</target>
       </trans-unit>
       <trans-unit id="TW.official_name" resname="TW.official_name" approved="yes">
         <source>Taiwan, Province of China</source>
-        <target>តៃវ៉ាន់​ ខេត្ត​នៃ​ប្រទេស​ចិន</target>
+        <target>តៃវ៉ាន់​ (ខេត្តនៃចិន)</target>
       </trans-unit>
       <trans-unit id="TZ.name" resname="TZ.name" approved="yes">
         <source>Tanzania, United Republic of</source>
-        <target>​តង់ហ្សានី​សាធារណ​រដ្ឋ​រួម​នៃ</target>
+        <target>តង់សានី (សាធារណរដ្ឋរួម)</target>
       </trans-unit>
       <trans-unit id="TZ.official_name" resname="TZ.official_name" approved="yes">
         <source>United Republic of Tanzania</source>
-        <target>សាធារណ​រដ្ឋ​រួម​តង់ហ្សានី​</target>
+        <target>សាធារណ​រដ្ឋ​រួម​តង់សានី​</target>
       </trans-unit>
       <trans-unit id="UA.name" resname="UA.name" approved="yes">
         <source>Ukraine</source>
@@ -1552,19 +1560,19 @@
       </trans-unit>
       <trans-unit id="UG.name" resname="UG.name" approved="yes">
         <source>Uganda</source>
-        <target>អ៊ូហ្គង់ដា</target>
+        <target>អ៊ូហ្កង់ដា</target>
       </trans-unit>
       <trans-unit id="UG.official_name" resname="UG.official_name" approved="yes">
         <source>Republic of Uganda</source>
-        <target>សាធារណរដ្ឋ​អ៊ូហ្គង់ដា</target>
+        <target>សាធារណរដ្ឋអ៊ូហ្កង់ដា</target>
       </trans-unit>
       <trans-unit id="UM.name" resname="UM.name" approved="yes">
         <source>United States Minor Outlying Islands</source>
-        <target>កោះ​តូច​នៅ​ឆ្ងាយ​ពី​សហរដ្ឋ​អាមេរិក</target>
+        <target>ប្រជុំកោះតូចៗ ដាច់ស្រយោលសហរដ្ឋអាមេរិក</target>
       </trans-unit>
       <trans-unit id="US.name" resname="US.name" approved="yes">
         <source>United States</source>
-        <target>សហរដ្ឋ​អាមេរិក</target>
+        <target>អាមេរិក (សហរដ្ឋ)</target>
       </trans-unit>
       <trans-unit id="US.official_name" resname="US.official_name" approved="yes">
         <source>United States of America</source>
@@ -1572,51 +1580,51 @@
       </trans-unit>
       <trans-unit id="UY.name" resname="UY.name" approved="yes">
         <source>Uruguay</source>
-        <target>អ៊ុយរ៉ាហ្គាយ</target>
+        <target>អ៊ុយរូហ្កាយ</target>
       </trans-unit>
       <trans-unit id="UY.official_name" resname="UY.official_name" approved="yes">
         <source>Eastern Republic of Uruguay</source>
-        <target>សាធារណរដ្ឋ​អ៊ុយរ៉ាហ្គាយ​ខាងកើត</target>
+        <target>សាធារណរដ្ឋភាគខាងកើតអ៊ុយរូហ្កាយ</target>
       </trans-unit>
       <trans-unit id="UZ.name" resname="UZ.name" approved="yes">
         <source>Uzbekistan</source>
-        <target>អ៊ូហ្សបេគីស្តង់</target>
+        <target>អ៊ូសបេគីស្ថាន</target>
       </trans-unit>
       <trans-unit id="UZ.official_name" resname="UZ.official_name" approved="yes">
         <source>Republic of Uzbekistan</source>
-        <target>សាធារណរដ្ឋ​អ៊ូហ្សបេគីស្តង់</target>
+        <target>សាធារណរដ្ឋអ៊ូសបេគីស្ថាន</target>
       </trans-unit>
       <trans-unit id="VA.name" resname="VA.name" approved="yes">
         <source>Holy See (Vatican City State)</source>
-        <target>ហូលីស៊ី (រដ្ឋ​របស់បូរី​វ៉ាទីកង់)</target>
+        <target>ព្រះរាជវាំងពិសិដ្ឋ (បុរីវ៉ាទីកង់)</target>
       </trans-unit>
       <trans-unit id="VC.name" resname="VC.name" approved="yes">
         <source>Saint Vincent and the Grenadines</source>
-        <target>សង់វាំងសង់ និង ហ្គ្រីណាឌីន</target>
+        <target>សាំងវីនសិន និង ហ្គ្រើណាដិន</target>
       </trans-unit>
       <trans-unit id="VE.name" resname="VE.name" approved="yes">
         <source>Venezuela, Bolivarian Republic of</source>
-        <target>សាធារណរដ្ឋ​បូលីវី​នៃ​វ៉េណេហ្ស៊ុយអេឡា</target>
+        <target>វ៉េណេស៊ុយអេឡា (សាធារណរដ្ឋបូលីវា)</target>
       </trans-unit>
       <trans-unit id="VE.official_name" resname="VE.official_name" approved="yes">
         <source>Bolivarian Republic of Venezuela</source>
-        <target>សាធារណរដ្ឋ​បូលីវី​នៃ​វ៉េណេហ្ស៊ុយអេឡា</target>
+        <target>សាធារណរដ្ឋបូលីវាវ៉េណេស៊ុយអេឡា</target>
       </trans-unit>
       <trans-unit id="VG.name" resname="VG.name" approved="yes">
         <source>Virgin Islands, British</source>
-        <target>កោះ​វីជីន ចក្រភពអង់គ្លេស</target>
+        <target>កោះ​វីជីន (អង់គ្លេស)</target>
       </trans-unit>
       <trans-unit id="VG.official_name" resname="VG.official_name" approved="yes">
         <source>British Virgin Islands</source>
-        <target>ចក្រភពអង់គ្លេស ​កោះ​វីជីន</target>
+        <target>កោះ​វីជីនអង់គ្លេស</target>
       </trans-unit>
       <trans-unit id="VI.name" resname="VI.name" approved="yes">
         <source>Virgin Islands, U.S.</source>
-        <target>កោះវីជីន ​សហរដ្ឋ​អាមេរិក</target>
+        <target>កោះវីជីន (អាមេរិក)</target>
       </trans-unit>
       <trans-unit id="VI.official_name" resname="VI.official_name" approved="yes">
         <source>Virgin Islands of the United States</source>
-        <target>កោះវីជីន​នៃ​សហរដ្ឋ​អាមេរិក</target>
+        <target>កោះវីជីនអាមេរិក</target>
       </trans-unit>
       <trans-unit id="VN.name" resname="VN.name" approved="yes">
         <source>Viet Nam</source>
@@ -1628,35 +1636,35 @@
       </trans-unit>
       <trans-unit id="VU.name" resname="VU.name" approved="yes">
         <source>Vanuatu</source>
-        <target>វ៉ានុយអាទុយ</target>
+        <target>វ៉ានូទូ</target>
       </trans-unit>
       <trans-unit id="VU.official_name" resname="VU.official_name" approved="yes">
         <source>Republic of Vanuatu</source>
-        <target>សាធារណរដ្ឋ​វ៉ានុយអាទុយ</target>
+        <target>សាធារណរដ្ឋវ៉ានូទូ</target>
       </trans-unit>
       <trans-unit id="WF.name" resname="WF.name" approved="yes">
         <source>Wallis and Futuna</source>
-        <target>វ៉ាលីស​និង​ហ្វុយទុយណា</target>
+        <target>វ៉ាលីហ្ស និង ហ្វូទូណា</target>
       </trans-unit>
       <trans-unit id="WS.name" resname="WS.name" approved="yes">
         <source>Samoa</source>
-        <target>សាមូអា</target>
+        <target>សាម័រ</target>
       </trans-unit>
       <trans-unit id="WS.official_name" resname="WS.official_name" approved="yes">
         <source>Independent State of Samoa</source>
-        <target>រដ្ឋ​ឯករាជ្យ​សាមូអា</target>
+        <target>រដ្ឋឯករាជ្យសាម័រ</target>
       </trans-unit>
       <trans-unit id="YE.name" resname="YE.name" approved="yes">
         <source>Yemen</source>
-        <target>យេមែន</target>
+        <target>យេម៉ែន</target>
       </trans-unit>
       <trans-unit id="YE.official_name" resname="YE.official_name" approved="yes">
         <source>Republic of Yemen</source>
-        <target>សាធារណ​រដ្ឋ​យេមែន</target>
+        <target>សាធារណរដ្ឋយេម៉ែន</target>
       </trans-unit>
       <trans-unit id="YT.name" resname="YT.name" approved="yes">
         <source>Mayotte</source>
-        <target>ម៉ាយុត</target>
+        <target>ម៉ាយុត្តិ</target>
       </trans-unit>
       <trans-unit id="ZA.name" resname="ZA.name" approved="yes">
         <source>South Africa</source>
@@ -1668,19 +1676,19 @@
       </trans-unit>
       <trans-unit id="ZM.name" resname="ZM.name" approved="yes">
         <source>Zambia</source>
-        <target>ហ្សាំប៊ី</target>
+        <target>សំប៊ី</target>
       </trans-unit>
       <trans-unit id="ZM.official_name" resname="ZM.official_name" approved="yes">
         <source>Republic of Zambia</source>
-        <target>សាធារណរដ្ឋ​ហ្សាំប៊ី</target>
+        <target>សាធារណរដ្ឋសំប៊ី</target>
       </trans-unit>
       <trans-unit id="ZW.name" resname="ZW.name" approved="yes">
         <source>Zimbabwe</source>
-        <target>ហ្ស៊ីមបាវ៉េ</target>
+        <target>ស៊ីមបាវ៉េ</target>
       </trans-unit>
       <trans-unit id="ZW.official_name" resname="ZW.official_name" approved="yes">
         <source>Republic of Zimbabwe</source>
-        <target>សាធារណរដ្ឋ​ហ្ស៊ីមបាវ៉េ</target>
+        <target>សាធារណរដ្ឋស៊ីមបាវ៉េ</target>
       </trans-unit>
     </body>
   </file>
