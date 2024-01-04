@@ -87,8 +87,8 @@ class ConnectionPool
         'pdo_sqlite' => PDOSqliteDriver::class,
         'pdo_pgsql' => PDOPgSqlDriver::class,
         // TODO: not supported yet, need to be checked later
-//        'pdo_oci' => PDOOCIDriver::class,
-//        'drizzle_pdo_mysql' => DrizzlePDOMySQLDriver::class,
+        //        'pdo_oci' => PDOOCIDriver::class,
+        //        'drizzle_pdo_mysql' => DrizzlePDOMySQLDriver::class,
     ];
 
     /**

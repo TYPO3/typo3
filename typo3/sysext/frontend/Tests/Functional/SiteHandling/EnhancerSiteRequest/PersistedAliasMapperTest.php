@@ -116,13 +116,13 @@ final class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTestCase
             ->withApplicableSet(
                 ApplicableConjunction::create(
                     AspectDeclaration::create('PersistedAliasMapper')->withConfiguration([
-                            VariableItem::create('aspectName', [
-                                'type' => 'PersistedAliasMapper',
-                                'tableName' => 'pages',
-                                'routeFieldName' => 'slug',
-                                'routeValuePrefix' => '/',
-                                'fallbackValue' => '9999',
-                            ]),
+                        VariableItem::create('aspectName', [
+                            'type' => 'PersistedAliasMapper',
+                            'tableName' => 'pages',
+                            'routeFieldName' => 'slug',
+                            'routeValuePrefix' => '/',
+                            'fallbackValue' => '9999',
+                        ]),
                     ]),
                     VariablesContext::create(
                         Variables::create(['resolveValue' => '9999'])

@@ -3062,13 +3062,13 @@ final class TcaMigrationTest extends UnitTestCase
     {
         yield 'always_description is removed' => [
             'input' => [
-              'aTable' => [
-                  'interface' => [
-                      'always_description' => 0,
-                      'anything_else' => true,
-                  ],
-                  'columns' => [],
-              ],
+                'aTable' => [
+                    'interface' => [
+                        'always_description' => 0,
+                        'anything_else' => true,
+                    ],
+                    'columns' => [],
+                ],
             ],
             'expected' => [
                 'aTable' => [

@@ -103,7 +103,7 @@ final class ResolverTest extends UnitTestCase
             'varTrue' => true,
             'varFalse' => false,
             'varArray' => ['foo' => 'bar'],
-         ]);
+        ]);
         GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
         $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression, ['contextVar' => 42]));
@@ -130,7 +130,7 @@ final class ResolverTest extends UnitTestCase
             'var2' => '2',
             'varTrue' => true,
             'varFalse' => false,
-         ]);
+        ]);
         GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
         $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression, $contextVariables));
@@ -166,7 +166,7 @@ final class ResolverTest extends UnitTestCase
         $contextMock->method('getExpressionLanguageVariables')->willReturn([
             'var1' => 'FOO',
             'var2' => 'foo',
-         ]);
+        ]);
         GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
         GeneralUtility::addInstance(DefaultFunctionsProvider::class, $expressionProviderMock);
         $expressionLanguageResolver = new Resolver('default', []);

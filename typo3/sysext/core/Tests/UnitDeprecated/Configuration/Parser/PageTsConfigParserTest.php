@@ -69,11 +69,11 @@ final class PageTsConfigParserTest extends UnitTestCase
         $cache->set(
             '1d0a3029a36cc56a82bfdb0642fcd912',
             [
-            0 => [
-                'sections' => [$cachedSection],
-                'TSconfig' => ['mod' => ['web_layout' => 'disabled']],
-            ],
-            1 => 'fb3c41ea55f42a993fc143a54e09bbdd', ]
+                0 => [
+                    'sections' => [$cachedSection],
+                    'TSconfig' => ['mod' => ['web_layout' => 'disabled']],
+                ],
+                1 => 'fb3c41ea55f42a993fc143a54e09bbdd', ]
         );
         $subject = new PageTsConfigParser(
             $typoScriptParserMock,

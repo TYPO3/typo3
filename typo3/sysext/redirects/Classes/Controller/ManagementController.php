@@ -158,9 +158,9 @@ class ManagementController
                 'record_edit',
                 [
                     'edit' => ['sys_redirect' => ['new'],
-                ],
-                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('site_redirects'),
-            ]
+                    ],
+                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('site_redirects'),
+                ]
             ))
             ->setTitle($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_add_text'))
             ->setShowLabelText(true)

@@ -54,14 +54,14 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
                     ],
                 ],
             ],
-             '_orig_prototypeName' => [
-                 'value' => 'standard',
-                 'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
-             ],
-             '_orig_identifier' => [
-                 'value' => 'test',
-                 'hmac' => GeneralUtility::hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
-             ],
+            '_orig_prototypeName' => [
+                'value' => 'standard',
+                'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
+            ],
+            '_orig_identifier' => [
+                'value' => 'test',
+                'hmac' => GeneralUtility::hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
+            ],
         ];
 
         $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['getFormDefinitionValidationService', 'retrieveSessionToken'], callOriginalConstructor: false);
@@ -125,12 +125,12 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
                         '_value' => 'yyy1',
                     ],
                     [
-                    '_label' => 'xxx2',
-                    '_value' => 'yyy2',
+                        '_label' => 'xxx2',
+                        '_value' => 'yyy2',
                     ],
                     [
-                    '_label' => 'xxx3',
-                    '_value' => 'yyy2',
+                        '_label' => 'xxx3',
+                        '_value' => 'yyy2',
                     ],
                 ],
                 '_label' => 'xxx',
@@ -175,14 +175,14 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
         $input = [
             'prototypeName' => 'foo',
             'identifier' => 'test',
-             '_orig_prototypeName' => [
-                 'value' => 'standard',
-                 'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
-             ],
-             '_orig_identifier' => [
-                 'value' => 'test',
-                 'hmac' => GeneralUtility::hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
-             ],
+            '_orig_prototypeName' => [
+                'value' => 'standard',
+                'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
+            ],
+            '_orig_identifier' => [
+                'value' => 'test',
+                'hmac' => GeneralUtility::hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
+            ],
         ];
 
         $typeConverter->convertFrom(json_encode($input), FormDefinitionArray::class);
@@ -206,14 +206,14 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
         $input = [
             'prototypeName' => 'standard',
             'identifier' => 'xxx',
-             '_orig_prototypeName' => [
-                 'value' => 'standard',
-                 'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
-             ],
-             '_orig_identifier' => [
-                 'value' => 'test',
-                 'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'test']), $sessionToken),
-             ],
+            '_orig_prototypeName' => [
+                'value' => 'standard',
+                'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
+            ],
+            '_orig_identifier' => [
+                'value' => 'test',
+                'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'test']), $sessionToken),
+            ],
         ];
 
         $typeConverter->convertFrom(json_encode($input), FormDefinitionArray::class);

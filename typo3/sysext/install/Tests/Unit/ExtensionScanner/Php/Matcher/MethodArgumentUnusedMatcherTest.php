@@ -205,7 +205,7 @@ final class MethodArgumentUnusedMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

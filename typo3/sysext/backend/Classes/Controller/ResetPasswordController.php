@@ -162,9 +162,9 @@ class ResetPasswordController
         $formUrl = $this->uriBuilder->buildUriWithRedirect(
             'password_reset_finish',
             array_filter(array_merge($parameters, [
-               't' => $token,
-               'i' => $identity,
-               'e' => $expirationDate,
+                't' => $token,
+                'i' => $identity,
+                'e' => $expirationDate,
             ])),
             RouteRedirect::createFromRequest($request)
         );

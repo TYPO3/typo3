@@ -37,8 +37,8 @@ final class TypoScriptParserTest extends FunctionalTestCase
             '[GLOBAL]',
             'RTE.default.proc.entryHTMLparser_db = 1',
             'RTE.default.proc.entryHTMLparser_db {',
-                'tags {',
-                '}',
+            'tags {',
+            '}',
             '}',
 
             'RTE.default.FE < RTE.default',

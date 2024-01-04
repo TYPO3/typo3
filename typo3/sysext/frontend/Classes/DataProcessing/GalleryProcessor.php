@@ -422,7 +422,7 @@ class GalleryProcessor implements DataProcessorInterface
             // Recalculate gallery width
             $this->galleryData['width'] = floor($maximumRowWidth / $mediaScalingCorrection);
 
-        // User entered a predefined width
+            // User entered a predefined width
         } elseif ($this->equalMediaWidth) {
             $mediaScalingCorrection = 1;
 
@@ -446,7 +446,7 @@ class GalleryProcessor implements DataProcessorInterface
             // Recalculate gallery width
             $this->galleryData['width'] = floor($totalRowWidth / $mediaScalingCorrection);
 
-        // Automatic setting of width and height
+            // Automatic setting of width and height
         } else {
             $maxMediaWidth = (int)($galleryWidthMinusBorderAndSpacing / $this->galleryData['count']['columns']);
             foreach ($this->fileObjects as $key => $fileObject) {

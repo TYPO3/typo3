@@ -468,8 +468,8 @@ class FormViewHelper extends AbstractFormViewHelper
         // basically "request token, yes" - uses form-action URI as scope
         if ($isTrulyRequestToken || $requestToken === '@nonce') {
             $requestToken = RequestToken::create($formAction);
-        // basically "request token with 'my-scope'" - uses 'my-scope'
         } elseif (is_string($requestToken) && $requestToken !== '') {
+            // basically "request token with 'my-scope'" - uses 'my-scope'
             $requestToken = RequestToken::create($requestToken);
         }
         if (!$requestToken instanceof RequestToken) {

@@ -219,7 +219,7 @@ final class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

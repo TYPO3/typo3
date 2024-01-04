@@ -80,7 +80,7 @@ final class ArrayGlobalMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

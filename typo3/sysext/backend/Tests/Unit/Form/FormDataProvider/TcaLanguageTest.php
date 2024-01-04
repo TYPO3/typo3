@@ -371,7 +371,7 @@ final class TcaLanguageTest extends UnitTestCase
                         'aTable.' => [
                             'aField.' => [
                                 'disableNoMatchingValueElement' => '1',
-                             ],
+                            ],
                         ],
                     ],
                 ],
@@ -548,35 +548,35 @@ final class TcaLanguageTest extends UnitTestCase
         $siteFinder = $this->createMock(SiteFinder::class);
         $siteFinder->method('getAllSites')->willReturn([
             new Site('site-1', 1, [
-               'base' => '/',
-               'languages' => [
-                   [
-                       'title' => 'English',
-                       'languageId' => 0,
-                       'base' => '/',
-                       'locale' => 'en_US',
-                       'flag' => 'us',
-                   ],
-                   [
-                       'title' => 'German',
-                       'languageId' => 2,
-                       'base' => '/de/',
-                       'locale' => 'de_DE',
-                       'flag' => 'de',
-                   ],
-               ],
+                'base' => '/',
+                'languages' => [
+                    [
+                        'title' => 'English',
+                        'languageId' => 0,
+                        'base' => '/',
+                        'locale' => 'en_US',
+                        'flag' => 'us',
+                    ],
+                    [
+                        'title' => 'German',
+                        'languageId' => 2,
+                        'base' => '/de/',
+                        'locale' => 'de_DE',
+                        'flag' => 'de',
+                    ],
+                ],
             ]),
             new Site('site-2', 2, [
-               'base' => '/',
-               'languages' => [
-                   [
-                       'title' => 'German',
-                       'languageId' => 0,
-                       'base' => '/',
-                       'locale' => 'de_DE',
-                       'flag' => 'de',
-                   ],
-               ],
+                'base' => '/',
+                'languages' => [
+                    [
+                        'title' => 'German',
+                        'languageId' => 0,
+                        'base' => '/',
+                        'locale' => 'de_DE',
+                        'flag' => 'de',
+                    ],
+                ],
             ]),
         ]);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinder);
@@ -623,11 +623,11 @@ final class TcaLanguageTest extends UnitTestCase
             'databaseRow' => array_replace_recursive([], $databaseRow),
             'processedTca' => [
                 'columns' => [
-                     'aField' => array_replace_recursive([
-                         'config' => [
-                             'type' => 'language',
-                         ],
-                     ], $fieldConfig),
+                    'aField' => array_replace_recursive([
+                        'config' => [
+                            'type' => 'language',
+                        ],
+                    ], $fieldConfig),
                 ],
             ],
         ], $additionalConfiguration);

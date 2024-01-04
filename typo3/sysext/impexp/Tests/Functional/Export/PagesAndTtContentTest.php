@@ -23,11 +23,11 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 final class PagesAndTtContentTest extends AbstractImportExportTestCase
 {
     protected array $pathsToLinkInTestInstance = [
-            'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
     ];
 
     protected array $testExtensionsToLoad = [
-            'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
     protected array $recordTypesIncludeFields =

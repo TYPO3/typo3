@@ -156,20 +156,20 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ->method('getConfiguration')
             ->with($configurationType, 'label_test', null)
             ->willReturn(['_LOCAL_LANG' => [
-                    'default' => [
-                        'key3' => 'English label for key3 from TypoScript',
-                    ],
-                    'da' => [
-                        'key1' => 'key1 value from TS core',
-                        'key3' => [
-                            'subkey1' => 'key3.subkey1 value from TypoScript',
-                            // this key doesn't exist in XLF files
-                            'subkey2' => [
-                                'subsubkey' => 'key3.subkey2.subsubkey value from TypoScript',
-                            ],
+                'default' => [
+                    'key3' => 'English label for key3 from TypoScript',
+                ],
+                'da' => [
+                    'key1' => 'key1 value from TS core',
+                    'key3' => [
+                        'subkey1' => 'key3.subkey1 value from TypoScript',
+                        // this key doesn't exist in XLF files
+                        'subkey2' => [
+                            'subsubkey' => 'key3.subkey2.subsubkey value from TypoScript',
                         ],
                     ],
                 ],
+            ],
             ]);
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 

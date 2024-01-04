@@ -40,7 +40,7 @@ final class JsonElementTest extends UnitTestCase
     public function renderReturnsJsonInStandardTextarea(): void
     {
         $data = [
-                'parameterArray' => [
+            'parameterArray' => [
                 'itemFormElName' => 'config',
                 'itemFormElValue' => ['foo' => 'bar'],
                 'fieldConf' => [

@@ -1031,50 +1031,50 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     public static function postsWithoutRespectingSysLanguageDataProvider(): array
     {
         $allLanguages = [
-             [
-                 'title' => 'Blog 1',
-                 AbstractDomainObject::PROPERTY_UID => 1,
-                 AbstractDomainObject::PROPERTY_LOCALIZED_UID => 1,
-             ],
-             [
-                 'title' => 'Blog 1 DA',
-                 AbstractDomainObject::PROPERTY_UID => 1,
-                 AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-             ],
+            [
+                'title' => 'Blog 1',
+                AbstractDomainObject::PROPERTY_UID => 1,
+                AbstractDomainObject::PROPERTY_LOCALIZED_UID => 1,
+            ],
+            [
+                'title' => 'Blog 1 DA',
+                AbstractDomainObject::PROPERTY_UID => 1,
+                AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
+            ],
         ];
         return [
             'default with overlays' => [
-                 'language' => 0,
-                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $allLanguages,
-             ],
-             'default without overlays, show all languages' => [
-                 'language' => 0,
-                 'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $allLanguages,
-             ],
-             'DA with overlays, shows translated records twice (which is a bug)' => [
-                 'language' => 1,
-                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => [
-                     [
-                         'title' => 'Blog 1 DA',
-                         AbstractDomainObject::PROPERTY_UID => 1,
-                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                     ],
-                     [
-                         'title' => 'Blog 1 DA',
-                         AbstractDomainObject::PROPERTY_UID => 1,
-                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                     ],
-                 ],
-             ],
+                'language' => 0,
+                'overlay' => LanguageAspect::OVERLAYS_ON,
+                'expected' => $allLanguages,
+            ],
+            'default without overlays, show all languages' => [
+                'language' => 0,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
+                'expected' => $allLanguages,
+            ],
+            'DA with overlays, shows translated records twice (which is a bug)' => [
+                'language' => 1,
+                'overlay' => LanguageAspect::OVERLAYS_ON,
+                'expected' => [
+                    [
+                        'title' => 'Blog 1 DA',
+                        AbstractDomainObject::PROPERTY_UID => 1,
+                        AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
+                    ],
+                    [
+                        'title' => 'Blog 1 DA',
+                        AbstractDomainObject::PROPERTY_UID => 1,
+                        AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
+                    ],
+                ],
+            ],
             'DA without overlays, queries DA language directly' => [
-                 'language' => 1,
-                 'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $allLanguages,
-             ],
-         ];
+                'language' => 1,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
+                'expected' => $allLanguages,
+            ],
+        ];
     }
 
     /**

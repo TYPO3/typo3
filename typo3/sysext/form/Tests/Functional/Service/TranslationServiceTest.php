@@ -737,10 +737,10 @@ final class TranslationServiceTest extends FunctionalTestCase
         $element->method('getRenderingOptions')->willReturn([
             'translation' => [
                 'arguments' => [
-                        'label' => [
-                            'this',
-                            'that',
-                        ],
+                    'label' => [
+                        'this',
+                        'that',
+                    ],
                 ],
             ],
         ]);
@@ -829,7 +829,7 @@ final class TranslationServiceTest extends FunctionalTestCase
         $textElementXlfPaths = [
             10 => 'EXT:form_labels/Resources/Private/Language/locallang_text.xlf',
             20 => 'EXT:form_labels/Resources/Private/Language/locallang_additional_text.xlf',
-         ];
+        ];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $formElementIdentifier = 'form-element-identifier';

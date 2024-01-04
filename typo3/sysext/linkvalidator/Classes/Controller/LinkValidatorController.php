@@ -172,11 +172,11 @@ class LinkValidatorController
             return $view->renderResponse('Backend/Report');
         }
         $view->assignMultiple([
-                'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
-                'prefix' => 'check',
-                'selectedLevel' => $this->searchLevel['check'],
-                'options' => $this->getCheckOptions('check'),
-            ]);
+            'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
+            'prefix' => 'check',
+            'selectedLevel' => $this->searchLevel['check'],
+            'options' => $this->getCheckOptions('check'),
+        ]);
         return $view->renderResponse('Backend/CheckLinks');
     }
 

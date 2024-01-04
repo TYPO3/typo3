@@ -44,8 +44,8 @@ final class FlexFormProcessorTest extends UnitTestCase
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'non_existing_field'];
         $this->contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
-           ['fieldName', $processorConfiguration, 'pi_flexform', 'non_existing_field'],
-           ['as', $processorConfiguration, 'flexFormData', 'myOutputVariable'],
+            ['fieldName', $processorConfiguration, 'pi_flexform', 'non_existing_field'],
+            ['as', $processorConfiguration, 'flexFormData', 'myOutputVariable'],
         ]);
 
         $processedData = [

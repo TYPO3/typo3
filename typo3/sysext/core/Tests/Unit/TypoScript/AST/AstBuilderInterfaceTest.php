@@ -775,10 +775,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'copy operator with relative assignment to sub level ' => [
-             "foo {\n" .
-             "  bar.foobar = aValue\n" .
-             "  bar.baz < .bar\n" .
-             '}',
+            "foo {\n" .
+            "  bar.foobar = aValue\n" .
+            "  bar.baz < .bar\n" .
+            '}',
             $expectedAst,
             [
                 'foo.' => [

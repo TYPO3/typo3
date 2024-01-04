@@ -117,13 +117,13 @@ final class EditDocumentControllerTest extends FunctionalTestCase
     {
         return [
             'data' => [
-              'tt_content' => [
-                  'NEW123456' => array_replace_recursive([
-                      'sys_language_uid' => 0,
-                      'header' => 'Test header',
-                      'pid' => -1,
-                  ], $additionalData),
-              ],
+                'tt_content' => [
+                    'NEW123456' => array_replace_recursive([
+                        'sys_language_uid' => 0,
+                        'header' => 'Test header',
+                        'pid' => -1,
+                    ], $additionalData),
+                ],
             ],
             'doSave' => true,
         ];

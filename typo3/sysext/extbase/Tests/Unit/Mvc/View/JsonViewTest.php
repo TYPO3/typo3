@@ -129,9 +129,9 @@ final class JsonViewTest extends UnitTestCase
         $configuration = [
             '_only' => ['name', 'path', 'properties'],
             '_descend' => [
-                 'properties' => [
-                      '_exclude' => ['prohibited'],
-                 ],
+                'properties' => [
+                    '_exclude' => ['prohibited'],
+                ],
             ],
         ];
         $expected = [
@@ -371,9 +371,9 @@ final class JsonViewTest extends UnitTestCase
         $object->value1 = new \stdClass();
         $configuration = [
             '_descend' => [
-                 'value1' => [
-                      '_exposeObjectIdentifier' => true,
-                 ],
+                'value1' => [
+                    '_exposeObjectIdentifier' => true,
+                ],
             ],
         ];
 

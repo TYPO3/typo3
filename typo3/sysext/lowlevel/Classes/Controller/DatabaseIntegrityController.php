@@ -850,15 +850,15 @@ class DatabaseIntegrityController
         } else {
             $out .= '<div class="btn-group" role="group">';
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
-                    'cmd' => [
-                        $table => [
-                            $row['uid'] => [
-                                'undelete' => 1,
-                            ],
+                'cmd' => [
+                    $table => [
+                        $row['uid'] => [
+                            'undelete' => 1,
                         ],
                     ],
-                    'redirect' => (string)$uriBuilder->buildUriFromRoute('system_dbint'),
-                ])) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:undelete_only')) . '">';
+                ],
+                'redirect' => (string)$uriBuilder->buildUriFromRoute('system_dbint'),
+            ])) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '</div>';
         }

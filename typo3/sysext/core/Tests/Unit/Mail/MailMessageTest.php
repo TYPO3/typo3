@@ -304,11 +304,11 @@ final class MailMessageTest extends UnitTestCase
     public static function exceptionIsThrownForInvalidArgumentCombinationsDataProvider(): array
     {
         return [
-          'setFrom' => ['setFrom'],
-          'setReplyTo' => ['setReplyTo'],
-          'setTo' => ['setTo'],
-          'setCc' => ['setCc'],
-          'setBcc' => ['setBcc'],
+            'setFrom' => ['setFrom'],
+            'setReplyTo' => ['setReplyTo'],
+            'setTo' => ['setTo'],
+            'setCc' => ['setCc'],
+            'setBcc' => ['setBcc'],
         ];
     }
 
