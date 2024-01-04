@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class AbstractUserAuthenticationTest extends FunctionalTestCase
@@ -73,18 +75,41 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
         self::assertTrue($this->subject->getModuleData(self::class));
     }
 
+    public static function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGivenDataProvider(): array
+    {
+        return [
+            ['', ''],
+            [null, ''],
+            [0, '0'],
+            ['0', '0'],
+            ['12,31', '12, 31'],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGivenDataProvider
      */
-    public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven(): void
-    {
+    public function getAuthInfoArrayReturnsCorrectPidConstraintForGivenCheckPidValue(
+        int|null|string $checkPid_value,
+        string $expectedPids
+    ): void {
         $this->subject->user_table = 'be_users';
-        $this->subject->checkPid_value = null;
+        $this->subject->checkPid_value = $checkPid_value;
 
         $authInfoArray = $this->subject->getAuthInfoArray(new ServerRequest('https://example.com'));
 
         $enableClause = $authInfoArray['db_user']['enable_clause'];
         self::assertInstanceOf(CompositeExpression::class, $enableClause);
-        self::assertSame('', (string)$enableClause);
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
+
+        $expectedEnableClause = '';
+
+        if ($expectedPids !== '') {
+            $expectedEnableClause = $connection->quoteIdentifier('be_users.pid') . ' IN (' . $expectedPids . ')';
+        }
+
+        self::assertSame($expectedEnableClause, (string)$enableClause);
     }
 }
