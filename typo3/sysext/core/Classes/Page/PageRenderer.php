@@ -39,8 +39,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * TYPO3 pageRender class
  * This class render the HTML of a webpage, usable for BE and FE
- *
- * @todo mark this class final in TYPO3 v13.0
  */
 class PageRenderer implements SingletonInterface
 {
