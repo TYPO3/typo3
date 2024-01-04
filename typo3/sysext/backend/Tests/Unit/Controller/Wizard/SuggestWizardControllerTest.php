@@ -141,11 +141,11 @@ class SuggestWizardControllerTest extends UnitTestCase
     public function isTableHiddenIsProperlyRetrievedDataProvider(): array
     {
         return [
-          'notSetValue' => [false, ['ctrl' => ['hideTable' => null]]],
-          'true' => [true, ['ctrl' => ['hideTable' => true]]],
-          'false' => [false, ['ctrl' => ['hideTable' => false]]],
-          'string with true' => [true, ['ctrl' => ['hideTable' => '1']]],
-          'string with false' => [false, ['ctrl' => ['hideTable' => '0']]],
+            'notSetValue' => [false, ['ctrl' => ['hideTable' => null]]],
+            'true' => [true, ['ctrl' => ['hideTable' => true]]],
+            'false' => [false, ['ctrl' => ['hideTable' => false]]],
+            'string with true' => [true, ['ctrl' => ['hideTable' => '1']]],
+            'string with false' => [false, ['ctrl' => ['hideTable' => '0']]],
         ];
     }
 

@@ -294,13 +294,13 @@ class TreeControllerTest extends FunctionalTestCase
                 ],
             ],
             [
-                 'uid' => 7000,
-                 'title' => 'Common Collection',
-                 '_children' => [
-                     [
-                         'uid' => 7100,
-                         'title' => 'Announcements & News',
-                         '_children' => [
+                'uid' => 7000,
+                'title' => 'Common Collection',
+                '_children' => [
+                    [
+                        'uid' => 7100,
+                        'title' => 'Announcements & News',
+                        '_children' => [
                             [
                                 'uid' => 7110,
                                 'title' => 'Markets',
@@ -316,9 +316,9 @@ class TreeControllerTest extends FunctionalTestCase
                                 'title' => 'Partners',
                                 '_children' => [],
                             ],
-                         ],
-                     ],
-                 ],
+                        ],
+                    ],
+                ],
             ],
         ];
         self::assertEquals($expected, $actual);

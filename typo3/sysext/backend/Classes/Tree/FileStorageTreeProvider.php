@@ -250,8 +250,8 @@ class FileStorageTreeProvider
         if ($user->isAdmin()) {
             return [
                 [
-                'folder' => $resourceStorage->getRootLevelFolder(),
-                'name' => $resourceStorage->getName(),
+                    'folder' => $resourceStorage->getRootLevelFolder(),
+                    'name' => $resourceStorage->getName(),
                 ],
             ];
         }

@@ -193,7 +193,7 @@ class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

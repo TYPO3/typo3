@@ -134,31 +134,31 @@ class DownloadRecordListTest extends FunctionalTestCase
         $contentRows = $subject->getRecords('pages', 1, $recordList->setFields['pages'], $this->user, true);
         $result = array_merge([$headerRow], $contentRows);
         self::assertEquals([
-           [
-               'uid' => 'uid',
-               'pid' => 'pid',
-               'title' => 'title',
-               'sys_language_uid' => 'sys_language_uid',
-           ],
-           [
-               'uid' => '2',
-               'pid' => '1',
-               'title' => 'Dummy 1-2',
-               'sys_language_uid' => 'Default',
-           ],
-           [
-               'uid' => '3',
-               'pid' => '1',
-               'title' => 'Dummy 1-3',
-               'sys_language_uid' => 'Default',
-           ],
-           [
-               'uid' => '4',
-               'pid' => '1',
-               'title' => 'Dummy 1-4',
-               'sys_language_uid' => 'Default',
-           ],
-       ], $this->prepareRecordsForDbCompatAssertions($result));
+            [
+                'uid' => 'uid',
+                'pid' => 'pid',
+                'title' => 'title',
+                'sys_language_uid' => 'sys_language_uid',
+            ],
+            [
+                'uid' => '2',
+                'pid' => '1',
+                'title' => 'Dummy 1-2',
+                'sys_language_uid' => 'Default',
+            ],
+            [
+                'uid' => '3',
+                'pid' => '1',
+                'title' => 'Dummy 1-3',
+                'sys_language_uid' => 'Default',
+            ],
+            [
+                'uid' => '4',
+                'pid' => '1',
+                'title' => 'Dummy 1-4',
+                'sys_language_uid' => 'Default',
+            ],
+        ], $this->prepareRecordsForDbCompatAssertions($result));
     }
 
     /**

@@ -124,39 +124,39 @@ class ServerRequestFactoryTest extends UnitTestCase
                             0 => 'composer.json',
                         ],
                     ],
-                    ],
-                    'type' => [
-                        'newExample' => [
-                            'image' => 'image/jpeg',
-                            'imageCollection' => [
-                                0 => 'application/json',
-                            ],
+                ],
+                'type' => [
+                    'newExample' => [
+                        'image' => 'image/jpeg',
+                        'imageCollection' => [
+                            0 => 'application/json',
                         ],
                     ],
-                    'tmp_name' => [
-                        'newExample' => [
-                            'image' => '/Applications/MAMP/tmp/php/phphXdbcd',
-                            'imageCollection' => [
-                                0 => '/Applications/MAMP/tmp/php/phpgrZ4bb',
-                            ],
+                ],
+                'tmp_name' => [
+                    'newExample' => [
+                        'image' => '/Applications/MAMP/tmp/php/phphXdbcd',
+                        'imageCollection' => [
+                            0 => '/Applications/MAMP/tmp/php/phpgrZ4bb',
                         ],
                     ],
-                    'error' => [
-                        'newExample' => [
-                                'image' => 0,
-                                'imageCollection' => [
-                                    0 => 0,
-                                ],
+                ],
+                'error' => [
+                    'newExample' => [
+                        'image' => 0,
+                        'imageCollection' => [
+                            0 => 0,
                         ],
                     ],
-                    'size' => [
-                        'newExample' => [
-                            'image' => 59065,
-                            'imageCollection' => [
-                                0 => 683,
-                            ],
+                ],
+                'size' => [
+                    'newExample' => [
+                        'image' => 59065,
+                        'imageCollection' => [
+                            0 => 683,
                         ],
                     ],
+                ],
             ],
         ];
 

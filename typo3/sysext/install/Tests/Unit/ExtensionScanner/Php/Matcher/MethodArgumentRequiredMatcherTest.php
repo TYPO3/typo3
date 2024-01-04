@@ -215,7 +215,7 @@ class MethodArgumentRequiredMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

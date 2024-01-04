@@ -116,14 +116,14 @@ class RegistryTest extends FunctionalTestCase
         $connection->bulkInsert(
             'sys_registry',
             [
-                    ['ns1', 'k1', serialize('v1')],
-                    ['ns1', 'k2', serialize('v2')],
-                    ['ns2', 'k1', serialize('v1')],
-                ],
+                ['ns1', 'k1', serialize('v1')],
+                ['ns1', 'k2', serialize('v2')],
+                ['ns2', 'k1', serialize('v1')],
+            ],
             ['entry_namespace', 'entry_key', 'entry_value'],
             [
-                    'entry_value' => Connection::PARAM_LOB,
-                ]
+                'entry_value' => Connection::PARAM_LOB,
+            ]
         );
 
         (new Registry())->remove('ns1', 'k1');

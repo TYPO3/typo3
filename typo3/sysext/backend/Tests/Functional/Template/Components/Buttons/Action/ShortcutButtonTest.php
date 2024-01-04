@@ -99,7 +99,7 @@ class ShortcutButtonTest extends FunctionalTestCase
                     'id' => 123,
                     'table' => 'some_table',
                     'GET' => [
-                       'clipBoard' => 1,
+                        'clipBoard' => 1,
                     ],
                 ]),
             'RecordListSingleTableCopyToClipboard',

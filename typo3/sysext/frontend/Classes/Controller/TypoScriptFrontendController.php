@@ -108,8 +108,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * List previously publicly accessible variables
      */
     private array $deprecatedPublicProperties = [
-         'ATagParams' => 'Using ATagParams will not be possible anymore in TYPO3 v12.0. Use TSFE->config[config][ATagParams] instead.',
-     ];
+        'ATagParams' => 'Using ATagParams will not be possible anymore in TYPO3 v12.0. Use TSFE->config[config][ATagParams] instead.',
+    ];
 
     /**
      * The page id (int)

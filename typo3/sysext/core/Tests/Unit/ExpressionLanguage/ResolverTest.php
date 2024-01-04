@@ -118,7 +118,7 @@ class ResolverTest extends UnitTestCase
             'var2' => '2',
             'varTrue' => true,
             'varFalse' => false,
-         ]);
+        ]);
         GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());
         $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
@@ -158,7 +158,7 @@ class ResolverTest extends UnitTestCase
         $contextProphecy->getExpressionLanguageVariables()->willReturn([
             'var1' => 'FOO',
             'var2' => 'foo',
-         ]);
+        ]);
         GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());
         GeneralUtility::addInstance(DefaultFunctionsProvider::class, $expressionProvider->reveal());
         $expressionLanguageResolver = new Resolver('default', []);

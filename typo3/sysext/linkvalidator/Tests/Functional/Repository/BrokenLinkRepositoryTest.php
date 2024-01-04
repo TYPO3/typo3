@@ -366,17 +366,17 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // expected result:
             [
                 [
-                   'record_uid' => 1,
-                   'record_pid' => 1,
-                   'language' => 0,
-                   'headline' => 'link',
-                   'field' => 'bodytext',
-                   'table_name' => 'tt_content',
-                   'element_type' => 'textmedia',
-                   'link_title' => 'link',
-                   'url' => 'http://localhost/iAmInvalid',
-                   'link_type' => 'external',
-                   'needs_recheck' => 0,
+                    'record_uid' => 1,
+                    'record_pid' => 1,
+                    'language' => 0,
+                    'headline' => 'link',
+                    'field' => 'bodytext',
+                    'table_name' => 'tt_content',
+                    'element_type' => 'textmedia',
+                    'link_title' => 'link',
+                    'url' => 'http://localhost/iAmInvalid',
+                    'link_type' => 'external',
+                    'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 2,

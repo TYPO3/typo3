@@ -944,15 +944,15 @@ class QueryGenerator
         } else {
             $out .= '<div class="btn-group" role="group">';
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
-                        'cmd' => [
-                            $table => [
-                                $row['uid'] => [
-                                    'undelete' => 1,
-                                ],
-                            ],
+                'cmd' => [
+                    $table => [
+                        $row['uid'] => [
+                            'undelete' => 1,
                         ],
-                        'redirect' => GeneralUtility::linkThisScript(),
-                    ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_only')) . '">';
+                    ],
+                ],
+                'redirect' => GeneralUtility::linkThisScript(),
+            ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
             $formEngineParameters = [
                 'edit' => [
@@ -964,15 +964,15 @@ class QueryGenerator
             ];
             $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $formEngineParameters);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
-                    'cmd' => [
-                        $table => [
-                            $row['uid'] => [
-                                'undelete' => 1,
-                            ],
+                'cmd' => [
+                    $table => [
+                        $row['uid'] => [
+                            'undelete' => 1,
                         ],
                     ],
-                    'redirect' => $redirectUrl,
-                ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_and_edit')) . '">';
+                ],
+                'redirect' => $redirectUrl,
+            ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_and_edit')) . '">';
             $out .= $this->iconFactory->getIcon('actions-delete-edit', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '</div>';
         }

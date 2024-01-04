@@ -1040,88 +1040,88 @@ class QueryLocalizedDataTest extends FunctionalTestCase
     public function postsWithoutRespectingSysLanguageDataProvider(): array
     {
         $lang0Expected = [
-             [
-                 'title' => 'Blog 1',
-                 'uid' => 1,
-                 '_localizedUid' => 1,
-             ],
-             [
-                 'title' => 'Blog 1',
-                 'uid' => 1,
-                 '_localizedUid' => 1,
-             ],
-         ];
+            [
+                'title' => 'Blog 1',
+                'uid' => 1,
+                '_localizedUid' => 1,
+            ],
+            [
+                'title' => 'Blog 1',
+                'uid' => 1,
+                '_localizedUid' => 1,
+            ],
+        ];
         $mixed = [
-             [
-                 'title' => 'Blog 1',
-                 'uid' => 1,
-                 '_localizedUid' => 1,
-             ],
-             [
-                 'title' => 'Blog 1 DK',
-                 'uid' => 2,
-                 '_localizedUid' => 2,
-             ],
-         ];
+            [
+                'title' => 'Blog 1',
+                'uid' => 1,
+                '_localizedUid' => 1,
+            ],
+            [
+                'title' => 'Blog 1 DK',
+                'uid' => 2,
+                '_localizedUid' => 2,
+            ],
+        ];
         return [
-             [
-                 'language' => 0,
-                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $lang0Expected,
-             ],
-             [
-                 'language' => 0,
-                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $lang0Expected,
-             ],
-             [
-                 'language' => 0,
-                 'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed,
-             ],
-             [
-                 'language' => 0,
-                 'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed,
-             ],
-             [
-                 'language' => 1,
-                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => [
-                     [
-                         'title' => 'Blog 1 DK',
-                         'uid' => 1,
-                         '_localizedUid' => 2,
-                     ],
-                     [
-                         'title' => 'Blog 1 DK',
-                         'uid' => 1,
-                         '_localizedUid' => 2,
-                     ],
-                 ],
-             ],
-             [
-                 'language' => 1,
-                 'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => [
-                     [
-                         'title' => 'Blog 1 DK',
-                         'uid' => 1,
-                         '_localizedUid' => 2,
-                     ],
-                     [
-                         'title' => 'Blog 1 DK',
-                         'uid' => 1,
-                         '_localizedUid' => 2,
-                     ],
-                 ],
-             ],
-             [
-                 'language' => 1,
-                 'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed,
-             ],
-         ];
+            [
+                'language' => 0,
+                'overlay' => LanguageAspect::OVERLAYS_ON,
+                'expected' => $lang0Expected,
+            ],
+            [
+                'language' => 0,
+                'overlay' => LanguageAspect::OVERLAYS_ON,
+                'expected' => $lang0Expected,
+            ],
+            [
+                'language' => 0,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
+                'expected' => $mixed,
+            ],
+            [
+                'language' => 0,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
+                'expected' => $mixed,
+            ],
+            [
+                'language' => 1,
+                'overlay' => LanguageAspect::OVERLAYS_ON,
+                'expected' => [
+                    [
+                        'title' => 'Blog 1 DK',
+                        'uid' => 1,
+                        '_localizedUid' => 2,
+                    ],
+                    [
+                        'title' => 'Blog 1 DK',
+                        'uid' => 1,
+                        '_localizedUid' => 2,
+                    ],
+                ],
+            ],
+            [
+                'language' => 1,
+                'overlay' => LanguageAspect::OVERLAYS_ON,
+                'expected' => [
+                    [
+                        'title' => 'Blog 1 DK',
+                        'uid' => 1,
+                        '_localizedUid' => 2,
+                    ],
+                    [
+                        'title' => 'Blog 1 DK',
+                        'uid' => 1,
+                        '_localizedUid' => 2,
+                    ],
+                ],
+            ],
+            [
+                'language' => 1,
+                'overlay' => LanguageAspect::OVERLAYS_OFF,
+                'expected' => $mixed,
+            ],
+        ];
     }
 
     /**

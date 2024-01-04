@@ -1517,9 +1517,9 @@ class DatabaseRecordList
             if (\trim($userTsConfig['options.']['showHistory.'][$table] ?? $userTsConfig['options.']['showHistory'] ?? '1')) {
                 if (!$isDeletePlaceHolder) {
                     $moduleUrl = $this->uriBuilder->buildUriFromRoute('record_history', [
-                            'element' => $table . ':' . $row['uid'],
-                            'returnUrl' => $this->listURL(),
-                        ]) . '#latest';
+                        'element' => $table . ':' . $row['uid'],
+                        'returnUrl' => $this->listURL(),
+                    ]) . '#latest';
                     $historyAction = '<a class="btn btn-default" href="' . htmlspecialchars($moduleUrl) . '" title="'
                         . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
                         . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -2032,9 +2032,9 @@ class DatabaseRecordList
                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute(
                     'record_edit',
                     [
-                            'justLocalized' => $table . ':' . $row['uid'] . ':' . $lUid_OnPage,
-                            'returnUrl' => $this->listURL(),
-                        ]
+                        'justLocalized' => $table . ':' . $row['uid'] . ':' . $lUid_OnPage,
+                        'returnUrl' => $this->listURL(),
+                    ]
                 );
                 $params = [];
                 $params['redirect'] = $redirectUrl;

@@ -222,9 +222,9 @@ class FileTest extends UnitTestCase
     {
         $fixture = new File(
             [
-            'name' => $originalFilename,
-            'identifier' => '/' . $originalFilename,
-        ],
+                'name' => $originalFilename,
+                'identifier' => '/' . $originalFilename,
+            ],
             $this->storageMock
         );
         self::assertSame($expectedBasename, $fixture->getNameWithoutExtension());

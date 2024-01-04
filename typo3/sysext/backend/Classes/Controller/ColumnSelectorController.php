@@ -73,7 +73,7 @@ class ColumnSelectorController
                 'message' => htmlspecialchars(
                     $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.nothingUpdated')
                 ),
-           ]);
+            ]);
         }
 
         $backendUser = $this->getBackendUserAuthentication();

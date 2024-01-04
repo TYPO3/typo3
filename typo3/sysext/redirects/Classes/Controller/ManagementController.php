@@ -163,9 +163,9 @@ class ManagementController
                 'record_edit',
                 [
                     'edit' => ['sys_redirect' => ['new'],
-                ],
-                'returnUrl' => (string)$uriBuilder->buildUriFromRoute('site_redirects'),
-            ]
+                    ],
+                    'returnUrl' => (string)$uriBuilder->buildUriFromRoute('site_redirects'),
+                ]
             ))
             ->setTitle($this->getLanguageService()->getLL('redirect_add_text'))
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));

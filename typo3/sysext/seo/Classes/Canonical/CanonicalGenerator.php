@@ -82,9 +82,9 @@ class CanonicalGenerator
 
         if (!empty($href)) {
             $canonical = '<link ' . GeneralUtility::implodeAttributes([
-                    'rel' => 'canonical',
-                    'href' => $href,
-                ], true) . '/>' . LF;
+                'rel' => 'canonical',
+                'href' => $href,
+            ], true) . '/>' . LF;
             $this->typoScriptFrontendController->additionalHeaderData[] = $canonical;
             return $canonical;
         }

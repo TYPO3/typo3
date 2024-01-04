@@ -138,10 +138,10 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         $view = $this->getFluidTemplateObject('ClearCacheToolbarItemSingle.html');
         $cacheAction = end($this->cacheActions);
         $view->assignMultiple([
-                'link'  => $cacheAction['href'],
-                'title' => $cacheAction['title'],
-                'iconIdentifier'  => $cacheAction['iconIdentifier'],
-            ]);
+            'link'  => $cacheAction['href'],
+            'title' => $cacheAction['title'],
+            'iconIdentifier'  => $cacheAction['iconIdentifier'],
+        ]);
         return $view->render();
     }
 

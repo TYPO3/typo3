@@ -546,10 +546,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $subject->render($configuration);
 
         $standAloneView->setPartialRootPaths([
-                0 => Environment::getPublicPath() . '/main',
-                10 => Environment::getPublicPath() . '/foo',
-                20 => Environment::getPublicPath() . '/bar',
-            ])
+            0 => Environment::getPublicPath() . '/main',
+            10 => Environment::getPublicPath() . '/foo',
+            20 => Environment::getPublicPath() . '/bar',
+        ])
             ->willReturn(new ReturnTypeNode('void'))
             ->shouldHaveBeenCalled();
     }

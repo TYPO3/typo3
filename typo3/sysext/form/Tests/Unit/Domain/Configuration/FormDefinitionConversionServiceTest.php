@@ -101,32 +101,32 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
                 'horst' => [
                     'heinz' => '',
                     'paul' => [[]],
-                     '_orig_heinz' => [
-                         'value' => '',
-                         'hmac' => $data['sabine']['horst']['_orig_heinz']['hmac'],
-                     ],
+                    '_orig_heinz' => [
+                        'value' => '',
+                        'hmac' => $data['sabine']['horst']['_orig_heinz']['hmac'],
+                    ],
                 ],
-                 '_orig_heinz' => [
-                     'value' => '2',
-                     'hmac' => $data['sabine']['_orig_heinz']['hmac'],
-                 ],
+                '_orig_heinz' => [
+                    'value' => '2',
+                    'hmac' => $data['sabine']['_orig_heinz']['hmac'],
+                ],
             ],
-             '_orig_prototypeName' => [
-                 'value' => 'standard',
-                 'hmac' => $data['_orig_prototypeName']['hmac'],
-             ],
-             '_orig_identifier' => [
-                 'value' => 'test',
-                 'hmac' => $data['_orig_identifier']['hmac'],
-             ],
-             '_orig_type' => [
-                 'value' => 'Form',
-                 'hmac' => $data['_orig_type']['hmac'],
-             ],
-             '_orig_heinz' => [
-                 'value' => 1,
-                 'hmac' => $data['_orig_heinz']['hmac'],
-             ],
+            '_orig_prototypeName' => [
+                'value' => 'standard',
+                'hmac' => $data['_orig_prototypeName']['hmac'],
+            ],
+            '_orig_identifier' => [
+                'value' => 'test',
+                'hmac' => $data['_orig_identifier']['hmac'],
+            ],
+            '_orig_type' => [
+                'value' => 'Form',
+                'hmac' => $data['_orig_type']['hmac'],
+            ],
+            '_orig_heinz' => [
+                'value' => 1,
+                'hmac' => $data['_orig_heinz']['hmac'],
+            ],
         ];
 
         self::assertSame($expected, $data);
@@ -163,28 +163,28 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
                 'horst' => [
                     'heinz' => '',
                     'paul' => [[]],
-                     '_orig_heinz' => [
-                         'value' => '',
-                         'hmac' => '12345',
-                     ],
+                    '_orig_heinz' => [
+                        'value' => '',
+                        'hmac' => '12345',
+                    ],
                 ],
-                 '_orig_heinz' => [
-                     'value' => '2',
-                     'hmac' => '12345',
-                 ],
+                '_orig_heinz' => [
+                    'value' => '2',
+                    'hmac' => '12345',
+                ],
             ],
-             '_orig_prototypeName' => [
-                 'value' => 'standard',
-                 'hmac' => '12345',
-             ],
-             '_orig_identifier' => [
-                 'value' => 'test',
-                 'hmac' => '12345',
-             ],
-             '_orig_heinz' => [
-                 'value' => 1,
-                 'hmac' => '12345',
-             ],
+            '_orig_prototypeName' => [
+                'value' => 'standard',
+                'hmac' => '12345',
+            ],
+            '_orig_identifier' => [
+                'value' => 'test',
+                'hmac' => '12345',
+            ],
+            '_orig_heinz' => [
+                'value' => 1,
+                'hmac' => '12345',
+            ],
         ];
 
         $expected = [

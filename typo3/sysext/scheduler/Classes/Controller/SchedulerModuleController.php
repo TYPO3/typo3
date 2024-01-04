@@ -178,9 +178,9 @@ class SchedulerModuleController
             GeneralUtility::getFileAbsFileName('EXT:scheduler/Resources/Private/Templates/Backend/SchedulerModule/Index.html')
         );
         $this->view->assignMultiple([
-           'headline' =>  $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']),
-           'sectionTitle' => $this->getSectionTitle(),
-           'content' => $content,
+            'headline' =>  $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']),
+            'sectionTitle' => $this->getSectionTitle(),
+            'content' => $content,
         ]);
 
         $this->getButtons($request);

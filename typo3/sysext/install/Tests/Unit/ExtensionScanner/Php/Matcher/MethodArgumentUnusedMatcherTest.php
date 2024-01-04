@@ -211,7 +211,7 @@ class MethodArgumentUnusedMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

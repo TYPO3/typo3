@@ -973,7 +973,7 @@ final class MimeTypeCollection
         'video/x-sgi-movie' => ['movie'],
         'video/x-smv' => ['smv'],
         'x-conference/x-cooltalk' => ['ice'],
-   ];
+    ];
 
     /**
      * @return array<string, List<string>>

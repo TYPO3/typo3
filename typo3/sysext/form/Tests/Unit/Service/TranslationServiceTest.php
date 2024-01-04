@@ -922,10 +922,10 @@ class TranslationServiceTest extends UnitTestCase
         $element->getRenderingOptions()->willReturn([
             'translation' => [
                 'arguments' => [
-                        'label' => [
-                            'this',
-                            'that',
-                        ],
+                    'label' => [
+                        'this',
+                        'that',
+                    ],
                 ],
             ],
         ]);
@@ -1008,7 +1008,7 @@ class TranslationServiceTest extends UnitTestCase
         $textElementXlfPaths = [
             10 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf',
             20 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf',
-         ];
+        ];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
         $formElementIdentifier = 'form-element-identifier';

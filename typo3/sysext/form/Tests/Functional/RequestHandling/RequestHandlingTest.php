@@ -100,9 +100,9 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
         // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through ext:form controller' => [
-             'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughExtFormController',
-             'formNamePrefix' => 'tx_form_formframework',
-         ];
+            'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughExtFormController',
+            'formNamePrefix' => 'tx_form_formframework',
+        ];
     }
 
     /**
@@ -234,8 +234,8 @@ class RequestHandlingTest extends AbstractRequestHandlingTest
         // ];
 
         yield 'Multistep form / COA_INT FLUIDTEMPLATE through ext:form controller' => [
-             'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughExtFormController',
-         ];
+            'formIdentifier' => 'FormFromCoaIntFluidtemplateThroughExtFormController',
+        ];
     }
 
     /**

@@ -121,14 +121,14 @@ class OpenDocumentServiceTest extends UnitTestCase
             'identifier9',
         ]);
         $this->backendUser->getModuleData('opendocs::recent')->willReturn([
-                'identifier8' => [ 'data8' ],
-                'identifier7' => [ 'data7' ],
-                'identifier6' => [ 'data6' ],
-                'identifier5' => [ 'data5' ],
-                'identifier4' => [ 'data4' ],
-                'identifier3' => [ 'data3' ],
-                'identifier2' => [ 'data2' ],
-                'identifier1' => [ 'data1' ],
+            'identifier8' => [ 'data8' ],
+            'identifier7' => [ 'data7' ],
+            'identifier6' => [ 'data6' ],
+            'identifier5' => [ 'data5' ],
+            'identifier4' => [ 'data4' ],
+            'identifier3' => [ 'data3' ],
+            'identifier2' => [ 'data2' ],
+            'identifier1' => [ 'data1' ],
         ]);
 
         $expectedOpenDocumentsData = [
@@ -140,14 +140,14 @@ class OpenDocumentServiceTest extends UnitTestCase
         $this->backendUser->pushModuleData('FormEngine', $expectedOpenDocumentsData)->shouldBeCalled();
 
         $expectedRecentDocumentsData = [
-                'identifier9' => [ 'data9' ],
-                'identifier8' => [ 'data8' ],
-                'identifier7' => [ 'data7' ],
-                'identifier6' => [ 'data6' ],
-                'identifier5' => [ 'data5' ],
-                'identifier4' => [ 'data4' ],
-                'identifier3' => [ 'data3' ],
-                'identifier2' => [ 'data2' ],
+            'identifier9' => [ 'data9' ],
+            'identifier8' => [ 'data8' ],
+            'identifier7' => [ 'data7' ],
+            'identifier6' => [ 'data6' ],
+            'identifier5' => [ 'data5' ],
+            'identifier4' => [ 'data4' ],
+            'identifier3' => [ 'data3' ],
+            'identifier2' => [ 'data2' ],
         ];
         $this->backendUser->pushModuleData('opendocs::recent', $expectedRecentDocumentsData)->shouldBeCalled();
 

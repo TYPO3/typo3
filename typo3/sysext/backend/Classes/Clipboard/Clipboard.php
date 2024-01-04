@@ -240,7 +240,7 @@ class Clipboard
     public function printClipboard(string $table = ''): string
     {
         $attributes = [
-          'table' => $table,
+            'table' => $table,
         ];
         GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
         return '<typo3-backend-clipboard-panel ' . GeneralUtility::implodeAttributes($attributes, true) . '></typo3-backend-clipboard-panel>';

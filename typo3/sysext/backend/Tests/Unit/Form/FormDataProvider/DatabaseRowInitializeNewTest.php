@@ -729,7 +729,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'inlineParentUid' => 42,
             'inlineParentConfig' => [
                 'foreign_field' => 'theParentField',
-             ],
+            ],
         ];
         $expected = $input;
         $expected['databaseRow']['theParentField'] = 42;

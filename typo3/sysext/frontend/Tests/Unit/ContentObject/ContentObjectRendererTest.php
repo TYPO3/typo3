@@ -1963,8 +1963,8 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $this->frontendControllerMock
             ->config['config']['contentObjectExceptionHandler.'] = [
-            'errorMessage' => 'Global message for testing',
-        ];
+                'errorMessage' => 'Global message for testing',
+            ];
         $configuration = [
             'exceptionHandler' => '1',
             'exceptionHandler.' => [

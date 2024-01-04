@@ -2780,7 +2780,7 @@ class ArrayUtilityTest extends UnitTestCase
                 'input' => [
                     '10.' => [
                         'wrap' => 'foo',
-                        ],
+                    ],
                     '20.' => [
                         'wrap' => 'bar',
                     ],

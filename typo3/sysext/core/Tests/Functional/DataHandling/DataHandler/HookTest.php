@@ -89,8 +89,8 @@ class HookTest extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 
         $this->assertHookInvocationsCount([
-                'processDatamap_beforeStart',
-                'processDatamap_afterAllOperations',
+            'processDatamap_beforeStart',
+            'processDatamap_afterAllOperations',
         ], 1);
 
         $this->assertHookInvocationsPayload([

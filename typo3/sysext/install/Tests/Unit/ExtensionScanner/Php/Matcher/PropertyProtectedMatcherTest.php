@@ -120,7 +120,7 @@ class PropertyProtectedMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**

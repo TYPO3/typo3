@@ -120,7 +120,7 @@ class PropertyPublicMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
-       ];
+        ];
     }
 
     /**
