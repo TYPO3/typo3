@@ -156,7 +156,6 @@ class TextTableElement extends AbstractFormElement
                 'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
                 'rows' => (string)$rows,
                 'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
-                'hidden' => 'true',
             ],
             $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
         );
@@ -193,10 +192,10 @@ class TextTableElement extends AbstractFormElement
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap" style="overflow: auto">';
         $html[] =       '<div class="form-wizards-wrap">';
-        $html[] =           $this->getTableWizard($attributes['id']);
-        $html[] =           '<div>';
+        $html[] =           '<div hidden>';
         $html[] =               '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
         $html[] =           '</div>';
+        $html[] =           $this->getTableWizard($attributes['id']);
         if (!empty($fieldControlHtml)) {
             $html[] =           '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $html[] =               '<div class="btn-group">';
