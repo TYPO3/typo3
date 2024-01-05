@@ -5214,13 +5214,13 @@ class DataHandler implements LoggerAwareInterface
         ) {
             return;
         }
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        $localizationParentFieldName = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         $liveRecord = BackendUtility::getRecord($table, $uid);
-        if ((int)($liveRecord['sys_language_uid'] ?? 0) !== 0 || (int)($liveRecord['t3ver_wsid'] ?? 0) !== 0) {
+        if ((int)($liveRecord[$languageField] ?? 0) !== 0 || (int)($liveRecord['t3ver_wsid'] ?? 0) !== 0) {
             // Don't do anything if we're not deleting a live record in default language
             return;
         }
-        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
-        $localizationParentFieldName = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder = $queryBuilder->select('*')->from($table)
