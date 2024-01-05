@@ -61,6 +61,11 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Behavior/UpdateValueOnFieldChange.php
 
 		-
+			message: "#^Offset 'onChange' on array\\{label\\: string, config\\: mixed, children\\: mixed, onChange\\: mixed, description\\?\\: mixed\\} in isset\\(\\) always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Container/FlexFormElementContainer.php
+
+		-
 			message: "#^Offset 'isInlineDefaultLang…' on array on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Container/InlineRecordContainer.php
@@ -122,6 +127,11 @@ parameters:
 
 		-
 			message: "#^Cannot assign offset 'currentValue' to string\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
+
+		-
+			message: "#^Variable \\$translations on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
@@ -2948,6 +2958,11 @@ parameters:
 		-
 			message: "#^Offset 0 on array\\{\\} in empty\\(\\) does not exist\\.$#"
 			count: 1
+			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
+
+		-
+			message: "#^Variable \\$var on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 5
 			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
 
 		-
