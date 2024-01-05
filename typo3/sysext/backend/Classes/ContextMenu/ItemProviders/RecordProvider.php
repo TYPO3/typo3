@@ -279,7 +279,7 @@ class RecordProvider extends AbstractProvider
         if ($itemName === 'newWizard' && $this->table === 'tt_content') {
             $urlParameters = [
                 'id' => $this->record['pid'],
-                'sys_language_uid' => $this->record['sys_language_uid'],
+                'sys_language_uid' => $this->record[$this->getLanguageField()] ?? null,
                 'colPos' => $this->record['colPos'],
                 'uid_pid' => -$this->record['uid'],
             ];
@@ -652,5 +652,13 @@ class RecordProvider extends AbstractProvider
     protected function previewLinkCanBeBuild(): bool
     {
         return $this->getViewLink() !== '';
+    }
+
+    /**
+     * Returns the configured language field
+     */
+    protected function getLanguageField(): string
+    {
+        return $GLOBALS['TCA'][$this->table]['ctrl']['languageField'] ?? '';
     }
 }

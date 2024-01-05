@@ -510,7 +510,7 @@ class PageProvider extends RecordProvider
         }
         if ($itemName === 'edit') {
             $attributes = [
-                'data-pages-language-uid' => $this->record['sys_language_uid'],
+                'data-pages-language-uid' => $this->record[$this->getLanguageField()] ?? null,
             ];
         }
         return $attributes;
@@ -518,7 +518,7 @@ class PageProvider extends RecordProvider
 
     protected function getPreviewPid(): int
     {
-        return (int)$this->record['sys_language_uid'] === 0 ? (int)$this->record['uid'] : (int)$this->record['l10n_parent'];
+        return (int)($this->record[$this->getLanguageField()] ?? 0) === 0 ? (int)$this->record['uid'] : (int)$this->record['l10n_parent'];
     }
 
     /**
@@ -527,7 +527,7 @@ class PageProvider extends RecordProvider
     protected function getViewLink(): string
     {
         return (string)PreviewUriBuilder::create($this->getPreviewPid())
-            ->withLanguage((int)($this->record['sys_language_uid'] ?? 0))
+            ->withLanguage((int)($this->record[$this->getLanguageField()] ?? 0))
             ->buildUri();
     }
 
@@ -560,8 +560,7 @@ class PageProvider extends RecordProvider
         if ($this->backendUser->isAdmin()) {
             return true;
         }
-        $languageField = $GLOBALS['TCA'][$this->table]['ctrl']['languageField'] ?? '';
-        if ($languageField !== '' && isset($this->record[$languageField])) {
+        if (($languageField = $this->getLanguageField()) !== '' && isset($this->record[$languageField])) {
             return $this->backendUser->checkLanguageAccess((int)$this->record[$languageField]);
         }
         return true;
