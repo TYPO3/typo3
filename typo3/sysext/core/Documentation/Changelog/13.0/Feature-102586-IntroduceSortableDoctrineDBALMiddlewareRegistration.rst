@@ -17,16 +17,16 @@ using a simple :php:`'identifier' => MyClass::class,'` configuration schema.
 TYPO3 v13 introduces Doctrine DBAL driver middleware registration on a global configuration
 level, allow extension authors to register middleware once but using it for all connections.
 
-:ref:`Global driver middlewares <_feature-102496-1700775381` and :ref:`connection driver middlewares <_feature-100089-1677961107>`
+:ref:`Global driver middlewares <feature-102496-1700775381>` and :ref:`connection driver middlewares <feature-100089-1677961107>`
 are combined for a connection. The simple configuration approach introduced for the
-:ref:`connection driver middlewares <_feature-100089-1677961107>` is no longer suitable
+:ref:`connection driver middlewares <feature-100089-1677961107>` is no longer suitable
 for a easy dependency configuration or disabling a global driver middleware by connection.
 
 The way to register and order PSR-15 middlewares has proven to be a reliable way,
 and understood by extension authors and integrators.
 
 TYPO3 makes the global and connection driver middleware configuration sortable using the
-:ref:`DependencyOrderingService <_feature-67293>` (:php:`\TYPO3\CMS\Core\Service\DependencyOrderingService`)
+:ref:`DependencyOrderingService <feature-67293>` (:php:`\TYPO3\CMS\Core\Service\DependencyOrderingService`)
 similar to the PSR-15 middleware stack. Available structure for a middleware configuration is:
 
 ..  code-block:: php

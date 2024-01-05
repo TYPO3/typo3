@@ -19,7 +19,7 @@ Impact
 ======
 
 Connection driver middleware registration using a simple string will emit a corresponding
-message to the deprecation log since TYPO3 v13, but converting it on-thy fly to a valid
+message to the deprecation log since TYPO3 v13, but converting it on-the-fly to a valid
 array configuration.
 
 
@@ -29,7 +29,7 @@ Affected installations
 TYPO3 instances using 3rd party extension providing custom Doctrine DBAL driver
 middlewares and having them registered for one or more connections will emit a
 deprecation message since TYPO3 v13 and either a exception with TYPO3 v14 or
-an php type error.
+an PHP type error.
 
 Migration
 =========
@@ -51,7 +51,7 @@ needs to be converted to
 
     $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['SecondDatabase']['driverMiddlewares']['driver-middleware-identifier'] = [
       'target' => MyDriverMiddlewareClass::class,
-      'after' [
+      'after' => [
         'typo3/core/custom-platform-driver-middleware',
       ],
     ];
@@ -59,8 +59,8 @@ needs to be converted to
 Registration for Driver Middlewares for TYPO3 v12 and v13
 ---------------------------------------------------------
 
-Extension authors providing dual core support with one extension version can use the
-:php:`Typo3Version` class to provide the configuration suitable for the core version
+Extension authors providing dual Core support with one extension version can use the
+:php:`Typo3Version` class to provide the configuration suitable for the Core version
 and avoiding the deprecation notice:
 
 ..  code-block:: php
@@ -73,7 +73,7 @@ and avoiding the deprecation notice:
             ? MyDriverMiddlewareClass::class
             : [
               'target' => MyDriverMiddlewareClass::class,
-              'after' [
+              'after' => [
                 'typo3/core/custom-platform-driver-middleware',
               ],
             ];
