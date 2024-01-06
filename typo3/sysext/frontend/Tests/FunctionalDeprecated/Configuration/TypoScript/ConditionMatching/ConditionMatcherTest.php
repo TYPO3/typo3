@@ -270,9 +270,21 @@ final class ConditionMatcherTest extends FunctionalTestCase
     public function PIDupinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
         $subject = $this->getConditionMatcher();
+
+        if (!$this->isSymfonySeven()) {
+            // Before Symfony 7+ everything was chaos.
+            self::assertTrue($subject->match('[2 in tree.rootLineParentIds]'));
+            self::assertTrue($subject->match('["2" in tree.rootLineParentIds]'));
+            self::assertTrue($subject->match('[\'2\' in tree.rootLineParentIds]'));
+            return;
+        }
+
+        // Symfony 7 removed deprecated code paths and therefore started using strict `in_array()` check for the
+        // `in` and `notIn` condition in the expression language. Basically this is a breaking change in regard
+        // for TYPO3 users, but as the use of symfony 7 is the choice for project it's reasonable to live with it.
         self::assertTrue($subject->match('[2 in tree.rootLineParentIds]'));
-        self::assertTrue($subject->match('["2" in tree.rootLineParentIds]'));
-        self::assertTrue($subject->match('[\'2\' in tree.rootLineParentIds]'));
+        self::assertFalse($subject->match('["2" in tree.rootLineParentIds]'));
+        self::assertFalse($subject->match('[\'2\' in tree.rootLineParentIds]'));
     }
 
     /**
@@ -622,5 +634,15 @@ final class ConditionMatcherTest extends FunctionalTestCase
             1 => ['uid' => 2, 'pid' => 1],
             2 => ['uid' => 3, 'pid' => 2],
         ];
+    }
+
+    private function isSymfonySeven(): bool
+    {
+        // Symfony 7 dropped the `inArray` method with 7.0.0 from the BinaryNode, so we can use it as a check here for
+        // the version and avoid to deal with composer version information here.
+        return method_exists(
+            \Symfony\Component\ExpressionLanguage\Node\BinaryNode::class,
+            'inArray'
+        ) === false;
     }
 }
