@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -376,17 +377,20 @@ class FileReference implements FileInterface
     }
 
     /**
-     * Deletes only this particular FileReference from the persistence layer
-     * (database table sys_file_reference) but leaves the original file untouched.
-     *
-     * @throws \BadMethodCallException
+     * Deletes only this particular FileReference from the persistence layer (table: sys_file_reference)
+     * and leaves the original file untouched.
      */
     public function delete(): bool
     {
-        // @todo Implement this function. This should only delete the
-        // FileReference (sys_file_reference) record, not the file itself.
-        throw new \BadMethodCallException('Function not implemented FileReference::delete().', 1333754461);
-        //return $this->fileRepository->removeUsageRecord($this);
+        $deletedRows = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_reference')
+            ->delete(
+                'sys_file_reference',
+                [
+                    'uid' => $this->getUid(),
+                ]
+            );
+
+        return $deletedRows === 1;
     }
 
     /**
