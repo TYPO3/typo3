@@ -380,7 +380,7 @@ class PageLayoutController
             if ($shortcutMode || $this->pageinfo['shortcut']) {
                 switch ($shortcutMode) {
                     case PageRepository::SHORTCUT_MODE_NONE:
-                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['shortcut'], true));
+                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage((int)$this->pageinfo['shortcut'], true));
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredOrNotAccessibleInternalLinkMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
@@ -389,7 +389,7 @@ class PageLayoutController
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredFirstSubpageMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['pid'], true));
+                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage((int)$this->pageinfo['pid'], true));
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredParentPageMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:

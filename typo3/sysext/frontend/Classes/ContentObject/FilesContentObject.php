@@ -175,7 +175,7 @@ class FilesContentObject extends AbstractContentObject
             || ($referencesForeignUid !== 0 && $referencesForeignUid !== $currentId)
         ) {
             $element = $pageRepository->getRawRecord($referencesForeignTable, $referencesForeignUid);
-
+            // Do versionOL() again and unset move pointers
             $pageRepository->versionOL($referencesForeignTable, $element, true);
             if (is_array($element)) {
                 $element = $pageRepository->getLanguageOverlay($referencesForeignTable, $element);

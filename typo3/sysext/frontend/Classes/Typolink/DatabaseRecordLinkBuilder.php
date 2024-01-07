@@ -54,13 +54,13 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         }
         $typoScriptConfiguration = $configuration[$configurationKey]['typolink.'];
         $linkHandlerConfiguration = $linkHandlerConfiguration[$configurationKey]['configuration.'];
-        $databaseTable = $linkHandlerConfiguration['table'];
+        $databaseTable = (string)($linkHandlerConfiguration['table'] ?? '');
 
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         if ($configuration[$configurationKey]['forceLink'] ?? false) {
-            $record = $pageRepository->getRawRecord($databaseTable, $linkDetails['uid']);
+            $record = $pageRepository->getRawRecord($databaseTable, (int)$linkDetails['uid']);
         } else {
-            $record = $pageRepository->checkRecord($databaseTable, $linkDetails['uid']);
+            $record = $pageRepository->checkRecord($databaseTable, (int)$linkDetails['uid']);
             $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
             $languageField = (string)($GLOBALS['TCA'][$databaseTable]['ctrl']['languageField'] ?? '');
 
@@ -82,7 +82,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
                 }
             }
         }
-        if ($record === 0) {
+        if ($record === null) {
             throw new UnableToLinkException(
                 'Record not found for "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.',
                 1490989659,

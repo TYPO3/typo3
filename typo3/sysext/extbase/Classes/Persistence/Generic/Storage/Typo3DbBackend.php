@@ -455,7 +455,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
         // First, find out the fields that belong to the "main" selected table which is defined by TCA, and take the first
         // record to find out all possible fields in this database table
-        $fieldsOfMainTable = $pageRepository->getRawRecord($tableName, $rows[0]['uid']);
+        $fieldsOfMainTable = $pageRepository->getRawRecord($tableName, (int)$rows[0]['uid']);
         $overlaidRows = [];
         if (is_array($fieldsOfMainTable)) {
             foreach ($rows as $row) {

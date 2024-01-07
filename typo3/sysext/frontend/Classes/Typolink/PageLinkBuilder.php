@@ -321,7 +321,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Look for overlay Mount Point:
         $mount_info = $pageRepository->getMountPointInfo($page['uid'], $page);
         if (is_array($mount_info) && $mount_info['overlay']) {
-            $page = $pageRepository->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
+            $page = $pageRepository->getPage((int)$mount_info['mount_pid'], $disableGroupAccessCheck);
             if (empty($page)) {
                 throw new UnableToLinkException('Mount point "' . $mount_info['mount_pid'] . '" was not available, so "' . $linkText . '" was not linked.', 1490987337, null, $linkText);
             }
@@ -384,7 +384,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $thePage = $pageRepository->getPage($tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
+        $thePage = $pageRepository->getPage((int)$tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
         $addParams = str_replace(
             [
                 '###RETURN_URL###',
@@ -422,7 +422,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // In the second call of this function $linkDetails['pageuid'] is different (=current page) to uid of Page
         // object and it need to be fetched again.
         if (($page['uid'] ?? false) !== $linkDetails['pageuid']) {
-            $page = $pageRepository->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
+            $page = $pageRepository->getPage((int)$linkDetails['pageuid'], $disableGroupAccessCheck);
         }
 
         if (empty($page) || !is_array($page)) {
@@ -449,7 +449,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Let's fetch the default-language page now
         $languageParentPage = $pageRepository->getPage(
-            $page[$languageParentField],
+            (int)$page[$languageParentField],
             $disableGroupAccessCheck
         );
         if (empty($languageParentPage)) {

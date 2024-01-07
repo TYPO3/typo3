@@ -65,7 +65,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     {
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->willReturn(null);
+        $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
         $result = $this->subject->_call('sectionIndex', 'field');
@@ -79,7 +79,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     {
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->with(10)->willReturn(null);
+        $pageRepository->expects(self::once())->method('getPage')->with(10)->willReturn([]);
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
@@ -96,7 +96,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $this->expectExceptionCode(1337334849);
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
+        $pageRepository->expects(self::once())->method('getPage')->willReturn(['uid' => 10]);
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
@@ -255,7 +255,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_set('mconf', ['sectionIndex.' => $configuration]);
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
+        $pageRepository->expects(self::once())->method('getPage')->willReturn(['uid' => 12]);
         $this->subject->_set('sys_page', $pageRepository);
 
         $queryConfiguration = [

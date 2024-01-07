@@ -421,7 +421,7 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         if ($pageDoktype === PageRepository::DOKTYPE_MOUNTPOINT && $pageRecord['mount_pid_ol']) {
             $originalMountPointPageRecord = $pageRecord;
             $pageInformation->setOriginalMountPointPageRecord($pageRecord);
-            $pageRecord = $pageRepository->getPage($originalMountPointPageRecord['mount_pid']);
+            $pageRecord = $pageRepository->getPage((int)$originalMountPointPageRecord['mount_pid']);
             if (empty($pageRecord)) {
                 $message = 'This page (ID ' . $originalMountPointPageRecord['uid'] . ') is of type "Mount point" and '
                     . 'mounts a page which is not accessible (ID ' . $originalMountPointPageRecord['mount_pid'] . ').';

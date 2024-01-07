@@ -813,7 +813,7 @@ abstract class AbstractMenuContentObject
             $kw = (string)$this->parent_cObj->stdWrapValue('setKeywords', $this->conf['special.'] ?? []);
         } else {
             // The page record of the 'value'.
-            $value_rec = $this->sys_page->getPage($specialValue);
+            $value_rec = $this->sys_page->getPage((int)$specialValue);
             $kfieldSrc = ($this->conf['special.']['keywordsField.']['sourceField'] ?? false) ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
             // keywords.
             $kw = trim($this->parent_cObj->keywords($value_rec[$kfieldSrc] ?? ''));
@@ -942,7 +942,7 @@ abstract class AbstractMenuContentObject
             // Traverse rootline:
             if ($k_rl >= $beginKey && $k_rl <= $endKey) {
                 $temp_key = $k_rl;
-                $menuItems[$temp_key] = $this->sys_page->getPage($v_rl['uid']);
+                $menuItems[$temp_key] = $this->sys_page->getPage((int)$v_rl['uid']);
                 if (!empty($menuItems[$temp_key])) {
                     // If there are no specific target for the page, put the level specific target on.
                     if (!$menuItems[$temp_key]['target']) {
@@ -985,16 +985,16 @@ abstract class AbstractMenuContentObject
         if ($specialValue != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
             $recArr = [];
             // The page record of the 'value'.
-            $value_rec = $this->sys_page->getPage($specialValue, $this->disableGroupAccessCheck);
+            $value_rec = $this->sys_page->getPage((int)$specialValue, $this->disableGroupAccessCheck);
             // 'up' page cannot be outside rootline
             if ($value_rec['pid']) {
                 // The page record of 'up'.
-                $recArr['up'] = $this->sys_page->getPage($value_rec['pid'], $this->disableGroupAccessCheck);
+                $recArr['up'] = $this->sys_page->getPage((int)$value_rec['pid'], $this->disableGroupAccessCheck);
             }
             // If the 'up' item was NOT level 0 in rootline...
             if (($recArr['up']['pid'] ?? 0) && $value_rec['pid'] != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
                 // The page record of "index".
-                $recArr['index'] = $this->sys_page->getPage($recArr['up']['pid']);
+                $recArr['index'] = $this->sys_page->getPage((int)$recArr['up']['pid']);
             }
             // check if certain pages should be excluded
             $additionalWhere .= ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
@@ -1103,7 +1103,6 @@ abstract class AbstractMenuContentObject
         if (in_array((int)($data['doktype'] ?? 0), $this->excludedDoktypes, true)) {
             return false;
         }
-        $languageId = $this->getCurrentLanguageAspect()->getId();
         // PageID should not be banned (check for default language and translated IDs)
         if (($data['_LOCALIZED_UID'] ?? 0) > 0 && in_array((int)$data['_LOCALIZED_UID'], $banUidArray, true)) {
             return false;
@@ -1119,11 +1118,12 @@ abstract class AbstractMenuContentObject
         if (!$this->sys_page->isPageSuitableForLanguage($data, $this->getCurrentLanguageAspect())) {
             return false;
         }
+        $languageAspect = $this->getCurrentLanguageAspect();
         // Checking if the link should point to the default language so links to non-accessible pages will not happen
-        if ($languageId > 0 && !empty($this->conf['protectLvar'])) {
+        if ($languageAspect->getId() > 0 && !empty($this->conf['protectLvar'])) {
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['l18n_cfg'] ?? 0));
             if ($this->conf['protectLvar'] === 'all' || $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
-                $olRec = $this->sys_page->getPageOverlay($data['uid'], $languageId);
+                $olRec = $this->sys_page->getPageOverlay((int)($data['uid'] ?? 0), $languageAspect);
                 if (empty($olRec)) {
                     // If no page translation record then page can NOT be accessed in
                     // the language pointed to, therefore we protect the link by linking to the default language
@@ -1675,7 +1675,7 @@ abstract class AbstractMenuContentObject
     {
         $pid = (int)($pid ?: $this->id);
         $basePageRow = $this->sys_page->getPage($pid);
-        if (!is_array($basePageRow)) {
+        if ($basePageRow === []) {
             return [];
         }
         $useColPos = (int)$this->parent_cObj->stdWrapValue('useColPos', $this->mconf['sectionIndex.'] ?? [], 0);

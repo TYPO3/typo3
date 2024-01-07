@@ -483,9 +483,6 @@ class ResourceFactory implements SingletonInterface
             && ApplicationType::fromRequest($request)->isFrontend()
         ) {
             $fileReferenceData = GeneralUtility::makeInstance(PageRepository::class)->checkRecord('sys_file_reference', $uid);
-            if (!is_array($fileReferenceData)) {
-                $fileReferenceData = null;
-            }
         } else {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));

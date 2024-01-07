@@ -250,7 +250,7 @@ class PageSlugCandidateProvider
             if ($mountPageInformation) {
                 // Add the MPvar to the row, so it can be used later-on in the PageRouter / PageArguments
                 $row['MPvar'] = $mountPageInformation['MPvar'];
-                $mountedPage = $pageRepository->getPage_noCheck($mountPageInformation['mount_pid_rec']['uid']);
+                $mountedPage = $pageRepository->getPage_noCheck((int)$mountPageInformation['mount_pid_rec']['uid']);
                 // Ensure to fetch the slug in the translated page
                 $mountedPage = $pageRepository->getLanguageOverlay('pages', $mountedPage, new LanguageAspect($languageId, $languageId));
                 // Mount wasn't connected properly, so it is skipped

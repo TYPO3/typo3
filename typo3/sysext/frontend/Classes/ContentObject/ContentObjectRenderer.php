@@ -894,7 +894,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $pidList = [];
         if (is_array($listArr) && !empty($listArr)) {
             foreach ($listArr as $uid) {
-                $page = $pageRepository->getPage($uid);
+                $page = $pageRepository->getPage((int)$uid);
                 if (!$page['is_siteroot']) {
                     $pidList[] = $page['pid'];
                 }
@@ -4045,7 +4045,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             break;
                         }
                         $pageRepository = $this->getPageRepository();
-                        $dbRecord = $pageRepository->getRawRecord($selectParts[0], $selectParts[1]);
+                        $dbRecord = $pageRepository->getRawRecord($selectParts[0], (int)$selectParts[1]);
                         if (is_array($dbRecord) && isset($selectParts[2])) {
                             $retVal = $dbRecord[$selectParts[2]] ?? '';
                         }
