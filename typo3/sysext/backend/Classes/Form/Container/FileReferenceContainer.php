@@ -509,20 +509,19 @@ class FileReferenceContainer extends AbstractContainer
         }
 
         $title = '
-            <dt class="col-1">
+            <dt class="col">
                 ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.' . $labelField)) . '
             </dt>
             <dd class="col text-truncate">
                 ' . $value . '
-            </dd>
-            <div class="w-100"></div>';
+            </dd>';
 
         // In debug mode, add the table name to the record title
         if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
             $title .= '<div class="col"><code class="m-0">[' . self::FILE_REFERENCE_TABLE . ']</code></div>';
         }
 
-        return '<dl class="row row-cols-auto">' . $title . '</dl>';
+        return '<dl class="row row-cols-auto gx-2">' . $title . '</dl>';
     }
 
     protected function getTitleForRecord(array $databaseRow, array $fileRecord): string
