@@ -82,6 +82,27 @@ class MainController
     {
         $resources = ResourceUtility::getResources(['nonce' => $this->requestId->nonce]);
 
+        $backupRequest = null;
+        $frontendTypoScript = $request->getAttribute('frontend.typoscript');
+        if (!$frontendTypoScript->hasSetup()) {
+            // @todo: This is a hack: The admin panel is the only extension that starts
+            //        a Fluid view in 'fully cached' scenarios. f:translate() now triggers
+            //        the extbase configuration manager in FE, which fetches TS setup from
+            //        the Request attribute, which is *usally* always available, *except*
+            //        in fully cached scenarios.
+            //        See https://review.typo3.org/c/Packages/TYPO3.CMS/+/80732
+            //        We still want extbase to crash if it tries to fetch TS setup when it
+            //        is not set, so we work around this in the admin panel here.
+            //        This should later be resolved by avoiding the dependency to extbase
+            //        LocalizationUtility again, when core localization services can do
+            //        similar things in FE as well.
+            $frontendTypoScript = clone $frontendTypoScript;
+            $frontendTypoScript->setSetupArray([]);
+            $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
+            $backupRequest = $GLOBALS['TYPO3_REQUEST'];
+            $GLOBALS['TYPO3_REQUEST'] = $request;
+        }
+
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Main.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
@@ -133,7 +154,11 @@ class MainController
                 'backendUrl' => $backendUrl,
             ]);
         }
-        return $view->render();
+        $result = $view->render();
+        if ($backupRequest) {
+            $GLOBALS['TYPO3_REQUEST'] = $backupRequest;
+        }
+        return $result;
     }
 
     /**
