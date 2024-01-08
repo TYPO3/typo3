@@ -70,9 +70,11 @@ class DoughnutChartWidget implements WidgetInterface, RequestAwareWidgetInterfac
                 'type' => 'doughnut',
                 'options' => [
                     'maintainAspectRatio' => false,
-                    'legend' => [
-                        'display' => true,
-                        'position' => 'bottom',
+                    'plugins' => [
+                        'legend' => [
+                            'display' => true,
+                            'position' => 'bottom',
+                        ],
                     ],
                     'cutoutPercentage' => 60,
                 ],

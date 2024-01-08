@@ -70,8 +70,10 @@ class BarChartWidget implements WidgetInterface, RequestAwareWidgetInterface, Ev
                 'type' => 'bar',
                 'options' => [
                     'maintainAspectRatio' => false,
-                    'legend' => [
-                        'display' => false,
+                    'plugins' => [
+                        'legend' => [
+                            'display' => false,
+                        ],
                     ],
                     'scales' => [
                         'y' => [
