@@ -73,11 +73,10 @@ Custom driver middleware example using the interface
     namespace MyVendor\MyExt\DoctrineDBAL;
 
     use Doctrine\DBAL\Driver as DoctrineDriverInterface;
-    use Doctrine\DBAL\Driver\Middleware as DoctrineDriverMiddlewareInterface;
     use MyVendor\MyExt\DoctrineDBAL\CustomDriver as MyCustomDriver;
     use TYPO3\CMS\Core\Database\Middleware\UsableForConnectionInterface;
 
-    final class CustomMiddleware implements DoctrineDriverMiddlewareInterface
+    final class CustomMiddleware implements UsableForConnectionInterface
     {
       public function wrap(DoctrineDriverInterface $driver): DoctrineDriverInterface
       {
