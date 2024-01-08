@@ -489,11 +489,11 @@ if ! type ${CONTAINER_BIN} >/dev/null 2>&1; then
     exit 1
 fi
 
-IMAGE_APACHE="ghcr.io/typo3/core-testing-apache24:1.1"
+IMAGE_APACHE="ghcr.io/typo3/core-testing-apache24:1.2"
 IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):$(getPhpImageVersion $PHP_VERSION)"
 
-IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs18:1.0"
-IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs18-chrome:1.0"
+IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs18:1.1"
+IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs18-chrome:1.1"
 IMAGE_ALPINE="docker.io/alpine:3.8"
 IMAGE_SELENIUM="docker.io/selenium/standalone-chrome:4.11.0-20230801"
 IMAGE_REDIS="docker.io/redis:4-alpine"
