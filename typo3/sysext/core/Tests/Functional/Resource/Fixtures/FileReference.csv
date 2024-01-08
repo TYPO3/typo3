@@ -1,6 +1,0 @@
-"sys_file",,,,,,,,,,
-,"uid","pid","storage","identifier","folder_hash","name","identifier_hash","extension","mime_type","sha1"
-,1,0,1,"/bar/bla/foo.txt","d839c094d3294deb5b61cf7e0fe4f1cddaa96579","foo","84e70e8b11db88cea944e4d7be107092ab148b72","txt","text/plain","6e237d7c3e98387f924b81aada9b8d1f43f5eb5b"
-"sys_file_reference",,,,,,,
-,"uid","pid","crdate","uid_local","uid_foreign","tablenames",
-,1,0,1704650830,1,1,"tt_content",
