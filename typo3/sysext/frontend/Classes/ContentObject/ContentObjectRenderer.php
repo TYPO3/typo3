@@ -5167,9 +5167,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $constraints[] = $languageConstraint;
         }
 
-        // Enablefields
+        // default constraints from TCA
         $pageRepository = $this->getPageRepository();
-        $constraints[] = QueryHelper::stripLogicalOperatorPrefix($pageRepository->enableFields($table, -1, $enableFieldsIgnore));
+        $constraints = array_merge(
+            $constraints,
+            array_values($pageRepository->getDefaultConstraints($table, $enableFieldsIgnore))
+        );
 
         // MAKE WHERE:
         if ($constraints !== []) {

@@ -6276,4 +6276,12 @@ return [
             'Breaking-102715-FrontendDetermineIdRelatedEventsChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->enableFields' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-102793-PageRepositoryEnableFields.rst',
+        ],
+    ],
+
 ];

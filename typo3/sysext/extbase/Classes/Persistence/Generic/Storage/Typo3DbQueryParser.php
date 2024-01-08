@@ -682,14 +682,14 @@ class Typo3DbQueryParser
             if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                 && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
             ) {
-                $statement .= $this->getFrontendConstraintStatement($tableName, $ignoreEnableFields, $enableFieldsToBeIgnored, $includeDeleted);
+                $statement .= $this->getFrontendConstraintStatement($tableName, $tableAlias, $ignoreEnableFields, $enableFieldsToBeIgnored, $includeDeleted);
             } else {
                 // applicationType backend
                 $statement .= $this->getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted);
-            }
-            if (!empty($statement)) {
-                $statement = $this->replaceTableNameWithAlias($statement, $tableName, $tableAlias);
-                $statement = strtolower(substr($statement, 1, 3)) === 'and' ? substr($statement, 5) : $statement;
+                if (!empty($statement)) {
+                    $statement = $this->replaceTableNameWithAlias($statement, $tableName, $tableAlias);
+                    $statement = strtolower(substr($statement, 1, 3)) === 'and' ? substr($statement, 5) : $statement;
+                }
             }
         }
         return $statement;
@@ -698,25 +698,28 @@ class Typo3DbQueryParser
     /**
      * Returns constraint statement for frontend context
      *
-     * @param string $tableName
      * @param bool $ignoreEnableFields A flag indicating whether the enable fields should be ignored
      * @param array $enableFieldsToBeIgnored If $ignoreEnableFields is true, this array specifies enable fields to be ignored. If it is NULL or an empty array (default) all enable fields are ignored.
      * @param bool $includeDeleted A flag indicating whether deleted records should be included
-     * @return string
      * @throws InconsistentQuerySettingsException
      */
-    protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored, $includeDeleted)
+    protected function getFrontendConstraintStatement(string $tableName, string $tableAlias, bool $ignoreEnableFields, array $enableFieldsToBeIgnored, bool $includeDeleted): string
     {
         $statement = '';
         if ($ignoreEnableFields && !$includeDeleted) {
             if (!empty($enableFieldsToBeIgnored)) {
-                // array_combine() is necessary because of the way \TYPO3\CMS\Core\Domain\Repository\PageRepository::enableFields() is implemented
-                $statement .= $this->getPageRepository()->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
+                $constraints = $this->getPageRepository()->getDefaultConstraints($tableName, $enableFieldsToBeIgnored, $tableAlias);
+                if ($constraints !== []) {
+                    $statement = implode(' AND ', $constraints);
+                }
             } elseif (!empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-                $statement .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
+                $statement = $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
             }
         } elseif (!$ignoreEnableFields && !$includeDeleted) {
-            $statement .= $this->getPageRepository()->enableFields($tableName);
+            $constraints = $this->getPageRepository()->getDefaultConstraints($tableName, [], $tableAlias);
+            if ($constraints !== []) {
+                $statement = implode(' AND ', $constraints);
+            }
         } elseif (!$ignoreEnableFields) {
             throw new InconsistentQuerySettingsException('Query setting "ignoreEnableFields=FALSE" can not be used together with "includeDeleted=TRUE" in frontend context.', 1460975922);
         }

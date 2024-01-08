@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -44,6 +45,7 @@ use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Event\AfterRecordLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\BeforePageLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent;
+use TYPO3\CMS\Core\Domain\Event\ModifyDefaultConstraintsForDatabaseQueryEvent;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -65,10 +67,9 @@ class PageRepository implements LoggerAwareInterface
 
     /**
      * This is not the final clauses. There will normally be conditions for the
-     * hidden, starttime and endtime fields as well. You MUST initialize the object
-     * by the init() function
+     * hidden, starttime and endtime fields as well. This is initialized in the init() function.
      */
-    protected string $where_hid_del = ' AND pages.deleted=0';
+    protected string $where_hid_del = 'pages.deleted=0';
 
     /**
      * Clause for fe_group access
@@ -129,7 +130,7 @@ class PageRepository implements LoggerAwareInterface
     public function __construct(Context $context = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->versioningWorkspaceId = $this->context->getPropertyFromAspect('workspace', 'id');
+        $this->versioningWorkspaceId = (int)$this->context->getPropertyFromAspect('workspace', 'id');
         // Only set up the where clauses for pages when TCA is set. This usually happens only in tests.
         // Once all tests are written very well, this can be removed again
         if (isset($GLOBALS['TCA']['pages'])) {
@@ -148,11 +149,9 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function init(): void
     {
-        // If $show_hidden is TRUE, the hidden-field is ignored!! Normally this should be FALSE. Is used for previewing.
-        $show_hidden = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages');
         // As PageRepository may be used multiple times during the frontend request, and may
         // actually be used before the usergroups have been resolved, self::getMultipleGroupsWhereClause()
-        // and the hook in ->enableFields() need to be reconsidered when the usergroup state changes.
+        // and the Event in ->enableFields() need to be reconsidered when the usergroup state changes.
         // When something changes in the context, a second runtime cache entry is built.
         // However, the PageRepository is generally in use for generating e.g. hundreds of links, so they would all use
         // the same cache identifier.
@@ -162,8 +161,11 @@ class PageRepository implements LoggerAwareInterface
         // We need to respect the date aspect as we might have subrequests with a different time (e.g. backend preview links)
         $dateTimeIdentifier = $this->context->getAspect('date')->get('timestamp');
 
+        // If TRUE, the hidden-field is ignored. Normally this should be FALSE. Is used for previewing.
+        $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages');
+
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($show_hidden ? 'ShowHidden' : '') . '_' . (int)$this->versioningWorkspaceId . '_' . $frontendUserIdentifier . '_' . $dateTimeIdentifier;
+        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($includeHiddenPages ? 'ShowHidden' : '') . '_' . $this->versioningWorkspaceId . '_' . $frontendUserIdentifier . '_' . $dateTimeIdentifier;
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry) {
             $this->where_hid_del = $cacheEntry;
@@ -176,22 +178,19 @@ class PageRepository implements LoggerAwareInterface
                 // de-selecting hidden pages - we need versionOL() to unset them only
                 // if the overlay record instructs us to.
                 // Clear where_hid_del and restrict to live and current workspaces
-                $this->where_hid_del = ' AND ' . $expressionBuilder->and(
+                $this->where_hid_del = (string)$expressionBuilder->and(
                     $expressionBuilder->eq('pages.deleted', 0),
                     $expressionBuilder->or(
                         $expressionBuilder->eq('pages.t3ver_wsid', 0),
-                        $expressionBuilder->eq('pages.t3ver_wsid', (int)$this->versioningWorkspaceId)
+                        $expressionBuilder->eq('pages.t3ver_wsid', $this->versioningWorkspaceId)
                     )
                 );
             } else {
                 // add starttime / endtime, and check for hidden/deleted
                 // Filter out new/deleted place-holder pages in case we are NOT in a
                 // versioning preview (that means we are online!)
-                $this->where_hid_del = ' AND ' . (string)$expressionBuilder->and(
-                    QueryHelper::stripLogicalOperatorPrefix(
-                        $this->enableFields('pages', (int)$show_hidden, ['fe_group' => true])
-                    )
-                );
+                $constraints = $this->getDefaultConstraints('pages', ['fe_group' => true]);
+                $this->where_hid_del = $constraints === [] ? '' : (string)$expressionBuilder->and(...$constraints);
             }
             $cache->set($cacheIdentifier, $this->where_hid_del);
         }
@@ -222,13 +221,13 @@ class PageRepository implements LoggerAwareInterface
      * Language overlay and versioning overlay are applied. Mount Point
      * handling is not done, an overlaid Mount Point is not replaced.
      *
-     * The result is conditioned by the public properties where_groupAccess
-     * and where_hid_del that are preset by the init() method.
+     * The result is conditioned by the properties $this->where_groupAccess
+     * and $this->where_hid_del that are preset by the init() method.
      *
      * @see PageRepository::where_groupAccess
      * @see PageRepository::where_hid_del
      *
-     * By default the usergroup access check is enabled. Use the second method argument
+     * By default, the usergroup access check is enabled. Use the second method argument
      * to disable the usergroup access check.
      *
      * The given UID can be preprocessed by registering a hook class that is
@@ -274,7 +273,7 @@ class PageRepository implements LoggerAwareInterface
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, Connection::PARAM_INT)),
-                QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del)
+                $this->where_hid_del
             );
 
         $originalWhereGroupAccess = '';
@@ -912,7 +911,7 @@ class PageRepository implements LoggerAwareInterface
                     $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
-                QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
+                $this->where_hid_del,
                 QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
             );
@@ -1042,7 +1041,7 @@ class PageRepository implements LoggerAwareInterface
                         $searchField,
                         $queryBuilder->createNamedParameter($searchUid, Connection::PARAM_INT)
                     ),
-                    QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
+                    $this->where_hid_del,
                     QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
                     QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
                 )
@@ -1134,7 +1133,7 @@ class PageRepository implements LoggerAwareInterface
                     throw new ShortcutTargetPageNotFoundException($message, 1301648404);
                 }
         }
-        // Check if short cut page was a shortcut itself, if so look up recursively:
+        // Check if shortcut page was a shortcut itself, if so look up recursively
         if ((int)$page['doktype'] === self::DOKTYPE_SHORTCUT) {
             if (!in_array($page['uid'], $pageLog) && $iteration > 0) {
                 $pageLog[] = $page['uid'];
@@ -1215,7 +1214,7 @@ class PageRepository implements LoggerAwareInterface
      * record.
      *
      * The optional page record must contain at least uid, pid, doktype,
-     * mount_pid,mount_pid_ol. If it is not supplied it will be looked up by
+     * mount_pid, mount_pid_ol. If it is not supplied it will be looked up by
      * the system at additional costs for the lookup.
      *
      * Returns FALSE if no mount point was found, "-1" if there should have been
@@ -1445,7 +1444,7 @@ class PageRepository implements LoggerAwareInterface
      ********************************/
 
     /**
-     * Returns a part of a WHERE clause which will filter out records with start/end
+     * Returns a WHERE clause which will filter out records with start/end
      * times or hidden/fe_groups fields set to values that should de-select them
      * according to the current time, preview settings or user login. Definitely a
      * frontend function.
@@ -1458,76 +1457,127 @@ class PageRepository implements LoggerAwareInterface
      * @param array $ignore_array Array you can pass where keys can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
      * @throws \InvalidArgumentException
      * @return string The clause starting like " AND ...=... AND ...=...
+     * @deprecated will be removed in TYPO3 v14.0. Use getDefaultConstraints() instead.
      */
     public function enableFields(string $table, int $show_hidden = -1, array $ignore_array = []): string
     {
-        $showInaccessible = $this->context->getPropertyFromAspect('visibility', 'includeScheduledRecords', false);
-
+        trigger_error('PageRepository->enableFields() will be removed in TYPO3 v14.0. Use ->getDefaultConstraints() instead.', E_USER_DEPRECATED);
         if ($show_hidden === -1) {
             // If show_hidden was not set from outside, use the current context
-            $show_hidden = (int)$this->context->getPropertyFromAspect('visibility', $table === 'pages' ? 'includeHiddenPages' : 'includeHiddenContent', false);
+            $ignore_array['disabled'] = (bool)$this->context->getPropertyFromAspect('visibility', $table === 'pages' ? 'includeHiddenPages' : 'includeHiddenContent', false);
+        } else {
+            $ignore_array['disabled'] = (bool)$show_hidden;
         }
-        // If show_hidden was not changed during the previous evaluation, do it here.
+        $constraints = $this->getDefaultConstraints($table, $ignore_array);
+        if ($constraints === []) {
+            return '';
+        }
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($table)
+            ->expr();
+        return ' AND ' . $expressionBuilder->and(...$constraints);
+    }
+
+    /**
+     * Returns a DB query constraints (part of the WHERE clause) which will
+     * filter out records with start/end times or hidden/fe_groups fields set
+     * to values that should de-select them according to the current time, preview
+     * settings or user login.
+     *
+     * Is using the $GLOBALS['TCA'] arrays "ctrl" part where the key "enablecolumns"
+     * determines for each table which of these features applies to that table.
+     *
+     * @param string $table Table name found in the $GLOBALS['TCA'] array
+     * @param array $enableFieldsToIgnore Array where values (or keys) can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
+     * @return CompositeExpression[] Constraints built up by the enableField controls
+     */
+    public function getDefaultConstraints(string $table, array $enableFieldsToIgnore = [], string $tableAlias = null): array
+    {
+        if (array_is_list($enableFieldsToIgnore)) {
+            $enableFieldsToIgnore = array_flip($enableFieldsToIgnore);
+            foreach ($enableFieldsToIgnore as $key => $value) {
+                $enableFieldsToIgnore[$key] = true;
+            }
+        }
         $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? null;
         if (!is_array($ctrl)) {
-            throw new \InvalidArgumentException('There is no entry in the $TCA array for the table "' . $table . '". This means that the function enableFields() is called with an invalid table name as argument.', 1283790586);
+            return [];
+        }
+        $tableAlias ??= $table;
+
+        // If set, any hidden-fields in records are ignored, falling back to the default property from the visibility aspect
+        if (!isset($enableFieldsToIgnore['disabled'])) {
+            $enableFieldsToIgnore['disabled'] = (bool)$this->context->getPropertyFromAspect('visibility', $table === 'pages' ? 'includeHiddenPages' : 'includeHiddenContent', false);
+        }
+        $showScheduledRecords = $this->context->getPropertyFromAspect('visibility', 'includeScheduledRecords', false);
+        if (!isset($enableFieldsToIgnore['starttime'])) {
+            $enableFieldsToIgnore['starttime'] = $showScheduledRecords;
+        }
+        if (!isset($enableFieldsToIgnore['endtime'])) {
+            $enableFieldsToIgnore['endtime'] = $showScheduledRecords;
         }
 
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table)
             ->expr();
+
         $constraints = [];
-        // Delete field check:
+        // Delete field check
         if ($ctrl['delete'] ?? false) {
-            $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
+            $constraints['deleted'] = $expressionBuilder->eq($tableAlias . '.' . $ctrl['delete'], 0);
         }
+
         if ($this->hasTableWorkspaceSupport($table)) {
-            // this should work exactly as WorkspaceRestriction and WorkspaceRestriction should be used instead
+            // This should work exactly as WorkspaceRestriction and WorkspaceRestriction should be used instead
             if ($this->versioningWorkspaceId === 0) {
                 // Filter out placeholder records (new/deleted items)
                 // in case we are NOT in a version preview (that means we are online!)
-                $constraints[] = $expressionBuilder->lte(
-                    $table . '.t3ver_state',
-                    VersionState::DEFAULT_STATE->value
+                $constraints['workspaces'] = $expressionBuilder->and(
+                    $expressionBuilder->lte(
+                        $tableAlias . '.t3ver_state',
+                        VersionState::DEFAULT_STATE->value
+                    ),
+                    $expressionBuilder->eq($tableAlias . '.t3ver_wsid', 0)
                 );
-                $constraints[] = $expressionBuilder->eq($table . '.t3ver_wsid', 0);
             } else {
                 // show only records of live and of the current workspace
                 // in case we are in a versioning preview
-                $constraints[] = $expressionBuilder->or(
-                    $expressionBuilder->eq($table . '.t3ver_wsid', 0),
-                    $expressionBuilder->eq($table . '.t3ver_wsid', (int)$this->versioningWorkspaceId)
+                $constraints['workspaces'] = $expressionBuilder->or(
+                    $expressionBuilder->eq($tableAlias . '.t3ver_wsid', 0),
+                    $expressionBuilder->eq($tableAlias . '.t3ver_wsid', $this->versioningWorkspaceId)
                 );
             }
 
             // Filter out versioned records
-            if (empty($ignore_array['pid'])) {
+            if (empty($enableFieldsToIgnore['pid'])) {
                 // Always filter out versioned records that have an "offline" record
-                $constraints[] = $expressionBuilder->or(
-                    $expressionBuilder->eq($table . '.t3ver_oid', 0),
-                    $expressionBuilder->eq($table . '.t3ver_state', VersionState::MOVE_POINTER->value)
+                $constraints['pid'] = $expressionBuilder->or(
+                    $expressionBuilder->eq($tableAlias . '.t3ver_oid', 0),
+                    $expressionBuilder->eq($tableAlias . '.t3ver_state', VersionState::MOVE_POINTER->value)
                 );
             }
         }
 
-        // Enable fields:
+        // Enable fields
         if (is_array($ctrl['enablecolumns'] ?? false)) {
             // In case of versioning-preview, enableFields are ignored (checked in versionOL())
             if ($this->versioningWorkspaceId === 0 || !$this->hasTableWorkspaceSupport($table)) {
-                if (($ctrl['enablecolumns']['disabled'] ?? false) && !$show_hidden && !($ignore_array['disabled'] ?? false)) {
-                    $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
-                    $constraints[] = $expressionBuilder->eq($field, 0);
+
+                if (($ctrl['enablecolumns']['disabled'] ?? false) && !$enableFieldsToIgnore['disabled']) {
+                    $constraints['disabled'] = $expressionBuilder->eq(
+                        $tableAlias . '.' . $ctrl['enablecolumns']['disabled'],
+                        0
+                    );
                 }
-                if (($ctrl['enablecolumns']['starttime'] ?? false) && !$showInaccessible && !($ignore_array['starttime'] ?? false)) {
-                    $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
-                    $constraints[] = $expressionBuilder->lte(
-                        $field,
+                if (($ctrl['enablecolumns']['starttime'] ?? false) && !($enableFieldsToIgnore['starttime'] ?? false)) {
+                    $constraints['starttime'] = $expressionBuilder->lte(
+                        $tableAlias . '.' . $ctrl['enablecolumns']['starttime'],
                         $this->context->getPropertyFromAspect('date', 'accessTime', 0)
                     );
                 }
-                if (($ctrl['enablecolumns']['endtime'] ?? false) && !$showInaccessible && !($ignore_array['endtime'] ?? false)) {
-                    $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
-                    $constraints[] = $expressionBuilder->or(
+                if (($ctrl['enablecolumns']['endtime'] ?? false) && !($enableFieldsToIgnore['endtime'] ?? false)) {
+                    $field = $tableAlias . '.' . $ctrl['enablecolumns']['endtime'];
+                    $constraints['endtime'] = $expressionBuilder->or(
                         $expressionBuilder->eq($field, 0),
                         $expressionBuilder->gt(
                             $field,
@@ -1535,30 +1585,19 @@ class PageRepository implements LoggerAwareInterface
                         )
                     );
                 }
-                if (($ctrl['enablecolumns']['fe_group'] ?? false) && !($ignore_array['fe_group'] ?? false)) {
-                    $field = $table . '.' . $ctrl['enablecolumns']['fe_group'];
-                    $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
+                if (($ctrl['enablecolumns']['fe_group'] ?? false) && !($enableFieldsToIgnore['fe_group'] ?? false)) {
+                    $field = $tableAlias . '.' . $ctrl['enablecolumns']['fe_group'];
+                    $constraints['fe_group'] = QueryHelper::stripLogicalOperatorPrefix(
                         $this->getMultipleGroupsWhereClause($field, $table)
-                    );
-                }
-                // Call hook functions for additional enableColumns
-                // It is used by the extension ingmar_accessctrl which enables assigning more
-                // than one usergroup to content and page records
-                $_params = [
-                    'table' => $table,
-                    'show_hidden' => $show_hidden,
-                    'showInaccessible' => $showInaccessible,
-                    'ignore_array' => $ignore_array,
-                    'ctrl' => $ctrl,
-                ];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] ?? [] as $_funcRef) {
-                    $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
-                        GeneralUtility::callUserFunction($_funcRef, $_params, $this)
                     );
                 }
             }
         }
-        return empty($constraints) ? '' : ' AND ' . $expressionBuilder->and(...$constraints);
+
+        // Call a PSR-14 Event for additional constraints
+        $event = new ModifyDefaultConstraintsForDatabaseQueryEvent($table, $tableAlias, $expressionBuilder, $constraints, $enableFieldsToIgnore, $this->context);
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
+        return $event->getConstraints();
     }
 
     /**
@@ -1568,7 +1607,7 @@ class PageRepository implements LoggerAwareInterface
      * @param string $field Field with group list
      * @param string $table Table name
      * @return string AND sql-clause
-     * @see enableFields()
+     * @see getDefaultConstraints()
      */
     public function getMultipleGroupsWhereClause(string $field, string $table): string
     {

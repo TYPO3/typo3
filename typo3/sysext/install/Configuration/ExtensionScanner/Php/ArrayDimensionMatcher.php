@@ -1080,4 +1080,10 @@ return [
             'Feature-102755-PSR-14EventForModifyingGetImageResourceResult.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_page.php\'][\'addEnableColumns\']' => [
+        'restFiles' => [
+            'Breaking-102793-PageRepository-enableFieldsHookRemoved.rst',
+            'Feature-102793-PSR-14EventForModifyingDefaultConstraintsInPageRepository.rst',
+        ],
+    ],
 ];

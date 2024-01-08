@@ -17,15 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
 
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\Domain\Event\ModifyDefaultConstraintsForDatabaseQueryEvent;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -462,7 +466,7 @@ final class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function enableFieldsHidesVersionedRecordsAndPlaceholders(): void
+    public function getDefaultConstraintsHidesVersionedRecordsAndPlaceholders(): void
     {
         $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
@@ -473,17 +477,18 @@ final class PageRepositoryTest extends FunctionalTestCase
 
         $subject = new PageRepository(new Context());
 
-        $conditions = $subject->enableFields($table);
+        $conditions = $subject->getDefaultConstraints($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $expr = $connection->getExpressionBuilder();
 
         self::assertThat(
-            $conditions,
-            self::stringContains(' AND ((' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0) '),
+            (string)$expr->and(...$conditions),
+            self::stringContains('((((' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)'),
             'Versioning placeholders'
         );
         self::assertThat(
-            $conditions,
-            self::stringContains(' AND (((' . $connection->quoteIdentifier($table . '.t3ver_oid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' = 4)))'),
+            (string)$expr->and(...$conditions),
+            self::stringContains('(((' . $connection->quoteIdentifier($table . '.t3ver_oid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' = 4)))'),
             'Records with online version'
         );
     }
@@ -491,7 +496,7 @@ final class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function enableFieldsDoesNotHidePlaceholdersInPreview(): void
+    public function getDefaultConstraintsDoesNotHidePlaceholdersInPreview(): void
     {
         $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
@@ -504,16 +509,17 @@ final class PageRepositoryTest extends FunctionalTestCase
         $context->setAspect('workspace', new WorkspaceAspect(13));
         $subject = new PageRepository($context);
 
-        $conditions = $subject->enableFields($table);
+        $conditions = $subject->getDefaultConstraints($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $expr = $connection->getExpressionBuilder();
 
         self::assertThat(
-            $conditions,
-            self::logicalNot(self::stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)')),
+            (string)$expr->and(...$conditions),
+            self::logicalNot(self::stringContains('(' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)')),
             'No versioning placeholders'
         );
         self::assertThat(
-            $conditions,
+            (string)$expr->and(...$conditions),
             self::stringContains(' AND (((' . $connection->quoteIdentifier($table . '.t3ver_oid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' = 4)))'),
             'Records from online versions'
         );
@@ -522,7 +528,7 @@ final class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview(): void
+    public function getDefaultConstraintsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview(): void
     {
         $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
@@ -535,12 +541,13 @@ final class PageRepositoryTest extends FunctionalTestCase
         $context->setAspect('workspace', new WorkspaceAspect(2));
         $subject = new PageRepository($context);
 
-        $conditions = $subject->enableFields($table);
+        $conditions = $subject->getDefaultConstraints($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $expr = $connection->getExpressionBuilder();
 
         self::assertThat(
-            $conditions,
-            self::stringContains(' AND ((((' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 2)))'),
+            (string)$expr->and(...$conditions),
+            self::stringContains('((' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 2)'),
             'No versioning placeholders'
         );
     }
@@ -554,7 +561,6 @@ final class PageRepositoryTest extends FunctionalTestCase
     protected function assertNotOverlayRow($row): void
     {
         self::assertIsArray($row);
-
         self::assertFalse(isset($row['_LOCALIZED_UID']));
     }
 
@@ -666,5 +672,37 @@ final class PageRepositoryTest extends FunctionalTestCase
         $subject->versionOL('pages', $input);
 
         self::assertSame($originalInput, $input);
+    }
+
+    /**
+     * @test
+     */
+    public function modifyDefaultConstraintsForDatabaseQueryEventIsCalled(): void
+    {
+        $modifyDefaultConstraintsForDatabaseQueryEvent = null;
+        $defaultConstraint = new CompositeExpression('foo');
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'modify-default-constraints-for-database-query-listener',
+            static function (ModifyDefaultConstraintsForDatabaseQueryEvent $event) use (&$modifyDefaultConstraintsForDatabaseQueryEvent, $defaultConstraint) {
+                $modifyDefaultConstraintsForDatabaseQueryEvent = $event;
+                $event->setConstraints([$defaultConstraint]);
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(ModifyDefaultConstraintsForDatabaseQueryEvent::class, 'modify-default-constraints-for-database-query-listener');
+
+        $table = StringUtility::getUniqueId('aTable');
+        $GLOBALS['TCA'][$table] = ['ctrl' => []];
+
+        $defaultConstraints = (new PageRepository(new Context()))->getDefaultConstraints($table);
+
+        self::assertEquals([$defaultConstraint], $defaultConstraints);
+        self::assertInstanceOf(ModifyDefaultConstraintsForDatabaseQueryEvent::class, $modifyDefaultConstraintsForDatabaseQueryEvent);
+        self::assertEquals($table, $modifyDefaultConstraintsForDatabaseQueryEvent->getTable());
+        self::assertEquals([$defaultConstraint], $modifyDefaultConstraintsForDatabaseQueryEvent->getConstraints());
     }
 }
