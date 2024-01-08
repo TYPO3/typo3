@@ -52,7 +52,9 @@ return [
                         ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText.example1', 'User-agent: *
 Disallow: /typo3/
 Disallow: /typo3_src/
-Allow: /typo3/sysext/frontend/Resources/Public/*
+Disallow: /fileadmin/user_upload/_temp_/importexport
+# Uncomment the following line if you have a sitemap enabled. Replace the domain with your own.
+# Sitemap: https://www.example.org/sitemap.xml
 '],
                     ],
                 ],
