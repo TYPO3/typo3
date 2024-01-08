@@ -42,8 +42,7 @@ use TYPO3\CMS\Core\Routing\RequestContextFactory;
  * from each extension.
  *
  * After this middleware, a "Route" object is available as attribute in the
- * Request object. Additionally, the request handler (e.g. a controller) is
- * available as "target" in the PSR-7 request object.
+ * Request object.
  *
  * @internal
  */
@@ -56,7 +55,7 @@ class BackendRouteInitialization implements MiddlewareInterface
     ) {}
 
     /**
-     * Resolve the &route (or &M) GET/POST parameter, and also resolves a Route object
+     * Resolve the route based on the URL path part, and also resolves a Route object
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -68,7 +67,6 @@ class BackendRouteInitialization implements MiddlewareInterface
             $routeResult = $this->router->matchResult($request);
             $request = $request->withAttribute('routing', $routeResult);
             $request = $request->withAttribute('route', $routeResult->getRoute());
-            $request = $request->withAttribute('target', $routeResult->getRoute()->getOption('target'));
         } catch (MethodNotAllowedException $e) {
             return new Response(null, 405);
         } catch (ResourceNotFoundException $e) {
