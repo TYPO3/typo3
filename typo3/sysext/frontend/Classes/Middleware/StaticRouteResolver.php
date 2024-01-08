@@ -139,6 +139,9 @@ class StaticRouteResolver implements MiddlewareInterface
     {
         switch ($type) {
             case 'staticText':
+                if (!isset($routeConfig['content']) || !is_string($routeConfig['content'])) {
+                    throw new \InvalidArgumentException('A static route of type "staticText" must have a content defined.', 1704704705);
+                }
                 $content = $routeConfig['content'];
                 $contentType = 'text/plain; charset=utf-8';
                 break;
