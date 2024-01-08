@@ -1,0 +1,8 @@
+"sys_file"
+,"uid","pid","storage","identifier","folder_hash","name","identifier_hash","extension","mime_type","sha1"
+,1,0,1,"/ProcessedFileTest.jpg","d839c094d3294deb5b61cf7e0fe4f1cddaa96579","foo","84e70e8b11db88cea944e4d7be107092ab148b72","jpg","image/jpeg","6e237d7c3e98387f924b81aada9b8d1f43f5eb5b"
+"sys_file_reference"
+,"uid","pid","crdate","deleted","uid_local","uid_foreign","tablenames",
+,1,0,1704650830,1,1,1,"tt_content",
+"sys_refindex"
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string"

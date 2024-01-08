@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -397,15 +398,38 @@ class FileReference implements FileInterface
      */
     public function delete()
     {
-        $deletedRows = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_reference')
-            ->delete(
-                'sys_file_reference',
-                [
-                    'uid' => $this->getUid(),
-                ]
-            );
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $tcaDeleteFieldname = $GLOBALS['TCA']['sys_file_reference']['ctrl']['delete'] ?? null;
+        if ($tcaDeleteFieldname) {
+            $affectedRows = $connectionPool->getConnectionForTable('sys_file_reference')
+                ->update(
+                    'sys_file_reference',
+                    [
+                        $tcaDeleteFieldname => 1,
+                    ],
+                    [
+                        'uid' => $this->getUid(),
+                    ]
+                );
+        } else {
+            $affectedRows = $connectionPool->getConnectionForTable('sys_file_reference')
+                ->delete(
+                    'sys_file_reference',
+                    [
+                        'uid' => $this->getUid(),
+                    ]
+                );
+        }
 
-        return $deletedRows === 1;
+        if ($affectedRows === 1) {
+            $table = $this->propertiesOfFileReference['tablenames'];
+            $uidForeign = $this->propertiesOfFileReference['uid_foreign'];
+            $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+            $referenceIndex->updateRefIndexTable($table, $uidForeign);
+            $referenceIndex->updateRefIndexTable('sys_file_reference', $this->getUid());
+        }
+
+        return $affectedRows === 1;
     }
 
     /**
