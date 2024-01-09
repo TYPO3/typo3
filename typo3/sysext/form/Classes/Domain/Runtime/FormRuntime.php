@@ -60,7 +60,6 @@ use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This class implements the *runtime logic* of a form, i.e. deciding which
@@ -163,6 +162,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         protected readonly ConfigurationManagerInterface $configurationManager,
         protected readonly HashService $hashService,
         protected readonly ValidatorResolver $validatorResolver,
+        private readonly Context $context,
     ) {
         $this->response = new Response();
     }
@@ -447,20 +447,16 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * Necessary to know if honeypot information should be stored in the user session info, or in the anonymous session
-     *
-     * @return bool true when a frontend user is logged, otherwise false
+     * Necessary to know if honeypot information should be stored in the user session info, or in the anonymous session.
      */
     protected function isFrontendUserAuthenticated(): bool
     {
-        return (bool)GeneralUtility::makeInstance(Context::class)
-            ->getPropertyFromAspect('frontend.user', 'isLoggedIn', false);
+        return (bool)$this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false);
     }
 
-    protected function processVariants()
+    protected function processVariants(): void
     {
         $conditionResolver = $this->getConditionResolver();
-
         $renderables = array_merge([$this->formDefinition], $this->formDefinition->getRenderablesRecursively());
         foreach ($renderables as $renderable) {
             if ($renderable instanceof VariableRenderableInterface) {
@@ -1029,13 +1025,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         if ($this->request->getAttribute('language') instanceof SiteLanguage) {
             $this->currentSiteLanguage = $this->request->getAttribute('language');
         } else {
-            $pageId = 0;
-            $languageId = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
-
-            if ($this->getTypoScriptFrontendController() !== null) {
-                $pageId = $this->getTypoScriptFrontendController()->id;
-            }
-
+            $languageId = (int)$this->context->getPropertyFromAspect('language', 'id', 0);
+            $pageId = $this->request->getAttribute('frontend.page.information')?->getId() ?? 0;
             $fakeSiteConfiguration = [
                 'languages' => [
                     [
@@ -1047,7 +1038,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                     ],
                 ],
             ];
-
             $this->currentSiteLanguage = GeneralUtility::makeInstance(Site::class, 'form-dummy', $pageId, $fakeSiteConfiguration)
                 ->getLanguageById($languageId);
         }
@@ -1101,11 +1091,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected function getFrontendUser(): FrontendUserAuthentication
     {
         return $this->request->getAttribute('frontend.user');
-    }
-
-    protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'] ?? null;
     }
 
     protected function isRenderableEnabled(RenderableInterface $renderable): bool

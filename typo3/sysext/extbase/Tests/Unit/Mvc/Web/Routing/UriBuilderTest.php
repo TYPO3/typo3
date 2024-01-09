@@ -41,7 +41,7 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\EntityFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\ValueObjectFixture;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UriBuilderTest extends UnitTestCase
@@ -458,12 +458,14 @@ final class UriBuilderTest extends UnitTestCase
     public function buildFrontendUriCreatesRelativeUrisByDefault(): void
     {
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
-        $mockRequest = $this->createMock(Request::class);
-        $mockRequest->method('getAttribute')->with('currentContentObject')->willReturn($mockContentObject);
         $mockContentObject->expects(self::once())->method('createUrl')->willReturn('relative/uri');
+        $serverRequest = (new ServerRequest())
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('currentContentObject', $mockContentObject);
+        $request = new Request($serverRequest);
         $expectedResult = 'relative/uri';
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
-        $subject->setRequest($mockRequest);
+        $subject->setRequest($request);
         self::assertSame($expectedResult, $subject->buildFrontendUri());
     }
 
@@ -473,11 +475,13 @@ final class UriBuilderTest extends UnitTestCase
     public function buildFrontendUriDoesNotStripLeadingSlashesFromRelativeUris(): void
     {
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
-        $mockRequest = $this->createMock(Request::class);
-        $mockRequest->method('getAttribute')->with('currentContentObject')->willReturn($mockContentObject);
         $mockContentObject->expects(self::once())->method('createUrl')->willReturn('/relative/uri');
+        $serverRequest = (new ServerRequest())
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('currentContentObject', $mockContentObject);
+        $request = new Request($serverRequest);
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
-        $subject->setRequest($mockRequest);
+        $subject->setRequest($request);
         $expectedResult = '/relative/uri';
         self::assertSame($expectedResult, $subject->buildFrontendUri());
     }
@@ -579,8 +583,6 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationRespectsSpecifiedTargetPageUid(): void
     {
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->id = 123;
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
         $subject->setTargetPageUid(321);
         $expectedConfiguration = ['parameter' => 321];
@@ -592,10 +594,19 @@ final class UriBuilderTest extends UnitTestCase
      */
     public function buildTypolinkConfigurationUsesCurrentPageUidIfTargetPageUidIsNotSet(): void
     {
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->id = 123;
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(123);
+        $request = (new ServerRequest())
+            ->withAttribute('frontend.page.information', $pageInformation)
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = (new Request($request));
+        $currentContentObject = new ContentObjectRenderer();
+        $currentContentObject->setRequest($request);
+        $request = $request->withAttribute('currentContentObject', $currentContentObject);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $expectedConfiguration = ['parameter' => 123];
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
+        $subject->setRequest($request);
         self::assertEquals($expectedConfiguration, $subject->_call('buildTypolinkConfiguration'));
     }
 

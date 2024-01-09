@@ -65,13 +65,11 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
         }
 
         // See if the current page is of doktype "External URL", if so, do a redirect as well.
-        $controller = $request->getAttribute('frontend.controller');
-        if ((int)$controller->page['doktype'] === PageRepository::DOKTYPE_LINK) {
-            $externalUrl = $this->prefixExternalPageUrl(
-                $controller->page['url'],
-                $request->getAttribute('normalizedParams')->getSiteUrl()
-            );
-            $message = 'TYPO3 External URL' . ($exposeInformation ? ' at page with ID ' . $controller->page['uid'] : '');
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageRecord = $pageInformation->getPageRecord();
+        if ((int)$pageRecord['doktype'] === PageRepository::DOKTYPE_LINK) {
+            $externalUrl = $this->prefixExternalPageUrl($pageRecord['url'], $request->getAttribute('normalizedParams')->getSiteUrl());
+            $message = 'TYPO3 External URL' . ($exposeInformation ? ' at page with ID ' . $pageRecord['uid'] : '');
             if (!empty($externalUrl)) {
                 return new RedirectResponse(
                     $externalUrl,
@@ -82,7 +80,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
             $this->logger->error(
                 'Page of type "External URL" could not be resolved properly',
                 [
-                    'page' => $controller->page,
+                    'page' => $pageRecord,
                 ]
             );
             return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(

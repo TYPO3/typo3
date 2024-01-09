@@ -88,14 +88,12 @@ class MainController
         $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
         $view->setLayoutRootPaths(['EXT:adminpanel/Resources/Private/Layouts']);
 
-        $view->assignMultiple(
-            [
-                'toggleActiveUrl' => $this->generateBackendUrl('ajax_adminPanel_toggle'),
-                'resources' => $resources,
-                'adminPanelActive' => StateUtility::isOpen(),
-                'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
-            ]
-        );
+        $view->assignMultiple([
+            'toggleActiveUrl' => $this->generateBackendUrl('ajax_adminPanel_toggle'),
+            'resources' => $resources,
+            'adminPanelActive' => StateUtility::isOpen(),
+            'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
+        ]);
         if (StateUtility::isOpen()) {
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('adminpanel_requestcache');
             $requestId = $request->getAttribute('adminPanelRequestId');
@@ -114,10 +112,9 @@ class MainController
                 $parentModule->setModuleData($data);
             }
 
-            $frontendController = $request->getAttribute('frontend.controller');
             $routeIdentifier = 'web_layout';
             $arguments = [
-                'id' => $frontendController->id ?? 0,
+                'id' => $request->getAttribute('frontend.page.information')->getId(),
             ];
             $backendUrl = (string)$this->uriBuilder->buildUriFromRoute(
                 $routeIdentifier,
@@ -125,18 +122,16 @@ class MainController
                 UriBuilder::SHAREABLE_URL
             );
 
-            $view->assignMultiple(
-                [
-                    'modules' => $this->modules,
-                    'settingsModules' => $settingsModules,
-                    'parentModules' => $parentModules,
-                    'saveUrl' => $this->generateBackendUrl('ajax_adminPanel_saveForm'),
-                    'moduleResources' => $moduleResources,
-                    'requestId' => $requestId,
-                    'data' => $data ?? [],
-                    'backendUrl' => $backendUrl,
-                ]
-            );
+            $view->assignMultiple([
+                'modules' => $this->modules,
+                'settingsModules' => $settingsModules,
+                'parentModules' => $parentModules,
+                'saveUrl' => $this->generateBackendUrl('ajax_adminPanel_saveForm'),
+                'moduleResources' => $moduleResources,
+                'requestId' => $requestId,
+                'data' => $data ?? [],
+                'backendUrl' => $backendUrl,
+            ]);
         }
         return $view->render();
     }

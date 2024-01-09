@@ -165,6 +165,7 @@ services:
       - { name: 'data.processor', identifier: 'gallery' }
 
   TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor:
+    public: true
     shared: false
     tags:
       - { name: 'data.processor', identifier: 'language-menu' }

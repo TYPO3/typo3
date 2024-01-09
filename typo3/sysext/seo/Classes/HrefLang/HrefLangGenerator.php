@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor;
 use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
 
@@ -45,26 +44,27 @@ class HrefLangGenerator
     #[AsEventListener('typo3-seo/hreflangGenerator')]
     public function __invoke(ModifyHrefLangTagsEvent $event): void
     {
-        $hrefLangs = $event->getHrefLangs();
-        if ((int)$this->getTypoScriptFrontendController()->page['no_index'] === 1) {
+        $request = $event->getRequest();
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageRecord = $pageInformation->getPageRecord();
+        if ((int)$pageRecord['no_index'] === 1) {
             return;
         }
-
         $this->cObj->setRequest($event->getRequest());
         $languages = $this->languageMenuProcessor->process($this->cObj, [], [], []);
-        $tsfe = $this->getTypoScriptFrontendController();
-        $site = $tsfe->getSite();
-        $siteLanguage = $tsfe->getLanguage();
-        $pageId = $tsfe->id;
+        $site = $request->getAttribute('site');
+        $siteLanguage = $request->getAttribute('language', $site->getDefaultLanguage());
+        $pageId = $pageInformation->getId();
 
+        $hrefLangs = $event->getHrefLangs();
         foreach ($languages['languagemenu'] as $language) {
             if (!empty($language['link']) && $language['hreflang']) {
                 if ($language['languageId'] === 0) {
                     // No need to fetch default language
-                    $page = ($tsfe->page['_TRANSLATION_SOURCE'] ?? null)?->toArray(true) ?? $tsfe->page;
-                } elseif ($language['languageId'] === ($tsfe->page['_REQUESTED_OVERLAY_LANGUAGE'] ?? false)) {
+                    $page = ($pageRecord['_TRANSLATION_SOURCE'] ?? null)?->toArray(true) ?? $pageRecord;
+                } elseif ($language['languageId'] === ($pageRecord['_REQUESTED_OVERLAY_LANGUAGE'] ?? false)) {
                     // No need to fetch current language
-                    $page = $tsfe->page;
+                    $page = $pageRecord;
                 } else {
                     $page = $this->getTranslatedPageRecord($pageId, $language['languageId'], $site);
                 }
@@ -81,13 +81,11 @@ class HrefLangGenerator
                 $hrefLangs[$language['hreflang']] = $href;
             }
         }
-
         if (count($hrefLangs) > 1) {
             if (array_key_exists($languages['languagemenu'][0]['hreflang'], $hrefLangs)) {
                 $hrefLangs['x-default'] = $hrefLangs[$languages['languagemenu'][0]['hreflang']];
             }
         }
-
         $event->setHrefLangs($hrefLangs);
     }
 
@@ -101,13 +99,7 @@ class HrefLangGenerator
                 $url = $url->withQuery($uri->getQuery());
             }
         }
-
         return (string)$url;
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 
     protected function getTranslatedPageRecord(int $pageId, int $languageId, Site $site): array

@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
@@ -795,8 +794,10 @@ class IndexSearchRepository
         if (!$match) {
             switch ($this->sections) {
                 case '-1':
+                    // @todo: This repository either needs to retrieve the request or page uid.
+                    $pageId = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId();
                     $whereClause = $whereClause->with(
-                        $expressionBuilder->eq('ISEC.page_id', $this->getTypoScriptFrontendController()->id)
+                        $expressionBuilder->eq('ISEC.page_id', $pageId)
                     );
                     break;
                 case '-2':
@@ -1216,11 +1217,6 @@ class IndexSearchRepository
     protected function getSearchRootPageIdList(): array
     {
         return GeneralUtility::intExplode(',', $this->searchRootPageIdList);
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 
     protected function getTimeTracker(): TimeTracker

@@ -28,6 +28,8 @@ final class ResolverTest extends FunctionalTestCase
      */
     public function evaluateWithTyposcriptAndTsfeEvaluatesCorrectly(): void
     {
+        // @todo: This will raise a deprecation log level entry later, when TSFE->id is
+        //        actively deprecated. See hint in Typo3ConditionFunctionsProvider.
         $frontendControllerMock = $this
                 ->getMockBuilder(TypoScriptFrontendController::class)
                 ->disableOriginalConstructor()

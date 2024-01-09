@@ -58,8 +58,12 @@ class FrontendGenerationPageIndexingTrigger
         if (!$event->isCachingEnabled()) {
             return;
         }
-        $tsfe = $event->getController();
+        $request = $event->getRequest();
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageRecord = $pageInformation->getPageRecord();
+
         // Determine if page should be indexed, and if so, configure and initialize indexer
+        $tsfe = $event->getController();
         if (!($tsfe->config['config']['index_enable'] ?? false)) {
             return;
         }
@@ -74,7 +78,7 @@ class FrontendGenerationPageIndexingTrigger
             return;
         }
 
-        if ($tsfe->page['no_search'] ?? false) {
+        if ($pageRecord['no_search'] ?? false) {
             $this->timeTracker->setTSlogMessage('Index page? No, The "No Search" flag has been set in the page properties!');
             return;
         }
@@ -99,6 +103,7 @@ class FrontendGenerationPageIndexingTrigger
         /** @var PageArguments $pageArguments */
         $pageArguments = $request->getAttribute('routing');
         $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageRecord = $pageInformation->getPageRecord();
         $configuration = [
             // Page id
             'id' => $pageInformation->getId(),
@@ -113,7 +118,7 @@ class FrontendGenerationPageIndexingTrigger
             // page arguments array
             'staticPageArguments' => $pageArguments->getStaticArguments(),
             // The creation date of the TYPO3 page
-            'crdate' => $pageInformation->getPageRecord()['crdate'],
+            'crdate' => $pageRecord['crdate'],
             'rootline_uids' => [],
         ];
 
@@ -130,7 +135,7 @@ class FrontendGenerationPageIndexingTrigger
         $configuration['indexedDocTitle'] = $this->pageTitleProviderManager->getTitle($request);
 
         // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
-        $configuration['mtime'] = $tsfe->register['SYS_LASTCHANGED'] ?? $tsfe->page['SYS_LASTCHANGED'];
+        $configuration['mtime'] = $tsfe->register['SYS_LASTCHANGED'] ?? $pageRecord['SYS_LASTCHANGED'];
         // Configuration of behavior
         $configuration['index_externals'] = $tsfe->config['config']['index_externals'] ?? true;
         // Whether to index external documents like PDF, DOC etc. (if possible)

@@ -202,15 +202,15 @@ abstract class AbstractMenuContentObject
      * @return bool Returns TRUE on success
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
      */
-    public function start($_, $sys_page, $id, $conf, int $menuNumber, $objSuffix = '', ?ServerRequestInterface $request = null)
+    public function start($_, $sys_page, $id, $conf, int $menuNumber, string $objSuffix, ServerRequestInterface $request): bool
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $this->conf = (array)$conf;
         $this->menuNumber = $menuNumber;
         $this->mconf = (array)$conf[$this->menuNumber . $objSuffix . '.'];
         $this->request = $request;
         // Sets the internal vars. $sys_page MUST be the PageRepository object
         if ($this->conf[$this->menuNumber . $objSuffix] && is_object($sys_page)) {
+            $tsfe = $this->getTypoScriptFrontendController();
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
             $this->conf['alwaysActivePIDlist'] = (string)$this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf);
@@ -295,7 +295,7 @@ abstract class AbstractMenuContentObject
             if (($this->conf['special'] ?? '') === 'directory') {
                 $value = $this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
                 if ($value === '') {
-                    $value = $tsfe->id;
+                    $value = $this->request->getAttribute('frontend.page.information')->getId();
                 }
                 $directoryLevel = $this->getRootlineLevel($tsfe->config['rootLine'], (string)$value);
             }
@@ -344,9 +344,7 @@ abstract class AbstractMenuContentObject
             return;
         }
 
-        $frontendController = $this->getTypoScriptFrontendController();
         // Initializing showAccessRestrictedPages
-        $SAVED_where_groupAccess = '';
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
             $this->disableGroupAccessCheck = true;
         }
@@ -387,7 +385,7 @@ abstract class AbstractMenuContentObject
             while ($c < $minItems) {
                 $this->menuArr[$c] = [
                     'title' => '...',
-                    'uid' => $frontendController->id,
+                    'uid' => $this->request->getAttribute('frontend.page.information')->getId(),
                 ];
                 $c++;
             }
@@ -397,6 +395,7 @@ abstract class AbstractMenuContentObject
             $this->menuArr = $this->userProcess('itemArrayProcFunc', $this->menuArr);
         }
         // Setting number of menu items
+        $frontendController = $this->getTypoScriptFrontendController();
         $frontendController->register['count_menuItems'] = count($this->menuArr);
         $this->generate();
         // End showAccessRestrictedPages
@@ -451,7 +450,7 @@ abstract class AbstractMenuContentObject
             $this->excludedDoktypes,
             $this->getCurrentSite(),
             GeneralUtility::makeInstance(Context::class),
-            $this->getTypoScriptFrontendController()->page
+            $this->request->getAttribute('frontend.page.information')->getPageRecord()
         );
         $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
         return $event->getFilteredMenuItems();
@@ -559,8 +558,8 @@ abstract class AbstractMenuContentObject
     {
         $menuItems = [];
         // Getting current page record NOT overlaid by any translation:
-        $tsfe = $this->getTypoScriptFrontendController();
-        $currentPageWithNoOverlay = ($tsfe->page['_TRANSLATION_SOURCE'] ?? null)?->toArray(true) ?? $tsfe->page;
+        $pageRecord = $this->request->getAttribute('frontend.page.information')->getPageRecord();
+        $currentPageWithNoOverlay = ($pageRecord['_TRANSLATION_SOURCE'] ?? null)?->toArray(true) ?? $pageRecord;
 
         $languages = $this->getCurrentSite()->getLanguages();
         if ($specialValue === 'auto') {
@@ -569,6 +568,7 @@ abstract class AbstractMenuContentObject
             $languageItems = GeneralUtility::intExplode(',', $specialValue);
         }
 
+        $tsfe = $this->getTypoScriptFrontendController();
         $tsfe->register['languages_HMENU'] = implode(',', $languageItems);
 
         $currentLanguageId = $this->getCurrentLanguageAspect()->getId();
@@ -640,10 +640,9 @@ abstract class AbstractMenuContentObject
      */
     protected function prepareMenuItemsForDirectoryMenu($specialValue, $sortingField)
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         if ($specialValue == '') {
-            $specialValue = $tsfe->id;
+            $specialValue = $this->request->getAttribute('frontend.page.information')->getId();
         }
         $items = GeneralUtility::intExplode(',', (string)$specialValue);
         $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
@@ -741,7 +740,7 @@ abstract class AbstractMenuContentObject
         $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         if ($specialValue == '') {
-            $specialValue = $tsfe->id;
+            $specialValue = $this->request->getAttribute('frontend.page.information')->getId();
         }
         $items = GeneralUtility::intExplode(',', (string)$specialValue);
         if (MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'] ?? null)) {
@@ -807,7 +806,7 @@ abstract class AbstractMenuContentObject
         $menuItems = [];
         [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
-            $specialValue = $tsfe->id;
+            $specialValue = $this->request->getAttribute('frontend.page.information')->getId();
         }
         if (($this->conf['special.']['setKeywords'] ?? false) || ($this->conf['special.']['setKeywords.'] ?? false)) {
             $kw = (string)$this->parent_cObj->stdWrapValue('setKeywords', $this->conf['special.'] ?? []);
@@ -975,12 +974,12 @@ abstract class AbstractMenuContentObject
      */
     protected function prepareMenuItemsForBrowseMenu($specialValue, $sortingField, $additionalWhere)
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
-            $specialValue = $this->getTypoScriptFrontendController()->page['uid'];
+            $specialValue = $this->request->getAttribute('frontend.page.information')->getPageRecord()['uid'];
         }
+        $tsfe = $this->getTypoScriptFrontendController();
         // Will not work out of rootline
         if ($specialValue != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
             $recArr = [];
@@ -1377,11 +1376,11 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Returns TRUE if the page is the CURRENT page (equals $this->getTypoScriptFrontendController()->id)
+     * Returns TRUE if the page is the CURRENT page.
      *
      * @param array $page Page record to evaluate.
      * @param string $MPvar MPvar for the current position of item.
-     * @return bool TRUE if resolved page ID = $this->getTypoScriptFrontendController()->id
+     * @return bool TRUE if resolved page ID is current requested page id
      */
     protected function isCurrent(array $page, $MPvar)
     {
@@ -1607,8 +1606,8 @@ abstract class AbstractMenuContentObject
         if (!trim($excludeUidList)) {
             return [];
         }
-
-        $banUidList = str_replace('current', (string)($this->getTypoScriptFrontendController()->page['uid'] ?? ''), $excludeUidList);
+        $currentPageUid = $this->request->getAttribute('frontend.page.information')->getPageRecord()['uid'] ?? '';
+        $banUidList = str_replace('current', (string)($currentPageUid), $excludeUidList);
         return GeneralUtility::intExplode(',', $banUidList);
     }
 
@@ -1774,7 +1773,6 @@ abstract class AbstractMenuContentObject
         if (!$frontendController instanceof TypoScriptFrontendController) {
             throw new ContentRenderingException('TypoScriptFrontendController is not available.', 1655725105);
         }
-
         return $frontendController;
     }
 

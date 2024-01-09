@@ -158,13 +158,13 @@ class Bootstrap
         }
         // Usually coming from an error action, ensure all caches are cleared
         if ($response->getStatusCode() === 400) {
-            $this->clearCacheOnError();
+            $this->clearCacheOnError($request);
         }
 
-        // In case TSFE is available and this is a json response, we have to let TSFE know we have a specific Content-Type
-        if (($typoScriptFrontendController = ($GLOBALS['TSFE'] ?? null)) instanceof TypoScriptFrontendController
-            && $response->hasHeader('Content-Type')
-        ) {
+        // If TypoScriptFrontendController has been properly set up and this is a json response,
+        // we let TypoScriptFrontendController know we have a specific Content-Type.
+        $typoScriptFrontendController = $request->getAttribute('frontend.controller');
+        if ($typoScriptFrontendController instanceof TypoScriptFrontendController && $response->hasHeader('Content-Type')) {
             $typoScriptFrontendController->setContentType($response->getHeaderLine('Content-Type'));
             // Do not send the header directly (see below)
             $response = $response->withoutHeader('Content-Type');
@@ -218,12 +218,13 @@ class Bootstrap
     /**
      * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
      */
-    protected function clearCacheOnError(): void
+    protected function clearCacheOnError(ServerRequestInterface $request): void
     {
         $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
-            if (isset($GLOBALS['TSFE'])) {
-                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
+            $pageId = $request->getAttribute('frontend.page.information')?->getId();
+            if ($pageId !== null) {
+                $this->cacheService->clearPageCache([$pageId]);
             }
         }
     }

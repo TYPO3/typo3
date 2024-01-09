@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
 use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
@@ -41,7 +42,6 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
@@ -49,7 +49,6 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
-
         $this->writeSiteConfiguration(
             'website-example',
             $this->buildSiteConfiguration(100, 'http://example.com/'),
@@ -57,7 +56,6 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
-
         $this->writeSiteConfiguration(
             'dummy',
             $this->buildSiteConfiguration(200, '/'),
@@ -65,7 +63,6 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
-
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages-canonical.csv');
         $this->setUpFrontendRootPage(
             1,
@@ -144,7 +141,6 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($targetUri))->withInstructions([$this->buildPageTypoScript()])
         );
-
         if ($expectedCanonicalUrl) {
             self::assertStringContainsString($expectedCanonicalUrl, (string)$response->getBody());
         } else {
@@ -171,11 +167,18 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(ModifyUrlForCanonicalTagEvent::class, 'modify-url-for-canonical-tag-listener');
 
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->id = 123;
-        $GLOBALS['TSFE']->page['no_index'] = 1;
-
-        $this->get(CanonicalGenerator::class)->generate(['request' => new ServerRequest('https://example.com'), 'page' => ['uid' => 123]]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.controller', $this->createMock(TypoScriptFrontendController::class));
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(123);
+        $pageRecord = [
+            'uid' => 123,
+            'no_index' => 1,
+            'canonical_link' => '',
+        ];
+        $pageInformation->setPageRecord($pageRecord);
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->get(CanonicalGenerator::class)->generate(['request' => $request]);
 
         self::assertInstanceOf(ModifyUrlForCanonicalTagEvent::class, $modifyUrlForCanonicalTagEvent);
         self::assertEmpty('', $modifyUrlForCanonicalTagEvent->getUrl());

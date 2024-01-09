@@ -27,10 +27,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -371,6 +373,11 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     public function isItemStateChecksExcludeUidList(array $menuItems, string $excludeUidList, bool $expectedResult): void
     {
         $subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class, [], '', true, true, true, ['getRuntimeCache']);
+        $request = new ServerRequest();
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $subject->_set('request', $request);
 
         $runtimeCacheMock = $this->getMockBuilder(FrontendInterface::class)->getMock();
         $runtimeCacheMock->method('get')->with(self::anything())->willReturn(false);
@@ -566,7 +573,6 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, string $oTarget, string|int $addParams = '', string|int $typeOverride = '', int|string|null $overrideId = null): void
     {
         $expected['page'] = new Page($page);
-
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['createLink'])
             ->getMock();

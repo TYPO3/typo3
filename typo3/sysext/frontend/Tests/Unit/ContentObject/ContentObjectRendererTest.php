@@ -88,6 +88,7 @@ use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\TestSanitizerBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
@@ -149,7 +150,6 @@ final class ContentObjectRendererTest extends UnitTestCase
             );
         $this->frontendControllerMock->_set('context', GeneralUtility::makeInstance(Context::class));
         $this->frontendControllerMock->config = [];
-        $this->frontendControllerMock->page = [];
         $this->frontendControllerMock->_set('language', $site->getLanguageById(2));
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
 
@@ -403,8 +403,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     {
         self::assertEquals('бла', $this->subject->crop('бла', '3|...'));
     }
-
-    //////////////////////////////
 
     //////////////////////////////
     // Tests concerning cropHTML
@@ -1187,8 +1185,10 @@ final class ContentObjectRendererTest extends UnitTestCase
             'inGetAndPost' => 'ValueInPost',
         ];
         $request = new ServerRequest('https://example.com');
-        $request = $request->withQueryParams($queryArguments)
-            ->withParsedBody($postParameters);
+        $request = $request->withQueryParams($queryArguments)->withParsedBody($postParameters);
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $this->subject->setRequest($request);
         self::assertEquals($expectedValue, $this->subject->getData('gp:' . $key));
     }
@@ -1203,6 +1203,11 @@ final class ContentObjectRendererTest extends UnitTestCase
         $envName = StringUtility::getUniqueId('frontendtest');
         $value = StringUtility::getUniqueId('someValue');
         putenv($envName . '=' . $value);
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         self::assertEquals($value, $this->subject->getData('getenv:' . $envName));
     }
 
@@ -1213,6 +1218,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeGetindpenv(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $this->subject->expects(self::once())->method('getEnvironmentVariable')
             ->with(self::equalTo('SCRIPT_FILENAME'))->willReturn('dummyPath');
         self::assertEquals('dummyPath', $this->subject->getData('getindpenv:SCRIPT_FILENAME'));
@@ -1228,7 +1238,6 @@ final class ContentObjectRendererTest extends UnitTestCase
         $key = 'someKey';
         $value = 'someValue';
         $field = [$key => $value];
-
         self::assertEquals($value, $this->subject->getData('field:' . $key, $field));
     }
 
@@ -1270,6 +1279,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeFileReturnsUidOfFileObject(string $typoScriptPath): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $uid = StringUtility::getUniqueId();
         $file = $this->createMock(File::class);
         $file->expects(self::once())->method('getUid')->willReturn($uid);
@@ -1284,10 +1298,14 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeParameters(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
         $this->subject->parameters[$key] = $value;
-
         self::assertEquals($value, $this->subject->getData('parameters:' . $key));
     }
 
@@ -1298,10 +1316,14 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeRegister(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
         $GLOBALS['TSFE']->register[$key] = $value;
-
         self::assertEquals($value, $this->subject->getData('register:' . $key));
     }
 
@@ -1321,6 +1343,9 @@ final class ContentObjectRendererTest extends UnitTestCase
             ],
         ]);
         $request = (new ServerRequest())->withAttribute('frontend.user', $frontendUser);
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $this->subject->setRequest($request);
         self::assertEquals(42, $this->subject->getData('session:myext|mydata|someValue'));
     }
@@ -1332,6 +1357,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeLevel(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $rootline = [
             0 => ['uid' => 1, 'title' => 'title1'],
             1 => ['uid' => 2, 'title' => 'title2'],
@@ -1348,6 +1378,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeLeveltitle(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $rootline = [
             0 => ['uid' => 1, 'title' => 'title1'],
             1 => ['uid' => 2, 'title' => 'title2'],
@@ -1366,6 +1401,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeLevelmedia(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $rootline = [
             0 => ['uid' => 1, 'title' => 'title1', 'media' => 'media1'],
             1 => ['uid' => 2, 'title' => 'title2', 'media' => 'media2'],
@@ -1384,6 +1424,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeLeveluid(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $rootline = [
             0 => ['uid' => 1, 'title' => 'title1'],
             1 => ['uid' => 2, 'title' => 'title2'],
@@ -1402,6 +1447,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeLevelfield(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $rootline = [
             0 => ['uid' => 1, 'title' => 'title1', 'testfield' => 'field1'],
             1 => ['uid' => 2, 'title' => 'title2', 'testfield' => 'field2'],
@@ -1419,17 +1469,22 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeFullrootline(): void
     {
-        $rootline1 = [
-            0 => ['uid' => 1, 'title' => 'title1', 'testfield' => 'field1'],
-        ];
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
         $rootline2 = [
             0 => ['uid' => 1, 'title' => 'title1', 'testfield' => 'field1'],
             1 => ['uid' => 2, 'title' => 'title2', 'testfield' => 'field2'],
             2 => ['uid' => 3, 'title' => 'title3', 'testfield' => 'field3'],
         ];
+        $pageInformation->setRootLine($rootline2);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+        $rootline1 = [
+            0 => ['uid' => 1, 'title' => 'title1', 'testfield' => 'field1'],
+        ];
 
         $GLOBALS['TSFE']->config['rootLine'] = $rootline1;
-        $GLOBALS['TSFE']->rootLine = $rootline2;
         self::assertEquals('field2', $this->subject->getData('fullrootline:-1,testfield'));
     }
 
@@ -1440,9 +1495,13 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDate(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $format = 'Y-M-D';
         $defaultFormat = 'd/m Y';
-
         self::assertEquals(date($format, $GLOBALS['EXEC_TIME']), $this->subject->getData('date:' . $format));
         self::assertEquals(date($defaultFormat, $GLOBALS['EXEC_TIME']), $this->subject->getData('date'));
     }
@@ -1454,8 +1513,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypePage(): void
     {
+        $pageInformation = new PageInformation();
         $uid = random_int(0, mt_getrandmax());
-        $GLOBALS['TSFE']->page['uid'] = $uid;
+        $pageInformation->setPageRecord(['uid' => $uid]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         self::assertEquals($uid, $this->subject->getData('page:uid'));
     }
 
@@ -1466,6 +1529,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeCurrent(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
         $this->subject->data[$key] = $value;
@@ -1478,6 +1546,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDbReturnsCorrectTitle()
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
         $pageRepository = $this->createMock(PageRepository::class);
         GeneralUtility::addInstance(PageRepository::class, $pageRepository);
@@ -1527,6 +1600,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiers(string $identifier, InvocationOrder $expectsMethodCall): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
         $pageRepository = $this->createMock(PageRepository::class);
         if ($expectsMethodCall instanceof InvokedCount && !$expectsMethodCall->isNever()) {
@@ -1543,6 +1621,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeLll(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
         $languageServiceFactory = $this->createMock(LanguageServiceFactory::class);
@@ -1560,6 +1643,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypePath(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $filenameIn = 'typo3/sysext/frontend/Public/Icons/Extension.svg';
         self::assertEquals($filenameIn, $this->subject->getData('path:' . $filenameIn));
     }
@@ -1571,6 +1659,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeContext(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(3));
         $context->setAspect('frontend.user', new UserAspect(new FrontendUserAuthentication(), [0, -1]));
@@ -1588,6 +1681,11 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeSite(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $site = new Site('my-site', 123, [
             'base' => 'http://example.com',
             'custom' => [
@@ -1608,6 +1706,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeSiteWithBaseVariants(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         $packageManager = new PackageManager(new DependencyOrderingService());
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
             $packageManager,
@@ -1643,6 +1747,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeSiteLanguage(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         $site = $this->createSiteWithLanguage([
             'base' => '/',
             'languageId' => 1,
@@ -1666,6 +1776,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeParentRecordNumber(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         $recordNumber = random_int(0, mt_getrandmax());
         $this->subject->parentRecordNumber = $recordNumber;
         self::assertEquals($recordNumber, $this->subject->getData('cobj:parentRecordNumber'));
@@ -1678,6 +1794,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDebugRootline(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         $rootline = [
             0 => ['uid' => 1, 'title' => 'title1'],
             1 => ['uid' => 2, 'title' => 'title2'],
@@ -1700,13 +1822,19 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDebugFullRootline(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
         $rootline = [
             0 => ['uid' => 1, 'title' => 'title1'],
             1 => ['uid' => 2, 'title' => 'title2'],
             2 => ['uid' => 3, 'title' => ''],
         ];
+        $pageInformation->setRootLine($rootline);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         $expectedResult = 'array(3items)0=>array(2items)uid=>1(integer)title=>"title1"(6chars)1=>array(2items)uid=>2(integer)title=>"title2"(6chars)2=>array(2items)uid=>3(integer)title=>""(0chars)';
-        $GLOBALS['TSFE']->rootLine = $rootline;
 
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:fullRootLine');
@@ -1722,6 +1850,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDebugData(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
         $this->subject->data = [$key => $value];
@@ -1742,6 +1876,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDebugRegister(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
         $GLOBALS['TSFE']->register = [$key => $value];
@@ -1762,15 +1902,16 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDebugPage(): void
     {
+        $pageInformation = new PageInformation();
         $uid = random_int(0, mt_getrandmax());
-        $GLOBALS['TSFE']->page = ['uid' => $uid];
-
+        $pageInformation->setPageRecord(['uid' => $uid]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $expectedResult = 'array(1item)uid=>' . $uid . '(integer)';
-
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:page');
         $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
-
         self::assertEquals($expectedResult, $cleanedResult);
     }
 
@@ -6416,6 +6557,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_setContentToCurrent(): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         $content = StringUtility::getUniqueId('content');
         self::assertNotSame($content, $this->subject->getData('current'));
         self::assertSame(
@@ -6474,6 +6621,12 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_setCurrent(string $input, array $conf): void
     {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
         if (isset($conf['setCurrent'])) {
             self::assertNotSame($conf['setCurrent'], $this->subject->getData('current'));
         }

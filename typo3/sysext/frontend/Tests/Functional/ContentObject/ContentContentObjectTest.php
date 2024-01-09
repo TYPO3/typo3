@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ContentContentObjectTest extends FunctionalTestCase
@@ -63,12 +64,14 @@ final class ContentContentObjectTest extends FunctionalTestCase
             new PageArguments(1, '0', [])
         );
         $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
-        $request = new ServerRequest();
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setContentFromPid(1);
+        $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
         $contentObjectRenderer->setRequest($request);
         $subject = $contentObjectRenderer->getContentObject('CONTENT');
         $result = $subject->render(['table' => 'tt_content']);
         self::assertEquals($finalContent, $result);
-
         self::assertInstanceOf(ModifyRecordsAfterFetchingContentEvent::class, $modifyRecordsAfterFetchingContentEvent);
         self::assertEquals($records, $modifyRecordsAfterFetchingContentEvent->getRecords());
         self::assertEquals($finalContent, $modifyRecordsAfterFetchingContentEvent->getFinalContent());

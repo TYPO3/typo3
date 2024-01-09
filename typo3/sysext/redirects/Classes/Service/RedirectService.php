@@ -409,11 +409,6 @@ class RedirectService implements LoggerAwareInterface
             $site->getDefaultLanguage(),
             $pageArguments
         );
-        // b/w compat layer
-        $controller->id = $pageInformation->getId();
-        $controller->page = $pageInformation->getPageRecord();
-        $controller->contentPid = $pageInformation->getContentFromPid();
-        $controller->rootLine = $pageInformation->getRootLine();
         $newRequest = $controller->getFromCache($originalRequest);
         $controller->releaseLocks();
         $controller->newCObj($newRequest);

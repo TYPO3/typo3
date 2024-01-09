@@ -113,7 +113,11 @@ class LinkFactory implements LoggerAwareInterface
      */
     public function createUri(string $urlParameter, ContentObjectRenderer $contentObjectRenderer = null): LinkResultInterface
     {
-        $contentObjectRenderer = $contentObjectRenderer ?? GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        if ($contentObjectRenderer === null) {
+            $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            // @todo: LinkFactory needs the request to determine fallback page uid when link config has none.
+            $contentObjectRenderer->setRequest($GLOBALS['TYPO3_REQUEST']);
+        }
         return $this->create('', ['parameter' => $urlParameter], $contentObjectRenderer);
     }
 

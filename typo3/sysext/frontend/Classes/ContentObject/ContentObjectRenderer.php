@@ -392,7 +392,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $this->container = $container;
     }
 
-    public function setRequest(?ServerRequestInterface $request): void
+    public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
     }
@@ -848,7 +848,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @return string A list of PIDs
      * @internal
      */
-    public function getSlidePids($pidList, $pidConf)
+    public function getSlidePids($pidList, $pidConf): string
     {
         // todo: phpstan states that $pidConf always exists and is not nullable. At the moment, this is a false positive
         //       as null can be passed into this method via $pidConf. As soon as more strict types are used, this isset
@@ -860,8 +860,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $pageRepository = $this->getPageRepository();
         $listArr = null;
         if (trim($pidList)) {
-            $tsfe = $this->getTypoScriptFrontendController();
-            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $pidList));
+            $contentPid = $this->getRequest()->getAttribute('frontend.page.information')->getContentFromPid();
+            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $pidList));
             $listArr = $this->checkPidArray($listArr);
         }
         $pidList = [];
@@ -3848,24 +3848,26 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Implements the TypoScript data type "getText". This takes a string with parameters and based on those a value from somewhere in the system is returned.
+     * Implements the TypoScript data type "getText". This takes a string with parameters
+     * and based on those a value from somewhere in the system is returned.
      *
-     * @param string $string The parameter string, eg. "field : title" or "field : navtitle // field : title" (in the latter case and example of how the value is FIRST splitted by "//" is shown)
-     * @param array|null $fieldArray Alternative field array; If you set this to an array this variable will be used to look up values for the "field" key. Otherwise the current page record in $GLOBALS['TSFE']->page is used.
+     * @param string $string The parameter string, eg. "field : title" or "field : navtitle // field : title"
+     *                       In the latter case and example of how the value is FIRST split by "//" is shown
+     * @param array|null $fieldArray Alternative field array; If you set this to an array this variable will be used to
+     *                               look up values for the "field" key. Otherwise, the current page record is used.
      * @return string The value fetched
      * @see getFieldVal()
      */
     public function getData($string, $fieldArray = null)
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         if (!is_array($fieldArray)) {
-            $fieldArray = $tsfe->page;
+            $fieldArray = $this->getRequest()->getAttribute('frontend.page.information')->getPageRecord();
         }
         $retVal = '';
         // @todo: getData should not be called with non-string as $string. example trigger:
         //        SecureHtmlRenderingTest htmlViewHelperAvoidsCrossSiteScripting set #07 PHP 8
         $sections = is_string($string) ? explode('//', $string) : [];
-        foreach ($sections as $secKey => $secVal) {
+        foreach ($sections as $secVal) {
             if ($retVal) {
                 break;
             }
@@ -3920,19 +3922,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->parameters[$key] ?? null;
                         break;
                     case 'register':
+                        $tsfe = $this->getTypoScriptFrontendController();
                         $retVal = $tsfe->register[$key] ?? null;
                         break;
                     case 'global':
                         $retVal = $this->getGlobal($key);
                         break;
                     case 'level':
+                        $tsfe = $this->getTypoScriptFrontendController();
                         $retVal = count($tsfe->config['rootLine'] ?? []) - 1;
                         break;
                     case 'leveltitle':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $pointer = (int)($keyParts[0] ?? 0);
                         $slide = (string)($keyParts[1] ?? '');
-
+                        $tsfe = $this->getTypoScriptFrontendController();
                         $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
                         $retVal = $this->rootLineValue($numericKey, 'title', strtolower($slide) === 'slide');
                         break;
@@ -3940,11 +3944,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $pointer = (int)($keyParts[0] ?? 0);
                         $slide = (string)($keyParts[1] ?? '');
-
+                        $tsfe = $this->getTypoScriptFrontendController();
                         $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
                         $retVal = $this->rootLineValue($numericKey, 'media', strtolower($slide) === 'slide');
                         break;
                     case 'leveluid':
+                        $tsfe = $this->getTypoScriptFrontendController();
                         $numericKey = $this->getKey((int)$key, $tsfe->config['rootLine'] ?? []);
                         $retVal = $this->rootLineValue($numericKey, 'uid');
                         break;
@@ -3953,7 +3958,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $pointer = (int)($keyParts[0] ?? 0);
                         $field = (string)($keyParts[1] ?? '');
                         $slide = (string)($keyParts[2] ?? '');
-
+                        $tsfe = $this->getTypoScriptFrontendController();
                         $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
                         $retVal = $this->rootLineValue($numericKey, $field, strtolower($slide) === 'slide');
                         break;
@@ -3962,10 +3967,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $pointer = (int)($keyParts[0] ?? 0);
                         $field = (string)($keyParts[1] ?? '');
                         $slide = (string)($keyParts[2] ?? '');
-
-                        $fullKey = (int)($pointer - count($tsfe->config['rootLine'] ?? []) + count($tsfe->rootLine));
+                        $tsfe = $this->getTypoScriptFrontendController();
+                        $rootLine = $this->getRequest()->getAttribute('frontend.page.information')->getRootLine();
+                        $fullKey = $pointer - count($tsfe->config['rootLine'] ?? []) + count($rootLine);
                         if ($fullKey >= 0) {
-                            $retVal = $this->rootLineValue($fullKey, $field, stristr($slide, 'slide') !== false, $tsfe->rootLine);
+                            $retVal = $this->rootLineValue($fullKey, $field, stristr($slide, 'slide') !== false, $rootLine);
                         }
                         break;
                     case 'date':
@@ -3975,11 +3981,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = date($key, $GLOBALS['EXEC_TIME']);
                         break;
                     case 'page':
-                        $retVal = $tsfe->page[$key] ?? '';
+                        $pageRecord = $this->getRequest()->getAttribute('frontend.page.information')->getPageRecord();
+                        $retVal = $pageRecord[$key] ?? '';
                         break;
                     case 'pagelayout':
-                        $retVal = GeneralUtility::makeInstance(PageLayoutResolver::class)
-                            ->getLayoutForPage($tsfe->page, $tsfe->rootLine);
+                        $pageInformation = $this->getRequest()->getAttribute('frontend.page.information');
+                        $pageLayoutResolver = GeneralUtility::makeInstance(PageLayoutResolver::class);
+                        $retVal = $pageLayoutResolver->getLayoutForPage($pageInformation->getPageRecord(), $pageInformation->getRootLine());
                         break;
                     case 'current':
                         $retVal = $this->data[$this->currentValKey] ?? null;
@@ -4017,19 +4025,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'debug':
                         switch ($key) {
                             case 'rootLine':
+                                $tsfe = $this->getTypoScriptFrontendController();
                                 $retVal = DebugUtility::viewArray($tsfe->config['rootLine'] ?? []);
                                 break;
                             case 'fullRootLine':
-                                $retVal = DebugUtility::viewArray($tsfe->rootLine);
+                                $retVal = DebugUtility::viewArray($this->getRequest()->getAttribute('frontend.page.information')->getRootLine());
                                 break;
                             case 'data':
                                 $retVal = DebugUtility::viewArray($this->data);
                                 break;
                             case 'register':
+                                $tsfe = $this->getTypoScriptFrontendController();
                                 $retVal = DebugUtility::viewArray($tsfe->register);
                                 break;
                             case 'page':
-                                $retVal = DebugUtility::viewArray($tsfe->page);
+                                $retVal = DebugUtility::viewArray($this->getRequest()->getAttribute('frontend.page.information')->getPageRecord());
                                 break;
                         }
                         break;
@@ -4874,7 +4884,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $pidList = GeneralUtility::trimExplode(',', $conf['pidInList'], true);
                 array_walk($pidList, function (&$storagePid) {
                     if ($storagePid === 'this') {
-                        $storagePid = $this->getTypoScriptFrontendController()->id;
+                        $storagePid = $this->request->getAttribute('frontend.page.information')->getId();
                     }
                 });
                 $pageRepository = $this->getPageRepository();
@@ -5081,7 +5091,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Init:
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $expressionBuilder = $queryBuilder->expr();
-        $tsfe = $this->getTypoScriptFrontendController();
+        $request = $this->getRequest();
+        $contentPid = $request->getAttribute('frontend.page.information')->getContentFromPid();
         $constraints = [];
         $pid_uid_flag = 0;
         $enableFieldsIgnore = [];
@@ -5098,7 +5109,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         );
 
         if (trim($conf['uidInList'] ?? '')) {
-            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $conf['uidInList']));
+            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $conf['uidInList']));
 
             // If moved records shall be considered, select via t3ver_oid
             if ($considerMovePointers) {
@@ -5124,7 +5135,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         if (trim($conf['pidInList'])) {
-            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $conf['pidInList']));
+            $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $conf['pidInList']));
             // Removes all pages which are not visible for the user!
             $listArr = $this->checkPidArray($listArr);
             if (GeneralUtility::inList($conf['pidInList'], 'root')) {
@@ -5319,11 +5330,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return [];
         }
 
-        $tsfe = $this->getTypoScriptFrontendController();
-        if ($pageIds === [$tsfe->id]) {
-            // The TypoScriptFrontendController already granted access to the current page (see getPageAndRootline())
-            // and made sure the current doktype is a doktype whose content should be rendered, so there is no need
-            // to check that again.
+        if ($pageIds === [$this->request->getAttribute('frontend.page.information')->getId()]) {
+            // Middlewares already checked access to the current page and made sure the current doktype
+            // is a doktype whose content should be rendered, so there is no need to check that again.
             return $pageIds;
         }
         $pageRepository = $this->getPageRepository();
@@ -5517,10 +5526,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * @return TypoScriptFrontendController|null
      * @internal this is set to public so extensions such as EXT:solr can use the method in tests.
      */
-    public function getTypoScriptFrontendController()
+    public function getTypoScriptFrontendController(): ?TypoScriptFrontendController
     {
         return $this->typoScriptFrontendController ?: $GLOBALS['TSFE'] ?? null;
     }

@@ -33,24 +33,20 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
-    protected $backupGlobals = true;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCsvDataSet(__DIR__ . '/../../../../../core/Tests/Functional/Fixtures/pages.csv');
+        $this->importCsvDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'typo3-localhost',
             $this->buildSiteConfiguration(1, 'https://typo3.localhost/'),
             [$this->buildDefaultLanguageConfiguration('EN', '/')]
         );
 
-        // A nullsite is used, so PageLinkBuilder does not "detect" the default site (from TSFE) as the same
-        // site making all links absolute for our tests
+        // @todo: Update this. There should always be a site object and setting $GLOBALS['TYPO3_REQUEST'] is a hack.
         $rootPageSite = new NullSite();
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://typo3-2.localhost/', 'GET'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('site', $rootPageSite)
             ->withAttribute('language', $rootPageSite->getDefaultLanguage());
     }
 

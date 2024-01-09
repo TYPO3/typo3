@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Middleware;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -24,16 +25,19 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * Render the admin panel via PSR-15 middleware
  *
  * @internal
  */
-class AdminPanelRenderer implements MiddlewareInterface
+readonly class AdminPanelRenderer implements MiddlewareInterface
 {
+    public function __construct(
+        private ContainerInterface $container,
+    ) {}
+
     /**
      * Render the admin panel if activated
      */
@@ -41,18 +45,17 @@ class AdminPanelRenderer implements MiddlewareInterface
     {
         $response = $handler->handle($request);
         if (
-            $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
+            $request->getAttribute('frontend.page.information') instanceof PageInformation
             && StateUtility::isActivatedForUser()
             && StateUtility::isActivatedInTypoScript()
             && !StateUtility::isHiddenForUser()
         ) {
-            $mainController = GeneralUtility::makeInstance(MainController::class);
             $body = $response->getBody();
             $body->rewind();
             $contents = $response->getBody()->getContents();
             $content = str_ireplace(
                 '</body>',
-                $mainController->render($request) . '</body>',
+                $this->container->get(MainController::class)->render($request) . '</body>',
                 $contents
             );
             $body = new Stream('php://temp', 'rw');

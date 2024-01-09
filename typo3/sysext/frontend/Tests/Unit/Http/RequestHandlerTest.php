@@ -129,9 +129,6 @@ final class RequestHandlerTest extends UnitTestCase
         $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
         $frontendController = $frontendControllerMock;
         $frontendController->cObj = $contentObjectRendererMock;
-        $frontendController->page = [
-            'title' => '',
-        ];
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
@@ -300,9 +297,6 @@ final class RequestHandlerTest extends UnitTestCase
         $frontendController->config = [
             'config' => [],
         ];
-        $frontendController->page = [
-            'title' => '',
-        ];
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
@@ -357,9 +351,6 @@ final class RequestHandlerTest extends UnitTestCase
         $frontendController->cObj = $contentObjectRendererMock;
         $frontendController->config = [
             'config' => [],
-        ];
-        $frontendController->page = [
-            'title' => '',
         ];
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
@@ -471,9 +462,6 @@ final class RequestHandlerTest extends UnitTestCase
         $frontendController->cObj = $contentObjectRendererMock;
         $frontendController->config = [
             'config' => [],
-        ];
-        $frontendController->page = [
-            'title' => '',
         ];
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('This website is...');

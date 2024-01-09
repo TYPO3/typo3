@@ -40,6 +40,10 @@ class RecordsContentObject extends AbstractContentObject
      */
     protected $data = [];
 
+    public function __construct(
+        private readonly TimeTracker $timeTracker,
+    ) {}
+
     /**
      * Rendering the cObject, RECORDS
      *
@@ -55,13 +59,12 @@ class RecordsContentObject extends AbstractContentObject
 
         $theValue = '';
         $originalRec = $frontendController->currentRecord;
-        // If the currentRecord is set, we register, that this record has invoked this function.
-        // It's should not be allowed to do this again then!!
+        // If the currentRecord is set, we register that this record has invoked this function.
+        // It should not be allowed to do this again then.
         if ($originalRec) {
             if (!($frontendController->recordRegister[$originalRec] ?? false)) {
                 $frontendController->recordRegister[$originalRec] = 0;
             }
-
             ++$frontendController->recordRegister[$originalRec];
         }
 
@@ -147,16 +150,13 @@ class RecordsContentObject extends AbstractContentObject
     protected function isRecordsPageAccessible(string $table, array $row, array $conf): bool
     {
         $pageId = (int)($table === 'pages' ? $row['uid'] : $row['pid']);
-        if ($pageId === $this->getTypoScriptFrontendController()->id) {
-            // Access to current page has already been checked in TypoScriptFrontendController
-            // before rendering this content object.
+        if ($pageId === $this->request->getAttribute('frontend.page.information')->getId()) {
+            // Access to current page has already been checked before rendering this content object.
             return true;
         }
-
         if ($this->cObj->stdWrapValue('dontCheckPid', $conf)) {
             return true;
         }
-
         $validPageId = $this->getPageRepository()->filterAccessiblePageIds([$pageId]);
         return $validPageId !== [];
     }
@@ -226,7 +226,7 @@ class RecordsContentObject extends AbstractContentObject
                         $e->getMessage(),
                         $e->getCode()
                     );
-                    $this->getTimeTracker()->setTSlogMessage($message, LogLevel::WARNING);
+                    $this->timeTracker->setTSlogMessage($message, LogLevel::WARNING);
                 }
             }
             // Store the resulting records into the itemArray and data results array
@@ -243,13 +243,5 @@ class RecordsContentObject extends AbstractContentObject
                 }
             }
         }
-    }
-
-    /**
-     * @return TimeTracker
-     */
-    protected function getTimeTracker()
-    {
-        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

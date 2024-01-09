@@ -52,6 +52,10 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
             'getTSFE',
             static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments) {
+                // @todo: b/w compat layer. This will later log a deprecation log entry when
+                //        for instance tsfe->id is being actively deprecated. When this happens,
+                //        an alternative should be documented to for instance retrieve the current
+                //        page uid from PageInformation - request attribute 'frontend.page.information'.
                 if (($arguments['tsfe'] ?? null) instanceof TypoScriptFrontendController) {
                     return $arguments['tsfe'];
                 }

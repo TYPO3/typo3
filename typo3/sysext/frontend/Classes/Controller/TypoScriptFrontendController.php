@@ -86,6 +86,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * The page id (int).
      *
      * Read-only! Extensions may read but never write this property!
+     * @todo: deprecate
      */
     public int $id;
 
@@ -94,30 +95,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected PageArguments $pageArguments;
 
     /**
-     * Rootline of page records all the way to the root.
-     *
-     * Both language and version overlays are applied to these page records:
-     * All "data" fields are set to language / version overlay values, *except* uid and
-     * pid, which are the default-language and live-version ids.
-     *
-     * First array row with the highest key is the deepest page (the requested page),
-     * then parent pages with descending keys until (but not including) the
-     * project root pseudo page 0.
-     *
-     * When page uid 5 is called in this example:
-     * [0] Project name
-     * |- [2] An organizational page, probably with is_siteroot=1 and a site config
-     *    |- [3] Site root with a sys_template having "root" flag set
-     *       |- [5] Here you are
-     *
-     * This $absoluteRootLine is:
-     * [3] => [uid = 5, pid = 3, title = Here you are, ...]
-     * [2] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
-     * [1] => [uid = 2, pid = 0, title = An organizational page, probably with is_siteroot=1 and a site config, ...]
-     *
-     * Read-only! Extensions may read but never write this property!
-     *
      * @var array<int, array<string, mixed>>
+     * @todo: deprecate
      */
     public array $rootLine = [];
 
@@ -125,6 +104,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * The page record.
      *
      * Read-only! Extensions may read but never write this property!
+     * @todo: deprecate
      */
     public ?array $page = [];
 
@@ -133,11 +113,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * point to another page from which content will then be displayed instead.
      *
      * Read-only! Extensions may read but never write this property!
+     * @todo: deprecate
      */
     public int $contentPid = 0;
 
     /**
      * Read-only! Extensions may read but never write this property!
+     * @todo: deprecate
      */
     public ?PageRepository $sys_page = null;
 
@@ -335,7 +317,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->site = $site;
         $this->language = $siteLanguage;
         $this->pageArguments = $pageArguments;
-        $this->id = $pageArguments->getPageId();
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
@@ -409,6 +390,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->config = [];
         $this->pageContentWasLoadedFromCache = false;
 
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $rootLine = $pageInformation->getRootLine();
+
         // Very first thing, *always* executed: TypoScript is one factor that influences page content.
         // There can be multiple cache entries per page, when TypoScript conditions on the same page
         // create different TypoScript. We thus need the sys_template rows relevant for this page.
@@ -419,7 +403,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         //        in TypoScriptFrontendInitialization. This could be done when getPageAndRootline()
         //        switches to a CTE query instead of using RootlineUtility.
         $sysTemplateRepository = GeneralUtility::makeInstance(SysTemplateRepository::class);
-        $sysTemplateRows = $sysTemplateRepository->getSysTemplateRowsByRootline($this->rootLine, $request);
+        $sysTemplateRows = $sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
         // Needed for cache calculations. Put into a variable here to not serialize multiple times.
         $serializedSysTemplateRows = serialize($sysTemplateRows);
 
@@ -443,7 +427,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Calculate "local" rootLine that stops at first root=1 template, will be set as $this->config['rootLine']
         $sysTemplateRowsIndexedByPid = array_combine(array_column($sysTemplateRows, 'pid'), $sysTemplateRows);
         $localRootline = [];
-        foreach ($this->rootLine as $rootlinePage) {
+        foreach ($rootLine as $rootlinePage) {
             array_unshift($localRootline, $rootlinePage);
             if ((int)($rootlinePage['uid'] ?? 0) > 0
                 && (int)($sysTemplateRowsIndexedByPid[$rootlinePage['uid']]['root'] ?? 0) === 1
@@ -469,15 +453,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $typoscriptCache = $cacheManager->getCache('typoscript');
         }
 
-        $topDownRootLine = $this->rootLine;
+        $topDownRootLine = $rootLine;
         ksort($topDownRootLine);
         $expressionMatcherVariables = [
             'request' => $request,
-            'pageId' => $this->id,
+            'pageId' => $pageInformation->getId(),
             // @todo We're using the full page row here to provide all necessary fields (e.g. "backend_layout"),
             //       which are currently not included in the rows, RootlineUtility provides by default. We might
-            //       want to switch to $this->rootline as soon as it contains all fields.
-            'page' => $this->page,
+            //       want to switch to $pageInformation->getRootLine() as soon as it contains all fields.
+            'page' => $pageInformation->getPageRecord(),
             'fullRootLine' => $topDownRootLine,
             'localRootLine' => $localRootline,
             'site' => $site,
@@ -855,11 +839,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Fetch the list of user groups
         $userAspect = $this->context->getAspect('frontend.user');
         $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageId = $pageInformation->getId();
         $site = $request->getAttribute('site');
         $language = $request->getAttribute('language', $site->getDefaultLanguage());
         $pageArguments = $request->getAttribute('routing');
         $hashParameters = [
-            'id' => $pageInformation->getId(),
+            'id' => $pageId,
             'type' => (int)($pageArguments->getPageType() ?: 0),
             'groupIds' => implode(',', $userAspect->getGroupIds()),
             'MP' => $pageInformation->getMountPoint(),
@@ -882,7 +867,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
-        return $this->id . '_' . sha1(serialize($hashParameters));
+        return $pageId . '_' . sha1(serialize($hashParameters));
     }
 
     /**
@@ -927,10 +912,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param int $expirationTstamp Expiration timestamp
      * @see populatePageDataFromCache()
      */
-    protected function setPageCacheContent(string $content, array $data, int $expirationTstamp): array
+    protected function setPageCacheContent(ServerRequestInterface $request, string $content, array $data, int $expirationTstamp): array
     {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageId = $pageInformation->getId();
+        $pageRecord = $pageInformation->getPageRecord();
         $cacheData = [
-            'page_id' => $this->id,
+            'page_id' => $pageId,
             'content' => $content,
             'contentType' => $this->contentType,
             'cache_data' => $data,
@@ -938,13 +926,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'tstamp' => $GLOBALS['EXEC_TIME'],
         ];
         $this->cacheExpires = $expirationTstamp;
-        $this->pageCacheTags[] = 'pageId_' . $this->id;
+        $this->pageCacheTags[] = 'pageId_' . $pageId;
         // Respect the page cache when content of pid is shown
-        if ($this->id !== $this->contentPid) {
-            $this->pageCacheTags[] = 'pageId_' . $this->contentPid;
+        if ($pageId !== $pageInformation->getContentFromPid()) {
+            $this->pageCacheTags[] = 'pageId_' . $pageInformation->getContentFromPid();
         }
-        if (!empty($this->page['cache_tags'])) {
-            $tags = GeneralUtility::trimExplode(',', $this->page['cache_tags'], true);
+        if (!empty($pageRecord['cache_tags'])) {
+            $tags = GeneralUtility::trimExplode(',', $pageRecord['cache_tags'], true);
             $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
         }
         $this->pageCacheTags = array_unique($this->pageCacheTags);
@@ -964,17 +952,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @see ContentObjectRenderer::lastChanged()
      * @see setRegisterValueForSysLastChanged()
      */
-    protected function setSysLastChanged(): void
+    protected function setSysLastChanged(ServerRequestInterface $request): void
     {
-        // We only update the info if browsing the live workspace
+        // Only update if browsing the live workspace
         $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
         if ($isInWorkspace) {
             return;
         }
-        if ($this->page['SYS_LASTCHANGED'] < (int)($this->register['SYS_LASTCHANGED'] ?? 0)) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('pages');
-            $pageId = $this->page['_LOCALIZED_UID'] ?? $this->id;
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageRecord = $pageInformation->getPageRecord();
+        if ($pageRecord['SYS_LASTCHANGED'] < (int)($this->register['SYS_LASTCHANGED'] ?? 0)) {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+            $pageId = $pageRecord['_LOCALIZED_UID'] ?? $pageInformation->getId();
             $connection->update(
                 'pages',
                 [
@@ -1049,16 +1038,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Processing if caching is enabled
         if ($event->isCachingEnabled()) {
             // Seconds until a cached page is too old
-            $cacheTimeout = $this->get_cache_timeout();
+            $cacheTimeout = $this->get_cache_timeout($request);
             $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
             // Write the page to cache
-            $cachedInformation = $this->setPageCacheContent($this->content, $this->config, $timeOutTime);
+            $cachedInformation = $this->setPageCacheContent($request, $this->content, $this->config, $timeOutTime);
 
             // Event for cache post processing (eg. writing static files)
             $event = new AfterCachedPageIsPersistedEvent($request, $this, $this->newHash, $cachedInformation, $cacheTimeout);
             $eventDispatcher->dispatch($event);
         }
-        $this->setSysLastChanged();
+        $this->setSysLastChanged($request);
     }
 
     /**
@@ -1410,14 +1399,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Creates an instance of ContentObjectRenderer in $this->cObj
      * This instance is used to start the rendering of the TypoScript template structure
      *
-     * @param ServerRequestInterface|null $request
      * @internal
      */
-    public function newCObj(ServerRequestInterface $request = null): void
+    public function newCObj(ServerRequestInterface $request): void
     {
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
         $this->cObj->setRequest($request);
-        $this->cObj->start($this->page, 'pages');
+        $this->cObj->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
     }
 
     /**
@@ -1545,14 +1533,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Get the cache timeout for the current page.
-     * @internal
      */
-    public function get_cache_timeout(): int
+    protected function get_cache_timeout(ServerRequestInterface $request): int
     {
+        $pageInformation = $request->getAttribute('frontend.page.information');
         return GeneralUtility::makeInstance(CacheLifetimeCalculator::class)
             ->calculateLifetimeForPage(
-                (int)$this->id,
-                $this->page,
+                $pageInformation->getId(),
+                $pageInformation->getPageRecord(),
                 $this->config['config'] ?? [],
                 $this->cacheTimeOutDefault,
                 $this->context
@@ -1637,13 +1625,5 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getSite(): Site
     {
         return $this->site;
-    }
-
-    /**
-     * @internal
-     */
-    public function getPageArguments(): PageArguments
-    {
-        return $this->pageArguments;
     }
 }

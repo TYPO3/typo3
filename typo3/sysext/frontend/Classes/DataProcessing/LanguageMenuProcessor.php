@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 
@@ -46,26 +46,14 @@ use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 class LanguageMenuProcessor implements DataProcessorInterface
 {
     protected const LINK_PLACEHOLDER = '###LINKPLACEHOLDER###';
-
-    /**
-     * The content object renderer
-     */
-    protected ?ContentObjectRenderer $cObj = null;
-
-    /**
-     * The processor configuration
-     *
-     * @var array
-     */
-    protected $processorConfiguration;
+    protected ContentObjectRenderer $cObj;
+    protected array $processorConfiguration;
 
     /**
      * Allowed configuration keys for menu generation, other keys
      * will throw an exception to prevent configuration errors.
-     *
-     * @var array
      */
-    protected $allowedConfigurationKeys = [
+    protected array $allowedConfigurationKeys = [
         'if',
         'if.',
         'languages',
@@ -78,28 +66,20 @@ class LanguageMenuProcessor implements DataProcessorInterface
     /**
      * Remove keys from configuration that should not be passed
      * to HMENU to prevent configuration errors
-     *
-     * @var array
      */
-    protected $removeConfigurationKeysForHmenu = [
+    protected array $removeConfigurationKeysForHmenu = [
         'languages',
         'languages.',
         'as',
     ];
 
-    /**
-     * @var array
-     */
-    protected $menuConfig = [
+    protected array $menuConfig = [
         'special' => 'language',
         'addQueryString' => 1,
         'wrap' => '[|]',
     ];
 
-    /**
-     * @var array
-     */
-    protected $menuLevelConfig = [
+    protected array $menuLevelConfig = [
         'doNotLinkIt' => '1',
         'wrapItemAndSub' => '{|}, |*| {|}, |*| {|}',
         'stdWrap.' => [
@@ -232,33 +212,14 @@ class LanguageMenuProcessor implements DataProcessorInterface
         ],
     ];
 
-    /**
-     * @var array
-     */
-    protected $menuDefaults = [
+    protected array $menuDefaults = [
         'as' => 'languagemenu',
     ];
 
-    /**
-     * @var string
-     */
-    protected $menuTargetVariableName;
-
-    /**
-     * @var ContentDataProcessor
-     */
-    protected $contentDataProcessor;
-
-    protected ContentObjectFactory $contentObjectFactory;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
-        $this->contentObjectFactory = GeneralUtility::makeInstance(ContentObjectFactory::class);
-    }
+    public function __construct(
+        protected readonly ContentDataProcessor $contentDataProcessor,
+        protected readonly ContentObjectFactory $contentObjectFactory,
+    ) {}
 
     /**
      * This is called from UserContentObject via ContentObjectRenderer->callUserFunction()
@@ -277,9 +238,9 @@ class LanguageMenuProcessor implements DataProcessorInterface
         return $this->cObj->stdWrapValue($key, $this->processorConfiguration, $this->menuDefaults[$key]);
     }
 
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    protected function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TSFE'];
+        return $this->cObj->getRequest();
     }
 
     /**
@@ -287,7 +248,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
      */
     protected function getCurrentSite(): Site
     {
-        return $this->getTypoScriptFrontendController()->getSite();
+        return $this->getRequest()->getAttribute('site');
     }
 
     /**
@@ -334,7 +295,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         }
 
         $paramsToExclude = CanonicalizationUtility::getParamsToExcludeForCanonicalizedUrl(
-            (int)$this->getTypoScriptFrontendController()->id,
+            $this->getRequest()->getAttribute('frontend.page.information')->getId(),
             (array)$GLOBALS['TYPO3_CONF_VARS']['FE']['additionalCanonicalizedUrlParameters']
         );
 
@@ -395,9 +356,6 @@ class LanguageMenuProcessor implements DataProcessorInterface
         $this->cObj = $cObj;
         $this->processorConfiguration = $processorConfiguration;
 
-        // Get Configuration
-        $this->menuTargetVariableName = $this->getConfigurationValue('as');
-
         // Validate and Build Configuration
         $this->validateAndBuildConfiguration();
 
@@ -418,7 +376,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         }
 
         // Return processed data
-        $processedData[$this->menuTargetVariableName] = $processedMenu;
+        $processedData[$this->getConfigurationValue('as')] = $processedMenu;
         return $processedData;
     }
 

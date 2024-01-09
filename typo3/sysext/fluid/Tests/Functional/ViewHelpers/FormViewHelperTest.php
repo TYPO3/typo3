@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\ExtendsAbstractEntity;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -236,6 +236,8 @@ final class FormViewHelperTest extends FunctionalTestCase
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
         $request = $this->createRequest()
             ->withAttribute(
                 'extbase',
@@ -245,10 +247,9 @@ final class FormViewHelperTest extends FunctionalTestCase
                 ->setControllerName('controllerName')
                 ->setControllerExtensionName('extensionName')
             )
-            ->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
+            ->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]))
+            ->withAttribute('frontend.page.information', $pageInformation);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->id = 1;
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form addQueryString="untrusted" />');
         $context->setRequest(new Request($request));

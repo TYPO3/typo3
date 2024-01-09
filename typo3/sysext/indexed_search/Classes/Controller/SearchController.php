@@ -307,7 +307,8 @@ class SearchController extends ActionController
                 }
             }
             // Write search statistics
-            $this->searchRepository->writeSearchStat($GLOBALS['TSFE']->id, $this->searchWords ?: []);
+            $pageId = $this->request->getAttribute('frontend.page.information')->getId();
+            $this->searchRepository->writeSearchStat($pageId, $this->searchWords ?: []);
         }
         $this->view->assign('resultsets', $resultsets);
         $this->view->assign('searchParams', $searchData);
@@ -948,7 +949,7 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableSearchTypeOptions()
+    protected function getAllAvailableSearchTypeOptions(): array
     {
         $allOptions = [];
         $types = [0, 1, 2, 3, 10, 20];
@@ -963,8 +964,7 @@ class SearchController extends ActionController
             unset($allOptions[10]);
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['searchType']);
-        return $allOptions;
+        return $this->removeOptionsFromOptionList($allOptions, $blindSettings['searchType']);
     }
 
     /**
@@ -972,7 +972,7 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableOperandsOptions()
+    protected function getAllAvailableOperandsOptions(): array
     {
         $allOptions = [];
         $blindSettings = $this->settings['blind'];
@@ -992,7 +992,7 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableMediaTypesOptions()
+    protected function getAllAvailableMediaTypesOptions(): array
     {
         $allOptions = [];
         $mediaTypes = [-1, 0, -2];
@@ -1029,26 +1029,17 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableLanguageOptions()
+    protected function getAllAvailableLanguageOptions(): array
     {
         $allOptions = [
             '-1' => LocalizationUtility::translate('languageUids.-1', 'IndexedSearch'),
         ];
         $blindSettings = $this->settings['blind'];
         if (!$blindSettings['languageUid']) {
-            try {
-                $site = GeneralUtility::makeInstance(SiteFinder::class)
-                    ->getSiteByPageId($GLOBALS['TSFE']->id);
-
-                $languages = $site->getLanguages();
-                foreach ($languages as $language) {
-                    $allOptions[$language->getLanguageId()] = $language->getNavigationTitle();
-                }
-            } catch (SiteNotFoundException $e) {
-                // No Site found, no options
-                $allOptions = [];
+            $languages = $this->request->getAttribute('site')->getLanguages();
+            foreach ($languages as $language) {
+                $allOptions[$language->getLanguageId()] = $language->getNavigationTitle();
             }
-
             // disable single entries by TypoScript
             $allOptions = $this->removeOptionsFromOptionList($allOptions, (array)$blindSettings['languageUid']);
         } else {
@@ -1066,7 +1057,7 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableSectionsOptions()
+    protected function getAllAvailableSectionsOptions(): array
     {
         $allOptions = [];
         $sections = [0, -1, -2, -3];
@@ -1112,7 +1103,7 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableIndexConfigurationsOptions()
+    protected function getAllAvailableIndexConfigurationsOptions(): array
     {
         $allOptions = [
             '-1' => LocalizationUtility::translate('indexingConfigurations.-1', 'IndexedSearch'),
@@ -1151,7 +1142,7 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableSortOrderOptions()
+    protected function getAllAvailableSortOrderOptions(): array
     {
         $allOptions = [];
         $sortOrders = ['rank_flag', 'rank_freq', 'rank_first', 'rank_count', 'mtime', 'title', 'crdate'];
@@ -1171,7 +1162,7 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableGroupOptions()
+    protected function getAllAvailableGroupOptions(): array
     {
         $allOptions = [];
         $blindSettings = $this->settings['blind'];
@@ -1191,7 +1182,7 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableSortDescendingOptions()
+    protected function getAllAvailableSortDescendingOptions(): array
     {
         $allOptions = [];
         $blindSettings = $this->settings['blind'];
@@ -1211,14 +1202,14 @@ class SearchController extends ActionController
      *
      * @return array Associative array with options
      */
-    protected function getAllAvailableNumberOfResultsOptions()
+    protected function getAllAvailableNumberOfResultsOptions(): array
     {
         $allOptions = [];
         if (count($this->availableResultsNumbers) > 1) {
             $allOptions = array_combine($this->availableResultsNumbers, $this->availableResultsNumbers);
         }
         // disable single entries by TypoScript
-        return $this->removeOptionsFromOptionList((array)$allOptions, $this->settings['blind']['numberOfResults']);
+        return $this->removeOptionsFromOptionList($allOptions, $this->settings['blind']['numberOfResults']);
     }
 
     /**
@@ -1228,7 +1219,7 @@ class SearchController extends ActionController
      * @param array $blindOptions associative array containing the optionkey as they key and the value = 1 if it should be removed
      * @return array Options from $allOptions with some options removed
      */
-    protected function removeOptionsFromOptionList($allOptions, $blindOptions)
+    protected function removeOptionsFromOptionList(array $allOptions, $blindOptions): array
     {
         if (is_array($blindOptions)) {
             foreach ($blindOptions as $key => $val) {
@@ -1417,7 +1408,7 @@ class SearchController extends ActionController
      *
      * @return array Variables to pass into the view so they can be used in fluid template
      */
-    protected function processExtendedSearchParameters()
+    protected function processExtendedSearchParameters(): array
     {
         $allSearchTypes = $this->getAllAvailableSearchTypeOptions();
         $allDefaultOperands = $this->getAllAvailableOperandsOptions();
@@ -1425,7 +1416,6 @@ class SearchController extends ActionController
         $allLanguageUids = $this->getAllAvailableLanguageOptions();
         $allSortOrders = $this->getAllAvailableSortOrderOptions();
         $allSortDescendings = $this->getAllAvailableSortDescendingOptions();
-
         return [
             'allSearchTypes' => $allSearchTypes,
             'allDefaultOperands' => $allDefaultOperands,
@@ -1507,7 +1497,6 @@ class SearchController extends ActionController
     protected function getNumberOfResults($numberOfResults)
     {
         $numberOfResults = (int)$numberOfResults;
-
         return in_array($numberOfResults, $this->availableResultsNumbers) ?
             $numberOfResults : $this->defaultResultNumber;
     }

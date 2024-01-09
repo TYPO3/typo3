@@ -26,7 +26,6 @@ use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FormRuntimeTest extends FunctionalTestCase
@@ -42,7 +41,6 @@ final class FormRuntimeTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->loadDefaultYamlConfigurations();
-        $this->initializeTSFE();
         $this->formFactory = $this->get(ArrayFormFactory::class);
         $this->request = $this->buildExtbaseRequest();
     }
@@ -130,11 +128,5 @@ final class FormRuntimeTest extends FunctionalTestCase
                 ],
             ],
         ]);
-    }
-
-    private function initializeTSFE(): void
-    {
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->id = 1;
     }
 }

@@ -27,21 +27,12 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class RenderFormValueViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['form'];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->loadDefaultYamlConfigurations();
-        $this->initializeTSFE();
-    }
 
     public static function renderDataProvider(): array
     {
@@ -63,6 +54,7 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
+        $this->loadDefaultYamlConfigurations();
         $definition = $this->buildFormDefinition();
         $runtime = $definition->bind($this->buildExtbaseRequest());
 
@@ -130,11 +122,5 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
                 ],
             ],
         ]);
-    }
-
-    private function initializeTSFE(): void
-    {
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->id = 1;
     }
 }

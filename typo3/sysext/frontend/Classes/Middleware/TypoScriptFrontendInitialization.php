@@ -133,6 +133,7 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         }
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $GLOBALS['TYPO3_REQUEST'] = $request;
+        $pageRecord = $pageInformation->getPageRecord();
 
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
@@ -143,15 +144,13 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         );
         // b/w compat layer
         $controller->id = $pageInformation->getId();
-        $controller->page = $pageInformation->getPageRecord();
+        $controller->page = $pageRecord;
         $controller->contentPid = $pageInformation->getContentFromPid();
         $controller->rootLine = $pageInformation->getRootLine();
 
-        // Update SYS_LASTCHANGED at the very last, when $this->page might be changed
-        // by settingLanguage() and the $this->page was finally resolved.
+        // Update SYS_LASTCHANGED at the very last, when page record was finally resolved.
         // Is also called when a translated page is in use, so the register reflects
         // the state of the translated page, not the page in the default language.
-        $pageRecord = $pageInformation->getPageRecord();
         $controller->register['SYS_LASTCHANGED'] = (int)$pageRecord['tstamp'];
         if ($controller->register['SYS_LASTCHANGED'] < (int)$pageRecord['SYS_LASTCHANGED']) {
             $controller->register['SYS_LASTCHANGED'] = (int)$pageRecord['SYS_LASTCHANGED'];
@@ -160,7 +159,7 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         // Check if backend user has read access to this page.
         if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
             && $this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)
-            && !$GLOBALS['BE_USER']->doesUserHaveAccess($controller->page, Permission::PAGE_SHOW)
+            && !$GLOBALS['BE_USER']->doesUserHaveAccess($pageRecord, Permission::PAGE_SHOW)
         ) {
             return GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
                 $request,

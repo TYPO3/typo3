@@ -117,7 +117,8 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 
     protected function defineUrl(array $data): array
     {
-        $pageId = $this->config['url']['pageId'] ?? $GLOBALS['TSFE']->id;
+        $pageId = $this->request->getAttribute('frontend.page.information')->getId();
+        $pageId = $this->config['url']['pageId'] ?? $pageId;
         $additionalParams = [];
 
         $additionalParams = $this->getUrlFieldParameterMap($additionalParams, $data['data']);

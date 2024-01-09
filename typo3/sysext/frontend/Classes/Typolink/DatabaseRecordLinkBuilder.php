@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Builds a TypoLink to a database record
@@ -36,9 +35,8 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
 {
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $request = $this->contentObjectRenderer->getRequest();
-        $pageTsConfig = $this->getPageTsConfig($tsfe, $request);
+        $pageTsConfig = $this->getPageTsConfig($request);
         $configurationKey = $linkDetails['identifier'] . '.';
         $typoScriptArray = $request->getAttribute('frontend.typoscript')?->getSetupArray() ?? [];
         $configuration = $typoScriptArray['config.']['recordLinks.'] ?? [];
@@ -108,7 +106,6 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
             $typoScriptConfiguration['section'] = $linkDetails['fragment'];
         }
         // Build the full link to the record by calling LinkFactory again ("inception")
-        $request = $this->contentObjectRenderer->getRequest();
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $localContentObjectRenderer->setRequest($request);
         $localContentObjectRenderer->start($record, $databaseTable);
@@ -119,15 +116,16 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
     /**
      * Helper method to calculate pageTsConfig in frontend scope, we can't use BackendUtility::getPagesTSconfig() here.
      */
-    protected function getPageTsConfig(TypoScriptFrontendController $tsfe, ServerRequestInterface $request): array
+    protected function getPageTsConfig(ServerRequestInterface $request): array
     {
-        $id = $tsfe->id;
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $id = $pageInformation->getId();
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $pageTsConfig = $runtimeCache->get('pageTsConfig-' . $id);
         if ($pageTsConfig instanceof PageTsConfig) {
             return $pageTsConfig->getPageTsConfigArray();
         }
-        $fullRootLine = $tsfe->rootLine;
+        $fullRootLine = $pageInformation->getRootLine();
         ksort($fullRootLine);
         $site = $request->getAttribute('site') ?? new NullSite();
         $pageTsConfigFactory = GeneralUtility::makeInstance(PageTsConfigFactory::class);

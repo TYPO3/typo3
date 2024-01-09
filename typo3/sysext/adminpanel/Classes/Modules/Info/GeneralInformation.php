@@ -43,7 +43,6 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         $frontendUserAspect = $this->context->getAspect('frontend.user');
-        $tsfe = $request->getAttribute('frontend.controller');
         return new ModuleData(
             [
                 'post' => $request->getParsedBody(),
@@ -51,12 +50,12 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
                 'cookie' => $request->getCookieParams(),
                 'server' => $request->getServerParams(),
                 'info' => [
-                    'pageUid' => $tsfe->id,
-                    'pageType' => $tsfe->getPageArguments()->getPageType(),
+                    'pageUid' => $request->getAttribute('frontend.page.information')->getId(),
+                    'pageType' => $request->getAttribute('routing')->getPageType(),
                     'groupList' => implode(',', $frontendUserAspect->getGroupIds()),
-                    'noCache' => !$this->isCachingAllowed($request),
+                    'noCache' => !$request->getAttribute('frontend.cache.instruction')->isCachingAllowed(),
                     'noCacheReasons' => $request->getAttribute('frontend.cache.instruction')->getDisabledCacheReasons(),
-                    'countUserInt' => count($tsfe->config['INTincScript'] ?? []),
+                    'countUserInt' => count($request->getAttribute('frontend.controller')->config['INTincScript'] ?? []),
                     'totalParsetime' => $this->timeTracker->getParseTime(),
                     'feUser' => [
                         'uid' => $frontendUserAspect->get('id') ?: 0,
@@ -71,9 +70,6 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
 
     /**
      * Creates the content for the "info" section ("module") of the Admin Panel
-     *
-     * @return string HTML content for the section. Consists of a string with table-rows with four columns.
-     * @see display()
      */
     public function getContent(ModuleData $data): string
     {
@@ -81,17 +77,11 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
         $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Info/General.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
-
         $view->assignMultiple($data->getArrayCopy());
         $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
-
         return $view->render();
     }
 
-    /**
-     * Identifier for this Sub-module,
-     * for example "preview" or "cache"
-     */
     public function getIdentifier(): string
     {
         return 'info_general';
@@ -116,11 +106,9 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
             'totalSize' => 0,
             'totalSizeHuman' => GeneralUtility::formatSize(0),
         ];
-
-        if ($this->isCachingAllowed($request)) {
+        if ($request->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
             return $imagesOnPage;
         }
-
         $count = 0;
         $totalImageSize = 0;
         foreach (GeneralUtility::makeInstance(AssetCollector::class)->getMedia() as $file => $information) {
@@ -145,15 +133,10 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     protected function collectDocumentSize(ServerRequestInterface $request): string
     {
         $documentSize = 0;
-        if (!$this->isCachingAllowed($request)) {
+        if (!$request->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
             $tsfe = $request->getAttribute('frontend.controller');
             $documentSize = mb_strlen($tsfe->content, 'UTF-8');
         }
         return GeneralUtility::formatSize($documentSize);
-    }
-
-    protected function isCachingAllowed(ServerRequestInterface $request): bool
-    {
-        return $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
     }
 }

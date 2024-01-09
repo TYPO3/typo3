@@ -639,7 +639,7 @@ class RequestHandler implements RequestHandlerInterface
         $controller->generatePageTitle($request);
 
         // @internal hook for EXT:seo, will be gone soon, do not use it in your own extensions
-        $_params = ['page' => $controller->page, 'request' => $request];
+        $_params = ['request' => $request];
         $_ref = null;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $_ref);

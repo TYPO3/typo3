@@ -40,6 +40,7 @@ use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitialized
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -226,6 +227,12 @@ final class ContentObjectRendererTest extends FunctionalTestCase
             new PageArguments(1, '0', [])
         );
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
+        $request = $this->getPreparedRequest();
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(0);
+        $pageInformation->setContentFromPid(0);
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $subject->setRequest($request);
 
         $result = $subject->getQuery($table, $conf, true);
 

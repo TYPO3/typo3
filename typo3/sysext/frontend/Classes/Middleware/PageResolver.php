@@ -33,7 +33,6 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  * Resolve the page ID based on TYPO3's routing functionality configured in a site.
  *
  * Processes the page ID, page type (typeNum) and other parameters built from queryArguments and routeParameters.
- * After this point we have an array, TSFE->page, which is the page-record of the current page, $TSFE->id.
  *
  * However, if there is a backend user logged in and he has NO access to this page (and the page is hidden),
  * then the ID is determined again and the backend user is not considered for the rest of the frontend request.

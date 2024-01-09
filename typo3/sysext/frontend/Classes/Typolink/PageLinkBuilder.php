@@ -58,14 +58,29 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $linkResultType = LinkService::TYPE_PAGE;
-        $tsfe = $this->getTypoScriptFrontendController();
         $conf['additionalParams'] = $conf['additionalParams'] ?? '';
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         if (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
-            // If no id is given
-            $linkDetails['pageuid'] = $tsfe->id;
+            // If no id is given try to fetch it from PageInformation attribute, else fetch it from site.
+            $request = $this->contentObjectRenderer->getRequest();
+            $pageId = $request->getAttribute('frontend.page.information')?->getId();
+            if ($pageId === null) {
+                $site = $request->getAttribute('site');
+                if ($site !== null) {
+                    $pageId = $site->getRootPageId();
+                } else {
+                    // @todo: We can usually expect a site to be always set. This fallback here may only be
+                    //        required due to incomplete setup in transform.html VH functional test?!
+                    $allSites = $siteFinder->getAllSites();
+                    $firstSite = reset($allSites);
+                    $pageId = $firstSite->getRootPageId();
+                }
+            }
+            $linkDetails['pageuid'] = $pageId;
         }
 
         // Link to page even if access is missing?
+        $tsfe = $this->getTypoScriptFrontendController();
         if (isset($conf['linkAccessRestrictedPages'])) {
             $disableGroupAccessCheck = (bool)($conf['linkAccessRestrictedPages'] ?? false);
         } else {
@@ -96,7 +111,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Check if the target page has a site configuration
         try {
-            $siteOfTargetPage = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$page['uid'], null, $queryParameters['MP'] ?? '');
+            $siteOfTargetPage = $siteFinder->getSiteByPageId((int)$page['uid'], null, $queryParameters['MP'] ?? '');
             $currentSite = $this->getCurrentSite();
         } catch (SiteNotFoundException $e) {
             // Usually happens in tests, as sites with configuration should be available everywhere.
@@ -538,7 +553,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($fragment
             && $useAbsoluteUrl === false
             && $currentSiteLanguage === $siteLanguageOfTargetPage
-            && $targetPageId === $tsfe->id
+            && $targetPageId === ($this->contentObjectRenderer->getRequest()->getAttribute('frontend.page.information')?->getId() ?? 0)
             && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
             && !($tsfe->config['config']['baseURL'] ?? false)
             && count($queryParameters) === 1 // _language is always set
