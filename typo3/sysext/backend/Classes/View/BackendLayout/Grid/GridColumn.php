@@ -79,8 +79,11 @@ class GridColumn extends AbstractGridObject
 
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(PageLayoutContext $context, array $definition)
-    {
+    public function __construct(
+        PageLayoutContext $context,
+        array $definition,
+        protected string $table = 'tt_content'
+    ) {
         parent::__construct($context);
         $this->definition = $definition;
         $this->columnNumber = isset($definition['colPos']) ? (int)$definition['colPos'] : null;
@@ -173,7 +176,7 @@ class GridColumn extends AbstractGridObject
         $pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(
             BackendUtility::getRecordTitle('pages', $pageRecord, true)
         );
-        $editParam = '&edit[tt_content][' . implode(',', $this->getAllContainedItemUids()) . ']=edit' . $pageTitleParamForAltDoc;
+        $editParam = '&edit[' . $this->table . '][' . implode(',', $this->getAllContainedItemUids()) . ']=edit' . $pageTitleParamForAltDoc;
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return $uriBuilder->buildUriFromRoute('record_edit') . $editParam . '&returnUrl=' . rawurlencode($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
     }

@@ -44,25 +44,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class GridColumnItem extends AbstractGridObject
 {
     /**
-     * @var mixed[]
-     */
-    protected $record = [];
-
-    /**
-     * @var GridColumn
-     */
-    protected $column;
-
-    /**
      * @var GridColumnItem[]
      */
-    protected $translations = [];
+    protected array $translations = [];
 
-    public function __construct(PageLayoutContext $context, GridColumn $column, array $record)
-    {
+    public function __construct(
+        PageLayoutContext $context,
+        protected GridColumn $column,
+        protected array $record,
+        protected string $table = 'tt_content'
+    ) {
         parent::__construct($context);
-        $this->column = $column;
-        $this->record = $record;
     }
 
     public function isVersioned(): bool
@@ -74,7 +66,7 @@ class GridColumnItem extends AbstractGridObject
     {
         $previewRenderer = GeneralUtility::makeInstance(StandardPreviewRendererResolver::class)
             ->resolveRendererFor(
-                'tt_content',
+                $this->table,
                 $this->record,
                 $this->context->getPageId()
             );
@@ -83,7 +75,7 @@ class GridColumnItem extends AbstractGridObject
         // Dispatch event to allow listeners adding an alternative content type
         // specific preview or to manipulate the content elements' record data.
         $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
-            new PageContentPreviewRenderingEvent('tt_content', $this->record, $this->context)
+            new PageContentPreviewRenderingEvent($this->table, $this->record, $this->context)
         );
 
         // Update the modified record data
@@ -118,7 +110,7 @@ class GridColumnItem extends AbstractGridObject
         if (!$backendUser->doesUserHaveAccess($this->context->getPageRecord(), Permission::CONTENT_EDIT)) {
             return false;
         }
-        return !(bool)($backendUser->getTSConfig()['options.']['disableDelete.']['tt_content'] ?? $backendUser->getTSConfig()['options.']['disableDelete'] ?? false);
+        return !($backendUser->getTSConfig()['options.']['disableDelete.'][$this->table] ?? $backendUser->getTSConfig()['options.']['disableDelete'] ?? false);
     }
 
     public function getDeleteUrl(): string
@@ -127,7 +119,7 @@ class GridColumnItem extends AbstractGridObject
             'tce_db',
             [
                 'cmd' => [
-                    'tt_content' => [
+                    $this->table => [
                         $this->record['uid'] => [
                             'delete' => 1,
                         ],
@@ -140,18 +132,18 @@ class GridColumnItem extends AbstractGridObject
 
     public function getDeleteMessage(): string
     {
-        $recordInfo = $this->record['header'] ?? '';
+        $recordInfo = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), (int)$this->getBackendUser()->uc['titleLen']);
         if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-            $recordInfo .= ' [tt:content:' . $this->record['uid'] . ']';
+            $recordInfo .= ' [' . $this->table . ':' . $this->record['uid'] . ']';
         }
 
         $refCountMsg = BackendUtility::referenceCount(
-            'tt_content',
+            $this->table,
             $this->record['uid'],
             LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
             (string)$this->getReferenceCount($this->record['uid'])
         ) . BackendUtility::translationCount(
-            'tt_content',
+            $this->table,
             $this->record['uid'],
             LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
         );
@@ -164,7 +156,7 @@ class GridColumnItem extends AbstractGridObject
         $record = $this->getRecord();
         $previewRenderer = GeneralUtility::makeInstance(StandardPreviewRendererResolver::class)
             ->resolveRendererFor(
-                'tt_content',
+                $this->table,
                 $record,
                 $this->context->getPageId()
             );
@@ -173,28 +165,30 @@ class GridColumnItem extends AbstractGridObject
 
     public function getContentTypeLabel(): string
     {
+        if (($typeColumn = $this->getTypeColumn()) === '') {
+            return '';
+        }
+        $contentType = $this->record[$typeColumn] ?? '';
         $contentTypeLabels = $this->context->getContentTypeLabels();
-        $ctype = $this->record['CType'] ?? '';
-        return $contentTypeLabels[$ctype] ??
-            BackendUtility::getLabelFromItemListMerged((int)$this->record['pid'], 'tt_content', 'CType', $ctype, $this->record);
+        return $contentTypeLabels[$contentType] ??
+            BackendUtility::getLabelFromItemListMerged((int)($this->record['pid'] ?? 0), $this->table, $typeColumn, $contentType, $this->record);
     }
 
     public function getIcons(): string
     {
-        $table = 'tt_content';
         $row = $this->record;
         $icons = [];
 
         $icon = $this->iconFactory
-            ->getIconForRecord($table, $row, Icon::SIZE_SMALL)
-            ->setTitle(BackendUtility::getRecordIconAltText($row, $table))
+            ->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)
+            ->setTitle(BackendUtility::getRecordIconAltText($row, $this->table))
             ->render();
-        if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
-            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
+        if ($this->getBackendUser()->recordEditAccessInternals($this->table, $row)) {
+            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $this->table, $row['uid']);
         }
         $icons[] = $icon;
 
-        if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
+        if ($lockInfo = BackendUtility::isRecordLocked($this->table, $row['uid'])) {
             $icons[] = '<a href="#" title="' . htmlspecialchars($lockInfo['msg']) . '">'
                 . $this->iconFactory->getIcon('status-user-backend', Icon::SIZE_SMALL, 'overlay-edit')->render() . '</a>';
         }
@@ -203,7 +197,7 @@ class GridColumnItem extends AbstractGridObject
 
     public function getSiteLanguage(): SiteLanguage
     {
-        return $this->context->getSiteLanguage((int)$this->getRecord()['sys_language_uid']);
+        return $this->context->getSiteLanguage((int)($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField'] ?? null] ?? 0));
     }
 
     public function getRecord(): array
@@ -234,12 +228,14 @@ class GridColumnItem extends AbstractGridObject
 
     public function isDisabled(): bool
     {
-        $table = 'tt_content';
         $row = $this->getRecord();
-        $enableCols = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
-        return $enableCols['disabled'] && $row[$enableCols['disabled']]
-            || $enableCols['starttime'] && $row[$enableCols['starttime']] > $GLOBALS['EXEC_TIME']
-            || $enableCols['endtime'] && $row[$enableCols['endtime']] && $row[$enableCols['endtime']] < $GLOBALS['EXEC_TIME'];
+        $enableCols = $GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns'] ?? null;
+        return is_array($enableCols)
+            && (
+                (($enableCols['disabled'] ?? false) && $row[$enableCols['disabled']])
+                || (($enableCols['starttime'] ?? false) && ($row[$enableCols['starttime']] ?? 0) > $GLOBALS['EXEC_TIME'])
+                || (($enableCols['endtime'] ?? false) && ($row[$enableCols['endtime']] ?? false) && $row[$enableCols['endtime']] < $GLOBALS['EXEC_TIME'])
+            );
     }
 
     public function isEditable(): bool
@@ -249,20 +245,23 @@ class GridColumnItem extends AbstractGridObject
             return true;
         }
         $pageRecord = $this->context->getPageRecord();
-        return !(bool)($pageRecord['editlock'] ?? false)
+        return !($pageRecord['editlock'] ?? false)
             && $backendUser->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            && $backendUser->recordEditAccessInternals('tt_content', $this->record);
+            && $backendUser->recordEditAccessInternals($this->table, $this->record);
     }
 
     public function isDragAndDropAllowed(): bool
     {
         $pageRecord = $this->context->getPageRecord();
-        return (int)$this->record['l18n_parent'] === 0 &&
-            (
+        $typeColumn = $this->getTypeColumn();
+        return (int)($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) === 0
+            && (
                 $this->getBackendUser()->isAdmin()
-                || ((int)$this->record['editlock'] === 0 && (int)$pageRecord['editlock'] === 0)
-                && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-                && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $this->record['CType'])
+                || (
+                    ((int)($this->record['editlock'] ?? 0) === 0 && (int)($pageRecord['editlock'] ?? 0) === 0)
+                    && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
+                    && $this->getBackendUser()->checkAuthMode($this->table, $typeColumn, $this->record[$typeColumn])
+                )
             )
         ;
     }
@@ -273,7 +272,7 @@ class GridColumnItem extends AbstractGridObject
         return !$allowInconsistentLanguageHandling
             && $this->getSiteLanguage()->getLanguageId() !== 0
             && $this->getContext()->getLanguageModeIdentifier() === 'mixed'
-            && (int)$this->record['l18n_parent'] === 0;
+            && (int)($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) === 0;
     }
 
     public function getNewContentAfterUrl(): string
@@ -292,8 +291,8 @@ class GridColumnItem extends AbstractGridObject
 
     public function getVisibilityToggleUrl(): string
     {
-        $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
-        if ($this->record[$hiddenField]) {
+        $hiddenField = $GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'] ?? null;
+        if ($this->record[$hiddenField] ?? false) {
             $value = 0;
         } else {
             $value = 1;
@@ -302,7 +301,7 @@ class GridColumnItem extends AbstractGridObject
             'tce_db',
             [
                 'data' => [
-                    'tt_content' => [
+                    $this->table => [
                         (($this->record['_ORIG_uid'] ?? false) ?: ($this->record['uid'] ?? 0)) => [
                             $hiddenField => $value,
                         ],
@@ -310,13 +309,12 @@ class GridColumnItem extends AbstractGridObject
                 ],
                 'redirect' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
             ]
-        ) . '#element-tt_content-' . $this->record['uid'];
+        ) . '#element-' . $this->table . '-' . $this->record['uid'];
     }
 
     public function getVisibilityToggleTitle(): string
     {
-        $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
-        if ($this->record[$hiddenField]) {
+        if ($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'] ?? null] ?? false) {
             return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unHide');
         }
         return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hide');
@@ -324,17 +322,17 @@ class GridColumnItem extends AbstractGridObject
 
     public function getVisibilityToggleIconName(): string
     {
-        $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
-        return $this->record[$hiddenField] ? 'unhide' : 'hide';
+        return ($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'] ?? null] ?? false) ? 'unhide' : 'hide';
     }
 
     public function isVisibilityToggling(): bool
     {
-        $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
-        return $hiddenField && $GLOBALS['TCA']['tt_content']['columns'][$hiddenField]
+        $hiddenField = $GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'] ?? null;
+        return $hiddenField
+            && ($GLOBALS['TCA'][$this->table]['columns'][$hiddenField] ?? false)
             && (
-                !($GLOBALS['TCA']['tt_content']['columns'][$hiddenField]['exclude'] ?? false)
-                || $this->getBackendUser()->check('non_exclude_fields', 'tt_content:' . $hiddenField)
+                !($GLOBALS['TCA'][$this->table]['columns'][$hiddenField]['exclude'] ?? false)
+                || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $hiddenField)
             )
         ;
     }
@@ -343,24 +341,29 @@ class GridColumnItem extends AbstractGridObject
     {
         $urlParameters = [
             'edit' => [
-                'tt_content' => [
+                $this->table => [
                     $this->record['uid'] => 'edit',
                 ],
             ],
-            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $this->record['uid'],
+            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $this->table . '-' . $this->record['uid'],
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-tt_content-' . $this->record['uid'];
+        return $uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-' . $this->table . '-' . $this->record['uid'];
     }
 
     /**
      * Gets the number of records referencing the record with the UID $uid in
-     * the table tt_content.
+     * the current table.
      *
      * @return int The number of references to record $uid in table
      */
     protected function getReferenceCount(int $uid): int
     {
-        return GeneralUtility::makeInstance(ReferenceIndex::class)->getNumberOfReferencedRecords('tt_content', $uid);
+        return GeneralUtility::makeInstance(ReferenceIndex::class)->getNumberOfReferencedRecords($this->table, $uid);
+    }
+
+    protected function getTypeColumn(): string
+    {
+        return (string)($GLOBALS['TCA'][$this->table]['ctrl']['type'] ?? '');
     }
 }
