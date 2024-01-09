@@ -22,9 +22,9 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 /**
  * Event which is fired after an object was pushed to the storage backend
  */
-final class EntityPersistedEvent
+final readonly class EntityPersistedEvent
 {
-    public function __construct(private readonly DomainObjectInterface $persistedObject) {}
+    public function __construct(private DomainObjectInterface $persistedObject) {}
 
     public function getObject(): DomainObjectInterface
     {

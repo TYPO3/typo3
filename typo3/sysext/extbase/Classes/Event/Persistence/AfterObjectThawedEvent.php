@@ -22,9 +22,9 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 /**
  * Allows to modify values when creating domain objects.
  */
-final class AfterObjectThawedEvent
+final readonly class AfterObjectThawedEvent
 {
-    public function __construct(private readonly DomainObjectInterface $mappedObject, private readonly array $record) {}
+    public function __construct(private DomainObjectInterface $mappedObject, private array $record) {}
 
     public function getObject(): DomainObjectInterface
     {

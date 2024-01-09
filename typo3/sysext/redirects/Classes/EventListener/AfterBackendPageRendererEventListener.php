@@ -24,10 +24,10 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 /**
  * @internal redirects internal usage, not part of public API.
  */
-final class AfterBackendPageRendererEventListener
+final readonly class AfterBackendPageRendererEventListener
 {
     public function __construct(
-        private readonly PageRenderer $pageRenderer
+        private PageRenderer $pageRenderer
     ) {}
 
     #[AsEventListener('redirects-after-backend-page-renderer-event')]

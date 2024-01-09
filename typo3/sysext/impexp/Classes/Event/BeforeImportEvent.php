@@ -22,11 +22,11 @@ use TYPO3\CMS\Impexp\Import;
 /**
  * This event is triggered when an import file is about to be imported
  */
-final class BeforeImportEvent
+final readonly class BeforeImportEvent
 {
     public function __construct(
-        private readonly Import $import,
-        private readonly string $file
+        private Import $import,
+        private string $file
     ) {}
 
     public function getImport(): Import

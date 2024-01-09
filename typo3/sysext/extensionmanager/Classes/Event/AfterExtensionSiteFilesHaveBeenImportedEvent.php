@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Extensionmanager\Event;
 /**
  * Event that is triggered after a package has imported its site configurations (from Initialisation/Site)
  */
-final class AfterExtensionSiteFilesHaveBeenImportedEvent
+final readonly class AfterExtensionSiteFilesHaveBeenImportedEvent
 {
-    public function __construct(private readonly string $packageKey, private readonly array $siteIdentifierList) {}
+    public function __construct(private string $packageKey, private array $siteIdentifierList) {}
 
     /**
      * Returns the extension that imported the site configuration

@@ -22,9 +22,9 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 /**
  * Allows to inject custom variables into the login form.
  */
-final class ModifyLoginFormViewEvent
+final readonly class ModifyLoginFormViewEvent
 {
-    public function __construct(private readonly ViewInterface $view) {}
+    public function __construct(private ViewInterface $view) {}
 
     public function getView(): ViewInterface
     {

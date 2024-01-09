@@ -23,11 +23,11 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 /**
  * Event which is fired after the dispatcher has successfully dispatched a request to a controller/action.
  */
-final class AfterRequestDispatchedEvent
+final readonly class AfterRequestDispatchedEvent
 {
     public function __construct(
-        private readonly RequestInterface $request,
-        private readonly ResponseInterface $response
+        private RequestInterface $request,
+        private ResponseInterface $response
     ) {}
 
     public function getRequest(): RequestInterface

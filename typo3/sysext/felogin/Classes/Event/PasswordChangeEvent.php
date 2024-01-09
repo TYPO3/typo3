@@ -20,12 +20,12 @@ namespace TYPO3\CMS\FrontendLogin\Event;
 /**
  * Informal event that contains information about the password which was set, and is about to be stored in the database.
  */
-final class PasswordChangeEvent
+final readonly class PasswordChangeEvent
 {
     public function __construct(
-        private readonly array $user,
-        private readonly string $passwordHash,
-        private readonly string $rawPassword
+        private array $user,
+        private string $passwordHash,
+        private string $rawPassword
     ) {}
 
     public function getUser(): array

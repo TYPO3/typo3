@@ -22,13 +22,13 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 /**
  * Event that is triggered after a package has imported the database file shipped within a t3d/xml import file
  */
-final class AfterExtensionDatabaseContentHasBeenImportedEvent
+final readonly class AfterExtensionDatabaseContentHasBeenImportedEvent
 {
     public function __construct(
-        private readonly string $packageKey,
-        private readonly string $importFileName,
-        private readonly int $importResult,
-        private readonly InstallUtility $emitter
+        private string $packageKey,
+        private string $importFileName,
+        private int $importResult,
+        private InstallUtility $emitter
     ) {}
 
     public function getPackageKey(): string

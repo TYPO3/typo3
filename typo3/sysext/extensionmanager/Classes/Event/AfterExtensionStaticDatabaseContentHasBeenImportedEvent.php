@@ -22,12 +22,12 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 /**
  * Event that is triggered after a package has imported the database file shipped within "ext_tables_static+adt.sql"
  */
-final class AfterExtensionStaticDatabaseContentHasBeenImportedEvent
+final readonly class AfterExtensionStaticDatabaseContentHasBeenImportedEvent
 {
     public function __construct(
-        private readonly string $packageKey,
-        private readonly string $sqlFileName,
-        private readonly InstallUtility $emitter
+        private string $packageKey,
+        private string $sqlFileName,
+        private InstallUtility $emitter
     ) {}
 
     public function getPackageKey(): string

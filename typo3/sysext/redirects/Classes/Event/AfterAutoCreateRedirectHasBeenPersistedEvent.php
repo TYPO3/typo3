@@ -28,12 +28,12 @@ use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
  * It can be used to update redirects external in a load-balancer directly for
  * example, or doing some kind of synchronization.
  */
-final class AfterAutoCreateRedirectHasBeenPersistedEvent
+final readonly class AfterAutoCreateRedirectHasBeenPersistedEvent
 {
     public function __construct(
-        private readonly SlugRedirectChangeItem $slugRedirectChangeItem,
-        private readonly RedirectSourceInterface $source,
-        private readonly array $redirectRecord,
+        private SlugRedirectChangeItem $slugRedirectChangeItem,
+        private RedirectSourceInterface $source,
+        private array $redirectRecord,
     ) {}
 
     public function getSlugRedirectChangeItem(): SlugRedirectChangeItem

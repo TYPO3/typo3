@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Workspaces\Event;
 /**
  * Event that is fired after a record has been published in a workspace.
  */
-final class AfterRecordPublishedEvent
+final readonly class AfterRecordPublishedEvent
 {
     public function __construct(
-        private readonly string $table,
-        private readonly int $recordId,
-        private readonly int $workspaceId,
+        private string $table,
+        private int $recordId,
+        private int $workspaceId,
     ) {}
 
     /**

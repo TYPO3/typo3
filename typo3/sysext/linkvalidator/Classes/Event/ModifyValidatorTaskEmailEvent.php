@@ -23,12 +23,12 @@ use TYPO3\CMS\Linkvalidator\Result\LinkAnalyzerResult;
 /**
  * Allows to process and modify the LinkAnalyzer result and FluidEmail object
  */
-final class ModifyValidatorTaskEmailEvent
+final readonly class ModifyValidatorTaskEmailEvent
 {
     public function __construct(
-        private readonly LinkAnalyzerResult $linkAnalyzerResult,
-        private readonly FluidEmail $fluidEmail,
-        private readonly array $modTSconfig
+        private LinkAnalyzerResult $linkAnalyzerResult,
+        private FluidEmail $fluidEmail,
+        private array $modTSconfig
     ) {}
 
     public function getLinkAnalyzerResult(): LinkAnalyzerResult

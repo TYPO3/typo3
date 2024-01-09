@@ -23,9 +23,9 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
  * Event which is fired after an object/entity was sent to persistence layer to be added
  * including update of reference index and current session.
  */
-final class EntityFinalizedAfterPersistenceEvent
+final readonly class EntityFinalizedAfterPersistenceEvent
 {
-    public function __construct(private readonly DomainObjectInterface $persistedObject) {}
+    public function __construct(private DomainObjectInterface $persistedObject) {}
 
     public function getObject(): DomainObjectInterface
     {

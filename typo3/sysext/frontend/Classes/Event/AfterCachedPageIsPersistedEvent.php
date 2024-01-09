@@ -28,14 +28,14 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * * Caching is disabled using 'frontend.cache.instruction' request attribute, which can
  *   be set by various middlewares or AfterCacheableContentIsGeneratedEvent
  */
-final class AfterCachedPageIsPersistedEvent
+final readonly class AfterCachedPageIsPersistedEvent
 {
     public function __construct(
-        private readonly ServerRequestInterface $request,
-        private readonly TypoScriptFrontendController $controller,
-        private readonly string $cacheIdentifier,
-        private readonly array $cacheData,
-        private readonly int $cacheLifetime
+        private ServerRequestInterface $request,
+        private TypoScriptFrontendController $controller,
+        private string $cacheIdentifier,
+        private array $cacheData,
+        private int $cacheLifetime
     ) {}
 
     public function getRequest(): ServerRequestInterface

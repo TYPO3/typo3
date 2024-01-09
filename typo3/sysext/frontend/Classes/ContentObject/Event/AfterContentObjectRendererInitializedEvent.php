@@ -22,10 +22,10 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * Listeners are able to modify the initialized ContentObjectRenderer instance
  */
-final class AfterContentObjectRendererInitializedEvent
+final readonly class AfterContentObjectRendererInitializedEvent
 {
     public function __construct(
-        private readonly ContentObjectRenderer $contentObjectRenderer
+        private ContentObjectRenderer $contentObjectRenderer
     ) {}
 
     public function getContentObjectRenderer(): ContentObjectRenderer

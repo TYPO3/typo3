@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Mail\FluidEmail;
  *
  * Additional validation can happen here.
  */
-final class SendRecoveryEmailEvent
+final readonly class SendRecoveryEmailEvent
 {
-    public function __construct(private readonly FluidEmail $email, private readonly array $user) {}
+    public function __construct(private FluidEmail $email, private array $user) {}
 
     public function getUserInformation(): array
     {

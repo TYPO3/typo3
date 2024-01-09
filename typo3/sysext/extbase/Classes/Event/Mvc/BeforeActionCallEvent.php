@@ -21,12 +21,12 @@ namespace TYPO3\CMS\Extbase\Event\Mvc;
  * Event that is triggered before any Extbase Action is called within the ActionController or one
  * of its subclasses.
  */
-final class BeforeActionCallEvent
+final readonly class BeforeActionCallEvent
 {
     public function __construct(
-        private readonly string $controllerClassName,
-        private readonly string $actionMethodName,
-        private readonly array $preparedArguments
+        private string $controllerClassName,
+        private string $actionMethodName,
+        private array $preparedArguments
     ) {}
 
     public function getControllerClassName(): string

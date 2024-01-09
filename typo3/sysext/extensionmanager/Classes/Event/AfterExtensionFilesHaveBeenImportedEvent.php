@@ -22,12 +22,12 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 /**
  * Event that is triggered after a package has imported all extension files (from Initialisation/Files)
  */
-final class AfterExtensionFilesHaveBeenImportedEvent
+final readonly class AfterExtensionFilesHaveBeenImportedEvent
 {
     public function __construct(
-        private readonly string $packageKey,
-        private readonly string $destinationAbsolutePath,
-        private readonly InstallUtility $emitter
+        private string $packageKey,
+        private string $destinationAbsolutePath,
+        private InstallUtility $emitter
     ) {}
 
     public function getPackageKey(): string
