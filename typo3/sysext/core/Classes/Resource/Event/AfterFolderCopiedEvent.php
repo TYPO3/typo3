@@ -25,12 +25,12 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
  *
  * Example: Custom listeners can analyze contents of a file or add custom permissions to a folder automatically.
  */
-final class AfterFolderCopiedEvent
+final readonly class AfterFolderCopiedEvent
 {
     public function __construct(
-        private readonly Folder $folder,
-        private readonly Folder $targetParentFolder,
-        private readonly ?FolderInterface $targetFolder
+        private Folder $folder,
+        private Folder $targetParentFolder,
+        private ?FolderInterface $targetFolder
     ) {}
 
     public function getFolder(): Folder

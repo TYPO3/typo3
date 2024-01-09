@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Core\Package\Event;
 /**
  * Event that is triggered before a number of packages should become active
  */
-final class BeforePackageActivationEvent
+final readonly class BeforePackageActivationEvent
 {
-    public function __construct(private readonly array $packageKeys) {}
+    public function __construct(private array $packageKeys) {}
 
     public function getPackageKeys(): array
     {

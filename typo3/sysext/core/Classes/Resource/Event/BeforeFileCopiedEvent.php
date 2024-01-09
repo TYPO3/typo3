@@ -26,9 +26,9 @@ use TYPO3\CMS\Core\Resource\Folder;
  *
  * This allows to further analyze or modify the file or metadata before it is written by the driver.
  */
-final class BeforeFileCopiedEvent
+final readonly class BeforeFileCopiedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly Folder $folder) {}
+    public function __construct(private FileInterface $file, private Folder $folder) {}
 
     public function getFile(): FileInterface
     {

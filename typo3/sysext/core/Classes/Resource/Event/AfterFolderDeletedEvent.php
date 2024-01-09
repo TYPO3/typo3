@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Resource\Folder;
  * This event is fired after a folder was deleted. Custom listeners can then further clean up permissions or
  * third-party processed files with this event.
  */
-final class AfterFolderDeletedEvent
+final readonly class AfterFolderDeletedEvent
 {
-    public function __construct(private readonly Folder $folder, private readonly bool $wasDeleted) {}
+    public function __construct(private Folder $folder, private bool $wasDeleted) {}
 
     public function getFolder(): Folder
     {

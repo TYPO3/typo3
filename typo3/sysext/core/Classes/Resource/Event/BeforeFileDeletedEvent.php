@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  *
  * Event listeners can clean up third-party references with this event.
  */
-final class BeforeFileDeletedEvent
+final readonly class BeforeFileDeletedEvent
 {
-    public function __construct(private readonly FileInterface $file) {}
+    public function __construct(private FileInterface $file) {}
 
     public function getFile(): FileInterface
     {

@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Resource\Folder;
  * This event is fired before a folder is about to be added to the Resource Storage / Driver.
  * This allows to further specify folder names according to regulations for a specific project.
  */
-final class BeforeFolderAddedEvent
+final readonly class BeforeFolderAddedEvent
 {
-    public function __construct(private readonly Folder $parentFolder, private readonly string $folderName) {}
+    public function __construct(private Folder $parentFolder, private string $folderName) {}
 
     public function getParentFolder(): Folder
     {

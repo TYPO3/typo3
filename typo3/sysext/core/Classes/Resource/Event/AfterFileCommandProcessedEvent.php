@@ -22,12 +22,12 @@ namespace TYPO3\CMS\Core\Resource\Event;
  * to perform additional tasks for specific commands. For example, trigger a
  * custom indexer after a file has been uploaded.
  */
-final class AfterFileCommandProcessedEvent
+final readonly class AfterFileCommandProcessedEvent
 {
     public function __construct(
-        private readonly array $command,
-        private readonly mixed $result,
-        private readonly string $conflictMode
+        private array $command,
+        private mixed $result,
+        private string $conflictMode
     ) {}
 
     /**

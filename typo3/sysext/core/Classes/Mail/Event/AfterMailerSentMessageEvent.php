@@ -27,9 +27,9 @@ use Symfony\Component\Mailer\MailerInterface;
  *       allows to retrieve the SentMessage using the getSentMessage() method. Depending
  *       on the Transport, used to send the message, this might also be NULL.
  */
-final class AfterMailerSentMessageEvent
+final readonly class AfterMailerSentMessageEvent
 {
-    public function __construct(private readonly MailerInterface $mailer) {}
+    public function __construct(private MailerInterface $mailer) {}
 
     public function getMailer(): MailerInterface
     {

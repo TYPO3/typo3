@@ -23,12 +23,12 @@ use TYPO3\CMS\Core\Resource\Folder;
  * This event is fired before a folder is about to be copied to the Resource Storage / Driver.
  * Listeners could add deferred processing / queuing of large folders.
  */
-final class BeforeFolderCopiedEvent
+final readonly class BeforeFolderCopiedEvent
 {
     public function __construct(
-        private readonly Folder $folder,
-        private readonly Folder $targetParentFolder,
-        private readonly string $targetFolderName
+        private Folder $folder,
+        private Folder $targetParentFolder,
+        private string $targetFolderName
     ) {}
 
     public function getFolder(): Folder

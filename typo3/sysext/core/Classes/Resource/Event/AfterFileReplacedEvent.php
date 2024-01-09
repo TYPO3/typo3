@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  *
  * Example: Further process a file or create variants, or index the contents of a file for AI analysis etc.
  */
-final class AfterFileReplacedEvent
+final readonly class AfterFileReplacedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly string $localFilePath) {}
+    public function __construct(private FileInterface $file, private string $localFilePath) {}
 
     public function getFile(): FileInterface
     {

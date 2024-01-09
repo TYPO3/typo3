@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\Security\RequestToken;
 final class BeforeRequestTokenProcessedEvent
 {
     public function __construct(
-        private AbstractUserAuthentication $user,
-        private ServerRequestInterface $request,
+        private readonly AbstractUserAuthentication $user,
+        private readonly ServerRequestInterface $request,
         private RequestToken|false|null $requestToken
     ) {}
 

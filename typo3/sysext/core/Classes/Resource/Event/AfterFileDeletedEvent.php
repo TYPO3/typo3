@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  * Example: If an extension provides additional functionality (e.g. variants), this event allows listener to also clean
  * up their custom handling. This can also be used for versioning of files.
  */
-final class AfterFileDeletedEvent
+final readonly class AfterFileDeletedEvent
 {
-    public function __construct(private readonly FileInterface $file) {}
+    public function __construct(private FileInterface $file) {}
 
     public function getFile(): FileInterface
     {

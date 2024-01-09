@@ -23,9 +23,9 @@ namespace TYPO3\CMS\Core\Resource\Event;
  * Example: If a file is marked as missing, listeners can try to recover a file. This can happen on specific setups
  * where editors also work via FTP.
  */
-final class AfterFileMarkedAsMissingEvent
+final readonly class AfterFileMarkedAsMissingEvent
 {
-    public function __construct(private readonly int $fileUid) {}
+    public function __construct(private int $fileUid) {}
 
     public function getFileUid(): int
     {

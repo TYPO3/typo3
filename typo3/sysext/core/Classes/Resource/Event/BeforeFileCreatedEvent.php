@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Resource\Folder;
  *
  * This allows to further analyze or modify the file or filename before it is written by the driver.
  */
-final class BeforeFileCreatedEvent
+final readonly class BeforeFileCreatedEvent
 {
-    public function __construct(private readonly string $fileName, private readonly Folder $folder) {}
+    public function __construct(private string $fileName, private Folder $folder) {}
 
     public function getFileName(): string
     {

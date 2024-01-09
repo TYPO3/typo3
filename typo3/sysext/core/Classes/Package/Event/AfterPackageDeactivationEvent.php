@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Core\Package\Event;
 /**
  * Event that is triggered after a package has been de-activated
  */
-final class AfterPackageDeactivationEvent
+final readonly class AfterPackageDeactivationEvent
 {
     public function __construct(
-        private readonly string $packageKey,
-        private readonly string $type,
-        private readonly ?object $emitter = null
+        private string $packageKey,
+        private string $type,
+        private ?object $emitter = null
     ) {}
 
     public function getPackageKey(): string

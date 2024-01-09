@@ -24,12 +24,12 @@ use TYPO3\CMS\Core\Resource\Folder;
  * This event is fired before a file is about to be moved within a Resource Storage / Driver.
  * The folder represents the "target folder".
  */
-final class BeforeFileMovedEvent
+final readonly class BeforeFileMovedEvent
 {
     public function __construct(
-        private readonly FileInterface $file,
-        private readonly Folder $folder,
-        private readonly string $targetFileName
+        private FileInterface $file,
+        private Folder $folder,
+        private string $targetFileName
     ) {}
 
     public function getFile(): FileInterface

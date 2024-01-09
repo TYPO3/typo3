@@ -22,9 +22,9 @@ namespace TYPO3\CMS\Core\Resource\Event;
  *
  * Examples: Allows to additionally populate custom fields of the sys_file/sys_file_metadata database records.
  */
-final class AfterFileAddedToIndexEvent
+final readonly class AfterFileAddedToIndexEvent
 {
-    public function __construct(private readonly int $fileUid, private readonly array $record) {}
+    public function __construct(private int $fileUid, private array $record) {}
 
     public function getFileUid(): int
     {

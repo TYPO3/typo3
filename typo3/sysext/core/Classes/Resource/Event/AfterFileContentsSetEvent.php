@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  *
  * Examples: Listeners can analyze content for AI purposes within Extensions.
  */
-final class AfterFileContentsSetEvent
+final readonly class AfterFileContentsSetEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly string $content) {}
+    public function __construct(private FileInterface $file, private string $content) {}
 
     public function getFile(): FileInterface
     {

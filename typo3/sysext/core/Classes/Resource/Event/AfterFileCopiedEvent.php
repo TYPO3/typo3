@@ -26,13 +26,13 @@ use TYPO3\CMS\Core\Resource\Folder;
  *
  * Example: Listeners can sign up for listing duplicates using this event.
  */
-final class AfterFileCopiedEvent
+final readonly class AfterFileCopiedEvent
 {
     public function __construct(
-        private readonly FileInterface $file,
-        private readonly Folder $folder,
-        private readonly string $newFileIdentifier,
-        private readonly ?FileInterface $newFile
+        private FileInterface $file,
+        private Folder $folder,
+        private string $newFileIdentifier,
+        private ?FileInterface $newFile
     ) {}
 
     public function getFile(): FileInterface

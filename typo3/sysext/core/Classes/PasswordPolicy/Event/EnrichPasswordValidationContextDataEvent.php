@@ -26,12 +26,12 @@ use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
  * Event listeners should therefore always consider the initiating class name when accessing data
  * from `getUserData()`.
  */
-final class EnrichPasswordValidationContextDataEvent
+final readonly class EnrichPasswordValidationContextDataEvent
 {
     public function __construct(
-        protected readonly ContextData $contextData,
-        protected readonly array $userData,
-        protected readonly string $initiatingClass
+        protected ContextData $contextData,
+        protected array $userData,
+        protected string $initiatingClass
     ) {}
 
     public function getContextData(): ContextData

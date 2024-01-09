@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Core\Resource\Event;
 /**
  * This event is fired once metadata of a file was updated, in order to update custom metadata fields accordingly
  */
-final class AfterFileMetaDataUpdatedEvent
+final readonly class AfterFileMetaDataUpdatedEvent
 {
     public function __construct(
-        private readonly int $fileUid,
-        private readonly int $metaDataUid,
-        private readonly array $record
+        private int $fileUid,
+        private int $metaDataUid,
+        private array $record
     ) {}
 
     public function getFileUid(): int

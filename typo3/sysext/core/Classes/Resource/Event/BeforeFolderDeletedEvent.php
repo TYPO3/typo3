@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Resource\Folder;
  *
  * Listeners can use this event to clean up further external references to a folder / files in this folder.
  */
-final class BeforeFolderDeletedEvent
+final readonly class BeforeFolderDeletedEvent
 {
-    public function __construct(private readonly Folder $folder) {}
+    public function __construct(private Folder $folder) {}
 
     public function getFolder(): Folder
     {

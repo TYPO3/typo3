@@ -27,12 +27,12 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
  *
  * Examples: Use this to update custom third party handlers that rely on specific paths.
  */
-final class AfterFileMovedEvent
+final readonly class AfterFileMovedEvent
 {
     public function __construct(
-        private readonly FileInterface $file,
-        private readonly Folder $folder,
-        private readonly FolderInterface $originalFolder
+        private FileInterface $file,
+        private Folder $folder,
+        private FolderInterface $originalFolder
     ) {}
 
     public function getFile(): FileInterface

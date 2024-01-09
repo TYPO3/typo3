@@ -22,10 +22,10 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 /**
  * Event fired after a user has been actively logged out.
  */
-final class AfterUserLoggedOutEvent
+final readonly class AfterUserLoggedOutEvent
 {
     public function __construct(
-        private readonly AbstractUserAuthentication $user
+        private AbstractUserAuthentication $user
     ) {}
 
     public function getUser(): AbstractUserAuthentication

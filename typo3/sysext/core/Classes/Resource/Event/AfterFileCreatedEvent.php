@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Resource\Folder;
  *
  * Example: This allows to modify a file or check for an appropriate signature after a file was created in TYPO3.
  */
-final class AfterFileCreatedEvent
+final readonly class AfterFileCreatedEvent
 {
-    public function __construct(private readonly string $fileName, private readonly Folder $folder) {}
+    public function __construct(private string $fileName, private Folder $folder) {}
 
     public function getFileName(): string
     {

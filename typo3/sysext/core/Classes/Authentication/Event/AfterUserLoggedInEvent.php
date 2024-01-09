@@ -23,11 +23,11 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 /**
  * Event fired after a user has been actively logged in to backend (incl. possible MFA) or frontend.
  */
-final class AfterUserLoggedInEvent
+final readonly class AfterUserLoggedInEvent
 {
     public function __construct(
-        private readonly AbstractUserAuthentication $user,
-        private readonly ?ServerRequestInterface $request = null
+        private AbstractUserAuthentication $user,
+        private ?ServerRequestInterface $request = null
     ) {}
 
     public function getUser(): AbstractUserAuthentication

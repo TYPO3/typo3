@@ -23,12 +23,12 @@ use TYPO3\CMS\Core\Resource\File;
  * This event is fired once an index was just updated inside the database (= indexed).
  * Custom listeners can update further index values when a file was updated.
  */
-final class AfterFileUpdatedInIndexEvent
+final readonly class AfterFileUpdatedInIndexEvent
 {
     public function __construct(
-        private readonly File $file,
-        private readonly array $properties,
-        private readonly array $updatedFields
+        private File $file,
+        private array $properties,
+        private array $updatedFields
     ) {}
 
     public function getFile(): File

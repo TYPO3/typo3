@@ -26,9 +26,9 @@ use TYPO3\CMS\Core\Resource\Folder;
  * Use case: Using listeners for this event allows to e.g. post-check permissions or
  * specific analysis of files like additional metadata analysis after adding them to TYPO3.
  */
-final class AfterFileAddedEvent
+final readonly class AfterFileAddedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly Folder $folder) {}
+    public function __construct(private FileInterface $file, private Folder $folder) {}
 
     public function getFile(): FileInterface
     {

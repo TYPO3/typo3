@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  * This event is fired before a file is about to be replaced.
  * Custom listeners can check for file integrity or analyze the content of the file before it gets added.
  */
-final class BeforeFileReplacedEvent
+final readonly class BeforeFileReplacedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly string $localFilePath) {}
+    public function __construct(private FileInterface $file, private string $localFilePath) {}
 
     public function getFile(): FileInterface
     {

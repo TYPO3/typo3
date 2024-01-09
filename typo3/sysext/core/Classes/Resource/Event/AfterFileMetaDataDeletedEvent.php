@@ -21,9 +21,9 @@ namespace TYPO3\CMS\Core\Resource\Event;
  * This event is fired once all metadata of a file was removed, in order to manage custom metadata that was
  * added previously
  */
-final class AfterFileMetaDataDeletedEvent
+final readonly class AfterFileMetaDataDeletedEvent
 {
-    public function __construct(private readonly int $fileUid) {}
+    public function __construct(private int $fileUid) {}
 
     public function getFileUid(): int
     {

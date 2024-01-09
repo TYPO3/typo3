@@ -25,12 +25,12 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
  *
  * Custom references can be updated via listeners of this event.
  */
-final class AfterFolderMovedEvent
+final readonly class AfterFolderMovedEvent
 {
     public function __construct(
-        private readonly Folder $folder,
-        private readonly Folder $targetParentFolder,
-        private readonly ?FolderInterface $targetFolder
+        private Folder $folder,
+        private Folder $targetParentFolder,
+        private ?FolderInterface $targetFolder
     ) {}
 
     public function getFolder(): Folder

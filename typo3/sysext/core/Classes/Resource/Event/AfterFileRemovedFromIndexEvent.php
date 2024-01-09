@@ -22,9 +22,9 @@ namespace TYPO3\CMS\Core\Resource\Event;
  *
  * Example can be to further handle files and manage them separately outside of TYPO3's index.
  */
-final class AfterFileRemovedFromIndexEvent
+final readonly class AfterFileRemovedFromIndexEvent
 {
-    public function __construct(private readonly int $fileUid) {}
+    public function __construct(private int $fileUid) {}
 
     public function getFileUid(): int
     {

@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Resource\Folder;
  *
  * This allows to customize permissions or set up editor permissions automatically via listeners.
  */
-final class AfterFolderAddedEvent
+final readonly class AfterFolderAddedEvent
 {
-    public function __construct(private readonly Folder $folder) {}
+    public function __construct(private Folder $folder) {}
 
     public function getFolder(): Folder
     {

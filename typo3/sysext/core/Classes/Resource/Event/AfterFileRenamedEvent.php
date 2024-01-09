@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  * This event is fired after a file was renamed in order to further process a file or filename
  * or update custom references to a file.
  */
-final class AfterFileRenamedEvent
+final readonly class AfterFileRenamedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly ?string $targetFileName) {}
+    public function __construct(private FileInterface $file, private ?string $targetFileName) {}
 
     public function getFile(): FileInterface
     {

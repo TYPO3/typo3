@@ -24,12 +24,12 @@ use TYPO3\CMS\Core\Resource\Folder;
  * Listeners can be used to modify a folder name before it is actually moved or to ensure consistency
  * or specific rules when moving folders.
  */
-final class BeforeFolderMovedEvent
+final readonly class BeforeFolderMovedEvent
 {
     public function __construct(
-        private readonly Folder $folder,
-        private readonly Folder $targetParentFolder,
-        private readonly string $targetFolderName
+        private Folder $folder,
+        private Folder $targetParentFolder,
+        private string $targetFolderName
     ) {}
 
     public function getFolder(): Folder

@@ -24,11 +24,11 @@ use TYPO3\CMS\Core\Resource\Folder;
  *
  * Examples: Add custom processing of folders or adjust permissions.
  */
-final class AfterFolderRenamedEvent
+final readonly class AfterFolderRenamedEvent
 {
     public function __construct(
-        private readonly Folder $folder,
-        private readonly Folder $sourceFolder
+        private Folder $folder,
+        private Folder $sourceFolder
     ) {}
 
     public function getFolder(): Folder
