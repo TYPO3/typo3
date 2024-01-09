@@ -69,7 +69,7 @@ enum VersionState: int
     public static function cast(mixed $value): ?self
     {
         trigger_error(
-            'VersionState::' . __METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use VersionState::tryFrom() instead.',
+            __METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use VersionState::tryFrom() instead.',
             E_USER_DEPRECATED,
         );
         return $value instanceof self ? $value : self::tryFrom((int)$value);
@@ -83,7 +83,7 @@ enum VersionState: int
     public function equals(mixed $value): bool
     {
         trigger_error(
-            'VersionState->' . __METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use VersionState::tryFrom() and native comparison logic instead.',
+            __METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use VersionState::tryFrom() and native comparison logic instead.',
             E_USER_DEPRECATED,
         );
         return $this === ($value instanceof self ? $value : self::tryFrom((int)$value));
