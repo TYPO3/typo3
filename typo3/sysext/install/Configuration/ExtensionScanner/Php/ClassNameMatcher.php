@@ -2452,4 +2452,18 @@ return [
             'Feature-102755-PSR-14EventForModifyingGetImageResourceResult.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepositoryInitHookInterface' => [
+        'restFiles' => [
+            'Breaking-102806-HooksInPageRepositoryRemoved.rst',
+            'Deprecation-102806-InterfacesForPageRepositoryHooks.rst',
+            'Feature-102806-BeforePageIsRetrievedEventInPageRepository.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface' => [
+        'restFiles' => [
+            'Breaking-102806-HooksInPageRepositoryRemoved.rst',
+            'Deprecation-102806-InterfacesForPageRepositoryHooks.rst',
+            'Feature-102806-BeforePageIsRetrievedEventInPageRepository.rst',
+        ],
+    ],
 ];

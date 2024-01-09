@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Event\AfterRecordLanguageOverlayEvent;
+use TYPO3\CMS\Core\Domain\Event\BeforePageIsRetrievedEvent;
 use TYPO3\CMS\Core\Domain\Event\BeforePageLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\ModifyDefaultConstraintsForDatabaseQueryEvent;
@@ -194,16 +195,6 @@ class PageRepository implements LoggerAwareInterface
             }
             $cache->set($cacheIdentifier, $this->where_hid_del);
         }
-
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] ?? false)) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] as $classRef) {
-                $hookObject = GeneralUtility::makeInstance($classRef);
-                if (!$hookObject instanceof PageRepositoryInitHookInterface) {
-                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . PageRepositoryInitHookInterface::class, 1379579812);
-                }
-                $hookObject->init_postProcess($this);
-            }
-        }
     }
 
     /**************************
@@ -221,7 +212,7 @@ class PageRepository implements LoggerAwareInterface
      * Language overlay and versioning overlay are applied. Mount Point
      * handling is not done, an overlaid Mount Point is not replaced.
      *
-     * The result is conditioned by the properties $this->where_groupAccess
+     * The result has constraints filled by the properties $this->where_groupAccess
      * and $this->where_hid_del that are preset by the init() method.
      *
      * @see PageRepository::where_groupAccess
@@ -230,9 +221,7 @@ class PageRepository implements LoggerAwareInterface
      * By default, the usergroup access check is enabled. Use the second method argument
      * to disable the usergroup access check.
      *
-     * The given UID can be preprocessed by registering a hook class that is
-     * implementing the PageRepositoryGetPageHookInterface into the configuration array
-     * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'].
+     * The given Page ID can be preprocessed by registering an Event.
      *
      * @param int $uid The page id to look up
      * @param bool $disableGroupAccessCheck set to true to disable group access check
@@ -242,14 +231,15 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getPage(int $uid, bool $disableGroupAccessCheck = false): array
     {
-        // Hook to manipulate the page uid for special overlay handling
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof PageRepositoryGetPageHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageHookInterface::class, 1251476766);
-            }
-            $hookObject->getPage_preProcess($uid, $disableGroupAccessCheck, $this);
+        // Dispatch Event to manipulate the page uid for special overlay handling
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new BeforePageIsRetrievedEvent($uid, $disableGroupAccessCheck, $this->context)
+        );
+        if ($event->hasPage()) {
+            // In case an event listener resolved the page on its own, directly return it
+            return $event->getPage()->toArray(true);
         }
+        $uid = $event->getPageId();
         $cacheIdentifier = 'PageRepository_getPage_' . md5(
             implode(
                 '-',
@@ -1748,7 +1738,7 @@ class PageRepository implements LoggerAwareInterface
      * @param int $uid Record uid for which to find workspace version.
      * @param array $fields Fields to select, `*` is the default - If a custom list is set, make sure the list
      *                       contains the `uid` field. It's mandatory for further processing of the result row.
-     * @param bool $bypassEnableFieldsCheck If TRUE, enablefields are not checked for.
+     * @param bool $bypassEnableFieldsCheck If TRUE, enableFields are not checked for.
      * @return array|int|bool If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
      * @see BackendUtility::getWorkspaceVersionOfRecord()
      * @internal this is a rather low-level method, it is recommended to use versionOL instead()
@@ -2188,10 +2178,8 @@ class PageRepository implements LoggerAwareInterface
     /**
      * Purges computed properties from database rows,
      * such as _ORIG_uid or _ORIG_pid for instance.
-     *
-     * @return array
      */
-    protected function purgeComputedProperties(array $row)
+    protected function purgeComputedProperties(array $row): array
     {
         foreach ($this->computedPropertyNames as $computedPropertyName) {
             if (array_key_exists($computedPropertyName, $row)) {

@@ -1086,4 +1086,18 @@ return [
             'Feature-102793-PSR-14EventForModifyingDefaultConstraintsInPageRepository.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_page.php\'][\'getPage\']' => [
+        'restFiles' => [
+            'Breaking-102806-HooksInPageRepositoryRemoved.rst',
+            'Deprecation-102806-InterfacesForPageRepositoryHooks.rst',
+            'Feature-102806-BeforePageIsRetrievedEventInPageRepository.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\TYPO3\CMS\Core\Domain\PageRepository::class][\'init\']' => [
+        'restFiles' => [
+            'Breaking-102806-HooksInPageRepositoryRemoved.rst',
+            'Deprecation-102806-InterfacesForPageRepositoryHooks.rst',
+            'Feature-102806-BeforePageIsRetrievedEventInPageRepository.rst',
+        ],
+    ],
 ];

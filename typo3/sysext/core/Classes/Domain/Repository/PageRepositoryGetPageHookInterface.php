@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Domain\Repository;
 
 /**
  * Interface for classes which hook into pageSelect and do additional getPage processing
+ * @deprecated will be removed in TYPO3 v14.0.
  */
 interface PageRepositoryGetPageHookInterface
 {

@@ -25,10 +25,10 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\Domain\Event\BeforePageIsRetrievedEvent;
 use TYPO3\CMS\Core\Domain\Event\ModifyDefaultConstraintsForDatabaseQueryEvent;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -365,26 +365,6 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(new Page($orig3), $row['_TRANSLATION_SOURCE']);
     }
 
-    /**
-     * Tests whether the getPage Hook is called correctly.
-     *
-     * @test
-     */
-    public function isGetPageHookCalled(): void
-    {
-        // Create a hook mock object
-        $getPageHookMock = $this->createMock(PageRepositoryGetPageHookInterface::class);
-        $getPageHookMock->expects(self::atLeastOnce())->method('getPage_preProcess')
-            ->with(42, false, new PageRepository());
-        $className = get_class($getPageHookMock);
-
-        // Register hook mock object
-        GeneralUtility::addInstance($className, $getPageHookMock);
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'][] = $className;
-        $subject = new PageRepository();
-        $subject->getPage(42, false);
-    }
-
     ////////////////////////////////
     // Tests concerning mountpoints
     ////////////////////////////////
@@ -704,5 +684,37 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertInstanceOf(ModifyDefaultConstraintsForDatabaseQueryEvent::class, $modifyDefaultConstraintsForDatabaseQueryEvent);
         self::assertEquals($table, $modifyDefaultConstraintsForDatabaseQueryEvent->getTable());
         self::assertEquals([$defaultConstraint], $modifyDefaultConstraintsForDatabaseQueryEvent->getConstraints());
+    }
+
+    /**
+     * @test
+     */
+    public function beforePageIsRetrievedEventIsCalled(): void
+    {
+        $pageId = 2004;
+        $page = new Page(['uid' => $pageId]);
+        $beforePageIsRetrievedEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'before-page-is-retrieved-listener',
+            static function (BeforePageIsRetrievedEvent $event) use (&$beforePageIsRetrievedEvent, $page, $pageId) {
+                $beforePageIsRetrievedEvent = $event;
+                $beforePageIsRetrievedEvent->setPageId($pageId);
+                $beforePageIsRetrievedEvent->setPage($page);
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(BeforePageIsRetrievedEvent::class, 'before-page-is-retrieved-listener');
+
+        $result = (new PageRepository(new Context()))->getPage(1234);
+
+        self::assertEquals($page->getPageId(), $result['uid']);
+        self::assertInstanceOf(BeforePageIsRetrievedEvent::class, $beforePageIsRetrievedEvent);
+        self::assertEquals($page, $beforePageIsRetrievedEvent->getPage());
+        self::assertEquals($pageId, $beforePageIsRetrievedEvent->getPageId());
+        self::assertTrue($beforePageIsRetrievedEvent->hasPage());
     }
 }
