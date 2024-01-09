@@ -26,8 +26,8 @@ final class ModifyDatabaseQueryForContentEvent
 {
     public function __construct(
         private QueryBuilder $queryBuilder,
-        private string $table,
-        private int $pageId,
+        private readonly string $table,
+        private readonly int $pageId,
     ) {}
 
     public function getQueryBuilder(): QueryBuilder

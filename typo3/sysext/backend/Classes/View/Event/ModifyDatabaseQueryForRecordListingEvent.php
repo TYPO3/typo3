@@ -28,12 +28,12 @@ final class ModifyDatabaseQueryForRecordListingEvent
 {
     public function __construct(
         private QueryBuilder $queryBuilder,
-        private string $table,
-        private int $pageId,
-        private array $fields,
-        private int $firstResult,
-        private int $maxResults,
-        private DatabaseRecordList $recordList
+        private readonly string $table,
+        private readonly int $pageId,
+        private readonly array $fields,
+        private readonly int $firstResult,
+        private readonly int $maxResults,
+        private readonly DatabaseRecordList $recordList
     ) {}
 
     public function getQueryBuilder(): QueryBuilder

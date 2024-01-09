@@ -28,9 +28,9 @@ use TYPO3\CMS\Filelist\Event\ModifyEditFileFormDataEvent;
  * Listener which modifies the form data to initialize code editor with
  * the resolved format option (based on the file extension).
  */
-final class InitializeCodeEditorInEditFileForm
+final readonly class InitializeCodeEditorInEditFileForm
 {
-    public function __construct(private readonly ModeRegistry $modeRegistry) {}
+    public function __construct(private ModeRegistry $modeRegistry) {}
 
     #[AsEventListener('typo3-code editor/initialize-code-editor-in-edit-file-form')]
     public function __invoke(ModifyEditFileFormDataEvent $event): void

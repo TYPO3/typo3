@@ -22,12 +22,12 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Allows to modify variables for the view depending on a special login provider set in the controller.
  */
-final class ModifyPageLayoutOnLoginProviderSelectionEvent
+final readonly class ModifyPageLayoutOnLoginProviderSelectionEvent
 {
     public function __construct(
-        private readonly LoginController $controller,
-        private readonly StandaloneView $view,
-        private readonly PageRenderer $pageRenderer
+        private LoginController $controller,
+        private StandaloneView $view,
+        private PageRenderer $pageRenderer
     ) {}
 
     public function getController(): LoginController

@@ -23,11 +23,11 @@ use TYPO3\CMS\Backend\Controller\EditDocumentController;
 /**
  * Event to listen to before the form engine has been initialized (= before all data will be persisted)
  */
-final class BeforeFormEnginePageInitializedEvent
+final readonly class BeforeFormEnginePageInitializedEvent
 {
     public function __construct(
-        private readonly EditDocumentController $controller,
-        private readonly ServerRequestInterface $request
+        private EditDocumentController $controller,
+        private ServerRequestInterface $request
     ) {}
 
     public function getController(): EditDocumentController

@@ -22,9 +22,9 @@ use TYPO3\CMS\Backend\Search\LiveSearch\ResultItem;
 /**
  * PSR-14 event to modify as result item created by the live search
  */
-final class ModifyResultItemInLiveSearchEvent
+final readonly class ModifyResultItemInLiveSearchEvent
 {
-    public function __construct(private readonly ResultItem $resultItem) {}
+    public function __construct(private ResultItem $resultItem) {}
 
     public function getResultItem(): ResultItem
     {

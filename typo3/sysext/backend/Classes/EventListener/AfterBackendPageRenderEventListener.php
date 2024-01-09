@@ -27,9 +27,9 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 /**
  * Adds custom renderers for the backend live search
  */
-final class AfterBackendPageRenderEventListener
+final readonly class AfterBackendPageRenderEventListener
 {
-    public function __construct(private readonly PageRenderer $pageRenderer) {}
+    public function __construct(private PageRenderer $pageRenderer) {}
 
     #[AsEventListener(event: AfterBackendPageRenderEvent::class)]
     public function __invoke(): void

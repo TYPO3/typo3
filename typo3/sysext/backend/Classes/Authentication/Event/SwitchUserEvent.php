@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Backend\Authentication\Event;
 /**
  * This event is triggered when a "SU" (switch user) action has been triggered
  */
-final class SwitchUserEvent
+final readonly class SwitchUserEvent
 {
     public function __construct(
-        private readonly string $sessionId,
-        private readonly array $targetUser,
-        private readonly array $currentUser
+        private string $sessionId,
+        private array $targetUser,
+        private array $currentUser
     ) {}
 
     public function getSessionId(): string

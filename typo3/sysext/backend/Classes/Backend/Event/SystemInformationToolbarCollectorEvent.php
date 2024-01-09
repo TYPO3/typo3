@@ -23,9 +23,9 @@ use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
  * An event to enrich the system information toolbar in the TYPO3 Backend top toolbar
  * with various information
  */
-final class SystemInformationToolbarCollectorEvent
+final readonly class SystemInformationToolbarCollectorEvent
 {
-    public function __construct(private readonly SystemInformationToolbarItem $toolbarItem) {}
+    public function __construct(private SystemInformationToolbarItem $toolbarItem) {}
 
     public function getToolbarItem(): SystemInformationToolbarItem
     {

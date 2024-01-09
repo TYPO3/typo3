@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 /**
  * PSR-14 event to modify the query builder instance for the live search
  */
-final class ModifyQueryForLiveSearchEvent
+final readonly class ModifyQueryForLiveSearchEvent
 {
-    public function __construct(private readonly QueryBuilder $queryBuilder, private readonly string $table) {}
+    public function __construct(private QueryBuilder $queryBuilder, private string $table) {}
 
     public function getQueryBuilder(): QueryBuilder
     {

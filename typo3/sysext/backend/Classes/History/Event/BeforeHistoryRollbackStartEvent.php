@@ -23,13 +23,13 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 /**
  * This event is fired before a history record rollback starts
  */
-final class BeforeHistoryRollbackStartEvent
+final readonly class BeforeHistoryRollbackStartEvent
 {
     public function __construct(
-        private readonly string $rollbackFields,
-        private readonly array $diff,
-        private readonly RecordHistoryRollback $recordHistoryRollback,
-        private readonly ?BackendUserAuthentication $backendUserAuthentication = null
+        private string $rollbackFields,
+        private array $diff,
+        private RecordHistoryRollback $recordHistoryRollback,
+        private ?BackendUserAuthentication $backendUserAuthentication = null
     ) {}
 
     public function getRecordHistoryRollback(): RecordHistoryRollback
