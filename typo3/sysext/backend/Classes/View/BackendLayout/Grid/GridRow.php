@@ -32,7 +32,7 @@ class GridRow extends AbstractGridObject
     /**
      * @var GridColumn[]
      */
-    protected $columns = [];
+    protected array $columns = [];
 
     public function addColumn(GridColumn $column): void
     {

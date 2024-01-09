@@ -40,12 +40,7 @@ class Grid extends AbstractGridObject
     /**
      * @var GridRow[]
      */
-    protected $rows = [];
-
-    /**
-     * @var bool
-     */
-    protected $allowNewContent = true;
+    protected array $rows = [];
 
     public function addRow(GridRow $row): void
     {

@@ -44,34 +44,18 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class LanguageColumn extends AbstractGridObject
 {
-    /**
-     * @var array
-     */
-    protected $localizationConfiguration = [];
+    protected readonly array $localizationConfiguration;
 
-    /**
-     * @var Grid|null
-     */
-    protected $grid;
-
-    /**
-     * @var array
-     */
-    protected $translationInfo = [
-        'hasStandaloneContent' => false,
-        'hasTranslations' => false,
-        'untranslatedRecordUids' => [],
-    ];
-
-    public function __construct(PageLayoutContext $context, Grid $grid, array $translationInfo)
-    {
+    public function __construct(
+        protected PageLayoutContext $context,
+        protected readonly Grid $grid,
+        protected readonly array $translationInfo
+    ) {
         parent::__construct($context);
         $this->localizationConfiguration = BackendUtility::getPagesTSconfig($context->getPageId())['mod.']['web_layout.']['localization.'] ?? [];
-        $this->grid = $grid;
-        $this->translationInfo = $translationInfo;
     }
 
-    public function getGrid(): ?Grid
+    public function getGrid(): Grid
     {
         return $this->grid;
     }
@@ -126,16 +110,13 @@ class LanguageColumn extends AbstractGridObject
                     $pageRecordUid => 'edit',
                 ],
             ],
-            // Disallow manual adjustment of the language field for pages
-            'overrideVals' => [
-                'pages' => [
-                    'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
-                ],
-            ],
             'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
         ];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+        // Disallow manual adjustment of the language field for pages
+        if (($languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? '') !== '') {
+            $urlParameters['overrideVals']['pages'][$languageField] = $this->context->getSiteLanguage()->getLanguageId();
+        }
+        return (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('record_edit', $urlParameters);
     }
 
     public function getAllowViewPage(): bool

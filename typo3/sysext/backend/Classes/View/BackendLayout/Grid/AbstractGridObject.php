@@ -39,19 +39,10 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 abstract class AbstractGridObject
 {
-    /**
-     * @var PageLayoutContext
-     */
-    protected $context;
+    protected readonly IconFactory $iconFactory;
 
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    public function __construct(PageLayoutContext $context)
+    public function __construct(protected PageLayoutContext $context)
     {
-        $this->context = $context;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 

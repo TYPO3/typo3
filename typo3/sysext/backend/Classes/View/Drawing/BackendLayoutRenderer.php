@@ -229,12 +229,7 @@ class BackendLayoutRenderer
 
             $translatedRows = $contentFetcher->getFlatContentRecords($localizedLanguageId);
 
-            $grid = $defaultLanguageColumnObject->getGrid();
-            if ($grid === null) {
-                continue;
-            }
-
-            foreach ($grid->getRows() as $rows) {
+            foreach ($defaultLanguageColumnObject->getGrid()->getRows() as $rows) {
                 foreach ($rows->getColumns() as $column) {
                     if (($translationInfo['mode'] ?? '') === 'connected') {
                         foreach ($column->getItems() as $item) {

@@ -50,9 +50,9 @@ class GridColumnItem extends AbstractGridObject
 
     public function __construct(
         PageLayoutContext $context,
-        protected GridColumn $column,
+        protected readonly GridColumn $column,
         protected array $record,
-        protected string $table = 'tt_content'
+        protected readonly string $table = 'tt_content'
     ) {
         parent::__construct($context);
     }
@@ -268,10 +268,10 @@ class GridColumnItem extends AbstractGridObject
 
     public function isInconsistentLanguage(): bool
     {
-        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->getContext()->getPageId())['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->context->getPageId())['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
         return !$allowInconsistentLanguageHandling
             && $this->getSiteLanguage()->getLanguageId() !== 0
-            && $this->getContext()->getLanguageModeIdentifier() === 'mixed'
+            && $this->context->getLanguageModeIdentifier() === 'mixed'
             && (int)($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) === 0;
     }
 
