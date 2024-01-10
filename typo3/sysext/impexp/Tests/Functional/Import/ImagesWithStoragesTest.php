@@ -34,10 +34,7 @@ final class ImagesWithStoragesTest extends AbstractImportExportTestCase
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/images-with-storages.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/images-with-storages.xml');
         $subject->importData();
 
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importImagesWithStorages.csv');
@@ -56,10 +53,7 @@ final class ImagesWithStoragesTest extends AbstractImportExportTestCase
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/images-with-static-and-fallback-storages.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/images-with-static-and-fallback-storages.xml');
         $subject->importData();
 
         self::assertFileExists(Environment::getPublicPath() . '/fileadmin_invalid_path/user_upload/typo3_image2.jpg');

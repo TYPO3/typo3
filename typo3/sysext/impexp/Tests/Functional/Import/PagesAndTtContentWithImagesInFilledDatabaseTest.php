@@ -46,10 +46,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-different-image.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-different-image.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg';
@@ -76,10 +73,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         try {
             $subject->setPid(0);
             $subject->setUpdate(true);
-            $subject->loadFile(
-                'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-different-image.xml',
-                true
-            );
+            $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-different-image.xml');
             $subject->importData();
         } catch (\Exception $e) {
             // This warning is expected, but the import is completed anyway
@@ -117,10 +111,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
                 'pages:1' => Import::IMPORT_MODE_AS_NEW,
                 'pages:2' => Import::IMPORT_MODE_AS_NEW,
             ]);
-            $subject->loadFile(
-                'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-different-image.xml',
-                true
-            );
+            $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-different-image.xml');
             $subject->importData();
         } catch (\Exception $e) {
             // This warning is expected, but the import is completed anyway
@@ -154,10 +145,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         try {
             $subject->setPid(0);
             $subject->setUpdate(true);
-            $subject->loadFile(
-                'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-forced-uids.xml',
-                true
-            );
+            $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-forced-uids.xml');
             $subject->importData();
         } catch (\Exception $e) {
             // This warning is expected, but the import is completed anyway
@@ -188,10 +176,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-same-image.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-same-image.xml');
         $subject->importData();
 
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithSameImageToExistingData.csv');
@@ -233,10 +218,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $subject->setPid(0);
         // Import file with sys_file:1 and sys_file:2, where sys_file:1 has one connected
         // content element, and sys_file:2 has two connected content elements.
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/used-1.jpg';
@@ -257,10 +239,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml');
         $subject->checkImportPrerequisites();
         self::assertTrue(true);
     }
@@ -293,10 +272,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(1);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-flexform-relation.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-flexform-relation.xml');
         $subject->importData();
 
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tt_content');
@@ -324,10 +300,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/form_definitions/flexFormWithSoftReference.form.yaml';
@@ -351,10 +324,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml');
         $subject->setSoftrefCfg(['2f9299a90b56944746e4cadb753a6a70' => ['mode' => Import::SOFTREF_IMPORT_MODE_EXCLUDE]]);
         $subject->importData();
 
@@ -379,10 +349,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml');
         $subject->setSoftrefCfg(['2f9299a90b56944746e4cadb753a6a70' => ['mode' => Import::SOFTREF_IMPORT_MODE_EDITABLE]]);
         $subject->setSoftrefInputValues(['2f9299a90b56944746e4cadb753a6a70' => '1:1']);
         $subject->importData();

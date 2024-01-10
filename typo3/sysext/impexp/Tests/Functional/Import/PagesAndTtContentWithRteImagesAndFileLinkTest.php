@@ -36,10 +36,7 @@ final class PagesAndTtContentWithRteImagesAndFileLinkTest extends AbstractImport
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
 
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-rte-image-n-file-link.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-rte-image-n-file-link.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';

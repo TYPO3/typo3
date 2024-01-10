@@ -60,7 +60,7 @@ class ImportExportUtility
         $this->eventDispatcher->dispatch(new BeforeImportEvent($this->import, $file));
 
         try {
-            $this->import->loadFile($file, true);
+            $this->import->loadFile($file);
             $this->import->importData();
         } catch (\Exception $e) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);

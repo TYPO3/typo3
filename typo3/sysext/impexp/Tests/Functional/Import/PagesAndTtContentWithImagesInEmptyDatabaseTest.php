@@ -36,10 +36,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
             self::markTestSkipped('Test not available on case insensitive filesystems.');
         }
 
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
@@ -61,10 +58,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
             self::markTestSkipped('Test not available on case sensitive filesystems.');
         }
 
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
@@ -86,10 +80,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
             self::markTestSkipped('Test not available on case insensitive filesystems.');
         }
 
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-without-storage.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-without-storage.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
@@ -111,10 +102,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
             self::markTestSkipped('Test not available on case sensitive filesystems.');
         }
 
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-without-storage.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-without-storage.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
@@ -132,10 +120,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
 
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-spaces-in-path.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-spaces-in-path.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/folder_with_spaces/typo3_image2.jpg';
@@ -155,11 +140,8 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
 
-        $subject->loadFile(
-            // Files are parallel to the fixture .xml file in a folder - impexp tests for /../ not allowed in path, so we set an absolute path here
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-but-not-included.xml',
-            true
-        );
+        // Files are parallel to the fixture .xml file in a folder - impexp tests for /../ not allowed in path, so we set an absolute path here
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-but-not-included.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
@@ -178,10 +160,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         $subject->setPid(0);
 
         try {
-            $subject->loadFile(
-                'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-forced-uids.xml',
-                true
-            );
+            $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-forced-uids.xml');
             $subject->setForceAllUids(true);
             $subject->importData();
         } catch (\Exception $e) {
@@ -209,10 +188,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-invalid-storage.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-invalid-storage.xml');
         $subject->importData();
 
         self::assertFileEquals(
@@ -229,10 +205,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
         try {
-            $subject->loadFile(
-                'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-missing-image.xml',
-                true
-            );
+            $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-missing-image.xml');
             $subject->importData();
         } catch (\Exception $e) {
         }

@@ -32,10 +32,7 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
 
-        $subject->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml',
-            true
-        );
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml');
         $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image3.jpg';

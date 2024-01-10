@@ -49,10 +49,7 @@ final class ImportExportTest extends AbstractImportExportTestCase
 
         $import = GeneralUtility::makeInstance(Import::class);
         $import->setPid(0);
-        $import->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/irre-records.xml',
-            1
-        );
+        $import->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/irre-records.xml');
         $import->setForceAllUids(true);
         $import->importData();
 

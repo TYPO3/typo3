@@ -248,10 +248,7 @@ final class ImportTest extends AbstractImportExportTestCase
     {
         $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
-        $importMock->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/XmlExports/empty.xml',
-            true
-        );
+        $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/empty.xml');
         self::assertTrue(true);
     }
 
@@ -262,10 +259,7 @@ final class ImportTest extends AbstractImportExportTestCase
     {
         $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
-        $importMock->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty.t3d',
-            true
-        );
+        $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty.t3d');
         self::assertTrue(true);
     }
 
@@ -278,10 +272,7 @@ final class ImportTest extends AbstractImportExportTestCase
 
         $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
-        $importMock->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty-with-wrong-checksum.t3d',
-            true
-        );
+        $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty-with-wrong-checksum.t3d');
     }
 
     /**
@@ -295,10 +286,7 @@ final class ImportTest extends AbstractImportExportTestCase
 
         $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
-        $importMock->loadFile(
-            'EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty-z.t3d',
-            true
-        );
+        $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty-z.t3d');
         self::assertTrue(true);
     }
 }

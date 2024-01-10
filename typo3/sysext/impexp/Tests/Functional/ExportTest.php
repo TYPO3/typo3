@@ -129,6 +129,7 @@ final class ExportTest extends AbstractImportExportTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecords.php';
 
@@ -156,6 +157,7 @@ final class ExportTest extends AbstractImportExportTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content-with-softrefs.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecordsWithSoftRefs.php';
 

@@ -2066,19 +2066,9 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getUid\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/impexp/Classes/Import.php
-
-		-
 			message: "#^Empty array passed to foreach\\.$#"
 			count: 2
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
-
-		-
-			message: "#^Parameter \\#2 \\$all of method TYPO3\\\\CMS\\\\Impexp\\\\Import\\:\\:loadFile\\(\\) expects bool, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/ImportExportTest.php
 
 		-
 			message: "#^Offset 'query' on array\\{scheme\\?\\: string, host\\?\\: string, port\\?\\: int\\<0, 65535\\>, user\\?\\: string, pass\\?\\: string, path\\?\\: string, query\\: string, fragment\\?\\: string\\} on left side of \\?\\? always exists and is not nullable\\.$#"

@@ -117,7 +117,7 @@ class ImportCommand extends Command
             $this->import->setForceAllUids($input->getOption('force-uid'));
             $this->import->setEnableLogging($input->getOption('enable-log'));
             $this->import->setImportMode($this->parseAssociativeArray($input, 'import-mode', '='));
-            $this->import->loadFile((string)$input->getArgument('file'), true);
+            $this->import->loadFile((string)$input->getArgument('file'));
             $this->import->checkImportPrerequisites();
             $this->import->importData();
             $io->success('Importing ' . $input->getArgument('file') . ' to page ' . $input->getArgument('pid') . ' succeeded.');

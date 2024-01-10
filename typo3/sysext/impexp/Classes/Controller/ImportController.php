@@ -185,7 +185,7 @@ class ImportController
                 $filePath = $this->getFilePathWithinFileMountBoundaries((string)$inputData['file']);
             }
             try {
-                $import->loadFile($filePath, true);
+                $import->loadFile($filePath);
                 $import->checkImportPrerequisites();
                 if ($inputData['import_file'] ?? false) {
                     $import->importData();
