@@ -4914,7 +4914,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // Setting LIMIT:
-        $error = false;
         if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
             // Finding the total number of records, if used:
             if (str_contains(strtolower(($conf['begin'] ?? '') . ($conf['max'] ?? '')), 'total')) {
@@ -4938,64 +4937,58 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                 } catch (DBALException $e) {
                     $this->getTimeTracker()->setTSlogMessage($e->getPrevious()->getMessage());
-                    $error = true;
+                    return '';
                 }
             }
 
-            if (!$error) {
-                if (isset($conf['begin']) && $conf['begin'] > 0) {
-                    $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'])), 0);
-                    $queryBuilder->setFirstResult($conf['begin']);
-                }
-                if (isset($conf['max'])) {
-                    $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'])), 0);
-                    $queryBuilder->setMaxResults($conf['max'] ?: 100000);
-                }
+            if (isset($conf['begin']) && $conf['begin'] > 0) {
+                $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'])), 0);
+                $queryBuilder->setFirstResult($conf['begin']);
+            }
+            if (isset($conf['max'])) {
+                $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'])), 0);
+                $queryBuilder->setMaxResults($conf['max'] ?: 100000);
             }
         }
 
-        if (!$error) {
-            // Setting up tablejoins:
-            if ($conf['join'] ?? false) {
-                $joinParts = QueryHelper::parseJoin($conf['join']);
-                $queryBuilder->join(
-                    $table,
-                    $joinParts['tableName'],
-                    $joinParts['tableAlias'],
-                    $joinParts['joinCondition']
-                );
-            } elseif ($conf['leftjoin'] ?? false) {
-                $joinParts = QueryHelper::parseJoin($conf['leftjoin']);
-                $queryBuilder->leftJoin(
-                    $table,
-                    $joinParts['tableName'],
-                    $joinParts['tableAlias'],
-                    $joinParts['joinCondition']
-                );
-            } elseif ($conf['rightjoin'] ?? false) {
-                $joinParts = QueryHelper::parseJoin($conf['rightjoin']);
-                $queryBuilder->rightJoin(
-                    $table,
-                    $joinParts['tableName'],
-                    $joinParts['tableAlias'],
-                    $joinParts['joinCondition']
-                );
-            }
-
-            // Convert the QueryBuilder object into a SQL statement.
-            $query = $queryBuilder->getSQL();
-
-            // Replace the markers in the queryParts to handle stdWrap enabled properties
-            foreach ($queryMarkers as $marker => $markerValue) {
-                // @todo Ugly hack that needs to be cleaned up, with the current architecture
-                // @todo for exec_Query / getQuery it's the best we can do.
-                $query = str_replace('###' . $marker . '###', $markerValue, $query);
-            }
-
-            return $returnQueryArray ? $this->getQueryArray($queryBuilder) : $query;
+        // Setting up tablejoins:
+        if ($conf['join'] ?? false) {
+            $joinParts = QueryHelper::parseJoin($conf['join']);
+            $queryBuilder->join(
+                $table,
+                $joinParts['tableName'],
+                $joinParts['tableAlias'],
+                $joinParts['joinCondition']
+            );
+        } elseif ($conf['leftjoin'] ?? false) {
+            $joinParts = QueryHelper::parseJoin($conf['leftjoin']);
+            $queryBuilder->leftJoin(
+                $table,
+                $joinParts['tableName'],
+                $joinParts['tableAlias'],
+                $joinParts['joinCondition']
+            );
+        } elseif ($conf['rightjoin'] ?? false) {
+            $joinParts = QueryHelper::parseJoin($conf['rightjoin']);
+            $queryBuilder->rightJoin(
+                $table,
+                $joinParts['tableName'],
+                $joinParts['tableAlias'],
+                $joinParts['joinCondition']
+            );
         }
 
-        return '';
+        // Convert the QueryBuilder object into a SQL statement.
+        $query = $queryBuilder->getSQL();
+
+        // Replace the markers in the queryParts to handle stdWrap enabled properties
+        foreach ($queryMarkers as $marker => $markerValue) {
+            // @todo Ugly hack that needs to be cleaned up, with the current architecture
+            // @todo for exec_Query / getQuery it's the best we can do.
+            $query = str_replace('###' . $marker . '###', $markerValue, $query);
+        }
+
+        return $returnQueryArray ? $this->getQueryArray($queryBuilder) : $query;
     }
 
     /**
