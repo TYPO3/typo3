@@ -188,6 +188,11 @@ html {
     gap: .5rem;
     padding: var(--pagemodule-element-spacing);
 
+    &-left {
+        display: flex;
+        column-gap: .25rem;
+    }
+
     &-left,
     &-right {
         flex-shrink: 0;
