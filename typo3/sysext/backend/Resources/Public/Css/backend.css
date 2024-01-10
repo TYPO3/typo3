@@ -4391,6 +4391,7 @@ html{scroll-behavior:smooth}
 .t3-page-ce-hidden .t3-page-ce-element:hover{opacity:1}
 .t3-page-ce-warning .t3-page-ce-element{border:1px solid var(--pagemodule-element-warning-border-color);background-color:var(--pagemodule-element-warning-bg);box-shadow:none}
 .t3-page-ce-header{display:flex;align-items:center;gap:.5rem;padding:var(--pagemodule-element-spacing)}
+.t3-page-ce-header-left{display:flex;-moz-column-gap:.25rem;column-gap:.25rem}
 .t3-page-ce-header-left,.t3-page-ce-header-right{flex-shrink:0}
 .t3-page-ce-header-title{text-overflow:ellipsis;overflow:hidden;white-space:nowrap;flex-grow:1;font-weight:700}
 .t3-page-ce-body{padding:var(--pagemodule-grid-spacing);word-wrap:break-word;margin-top:calc(var(--pagemodule-grid-spacing) * -1)}
