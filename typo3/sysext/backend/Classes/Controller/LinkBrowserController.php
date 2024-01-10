@@ -21,9 +21,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,6 +38,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
     public function __construct(
         protected readonly LinkService $linkService,
         protected readonly TypoLinkCodecService $typoLinkCodecService,
+        protected readonly FlashMessageService $flashMessageService,
     ) {}
 
     public function getConfiguration(): array
@@ -96,10 +101,16 @@ class LinkBrowserController extends AbstractLinkBrowserController
         unset($currentLinkParts['additionalParams']);
 
         if (!empty($currentLinkParts['url'])) {
-            $data = $this->linkService->resolve($currentLinkParts['url']);
-            $currentLinkParts['type'] = $data['type'];
-            unset($data['type']);
-            $currentLinkParts['url'] = $data;
+            try {
+                $data = $this->linkService->resolve($currentLinkParts['url']);
+                $currentLinkParts['type'] = $data['type'];
+                unset($data['type']);
+                $currentLinkParts['url'] = $data;
+            } catch (UnknownLinkHandlerException $e) {
+                $this->flashMessageService->getMessageQueueByIdentifier()->enqueue(
+                    new FlashMessage(message: $e->getMessage(), severity: ContextualFeedbackSeverity::ERROR)
+                );
+            }
         }
 
         $this->currentLinkParts = $currentLinkParts;
