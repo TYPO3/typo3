@@ -162,7 +162,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
         $elements[$tokenID . ':' . $idx] = [];
         $elements[$tokenID . ':' . $idx]['matchString'] = $content;
         // Based on link type, maybe do more:
-        switch ((string)$tLP['type']) {
+        switch ((string)($tLP['type'] ?? '')) {
             case LinkService::TYPE_EMAIL:
                 // Mail addresses can be substituted manually:
                 $elements[$tokenID . ':' . $idx]['subst'] = [

@@ -20,10 +20,14 @@ namespace TYPO3\CMS\RteCKEditor\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Core\Configuration\Richtext;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 
@@ -52,6 +56,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         protected readonly LinkService $linkService,
         protected readonly Richtext $richtext,
         protected readonly LanguageServiceFactory $languageServiceFactory,
+        protected readonly FlashMessageService $flashMessageService,
     ) {}
 
     /**
@@ -117,12 +122,18 @@ class BrowseLinksController extends AbstractLinkBrowserController
             return;
         }
         if (!empty($this->currentLinkParts['url'])) {
-            $data = $this->linkService->resolve($this->currentLinkParts['url']);
-            $this->currentLinkParts['type'] = $data['type'];
-            unset($data['type']);
-            $this->currentLinkParts['url'] = $data;
-            if (!empty($this->currentLinkParts['url']['parameters'])) {
-                $this->currentLinkParts['params'] = '&' . $this->currentLinkParts['url']['parameters'];
+            try {
+                $data = $this->linkService->resolve($this->currentLinkParts['url']);
+                $this->currentLinkParts['type'] = $data['type'];
+                unset($data['type']);
+                $this->currentLinkParts['url'] = $data;
+                if (!empty($this->currentLinkParts['url']['parameters'])) {
+                    $this->currentLinkParts['params'] = '&' . $this->currentLinkParts['url']['parameters'];
+                }
+            } catch (UnknownLinkHandlerException $e) {
+                $this->flashMessageService->getMessageQueueByIdentifier()->enqueue(
+                    new FlashMessage(message: $e->getMessage(), severity: ContextualFeedbackSeverity::ERROR)
+                );
             }
         }
         parent::initCurrentUrl();
