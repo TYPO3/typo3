@@ -168,10 +168,12 @@ class GridColumnItem extends AbstractGridObject
         if (($typeColumn = $this->getTypeColumn()) === '') {
             return '';
         }
-        $contentType = $this->record[$typeColumn] ?? '';
+        if (($recordType = $this->getRecordType()) === '') {
+            return '';
+        }
         $contentTypeLabels = $this->context->getContentTypeLabels();
-        return $contentTypeLabels[$contentType] ??
-            BackendUtility::getLabelFromItemListMerged((int)($this->record['pid'] ?? 0), $this->table, $typeColumn, $contentType, $this->record);
+        return $contentTypeLabels[$recordType] ??
+            BackendUtility::getLabelFromItemListMerged((int)($this->record['pid'] ?? 0), $this->table, $typeColumn, $recordType, $this->record);
     }
 
     public function getIcons(): string
@@ -351,6 +353,21 @@ class GridColumnItem extends AbstractGridObject
         return $uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-' . $this->table . '-' . $this->record['uid'];
     }
 
+    public function getTypeColumn(): string
+    {
+        return (string)($GLOBALS['TCA'][$this->table]['ctrl']['type'] ?? '');
+    }
+
+    public function getRecordType(): string
+    {
+        return (string)($this->record[$this->getTypeColumn()] ?? '');
+    }
+
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
     /**
      * Gets the number of records referencing the record with the UID $uid in
      * the current table.
@@ -360,10 +377,5 @@ class GridColumnItem extends AbstractGridObject
     protected function getReferenceCount(int $uid): int
     {
         return GeneralUtility::makeInstance(ReferenceIndex::class)->getNumberOfReferencedRecords($this->table, $uid);
-    }
-
-    protected function getTypeColumn(): string
-    {
-        return (string)($GLOBALS['TCA'][$this->table]['ctrl']['type'] ?? '');
     }
 }
