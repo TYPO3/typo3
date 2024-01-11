@@ -1916,6 +1916,35 @@ final class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Checks if getData() works with type "applicationContext"
+     *
+     * @test
+     */
+    public function getDataWithApplicationContext(): void
+    {
+        Environment::initialize(
+            new ApplicationContext('Production'),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getPublicPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+
+        $result = $this->subject->getData('applicationContext');
+
+        self::assertSame('Production', $result);
+    }
+
+    /**
      * @test
      */
     public function renderingContentObjectThrowsException(): void

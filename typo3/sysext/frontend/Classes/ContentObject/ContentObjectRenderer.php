@@ -3873,7 +3873,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             $parts = explode(':', $secVal, 2);
             $type = strtolower(trim($parts[0]));
-            $typesWithOutParameters = ['level', 'date', 'current', 'pagelayout'];
+            $typesWithOutParameters = ['level', 'date', 'current', 'pagelayout', 'applicationcontext'];
             $key = trim($parts[1] ?? '');
             if (($key != '') || in_array($type, $typesWithOutParameters)) {
                 switch ($type) {
@@ -4140,6 +4140,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'sitesettings':
                         $siteSettings = $this->getTypoScriptFrontendController()->getSite()->getSettings();
                         $retVal = $siteSettings->get($key, '');
+                        break;
+                    case 'applicationcontext':
+                        $retVal = Environment::getContext()->__toString();
                         break;
                 }
             }
