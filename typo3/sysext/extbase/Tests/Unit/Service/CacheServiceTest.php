@@ -19,14 +19,15 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CacheServiceTest extends UnitTestCase
 {
-    protected CacheService $cacheService;
-    protected CacheManager&MockObject $cacheManagerMock;
+    private CacheService $subject;
+    private CacheManager&MockObject $cacheManagerMock;
 
     protected function setUp(): void
     {
@@ -34,7 +35,7 @@ final class CacheServiceTest extends UnitTestCase
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManager->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn([]);
         $this->cacheManagerMock = $this->createMock(CacheManager::class);
-        $this->cacheService = new CacheService($configurationManager, $this->cacheManagerMock);
+        $this->subject = new CacheService($configurationManager, $this->cacheManagerMock, $this->createMock(ConnectionPool::class));
     }
 
     /**
@@ -43,7 +44,7 @@ final class CacheServiceTest extends UnitTestCase
     public function clearPageCacheConvertsPageIdsToArray(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_123']);
-        $this->cacheService->clearPageCache(123);
+        $this->subject->clearPageCache(123);
     }
 
     /**
@@ -52,7 +53,7 @@ final class CacheServiceTest extends UnitTestCase
     public function clearPageCacheConvertsPageIdsToNumericArray(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_0']);
-        $this->cacheService->clearPageCache('Foo');
+        $this->subject->clearPageCache('Foo');
     }
 
     /**
@@ -61,7 +62,7 @@ final class CacheServiceTest extends UnitTestCase
     public function clearPageCacheDoesNotConvertPageIdsIfNoneAreSpecified(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroup')->with('pages');
-        $this->cacheService->clearPageCache();
+        $this->subject->clearPageCache();
     }
 
     /**
@@ -70,7 +71,7 @@ final class CacheServiceTest extends UnitTestCase
     public function clearPageCacheUsesCacheManagerToFlushCacheOfSpecifiedPages(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_1', 'pageId_2', 'pageId_3']);
-        $this->cacheService->clearPageCache([1, 2, 3]);
+        $this->subject->clearPageCache([1, 2, 3]);
     }
 
     /**
@@ -80,11 +81,11 @@ final class CacheServiceTest extends UnitTestCase
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_2', 'pageId_15', 'pageId_8']);
 
-        $this->cacheService->getPageIdStack()->push(8);
-        $this->cacheService->getPageIdStack()->push(15);
-        $this->cacheService->getPageIdStack()->push(2);
+        $this->subject->getPageIdStack()->push(8);
+        $this->subject->getPageIdStack()->push(15);
+        $this->subject->getPageIdStack()->push(2);
 
-        $this->cacheService->clearCachesOfRegisteredPageIds();
+        $this->subject->clearCachesOfRegisteredPageIds();
     }
 
     /**
@@ -94,12 +95,12 @@ final class CacheServiceTest extends UnitTestCase
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_2', 'pageId_15', 'pageId_8']);
 
-        $this->cacheService->getPageIdStack()->push(8);
-        $this->cacheService->getPageIdStack()->push(15);
-        $this->cacheService->getPageIdStack()->push(15);
-        $this->cacheService->getPageIdStack()->push(2);
-        $this->cacheService->getPageIdStack()->push(2);
+        $this->subject->getPageIdStack()->push(8);
+        $this->subject->getPageIdStack()->push(15);
+        $this->subject->getPageIdStack()->push(15);
+        $this->subject->getPageIdStack()->push(2);
+        $this->subject->getPageIdStack()->push(2);
 
-        $this->cacheService->clearCachesOfRegisteredPageIds();
+        $this->subject->clearCachesOfRegisteredPageIds();
     }
 }

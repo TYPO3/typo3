@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Cache clearing helper functions
@@ -33,24 +32,15 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class CacheService implements SingletonInterface
 {
-    /**
-     * As determining the table columns is a costly operation this is done only once per table during runtime and cached then
-     *
-     * @see clearPageCache()
-     */
-    protected array $hasPidColumn = [];
     protected array $clearCacheForTables = [];
-    protected ConfigurationManagerInterface $configurationManager;
-    protected CacheManager $cacheManager;
-    protected ConnectionPool $connectionPool;
     protected \SplStack $pageIdStack;
 
-    public function __construct(ConfigurationManagerInterface $configurationManager, CacheManager $cacheManager)
-    {
-        $this->configurationManager = $configurationManager;
-        $this->cacheManager = $cacheManager;
+    public function __construct(
+        private readonly ConfigurationManagerInterface $configurationManager,
+        private readonly CacheManager $cacheManager,
+        private readonly ConnectionPool $connectionPool,
+    ) {
         $this->pageIdStack = new \SplStack();
-        $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
     }
 
     public function getPageIdStack(): \SplStack
@@ -135,35 +125,20 @@ class CacheService implements SingletonInterface
         $pageIdsToClear = [];
         $storagePage = null;
 
-        // As determining the table columns is a costly operation this is done only once per table during runtime and cached then
-        if (!isset($this->hasPidColumn[$tableName])) {
-            $columns = $this->connectionPool
-                ->getConnectionForTable($tableName)
-                ->createSchemaManager()
-                ->listTableColumns($tableName);
-            $this->hasPidColumn[$tableName] = array_key_exists('pid', $columns);
-        }
-
-        if ($this->hasPidColumn[$tableName]) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
-            $result = $queryBuilder
-                ->select('pid')
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                    )
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $result = $queryBuilder
+            ->select('pid')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
-                ->executeQuery();
-            if ($row = $result->fetchAssociative()) {
-                $storagePage = $row['pid'];
-                $pageIdsToClear[] = $storagePage;
-            }
-        } elseif ($this->getTypoScriptFrontendController() !== null) {
-            // No PID column - we can do a best-effort to clear the cache of the current page if in FE
-            $storagePage = $this->getTypoScriptFrontendController()->id;
+            )
+            ->executeQuery();
+        if ($row = $result->fetchAssociative()) {
+            $storagePage = $row['pid'];
             $pageIdsToClear[] = $storagePage;
         }
         if ($storagePage === null) {
@@ -184,10 +159,5 @@ class CacheService implements SingletonInterface
         foreach ($pageIdsToClear as $pageIdToClear) {
             $this->getPageIdStack()->push($pageIdToClear);
         }
-    }
-
-    protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'] ?? null;
     }
 }
