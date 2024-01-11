@@ -165,15 +165,16 @@ class GridColumnItem extends AbstractGridObject
 
     public function getContentTypeLabel(): string
     {
-        if (($typeColumn = $this->getTypeColumn()) === '') {
-            return '';
-        }
         if (($recordType = $this->getRecordType()) === '') {
             return '';
         }
         $contentTypeLabels = $this->context->getContentTypeLabels();
-        return $contentTypeLabels[$recordType] ??
-            BackendUtility::getLabelFromItemListMerged((int)($this->record['pid'] ?? 0), $this->table, $typeColumn, $recordType, $this->record);
+        $contentTypeLabel = $contentTypeLabels[$recordType] ?? '';
+        if ($contentTypeLabel === '') {
+            $contentTypeLabel = $this->getLabelFromItemListMerged();
+            $contentTypeLabel = $this->getLanguageService()->sL($contentTypeLabel);
+        }
+        return $contentTypeLabel;
     }
 
     public function getIcons(): string
@@ -262,7 +263,7 @@ class GridColumnItem extends AbstractGridObject
                 || (
                     ((int)($this->record['editlock'] ?? 0) === 0 && (int)($pageRecord['editlock'] ?? 0) === 0)
                     && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-                    && $this->getBackendUser()->checkAuthMode($this->table, $typeColumn, $this->record[$typeColumn])
+                    && $this->getBackendUser()->checkAuthMode($this->table, $typeColumn, $this->getRecordType())
                 )
             )
         ;
@@ -377,5 +378,16 @@ class GridColumnItem extends AbstractGridObject
     protected function getReferenceCount(int $uid): int
     {
         return GeneralUtility::makeInstance(ReferenceIndex::class)->getNumberOfReferencedRecords($this->table, $uid);
+    }
+
+    protected function getLabelFromItemListMerged(): string
+    {
+        $record = $this->record;
+        $pid = (int)($record['pid'] ?? 0);
+        $table = $this->table;
+        $typeColumn = $this->getTypeColumn();
+        $recordType = $this->getRecordType();
+        $label = BackendUtility::getLabelFromItemListMerged($pid, $table, $typeColumn, $recordType, $record);
+        return $label;
     }
 }
