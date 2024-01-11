@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\PageTitle;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -24,10 +25,13 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 abstract class AbstractPageTitleProvider implements PageTitleProviderInterface, SingletonInterface
 {
-    /**
-     * @var string
-     */
-    protected $title = '';
+    protected ServerRequestInterface $request;
+    protected string $title = '';
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
 
     public function getTitle(): string
     {

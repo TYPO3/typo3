@@ -22,8 +22,9 @@ namespace TYPO3\CMS\Core\PageTitle;
  */
 class RecordPageTitleProvider extends AbstractPageTitleProvider
 {
-    public function __construct()
+    public function getTitle(): string
     {
-        $this->title = $GLOBALS['TSFE']->page['title'];
+        $pageInformation = $this->request->getAttribute('frontend.page.information');
+        return (string)($pageInformation->getPageRecord()['title'] ?? '');
     }
 }

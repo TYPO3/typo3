@@ -127,7 +127,7 @@ class FrontendGenerationPageIndexingTrigger
 
         // Alternative title for indexing
         // @see https://forge.typo3.org/issues/88041
-        $configuration['indexedDocTitle'] = $this->pageTitleProviderManager->getTitle();
+        $configuration['indexedDocTitle'] = $this->pageTitleProviderManager->getTitle($request);
 
         // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
         $configuration['mtime'] = $tsfe->register['SYS_LASTCHANGED'] ?? $tsfe->page['SYS_LASTCHANGED'];

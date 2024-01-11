@@ -25,8 +25,9 @@ use TYPO3\CMS\Core\PageTitle\AbstractPageTitleProvider;
  */
 class SeoTitlePageTitleProvider extends AbstractPageTitleProvider
 {
-    public function __construct()
+    public function getTitle(): string
     {
-        $this->title = (string)$GLOBALS['TSFE']->page['seo_title'];
+        $pageInformation = $this->request->getAttribute('frontend.page.information');
+        return (string)($pageInformation->getPageRecord()['seo_title'] ?? '');
     }
 }

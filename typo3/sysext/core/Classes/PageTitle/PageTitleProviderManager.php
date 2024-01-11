@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\PageTitle;
 
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -31,29 +33,33 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var array
-     */
-    private $pageTitleCache = [];
+    private array $pageTitleCache = [];
 
-    public function getTitle(): string
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly DependencyOrderingService $dependencyOrderingService,
+        private readonly TypoScriptService $typoScriptService,
+    ) {}
+
+    public function getTitle(ServerRequestInterface $request): string
     {
         $pageTitle = '';
 
-        $titleProviders = $this->getPageTitleProviderConfiguration();
+        $titleProviders = $this->getPageTitleProviderConfiguration($request);
         $titleProviders = $this->setProviderOrder($titleProviders);
-
-        $orderedTitleProviders = GeneralUtility::makeInstance(DependencyOrderingService::class)
-            ->orderByDependencies($titleProviders);
+        $orderedTitleProviders = $this->dependencyOrderingService->orderByDependencies($titleProviders);
 
         $this->logger->debug('Page title providers ordered', [
             'orderedTitleProviders' => $orderedTitleProviders,
         ]);
 
-        foreach ($orderedTitleProviders as $provider => $configuration) {
+        foreach ($orderedTitleProviders as $configuration) {
             if (class_exists($configuration['provider']) && is_subclass_of($configuration['provider'], PageTitleProviderInterface::class)) {
                 /** @var PageTitleProviderInterface $titleProviderObject */
-                $titleProviderObject = GeneralUtility::makeInstance($configuration['provider']);
+                $titleProviderObject = $this->container->get($configuration['provider']);
+                if (method_exists($titleProviderObject, 'setRequest')) {
+                    $titleProviderObject->setRequest($request);
+                }
                 if (($pageTitle = $titleProviderObject->getTitle())
                     || ($pageTitle = $this->pageTitleCache[$configuration['provider']] ?? '') !== ''
                 ) {
@@ -94,13 +100,12 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
     /**
      * Get the TypoScript configuration for pageTitleProviders
      */
-    private function getPageTitleProviderConfiguration(): array
+    private function getPageTitleProviderConfiguration(ServerRequestInterface $request): array
     {
-        $typoscriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-        $config = $typoscriptService->convertTypoScriptArrayToPlainArray(
-            $GLOBALS['TSFE']->config['config'] ?? []
+        $tsfe = $request->getAttribute('frontend.controller');
+        $config = $this->typoScriptService->convertTypoScriptArrayToPlainArray(
+            $tsfe->config['config'] ?? []
         );
-
         return $config['pageTitleProviders'] ?? [];
     }
 

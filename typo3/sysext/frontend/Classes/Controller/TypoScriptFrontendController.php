@@ -1067,7 +1067,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @internal
      */
-    public function generatePageTitle(): string
+    public function generatePageTitle(ServerRequestInterface $request): string
     {
         // config.noPageTitle = 2 - means do not render the page title
         if ((int)($this->config['config']['noPageTitle'] ?? 0) === 2) {
@@ -1084,7 +1084,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!empty($this->config['config']['pageTitleCache'])) {
             $titleProvider->setPageTitleCache($this->config['config']['pageTitleCache']);
         }
-        $pageTitle = $titleProvider->getTitle();
+        $pageTitle = $titleProvider->getTitle($request);
         $this->config['config']['pageTitleCache'] = $titleProvider->getPageTitleCache();
 
         $titleTagContent = $this->printTitle(
@@ -1167,7 +1167,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->recursivelyReplaceIntPlaceholdersInContent($request);
         $this->getTimeTracker()->push('Substitute header section');
         $this->INTincScript_loadJSCode();
-        $this->generatePageTitle();
+        $this->generatePageTitle($request);
 
         $this->content = str_replace(
             [
