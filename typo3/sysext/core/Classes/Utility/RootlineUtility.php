@@ -105,7 +105,7 @@ class RootlineUtility
     {
         $this->mountPointParameter = $this->sanitizeMountPointParameter($mountPointParameter);
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
+        $this->initializePageRepository();
 
         $this->languageUid = $this->context->getPropertyFromAspect('language', 'id', 0);
         $this->workspaceUid = (int)$this->context->getPropertyFromAspect('workspace', 'id', 0);
@@ -121,6 +121,11 @@ class RootlineUtility
         $this->runtimeCache ??= GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
 
         $this->cacheIdentifier = $this->getCacheIdentifier();
+    }
+
+    protected function initializePageRepository(): void
+    {
+        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
     }
 
     /**

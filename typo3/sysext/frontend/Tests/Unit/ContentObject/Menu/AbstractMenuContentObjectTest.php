@@ -64,7 +64,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexReturnsEmptyArrayIfTheRequestedPageCouldNotBeFetched(): void
     {
         $this->prepareSectionIndexTest();
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->disableOriginalConstructor()->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
@@ -78,7 +78,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexUsesTheInternalIdIfNoPageIdWasGiven(): void
     {
         $this->prepareSectionIndexTest();
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->disableOriginalConstructor()->getMock();
         $pageRepository->expects(self::once())->method('getPage')->with(10)->willReturn([]);
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
@@ -95,13 +95,13 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1337334849);
         $this->prepareSectionIndexTest();
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->disableOriginalConstructor()->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn(['uid' => 10]);
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
 
-        $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
+        $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
         $cObject->expects(self::once())->method('exec_getQuery')->willReturn(0);
         $this->subject->_set('parent_cObj', $cObject);
 
@@ -126,7 +126,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
 
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context])->getMock();
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context])->onlyMethods(['init', 'getPage', 'getLanguageOverlay'])->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
         $pageRepository->expects(self::once())->method('getLanguageOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);
         $this->subject->_set('sys_page', $pageRepository);
@@ -194,7 +194,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
             ],
         ]);
 
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->disableOriginalConstructor()->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
         $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
         $this->subject->_set('sys_page', $pageRepository);
@@ -254,7 +254,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $this->subject->_set('mconf', ['sectionIndex.' => $configuration]);
 
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->disableOriginalConstructor()->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn(['uid' => 12]);
         $this->subject->_set('sys_page', $pageRepository);
 
@@ -391,7 +391,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
 
         $this->prepareSectionIndexTest();
 
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->disableOriginalConstructor()->getMock();
         $pageRepository->expects(self::once())->method('getMenu')->willReturn($menuItems);
         $subject->_set('sys_page', $pageRepository);
         $subject->_set('menuArr', [

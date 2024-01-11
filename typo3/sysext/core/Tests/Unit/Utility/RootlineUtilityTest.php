@@ -44,7 +44,7 @@ final class RootlineUtilityTest extends UnitTestCase
 
         $this->subject = $this->getAccessibleMock(
             RootlineUtility::class,
-            ['enrichWithRelationFields', 'resolvePageId'],
+            ['enrichWithRelationFields', 'resolvePageId', 'initializePageRepository'],
             [1, '', new Context()]
         );
 

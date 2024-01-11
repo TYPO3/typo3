@@ -436,11 +436,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DependencyInjection/ServiceProviderRegistry.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:getRuntimeCache\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\VariableFrontend but returns TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Domain/Repository/PageRepository.php
-
-		-
 			message: "#^Result of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Hooks/TcaItemsProcessorFunctions.php

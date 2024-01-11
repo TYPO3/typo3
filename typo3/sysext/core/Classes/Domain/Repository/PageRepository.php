@@ -21,7 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -131,14 +131,7 @@ class PageRepository implements LoggerAwareInterface
     public function __construct(Context $context = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->versioningWorkspaceId = (int)$this->context->getPropertyFromAspect('workspace', 'id');
-        // Only set up the where clauses for pages when TCA is set. This usually happens only in tests.
-        // Once all tests are written very well, this can be removed again
-        if (isset($GLOBALS['TCA']['pages'])) {
-            $this->init();
-            $this->where_groupAccess = $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
-            $this->sys_language_uid = (int)$this->context->getPropertyFromAspect('language', 'id', 0);
-        }
+        $this->init();
     }
 
     /**
@@ -150,6 +143,7 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function init(): void
     {
+        $this->versioningWorkspaceId = (int)$this->context->getPropertyFromAspect('workspace', 'id');
         // As PageRepository may be used multiple times during the frontend request, and may
         // actually be used before the usergroups have been resolved, self::getMultipleGroupsWhereClause()
         // and the Event in ->enableFields() need to be reconsidered when the usergroup state changes.
@@ -195,6 +189,8 @@ class PageRepository implements LoggerAwareInterface
             }
             $cache->set($cacheIdentifier, $this->where_hid_del);
         }
+        $this->where_groupAccess = $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
+        $this->sys_language_uid = (int)$this->context->getPropertyFromAspect('language', 'id', 0);
     }
 
     /**************************
@@ -2189,7 +2185,7 @@ class PageRepository implements LoggerAwareInterface
         return $row;
     }
 
-    protected function getRuntimeCache(): VariableFrontend
+    protected function getRuntimeCache(): FrontendInterface
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
