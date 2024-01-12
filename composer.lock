@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73ffedd3715f148ccb4e8c6a98e90f8b",
+    "content-hash": "ce0deea478a88bf2ab0d3d926006a382",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8898,7 +8898,7 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/8.0.8"
+                "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
             "time": "2023-12-28T13:04:55+00:00"
         }
