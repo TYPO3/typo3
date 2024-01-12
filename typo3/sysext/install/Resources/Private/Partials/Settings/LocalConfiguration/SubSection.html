@@ -31,14 +31,7 @@
                     </f:if>
                 </div>
                 <div class="item-body">
-                    <f:if condition="{item.readonly}">
-                        <div class="t3js-infobox callout callout-info">
-                            <div class="callout-body">
-                                For security reasons, this option cannot be changed here.<br>
-                                Please configure via <code>typo3conf/LocalConfiguration.php</code> or <code>typo3conf/AdditionalConfiguration.php</code>.
-                            </div>
-                        </div>
-                    </f:if>
+                    <f:render partial="Settings/ReadonlyInfo" arguments="{configuration: item}" />
                     <f:if condition="{item.differentValueInCurrentConfiguration}">
                         <div class="t3js-infobox callout callout-sm callout-warning">
                             <div class="callout-body">

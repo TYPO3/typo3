@@ -18,6 +18,7 @@
         <div class="row mb-3">
             <label class="col-sm-4 col-form-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
             <div class="col-sm-8">
+                <f:render partial="Settings/ReadonlyInfo" arguments="{configuration: configuration}" />
                 <input
                     id="{feature.name}{preset.name}{configurationKey}"
                     type="text"
@@ -27,7 +28,6 @@
                     data-radio="t3-install-tool-configuration-context-custom"
                     {f:if(condition: configuration.readonly, then: 'disabled')}
                 />
-                <f:render partial="Settings/Presets/ReadonlyInfo" arguments="{configuration: configuration}" />
             </div>
         </div>
     </f:for>
