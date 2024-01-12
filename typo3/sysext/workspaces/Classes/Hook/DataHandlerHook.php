@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -725,20 +724,20 @@ class DataHandlerHook
             // Set log entry for live record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
             if (($propArr['t3ver_oid'] ?? 0) > 0) {
-                $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.offline_record_updated');
+                $label = 'Record "{header}" ({table}:{uid}) was updated. (Offline version)';
             } else {
-                $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
+                $label = 'Record "{header}" ({table}:{uid}) was updated. (Online version)';
             }
-            $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
+            $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, ['header' => $propArr['header'], 'table' => $table, 'uid' => $id], $propArr['event_pid']);
             $dataHandler->setHistory($table, $id);
             // Set log entry for offline record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $curVersion);
             if (($propArr['t3ver_oid'] ?? 0) > 0) {
-                $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.offline_record_updated');
+                $label = 'Record "{header}" ({table}:{uid}) was updated. (Offline version)';
             } else {
-                $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
+                $label = 'Record "{header}" ({table}:{uid}) was updated. (Online version)';
             }
-            $dataHandler->log($table, $swapWith, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $swapWith], $propArr['event_pid']);
+            $dataHandler->log($table, $swapWith, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, ['header' => $propArr['header'], 'table' => $table, 'uid' => $swapWith], $propArr['event_pid']);
             $dataHandler->setHistory($table, $swapWith);
 
             $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
@@ -960,8 +959,7 @@ class DataHandlerHook
 
         // Set log entry for record
         $propArr = $dataHandler->getRecordPropertiesFromRow($table, $newRecordInWorkspace);
-        $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
-        $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
+        $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, 'Record "{table}" ({uid}) was updated. (Online version)', 10, ['table' => $propArr['header'], 'uid' => $table . ':' . $id], $propArr['event_pid']);
         $dataHandler->setHistory($table, $id);
 
         $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
@@ -1322,10 +1320,5 @@ class DataHandlerHook
     protected function createRelationHandlerInstance(): RelationHandler
     {
         return GeneralUtility::makeInstance(RelationHandler::class);
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }
