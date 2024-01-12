@@ -151,7 +151,7 @@ class UploadedFile implements UploadedFileInterface
         // Check if the target path is inside the allowed paths of TYPO3, and make it absolute.
         $targetPath = GeneralUtility::getFileAbsFileName($targetPath);
         if (empty($targetPath)) {
-            throw new \RuntimeException('Cannot move uploaded file, as it was already moved.', 1436717309);
+            throw new \RuntimeException('Cannot move uploaded file, as the target path is empty or invalid.', 1436717309);
         }
 
         // Max upload size (kb) for files.
