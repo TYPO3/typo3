@@ -2154,6 +2154,32 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
+    public function enrichAddsSelectVarcharWhenSelectSingleAndNoItems(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+            ],
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('string'),
+            [
+                'notnull' => true,
+                'default' => '',
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+    }
+
+    /**
+     * @test
+     */
     public function enrichAddsSelectTextWithoutAnyItemsOrTable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();

@@ -1085,7 +1085,8 @@ class DefaultTcaSchema
                         // With 'selectSingle' or with 'maxitems = 1', only a single value can be selected.
                         if (
                             !is_array($fieldConfig['config']['fileFolderConfig'] ?? false)
-                            && ($items === [] || $itemsContainsOnlyIntegers === true)
+                            && ($items !== [] || ($fieldConfig['config']['foreign_table'] ?? '') !== '')
+                            && $itemsContainsOnlyIntegers === true
                         ) {
                             // If the item list is empty, or if it contains only int values, an int field is enough.
                             // Also, the config must not be a 'fileFolderConfig' field which takes string values.
