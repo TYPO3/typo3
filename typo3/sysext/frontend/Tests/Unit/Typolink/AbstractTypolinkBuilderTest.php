@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -294,6 +296,9 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
             ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/subfolder/index.php']
         );
         $cObj->setRequest($serverRequest);
+        $container = new Container();
+        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
+        GeneralUtility::setContainer($container);
         $subject = $this->getAccessibleMockForAbstractClass(AbstractTypolinkBuilder::class, [$cObj, $this->frontendControllerMock]);
         $actual = $subject->_call(
             'resolveTargetAttribute',

@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
  * interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional stdWrap processing
+ *
+ * @deprecated not in use anymore since TYPO3 v13, will be removed in TYPO3 14.
+ *             Only stays to allow extensions to be compatible with TYPO3 v12 + v13.
  */
 interface ContentObjectStdWrapHookInterface
 {

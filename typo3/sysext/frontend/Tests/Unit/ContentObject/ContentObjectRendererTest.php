@@ -72,7 +72,10 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsExecutedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsInitializedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsExecutedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
@@ -3104,7 +3107,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     public function allStdWrapProcessorsAreCallable(): void
     {
         $callable = 0;
-        $notCallable = 0;
+        $notCallable = [];
         $processors = ['invalidProcessor'];
         foreach (array_keys($this->subject->_get('stdWrapOrder')) as $key) {
             $processors[] = strtr($key, ['.' => '']);
@@ -3114,11 +3117,17 @@ final class ContentObjectRendererTest extends UnitTestCase
             if (is_callable($method)) {
                 ++$callable;
             } else {
-                ++$notCallable;
+                $notCallable[] = $processor;
             }
         }
-        self::assertSame(1, $notCallable);
-        self::assertSame(82, $callable);
+        self::assertEquals([
+            'invalidProcessor',
+            BeforeStdWrapFunctionsInitializedEvent::class,
+            AfterStdWrapFunctionsInitializedEvent::class,
+            BeforeStdWrapFunctionsExecutedEvent::class,
+            AfterStdWrapFunctionsExecutedEvent::class,
+        ], $notCallable);
+        self::assertSame(78, $callable);
     }
 
     /**
@@ -3163,7 +3172,9 @@ final class ContentObjectRendererTest extends UnitTestCase
             try {
                 $conf = [$processor => '', $processor . '.' => ['table' => 'tt_content']];
                 $method = 'stdWrap_' . $processor;
-                $this->subject->$method('', $conf);
+                if (is_callable([$this->subject, $method])) {
+                    $this->subject->$method('', $conf);
+                }
             } catch (\Exception $e) {
                 $exceptions[] = $processor;
             }
@@ -3175,82 +3186,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     /***************************************************************************
      * End general tests for stdWrap_
      ***************************************************************************/
-
-    /***************************************************************************
-     * Tests for stdWrap_ in alphabetical order (all uppercase before lowercase)
-     ***************************************************************************/
-
-    /**
-     * Data provider for fourTypesOfStdWrapHookObjectProcessors
-     *
-     * @return array Order: stdWrap, hookObjectCall
-     */
-    public static function fourTypesOfStdWrapHookObjectProcessorsDataProvider(): array
-    {
-        return [
-            'preProcess' => [
-                'stdWrap_stdWrapPreProcess',
-                'stdWrapPreProcess',
-            ],
-            'override' => [
-                'stdWrap_stdWrapOverride',
-                'stdWrapOverride',
-            ],
-            'process' => [
-                'stdWrap_stdWrapProcess',
-                'stdWrapProcess',
-            ],
-            'postProcess' => [
-                'stdWrap_stdWrapPostProcess',
-                'stdWrapPostProcess',
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrapHookObject processors work properly.
-     *
-     * Checks:
-     *
-     * - stdWrap_stdWrapPreProcess
-     * - stdWrap_stdWrapOverride
-     * - stdWrap_stdWrapProcess
-     * - stdWrap_stdWrapPostProcess
-     *
-     * @test
-     * @dataProvider fourTypesOfStdWrapHookObjectProcessorsDataProvider
-     * @param string $stdWrapMethod The method to cover.
-     * @param string $hookObjectCall The expected hook object call.
-     */
-    public function fourTypesOfStdWrapHookObjectProcessors(
-        string $stdWrapMethod,
-        string $hookObjectCall
-    ): void {
-        $conf = [StringUtility::getUniqueId('conf')];
-        $content = StringUtility::getUniqueId('content');
-        $processed1 = StringUtility::getUniqueId('processed1');
-        $processed2 = StringUtility::getUniqueId('processed2');
-        $hookObject1 = $this->createMock(
-            ContentObjectStdWrapHookInterface::class
-        );
-        $hookObject1->expects(self::once())
-            ->method($hookObjectCall)
-            ->with($content, $conf)
-            ->willReturn($processed1);
-        $hookObject2 = $this->createMock(
-            ContentObjectStdWrapHookInterface::class
-        );
-        $hookObject2->expects(self::once())
-            ->method($hookObjectCall)
-            ->with($processed1, $conf)
-            ->willReturn($processed2);
-        $this->subject->_set(
-            'stdWrapHookObjects',
-            [$hookObject1, $hookObject2]
-        );
-        $result = $this->subject->$stdWrapMethod($content, $conf);
-        self::assertSame($processed2, $result);
-    }
 
     /**
      * Data provider for stdWrap_HTMLparser

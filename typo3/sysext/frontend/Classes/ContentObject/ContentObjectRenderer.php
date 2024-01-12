@@ -70,6 +70,10 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsExecutedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsInitializedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsExecutedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
@@ -108,10 +112,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @var string[]
      */
     public array $stdWrapOrder = [
-        'stdWrapPreProcess' => 'hook',
-        // this is a placeholder for the first Hook
-        'cacheRead' => 'hook',
-        // this is a placeholder for checking if the content is available in cache
+        BeforeStdWrapFunctionsInitializedEvent::class => 'event',
+        'cacheRead' => 'hook', // this is a placeholder for checking if the content is available in cache
         'setContentToCurrent' => 'boolean',
         'setContentToCurrent.' => 'array',
         'addPageCacheTags' => 'string',
@@ -129,8 +131,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'cObject.' => 'array',
         'numRows.' => 'array',
         'preUserFunc' => 'functionName',
-        'stdWrapOverride' => 'hook',
-        // this is a placeholder for the second Hook
+        AfterStdWrapFunctionsInitializedEvent::class => 'event',
         'override' => 'string',
         'override.' => 'array',
         'preIfEmptyListNum' => 'listNum',
@@ -148,8 +149,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'strPad.' => 'array',
         'stdWrap' => 'stdWrap',
         'stdWrap.' => 'array',
-        'stdWrapProcess' => 'hook',
-        // this is a placeholder for the third Hook
+        BeforeStdWrapFunctionsExecutedEvent::class => 'event',
         'required' => 'boolean',
         'required.' => 'array',
         'if.' => 'array',
@@ -250,10 +250,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'prefixComment.' => 'array',
         'htmlSanitize' => 'boolean',
         'htmlSanitize.' => 'array',
-        'cacheStore' => 'hook',
-        // this is a placeholder for storing the content in cache
-        'stdWrapPostProcess' => 'hook',
-        // this is a placeholder for the last Hook
+        'cacheStore' => 'hook', // this is a placeholder for storing the content in cache
+        AfterStdWrapFunctionsExecutedEvent::class => 'event',
         'debug' => 'boolean',
         'debug.' => 'array',
         'debugFunc' => 'boolean',
@@ -326,13 +324,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public $checkPid_badDoktypeList;
 
     public ?LinkResultInterface $lastTypoLinkResult = null;
-
-    /**
-     * Containing hook objects for stdWrap
-     *
-     * @var array
-     */
-    protected $stdWrapHookObjects = [];
 
     /**
      * @var File|FileReference|Folder|string|null Current file objects (during iterations over files)
@@ -463,14 +454,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ? $table . ':' . ($this->data['uid'] ?? '')
             : '';
         $this->parameters = [];
-        $this->stdWrapHookObjects = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof ContentObjectStdWrapHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . ContentObjectStdWrapHookInterface::class, 1195043965);
-            }
-            $this->stdWrapHookObjects[] = $hookObject;
-        }
 
         GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
             new AfterContentObjectRendererInitializedEvent($this)
@@ -1080,18 +1063,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap($content = '', $conf = [])
     {
         $content = (string)$content;
-        // If there is any hook object, activate all of the process and override functions.
-        // The hook interface ContentObjectStdWrapHookInterface takes care that all 4 methods exist.
-        if ($this->stdWrapHookObjects) {
-            $conf['stdWrapPreProcess'] = 1;
-            $conf['stdWrapOverride'] = 1;
-            $conf['stdWrapProcess'] = 1;
-            $conf['stdWrapPostProcess'] = 1;
-        }
-
         if (!is_array($conf) || !$conf) {
             return $content;
         }
+
+        // Activate the stdWrap PSR-14 Events - They will be executed
+        // as stdWrap functions, based on the defined "stdWrapOrder".
+        $conf[BeforeStdWrapFunctionsInitializedEvent::class] = 1;
+        $conf[AfterStdWrapFunctionsInitializedEvent::class] = 1;
+        $conf[BeforeStdWrapFunctionsExecutedEvent::class] = 1;
+        $conf[AfterStdWrapFunctionsExecutedEvent::class] = 1;
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
 
         // Cache handling
         if (isset($conf['cache.']) && is_array($conf['cache.'])) {
@@ -1142,16 +1124,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $functionName => $conf[$functionName] ?? null,
                         $functionProperties => $conf[$functionProperties] ?? null,
                     ];
-                    // Hand over the whole $conf array to the stdWrapHookObjects
+                    // Hand over the whole $conf array to the hooks
                     if ($functionType === 'hook') {
                         $singleConf = $conf;
                     }
                     // Add both keys - with and without the dot - to the set of executed functions
                     $isExecuted[$functionName] = true;
                     $isExecuted[$functionProperties] = true;
-                    // Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
-                    $functionName = 'stdWrap_' . $functionName;
-                    $content = $this->{$functionName}($content, $singleConf);
+                    if ($functionType === 'event') {
+                        $content = $eventDispatcher->dispatch(
+                            new $functionName($content, $conf, $this)
+                        )->getContent();
+                    } else {
+                        // Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
+                        $functionName = 'stdWrap_' . $functionName;
+                        $content = $this->{$functionName}($content, $singleConf);
+                    }
                 } elseif ($functionType === 'boolean' && !($conf[$functionName] ?? null)) {
                     $isExecuted[$functionName] = true;
                     $isExecuted[$functionProperties] = true;
@@ -1186,24 +1174,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $stdWrapped = $this->stdWrap($config[$key], $config[$key . '.']);
         // The string "0" should be returned.
         return $stdWrapped !== '' ? $stdWrapped : $defaultValue;
-    }
-
-    /**
-     * stdWrap pre process hook
-     * can be used by extensions authors to modify the behaviour of stdWrap functions to their needs
-     * this hook will execute functions before any other stdWrap function can modify anything
-     *
-     * @param string $content Input value undergoing processing in these functions.
-     * @param array $conf All stdWrap properties, not just the ones for a particular function.
-     * @return string The processed input value
-     */
-    public function stdWrap_stdWrapPreProcess($content = '', $conf = [])
-    {
-        foreach ($this->stdWrapHookObjects as $hookObject) {
-            /** @var ContentObjectStdWrapHookInterface $hookObject */
-            $content = $hookObject->stdWrapPreProcess($content, $conf, $this);
-        }
-        return $content;
     }
 
     /**
@@ -1378,24 +1348,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * stdWrap override hook
-     * can be used by extensions authors to modify the behaviour of stdWrap functions to their needs
-     * this hook will execute functions on existing content but still before the content gets modified or replaced
-     *
-     * @param string $content Input value undergoing processing in these functions.
-     * @param array $conf All stdWrap properties, not just the ones for a particular function.
-     * @return string The processed input value
-     */
-    public function stdWrap_stdWrapOverride($content = '', $conf = [])
-    {
-        foreach ($this->stdWrapHookObjects as $hookObject) {
-            /** @var ContentObjectStdWrapHookInterface $hookObject */
-            $content = $hookObject->stdWrapOverride($content, $conf, $this);
-        }
-        return $content;
-    }
-
-    /**
      * override
      * Will override the current value of content with its own value'
      *
@@ -1541,24 +1493,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_stdWrap($content = '', $conf = [])
     {
         return $this->stdWrap($content, $conf['stdWrap.']);
-    }
-
-    /**
-     * stdWrap process hook
-     * can be used by extensions authors to modify the behaviour of stdWrap functions to their needs
-     * this hook executes functions directly after the recursive stdWrap function call but still before the content gets modified
-     *
-     * @param string $content Input value undergoing processing in these functions.
-     * @param array $conf All stdWrap properties, not just the ones for a particular function.
-     * @return string The processed input value
-     */
-    public function stdWrap_stdWrapProcess($content = '', $conf = [])
-    {
-        foreach ($this->stdWrapHookObjects as $hookObject) {
-            /** @var ContentObjectStdWrapHookInterface $hookObject */
-            $content = $hookObject->stdWrapProcess($content, $conf, $this);
-        }
-        return $content;
     }
 
     /**
@@ -2432,24 +2366,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         ];
         $cacheFrontend->set($key, $cachedData, $tags, $lifetime);
         $this->getTypoScriptFrontendController()->addCacheTags($tags);
-        return $content;
-    }
-
-    /**
-     * stdWrap post process hook
-     * can be used by extensions authors to modify the behaviour of stdWrap functions to their needs
-     * this hook executes functions at after the content has been modified by the rest of the stdWrap functions but still before debugging
-     *
-     * @param string $content Input value undergoing processing in these functions.
-     * @param array $conf All stdWrap properties, not just the ones for a particular function.
-     * @return string The processed input value
-     */
-    public function stdWrap_stdWrapPostProcess($content = '', $conf = [])
-    {
-        foreach ($this->stdWrapHookObjects as $hookObject) {
-            /** @var ContentObjectStdWrapHookInterface $hookObject */
-            $content = $hookObject->stdWrapPostProcess($content, $conf, $this);
-        }
         return $content;
     }
 

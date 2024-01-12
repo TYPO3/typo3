@@ -1289,7 +1289,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         yield 'Live page with logged-in user' => [
             'url' => 'https://website.local/en-en/welcome',
             'pageTitle' => 'EN: Welcome',
-            'Online Page ID' => 1100,
+            'Online Page ID' => '1100',
             'Workspace ID' => 0,
             'Backend User ID' => 1,
             'statusCode' => 200,
@@ -1297,7 +1297,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         yield 'Live page with logged-in user accessed even though versioned page slug was changed' => [
             'url' => 'https://website.local/en-en/welcome',
             'pageTitle' => 'EN: Welcome to ACME Inc',
-            'Online Page ID' => 1100,
+            'Online Page ID' => '1100',
             'Workspace ID' => 1,
             'Backend User ID' => 1,
             'statusCode' => 200,
@@ -1305,7 +1305,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         yield 'Versioned page with logged-in user and modified slug' => [
             'url' => 'https://website.local/en-en/welcome-modified',
             'pageTitle' => 'EN: Welcome to ACME Inc',
-            'Online Page ID' => 1100,
+            'Online Page ID' => '1100',
             'Workspace ID' => 1,
             'Backend User ID' => 1,
             'statusCode' => 200,
@@ -1324,7 +1324,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageIsRenderedForVersionedPageDataProvider
      */
-    public function pageIsRenderedForVersionedPage(string $url, ?string $expectedPageTitle, ?int $expectedPageId, int $workspaceId, int $backendUserId, int $expectedStatusCode): void
+    public function pageIsRenderedForVersionedPage(string $url, ?string $expectedPageTitle, ?string $expectedPageId, int $workspaceId, int $backendUserId, int $expectedStatusCode): void
     {
         $this->writeSiteConfiguration(
             'website-local',

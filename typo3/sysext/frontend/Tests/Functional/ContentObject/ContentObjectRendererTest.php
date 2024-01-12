@@ -39,6 +39,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\EnhanceStdWrapEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
@@ -1359,5 +1360,37 @@ And another one';
         self::assertEquals('GIFBUILDER', $afterImageResourceResolvedEvent->getFile());
         self::assertEquals(['foo' => 'bar'], $afterImageResourceResolvedEvent->getFileArray());
         self::assertEquals('modified-public-url', $afterImageResourceResolvedEvent->getImageResource()->getPublicUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function enhanceStdWrapEventIsCalled(): void
+    {
+        $wrap = '<h1>|</h1>';
+        $content = 'modified content';
+        $enhanceStdWrapEvent = null;
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'enhance-stdWrap-listener',
+            static function (EnhanceStdWrapEvent $event) use (&$enhanceStdWrapEvent, $content) {
+                $enhanceStdWrapEvent = $event;
+                $event->setContent($content);
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(EnhanceStdWrapEvent::class, 'enhance-stdWrap-listener');
+
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $result = $subject->stdWrap('Test', ['wrap' => $wrap]);
+
+        self::assertInstanceOf(EnhanceStdWrapEvent::class, $enhanceStdWrapEvent);
+        self::assertEquals($content, $result);
+        self::assertEquals($content, $enhanceStdWrapEvent->getContent());
+        self::assertEquals($wrap, $enhanceStdWrapEvent->getConfiguration()['wrap']);
+        self::assertEquals($subject, $enhanceStdWrapEvent->getContentObjectRenderer());
     }
 }

@@ -18,7 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Processor;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
@@ -253,6 +257,9 @@ final class GalleryProcessorTest extends UnitTestCase
             $files[] = $this->createMock(FileReference::class);
         }
         $this->contentObjectRenderer->data = $data;
+        $container = new Container();
+        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
+        GeneralUtility::setContainer($container);
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
             $this->contentObjectRenderer,

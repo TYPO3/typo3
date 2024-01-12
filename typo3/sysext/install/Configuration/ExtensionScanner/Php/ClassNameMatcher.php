@@ -2466,4 +2466,11 @@ return [
             'Feature-102806-BeforePageIsRetrievedEventInPageRepository.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface' => [
+        'restFiles' => [
+            'Breaking-102745-RemovedContentObjectStdWrapHook.rst',
+            'Deprecation-102745-UnusedInterfaceForStdWrapHook.rst',
+            'Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality.rst',
+        ],
+    ],
 ];

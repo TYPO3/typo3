@@ -1106,4 +1106,10 @@ return [
             'Feature-99323-AddModifyRecordsAfterFetchingContentEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'stdWrap\']' => [
+        'restFiles' => [
+            'Breaking-102745-RemovedContentObjectStdWrapHook.rst',
+            'Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality.rst',
+        ],
+    ],
 ];
