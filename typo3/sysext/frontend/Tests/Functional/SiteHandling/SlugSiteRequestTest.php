@@ -804,7 +804,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
             $response->getStatusCode()
         );
         self::assertStringContainsString(
-            'reasons: code,fe_group',
+            'reasons: code',
             (string)$response->getBody()
         );
         self::assertThat(
@@ -947,7 +947,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
             $response->getStatusCode()
         );
         self::assertStringContainsString(
-            'reasons: code,fe_group',
+            'reasons: code',
             (string)$response->getBody()
         );
         self::assertThat(

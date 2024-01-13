@@ -25,7 +25,7 @@ return [
                 'typo3/cms-frontend/page-argument-validator',
             ],
             'before' => [
-                // TSFE should not yet have been called - determineId() is what relies on the information of this middleware
+                // Must be added *before* access checks when creating PageInformation
                 'typo3/cms-frontend/tsfe',
             ],
         ],

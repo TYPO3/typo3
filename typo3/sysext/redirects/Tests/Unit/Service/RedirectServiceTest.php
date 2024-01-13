@@ -19,16 +19,21 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
+use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
@@ -55,7 +60,19 @@ final class RedirectServiceTest extends UnitTestCase
         $this->siteFinder = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
         $this->redirectRepository = $this->getMockBuilder(RedirectRepository::class)->disableOriginalConstructor()->getMock();
 
-        $this->redirectService = new RedirectService($this->redirectCacheServiceMock, $this->linkServiceMock, $this->siteFinder, new NoopEventDispatcher());
+        $this->redirectService = new RedirectService(
+            $this->redirectCacheServiceMock,
+            $this->linkServiceMock,
+            $this->siteFinder,
+            new NoopEventDispatcher(),
+            new PageInformationFactory(
+                new Context(),
+                new NoopEventDispatcher(),
+                $this->createMock(Logger::class),
+                new RecordAccessVoter(new NoopEventDispatcher()),
+                new ErrorController()
+            )
+        );
         $this->redirectService->setLogger($logger);
 
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
@@ -624,7 +641,19 @@ final class RedirectServiceTest extends UnitTestCase
         $redirectService = $this->getAccessibleMock(
             RedirectService::class,
             ['getUriFromCustomLinkDetails'],
-            [$this->redirectCacheServiceMock, $this->linkServiceMock, $this->siteFinder, new NoopEventDispatcher()],
+            [
+                $this->redirectCacheServiceMock,
+                $this->linkServiceMock,
+                $this->siteFinder,
+                new NoopEventDispatcher(),
+                new PageInformationFactory(
+                    new Context(),
+                    new NoopEventDispatcher(),
+                    $this->createMock(Logger::class),
+                    new RecordAccessVoter(new NoopEventDispatcher()),
+                    new ErrorController()
+                ),
+            ],
             '',
         );
 

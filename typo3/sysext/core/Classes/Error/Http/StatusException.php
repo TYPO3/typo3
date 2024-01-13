@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Error\Exception;
 
 /**
  * HTTP Status Exception
+ *
+ * @todo: Rename to AbstractStatusException and declare abstract
  */
 class StatusException extends Exception
 {

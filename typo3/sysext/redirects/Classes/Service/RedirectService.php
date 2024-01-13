@@ -36,10 +36,10 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Middleware\TypoScriptFrontendInitialization;
-use TYPO3\CMS\Frontend\Page\PageInformation;
+use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
@@ -57,7 +57,8 @@ class RedirectService implements LoggerAwareInterface
         private readonly RedirectCacheService $redirectCacheService,
         private readonly LinkService $linkService,
         private readonly SiteFinder $siteFinder,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PageInformationFactory $pageInformationFactory,
     ) {}
 
     /**
@@ -388,6 +389,8 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function bootFrontendController(SiteInterface $site, array $queryParams, ServerRequestInterface $originalRequest): TypoScriptFrontendController
     {
+        $context = GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('frontend.preview', new PreviewAspect());
         $cacheInstruction = $originalRequest->getAttribute('frontend.cache.instruction', new CacheInstruction());
         $originalRequest = $originalRequest->withAttribute('frontend.cache.instruction', $cacheInstruction);
         $queryParamsFromRequest = $originalRequest->getQueryParams();
@@ -395,12 +398,7 @@ class RedirectService implements LoggerAwareInterface
         $originalRequest = $originalRequest->withQueryParams($mergedQueryParams);
         $pageArguments = new PageArguments($site->getRootPageId(), '0', []);
         $originalRequest = $originalRequest->withAttribute('routing', $pageArguments);
-        $pageInformation = new PageInformation();
-        $pageInformation->setId($site->getRootPageId());
-        $pageInformation->setMountPoint('');
-        $tsfeInitMiddleware = GeneralUtility::makeInstance(TypoScriptFrontendInitialization::class);
-        // @todo: Evil hack.
-        $tsfeInitMiddleware->determineId($originalRequest, $pageInformation);
+        $pageInformation = $this->pageInformationFactory->create($originalRequest);
         $originalRequest = $originalRequest->withAttribute('frontend.page.information', $pageInformation);
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,

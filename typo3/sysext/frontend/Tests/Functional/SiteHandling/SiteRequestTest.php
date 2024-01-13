@@ -619,7 +619,7 @@ final class SiteRequestTest extends AbstractTestCase
             $response->getStatusCode()
         );
         self::assertStringContainsString(
-            'reasons: code,fe_group',
+            'reasons: code',
             (string)$response->getBody()
         );
         self::assertThat(

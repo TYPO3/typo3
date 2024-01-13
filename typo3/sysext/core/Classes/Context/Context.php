@@ -115,7 +115,7 @@ class Context implements SingletonInterface
         }
         try {
             return $this->getAspect($name)->get($property);
-        } catch (AspectPropertyNotFoundException $e) {
+        } catch (AspectPropertyNotFoundException) {
             return $default;
         }
     }

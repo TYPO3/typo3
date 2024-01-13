@@ -255,7 +255,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         $queryBuilder->setRestrictions(
             GeneralUtility::makeInstance(FrontendRestrictionContainer::class, GeneralUtility::makeInstance(Context::class))
         );
-        // Frontend Groups are not available at this time (initialized via TSFE->determineId)
+        // Frontend Groups are not available at this time
         // So this must be excluded to allow access restricted records
         $queryBuilder->getRestrictions()->removeByType(FrontendGroupRestriction::class);
         return $queryBuilder;

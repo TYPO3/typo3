@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
@@ -43,6 +44,7 @@ final class IntegrityServiceTest extends FunctionalTestCase
                 $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock(),
                 $siteFinder,
                 new NoopEventDispatcher(),
+                $this->get(PageInformationFactory::class)
             ),
             $siteFinder
         );

@@ -404,9 +404,7 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function previewShowsPagesFromLiveAndCurrentWorkspace(): void
     {
-        // initialization
         $wsid = 987654321;
-        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->determineId()
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect($wsid));
         $subject = new PageRepository($context);
@@ -423,10 +421,7 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function getWorkspaceVersionReturnsTheCorrectMethod(): void
     {
-        // initialization
         $wsid = 987654321;
-
-        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->determineId()
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect($wsid));
         $subject = new PageRepository($context);

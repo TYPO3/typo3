@@ -30,10 +30,11 @@ use TYPO3\CMS\Frontend\Page\PageInformation;
  */
 final class AfterPageAndLanguageIsResolvedEvent
 {
+    private ?ResponseInterface $response = null;
+
     public function __construct(
         private readonly ServerRequestInterface $request,
         private PageInformation $pageInformation,
-        private ?ResponseInterface $response
     ) {}
 
     public function getRequest(): ServerRequestInterface
@@ -56,7 +57,7 @@ final class AfterPageAndLanguageIsResolvedEvent
         return $this->response;
     }
 
-    public function setResponse(?ResponseInterface $response): void
+    public function setResponse(ResponseInterface $response): void
     {
         $this->response = $response;
     }

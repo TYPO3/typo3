@@ -399,9 +399,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // @todo: Even though all rootline sys_template records are fetched with only one query
         //        in below implementation, we could potentially join or sub select sys_template
         //        records already when pages rootline is queried. This will save one query
-        //        and needs an implementation in getPageAndRootline() which is called via determineId()
-        //        in TypoScriptFrontendInitialization. This could be done when getPageAndRootline()
-        //        switches to a CTE query instead of using RootlineUtility.
+        //        and needs an implementation in PageInformationFactory. This could be done when
+        //        it switches to a CTE query instead of using RootlineUtility.
         $sysTemplateRepository = GeneralUtility::makeInstance(SysTemplateRepository::class);
         $sysTemplateRows = $sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
         // Needed for cache calculations. Put into a variable here to not serialize multiple times.
@@ -868,30 +867,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $pageId . '_' . sha1(serialize($hashParameters));
-    }
-
-    /**
-     * Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
-     *
-     * @internal
-     */
-    public function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string
-    {
-        $pageInformation = $request->getAttribute('frontend.page.information');
-        $pageRecord = $pageInformation->getPageRecord();
-        $parameter = $pageRecord['uid'];
-        /** @var PageArguments $pageArguments */
-        $pageArguments = $request->getAttribute('routing');
-        $type = (int)($pageArguments->getPageType() ?: 0);
-        if ($type) {
-            $parameter .= ',' . $type;
-        }
-        return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->createUrl([
-            'parameter' => $parameter,
-            'addQueryString' => 'untrusted',
-            'addQueryString.' => ['exclude' => 'id,type'],
-            'forceAbsoluteUrl' => true,
-        ]);
     }
 
     /**

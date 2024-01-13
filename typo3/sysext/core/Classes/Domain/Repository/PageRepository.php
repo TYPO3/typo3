@@ -60,7 +60,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * Mainly used in the frontend but also in some cases in the backend. It's
  * important to set the right $where_hid_del in the object so that the
  * functions operate properly
- * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::determineId()
  */
 class PageRepository implements LoggerAwareInterface
 {
@@ -1059,10 +1058,10 @@ class PageRepository implements LoggerAwareInterface
      * @throws ShortcutTargetPageNotFoundException
      * @return mixed Returns the page record of the page that the shortcut pointed to. If $resolveRandomPageShortcuts = false, and the shortcut page is configured to point to a random shortcut then an empty array is returned
      * @internal
-     * @see getPageAndRootline()
      */
-    public function getPageShortcut($shortcutFieldValue, $shortcutMode, $thisUid, $iteration = 20, $pageLog = [], $disableGroupCheck = false, bool $resolveRandomPageShortcuts = true)
+    protected function getPageShortcut($shortcutFieldValue, $shortcutMode, $thisUid, $iteration = 20, $pageLog = [], $disableGroupCheck = false, bool $resolveRandomPageShortcuts = true)
     {
+        // @todo: Simplify! page['shortcut'] is maxitems 1 and not a comma separated list of values!
         $idArray = GeneralUtility::intExplode(',', $shortcutFieldValue);
         if ($resolveRandomPageShortcuts === false && (int)$shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
             return [];
@@ -1127,6 +1126,7 @@ class PageRepository implements LoggerAwareInterface
             } else {
                 $pageLog[] = $page['uid'];
                 $this->logger->error('Page shortcuts were looping in uids {uids}', ['uids' => implode(', ', array_values($pageLog))]);
+                // @todo: This shouldn't be a \RuntimeException since editors can construct loops. It should trigger 500 handling or something.
                 throw new \RuntimeException('Page shortcuts were looping in uids: ' . implode(', ', array_values($pageLog)), 1294587212);
             }
         }
@@ -1142,7 +1142,7 @@ class PageRepository implements LoggerAwareInterface
      * This method also provides a runtime cache around resolving the shortcut resolving, in order to speed up link generation
      * to the same shortcut page.
      *
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageAndRootline()
+     * @throws ShortcutTargetPageNotFoundException
      */
     public function resolveShortcutPage(array $page, bool $resolveRandomSubpages = false, bool $disableGroupAccessCheck = false): array
     {

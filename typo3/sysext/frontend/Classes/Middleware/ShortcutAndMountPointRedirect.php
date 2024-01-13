@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
@@ -134,8 +135,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
                     throw new ImmediateResponseException($response, 1638022483);
                 }
             }
-            $controller = $request->getAttribute('frontend.controller');
-            return $controller->getUriToCurrentPageForRedirect($request);
+            return $this->getUriToCurrentPageForRedirect($request);
         }
         return null;
     }
@@ -153,8 +153,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
         if (!empty($originalMountPointPageRecord)
             && (int)$originalMountPointPageRecord['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT
         ) {
-            $controller = $request->getAttribute('frontend.controller');
-            return $controller->getUriToCurrentPageForRedirect($request);
+            return $this->getUriToCurrentPageForRedirect($request);
         }
         return null;
     }
@@ -179,5 +178,25 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
             }
         }
         return $redirectTo;
+    }
+
+    protected function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string
+    {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageRecord = $pageInformation->getPageRecord();
+        $parameter = $pageRecord['uid'];
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $request->getAttribute('routing');
+        $type = (int)($pageArguments->getPageType() ?: 0);
+        if ($type) {
+            $parameter .= ',' . $type;
+        }
+        $tsfe = $request->getAttribute('frontend.controller');
+        return GeneralUtility::makeInstance(ContentObjectRenderer::class, $tsfe)->createUrl([
+            'parameter' => $parameter,
+            'addQueryString' => 'untrusted',
+            'addQueryString.' => ['exclude' => 'id,type'],
+            'forceAbsoluteUrl' => true,
+        ]);
     }
 }

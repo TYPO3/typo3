@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
@@ -102,6 +103,7 @@ final class RedirectServiceTest extends FunctionalTestCase
             $linkServiceMock,
             $siteFinder,
             new NoopEventDispatcher(),
+            $this->get(PageInformationFactory::class)
         );
         $redirectService->setLogger($logger);
 
@@ -893,6 +895,7 @@ final class RedirectServiceTest extends FunctionalTestCase
             new LinkService(),
             $siteFinder,
             $this->get(EventDispatcherInterface::class),
+            $this->get(PageInformationFactory::class)
         );
         $redirectService->setLogger($logger);
 

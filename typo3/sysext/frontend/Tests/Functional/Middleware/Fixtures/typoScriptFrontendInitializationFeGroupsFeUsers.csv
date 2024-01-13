@@ -1,0 +1,8 @@
+"fe_groups"
+,"uid","pid","deleted","hidden","title"
+,1,1,0,0,"testgroup-one"
+,2,1,0,0,"testgroup-two"
+"fe_users"
+,"uid","pid","deleted","disable","username","usergroup","password"
+,1,1,0,0,"testuser-one",1,"$argon2i$v=19$m=65536,t=16,p=1$cWRQNnpWZFJZTUM0MVRwbg$uv3ArBoLKo76rq/iaAq3PYa5/JUhRxNfCbneeSz+fz8"
+,2,1,0,0,"testuser-two",2,"$argon2i$v=19$m=65536,t=16,p=1$cWRQNnpWZFJZTUM0MVRwbg$uv3ArBoLKo76rq/iaAq3PYa5/JUhRxNfCbneeSz+fz8"

@@ -37,8 +37,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ErrorController
 {
     /**
-     * Used for creating a 500 response ("Internal Server Error"), usually due some misconfiguration
-     * but if configured, a RedirectResponse could be returned as well.
+     * Used for creating a 500 response ("Internal Server Error"), usually due to some misconfiguration.
+     * If a page unavailable handler is configured, a RedirectResponse could be returned as well.
      *
      * @throws InternalServerErrorException
      */

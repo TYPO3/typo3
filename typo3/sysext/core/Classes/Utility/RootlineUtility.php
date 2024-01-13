@@ -318,7 +318,14 @@ class RootlineUtility
             foreach ($rootline as $entry) {
                 $cacheTags[] = 'pageId_' . $entry['uid'];
                 if ($entry['uid'] == $this->pageUid) {
-                    throw new CircularRootLineException('Circular connection in rootline for page with uid ' . $this->pageUid . ' found. Check your mountpoint configuration.', 1343464103);
+                    // @todo: Bug. This detection is broken since it happens *after* the child ->get() call, and thus
+                    //        triggers infinite recursion already. To fix this, the child needs to know the list of
+                    //        resolved children to except on duplicate *before* going up itself. Cover this case with
+                    //        a functional test when fixing.
+                    throw new CircularRootLineException(
+                        'Circular connection in rootline for page with uid ' . $this->pageUid . ' found. Check your mountpoint configuration.',
+                        1343464103
+                    );
                 }
             }
         } else {
