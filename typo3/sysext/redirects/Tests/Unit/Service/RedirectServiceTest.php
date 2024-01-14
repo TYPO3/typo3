@@ -25,12 +25,14 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
@@ -496,6 +498,7 @@ final class RedirectServiceTest extends UnitTestCase
     public function getTargetUrlReturnsNullIfUrlCouldNotBeResolved(): void
     {
         $this->linkServiceMock->method('resolve')->with(self::anything())->willThrowException(new InvalidPathException('', 1516531195));
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], new ServerRequest(new Uri()));
 
@@ -517,6 +520,7 @@ final class RedirectServiceTest extends UnitTestCase
             'url' => 'https://example.com/',
         ];
         $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -544,6 +548,7 @@ final class RedirectServiceTest extends UnitTestCase
             'file' => $fileMock,
         ];
         $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -572,6 +577,7 @@ final class RedirectServiceTest extends UnitTestCase
             'folder' => $folder,
         ];
         $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $source = new Uri('https://example.com/');
         $request = new ServerRequest($source);
@@ -597,6 +603,7 @@ final class RedirectServiceTest extends UnitTestCase
             'url' => 'http://example.com',
         ];
         $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -622,6 +629,7 @@ final class RedirectServiceTest extends UnitTestCase
             'url' => 'https://example.com/?foo=1&bar=2',
         ];
         $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $source = new Uri('https://example.com/?bar=2&baz=4&foo=1');
         $request = new ServerRequest($source);
@@ -673,6 +681,7 @@ final class RedirectServiceTest extends UnitTestCase
             'typoLinkParameter' => $pageRecord,
         ];
         $this->linkServiceMock->method('resolve')->with($pageRecord)->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $queryParams = [];
         $queryParams['foo'] = 'bar';
@@ -709,6 +718,7 @@ final class RedirectServiceTest extends UnitTestCase
             'url' => 'https://anotherdomain.com/$1',
         ];
         $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $source = new Uri('https://example.com/foo/bar');
         $request = new ServerRequest($source);
@@ -787,6 +797,7 @@ final class RedirectServiceTest extends UnitTestCase
             'query' => '',
         ];
         $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $source = new Uri($requestUri);
         $queryParams = [];
@@ -867,6 +878,7 @@ final class RedirectServiceTest extends UnitTestCase
             'url' => $redirectTarget,
         ];
         $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $source = new Uri($requestUri);
         $queryParams = [];

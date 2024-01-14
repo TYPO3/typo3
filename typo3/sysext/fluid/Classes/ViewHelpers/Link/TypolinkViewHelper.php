@@ -125,7 +125,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $partsAs = $arguments['parts-as'] ?? 'typoLinkParts';
 
         $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-        $typoLinkConfiguration = $typoLinkCodec->decode($parameter);
+        $typoLinkConfiguration = $typoLinkCodec->decode((string)$parameter);
         // Merge the $parameter with other arguments
         $mergedTypoLinkConfiguration = self::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
         $typoLinkParameter = $typoLinkCodec->encode($mergedTypoLinkConfiguration);

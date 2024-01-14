@@ -17,7 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\LinkHandling\Event\AfterTypoLinkDecodedEvent;
+use TYPO3\CMS\Core\LinkHandling\Event\BeforeTypoLinkEncodedEvent;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TypoLinkCodecServiceTest extends UnitTestCase
@@ -27,7 +34,7 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new TypoLinkCodecService();
+        $this->subject = new TypoLinkCodecService(new NoopEventDispatcher());
     }
 
     /**
@@ -175,5 +182,72 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function beforeTypoLinkEncodedEventIsCalled(): void
+    {
+        $beforeTypoLinkEncodedEvent = null;
+
+        $container = new Container();
+        $container->set(
+            'before-typo-link-encoded-listener',
+            static function (BeforeTypoLinkEncodedEvent $event) use (&$beforeTypoLinkEncodedEvent) {
+                $beforeTypoLinkEncodedEvent = $event;
+                $beforeTypoLinkEncodedEvent->setParameters(['foo', 'bar']);
+            }
+        );
+
+        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
+        $listenerProdiver->addListener(BeforeTypoLinkEncodedEvent::class, 'before-typo-link-encoded-listener');
+
+        $result = (new TypoLinkCodecService(new EventDispatcher($listenerProdiver)))->encode([
+            'url' => 'https://example.com',
+        ]);
+
+        self::assertEquals('bar foo', $result);
+        self::assertInstanceOf(BeforeTypoLinkEncodedEvent::class, $beforeTypoLinkEncodedEvent);
+        self::assertEquals(['url' => 'https://example.com'], $beforeTypoLinkEncodedEvent->getTypoLinkParts());
+        self::assertEquals(['foo', 'bar'], $beforeTypoLinkEncodedEvent->getParameters());
+    }
+
+    /**
+     * @test
+     */
+    public function afterTypoLinkDecodedEventIsCalled(): void
+    {
+        $afterTypoLinkDecodedEvent = null;
+
+        $container = new Container();
+        $container->set(
+            'after-typo-link-decoded-listener',
+            static function (AfterTypoLinkDecodedEvent $event) use (&$afterTypoLinkDecodedEvent) {
+                $afterTypoLinkDecodedEvent = $event;
+                $afterTypoLinkDecodedEvent->setTypoLinkParts(
+                    array_merge($afterTypoLinkDecodedEvent->getTypoLinkParts(), ['foo' => 'bar'])
+                );
+            }
+        );
+
+        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
+        $listenerProdiver->addListener(AfterTypoLinkDecodedEvent::class, 'after-typo-link-decoded-listener');
+
+        $result = (new TypoLinkCodecService(new EventDispatcher($listenerProdiver)))->decode('https://example.com');
+
+        $expected = [
+            'url' => 'https://example.com',
+            'target' => '',
+            'class' => '',
+            'title' => '',
+            'additionalParams' => '',
+            'foo' => 'bar',
+        ];
+
+        self::assertEquals($expected, $result);
+        self::assertInstanceOf(AfterTypoLinkDecodedEvent::class, $afterTypoLinkDecodedEvent);
+        self::assertEquals('https://example.com', $afterTypoLinkDecodedEvent->getTypoLink());
+        self::assertEquals($expected, $afterTypoLinkDecodedEvent->getTypoLinkParts());
     }
 }

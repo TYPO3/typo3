@@ -72,6 +72,9 @@ services:
   TYPO3\CMS\Core\Html\RteHtmlParser:
     public: true
 
+  TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService:
+    public: true
+
   TYPO3\CMS\Core\Mail\Mailer:
     public: true
 

@@ -94,9 +94,9 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         unset($conf['parameter.']);
 
         $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-        $parameterFromDb = $typoLinkCodecService->decode($conf['parameter'] ?? '');
+        $parameterFromDb = $typoLinkCodecService->decode((string)($conf['parameter'] ?? ''));
         unset($parameterFromDb['url']);
-        $parameterFromTypoScript = $typoLinkCodecService->decode($typoScriptConfiguration['parameter'] ?? '');
+        $parameterFromTypoScript = $typoLinkCodecService->decode((string)($typoScriptConfiguration['parameter'] ?? ''));
         $parameter = array_replace_recursive($parameterFromTypoScript, array_filter($parameterFromDb));
         $typoScriptConfiguration['parameter'] = $typoLinkCodecService->encode($parameter);
 

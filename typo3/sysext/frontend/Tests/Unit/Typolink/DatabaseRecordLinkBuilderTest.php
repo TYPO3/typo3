@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -88,8 +90,6 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
     /**
      * Tests showing that values set in the link record directly will overwrite those configured
      * in the default link handler configuration
-     *
-     * Note that the TypolinkCodecService is not mocked on purpose to get the full unit tested.
      *
      * @test
      * @dataProvider attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider
@@ -163,6 +163,7 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(Context::class, new Context());
         GeneralUtility::addInstance(PageRepository::class, $pageRepositoryMock);
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
+        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $pageRepositoryMock
             ->method('checkRecord')
