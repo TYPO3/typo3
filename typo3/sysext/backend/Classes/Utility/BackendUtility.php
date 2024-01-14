@@ -3546,7 +3546,7 @@ class BackendUtility
 
     /**
      * Gets the raw database row values and calls the php converter of doctrine to get the PHP value.
-     * Currently only handles the combination of type=user and dbType=json and takes care of decoding the value.
+     * Currently only handles type=json and takes care of decoding the value.
      *
      * @internal
      */
