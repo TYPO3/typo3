@@ -238,7 +238,7 @@ final class FilePersistenceSlot implements SingletonInterface
 
         $contentSignature = null;
         if ($content !== null) {
-            $contentSignature = $this->getContentSignature((string)$content);
+            $contentSignature = $this->getContentSignature($content);
         }
         $allowedInvocationIndex = $this->searchAllowedInvocation(
             $command,

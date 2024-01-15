@@ -54,12 +54,12 @@ class PseudoFileReference extends FileReference
             return ['_uid'];
         }
         if ($this->getOriginalResource()->getUid() > 0) {
-            $this->_uid = (int)$this->getOriginalResource()->getUid();
+            $this->_uid = $this->getOriginalResource()->getUid();
             return ['_uid'];
         }
         // in case this is a transient file reference, just expose the associated `sys_file.uid`
         // (based on previous comments, this is the most probably case in ext:form)
-        $this->_uidLocal = (int)$this->getOriginalResource()->getOriginalFile()->getUid();
+        $this->_uidLocal = $this->getOriginalResource()->getOriginalFile()->getUid();
         return ['_uidLocal'];
     }
 

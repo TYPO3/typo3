@@ -860,7 +860,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     public function offsetExists(mixed $identifier): bool
     {
         $identifier = (string)$identifier;
-        if ($this->getElementValue((string)$identifier) !== null) {
+        if ($this->getElementValue($identifier) !== null) {
             return true;
         }
 
