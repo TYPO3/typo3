@@ -1268,6 +1268,40 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function addPluginSetsCorrectItemGroupsEntry(): void
+    {
+        $extKey = 'indexed_search';
+        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['itemGroups']['my-second-group'] = 'My second group label from list_type';
+        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['itemGroups']['my-third-group'] = 'My third group label from list_type';
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']['null-group'] = null;
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']['my-group'] = 'My group label from CType';
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']['my-third-group'] = 'My third group label from CType';
+
+        // Won't be added since not defined in list_type or CType
+        ExtensionManagementUtility::addPlugin(['label', $extKey . '_1', '', 'non-existing-group'], 'list_type', $extKey);
+        // Won't be added since invalid value in CType definition
+        ExtensionManagementUtility::addPlugin(['label', $extKey . '_2', '', 'null-group'], 'list_type', $extKey);
+        ExtensionManagementUtility::addPlugin(['label', $extKey . '_3', '', 'my-group'], 'list_type', $extKey);
+        ExtensionManagementUtility::addPlugin(['label', $extKey . '_4', '', 'my-second-group'], 'list_type', $extKey);
+        ExtensionManagementUtility::addPlugin(['label', $extKey . '_5', '', 'my-third-group'], 'list_type', $extKey);
+
+        self::assertSame(
+            [
+                // Group exists in list_type>itemGroups
+                'my-second-group' => 'My second group label from list_type',
+                // Group exists in both - no overwriting
+                'my-third-group' => 'My third group label from list_type',
+                // Group exists in CType>itemGroups
+                'my-group' => 'My group label from CType',
+            ],
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['itemGroups']
+        );
+    }
+
+    /**
+     * @test
+     */
     public function addPluginAsContentTypeAddsIconAndDefaultItem(): void
     {
         $extKey = 'felogin';

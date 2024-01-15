@@ -848,9 +848,13 @@ class ExtensionManagementUtility
         $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][] = $selectItem->toArray();
 
         // Populate plugin subtype groups with CType group if missing.
-        if ($type === 'list_type' && !isset($GLOBALS['TCA']['tt_content']['columns'][$type]['itemGroups'][$selectItem->getGroup()])) {
-            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$selectItem->getGroup()] =
-                $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$selectItem->getGroup()] ?? [];
+        $groupIdentifier = $selectItem->getGroup();
+        if ($type === 'list_type'
+            && !isset($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$groupIdentifier])
+            && is_string($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$groupIdentifier] ?? false)
+        ) {
+            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$groupIdentifier] =
+                $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$groupIdentifier];
         }
 
         // Ensure to have at least some basic information available when editing the new type in FormEngine
