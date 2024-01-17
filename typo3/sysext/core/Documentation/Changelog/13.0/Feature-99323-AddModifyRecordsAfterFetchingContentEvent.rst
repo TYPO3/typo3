@@ -11,7 +11,7 @@ See :issue:`99323`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Frontend\Event\ModifyRecordsAfterFetchingContentEvent`
+A new PSR-14 Event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent`
 has been introduced which serves as a more powerful replacement for the now
 :doc:`removed <../13.0/Breaking-99323-RemovedHookForModifyingRecordsAfterFetchingContent>`
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow']`
