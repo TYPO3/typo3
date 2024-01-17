@@ -18,6 +18,7 @@ $EM_CONF[$_EXTKEY] = [
         'suggests' => [
             'filelist' => '13.0.0',
             'impexp' => '13.0.0',
+            'lowlevel' => '13.0.0',
         ],
     ],
 ];
