@@ -23,19 +23,11 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 class LanguageServiceFactory
 {
-    protected Locales $locales;
-    protected LocalizationFactory $localizationFactory;
-    protected FrontendInterface $runtimeCache;
-
     public function __construct(
-        Locales $locales,
-        LocalizationFactory $localizationFactory,
-        FrontendInterface $runtimeCache
-    ) {
-        $this->locales = $locales;
-        $this->localizationFactory = $localizationFactory;
-        $this->runtimeCache = $runtimeCache;
-    }
+        protected readonly Locales $locales,
+        protected readonly LocalizationFactory $localizationFactory,
+        protected readonly FrontendInterface $runtimeCache
+    ) {}
 
     /**
      * Factory method to create a language service object.

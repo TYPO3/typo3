@@ -61,19 +61,14 @@ class LanguageService
      */
     protected array $overrideLabels = [];
 
-    protected Locales $locales;
-    protected LocalizationFactory $localizationFactory;
-    protected FrontendInterface $runtimeCache;
-
     /**
      * @internal use LanguageServiceFactory instead
      */
-    public function __construct(Locales $locales, LocalizationFactory $localizationFactory, FrontendInterface $runtimeCache)
-    {
-        $this->locales = $locales;
-        $this->localizationFactory = $localizationFactory;
-        $this->runtimeCache = $runtimeCache;
-    }
+    public function __construct(
+        protected Locales $locales,
+        protected readonly LocalizationFactory $localizationFactory,
+        protected readonly FrontendInterface $runtimeCache
+    ) {}
 
     /**
      * Initializes the language to fetch XLF labels for.

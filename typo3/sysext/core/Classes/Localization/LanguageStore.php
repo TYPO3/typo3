@@ -53,14 +53,11 @@ class LanguageStore implements SingletonInterface
      */
     protected $data;
 
-    private PackageManager $packageManager;
-
     /**
      * Constructor
      */
-    public function __construct(PackageManager $packageManager)
+    public function __construct(private readonly PackageManager $packageManager)
     {
-        $this->packageManager = $packageManager;
         $this->initialize();
     }
 
