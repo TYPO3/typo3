@@ -72,6 +72,7 @@ use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsExecutedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsInitializedEvent;
+use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapContentStoredInCacheEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsExecutedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
@@ -2337,11 +2338,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Store content into cache
      *
-     * @param string $content Input value undergoing processing in these functions.
+     * @param string|null $content Input value undergoing processing in these functions.
      * @param array $conf All stdWrap properties, not just the ones for a particular function.
-     * @return string The processed input value
+     * @return string|null The processed input value
      */
-    public function stdWrap_cacheStore($content = '', $conf = [])
+    public function stdWrap_cacheStore($content = '', $conf = []): ?string
     {
         if (!isset($conf['cache.'])) {
             return $content;
@@ -2350,26 +2351,28 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (empty($key)) {
             return $content;
         }
-        $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
-        $tags = $this->calculateCacheTags($conf['cache.']);
-        $lifetime = $this->calculateCacheLifetime($conf['cache.']);
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] ?? [] as $_funcRef) {
-            $params = [
-                'key' => $key,
-                'content' => $content,
-                'lifetime' => $lifetime,
-                'tags' => $tags,
-            ];
-            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
-            GeneralUtility::callUserFunction($_funcRef, $params, $ref);
-        }
-        $cachedData = [
-            'content' => $content,
-            'cacheTags' => $tags,
-        ];
-        $cacheFrontend->set($key, $cachedData, $tags, $lifetime);
-        $this->getTypoScriptFrontendController()->addCacheTags($tags);
-        return $content;
+
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new BeforeStdWrapContentStoredInCacheEvent(
+                content: $content,
+                tags: $this->calculateCacheTags($conf['cache.']),
+                key: (string)$key,
+                lifetime: $this->calculateCacheLifetime($conf['cache.']),
+                configuration: $conf,
+                contentObjectRenderer: $this
+            )
+        );
+
+        GeneralUtility::makeInstance(CacheManager::class)
+            ->getCache('hash')
+            ->set(
+                $event->getKey(),
+                ['content' => $event->getContent(), 'cacheTags' => $event->getTags()],
+                $event->getTags(),
+                $event->getLifetime()
+            );
+        $this->getTypoScriptFrontendController()->addCacheTags($event->getTags());
+        return $event->getContent();
     }
 
     /**

@@ -1112,4 +1112,10 @@ return [
             'Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'stdWrap_cacheStore\']' => [
+        'restFiles' => [
+            'Breaking-102849-RemovedContentObjectStdWrapCacheStoreHook.rst',
+            'Feature-102849-PSR-14EventForManipulatingStoreCacheFunctionalityOfStdWrap.rst',
+        ],
+    ],
 ];

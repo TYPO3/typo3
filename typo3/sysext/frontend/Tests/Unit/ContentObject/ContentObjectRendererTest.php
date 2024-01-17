@@ -37,6 +37,8 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
@@ -72,6 +74,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapContentStoredInCacheEvent;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
@@ -3593,26 +3596,17 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public static function stdWrap_cacheStoreDataProvider(): array
     {
-        $confCache = [StringUtility::getUniqueId('cache.')];
-        $key = [StringUtility::getUniqueId('key')];
         return [
             'Return immediate with no conf' => [
                 null,
                 0,
                 null,
-                0,
             ],
             'Return immediate with empty key' => [
-                $confCache,
+                [StringUtility::getUniqueId('cache.')],
                 1,
                 '0',
                 0,
-            ],
-            'Call all methods' => [
-                $confCache,
-                1,
-                $key,
-                1,
             ],
         ];
     }
@@ -3625,36 +3619,21 @@ final class ContentObjectRendererTest extends UnitTestCase
      * - Returns $content as is.
      * - Returns immediate if $conf['cache.'] is not set.
      * - Returns immediate if calculateCacheKey returns an empty value.
-     * - Calls calculateCacheKey with $conf['cache.'].
-     * - Calls calculateCacheTags with $conf['cache.'].
-     * - Calls calculateCacheLifetime with $conf['cache.'].
-     * - Calls all configured user functions with $params, $this.
-     * - Calls set on the cache frontend with $key, $content, $tags, $lifetime.
      *
      * @test
      * @dataProvider stdWrap_cacheStoreDataProvider
      * @param array|null $confCache Configuration of 'cache.'
-     * @param int $timesCCK Times calculateCacheKey is called.
+     * @param int $times Times calculateCacheKey is called.
      * @param mixed $key The return value of calculateCacheKey.
-     * @param int $times Times the other methods are called.
      */
     public function stdWrap_cacheStore(
         ?array $confCache,
-        int $timesCCK,
+        int $times,
         mixed $key,
-        int $times
     ): void {
         $content = StringUtility::getUniqueId('content');
         $conf = [];
         $conf['cache.'] = $confCache;
-        $tags = [StringUtility::getUniqueId('tags')];
-        $lifetime = StringUtility::getUniqueId('lifetime');
-        $params = [
-            'key' => $key,
-            'content' => $content,
-            'lifetime' => $lifetime,
-            'tags' => $tags,
-        ];
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
             [
@@ -3664,65 +3643,94 @@ final class ContentObjectRendererTest extends UnitTestCase
                 'getTypoScriptFrontendController',
             ]
         );
-        $subject
-            ->expects(self::exactly($timesCCK))
-            ->method('calculateCacheKey')
-            ->with($confCache)
-            ->willReturn($key);
-        $subject
-            ->expects(self::exactly($times))
-            ->method('calculateCacheTags')
-            ->with($confCache)
-            ->willReturn($tags);
-        $subject
-            ->expects(self::exactly($times))
-            ->method('calculateCacheLifetime')
-            ->with($confCache)
-            ->willReturn($lifetime);
+        $subject->expects(self::exactly($times))->method('calculateCacheKey')->with($confCache)->willReturn($key);
+        self::assertSame(
+            $content,
+            $subject->stdWrap_cacheStore($content, $conf)
+        );
+    }
+
+    /**
+     * Make sure the PSR-14 Event in get stdWrap_cacheStore is called
+     *
+     * Additionally, following is ensured:
+     *
+     *  - Calls calculateCacheKey with $conf['cache.'].
+     *  - Calls calculateCacheTags with $conf['cache.'].
+     *  - Calls calculateCacheLifetime with $conf['cache.'].
+     *  - Calls all configured user functions with $params, $this.
+     *  - Calls set on the cache frontend with $key, $content, $tags, $lifetime.
+     *
+     * @test
+     */
+    public function beforeStdWrapContentStoredInCacheEventIsCalled(): void
+    {
+        $beforeStdWrapContentStoredInCacheEvent = null;
+        $modifiedContent = '---modified-content---';
+
+        /** @var Container $container */
+        $container = GeneralUtility::getContainer();
+        $container->set(
+            'before-stdWrap-content-stored-in-cache-listener',
+            static function (BeforeStdWrapContentStoredInCacheEvent $event) use (&$beforeStdWrapContentStoredInCacheEvent, $modifiedContent) {
+                $beforeStdWrapContentStoredInCacheEvent = $event;
+                $event->setContent($modifiedContent);
+            }
+        );
+
+        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
+        $listenerProdiver->addListener(BeforeStdWrapContentStoredInCacheEvent::class, 'before-stdWrap-content-stored-in-cache-listener');
+        $container->set(ListenerProvider::class, $listenerProdiver);
+        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProdiver));
+
+        $content = StringUtility::getUniqueId('content');
+        $tags = [StringUtility::getUniqueId('tags')];
+        $key = StringUtility::getUniqueId('key');
+        $lifetime = 100;
+        $cacheConfig = [
+            StringUtility::getUniqueId('cache.'),
+        ];
+        $configuration = [
+            'cache.' => $cacheConfig,
+        ];
+
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class,
+            [
+                'calculateCacheKey',
+                'calculateCacheTags',
+                'calculateCacheLifetime',
+                'getTypoScriptFrontendController',
+            ]
+        );
+        $subject->expects(self::once())->method('calculateCacheKey')->with($cacheConfig)->willReturn($key);
+        $subject->expects(self::once())->method('calculateCacheTags')->with($cacheConfig)->willReturn($tags);
+        $subject->expects(self::once())->method('calculateCacheLifetime')->with($cacheConfig)->willReturn($lifetime);
         $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
-        $typoScriptFrontendController
-            ->expects(self::exactly($times))
-            ->method('addCacheTags')
-            ->with($tags);
-        $subject
-            ->expects(self::exactly($times))
-            ->method('getTypoScriptFrontendController')
-            ->willReturn($typoScriptFrontendController);
+        $typoScriptFrontendController->expects(self::once())->method('addCacheTags')->with($tags);
+        $subject->expects(self::once())->method('getTypoScriptFrontendController')->willReturn($typoScriptFrontendController);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
-            ->expects(self::exactly($times))
+            ->expects(self::once())
             ->method('set')
-            ->with($key, ['content' => $content, 'cacheTags' => $tags], $tags, $lifetime)
+            ->with($key, ['content' => $modifiedContent, 'cacheTags' => $tags], $tags, $lifetime)
             ->willReturn(null);
         $cacheManager = $this->createMock(CacheManager::class);
         $cacheManager
             ->method('getCache')
             ->willReturn($cacheFrontend);
-        GeneralUtility::setSingletonInstance(
-            CacheManager::class,
-            $cacheManager
-        );
-        [$countCalls, $test] = [0, $this];
-        $closure = static function ($par1, $par2) use (
-            $test,
-            $subject,
-            $params,
-            &$countCalls
-        ) {
-            $test->assertSame($params, $par1);
-            $test->assertSame($subject, $par2);
-            $countCalls++;
-        };
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] = [
-            $closure,
-            $closure,
-            $closure,
-        ];
-        self::assertSame(
-            $content,
-            $subject->stdWrap_cacheStore($content, $conf)
-        );
-        self::assertSame($times * 3, $countCalls);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+
+        $result = $subject->stdWrap_cacheStore($content, $configuration);
+
+        self::assertSame($modifiedContent, $result);
+        self::assertInstanceOf(BeforeStdWrapContentStoredInCacheEvent::class, $beforeStdWrapContentStoredInCacheEvent);
+        self::assertSame($modifiedContent, $beforeStdWrapContentStoredInCacheEvent->getContent());
+        self::assertSame($tags, $beforeStdWrapContentStoredInCacheEvent->getTags());
+        self::assertSame($key, $beforeStdWrapContentStoredInCacheEvent->getKey());
+        self::assertSame($lifetime, $beforeStdWrapContentStoredInCacheEvent->getLifetime());
+        self::assertSame($configuration, $beforeStdWrapContentStoredInCacheEvent->getConfiguration());
+        self::assertSame($subject, $beforeStdWrapContentStoredInCacheEvent->getContentObjectRenderer());
     }
 
     /**
@@ -7578,5 +7586,4 @@ final class ContentObjectRendererTest extends UnitTestCase
         $result = $contentObjectRenderer->listNum('hello,foo,bar', 'rand', ',');
         self::assertTrue($result === 'hello' || $result === 'foo' || $result === 'bar');
     }
-
 }
