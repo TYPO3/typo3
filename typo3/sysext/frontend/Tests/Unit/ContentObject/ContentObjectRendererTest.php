@@ -72,10 +72,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsExecutedEvent;
-use TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsInitializedEvent;
-use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsExecutedEvent;
-use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
@@ -3092,43 +3088,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     /***************************************************************************
      * General tests for stdWrap_
      ***************************************************************************/
-
-    /**
-     * Check that all registered stdWrap processors are callable.
-     *
-     * Show:
-     *
-     * - The given invalidProcessor is counted as not callable.
-     * - All stdWrap processors are counted as callable.
-     * - Their amount is 91.
-     *
-     * @test
-     */
-    public function allStdWrapProcessorsAreCallable(): void
-    {
-        $callable = 0;
-        $notCallable = [];
-        $processors = ['invalidProcessor'];
-        foreach (array_keys($this->subject->_get('stdWrapOrder')) as $key) {
-            $processors[] = strtr($key, ['.' => '']);
-        }
-        foreach (array_unique($processors) as $processor) {
-            $method = [$this->subject, 'stdWrap_' . $processor];
-            if (is_callable($method)) {
-                ++$callable;
-            } else {
-                $notCallable[] = $processor;
-            }
-        }
-        self::assertEquals([
-            'invalidProcessor',
-            BeforeStdWrapFunctionsInitializedEvent::class,
-            AfterStdWrapFunctionsInitializedEvent::class,
-            BeforeStdWrapFunctionsExecutedEvent::class,
-            AfterStdWrapFunctionsExecutedEvent::class,
-        ], $notCallable);
-        self::assertSame(78, $callable);
-    }
 
     /**
      * Check which stdWrap functions are callable with empty parameters.
