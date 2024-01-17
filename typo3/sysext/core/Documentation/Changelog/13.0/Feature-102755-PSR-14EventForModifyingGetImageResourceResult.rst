@@ -47,7 +47,7 @@ registration:
     use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
 
-    final class AfterGetDataResolvedEventListener
+    final class AfterImageResourceResolvedEventListener
     {
         #[AsEventListener]
         public function __invoke(AfterImageResourceResolvedEvent $event): void
