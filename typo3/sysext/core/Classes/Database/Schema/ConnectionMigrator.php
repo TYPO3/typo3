@@ -31,7 +31,9 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
-use TYPO3\CMS\Core\Database\Connection;
+use Doctrine\DBAL\Types\BinaryType;
+use Doctrine\DBAL\Types\StringType;
+use TYPO3\CMS\Core\Database\Connection as Typo3Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,7 +51,7 @@ class ConnectionMigrator
     protected $deletedPrefix = 'zzz_deleted_';
 
     /**
-     * @var Connection
+     * @var Typo3Connection
      */
     protected $connection;
 
@@ -1073,9 +1075,10 @@ class ConnectionMigrator
      * @return Table[]
      * @throws \InvalidArgumentException
      */
-    protected function transformTablesForDatabasePlatform(array $tables, Connection $connection): array
+    protected function transformTablesForDatabasePlatform(array $tables, Typo3Connection $connection): array
     {
         $defaultTableOptions = $connection->getParams()['defaultTableOptions'] ?? [];
+        $tables = $this->normalizeTablesForTargetConnection($tables, $connection);
         foreach ($tables as &$table) {
             $indexes = [];
             foreach ($table->getIndexes() as $key => $index) {
@@ -1301,5 +1304,75 @@ class ConnectionMigrator
                 1701619871
             ),
         };
+    }
+
+    /**
+     * Due to portability reasons it is necessary to normalize the virtual generated schema against the target
+     * connection platform.
+     *
+     * - SQLite: Needs some special treatment regarding autoincrement fields. [1]
+     * - MySQL/MariaDB: varchar fields needs to have a length, but doctrine dropped the default size. This need's to be
+     *   addressed in application code. [2][3]
+     *
+     * @see https://github.com/doctrine/dbal/commit/33555d36e7e7d07a5880e01 [1]
+     * @see https://github.com/doctrine/dbal/blob/3.7.x/UPGRADE.md#deprecated-abstractplatform-methods-that-describe-the-default-and-the-maximum-column-lengths [2]
+     * @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-changes-in-handling-string-and-binary-columns [3]
+     *
+     * @param Table[] $tables
+     * @param Typo3Connection $connection
+     * @return Table[]
+     * @throws DBALException
+     */
+    protected function normalizeTablesForTargetConnection(array $tables, Typo3Connection $connection): array
+    {
+        $databasePlatform = $connection->getDatabasePlatform();
+        $isSQLite = $databasePlatform instanceof DoctrineSQLitePlatform;
+        $isMariaDBOrMySQL = ($databasePlatform instanceof DoctrineMariaDBPlatform || $databasePlatform instanceof DoctrineMySQLPlatform);
+
+        if (!$isSQLite && !$isMariaDBOrMySQL) {
+            // No normalization required
+            return $tables;
+        }
+        array_walk($tables, function (Table &$table) use ($databasePlatform): void {
+            $this->normalizeTableForMariaDBOrMySQL($databasePlatform, $table);
+        });
+
+        return $tables;
+    }
+
+    /**
+     * Doctrine DBAL 4+ removed the default length for string and binary fields, but they are required for MariaDB and
+     * MySQL database backends. Therefore, we need to normalize the tables and set column length for fields not having
+     * them.
+     *
+     * Missing column length may happen by the `DefaultTCASchema` enriched structure information, which is and should
+     * be database vendor unaware. Therefore, we normalize this here now.
+     *
+     * @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-changes-in-handling-string-and-binary-columns
+     * @see https://github.com/doctrine/dbal/blob/3.7.x/UPGRADE.md#deprecated-abstractplatform-methods-that-describe-the-default-and-the-maximum-column-lengths
+     */
+    protected function normalizeTableForMariaDBOrMySQL(AbstractPlatform $databasePlatform, Table $table): void
+    {
+        if (!($databasePlatform instanceof DoctrineMariaDBPlatform || $databasePlatform instanceof DoctrineMySQLPlatform)) {
+            return;
+        }
+
+        foreach ($table->getColumns() as $column) {
+            if (!($column->getType() instanceof StringType || $column->getType() instanceof BinaryType)) {
+                continue;
+            }
+            if ($column->getLength() !== null) {
+                // Ensure not to exceed the maximum varchar or binary length
+                if ($column->getLength() > 4000) {
+                    // @todo Should a exception be thrown for this case ?
+                    $column->setLength(4000);
+                }
+                continue;
+            }
+
+            // 255 has been the removed `AbstractPlatform->getVarcharDefaultLength()` and
+            // `AbstractPlatform->getBinaryMaxLength()` value
+            $column->setLength(255);
+        }
     }
 }
