@@ -29,6 +29,7 @@ use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\LimitToTablesRestrictionContainer;
@@ -1269,8 +1270,8 @@ class QueryBuilder
     protected function unquoteSingleIdentifier(string $identifier): string
     {
         $identifier = trim($identifier);
-        $platform = $this->getConnection()->getDatabasePlatform();
-        $quoteChar = $platform->getIdentifierQuoteCharacter();
+        $quoteChar = GeneralUtility::makeInstance(PlatformHelper::class)
+            ->getIdentifierQuoteCharacter($this->getConnection()->getDatabasePlatform());
         $identifier = trim($identifier, $quoteChar);
         $identifier = str_replace($quoteChar . $quoteChar, $quoteChar, $identifier);
         return $identifier;

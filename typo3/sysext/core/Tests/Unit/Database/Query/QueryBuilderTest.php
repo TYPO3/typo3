@@ -1054,6 +1054,24 @@ final class QueryBuilderTest extends UnitTestCase
                 'input' => '"anIdentifier"',
                 'expected' => 'anIdentifier',
             ],
+            'postgres with spaces ' => [
+                'platform' => DoctrinePostgreSQLPlatform::class,
+                'quoteChar' => '"',
+                'input' => ' "anIdentifier" ',
+                'expected' => 'anIdentifier',
+            ],
+            'sqlite' => [
+                'platform' => DoctrineSQLitePlatform::class,
+                'quoteChar' => '"',
+                'input' => '"anIdentifier"',
+                'expected' => 'anIdentifier',
+            ],
+            'sqlite with spaces' => [
+                'platform' => DoctrineSQLitePlatform::class,
+                'quoteChar' => '"',
+                'input' => ' "anIdentifier" ',
+                'expected' => 'anIdentifier',
+            ],
         ];
     }
 
@@ -1065,7 +1083,9 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $connectionMock = $this->createMock(Connection::class);
         $databasePlatformMock = $this->createMock($platform);
-        $databasePlatformMock->method('getIdentifierQuoteCharacter')->willReturn($quoteChar);
+        $databasePlatformMock->method('quoteSingleIdentifier')->willReturnCallback(static function (string $str) use ($quoteChar): string {
+            return $quoteChar . str_replace($quoteChar, $quoteChar . $quoteChar, $str) . $quoteChar;
+        });
         $connectionMock->method('getDatabasePlatform')->willReturn($databasePlatformMock);
         $subject = $this->getAccessibleMock(QueryBuilder::class, null, [$connectionMock]);
         $result = $subject->_call('unquoteSingleIdentifier', $input);

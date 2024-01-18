@@ -23,6 +23,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -241,7 +242,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         foreach ($expected as $field => $value) {
             // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
             if ($field === 'SELECT') {
-                $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();
+                $quoteChar = GeneralUtility::makeInstance(PlatformHelper::class)->getIdentifierQuoteCharacter($databasePlatform);
                 $value = str_replace(['[', ']'], [$quoteChar, $quoteChar], $value);
             }
             self::assertEquals($value, $result[$field]);
