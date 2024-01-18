@@ -1118,4 +1118,10 @@ return [
             'Feature-102849-PSR-14EventForManipulatingStoreCacheFunctionalityOfStdWrap.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'Link\'][\'resolveByStringRepresentation\']' => [
+        'restFiles' => [
+            'Breaking-102855-RemovedLinkServiceResolveByStringRepresentationHook.rst',
+            'Feature-102855-PSR-14EventForModifyingResolvedLinkResultData.rst',
+        ],
+    ],
 ];

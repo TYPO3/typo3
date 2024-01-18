@@ -501,16 +501,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
 		-
-			message: "#^Result of \\|\\| is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
-
-		-
-			message: "#^Variable \\$result in empty\\(\\) always exists and is always falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
-
-		-
 			message: "#^Right side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Localization/LanguageStore.php

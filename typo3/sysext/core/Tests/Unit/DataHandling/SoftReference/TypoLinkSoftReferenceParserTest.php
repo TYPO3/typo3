@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
@@ -33,6 +34,7 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         parent::setUp();
         $container = new Container();
         $container->set(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
+        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
         GeneralUtility::setContainer($container);
     }
 

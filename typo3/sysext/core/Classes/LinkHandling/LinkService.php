@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\LinkHandling;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\LinkHandling\Event\AfterLinkResolvedByStringRepresentationEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -103,48 +105,60 @@ class LinkService implements SingletonInterface
      */
     public function resolveByStringRepresentation(string $urn): array
     {
-        // linking to any t3:// syntax
-        if (stripos($urn, 't3://') === 0) {
-            // lets parse the urn
-            $urnParsed = parse_url($urn);
-            $type = $urnParsed['host'];
-            if (isset($urnParsed['query'])) {
-                parse_str(htmlspecialchars_decode($urnParsed['query']), $data);
-            } else {
-                $data = [];
-            }
-            $fragment = $urnParsed['fragment'] ?? null;
-
-            if (isset($this->handlers[$type])) {
-                $result = $this->handlers[$type]->resolveHandlerData($data);
-                $result['type'] = $type;
-            } else {
-                throw new UnknownLinkHandlerException('LinkHandler for ' . $type . ' was not registered', 1460581769);
-            }
-            // this was historically named "section"
-            if ($fragment) {
-                $result['fragment'] = $fragment;
-            }
-        } elseif (($this->handlers[self::TYPE_URL] ?? false) && PathUtility::hasProtocolAndScheme($urn)) {
-            $result = $this->handlers[self::TYPE_URL]->resolveHandlerData(['url' => $urn]);
-            $result['type'] = self::TYPE_URL;
-        } elseif (($this->handlers[self::TYPE_EMAIL] ?? false) && str_starts_with(strtolower($urn), 'mailto:')) {
-            $result = $this->handlers[self::TYPE_EMAIL]->resolveHandlerData(['email' => $urn]);
-            $result['type'] = self::TYPE_EMAIL;
-        } elseif (($this->handlers[self::TYPE_TELEPHONE] ?? false) && str_starts_with(strtolower($urn), 'tel:')) {
-            $result = $this->handlers[self::TYPE_TELEPHONE]->resolveHandlerData(['telephone' => $urn]);
-            $result['type'] = self::TYPE_TELEPHONE;
-        } else {
-            $result = [];
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation'] ?? null)) {
-                $params = ['urn' => $urn, 'result' => &$result];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation'] as $hookMethod) {
-                    $fakeThis = null;
-                    GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
+        $result = [];
+        $resolveException = null;
+        try {
+            // linking to any t3:// syntax
+            if (stripos($urn, 't3://') === 0) {
+                // lets parse the urn
+                $urnParsed = parse_url($urn);
+                $type = $urnParsed['host'];
+                if (isset($urnParsed['query'])) {
+                    parse_str(htmlspecialchars_decode($urnParsed['query']), $data);
+                } else {
+                    $data = [];
                 }
+                $fragment = $urnParsed['fragment'] ?? null;
+
+                if (isset($this->handlers[$type])) {
+                    $result = $this->handlers[$type]->resolveHandlerData($data);
+                    $result['type'] = $type;
+                } else {
+                    $resolveException = new UnknownLinkHandlerException('LinkHandler for ' . $type . ' was not registered', 1460581769);
+                }
+                // this was historically named "section"
+                if ($fragment) {
+                    $result['fragment'] = $fragment;
+                }
+            } elseif (($this->handlers[self::TYPE_URL] ?? false) && PathUtility::hasProtocolAndScheme($urn)) {
+                $result = $this->handlers[self::TYPE_URL]->resolveHandlerData(['url' => $urn]);
+                $result['type'] = self::TYPE_URL;
+            } elseif (($this->handlers[self::TYPE_EMAIL] ?? false) && str_starts_with(strtolower($urn), 'mailto:')) {
+                $result = $this->handlers[self::TYPE_EMAIL]->resolveHandlerData(['email' => $urn]);
+                $result['type'] = self::TYPE_EMAIL;
+            } elseif (($this->handlers[self::TYPE_TELEPHONE] ?? false) && str_starts_with(strtolower($urn), 'tel:')) {
+                $result = $this->handlers[self::TYPE_TELEPHONE]->resolveHandlerData(['telephone' => $urn]);
+                $result['type'] = self::TYPE_TELEPHONE;
             }
-            if (empty($result) || empty($result['type'])) {
-                throw new UnknownUrnException('No valid URN to resolve found', 1457177667);
+        } finally {
+            $result = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                new AfterLinkResolvedByStringRepresentationEvent(
+                    result: $result,
+                    urn: $urn,
+                    resolveException: $resolveException
+                )
+            )->getResult();
+
+            if (empty($result['type'])) {
+                // In case no link type could be resolved and UnknownLinkHandlerException
+                // has been added before, throw the exception now to inform calling components.
+                if ($resolveException === null) {
+                    // Use the general UnknownUrnException in case neither a defined
+                    // handler nor an event listener could resolve the given URN.
+                    $resolveException = new UnknownUrnException('No valid URN to resolve found', 1457177667);
+                }
+
+                throw $resolveException;
             }
         }
 

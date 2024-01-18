@@ -17,11 +17,28 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\LinkHandling\Event\AfterLinkResolvedByStringRepresentationEvent;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LinkServiceTest extends UnitTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $container = new Container();
+        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
+        GeneralUtility::setContainer($container);
+    }
+
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      */
@@ -194,5 +211,64 @@ final class LinkServiceTest extends UnitTestCase
     {
         $subject = new LinkService();
         self::assertEquals($expected, $subject->asString($parameters));
+    }
+
+    /**
+     * @test
+     */
+    public function unknownLinkHandlerExceptionIsThrown(): void
+    {
+        $this->expectException(UnknownLinkHandlerException::class);
+        $this->expectExceptionCode(1460581769);
+
+        (new LinkService())->resolveByStringRepresentation('t3://invalid');
+    }
+
+    /**
+     * @test
+     */
+    public function unknownUrnExceptionIsThrown(): void
+    {
+        $this->expectException(UnknownUrnException::class);
+        $this->expectExceptionCode(1457177667);
+
+        (new LinkService())->resolveByStringRepresentation('invalid');
+    }
+
+    /**
+     * @test
+     */
+    public function afterLinkResolvedByStringRepresentationEventIsCalled(): void
+    {
+        $afterLinkResolvedByStringRepresentationEvent = null;
+        $modifiedResult = ['type' => 'my-type'];
+
+        /** @var Container $container */
+        $container = GeneralUtility::getContainer();
+        $container->set(
+            'after-link-resolved-by-string-representation-listener',
+            static function (AfterLinkResolvedByStringRepresentationEvent $event) use (&$afterLinkResolvedByStringRepresentationEvent, $modifiedResult) {
+                $afterLinkResolvedByStringRepresentationEvent = $event;
+                $event->setResult($modifiedResult);
+            }
+        );
+
+        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
+        $listenerProdiver->addListener(AfterLinkResolvedByStringRepresentationEvent::class, 'after-link-resolved-by-string-representation-listener');
+        $container->set(ListenerProvider::class, $listenerProdiver);
+        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProdiver));
+
+        // Note: The $urn will trigger the UnknownLinkHandlerException. This exception is
+        // being caught and since the event listener sets a "type" the exception is not thrown.
+        // However, the exception is passed to the event to provide extensions as much information as possible
+        $urn = 't3://invalid';
+        $expectedExceptionMessage = 'LinkHandler for invalid was not registered';
+        $result = (new LinkService())->resolveByStringRepresentation($urn);
+
+        self::assertSame($modifiedResult, $result);
+        self::assertInstanceOf(AfterLinkResolvedByStringRepresentationEvent::class, $afterLinkResolvedByStringRepresentationEvent);
+        self::assertSame($modifiedResult, $afterLinkResolvedByStringRepresentationEvent->getResult());
+        self::assertSame($urn, $afterLinkResolvedByStringRepresentationEvent->getUrn());
+        self::assertSame($expectedExceptionMessage, $afterLinkResolvedByStringRepresentationEvent->getResolveException()->getMessage());
     }
 }

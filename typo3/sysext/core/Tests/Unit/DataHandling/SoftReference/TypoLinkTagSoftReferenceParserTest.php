@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -24,6 +27,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $container = new Container();
+        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
+        GeneralUtility::setContainer($container);
+    }
+
     public static function findRefReturnsParsedElementsDataProvider(): array
     {
         return [
