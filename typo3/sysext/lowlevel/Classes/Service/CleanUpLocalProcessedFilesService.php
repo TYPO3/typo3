@@ -82,7 +82,7 @@ class CleanUpLocalProcessedFilesService
                     if (!$fullReset) {
                         // reuse prepared statement to find processed files without any processed record entries in matching
                         // storage, using `$filePath` as equal match for field `identifier` and storage uid.
-                        $statement->bindValue(1, $filePath);
+                        $statement->bindValue(1, $filePath, Connection::PARAM_STR);
                         $statement->bindValue(2, $storage->getUid(), Connection::PARAM_INT);
                         if ((int)$statement->executeQuery()->fetchOne() === 0) {
                             $files[] = $splFileInfo;

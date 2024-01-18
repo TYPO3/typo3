@@ -27,6 +27,7 @@ use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
@@ -1388,30 +1389,23 @@ class QueryBuilder
     private function bindTypedValues(DriverStatement $stmt, array $params, array $types): void
     {
         // Check whether parameters are positional or named. Mixing is not allowed.
+        $stringType = new StringType();
         if (is_int(key($params))) {
             $bindIndex = 1;
 
             foreach ($params as $key => $value) {
-                if (isset($types[$key])) {
-                    $type                  = $types[$key];
-                    [$value, $bindingType] = $this->getBindingInfo($value, $type);
-                    $stmt->bindValue($bindIndex, $value, $bindingType);
-                } else {
-                    $stmt->bindValue($bindIndex, $value);
-                }
+                $type = (isset($types[$key])) ? $types[$key] : $stringType;
+                [$value, $bindingType] = $this->getBindingInfo($value, $type);
+                $stmt->bindValue($bindIndex, $value, $bindingType);
 
                 ++$bindIndex;
             }
         } else {
             // Named parameters
             foreach ($params as $name => $value) {
-                if (isset($types[$name])) {
-                    $type                  = $types[$name];
-                    [$value, $bindingType] = $this->getBindingInfo($value, $type);
-                    $stmt->bindValue($name, $value, $bindingType);
-                } else {
-                    $stmt->bindValue($name, $value);
-                }
+                $type = (isset($types[$name])) ? $types[$name] : $stringType;
+                [$value, $bindingType] = $this->getBindingInfo($value, $type);
+                $stmt->bindValue($name, $value, $bindingType);
             }
         }
     }

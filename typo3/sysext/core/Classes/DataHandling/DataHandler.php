@@ -2834,7 +2834,7 @@ class DataHandler implements LoggerAwareInterface
             for ($counter = 0; $counter <= 100; $counter++) {
                 $result->free();
                 $newValue = $value . $counter;
-                $statement->bindValue(1, $newValue);
+                $statement->bindValue(1, $newValue, Connection::PARAM_STR);
                 $result = $statement->executeQuery();
                 if (!$result->fetchOne()) {
                     break;
