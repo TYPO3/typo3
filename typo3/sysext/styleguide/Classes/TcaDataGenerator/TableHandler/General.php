@@ -66,7 +66,7 @@ final class General extends AbstractTableHandler implements TableHandlerInterfac
         }
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
         $connection->insert($tableName, $fieldValues);
-        $fieldValues['uid'] = $connection->lastInsertId($tableName);
+        $fieldValues['uid'] = $connection->lastInsertId();
         $fieldValues = $recordData->generate($tableName, $fieldValues);
         // Do not update primary identifier uid anymore, db's choke on that for good reason
         $updateValues = $fieldValues;

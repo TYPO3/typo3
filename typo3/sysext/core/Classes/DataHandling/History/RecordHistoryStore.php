@@ -97,7 +97,7 @@ class RecordHistoryStore
             'correlation_id' => (string)$this->createCorrelationId($table, $uid, $correlationId),
         ];
         $this->getDatabaseConnection()->insert('sys_history', $data);
-        return $this->getDatabaseConnection()->lastInsertId('sys_history');
+        return $this->getDatabaseConnection()->lastInsertId();
     }
 
     /**
@@ -118,7 +118,7 @@ class RecordHistoryStore
             'correlation_id' => (string)$this->createCorrelationId($table, $uid, $correlationId),
         ];
         $this->getDatabaseConnection()->insert('sys_history', $data);
-        return $this->getDatabaseConnection()->lastInsertId('sys_history');
+        return $this->getDatabaseConnection()->lastInsertId();
     }
 
     /**
@@ -138,7 +138,7 @@ class RecordHistoryStore
             'correlation_id' => (string)$this->createCorrelationId($table, $uid, $correlationId),
         ];
         $this->getDatabaseConnection()->insert('sys_history', $data);
-        return $this->getDatabaseConnection()->lastInsertId('sys_history');
+        return $this->getDatabaseConnection()->lastInsertId();
     }
 
     /**
@@ -158,7 +158,7 @@ class RecordHistoryStore
             'correlation_id' => (string)$this->createCorrelationId($table, $uid, $correlationId),
         ];
         $this->getDatabaseConnection()->insert('sys_history', $data);
-        return $this->getDatabaseConnection()->lastInsertId('sys_history');
+        return $this->getDatabaseConnection()->lastInsertId();
     }
 
     /**
@@ -179,7 +179,7 @@ class RecordHistoryStore
             'correlation_id' => (string)$this->createCorrelationId($table, $uid, $correlationId),
         ];
         $this->getDatabaseConnection()->insert('sys_history', $data);
-        return $this->getDatabaseConnection()->lastInsertId('sys_history');
+        return $this->getDatabaseConnection()->lastInsertId();
     }
 
     public function changeStageForRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
@@ -197,7 +197,7 @@ class RecordHistoryStore
             'correlation_id' => (string)$this->createCorrelationId($table, $uid, $correlationId),
         ];
         $this->getDatabaseConnection()->insert('sys_history', $data);
-        return $this->getDatabaseConnection()->lastInsertId('sys_history');
+        return $this->getDatabaseConnection()->lastInsertId();
     }
 
     protected function createCorrelationId(string $tableName, int $uid, ?CorrelationId $correlationId): CorrelationId

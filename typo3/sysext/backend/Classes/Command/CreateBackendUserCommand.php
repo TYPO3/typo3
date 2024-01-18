@@ -343,7 +343,7 @@ EOT
 
         $databaseConnection = $this->connectionPool->getConnectionForTable('be_users');
         $databaseConnection->insert('be_users', $adminUserFields);
-        $adminUserUid = (int)$databaseConnection->lastInsertId('be_users');
+        $adminUserUid = (int)$databaseConnection->lastInsertId();
 
         if ($maintainer) {
             $maintainerIds = $this->configurationManager->getConfigurationValueByPath('SYS/systemMaintainers') ?? [];

@@ -63,7 +63,7 @@ final class TypeSelectRenderTypeSingleForeignTableGroupField extends AbstractFie
                 $this->table,
                 $childFieldValues
             );
-            $uid = $connection->lastInsertId($this->table);
+            $uid = $connection->lastInsertId();
             $childFieldValues['uid'] = $uid;
             $childFieldValues['item_group'] = $group;
             $recordData = GeneralUtility::makeInstance(RecordData::class);

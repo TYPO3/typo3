@@ -62,7 +62,7 @@ final class InlineMnSymmetric extends AbstractTableHandler implements TableHandl
             ];
             $connection = $connectionPool->getConnectionForTable($tableName);
             $connection->insert($tableName, $fieldValues);
-            $fieldValues['uid'] = $connection->lastInsertId($tableName);
+            $fieldValues['uid'] = $connection->lastInsertId();
             if ($isFirst) {
                 $fieldValues['branches'] = $numberOfRelationsForFirstRecord;
                 $uidOfFirstRecord = $fieldValues['uid'];

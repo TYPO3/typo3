@@ -545,7 +545,7 @@ class MaintenanceController extends AbstractController
 
                 if ($isSystemMaintainer) {
                     // Get the new admin user uid just created
-                    $newAdminUserUid = (int)$connectionPool->getConnectionForTable('be_users')->lastInsertId('be_users');
+                    $newAdminUserUid = (int)$connectionPool->getConnectionForTable('be_users')->lastInsertId();
 
                     // Get the list of the existing systemMaintainer
                     $existingSystemMaintainersList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];

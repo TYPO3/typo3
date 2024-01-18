@@ -149,7 +149,7 @@ class MetaDataRepository implements SingletonInterface
         );
 
         $record = $emptyRecord;
-        $record['uid'] = $connection->lastInsertId($this->tableName);
+        $record['uid'] = $connection->lastInsertId();
 
         return $this->eventDispatcher->dispatch(new AfterFileMetaDataCreatedEvent($fileUid, (int)$record['uid'], $record))->getRecord();
     }

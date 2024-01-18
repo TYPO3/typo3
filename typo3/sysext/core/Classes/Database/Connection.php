@@ -437,14 +437,12 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * are not required / and only the table name is passed through.
      *
      * @param string|null $tableName
+     *
+     * @return numeric-string
      */
     public function lastInsertId($tableName = null, string $fieldName = 'uid'): string
     {
-        $databasePlatform = $this->getDatabasePlatform();
-        if ($databasePlatform instanceof DoctrinePostgreSqlPlatform) {
-            return parent::lastInsertId(trim(implode('_', [$tableName, $fieldName, 'seq']), '_'));
-        }
-        return (string)parent::lastInsertId($tableName);
+        return (string)parent::lastInsertId();
     }
 
     /**

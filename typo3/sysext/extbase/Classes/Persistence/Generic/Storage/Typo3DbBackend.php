@@ -89,7 +89,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         $uid = 0;
         if (!$isRelation) {
             // Relation tables have no auto_increment column, so no retrieval must be tried.
-            $uid = (int)$connection->lastInsertId($tableName);
+            $uid = (int)$connection->lastInsertId();
             $this->cacheService->clearCacheForRecord($tableName, $uid);
         }
         return $uid;

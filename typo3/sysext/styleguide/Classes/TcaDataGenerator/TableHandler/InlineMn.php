@@ -60,7 +60,7 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
             ];
             $connection = $connectionPool->getConnectionForTable('tx_styleguide_inline_mn_child');
             $connection->insert('tx_styleguide_inline_mn_child', $fieldValues);
-            $fieldValues['uid'] = $connection->lastInsertId('tx_styleguide_inline_mn_child');
+            $fieldValues['uid'] = $connection->lastInsertId();
             if (count($childRelationUids) < $numberOfChildRelationsToCreate) {
                 $childRelationUids[] = $fieldValues['uid'];
             }
@@ -83,7 +83,7 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
         ];
         $connection = $connectionPool->getConnectionForTable($tableName);
         $connection->insert($tableName, $fieldValues);
-        $parentid = $fieldValues['uid'] = $connection->lastInsertId($tableName);
+        $parentid = $fieldValues['uid'] = $connection->lastInsertId();
         $fieldValues = $recordData->generate($tableName, $fieldValues);
         // Do not update primary identifier uid anymore, db's choke on that for good reason
         $updateValues = $fieldValues;

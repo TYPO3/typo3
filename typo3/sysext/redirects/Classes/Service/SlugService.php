@@ -202,7 +202,7 @@ class SlugService implements LoggerAwareInterface
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('sys_redirect');
             $connection->insert('sys_redirect', $record);
-            $id = (int)$connection->lastInsertId('sys_redirect');
+            $id = (int)$connection->lastInsertId();
             $record['uid'] = $id;
             $this->getRecordHistoryStore()->addRecord('sys_redirect', $id, $record, $this->correlationIdRedirectCreation);
             $this->eventDispatcher->dispatch(

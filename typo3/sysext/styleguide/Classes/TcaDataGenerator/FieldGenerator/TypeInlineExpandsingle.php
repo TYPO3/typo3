@@ -80,7 +80,7 @@ final class TypeInlineExpandsingle extends AbstractFieldGenerator implements Fie
                 'tx_styleguide_inline_expandsingle_child',
                 $childFieldValues
             );
-            $childFieldValues['uid'] = $connection->lastInsertId('tx_styleguide_inline_expandsingle_child');
+            $childFieldValues['uid'] = $connection->lastInsertId();
             $recordData = GeneralUtility::makeInstance(RecordData::class);
             $childFieldValues = $recordData->generate('tx_styleguide_inline_expandsingle_child', $childFieldValues);
             $connection->update(

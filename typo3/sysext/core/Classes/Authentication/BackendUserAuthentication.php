@@ -1804,7 +1804,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             ]
         );
 
-        return (int)$connection->lastInsertId('sys_log');
+        return (int)$connection->lastInsertId();
     }
 
     /**

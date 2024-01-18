@@ -312,7 +312,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
                 );
             } else {
                 $this->databaseConnection->insert($table, $databaseData);
-                $insertedUid = (int)$this->databaseConnection->lastInsertId($table);
+                $insertedUid = (int)$this->databaseConnection->lastInsertId();
                 $this->finisherContext->getFinisherVariableProvider()->add(
                     $this->shortFinisherIdentifier,
                     'insertedUids.' . $iterationCount,

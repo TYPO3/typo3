@@ -34,6 +34,23 @@ final class ConnectionTest extends FunctionalTestCase
         $subject->install($creationStatements);
     }
 
+    /**
+     * @test
+     */
+    public function lastInsertIdReturnsExpectedConsecutiveUid(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/lastInsertId.csv');
+        $connection = $this->getConnectionPool()->getConnectionForTable('tt_content');
+        $connection->insert(
+            'tt_content',
+            [
+                'pid' => 0,
+                'header' => 'last-insert',
+            ]
+        );
+        self::assertSame('5', $connection->lastInsertId());
+    }
+
     /** @test */
     public function datetimeInstanceCanBePersistedToDatabaseWithoutSpecifyingType(): void
     {

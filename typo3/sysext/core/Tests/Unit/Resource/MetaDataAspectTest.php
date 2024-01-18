@@ -137,7 +137,7 @@ final class MetaDataAspectTest extends UnitTestCase
 
         $connectionMock = $this->createMock(Connection::class);
         $connectionMock->method('insert')->with(self::anything())->willReturn(1);
-        $connectionMock->method('lastInsertId')->with(self::anything())->willReturn('5');
+        $connectionMock->method('lastInsertId')->willReturn('5');
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);

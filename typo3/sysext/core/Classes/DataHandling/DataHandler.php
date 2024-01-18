@@ -9840,7 +9840,7 @@ class DataHandler implements LoggerAwareInterface
             // Return the actual ID we forced on insert as a surrogate.
             return $suggestedUid;
         }
-        $id = $connection->lastInsertId($tableName);
+        $id = $connection->lastInsertId();
         return (int)$id;
     }
 

@@ -66,7 +66,7 @@ class SchedulerTaskRepository
             ['serialized_task_object' => Connection::PARAM_LOB]
         );
         if ($result) {
-            $task->setTaskUid((int)$connection->lastInsertId(self::TABLE_NAME));
+            $task->setTaskUid((int)$connection->lastInsertId());
             $this->update($task);
             $result = true;
         } else {

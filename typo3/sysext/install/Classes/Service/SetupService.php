@@ -104,7 +104,7 @@ class SetupService
 
         $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
         $databaseConnection->insert('be_users', $adminUserFields);
-        $adminUserUid = (int)$databaseConnection->lastInsertId('be_users');
+        $adminUserUid = (int)$databaseConnection->lastInsertId();
 
         $maintainerIds = $this->configurationManager->getConfigurationValueByPath('SYS/systemMaintainers') ?? [];
         sort($maintainerIds);
@@ -173,7 +173,7 @@ class SetupService
                 'perms_everybody' => 1,
             ]
         );
-        $pageUid = $databaseConnectionForPages->lastInsertId('pages');
+        $pageUid = $databaseConnectionForPages->lastInsertId();
 
         // add a root sys_template with fluid_styled_content and a default PAGE typoscript snippet
         $connectionPool->getConnectionForTable('sys_template')->insert(

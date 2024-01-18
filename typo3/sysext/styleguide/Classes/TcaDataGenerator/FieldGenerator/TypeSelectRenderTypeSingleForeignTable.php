@@ -66,7 +66,7 @@ final class TypeSelectRenderTypeSingleForeignTable extends AbstractFieldGenerato
                 'tx_styleguide_elements_select_single_12_foreign',
                 $childFieldValues
             );
-            $childFieldValues['uid'] = $connection->lastInsertId('tx_styleguide_elements_select_single_12_foreign');
+            $childFieldValues['uid'] = $connection->lastInsertId();
             $recordData = GeneralUtility::makeInstance(RecordData::class);
             $childFieldValues = $recordData->generate('tx_styleguide_elements_select_single_12_foreign', $childFieldValues);
             $connection->update(

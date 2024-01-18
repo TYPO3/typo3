@@ -80,7 +80,7 @@ final class TypeInline1n extends AbstractFieldGenerator implements FieldGenerato
         }
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($childTable);
         $connection->insert($childTable, $childFieldValues);
-        $childFieldValues['uid'] = (int)$connection->lastInsertId($childTable);
+        $childFieldValues['uid'] = (int)$connection->lastInsertId();
         $recordData = GeneralUtility::makeInstance(RecordData::class);
         $childFieldValues = $recordData->generate($childTable, $childFieldValues);
         $connection->update(

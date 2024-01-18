@@ -92,7 +92,7 @@ final class TypeInlineUsecombination extends AbstractFieldGenerator implements F
             ];
             $connection = $connectionPool->getConnectionForTable($childChildTableName);
             $connection->insert($childChildTableName, $childFieldValues);
-            $childFieldValues['uid'] = $connection->lastInsertId($childChildTableName);
+            $childFieldValues['uid'] = $connection->lastInsertId();
             if (count($uidsOfChildrenToConnect) < 2) {
                 $uidsOfChildrenToConnect[] = $childFieldValues['uid'];
             }

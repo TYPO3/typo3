@@ -142,7 +142,7 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
                 ['configuration' => Connection::PARAM_LOB]
             );
 
-            $uid = $connection->lastInsertId('sys_file_processedfile');
+            $uid = $connection->lastInsertId();
             $processedFile->updateProperties(['uid' => $uid]);
         }
     }

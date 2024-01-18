@@ -268,7 +268,7 @@ class StorageRepository implements LoggerAwareInterface
         // Flush local resourceStorage cache so the storage can be accessed during the same request right away
         $this->flush();
 
-        return (int)$dbConnection->lastInsertId($this->table);
+        return (int)$dbConnection->lastInsertId();
     }
 
     /**
