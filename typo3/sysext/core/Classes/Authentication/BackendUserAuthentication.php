@@ -1150,6 +1150,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
             // The lists are cleaned for duplicates
             $this->groupData['webmounts'] = StringUtility::uniqueList($this->groupData['webmounts'] ?? '');
+            $this->groupData['filemounts'] = StringUtility::uniqueList($this->groupData['filemounts'] ?? '');
             $this->groupData['pagetypes_select'] = StringUtility::uniqueList($this->groupData['pagetypes_select'] ?? '');
             $this->groupData['tables_select'] = StringUtility::uniqueList(($this->groupData['tables_modify'] ?? '') . ',' . ($this->groupData['tables_select'] ?? ''));
             $this->groupData['tables_modify'] = StringUtility::uniqueList($this->groupData['tables_modify'] ?? '');
