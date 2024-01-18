@@ -46,24 +46,36 @@ export default [
         {
           name: 'externals',
           resolveId: (source, from) => {
-            if (source === '@ckeditor/ckeditor5-utils/src/version' && from.includes('@ckeditor/ckeditor5-engine')) {
+            if (source === '@ckeditor/ckeditor5-utils/src/version.js' && from.includes('@ckeditor/ckeditor5-engine')) {
               return { id: '@ckeditor/ckeditor5-utils', external: true }
             }
             if (source.startsWith('@ckeditor/') && !source.startsWith(packageName) && !source.endsWith('.svg') && !source.endsWith('.css')) {
               if (source.split('/').length > 2) {
                 throw new Error(`Non package-entry point was imported: ${source}`);
               }
-              return { id: source, external: true }
+              return { id: source.replace(/.js$/, ''), external: true }
             }
             if (source.startsWith('ckeditor5/src/')) {
-              return { id: '@ckeditor/ckeditor5-' + source.substring(14), external: true };
+              return { id: '@ckeditor/ckeditor5-' + source.substring(14).replace(/.js$/, ''), external: true };
             }
             if (source === 'lodash-es') {
               return { id: 'lodash-es', external: true }
             }
-            //if (!source.startsWith('@ckeditor/') && !source.startsWith('.') && !source.startsWith('/')) {
-            //  console.log(`HEADS UP: ${source} import from ${from}`);
-            //}
+            if (source.startsWith('@ckeditor/') && source.endsWith('.js') && source.split('/').length === 2) {
+              throw new Error(`JS File with suffix: ${source} import from ${from}`);
+            }
+            if (
+              !source.startsWith('@ckeditor/') &&
+              !source.startsWith('.') &&
+              !source.startsWith('/') &&
+              !source.startsWith('Sources/JavaScript/rte_ckeditor/contrib') &&
+              source !== 'vanilla-colorful/hex-color-picker.js' &&
+              source !== 'color-convert' &&
+              source !== 'color-name' &&
+              source !== 'color-parse'
+            ) {
+              throw new Error(`HEADS UP: New CKEditor5 import "${source}" (import from ${from}). Please decide whether to bundle or package separately and adapt Build/ckeditor5.rollup.config.js accordingly.`);
+            }
             return null
           }
         },
