@@ -39,12 +39,6 @@
 			<trans-unit id="workspace_perms_live" resname="workspace_perms_live">
 				<source>Edit Live (Online)</source>
 			</trans-unit>
-			<trans-unit id="workspace_perms_draft" resname="workspace_perms_draft">
-				<source>Edit Draft (Offline)</source>
-			</trans-unit>
-			<trans-unit id="workspace_perms_custom" resname="workspace_perms_custom">
-				<source>Create new workspace projects</source>
-			</trans-unit>
 			<trans-unit id="TSconfig" resname="TSconfig">
 				<source>TSconfig</source>
 			</trans-unit>
