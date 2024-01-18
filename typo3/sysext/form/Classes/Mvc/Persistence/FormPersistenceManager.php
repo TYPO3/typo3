@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Persistence;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -46,6 +47,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
+use TYPO3\CMS\Form\Mvc\Persistence\Event\AfterFormDefinitionLoadedEvent;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniquePersistenceIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -67,6 +69,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     protected array $formSettings;
     protected array $typoScriptSettings;
     protected FrontendInterface $runtimeCache;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         YamlSource $yamlSource,
@@ -74,12 +77,14 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         FilePersistenceSlot $filePersistenceSlot,
         ResourceFactory $resourceFactory,
         ConfigurationManagerInterface $configurationManager,
-        CacheManager $cacheManager
+        CacheManager $cacheManager,
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->yamlSource = $yamlSource;
         $this->storageRepository = $storageRepository;
         $this->filePersistenceSlot = $filePersistenceSlot;
         $this->resourceFactory = $resourceFactory;
+        $this->eventDispatcher = $eventDispatcher;
         // @todo: FormPersistenceManager is sometimes triggered via CLI without request (why/where?).
         //        In this case we fake a request so extbase ConfigurationManager still works.
         //        This of course needs to fall! The code below needs to be moved out of __construct()
@@ -100,8 +105,8 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 
     /**
      * Load the array formDefinition identified by $persistenceIdentifier,
-     * override it by TypoScript settings, and return it. Only files with
-     * the extension .yaml or .form.yaml are loaded.
+     * let event listeners modify it, override it by TypoScript settings, and
+     * return it. Only files with the extension .yaml or .form.yaml are loaded.
      *
      * @internal
      */
@@ -111,7 +116,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 
         $yaml = $this->runtimeCache->get($cacheKey);
         if ($yaml !== false) {
-            return $this->overrideByTypoScriptSettings($yaml);
+            return $this->overrideFormDefinition($yaml, $persistenceIdentifier, $cacheKey);
         }
 
         if (PathUtility::isExtensionPath($persistenceIdentifier)) {
@@ -134,7 +139,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
         $this->runtimeCache->set($cacheKey, $yaml);
 
-        return $this->overrideByTypoScriptSettings($yaml);
+        return $this->overrideFormDefinition($yaml, $persistenceIdentifier, $cacheKey);
     }
 
     /**
@@ -643,25 +648,35 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * Every formDefinition setting is overridable by TypoScript.
-     * If the TypoScript configuration path
-     * plugin.tx_form.settings.formDefinitionOverrides.<identifier>
+     * Allows to modify and override the formDefinition. Therefore,
+     * a PSR-14 Event is dispatched and if the TypoScript configuration
+     * path plugin.tx_form.settings.formDefinitionOverrides.<identifier>
      * exists, these settings are merged into the formDefinition.
      *
      * @param array<string, mixed> $formDefinition
      * @return array<string, mixed>
      */
-    protected function overrideByTypoScriptSettings(array $formDefinition): array
+    protected function overrideFormDefinition(array $formDefinition, string $persistenceIdentifier, string $cacheKey): array
     {
-        if (!empty($this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']] ?? null)) {
-            $formDefinitionOverrides = GeneralUtility::makeInstance(TypoScriptService::class)
-                ->resolvePossibleTypoScriptConfiguration($this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']]);
+        $formDefinition = $this->eventDispatcher->dispatch(
+            new AfterFormDefinitionLoadedEvent(
+                formDefinition: $formDefinition,
+                persistenceIdentifier: $persistenceIdentifier,
+                cacheKey: $cacheKey
+            )
+        )->getFormDefinition();
 
-            ArrayUtility::mergeRecursiveWithOverrule(
-                $formDefinition,
-                $formDefinitionOverrides
-            );
+        if (empty($this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']] ?? null)) {
+            return $formDefinition;
         }
+
+        $formDefinitionOverrides = GeneralUtility::makeInstance(TypoScriptService::class)
+            ->resolvePossibleTypoScriptConfiguration($this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']]);
+
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $formDefinition,
+            $formDefinitionOverrides
+        );
 
         return $formDefinition;
     }

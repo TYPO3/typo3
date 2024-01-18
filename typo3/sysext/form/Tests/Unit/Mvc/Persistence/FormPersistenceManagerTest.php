@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Persistence;
 
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -25,6 +29,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
+use TYPO3\CMS\Form\Mvc\Persistence\Event\AfterFormDefinitionLoadedEvent;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
@@ -609,13 +614,14 @@ final class FormPersistenceManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideByTypoScriptSettingsReturnsNotOverriddenConfigurationIfNoTypoScriptOverridesExists(): void
+    public function overrideFormDefinitionReturnsNotOverriddenConfigurationIfNoTypoScriptOverridesExists(): void
     {
         $mockController = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
         $mockController->_set('typoScriptSettings', [
             'formDefinitionOverrides' => [
             ],
         ]);
+        $mockController->_set('eventDispatcher', new NoopEventDispatcher());
 
         $input = [
             'identifier' => 'ext-form-identifier',
@@ -657,15 +663,16 @@ final class FormPersistenceManagerTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
+        self::assertSame($expected, $mockController->_call('overrideFormDefinition', $input, '', ''));
     }
 
     /**
      * @test
      */
-    public function overrideByTypoScriptSettingsReturnsOverriddenConfigurationIfTypoScriptOverridesExists(): void
+    public function overrideFormDefinitionReturnsOverriddenConfigurationIfTypoScriptOverridesExists(): void
     {
         $mockController = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
+        $mockController->_set('eventDispatcher', new NoopEventDispatcher());
 
         $typoScriptServiceMock = $this->createMock(TypoScriptService::class);
         $typoScriptServiceMock->method('resolvePossibleTypoScriptConfiguration')->with(self::anything())
@@ -729,13 +736,13 @@ final class FormPersistenceManagerTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
+        self::assertSame($expected, $mockController->_call('overrideFormDefinition', $input, '', ''));
     }
 
     /**
      * @test
      */
-    public function overrideByTypoScriptSettingsDoesNotEvaluateTypoScriptLookalikeInstructionsFromYamlSettings(): void
+    public function overrideFormDefinitionDoesNotEvaluateTypoScriptLookalikeInstructionsFromYamlSettings(): void
     {
         $formDefinitionYaml = [
             'identifier' => 'ext-form-identifier',
@@ -824,8 +831,44 @@ final class FormPersistenceManagerTest extends UnitTestCase
         GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceMock);
 
         $controllerMock->_set('typoScriptSettings', $formTypoScript);
+        $controllerMock->_set('eventDispatcher', new NoopEventDispatcher());
 
-        self::assertSame($expected, $controllerMock->_call('overrideByTypoScriptSettings', $formDefinitionYaml));
+        self::assertSame($expected, $controllerMock->_call('overrideFormDefinition', $formDefinitionYaml, '', ''));
+    }
+
+    /**
+     * @test
+     */
+    public function afterFormDefinitionLoadedEventIsCalled(): void
+    {
+        $afterFormDefinitionLoadedEvent = null;
+        $persistenceIdentifier = 'ext-form-identifier';
+        $cacheKey = 'formLoad' . md5($persistenceIdentifier);
+        $formDefinition = ['identifier' => $persistenceIdentifier];
+        $modifiedFormDefinition = ['identifier' => 'modified-ext-form-identifier'];
+
+        $container = new Container();
+        $container->set(
+            'after-form-definition-loaded-listener',
+            static function (AfterFormDefinitionLoadedEvent $event) use (&$afterFormDefinitionLoadedEvent, $modifiedFormDefinition) {
+                $afterFormDefinitionLoadedEvent = $event;
+                $event->setFormDefinition($modifiedFormDefinition);
+            }
+        );
+
+        $listenerProvider = GeneralUtility::makeInstance(ListenerProvider::class, $container);
+        $listenerProvider->addListener(AfterFormDefinitionLoadedEvent::class, 'after-form-definition-loaded-listener');
+
+        $controllerMock = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);
+        $controllerMock->_set('eventDispatcher', new EventDispatcher($listenerProvider));
+
+        $result = $controllerMock->_call('overrideFormDefinition', $formDefinition, $persistenceIdentifier, $cacheKey);
+
+        self::assertSame($modifiedFormDefinition, $result);
+        self::assertInstanceOf(AfterFormDefinitionLoadedEvent::class, $afterFormDefinitionLoadedEvent);
+        self::assertSame($modifiedFormDefinition, $afterFormDefinitionLoadedEvent->getFormDefinition());
+        self::assertSame($persistenceIdentifier, $afterFormDefinitionLoadedEvent->getPersistenceIdentifier());
+        self::assertSame($cacheKey, $afterFormDefinitionLoadedEvent->getCacheKey());
     }
 
     /**
