@@ -42,7 +42,7 @@ const defaultPlugins: PluginModuleDescriptor[] = [
   { module: '@ckeditor/ckeditor5-heading', exports: ['Heading'] },
   { module: '@ckeditor/ckeditor5-indent', exports: ['Indent'] },
   { module: '@ckeditor/ckeditor5-link', exports: ['Link'] },
-  { module: '@ckeditor/ckeditor5-list', exports: ['DocumentList'] },
+  { module: '@ckeditor/ckeditor5-list', exports: ['List'] },
   { module: '@ckeditor/ckeditor5-paragraph', exports: ['Paragraph'] },
   { module: '@ckeditor/ckeditor5-clipboard', exports: ['PastePlainText'] },
   { module: '@ckeditor/ckeditor5-paste-from-office', exports: ['PasteFromOffice'] },
