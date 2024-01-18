@@ -18,12 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent;
@@ -56,13 +52,7 @@ final class ContentContentObjectTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(ModifyRecordsAfterFetchingContentEvent::class, 'modify-records-after-fetching-content-listener');
 
-        $typoScriptFrontendController = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            GeneralUtility::makeInstance(Context::class),
-            $this->createMock(Site::class),
-            $this->createMock(SiteLanguage::class),
-            new PageArguments(1, '0', [])
-        );
+        $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);

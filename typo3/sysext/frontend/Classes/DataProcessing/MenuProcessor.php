@@ -15,13 +15,11 @@
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 
 /**
@@ -336,7 +334,7 @@ class MenuProcessor implements DataProcessorInterface
         if (($this->menuConfig['special'] ?? '') === 'language') {
             $languageUids = $this->menuConfig['special.']['value'];
             if ($this->menuConfig['special.']['value'] === 'auto') {
-                $site = $this->getCurrentSite();
+                $site = $this->cObj->getRequest()->getAttribute('site');
                 $languageUids = implode(',', array_keys($site->getLanguages()));
             }
             $this->menuLevelConfig['stdWrap.']['cObject.'] = array_replace_recursive(
@@ -539,21 +537,5 @@ class MenuProcessor implements DataProcessorInterface
         $menuItem['parts']['title'] = str_replace(self::TARGET_PLACEHOLDER, $target, $menuItem['parts']['title']);
 
         return $menuItem;
-    }
-
-    /**
-     * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
-     */
-    protected function getCurrentSite(): SiteInterface
-    {
-        return $this->getTypoScriptFrontendController()->getSite();
-    }
-
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
     }
 }

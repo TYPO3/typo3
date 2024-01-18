@@ -1246,7 +1246,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_lang($content = '', $conf = [])
     {
-        $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
+        // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
+        $siteLanguage = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
         $currentLanguageCode = $siteLanguage->getTypo3Language();
         if (!$currentLanguageCode) {
             return $content;
@@ -1795,7 +1796,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_formattedDate(string $content, array $conf): string
     {
         $pattern = $conf['formattedDate'] ?? 'LONG';
-        $locale = $conf['formattedDate.']['locale'] ?? $this->getTypoScriptFrontendController()->getLanguage()->getLocale();
+        // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
+        $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
+        $locale = $conf['formattedDate.']['locale'] ?? $language->getLocale();
 
         if ($content === '' || $content === '0') {
             $content = GeneralUtility::makeInstance(Context::class)->getAspect('date')->getDateTime();
@@ -3920,7 +3923,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         break;
                     case 'lll':
-                        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($this->getTypoScriptFrontendController()->getLanguage());
+                        // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
+                        $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
+                        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($language);
                         $retVal = $languageService->sL('LLL:' . $key);
                         break;
                     case 'path':
@@ -4001,7 +4006,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         break;
                     case 'site':
-                        $site = $this->getTypoScriptFrontendController()->getSite();
+                        $site = $this->getRequest()->getAttribute('site');
                         if ($key === 'identifier') {
                             $retVal = $site->getIdentifier();
                         } elseif ($key === 'base') {
@@ -4015,7 +4020,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         break;
                     case 'sitelanguage':
-                        $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
+                        // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
+                        $siteLanguage = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
                         if ($key === 'twoLetterIsoCode') {
                             $key = 'locale:languageCode';
                         }
@@ -4054,7 +4060,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         break;
                     case 'sitesettings':
-                        $siteSettings = $this->getTypoScriptFrontendController()->getSite()->getSettings();
+                        $siteSettings = $this->getRequest()->getAttribute('site')->getSettings();
                         $retVal = $siteSettings->get($key, '');
                         break;
                     case 'applicationcontext':

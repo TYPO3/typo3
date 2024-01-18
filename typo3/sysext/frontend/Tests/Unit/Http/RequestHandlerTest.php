@@ -152,7 +152,8 @@ final class RequestHandlerTest extends UnitTestCase
         ]);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
-            ->withAttribute('routing', new PageArguments(1, '0', []));
+            ->withAttribute('routing', new PageArguments(1, '0', []))
+            ->withAttribute('language', $siteLanguage);
         $subject = $this->getAccessibleMock(
             RequestHandler::class,
             ['getPageRenderer'],
@@ -166,7 +167,7 @@ final class RequestHandlerTest extends UnitTestCase
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $request);
         $pageRendererMock->expects(self::never())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrowException(new \InvalidArgumentException('', 1666309039));
     }
 
@@ -316,7 +317,8 @@ final class RequestHandlerTest extends UnitTestCase
         ]);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
-            ->withAttribute('routing', new PageArguments(1, '0', []));
+            ->withAttribute('routing', new PageArguments(1, '0', []))
+            ->withAttribute('language', $siteLanguage);
         $subject = $this->getAccessibleMock(
             RequestHandler::class,
             ['getPageRenderer'],
@@ -330,7 +332,7 @@ final class RequestHandlerTest extends UnitTestCase
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $request);
     }
 
     /**
@@ -373,7 +375,8 @@ final class RequestHandlerTest extends UnitTestCase
         ]);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
-            ->withAttribute('routing', new PageArguments(1, '0', []));
+            ->withAttribute('routing', new PageArguments(1, '0', []))
+            ->withAttribute('language', $siteLanguage);
         $subject = $this->getAccessibleMock(
             RequestHandler::class,
             ['getPageRenderer'],
@@ -387,7 +390,7 @@ final class RequestHandlerTest extends UnitTestCase
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $request);
     }
 
     public static function generateMultipleMetaTagsDataProvider(): array
@@ -496,7 +499,8 @@ final class RequestHandlerTest extends UnitTestCase
         ]);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
-            ->withAttribute('routing', new PageArguments(1, '0', []));
+            ->withAttribute('routing', new PageArguments(1, '0', []))
+            ->withAttribute('language', $siteLanguage);
         $subject = $this->getAccessibleMock(
             RequestHandler::class,
             ['getPageRenderer'],
@@ -510,7 +514,7 @@ final class RequestHandlerTest extends UnitTestCase
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $request);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $request);
     }
 
     /**

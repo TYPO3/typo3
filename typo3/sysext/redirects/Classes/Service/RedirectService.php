@@ -400,13 +400,8 @@ class RedirectService implements LoggerAwareInterface
         $originalRequest = $originalRequest->withAttribute('routing', $pageArguments);
         $pageInformation = $this->pageInformationFactory->create($originalRequest);
         $originalRequest = $originalRequest->withAttribute('frontend.page.information', $pageInformation);
-        $controller = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            GeneralUtility::makeInstance(Context::class),
-            $site,
-            $site->getDefaultLanguage(),
-            $pageArguments
-        );
+        $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
+        $controller->initializePageRenderer($originalRequest);
         $newRequest = $controller->getFromCache($originalRequest);
         $controller->releaseLocks();
         $controller->newCObj($newRequest);

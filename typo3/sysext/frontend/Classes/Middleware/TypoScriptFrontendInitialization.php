@@ -86,13 +86,9 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
         }
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
 
-        $controller = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            $this->context,
-            $request->getAttribute('site'),
-            $request->getAttribute('language', $request->getAttribute('site')->getDefaultLanguage()),
-            $request->getAttribute('routing')
-        );
+        $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
+        $controller->initializePageRenderer($request);
+        $controller->initializeLanguageService($request);
         $controller->id = $pageInformation->getId();
         $controller->page = $pageInformation->getPageRecord();
         $controller->contentPid = $pageInformation->getContentFromPid();

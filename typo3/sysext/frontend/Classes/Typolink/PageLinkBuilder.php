@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Typolink;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -47,7 +46,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\ModifyPageLinkConfigurationEvent;
 
 /**
@@ -820,21 +818,15 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     }
 
     /**
-     * Check if we have a site object in the current request. if null, this usually means that
-     * this class was called from CLI context.
+     * Check if we have a site object in the current request.
+     * If null, this usually means that this class was called from CLI context.
+     *
+     * @todo: We may want to see if we can't *require* a site object to be
+     *        always set and fail here otherwise!
      */
     protected function getCurrentSite(): ?SiteInterface
     {
-        if ($this->typoScriptFrontendController instanceof TypoScriptFrontendController) {
-            return $this->typoScriptFrontendController->getSite();
-        }
-        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            return $GLOBALS['TSFE']->getSite();
-        }
-        if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            return $GLOBALS['TYPO3_REQUEST']->getAttribute('site', null);
-        }
-        return null;
+        return $this->contentObjectRenderer->getRequest()->getAttribute('site');
     }
 
     /**
@@ -843,13 +835,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function getCurrentSiteLanguage(): ?SiteLanguage
     {
-        if ($this->typoScriptFrontendController instanceof TypoScriptFrontendController) {
-            return $this->typoScriptFrontendController->getLanguage();
-        }
-        if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
-        }
-        return null;
+        $request = $this->contentObjectRenderer->getRequest();
+        return $request->getAttribute('language') ?? $this->getCurrentSite()?->getDefaultLanguage();
     }
 
     /**

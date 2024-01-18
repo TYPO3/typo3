@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -219,20 +217,11 @@ abstract class AbstractTypolinkBuilder
         if (!$language instanceof SiteLanguage) {
             $language = $site->getDefaultLanguage();
         }
+        $request = $request->withAttribute('language', $language);
 
-        $pageArguments = $request->getAttribute('routing');
-        if (!($pageArguments instanceof PageArguments)) {
-            $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? $site->getRootPageId();
-            $type = $request->getQueryParams()['type'] ?? $request->getParsedBody()['type'] ?? '0';
-            $pageArguments = new PageArguments((int)$id, (string)$type, []);
-        }
-        $this->typoScriptFrontendController = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            GeneralUtility::makeInstance(Context::class),
-            $site,
-            $language,
-            $pageArguments
-        );
+        $this->typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
+        $this->typoScriptFrontendController->initializePageRenderer($request);
+        $this->typoScriptFrontendController->initializeLanguageService($request);
         return $this->typoScriptFrontendController;
     }
 }

@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -201,7 +200,7 @@ class RequestHandler implements RequestHandlerInterface
             return $pageContent;
         }
         // Now, populate pageRenderer with all additional data
-        $this->processHtmlBasedRenderingSettings($controller, $controller->getLanguage(), $request);
+        $this->processHtmlBasedRenderingSettings($controller, $request);
         $pageRenderer = $this->getPageRenderer();
         // Add previously generated page content within the <body> tag afterwards
         $pageRenderer->addBodyContent(LF . $pageContent);
@@ -242,7 +241,7 @@ class RequestHandler implements RequestHandlerInterface
      * PageRenderer is now populated with all <head> data and additional JavaScript/CSS/FooterData/HeaderData that can be cached.
      * Once finished, the content is added to the >addBodyContent() functionality.
      */
-    protected function processHtmlBasedRenderingSettings(TypoScriptFrontendController $controller, SiteLanguage $siteLanguage, ServerRequestInterface $request): void
+    protected function processHtmlBasedRenderingSettings(TypoScriptFrontendController $controller, ServerRequestInterface $request): void
     {
         $pageRenderer = $this->getPageRenderer();
         $typoScriptSetupArray = $request->getAttribute('frontend.typoscript')->getSetupArray();
@@ -265,6 +264,8 @@ class RequestHandler implements RequestHandlerInterface
         }
         $htmlTagAttributes = [];
 
+        // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
+        $siteLanguage = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
         if ($siteLanguage->getLocale()->isRightToLeftLanguageDirection()) {
             $htmlTagAttributes['dir'] = 'rtl';
         }

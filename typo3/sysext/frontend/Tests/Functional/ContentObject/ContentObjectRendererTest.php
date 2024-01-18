@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -32,7 +31,6 @@ use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -220,14 +218,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
             ],
         ];
 
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('test');
-        $typoScriptFrontendController = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            GeneralUtility::makeInstance(Context::class),
-            $site,
-            $site->getDefaultLanguage(),
-            new PageArguments(1, '0', [])
-        );
+        $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
         $request = $this->getPreparedRequest();
         $pageInformation = new PageInformation();
@@ -1206,13 +1197,7 @@ And another one';
         ];
         $fileReference = new FileReference($fileReferenceData);
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('test');
-        $typoScriptFrontendController = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            GeneralUtility::makeInstance(Context::class),
-            $site,
-            $site->getDefaultLanguage(),
-            new PageArguments(1, '0', [])
-        );
+        $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
         $subject->setCurrentFile($fileReference);
         $subject->setRequest($this->getPreparedRequest());

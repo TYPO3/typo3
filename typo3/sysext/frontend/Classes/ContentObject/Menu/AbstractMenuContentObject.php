@@ -1796,12 +1796,9 @@ abstract class AbstractMenuContentObject
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 
-    /**
-     * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
-     */
     protected function getCurrentSite(): Site
     {
-        return $this->getTypoScriptFrontendController()->getSite();
+        return $this->request->getAttribute('site');
     }
 
     /**

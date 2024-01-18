@@ -18,10 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -199,20 +195,9 @@ final class CObjectViewHelper extends AbstractViewHelper
         if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             $tsfe = $GLOBALS['TSFE'];
         } else {
-            $site = $request->getAttribute('site');
-            if (!($site instanceof SiteInterface)) {
-                $sites = GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
-                $site = reset($sites);
-            }
-            $language = $request->getAttribute('language') ?? $site->getDefaultLanguage();
-            $pageArguments = $request->getAttribute('routing') ?? new PageArguments(0, '0', []);
-            $tsfe = GeneralUtility::makeInstance(
-                TypoScriptFrontendController::class,
-                GeneralUtility::makeInstance(Context::class),
-                $site,
-                $language,
-                $pageArguments
-            );
+            $tsfe = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
+            $tsfe->initializePageRenderer($request);
+            $tsfe->initializeLanguageService($request);
         }
         $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $tsfe);
         $parent = $request->getAttribute('currentContentObject');

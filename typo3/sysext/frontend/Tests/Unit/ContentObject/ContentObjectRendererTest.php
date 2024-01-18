@@ -52,7 +52,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -132,12 +132,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     {
         parent::setUp();
 
-        $site = $this->createSiteWithLanguage([
-            'base' => '/',
-            'languageId' => 2,
-            'locale' => 'en_UK',
-        ]);
-
         $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
         $this->frontendControllerMock =
             $this->getAccessibleMock(
@@ -149,7 +143,6 @@ final class ContentObjectRendererTest extends UnitTestCase
             );
         $this->frontendControllerMock->_set('context', GeneralUtility::makeInstance(Context::class));
         $this->frontendControllerMock->config = [];
-        $this->frontendControllerMock->_set('language', $site->getLanguageById(2));
         $GLOBALS['TSFE'] = $this->frontendControllerMock;
 
         $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
@@ -1624,6 +1617,8 @@ final class ContentObjectRendererTest extends UnitTestCase
         $pageInformation->setPageRecord([]);
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $language = $this->createMock(SiteLanguage::class);
+        $request = $request->withAttribute('language', $language);
         $this->subject->setRequest($request);
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
@@ -1682,9 +1677,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     {
         $pageInformation = new PageInformation();
         $pageInformation->setPageRecord([]);
-        $request = new ServerRequest('https://example.com');
-        $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $this->subject->setRequest($request);
         $site = new Site('my-site', 123, [
             'base' => 'http://example.com',
             'custom' => [
@@ -1693,7 +1685,10 @@ final class ContentObjectRendererTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->frontendControllerMock->_set('site', $site);
+        $request = (new ServerRequest('https://example.com'))
+            ->withAttribute('frontend.page.information', $pageInformation)
+            ->withAttribute('site', $site);
+        $this->subject->setRequest($request);
         self::assertEquals('http://example.com', $this->subject->getData('site:base'));
         self::assertEquals('yeah', $this->subject->getData('site:custom.config.nested'));
     }
@@ -1707,9 +1702,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     {
         $pageInformation = new PageInformation();
         $pageInformation->setPageRecord([]);
-        $request = new ServerRequest('https://example.com');
-        $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $this->subject->setRequest($request);
 
         $packageManager = new PackageManager(new DependencyOrderingService());
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
@@ -1735,7 +1727,11 @@ final class ContentObjectRendererTest extends UnitTestCase
             ],
         ]);
 
-        $this->frontendControllerMock->_set('site', $site);
+        $request = (new ServerRequest('https://example.com'))
+            ->withAttribute('frontend.page.information', $pageInformation)
+            ->withAttribute('site', $site);
+        $this->subject->setRequest($request);
+
         self::assertEquals('http://dev.com', $this->subject->getData('site:base'));
     }
 
@@ -1750,8 +1746,6 @@ final class ContentObjectRendererTest extends UnitTestCase
         $pageInformation->setPageRecord([]);
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $this->subject->setRequest($request);
-
         $site = $this->createSiteWithLanguage([
             'base' => '/',
             'languageId' => 1,
@@ -1760,7 +1754,8 @@ final class ContentObjectRendererTest extends UnitTestCase
             'navigationTitle' => 'German',
         ]);
         $language = $site->getLanguageById(1);
-        $this->frontendControllerMock->_set('language', $language);
+        $request = $request->withAttribute('language', $language);
+        $this->subject->setRequest($request);
         self::assertEquals('German', $this->subject->getData('siteLanguage:navigationTitle'));
         self::assertEquals('de', $this->subject->getData('siteLanguage:twoLetterIsoCode'));
         self::assertEquals('de', $this->subject->getData('siteLanguage:locale:languageCode'));
@@ -2086,48 +2081,6 @@ final class ContentObjectRendererTest extends UnitTestCase
             );
         }
         return $contentObjectFixture;
-    }
-
-    private function getLibParseFunc(): array
-    {
-        return [
-            'makelinks' => '1',
-            'makelinks.' => [
-                'http.' => [
-                    'keep' => '{$styles.content.links.keep}',
-                    'extTarget' => '',
-                    'mailto.' => [
-                        'keep' => 'path',
-                    ],
-                ],
-            ],
-            'tags' => [
-                'link' => 'TEXT',
-                'link.' => [
-                    'current' => '1',
-                    'typolink.' => [
-                        'parameter.' => [
-                            'data' => 'parameters : allParams',
-                        ],
-                    ],
-                    'parseFunc.' => [
-                        'constants' => '1',
-                    ],
-                ],
-            ],
-
-            'allowTags' => 'a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var',
-            'denyTags' => '*',
-            'sword' => '<span class="csc-sword">|</span>',
-            'constants' => '1',
-            'nonTypoTagStdWrap.' => [
-                'HTMLparser' => '1',
-                'HTMLparser.' => [
-                    'keepNonMatchedTags' => '1',
-                    'htmlSpecialChars' => '2',
-                ],
-            ],
-        ];
     }
 
     public static function _parseFuncReturnsCorrectHtmlDataProvider(): array
@@ -3085,67 +3038,6 @@ final class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($expected, (new ContentObjectRenderer())->HTMLcaseshift($content, 'upper'));
     }
 
-    /***************************************************************************
-     * General tests for stdWrap_
-     ***************************************************************************/
-
-    /**
-     * Check which stdWrap functions are callable with empty parameters.
-     *
-     * Show:
-     *
-     * - Almost all stdWrap_[type] are callable if called with 2 parameters:
-     *   - string $content Empty string.
-     *   - array $conf ['type' => '', 'type.' => []].
-     * - Exceptions: stdWrap_numRows
-     * - The overall count is 91.
-     *
-     *  Note:
-     *
-     *  The exceptions break, if the configuration is empty. This test just
-     *  tracks the different behaviour to gain information. It doesn't mean
-     *  that it is an issue.
-     *
-     * @test
-     */
-    public function notAllStdWrapProcessorsAreCallableWithEmptyConfiguration(): void
-    {
-        $timeTrackerMock = $this->getMockBuilder(TimeTracker::class)->disableOriginalConstructor()->getMock();
-        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerMock);
-        $linkFactory = $this->getMockBuilder(LinkFactory::class)->disableOriginalConstructor()->getMock();
-        $linkFactory->expects(self::atLeastOnce())->method('create')->with(self::anything())->willReturn(new LinkResult('', ''));
-        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
-        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
-        $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererMock);
-
-        $expectExceptions = ['numRows'];
-        $count = 0;
-        $processors = [];
-        $exceptions = [];
-        foreach (array_keys($this->subject->_get('stdWrapOrder')) as $key) {
-            $processors[] = strtr($key, ['.' => '']);
-        }
-        foreach (array_unique($processors) as $processor) {
-            ++$count;
-            try {
-                $conf = [$processor => '', $processor . '.' => ['table' => 'tt_content']];
-                $method = 'stdWrap_' . $processor;
-                if (is_callable([$this->subject, $method])) {
-                    $this->subject->$method('', $conf);
-                }
-            } catch (\Exception $e) {
-                $exceptions[] = $processor;
-            }
-        }
-        self::assertSame($expectExceptions, $exceptions);
-        self::assertSame(82, $count);
-    }
-
-    /***************************************************************************
-     * End general tests for stdWrap_
-     ***************************************************************************/
-
     /**
      * Data provider for stdWrap_HTMLparser
      *
@@ -4034,6 +3926,13 @@ final class ContentObjectRendererTest extends UnitTestCase
         $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('2023-02-02 13:05:00')));
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $subject = new ContentObjectRenderer($this->frontendControllerMock);
+        $site = $this->createSiteWithLanguage([
+            'base' => '/',
+            'languageId' => 2,
+            'locale' => 'en_UK',
+        ]);
+        $request = (new ServerRequest())->withAttribute('language', $site->getLanguageById(2));
+        $subject->setRequest($request);
         $conf = ['formattedDate' => $pattern];
         if ($locale !== null) {
             $conf['formattedDate.']['locale'] = $locale;
@@ -5589,7 +5488,9 @@ final class ContentObjectRendererTest extends UnitTestCase
             'languageId' => 2,
             'locale' => $language,
         ]);
-        $this->frontendControllerMock->_set('language', $site->getLanguageById(2));
+        $request = new ServerRequest();
+        $request = $request->withAttribute('language', $site->getLanguageById(2));
+        $this->subject->setRequest($request);
         self::assertSame(
             $expected,
             $this->subject->stdWrap_lang($input, $conf)

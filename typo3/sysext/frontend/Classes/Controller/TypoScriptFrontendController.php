@@ -40,8 +40,6 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
@@ -90,10 +88,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public int $id;
 
-    protected Site $site;
-    protected SiteLanguage $language;
-    protected PageArguments $pageArguments;
-
     /**
      * @var array<int, array<string, mixed>>
      * @todo: deprecate
@@ -121,7 +115,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Read-only! Extensions may read but never write this property!
      * @todo: deprecate
      */
-    public ?PageRepository $sys_page = null;
+    public PageRepository $sys_page;
 
     /**
      * A central data array consisting of various keys, initialized and
@@ -263,10 +257,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public string $content = '';
 
-    /**
-     * Internal calculations for labels
-     */
-    protected ?LanguageService $languageService = null;
+    protected LanguageService $languageService;
 
     /**
      * @internal Internal locking. May move to a middleware soon.
@@ -296,34 +287,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected string $debugInformationHeader = '';
 
     /**
-     * Since TYPO3 v10.0, TSFE is composed out of
-     *  - Context
-     *  - Site
-     *  - SiteLanguage
-     *  - PageArguments (containing ID, Type, cHash and MP arguments)
-     *
-     * Also sets a unique string (->uniqueString) for this script instance; A md5 hash of the microtime()
-     *
-     * @param Context $context the Context object to work with
-     * @param Site $site The resolved site to work with
-     * @param SiteLanguage $siteLanguage The resolved language to work with
-     * @param PageArguments $pageArguments The PageArguments object containing Page ID, type and GET parameters
      * @internal Extensions should usually not need to create own instances of TSFE
      */
-    public function __construct(Context $context, Site $site, SiteLanguage $siteLanguage, PageArguments $pageArguments)
+    public function __construct()
     {
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $this->context = $context;
-        $this->site = $site;
-        $this->language = $siteLanguage;
-        $this->pageArguments = $pageArguments;
+        $this->context = GeneralUtility::makeInstance(Context::class);
         $this->uniqueString = md5(microtime());
-        $this->initPageRenderer();
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->pageCache = $cacheManager->getCache('pages');
     }
 
-    protected function initPageRenderer(): void
+    /**
+     * @internal
+     */
+    public function initializePageRenderer(ServerRequestInterface $request): void
     {
         if ($this->pageRenderer !== null) {
             return;
@@ -332,12 +310,24 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
         // As initPageRenderer could be called in constructor and for USER_INTs, this information is only set
         // once - in order to not override any previous settings of PageRenderer.
-        if ($this->language->hasCustomTypo3Language()) {
-            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($this->language->getTypo3Language());
+        $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
+        if ($language->hasCustomTypo3Language()) {
+            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
         } else {
-            $locale = $this->language->getLocale();
+            $locale = $language->getLocale();
         }
         $this->pageRenderer->setLanguage($locale);
+    }
+
+    /**
+     * This is only needed for sL() to be initialized properly.
+     *
+     * @internal
+     */
+    public function initializeLanguageService(ServerRequestInterface $request): void
+    {
+        $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
+        $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($language);
     }
 
     /**
@@ -435,7 +425,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
 
-        $site = $this->getSite();
+        $site = $request->getAttribute('site');
         $isCachingAllowed = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
 
         $tokenizer = new LossyTokenizer();
@@ -1052,6 +1042,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->config['config']['pageTitleCache'] = $titleProvider->getPageTitleCache();
 
         $titleTagContent = $this->printTitle(
+            $request,
             $pageTitle,
             (bool)($this->config['config']['noPageTitle'] ?? false),
             (bool)($this->config['config']['pageTitleFirst'] ?? false),
@@ -1079,9 +1070,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @return string The page title on the form "[website title]: [input-title]". Not htmlspecialchar()'ed.
      * @see generatePageTitle()
      */
-    protected function printTitle(string $pageTitle, bool $noPageTitle = false, bool $showPageTitleFirst = false, string $pageTitleSeparator = '', bool $showWebsiteTitle = true): string
+    protected function printTitle(ServerRequestInterface $request, string $pageTitle, bool $noPageTitle = false, bool $showPageTitleFirst = false, string $pageTitleSeparator = '', bool $showWebsiteTitle = true): string
     {
-        $websiteTitle = $showWebsiteTitle ? $this->getWebsiteTitle() : '';
+        $websiteTitle = $showWebsiteTitle ? $this->getWebsiteTitle($request) : '';
         $pageTitle = $noPageTitle ? '' : $pageTitle;
         // only show a separator if there are both site title and page title
         if ($pageTitle === '' || $websiteTitle === '') {
@@ -1096,15 +1087,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return $websiteTitle . $pageTitleSeparator . $pageTitle;
     }
 
-    protected function getWebsiteTitle(): string
+    protected function getWebsiteTitle(ServerRequestInterface $request): string
     {
-        if (trim($this->language->getWebsiteTitle()) !== '') {
-            return trim($this->language->getWebsiteTitle());
+        // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
+        $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
+        if (trim($language->getWebsiteTitle()) !== '') {
+            return trim($language->getWebsiteTitle());
         }
-        if (trim($this->site->getConfiguration()['websiteTitle'] ?? '') !== '') {
-            return trim($this->site->getConfiguration()['websiteTitle']);
+        $siteConfiguration = $request->getAttribute('site')->getConfiguration();
+        if (trim($siteConfiguration['websiteTitle'] ?? '') !== '') {
+            return trim($siteConfiguration['websiteTitle']);
         }
-
         return '';
     }
 
@@ -1118,7 +1111,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->additionalHeaderData = $this->config['INTincScript_ext']['additionalHeaderData'] ?? [];
         $this->additionalFooterData = $this->config['INTincScript_ext']['additionalFooterData'] ?? [];
         if (empty($this->config['INTincScript_ext']['pageRendererState'])) {
-            $this->initPageRenderer();
+            $this->initializePageRenderer($request);
         } else {
             $pageRendererState = unserialize($this->config['INTincScript_ext']['pageRendererState'], ['allowed_classes' => [Locale::class]]);
             $this->pageRenderer->updateState($pageRendererState);
@@ -1268,10 +1261,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function applyHttpHeadersToResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $response = $response->withHeader('Content-Type', $this->contentType);
-        // Set header for content language unless disabled
-        $contentLanguage = (string)$this->language->getLocale();
         if (empty($this->config['config']['disableLanguageHeader'])) {
-            $response = $response->withHeader('Content-Language', $contentLanguage);
+            // Set header for content language unless disabled
+            // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
+            $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
+            $response = $response->withHeader('Content-Language', (string)$language->getLocale());
         }
 
         // Add a Response header to show debug information if a page was fetched from cache
@@ -1527,12 +1521,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $input Key string. Accepts the "LLL:" prefix.
      * @return string Label value, if any.
+     * @todo: deprecate
      */
     public function sL(string $input): string
     {
-        if ($this->languageService === null) {
-            $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($this->language);
-        }
         return $this->languageService->sL($input);
     }
 
@@ -1584,21 +1576,5 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
-    /**
-     * @internal
-     */
-    public function getLanguage(): SiteLanguage
-    {
-        return $this->language;
-    }
-
-    /**
-     * @internal
-     */
-    public function getSite(): Site
-    {
-        return $this->site;
     }
 }
