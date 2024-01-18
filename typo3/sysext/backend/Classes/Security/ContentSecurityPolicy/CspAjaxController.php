@@ -21,7 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Uid\UuidV4;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * AJAX endpoint for the CSP backend module, providing access to persisted CSP reports & resolutions.
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[Controller]
+#[AsController]
 class CspAjaxController
 {
     public function __construct(

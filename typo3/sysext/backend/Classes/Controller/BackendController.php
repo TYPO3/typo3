@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
 use TYPO3\CMS\Backend\Module\MenuModule;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
@@ -55,7 +55,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
  * Class for rendering the TYPO3 backend.
  * This is the backend outer main frame with topbar and module menu.
  */
-#[Controller]
+#[AsController]
 class BackendController
 {
     use PageRendererBackendSetupTrait;

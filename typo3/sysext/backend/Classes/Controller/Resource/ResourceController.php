@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller\Resource;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @internal
  */
-#[Controller]
+#[AsController]
 final class ResourceController
 {
     public function __construct(

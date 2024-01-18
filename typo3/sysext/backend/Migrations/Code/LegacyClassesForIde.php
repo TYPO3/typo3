@@ -19,10 +19,6 @@ namespace {
     die('Access denied');
 }
 
-namespace TYPO3\CMS\Backend\Attribute {
-    class Controller extends \TYPO3\CMS\Backend\Attribute\AsController {}
-}
-
 namespace TYPO3\CMS\Backend\Form\Element {
     /**
      * @deprecated since TYPO3 v12, will be removed in TYPO3 v13

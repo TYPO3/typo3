@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Form\Container\FileReferenceContainer;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Handle FormEngine files ajax calls
  */
-#[Controller]
+#[AsController]
 class FormFilesAjaxController extends AbstractFormEngineAjaxController
 {
     private const FILE_REFERENCE_TABLE = 'sys_file_reference';

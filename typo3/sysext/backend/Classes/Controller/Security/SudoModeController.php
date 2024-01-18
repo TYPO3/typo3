@@ -22,7 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessClaim;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
@@ -43,7 +43,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-#[Controller]
+#[AsController]
 final class SudoModeController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

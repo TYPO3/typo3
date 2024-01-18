@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\Controller;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserRegistry;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
  * Script class for the Element Browser window.
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-#[Controller]
+#[AsController]
 class ElementBrowserController
 {
     /**
