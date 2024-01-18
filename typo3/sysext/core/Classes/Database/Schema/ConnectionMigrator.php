@@ -51,41 +51,27 @@ class ConnectionMigrator
     protected $deletedPrefix = 'zzz_deleted_';
 
     /**
-     * @var Typo3Connection
-     */
-    protected $connection;
-
-    /**
-     * @var string
-     */
-    protected $connectionName;
-
-    /**
-     * @var Table[]
-     */
-    protected $tables;
-
-    /**
      * @param Table[] $tables
      */
-    public function __construct(string $connectionName, array $tables)
-    {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $this->connection = $connectionPool->getConnectionByName($connectionName);
-        $this->connectionName = $connectionName;
-        $this->tables = $tables;
-    }
+    public function __construct(
+        private readonly string $connectionName,
+        private readonly Typo3Connection $connection,
+        private array $tables,
+    ) {}
 
     /**
-     * @param Table[] $tables
+     * @param non-empty-string  $connectionName
+     * @param Typo3Connection   $connection
+     * @param Table[]           $tables
      * @return ConnectionMigrator
      */
-    public static function create(string $connectionName, array $tables)
+    public static function create(string $connectionName, Typo3Connection $connection, array $tables)
     {
         return GeneralUtility::makeInstance(
             static::class,
             $connectionName,
-            $tables
+            $connection,
+            $tables,
         );
     }
 

@@ -50,8 +50,7 @@ final class ConnectionMigratorTest extends UnitTestCase
 
         $this->maxIdentifierLength = PlatformInformation::getMaxIdentifierLength($this->platform);
 
-        $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, [], '', false);
-        $this->subject->_set('connection', $connectionMock);
+        $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, ['Default', $connectionMock, []]);
     }
 
     /**

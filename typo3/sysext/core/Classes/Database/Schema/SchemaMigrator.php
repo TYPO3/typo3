@@ -61,11 +61,9 @@ class SchemaMigrator
         $tables = $this->parseCreateTableStatements($statements);
         $updateSuggestions = [];
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
-            $this->adoptDoctrineAutoincrementDetectionForSqlite($tables, $this->connectionPool->getConnectionByName($connectionName));
-            $connectionMigrator = ConnectionMigrator::create(
-                $connectionName,
-                $tables
-            );
+            $connection = $this->connectionPool->getConnectionByName($connectionName);
+            $this->adoptDoctrineAutoincrementDetectionForSqlite($tables, $connection);
+            $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
             $updateSuggestions[$connectionName] = $connectionMigrator->getUpdateSuggestions($remove);
         }
         return $updateSuggestions;
@@ -87,10 +85,8 @@ class SchemaMigrator
         $tables = $this->parseCreateTableStatements($statements);
         $schemaDiffs = [];
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
-            $connectionMigrator = ConnectionMigrator::create(
-                $connectionName,
-                $tables
-            );
+            $connection = $this->connectionPool->getConnectionByName($connectionName);
+            $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
             $schemaDiffs[$connectionName] = $connectionMigrator->getSchemaDiff();
         }
         return $schemaDiffs;
@@ -157,11 +153,8 @@ class SchemaMigrator
         $result = [];
 
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
-            $connectionMigrator = ConnectionMigrator::create(
-                $connectionName,
-                $tables
-            );
-
+            $connection = $this->connectionPool->getConnectionByName($connectionName);
+            $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
             $lastResult = $connectionMigrator->install($createOnly);
             $result = array_merge($result, $lastResult);
         }
