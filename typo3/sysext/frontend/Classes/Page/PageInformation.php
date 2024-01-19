@@ -69,7 +69,36 @@ final class PageInformation
      *
      * @var array<int, array<string, mixed>>
      */
-    private array $rootLine = [];
+    private array $rootLine;
+
+    /**
+     * This is the "local" rootline of a deep page that stops at the first parent
+     * sys_template record that has "root" flag set, in natural parent-child order.
+     *
+     * Both language and version overlays are applied to these page records:
+     * All "data" fields are set to language / version overlay values, *except* uid and
+     * pid, which are the default-language and live-version ids.
+     *
+     * When page uid 5 is called in this example:
+     * [0] Project name
+     * |- [2] An organizational page, probably with is_siteroot=1 and a site config
+     *    |- [3] Site root with a sys_template having "root" flag set
+     *       |- [5] Here you are
+     *
+     * This rootLine is:
+     * [0] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
+     * [1] => [uid = 5, pid = 3, title = Here you are, ...]
+     *
+     * @var array<int, array<string, mixed>>
+     */
+    private array $localRootLine;
+
+    /**
+     * List of all sys_template rows attached to rootLine pages.
+     *
+     * @var array<int, array<string, mixed>>
+     */
+    private array $sysTemplateRows;
 
     /**
      * @internal Only to be set by core
@@ -124,6 +153,35 @@ final class PageInformation
     public function getRootLine(): array
     {
         return $this->rootLine;
+    }
+
+    /**
+     * @internal Only to be set by core
+     */
+    public function setLocalRootLine(array $localRootLine): void
+    {
+        $this->localRootLine = $localRootLine;
+    }
+
+    public function getLocalRootLine(): array
+    {
+        return $this->localRootLine;
+    }
+
+    /**
+     * @internal Only to be set by core
+     */
+    public function setSysTemplateRows(array $sysTemplateRows): void
+    {
+        $this->sysTemplateRows = $sysTemplateRows;
+    }
+
+    /**
+     * @internal Only to be read by core
+     */
+    public function getSysTemplateRows(): array
+    {
+        return $this->sysTemplateRows;
     }
 
     /**

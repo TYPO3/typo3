@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -65,6 +66,7 @@ final readonly class PageInformationFactory
         private LoggerInterface $logger,
         private RecordAccessVoter $accessVoter,
         private ErrorController $errorController,
+        private SysTemplateRepository $sysTemplateRepository,
     ) {}
 
     /**
@@ -111,8 +113,10 @@ final readonly class PageInformationFactory
         if ($event->getResponse()) {
             throw new PageInformationCreationFailedException($event->getResponse(), 1705420010);
         }
+        $pageInformation = $event->getPageInformation();
 
-        return $event->getPageInformation();
+        $pageInformation = $this->setSysTemplateRows($request, $pageInformation);
+        return $this->setLocalRootLine($pageInformation);
     }
 
     /**
@@ -514,6 +518,56 @@ final readonly class PageInformationFactory
             );
             throw new PageInformationCreationFailedException($response, 1705422293);
         }
+    }
+
+    /**
+     * Determine relevant sys_template rows and set to PageInformation object.
+     *
+     * @todo: Even though all rootline sys_template records are fetched with only one query
+     *        in below implementation, we could potentially join or sub select sys_template
+     *        records already when pages rootline is queried. This will save one query.
+     *        This could be done when we manage to switch PageRepository / RootlineUtility to a CTE.
+     * @throws PageInformationCreationFailedException
+     * @throws StatusException
+     */
+    protected function setSysTemplateRows(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
+    {
+        $rootLine = $pageInformation->getRootLine();
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
+        if (empty($sysTemplateRows)) {
+            // Early exception if there is no sys_template at all.
+            $message = 'No TypoScript record found!';
+            $this->logger->error($message);
+            $response = $this->errorController->internalErrorAction(
+                $request,
+                $message,
+                ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
+            );
+            throw new PageInformationCreationFailedException($response, 1705656657);
+        }
+        $pageInformation->setSysTemplateRows($sysTemplateRows);
+        return $pageInformation;
+    }
+
+    /**
+     * Calculate "local" rootLine that stops at first root=1 template.
+     */
+    protected function setLocalRootLine(PageInformation $pageInformation): PageInformation
+    {
+        $sysTemplateRows = $pageInformation->getSysTemplateRows();
+        $rootLine = $pageInformation->getRootLine();
+        $sysTemplateRowsIndexedByPid = array_combine(array_column($sysTemplateRows, 'pid'), $sysTemplateRows);
+        $localRootline = [];
+        foreach ($rootLine as $rootlinePage) {
+            array_unshift($localRootline, $rootlinePage);
+            if ((int)($rootlinePage['uid'] ?? 0) > 0
+                && (int)($sysTemplateRowsIndexedByPid[$rootlinePage['uid']]['root'] ?? 0) === 1
+            ) {
+                break;
+            }
+        }
+        $pageInformation->setLocalRootLine($localRootline);
+        return $pageInformation;
     }
 
     /**

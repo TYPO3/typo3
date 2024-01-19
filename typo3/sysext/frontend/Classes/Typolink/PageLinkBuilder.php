@@ -606,8 +606,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         } catch (RootLineException) {
             $tCR_rootline = [];
         }
-        $tsfe = $this->getTypoScriptFrontendController();
-        $inverseLocalRootLine = array_reverse($tsfe->config['rootLine'] ?? []);
+        $localRootLine = $request->getAttribute('frontend.page.information')?->getLocalRootLine() ?? [];
+        $inverseLocalRootLine = array_reverse($localRootLine);
         $rl_mpArray = [];
         $startMPaccu = false;
         // Traverse root line of link uid and inside of that the REAL root line of current position.
@@ -683,11 +683,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         $rootPoints = GeneralUtility::trimExplode(',', strtolower($mapRootPointList), true);
+        $pageInformation = $this->contentObjectRenderer->getRequest()->getAttribute('frontend.page.information');
         // Traverse rootpoints
         foreach ($rootPoints as $p) {
             $initMParray = [];
             if ($p === 'root') {
-                $rootPage = $this->getTypoScriptFrontendController()->config['rootLine'][0];
+                $rootPage = $pageInformation->getLocalRootLine()[0];
                 $p = $rootPage['uid'];
                 if (($rootPage['_MOUNT_OL'] ?? false) && ($rootPage['_MP_PARAM'] ?? false)) {
                     $initMParray[] = $rootPage['_MP_PARAM'];

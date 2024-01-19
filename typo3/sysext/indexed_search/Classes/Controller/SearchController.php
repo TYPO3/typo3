@@ -225,7 +225,8 @@ class SearchController extends ActionController
         }
         // This is the id of the site root.
         // This value may be a commalist of integer (prepared for this)
-        $this->searchRootPageIdList = (int)$GLOBALS['TSFE']->config['rootLine'][0]['uid'];
+        $localRootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
+        $this->searchRootPageIdList = (int)$localRootLine[0]['uid'];
         // Setting the list of root PIDs for the search. Notice, these page IDs MUST
         // have a TypoScript with root flag on them! Basically this list is used
         // to select on the "rl0" field and page ids are registered as "rl0" only if
@@ -1320,7 +1321,8 @@ class SearchController extends ActionController
                             }
                         }
                         // Stop, if we find that the current id is the current root page.
-                        if ($v['uid'] == $GLOBALS['TSFE']->config['rootLine'][0]['uid']) {
+                        $localRootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
+                        if ($v['uid'] == $localRootLine[0]['uid']) {
                             array_pop($breadcrumbWraps);
                             break;
                         }

@@ -246,7 +246,8 @@ class ImageContentObject extends AbstractContentObject
     {
         $wrapArr = explode('|', $wrap);
         if (preg_match('/\\{([0-9]*)\\}/', $wrapArr[0], $reg)) {
-            $uid = $this->getTypoScriptFrontendController()->config['rootLine'][$reg[1]]['uid'] ?? null;
+            $localRootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
+            $uid = $localRootLine[$reg[1]]['uid'] ?? null;
             if ($uid) {
                 $wrapArr[0] = str_replace($reg[0], $uid, $wrapArr[0]);
             }

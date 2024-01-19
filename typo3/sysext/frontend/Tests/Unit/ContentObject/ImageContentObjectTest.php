@@ -37,6 +37,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent;
 use TYPO3\CMS\Frontend\ContentObject\ImageContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -546,7 +547,10 @@ final class ImageContentObjectTest extends UnitTestCase
      */
     public function linkWrap(string $expected, string $content, $wrap): void
     {
-        $GLOBALS['TSFE']->config = ['rootLine' => [3 => ['uid' => 55]]];
+        $pageInformation = new PageInformation();
+        $pageInformation->setLocalRootLine([3 => ['uid' => 55]]);
+        $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
         $actual = $this->subject->_call('linkWrap', $content, $wrap);
         self::assertEquals($expected, $actual);
     }

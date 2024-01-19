@@ -3848,47 +3848,49 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->getGlobal($key);
                         break;
                     case 'level':
-                        $tsfe = $this->getTypoScriptFrontendController();
-                        $retVal = count($tsfe->config['rootLine'] ?? []) - 1;
+                        $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
+                        $retVal = count($localRootLine) - 1;
                         break;
                     case 'leveltitle':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $pointer = (int)($keyParts[0] ?? 0);
-                        $slide = (string)($keyParts[1] ?? '');
-                        $tsfe = $this->getTypoScriptFrontendController();
-                        $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
+                        $slide = $keyParts[1] ?? '';
+                        $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
+                        $numericKey = $this->getKey($pointer, $localRootLine);
                         $retVal = $this->rootLineValue($numericKey, 'title', strtolower($slide) === 'slide');
                         break;
                     case 'levelmedia':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $pointer = (int)($keyParts[0] ?? 0);
-                        $slide = (string)($keyParts[1] ?? '');
-                        $tsfe = $this->getTypoScriptFrontendController();
-                        $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
+                        $slide = $keyParts[1] ?? '';
+                        $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
+                        $numericKey = $this->getKey($pointer, $localRootLine);
                         $retVal = $this->rootLineValue($numericKey, 'media', strtolower($slide) === 'slide');
                         break;
                     case 'leveluid':
-                        $tsfe = $this->getTypoScriptFrontendController();
-                        $numericKey = $this->getKey((int)$key, $tsfe->config['rootLine'] ?? []);
+                        $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
+                        $numericKey = $this->getKey((int)$key, $localRootLine);
                         $retVal = $this->rootLineValue($numericKey, 'uid');
                         break;
                     case 'levelfield':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $pointer = (int)($keyParts[0] ?? 0);
-                        $field = (string)($keyParts[1] ?? '');
-                        $slide = (string)($keyParts[2] ?? '');
+                        $field = $keyParts[1] ?? '';
+                        $slide = $keyParts[2] ?? '';
                         $tsfe = $this->getTypoScriptFrontendController();
-                        $numericKey = $this->getKey($pointer, $tsfe->config['rootLine'] ?? []);
+                        $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
+                        $numericKey = $this->getKey($pointer, $localRootLine);
                         $retVal = $this->rootLineValue($numericKey, $field, strtolower($slide) === 'slide');
                         break;
                     case 'fullrootline':
                         $keyParts = GeneralUtility::trimExplode(',', $key);
                         $pointer = (int)($keyParts[0] ?? 0);
-                        $field = (string)($keyParts[1] ?? '');
-                        $slide = (string)($keyParts[2] ?? '');
+                        $field = $keyParts[1] ?? '';
+                        $slide = $keyParts[2] ?? '';
                         $tsfe = $this->getTypoScriptFrontendController();
                         $rootLine = $this->getRequest()->getAttribute('frontend.page.information')->getRootLine();
-                        $fullKey = $pointer - count($tsfe->config['rootLine'] ?? []) + count($rootLine);
+                        $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
+                        $fullKey = $pointer - count($localRootLine) + count($rootLine);
                         if ($fullKey >= 0) {
                             $retVal = $this->rootLineValue($fullKey, $field, stristr($slide, 'slide') !== false, $rootLine);
                         }
@@ -3931,7 +3933,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'path':
                         try {
                             $retVal = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($key);
-                        } catch (Exception $e) {
+                        } catch (Exception) {
                             // do nothing in case the file path is invalid
                             $retVal = null;
                         }
@@ -3946,8 +3948,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'debug':
                         switch ($key) {
                             case 'rootLine':
-                                $tsfe = $this->getTypoScriptFrontendController();
-                                $retVal = DebugUtility::viewArray($tsfe->config['rootLine'] ?? []);
+                                $retVal = DebugUtility::viewArray($this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine());
                                 break;
                             case 'fullRootLine':
                                 $retVal = DebugUtility::viewArray($this->getRequest()->getAttribute('frontend.page.information')->getRootLine());
@@ -4139,7 +4140,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Returns a value from the current rootline (site) from $GLOBALS['TSFE']->config['rootLine'];
+     * Returns a value from the current rootline.
      *
      * @param int $key Which level in the root line
      * @param string $field The field in the rootline record to return (a field from the pages table)
@@ -4149,9 +4150,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @internal
      * @see getData()
      */
-    public function rootLineValue($key, $field, $slideBack = false, $altRootLine = '')
+    protected function rootLineValue($key, $field, $slideBack = false, $altRootLine = ''): string
     {
-        $rootLine = is_array($altRootLine) ? $altRootLine : ($this->getTypoScriptFrontendController()->config['rootLine'] ?? []);
+        if (is_array($altRootLine)) {
+            $rootLine = $altRootLine;
+        } else {
+            $rootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
+        }
         if (!$slideBack) {
             return $rootLine[$key][$field] ?? '';
         }
@@ -4161,7 +4166,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 return $val;
             }
         }
-
         return '';
     }
 

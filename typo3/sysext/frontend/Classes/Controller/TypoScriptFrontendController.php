@@ -45,7 +45,6 @@ use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
@@ -125,27 +124,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * for instance a list of INT identifiers used to calculate 'dynamic' page
      * parts when a page is retrieved from cache.
      *
-     * Some sub keys:
-     *
      * 'config': This is the TypoScript ['config.'] sub-array, with some
      *           settings being sanitized and merged.
-     *
-     * 'rootLine': This is the "local" rootline of a deep page that stops at the first parent
-     *             sys_template record that has "root" flag set, in natural parent-child order.
-     *
-     *             Both language and version overlays are applied to these page records:
-     *             All "data" fields are set to language / version overlay values, *except* uid and
-     *             pid, which are the default-language and live-version ids.
-     *
-     *             When page uid 5 is called in this example:
-     *             [0] Project name
-     *             |- [2] An organizational page, probably with is_siteroot=1 and a site config
-     *                |- [3] Site root with a sys_template having "root" flag set
-     *                   |- [5] Here you are
-     *
-     *             This rootLine is:
-     *             [0] => [uid = 3, pid = 2, title = Site root with a sys_template having "root" flag set, ...]
-     *             [1] => [uid = 5, pid = 3, title = Here you are, ...]
      *
      * 'INTincScript': (internal) List of INT instructions
      * 'INTincScript_ext': (internal) Further state for INT instructions
@@ -373,58 +353,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function getFromCache(ServerRequestInterface $request): ServerRequestInterface
     {
-        // Reset some state.
-        // @todo: Find out which resets are really needed here - Since this is called from a
-        //        relatively early middleware, we can expect these properties to be not set already?!
-        $this->content = '';
-        $this->config = [];
-        $this->pageContentWasLoadedFromCache = false;
-
         $pageInformation = $request->getAttribute('frontend.page.information');
         $rootLine = $pageInformation->getRootLine();
-
-        // Very first thing, *always* executed: TypoScript is one factor that influences page content.
-        // There can be multiple cache entries per page, when TypoScript conditions on the same page
-        // create different TypoScript. We thus need the sys_template rows relevant for this page.
-        // @todo: Even though all rootline sys_template records are fetched with only one query
-        //        in below implementation, we could potentially join or sub select sys_template
-        //        records already when pages rootline is queried. This will save one query
-        //        and needs an implementation in PageInformationFactory. This could be done when
-        //        it switches to a CTE query instead of using RootlineUtility.
-        $sysTemplateRepository = GeneralUtility::makeInstance(SysTemplateRepository::class);
-        $sysTemplateRows = $sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
-        // Needed for cache calculations. Put into a variable here to not serialize multiple times.
+        $localRootline = $pageInformation->getLocalRootLine();
+        $sysTemplateRows = $pageInformation->getSysTemplateRows();
         $serializedSysTemplateRows = serialize($sysTemplateRows);
-
-        // Early exception if there is no sys_template at all.
-        if (empty($sysTemplateRows)) {
-            $message = 'No TypoScript record found!';
-            $this->logger->alert($message);
-            try {
-                $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
-                    $request,
-                    $message,
-                    ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
-                );
-                throw new PropagateResponseException($response, 1533931380);
-            } catch (AbstractServerErrorException $e) {
-                $exceptionClass = get_class($e);
-                throw new $exceptionClass($message, 1294587218);
-            }
-        }
-
-        // Calculate "local" rootLine that stops at first root=1 template, will be set as $this->config['rootLine']
-        $sysTemplateRowsIndexedByPid = array_combine(array_column($sysTemplateRows, 'pid'), $sysTemplateRows);
-        $localRootline = [];
-        foreach ($rootLine as $rootlinePage) {
-            array_unshift($localRootline, $rootlinePage);
-            if ((int)($rootlinePage['uid'] ?? 0) > 0
-                && (int)($sysTemplateRowsIndexedByPid[$rootlinePage['uid']]['root'] ?? 0) === 1
-            ) {
-                break;
-            }
-        }
-
         $site = $request->getAttribute('site');
         $isCachingAllowed = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
 
@@ -629,7 +562,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->lock->acquireLock('pages', $this->newHash);
         }
 
-        if (!$isCachingAllowed || empty($this->config) || $this->isINTincScript()) {
+        if (!$isCachingAllowed || empty($this->config['config'] ?? []) || $this->isINTincScript()) {
             // We don't need the full setup AST in many cached scenarios. However, if caching is not allowed, if no page
             // cache entry could be loaded or if the page cache entry has _INT object, then we still need the full setup AST.
             // If there is "just" an _INT object, we can use a possible cache entry for the setup AST, which speeds up _INT
@@ -734,7 +667,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (is_array($typoScriptPageTypeSetup['config.'] ?? null)) {
                 $this->config['config'] = array_replace_recursive($this->config['config'], $typoScriptPageTypeSetup['config.']);
             }
-            $this->config['rootLine'] = $localRootline;
             $frontendTypoScript->setSetupArray($setupArray);
         }
 
@@ -772,8 +704,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
+        // Preserve localRootLine, which is not cached.
+        $backupLocalRootLine = $this->config['rootLine'];
         // Fetches the lowlevel config stored with the cached data
         $this->config = $cachedData['cache_data'];
+        $this->config['rootLine'] = $backupLocalRootLine;
         // Getting the content
         $this->content = $cachedData['content'];
         // Getting the content type
@@ -1005,7 +940,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // Seconds until a cached page is too old
             $cacheTimeout = $this->get_cache_timeout($request);
             $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
-            // Write the page to cache
+            // Write the page to cache, but do not cache localRootLine since that is always determined
+            // and coming from PageInformation->getLocalRootLine().
+            $data = $this->config;
+            unset($data['rootLine']);
             $cachedInformation = $this->setPageCacheContent($request, $this->content, $this->config, $timeOutTime);
 
             // Event for cache post processing (eg. writing static files)

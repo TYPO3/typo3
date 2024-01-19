@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
@@ -72,7 +74,8 @@ final class RedirectServiceTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 $this->createMock(Logger::class),
                 new RecordAccessVoter(new NoopEventDispatcher()),
-                new ErrorController()
+                new ErrorController(),
+                new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
             )
         );
         $this->redirectService->setLogger($logger);
@@ -659,7 +662,8 @@ final class RedirectServiceTest extends UnitTestCase
                     new NoopEventDispatcher(),
                     $this->createMock(Logger::class),
                     new RecordAccessVoter(new NoopEventDispatcher()),
-                    new ErrorController()
+                    new ErrorController(),
+                    new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
                 ),
             ],
             '',

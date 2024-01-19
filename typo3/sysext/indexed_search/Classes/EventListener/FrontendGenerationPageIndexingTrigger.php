@@ -123,7 +123,8 @@ class FrontendGenerationPageIndexingTrigger
         ];
 
         // Root line uids
-        foreach ($tsfe->config['rootLine'] as $rlkey => $rldat) {
+        $localRootLine = $pageInformation->getLocalRootLine();
+        foreach ($localRootLine as $rlkey => $rldat) {
             $configuration['rootline_uids'][$rlkey] = $rldat['uid'];
         }
         // Content of page

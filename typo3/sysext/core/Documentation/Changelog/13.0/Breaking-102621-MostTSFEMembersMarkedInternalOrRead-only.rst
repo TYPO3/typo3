@@ -55,6 +55,7 @@ The following public class properties have been marked "read only":
 * :php:`TypoScriptFrontendController->config` - Reading :php:`$tsfe->config['config']` and :php:`$tsfe->config['rootLine']` is allowed
 * :php:`TypoScriptFrontendController->absRefPrefix`
 * :php:`TypoScriptFrontendController->cObj`
+* :php:`TypoScriptFrontendController->config['rootLine']` - Use :php:`$request->getAttribute('frontend.page.information')->getLocalRootLine()` instead
 
 The following public class properties have been marked :php:`@internal` - in general
 all properties not listed above:

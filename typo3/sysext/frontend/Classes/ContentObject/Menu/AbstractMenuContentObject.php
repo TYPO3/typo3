@@ -194,7 +194,7 @@ abstract class AbstractMenuContentObject
      * The initialization of the object. This just sets some internal variables.
      *
      * @param null $_ Obsolete argument
-     * @param PageRepository $sys_page The $this->getTypoScriptFrontendController()->sys_page object
+     * @param PageRepository $sys_page
      * @param int|string $id A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
      * @param array $conf The TypoScript configuration for the HMENU cObject
      * @param int $menuNumber Menu number; 1,2,3. Should probably be 1
@@ -210,7 +210,7 @@ abstract class AbstractMenuContentObject
         $this->request = $request;
         // Sets the internal vars. $sys_page MUST be the PageRepository object
         if ($this->conf[$this->menuNumber . $objSuffix] && is_object($sys_page)) {
-            $tsfe = $this->getTypoScriptFrontendController();
+            $localRootLine = $request->getAttribute('frontend.page.information')->getLocalRootLine();
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
             $this->conf['alwaysActivePIDlist'] = (string)$this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf);
@@ -226,7 +226,7 @@ abstract class AbstractMenuContentObject
             // EntryLevel
             $this->entryLevel = $this->parent_cObj->getKey(
                 $this->parent_cObj->stdWrapValue('entryLevel', $this->conf),
-                $tsfe->config['rootLine'] ?? []
+                $localRootLine
             );
             // Set parent page: If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
             // Called as the next level in a menu. It is assumed that $this->MP_array is set from parent menu.
@@ -234,11 +234,11 @@ abstract class AbstractMenuContentObject
                 $this->id = (int)$id;
             } else {
                 // This is a BRAND NEW menu, first level. So we take ID from rootline and also find MP_array (mount points)
-                $this->id = (int)($tsfe->config['rootLine'][$this->entryLevel]['uid'] ?? 0);
+                $this->id = (int)($localRootLine[$this->entryLevel]['uid'] ?? 0);
 
                 // Traverse rootline to build MP_array of pages BEFORE the entryLevel
                 // (MP var for ->id is picked up in the next part of the code...)
-                foreach (($tsfe->config['rootLine'] ?? []) as $entryLevel => $levelRec) {
+                foreach ($localRootLine as $entryLevel => $levelRec) {
                     // For overlaid mount points, set the variable right now:
                     if (($levelRec['_MP_PARAM'] ?? false) && ($levelRec['_MOUNT_OL'] ?? false)) {
                         $this->MP_array[] = $levelRec['_MP_PARAM'];
@@ -271,7 +271,7 @@ abstract class AbstractMenuContentObject
             if ($this->rL_uidRegister === null) {
                 $this->rL_uidRegister = [];
                 $rl_MParray = [];
-                foreach (($tsfe->config['rootLine'] ?? []) as $v_rl) {
+                foreach ($localRootLine as $v_rl) {
                     // For overlaid mount points, set the variable right now:
                     if (($v_rl['_MP_PARAM'] ?? false) && ($v_rl['_MOUNT_OL'] ?? false)) {
                         $rl_MParray[] = $v_rl['_MP_PARAM'];
@@ -297,27 +297,27 @@ abstract class AbstractMenuContentObject
                 if ($value === '') {
                     $value = $this->request->getAttribute('frontend.page.information')->getId();
                 }
-                $directoryLevel = $this->getRootlineLevel($tsfe->config['rootLine'], (string)$value);
+                $directoryLevel = $this->getRootlineLevel($localRootLine, (string)$value);
             }
             // Setting "nextActive": This is the page uid + MPvar of the NEXT page in rootline. Used to expand the menu if we are in the right branch of the tree
             // Notice: The automatic expansion of a menu is designed to work only when no "special" modes (except "directory") are used.
             $startLevel = $directoryLevel ?: $this->entryLevel;
             $currentLevel = $startLevel + $this->menuNumber;
-            if (is_array($tsfe->config['rootLine'][$currentLevel] ?? null)) {
+            if (is_array($localRootLine[$currentLevel] ?? null)) {
                 $nextMParray = $this->MP_array;
-                if (empty($nextMParray) && !($tsfe->config['rootLine'][$currentLevel]['_MOUNT_OL'] ?? false) && $currentLevel > 0) {
+                if (empty($nextMParray) && !($localRootLine[$currentLevel]['_MOUNT_OL'] ?? false) && $currentLevel > 0) {
                     // Make sure to slide-down any mount point information (_MP_PARAM) to children records in the rootline
                     // otherwise automatic expansion will not work
-                    $parentRecord = $tsfe->config['rootLine'][$currentLevel - 1] ?? [];
+                    $parentRecord = $localRootLine[$currentLevel - 1] ?? [];
                     if (isset($parentRecord['_MP_PARAM'])) {
                         $nextMParray[] = $parentRecord['_MP_PARAM'];
                     }
                 }
                 // In overlay mode, add next level MPvars as well:
-                if ($tsfe->config['rootLine'][$currentLevel]['_MOUNT_OL'] ?? false) {
-                    $nextMParray[] = $tsfe->config['rootLine'][$currentLevel]['_MP_PARAM'] ?? [];
+                if ($localRootLine[$currentLevel]['_MOUNT_OL'] ?? false) {
+                    $nextMParray[] = $localRootLine[$currentLevel]['_MP_PARAM'] ?? [];
                 }
-                $this->nextActive = ($tsfe->config['rootLine'][$currentLevel]['uid']  ?? 0) .
+                $this->nextActive = ($localRootLine[$currentLevel]['uid']  ?? 0) .
                     (
                         !empty($nextMParray)
                         ? ':' . implode(',', $nextMParray)
@@ -737,7 +737,6 @@ abstract class AbstractMenuContentObject
      */
     protected function prepareMenuItemsForUpdatedMenu($specialValue, $sortingField)
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         if ($specialValue == '') {
             $specialValue = $this->request->getAttribute('frontend.page.information')->getId();
@@ -802,7 +801,6 @@ abstract class AbstractMenuContentObject
      */
     protected function prepareMenuItemsForKeywordsMenu($specialValue, $sortingField)
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
@@ -829,11 +827,12 @@ abstract class AbstractMenuContentObject
         // Max number of items
         $limit = MathUtility::forceIntegerInRange(($this->conf['special.']['limit'] ?? 0), 0, 100);
         // Start point
+        $localRootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
         $eLevel = $this->parent_cObj->getKey(
             $this->parent_cObj->stdWrapValue('entryLevel', $this->conf['special.'] ?? []),
-            $tsfe->config['rootLine'] ?? []
+            $localRootLine
         );
-        $startUid = (int)($tsfe->config['rootLine'][$eLevel]['uid'] ?? 0);
+        $startUid = (int)($localRootLine[$eLevel]['uid'] ?? 0);
         // Which field is for keywords
         $kfield = 'keywords';
         if ($this->conf['special.']['keywordsField'] ?? false) {
@@ -919,7 +918,6 @@ abstract class AbstractMenuContentObject
      */
     protected function prepareMenuItemsForRootlineMenu()
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         $range = (string)$this->parent_cObj->stdWrapValue('range', $this->conf['special.'] ?? []);
         $begin_end = explode('|', $range);
@@ -927,13 +925,14 @@ abstract class AbstractMenuContentObject
         if (!MathUtility::canBeInterpretedAsInteger($begin_end[1] ?? '')) {
             $begin_end[1] = -1;
         }
-        $beginKey = $this->parent_cObj->getKey($begin_end[0], $tsfe->config['rootLine'] ?? []);
-        $endKey = $this->parent_cObj->getKey($begin_end[1], $tsfe->config['rootLine'] ?? []);
+        $localRootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
+        $beginKey = $this->parent_cObj->getKey($begin_end[0], $localRootLine ?? []);
+        $endKey = $this->parent_cObj->getKey($begin_end[1], $localRootLine ?? []);
         if ($endKey < $beginKey) {
             $endKey = $beginKey;
         }
         $rl_MParray = [];
-        foreach (($tsfe->config['rootLine'] ?? []) as $k_rl => $v_rl) {
+        foreach ($localRootLine as $k_rl => $v_rl) {
             // For overlaid mount points, set the variable right now:
             if (($v_rl['_MP_PARAM'] ?? false) && ($v_rl['_MOUNT_OL'] ?? false)) {
                 $rl_MParray[] = $v_rl['_MP_PARAM'];
@@ -979,9 +978,9 @@ abstract class AbstractMenuContentObject
         if (!$specialValue) {
             $specialValue = $this->request->getAttribute('frontend.page.information')->getPageRecord()['uid'];
         }
-        $tsfe = $this->getTypoScriptFrontendController();
+        $localRootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
         // Will not work out of rootline
-        if ($specialValue != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
+        if ($specialValue != ($localRootLine[0]['uid'] ?? null)) {
             $recArr = [];
             // The page record of the 'value'.
             $value_rec = $this->sys_page->getPage((int)$specialValue, $this->disableGroupAccessCheck);
@@ -991,7 +990,7 @@ abstract class AbstractMenuContentObject
                 $recArr['up'] = $this->sys_page->getPage((int)$value_rec['pid'], $this->disableGroupAccessCheck);
             }
             // If the 'up' item was NOT level 0 in rootline...
-            if (($recArr['up']['pid'] ?? 0) && $value_rec['pid'] != ($tsfe->config['rootLine'][0]['uid'] ?? null)) {
+            if (($recArr['up']['pid'] ?? 0) && $value_rec['pid'] != ($localRootLine[0]['uid'] ?? null)) {
                 // The page record of "index".
                 $recArr['index'] = $this->sys_page->getPage((int)$recArr['up']['pid']);
             }
