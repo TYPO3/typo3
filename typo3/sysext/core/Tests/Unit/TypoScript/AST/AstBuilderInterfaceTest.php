@@ -273,17 +273,22 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
         $expectedAst = new RootNode();
         $fooNode = new ChildNode('foo');
+        $expectedAst->addChild($fooNode);
+        $barNode = new ChildNode('bar');
+        $barNode->setValue('bar2');
+        $expectedAst->addChild($barNode);
         $keepNode = new ChildNode('keep');
         $keepNode->setValue('keep1');
         $expectedAst->addChild($keepNode);
-        $expectedAst->addChild($fooNode);
         yield 'nested unset removes nodes' => [
             "foo\n" .
             "foo.bar = bar1\n" .
+            "bar = bar2\n" .
             "keep = keep1\n" .
             'foo.bar >',
             $expectedAst,
             [
+                'bar' => 'bar2',
                 'keep' => 'keep1',
             ],
         ];
@@ -324,6 +329,94 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             [
                 'foo.' => [
                     'keep' => 'keep1',
+                ],
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $pageNode = new ChildNode('page');
+        $pageNode->setValue('PAGE');
+        $expectedAst->addChild($pageNode);
+        $coa10Node = new ChildNode('10');
+        $coa10Node->setValue('COA');
+        $pageNode->addChild($coa10Node);
+        $coa1010Node = new ChildNode('10');
+        $coa1010Node->setValue('TEXT');
+        $coa10Node->addChild($coa1010Node);
+        $coa1010ValueNode = new ChildNode('value');
+        $coa1010ValueNode->setValue('A');
+        $coa1010Node->addChild($coa1010ValueNode);
+        $coa1020Node = new ChildNode('20');
+        $coa1020Node->setValue('TEXT');
+        $coa10Node->addChild($coa1020Node);
+        $coa1020ValueNode = new ChildNode('value');
+        $coa1020ValueNode->setValue('B');
+        $coa1020Node->addChild($coa1020ValueNode);
+        $coa20Node = new ChildNode('20');
+        $coa20Node->setValue('COA');
+        $pageNode->addChild($coa20Node);
+        $coa2010Node = new ChildNode('10');
+        $coa2010Node->setValue('TEXT');
+        $coa20Node->addChild($coa2010Node);
+        $coa2010ValueNode = new ChildNode('value');
+        $coa2010ValueNode->setValue('1');
+        $coa2010Node->addChild($coa2010ValueNode);
+        $coa2020Node = new ChildNode('20');
+        $coa2020Node->setValue('TEXT');
+        $coa20Node->addChild($coa2020Node);
+        $coa2020ValueNode = new ChildNode('value');
+        $coa2020ValueNode->setValue('2');
+        $coa2020Node->addChild($coa2020ValueNode);
+        yield 'nested unset removes correct nodes with same name 3' => [
+            "page = PAGE\n" .
+            "page {\n" .
+            "  10 = COA\n" .
+            "  10 {\n" .
+            "    10 = TEXT\n" .
+            "    10.value = A\n" .
+            "    20 = TEXT\n" .
+            "    20.value = B\n" .
+            "    30 = TEXT\n" .
+            "    30.value = C\n" .
+            "  }\n" .
+            "  20 = COA\n" .
+            "  20 {\n" .
+            "    10 = TEXT\n" .
+            "    10.value = 1\n" .
+            "    20 = TEXT\n" .
+            "    20.value = 2\n" .
+            "    30 = TEXT\n" .
+            "    30.value = 3\n" .
+            "  }\n" .
+            "}\n" .
+            "page.10.30 >\n" .
+            "page.20.30 >\n",
+            $expectedAst,
+            [
+                'page' => 'PAGE',
+                'page.' => [
+                    '10' => 'COA',
+                    '10.' => [
+                        '10' => 'TEXT',
+                        '10.' => [
+                            'value' => 'A',
+                        ],
+                        '20' => 'TEXT',
+                        '20.' => [
+                            'value' => 'B',
+                        ],
+                    ],
+                    '20' => 'COA',
+                    '20.' => [
+                        '10' => 'TEXT',
+                        '10.' => [
+                            'value' => '1',
+                        ],
+                        '20' => 'TEXT',
+                        '20.' => [
+                            'value' => '2',
+                        ],
+                    ],
                 ],
             ],
         ];

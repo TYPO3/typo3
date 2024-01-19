@@ -49,18 +49,15 @@ abstract class AbstractAstBuilder
     {
         $node = $currentObjectPath->getFirst();
         $identifierStream = $line->getIdentifierTokenStream()->reset();
-        $previousIdentifierToken = $identifierStream->peekNext();
         while ($identifierToken = $identifierStream->getNext()) {
             if (!$foundNode = $node->getChildByName($identifierToken->getValue())) {
                 break;
             }
             $nextIdentifierToken = $identifierStream->peekNext();
             if ($nextIdentifierToken) {
-                $previousIdentifierToken = $identifierToken;
                 $node = $foundNode;
                 continue;
             }
-            $node->removeChildByName($previousIdentifierToken->getValue());
             $node->removeChildByName($identifierToken->getValue());
             break;
         }
