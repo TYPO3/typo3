@@ -393,6 +393,9 @@
 			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
 				<source>Selected workspace</source>
 			</trans-unit>
+			<trans-unit id="action.switchToWorkspace" resname="action.switchToWorkspace">
+				<source>Switch to workspace</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
