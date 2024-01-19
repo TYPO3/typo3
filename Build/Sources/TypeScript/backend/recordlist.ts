@@ -293,16 +293,18 @@ class Recordlist {
     document.querySelectorAll('.t3js-recordlist-paging').forEach((trigger: HTMLInputElement) => {
       trigger.addEventListener('keyup', (e: KeyboardEvent) => {
         e.preventDefault();
-        let value = parseInt(trigger.value, 10);
-        if (value < parseInt(trigger.min, 10)) {
-          value = parseInt(trigger.min, 10);
+        let value = Number(trigger.value);
+        const min = Number(trigger.min);
+        const max = Number(trigger.max);
+        if (min && value < min) {
+          value = min;
         }
-        if (value > parseInt(trigger.max, 10)) {
-          value = parseInt(trigger.max, 10);
+        if (max && value > max) {
+          value = max;
         }
         trigger.value = value.toString(10);
-        if (e.key === 'Enter' && value !== parseInt(trigger.dataset.currentpage, 10)) {
-          const form = trigger.closest('form[name="list-table-form-pages"]') as HTMLFormElement;
+        if (e.key === 'Enter' && value !== Number(trigger.dataset.currentpage)) {
+          const form = trigger.closest('form[name^="list-table-form-"]') as HTMLFormElement;
           const submitUrl = new URL(form.action, window.origin);
           submitUrl.searchParams.set('pointer', value.toString());
           window.location.href = submitUrl.toString();
