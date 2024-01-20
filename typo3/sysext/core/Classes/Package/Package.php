@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -29,65 +31,48 @@ class Package implements PackageInterface
     /**
      * If this package is part of factory default, it will be activated
      * during first installation.
-     *
-     * @var bool
      */
-    protected $partOfFactoryDefault = false;
+    protected bool $partOfFactoryDefault = false;
 
     /**
      * If this package is part of minimal usable system, it will be
      * activated if PackageStates is created from scratch.
-     *
-     * @var bool
      */
-    protected $partOfMinimalUsableSystem = false;
+    protected bool $partOfMinimalUsableSystem = false;
 
     /**
      * ServiceProvider class name. This property and the corresponding
      * composer.json setting is internal and therefore no api (yet).
      *
-     * @var string|null
      * @internal
      */
-    protected $serviceProvider;
+    protected ?string $serviceProvider;
 
     /**
      * Unique key of this package.
-     * @var string
      */
-    protected $packageKey;
+    protected string $packageKey;
 
     /**
      * Full path to this package's main directory
-     * @var string
      */
-    protected $packagePath;
+    protected string $packagePath;
 
-    /**
-     * @var bool
-     */
-    protected $isRelativePackagePath = false;
+    protected bool $isRelativePackagePath = false;
 
     /**
      * If this package is protected and therefore cannot be deactivated or deleted
-     * @var bool
      */
-    protected $protected = false;
+    protected bool $protected = false;
 
-    /**
-     * @var \stdClass
-     */
-    protected $composerManifest;
+    protected ?\stdClass $composerManifest;
 
     /**
      * Meta information about this package
-     * @var MetaData
      */
-    protected $packageMetaData;
+    protected MetaData $packageMetaData;
 
     /**
-     * Constructor
-     *
      * @param PackageManager $packageManager the package manager which knows this package
      * @param string $packageKey Key of this package
      * @param string $packagePath Absolute path to the location of the package's composer manifest
@@ -118,7 +103,7 @@ class Package implements PackageInterface
      * Loads package management related flags from the "extra:typo3/cms:Package" section
      * of extensions composer.json files into local properties
      */
-    protected function loadFlagsFromComposerManifest()
+    protected function loadFlagsFromComposerManifest(): void
     {
         $extraFlags = $this->getValueFromComposerManifest('extra');
         if ($extraFlags !== null && isset($extraFlags->{'typo3/cms'}->{'Package'})) {
@@ -133,7 +118,7 @@ class Package implements PackageInterface
     /**
      * Creates the package meta data object of this package.
      */
-    protected function createPackageMetaData(PackageManager $packageManager)
+    protected function createPackageMetaData(PackageManager $packageManager): void
     {
         $this->packageMetaData = new MetaData($this->getPackageKey());
         $description = (string)$this->getValueFromComposerManifest('description');
@@ -170,39 +155,33 @@ class Package implements PackageInterface
     }
 
     /**
-     * @return bool
      * @internal
      */
-    public function isPartOfFactoryDefault()
+    public function isPartOfFactoryDefault(): bool
     {
         return $this->partOfFactoryDefault;
     }
 
     /**
-     * @return bool
      * @internal
      */
-    public function isPartOfMinimalUsableSystem()
+    public function isPartOfMinimalUsableSystem(): bool
     {
         return $this->partOfMinimalUsableSystem;
     }
 
     /**
      * Returns the package key of this package.
-     *
-     * @return string
      */
-    public function getPackageKey()
+    public function getPackageKey(): string
     {
         return $this->packageKey;
     }
 
     /**
      * Tells if this package is protected and therefore cannot be deactivated or deleted
-     *
-     * @return bool
      */
-    public function isProtected()
+    public function isProtected(): bool
     {
         return $this->protected;
     }
@@ -212,7 +191,7 @@ class Package implements PackageInterface
      *
      * @param bool $protected TRUE if the package should be protected, otherwise FALSE
      */
-    public function setProtected($protected)
+    public function setProtected(bool $protected): void
     {
         $this->protected = (bool)$protected;
     }
@@ -222,7 +201,7 @@ class Package implements PackageInterface
      *
      * @return string Path to this package's main directory
      */
-    public function getPackagePath()
+    public function getPackagePath(): string
     {
         if (!$this->isRelativePackagePath) {
             return $this->packagePath;
@@ -246,21 +225,18 @@ class Package implements PackageInterface
     /**
      * Returns the package meta data object of this package.
      *
-     * @return MetaData
      * @internal
      */
-    public function getPackageMetaData()
+    public function getPackageMetaData(): MetaData
     {
         return $this->packageMetaData;
     }
 
     /**
      * Returns an array of packages this package replaces
-     *
-     * @return array
      * @internal
      */
-    public function getPackageReplacementKeys()
+    public function getPackageReplacementKeys(): array
     {
         // The cast to array is required since the manifest returns data with type mixed
         return (array)$this->getValueFromComposerManifest('replace') ?: [];
@@ -270,11 +246,10 @@ class Package implements PackageInterface
      * Returns contents of Composer manifest - or part there of if a key is given.
      *
      * @param string $key Optional. Only return the part of the manifest indexed by 'key'
-     * @return mixed|null
      * @see json_decode for return values
      * @internal
      */
-    public function getValueFromComposerManifest($key = null)
+    public function getValueFromComposerManifest($key = null): mixed
     {
         if ($key === null) {
             return $this->composerManifest;
@@ -286,5 +261,19 @@ class Package implements PackageInterface
             $value = null;
         }
         return $value;
+    }
+
+    /**
+     * Find package icon location relative to the package path
+     */
+    public function getPackageIcon(): ?string
+    {
+        $resourcePath = 'Resources/Public/Icons/Extension.';
+        foreach (['svg', 'png', 'gif'] as $fileExtension) {
+            if (file_exists($this->getPackagePath() . $resourcePath . $fileExtension)) {
+                return $resourcePath . $fileExtension;
+            }
+        }
+        return null;
     }
 }

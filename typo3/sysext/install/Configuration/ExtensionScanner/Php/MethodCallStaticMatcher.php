@@ -1599,4 +1599,11 @@ return [
             'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-102895-ExtensionManagementUtilitygetExtensionIcon.rst',
+        ],
+    ],
 ];

@@ -446,12 +446,9 @@ class NewRecordController
                                 if (!$groupTitle) {
                                     $groupTitle = $package->getPackageMetaData()->getTitle();
                                 }
-                                $extensionIcon = ExtensionManagementUtility::getExtensionIcon($package->getPackagePath());
+                                $extensionIcon = $package->getPackageIcon();
                                 if (!empty($extensionIcon)) {
-                                    $iconFile[$groupName] = '<img src="' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon(
-                                        $package->getPackagePath(),
-                                        true
-                                    )) . '" width="16" height="16" alt="' . $groupTitle . '" />';
+                                    $iconFile[$groupName] = '<img src="' . PathUtility::getAbsoluteWebPath($package->getPackagePath() . $extensionIcon) . '" width="16" height="16" alt="' . $groupTitle . '" />';
                                 }
                                 if (!empty($groupTitle)) {
                                     $groupTitles[$groupName] = $groupTitle;

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent;
@@ -153,8 +152,8 @@ class LanguagePackService
                 'title' => $title,
                 'type' => $package->getPackageMetaData()->getPackageType(),
             ];
-            if (!empty(ExtensionManagementUtility::getExtensionIcon($path, false))) {
-                $extension['icon'] = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($path, true));
+            if (!empty($package->getPackageIcon())) {
+                $extension['icon'] = PathUtility::getAbsoluteWebPath($package->getPackagePath() . $package->getPackageIcon());
             }
             $extension['packs'] = [];
             foreach ($activeLanguages as $iso) {

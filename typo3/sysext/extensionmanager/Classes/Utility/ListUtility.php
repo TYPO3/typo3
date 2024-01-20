@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -112,7 +111,7 @@ class ListUtility implements SingletonInterface
                 $installationType = $this->getInstallTypeForPackage($package);
                 if ($filter === '' || $filter === $installationType) {
                     $version = $package->getPackageMetaData()->getVersion();
-                    $icon = ExtensionManagementUtility::getExtensionIcon($package->getPackagePath());
+                    $icon = $package->getPackageIcon();
                     $extensionData = [
                         'packagePath' => $package->getPackagePath(),
                         'type' => $installationType,

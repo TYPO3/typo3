@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -30,73 +32,74 @@ interface PackageInterface
     public const PATTERN_MATCH_EXTENSIONKEY = '/^[0-9a-z_-]+$/i';
 
     /**
-     * @return array
      * @internal
      */
-    public function getPackageReplacementKeys();
+    public function getPackageReplacementKeys(): array;
 
     /**
      * Tells if the package is part of the default factory configuration
      * and therefor activated at first installation.
      *
-     * @return bool
      * @internal
      */
-    public function isPartOfFactoryDefault();
+    public function isPartOfFactoryDefault(): bool;
 
     /**
      * Tells if the package is required for a minimal usable (backend) system
      * and therefor activated if PackageStates is created from scratch for
      * whatever reason.
      *
-     * @return bool
      * @internal
      */
-    public function isPartOfMinimalUsableSystem();
+    public function isPartOfMinimalUsableSystem(): bool;
 
     /**
      * Returns contents of Composer manifest - or part there of if a key is given.
      *
-     * @param string $key Optional. Only return the part of the manifest indexed by 'key'
-     * @return mixed|null
+     * @param string|null $key Optional. Only return the part of the manifest indexed by 'key'
      * @see json_decode for return values
      * @internal
      */
-    public function getValueFromComposerManifest($key = null);
+    public function getValueFromComposerManifest(string $key = null): mixed;
 
     /**
      * Returns the package meta object of this package.
      *
-     * @return MetaData
      * @internal
      */
-    public function getPackageMetaData();
+    public function getPackageMetaData(): MetaData;
 
     /**
      * Returns the package key of this package.
      *
      * @return string
      */
-    public function getPackageKey();
+    public function getPackageKey(): string;
 
     /**
      * Tells if this package is protected and therefore cannot be deactivated or deleted
      *
      * @return bool
      */
-    public function isProtected();
+    public function isProtected(): bool;
 
     /**
      * Sets the protection flag of the package
      *
      * @param bool $protected TRUE if the package should be protected, otherwise FALSE
      */
-    public function setProtected($protected);
+    public function setProtected(bool $protected): void;
 
     /**
      * Returns the full path to this package's main directory
      *
      * @return string Path to this package's main directory
      */
-    public function getPackagePath();
+    public function getPackagePath(): string;
+
+    /**
+     * Find package icon location relative to the package path or null if nothing was found.
+     */
+    public function getPackageIcon(): ?string;
+
 }

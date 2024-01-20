@@ -827,7 +827,7 @@ class ExtensionManagementUtility
         }
         $selectItem = is_array($itemArray) ? SelectItem::fromTcaItemArray($itemArray) : $itemArray;
         if (!$selectItem->hasIcon()) {
-            $iconPath = static::getExtensionIcon(static::$packageManager->getPackage($extensionKey)->getPackagePath());
+            $iconPath = static::$packageManager->getPackage($extensionKey)->getPackageIcon();
             if ($iconPath) {
                 $selectItem = $selectItem->withIcon('EXT:' . $extensionKey . '/' . $iconPath);
             }
@@ -1108,9 +1108,11 @@ tt_content.' . $key . $suffix . ' {
      *
      * @param string $extensionPath Path to extension directory.
      * @param bool $returnFullPath Return full path of file.
+     * @deprecated will be removed in TYPO3 v14.0 - Use Package->getPackageIcon() instead.
      */
     public static function getExtensionIcon(string $extensionPath, bool $returnFullPath = false): string
     {
+        trigger_error('ExtensionManagementUtility::getExtensionIcon() will be removed in v14.0. Use Package->getPackageIcon() instead.', E_USER_DEPRECATED);
         $icon = '';
         $resourcePath = 'Resources/Public/Icons/Extension.';
         foreach (['svg', 'png', 'gif'] as $fileExtension) {
