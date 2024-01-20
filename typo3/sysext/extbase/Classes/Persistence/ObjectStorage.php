@@ -328,7 +328,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param non-empty-string|null $propertyName
      */
-    public function _memorizeCleanState(string|null $propertyName = null): void
+    public function _memorizeCleanState(?string $propertyName = null): void
     {
         $this->isModified = false;
     }
@@ -338,7 +338,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param non-empty-string|null $propertyName
      */
-    public function _isDirty(string|null $propertyName = null): bool
+    public function _isDirty(?string $propertyName = null): bool
     {
         return $this->isModified;
     }

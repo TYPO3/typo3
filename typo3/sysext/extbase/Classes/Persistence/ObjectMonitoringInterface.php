@@ -31,12 +31,12 @@ interface ObjectMonitoringInterface
      *
      * @param non-empty-string|null $propertyName
      */
-    public function _memorizeCleanState(string|null $propertyName = null): void;
+    public function _memorizeCleanState(?string $propertyName = null): void;
 
     /**
      * Returns TRUE if the properties were modified after reconstitution
      *
      * @param non-empty-string|null $propertyName
      */
-    public function _isDirty(string|null $propertyName = null): bool;
+    public function _isDirty(?string $propertyName = null): bool;
 }

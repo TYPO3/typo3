@@ -22,22 +22,9 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * A tt_content model
- */
 class TtContent extends AbstractEntity
 {
-    /**
-     * @var int<1, max>|null
-     */
-    protected $uid;
-
-    /**
-     * @var int<0, max>|null
-     */
-    protected $pid;
-
-    protected string $header;
+    protected string $header = '';
 
     /**
      * @var ObjectStorage<FileReference>

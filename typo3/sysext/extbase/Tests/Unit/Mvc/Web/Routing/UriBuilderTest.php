@@ -381,7 +381,7 @@ final class UriBuilderTest extends UnitTestCase
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
         $subject->setRequest($request);
         $mockDomainObject = $this->getAccessibleMock(AbstractEntity::class, null);
-        $mockDomainObject->_set('uid', '123');
+        $mockDomainObject->_set('uid', 123);
         $subject->setArguments(['somePrefix' => ['someDomainObject' => $mockDomainObject]]);
         $expectedResult = '/typo3/test/Path?token=dummyToken&somePrefix%5BsomeDomainObject%5D=123';
         self::assertEquals($expectedResult, $subject->buildBackendUri());
@@ -688,9 +688,9 @@ final class UriBuilderTest extends UnitTestCase
     public function buildTypolinkConfigurationConvertsDomainObjects(): void
     {
         $mockDomainObject1 = $this->getAccessibleMock(AbstractEntity::class, null);
-        $mockDomainObject1->_set('uid', '123');
+        $mockDomainObject1->_set('uid', 123);
         $mockDomainObject2 = $this->getAccessibleMock(AbstractEntity::class, null);
-        $mockDomainObject2->_set('uid', '321');
+        $mockDomainObject2->_set('uid', 321);
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
         $subject->setTargetPageUid(123);
         $subject->setArguments([
@@ -791,9 +791,9 @@ final class UriBuilderTest extends UnitTestCase
     public function convertDomainObjectsToIdentityArraysConvertsDomainObjects(): void
     {
         $mockDomainObject1 = $this->getAccessibleMock(AbstractEntity::class, null);
-        $mockDomainObject1->_set('uid', '123');
+        $mockDomainObject1->_set('uid', 123);
         $mockDomainObject2 = $this->getAccessibleMock(AbstractEntity::class, null);
-        $mockDomainObject2->_set('uid', '321');
+        $mockDomainObject2->_set('uid', 321);
         $expectedResult = ['foo' => ['bar' => 'baz'], 'domainObject1' => '123', 'second' => ['domainObject2' => '321']];
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
         $actualResult = $subject->_call('convertDomainObjectsToIdentityArrays', ['foo' => ['bar' => 'baz'], 'domainObject1' => $mockDomainObject1, 'second' => ['domainObject2' => $mockDomainObject2]]);
@@ -807,7 +807,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $objectStorage  = new ObjectStorage();
         $mockChildObject1 = $this->getAccessibleMock(AbstractEntity::class, null);
-        $mockChildObject1->_set('uid', '123');
+        $mockChildObject1->_set('uid', 123);
         $objectStorage->attach($mockChildObject1);
         $expectedResult = ['foo' => ['bar' => 'baz'], 'objectStorage' => ['123']];
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);

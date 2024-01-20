@@ -33,7 +33,7 @@ interface DomainObjectInterface extends ObjectMonitoringInterface
 {
     public function getUid(): ?int;
 
-    public function setPid(int $pid);
+    public function setPid(int $pid): void;
 
     public function getPid(): ?int;
 

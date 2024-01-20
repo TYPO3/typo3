@@ -312,7 +312,7 @@ final class PersistenceManagerTest extends UnitTestCase
         eval('
 			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
 			class ' . $className . ' extends \\' . AbstractEntity::class . ' {
-				protected $uid = 42;
+				protected ?int $uid = 42;
 			}
 		');
         eval('

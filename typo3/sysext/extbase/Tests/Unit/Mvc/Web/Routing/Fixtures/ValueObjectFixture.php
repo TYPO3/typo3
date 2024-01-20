@@ -22,9 +22,9 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 /**
  * Fixture overwriting uid
  */
-class ValueObjectFixture extends AbstractValueObject
+final class ValueObjectFixture extends AbstractValueObject
 {
-    public $name;
-    public $object;
-    public $uid;
+    public string $name = '';
+    public ?object $object = null;
+    public ?int $uid = null;
 }
