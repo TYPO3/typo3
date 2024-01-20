@@ -426,11 +426,11 @@ final class PageRepositoryTest extends FunctionalTestCase
         $context->setAspect('workspace', new WorkspaceAspect($wsid));
         $subject = new PageRepository($context);
 
-        $pageRec = $subject->getWorkspaceVersionOfRecord($wsid, 'pages', 11);
+        $pageRec = $subject->getWorkspaceVersionOfRecord('pages', 11);
 
         self::assertEquals(11, $pageRec['uid']);
         self::assertEquals(0, $pageRec['t3ver_oid']);
-        self::assertEquals(987654321, $pageRec['t3ver_wsid']);
+        self::assertEquals($wsid, $pageRec['t3ver_wsid']);
         self::assertEquals(VersionState::NEW_PLACEHOLDER->value, $pageRec['t3ver_state']);
     }
 

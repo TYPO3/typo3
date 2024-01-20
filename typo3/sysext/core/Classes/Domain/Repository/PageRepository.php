@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
-use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -60,6 +59,11 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * Mainly used in the frontend but also in some cases in the backend. It's
  * important to set the right $where_hid_del in the object so that the
  * functions operate properly
+ *
+ * For the Context, the workspace aspect is used to determine the workspace.
+ * The Workspace ID is relevant for previewing
+ * If > 0, versioning preview of other record versions is allowed. This should only
+ * be set if the page is not cached and truly previewed by a backend user!
  */
 class PageRepository implements LoggerAwareInterface
 {
@@ -75,20 +79,6 @@ class PageRepository implements LoggerAwareInterface
      * Clause for fe_group access
      */
     protected string $where_groupAccess = '';
-
-    /**
-     * Can be migrated away later to use context API directly.
-     */
-    protected int $sys_language_uid = 0;
-
-    /**
-     * Can be migrated away later to use context API directly.
-     * Workspace ID for preview
-     * If > 0, versioning preview of other record versions is allowed. THIS MUST
-     * ONLY BE SET IF the page is not cached and truly previewed by a backend
-     * user!
-     */
-    protected int $versioningWorkspaceId = 0;
 
     /**
      * Computed properties that are added to database rows.
@@ -142,7 +132,7 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function init(): void
     {
-        $this->versioningWorkspaceId = (int)$this->context->getPropertyFromAspect('workspace', 'id');
+        $workspaceId = (int)$this->context->getPropertyFromAspect('workspace', 'id');
         // As PageRepository may be used multiple times during the frontend request, and may
         // actually be used before the usergroups have been resolved, self::getMultipleGroupsWhereClause()
         // and the Event in ->enableFields() need to be reconsidered when the usergroup state changes.
@@ -159,7 +149,7 @@ class PageRepository implements LoggerAwareInterface
         $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages');
 
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($includeHiddenPages ? 'ShowHidden' : '') . '_' . $this->versioningWorkspaceId . '_' . $frontendUserIdentifier . '_' . $dateTimeIdentifier;
+        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($includeHiddenPages ? 'ShowHidden' : '') . '_' . $workspaceId . '_' . $frontendUserIdentifier . '_' . $dateTimeIdentifier;
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry) {
             $this->where_hid_del = $cacheEntry;
@@ -167,7 +157,7 @@ class PageRepository implements LoggerAwareInterface
             $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('pages')
                 ->expr();
-            if ($this->versioningWorkspaceId > 0) {
+            if ($workspaceId > 0) {
                 // For version previewing, make sure that enable-fields are not
                 // de-selecting hidden pages - we need versionOL() to unset them only
                 // if the overlay record instructs us to.
@@ -176,7 +166,7 @@ class PageRepository implements LoggerAwareInterface
                     $expressionBuilder->eq('pages.deleted', 0),
                     $expressionBuilder->or(
                         $expressionBuilder->eq('pages.t3ver_wsid', 0),
-                        $expressionBuilder->eq('pages.t3ver_wsid', $this->versioningWorkspaceId)
+                        $expressionBuilder->eq('pages.t3ver_wsid', $workspaceId)
                     )
                 );
             } else {
@@ -189,7 +179,6 @@ class PageRepository implements LoggerAwareInterface
             $cache->set($cacheIdentifier, $this->where_hid_del);
         }
         $this->where_groupAccess = $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
-        $this->sys_language_uid = (int)$this->context->getPropertyFromAspect('language', 'id', 0);
     }
 
     /**************************
@@ -242,7 +231,7 @@ class PageRepository implements LoggerAwareInterface
                     $uid,
                     $disableGroupAccessCheck ? '' : $this->where_groupAccess,
                     $this->where_hid_del,
-                    $this->sys_language_uid,
+                    $this->context->getPropertyFromAspect('language', 'id', 0),
                 ]
             )
         );
@@ -296,7 +285,7 @@ class PageRepository implements LoggerAwareInterface
     public function getPage_noCheck(int $uid): array
     {
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_getPage_noCheck_' . $uid . '_' . $this->sys_language_uid . '_' . $this->versioningWorkspaceId;
+        $cacheIdentifier = 'PageRepository_getPage_noCheck_' . $uid . '_' . $this->context->getPropertyFromAspect('language', 'id', 0) . '_' . (int)$this->context->getPropertyFromAspect('workspace', 'id');
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry !== false) {
             return $cacheEntry;
@@ -433,7 +422,7 @@ class PageRepository implements LoggerAwareInterface
      * Returns the relevant page overlay record fields
      *
      * @param int|array $pageInput If $pageInput is an integer, it's the pid of the pageOverlay record and thus the page overlay record is returned. If $pageInput is an array, it's a page-record and based on this page record the language record is found and OVERLAID before the page record is returned.
-     * @param int|LanguageAspect|null $language language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
+     * @param int|LanguageAspect|null $language language UID if you want to set an alternative value to the given context which is default. Should be >=0
      * @throws \UnexpectedValueException
      * @return array Page row which is overlaid with language_overlay record (or the overlay record alone)
      */
@@ -448,7 +437,7 @@ class PageRepository implements LoggerAwareInterface
      * Returns the relevant page overlay record fields
      *
      * @param array $pagesInput Array of integers or array of arrays. If each value is an integer, it's the pids of the pageOverlay records and thus the page overlay records are returned. If each value is an array, it's page-records and based on this page records the language records are found and OVERLAID before the page records are returned.
-     * @param int|LanguageAspect|null $language Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
+     * @param int|LanguageAspect|null $language Language UID if you want to set an alternative value to the given context aspect which is default. Should be >=0
      * @throws \UnexpectedValueException
      * @return array Page rows which are overlaid with language_overlay record.
      *               If the input was an array of integers, missing records are not
@@ -698,7 +687,7 @@ class PageRepository implements LoggerAwareInterface
             $queryBuilder->setRestrictions(
                 GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context)
             );
-            if ($this->versioningWorkspaceId > 0) {
+            if ((int)$this->context->getPropertyFromAspect('workspace', 'id') > 0) {
                 // If not in live workspace, remove query based "enable fields" checks, it will be done in versionOL()
                 // @see functional workspace test createLocalizedNotHiddenWorkspaceContentHiddenInLive()
                 $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
@@ -883,7 +872,7 @@ class PageRepository implements LoggerAwareInterface
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->versioningWorkspaceId));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->context->getPropertyFromAspect('workspace', 'id')));
 
         $res = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
             ->from('pages')
@@ -1152,7 +1141,7 @@ class PageRepository implements LoggerAwareInterface
         $shortcutMode = (int)($page['shortcut_mode'] ?? self::SHORTCUT_MODE_NONE);
         $shortcutTarget = (string)($page['shortcut'] ?? '');
 
-        $cacheIdentifier = 'shortcuts_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $page['uid'] . '_' . $this->sys_language_uid . '_' . $page['sys_language_uid'];
+        $cacheIdentifier = 'shortcuts_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $page['uid'] . '_' . $this->context->getPropertyFromAspect('language', 'id', 0) . '_' . $page['sys_language_uid'];
         // Only use the runtime cache if we do not support the random subpages functionality
         if ($resolveRandomSubpages === false) {
             $cachedResult = $this->getRuntimeCache()->get($cacheIdentifier);
@@ -1515,7 +1504,7 @@ class PageRepository implements LoggerAwareInterface
 
         if ($this->hasTableWorkspaceSupport($table)) {
             // This should work exactly as WorkspaceRestriction and WorkspaceRestriction should be used instead
-            if ($this->versioningWorkspaceId === 0) {
+            if ((int)$this->context->getPropertyFromAspect('workspace', 'id') === 0) {
                 // Filter out placeholder records (new/deleted items)
                 // in case we are NOT in a version preview (that means we are online!)
                 $constraints['workspaces'] = $expressionBuilder->and(
@@ -1530,7 +1519,7 @@ class PageRepository implements LoggerAwareInterface
                 // in case we are in a versioning preview
                 $constraints['workspaces'] = $expressionBuilder->or(
                     $expressionBuilder->eq($tableAlias . '.t3ver_wsid', 0),
-                    $expressionBuilder->eq($tableAlias . '.t3ver_wsid', $this->versioningWorkspaceId)
+                    $expressionBuilder->eq($tableAlias . '.t3ver_wsid', (int)$this->context->getPropertyFromAspect('workspace', 'id'))
                 );
             }
 
@@ -1547,7 +1536,7 @@ class PageRepository implements LoggerAwareInterface
         // Enable fields
         if (is_array($ctrl['enablecolumns'] ?? false)) {
             // In case of versioning-preview, enableFields are ignored (checked in versionOL())
-            if ($this->versioningWorkspaceId === 0 || !$this->hasTableWorkspaceSupport($table)) {
+            if ((int)$this->context->getPropertyFromAspect('workspace', 'id') === 0 || !$this->hasTableWorkspaceSupport($table)) {
 
                 if (($ctrl['enablecolumns']['disabled'] ?? false) && !$enableFieldsToIgnore['disabled']) {
                     $constraints['disabled'] = $expressionBuilder->eq(
@@ -1656,7 +1645,7 @@ class PageRepository implements LoggerAwareInterface
      */
     public function versionOL(string $table, &$row, bool $unsetMovePointers = false, bool $bypassEnableFieldsCheck = false): void
     {
-        if ($this->versioningWorkspaceId <= 0) {
+        if ((int)$this->context->getPropertyFromAspect('workspace', 'id') <= 0) {
             return;
         }
         if (!is_array($row)) {
@@ -1684,7 +1673,7 @@ class PageRepository implements LoggerAwareInterface
                 ->executeQuery()
                 ->fetchAssociative();
         }
-        if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, (int)$row['uid'], $fields, $bypassEnableFieldsCheck)) {
+        if ($wsAlt = $this->getWorkspaceVersionOfRecord($table, (int)$row['uid'], $fields, $bypassEnableFieldsCheck)) {
             if (is_array($wsAlt)) {
                 $rowVersionState = VersionState::tryFrom($wsAlt['t3ver_state'] ?? 0);
                 if ($rowVersionState === VersionState::MOVE_POINTER) {
@@ -1729,7 +1718,6 @@ class PageRepository implements LoggerAwareInterface
     /**
      * Select the version of a record for a workspace
      *
-     * @param int $workspace Workspace ID
      * @param string $table Table name to select from
      * @param int $uid Record uid for which to find workspace version.
      * @param array $fields Fields to select, `*` is the default - If a custom list is set, make sure the list
@@ -1739,8 +1727,9 @@ class PageRepository implements LoggerAwareInterface
      * @see BackendUtility::getWorkspaceVersionOfRecord()
      * @internal this is a rather low-level method, it is recommended to use versionOL instead()
      */
-    public function getWorkspaceVersionOfRecord(int $workspace, string $table, int $uid, array $fields = ['*'], bool $bypassEnableFieldsCheck = false): array|int|bool
+    public function getWorkspaceVersionOfRecord(string $table, int $uid, array $fields = ['*'], bool $bypassEnableFieldsCheck = false): array|int|bool
     {
+        $workspace = (int)$this->context->getPropertyFromAspect('workspace', 'id');
         // No look up in database because versioning not enabled / or workspace not offline
         if ($workspace === 0) {
             return false;
@@ -1986,7 +1975,7 @@ class PageRepository implements LoggerAwareInterface
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->versioningWorkspaceId));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->context->getPropertyFromAspect('workspace', 'id')));
         $queryBuilder->select('*')
             ->from('pages')
             ->where(
@@ -2032,7 +2021,7 @@ class PageRepository implements LoggerAwareInterface
                 $queryBuilder->getRestrictions()
                     ->removeAll()
                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->versioningWorkspaceId));
+                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->context->getPropertyFromAspect('workspace', 'id')));
                 $queryBuilder->select('*')
                     ->from('pages')
                     ->where(
@@ -2156,12 +2145,11 @@ class PageRepository implements LoggerAwareInterface
             );
         }
         $page = $queryBuilder->executeQuery()->fetchAssociative();
-        if ($this->versioningWorkspaceId > 0) {
+        if ((int)$this->context->getPropertyFromAspect('workspace', 'id') > 0) {
             // Fetch overlay of page if in workspace and check if it is hidden
             $backupContext = clone $this->context;
-            $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $this->versioningWorkspaceId));
             $this->context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
-            $targetPage = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', (int)$page['uid']);
+            $targetPage = $this->getWorkspaceVersionOfRecord('pages', (int)$page['uid']);
             // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
             $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);
             $this->context = $backupContext;
