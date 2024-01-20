@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockOraclePlatform;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPlatform;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPostgreSQLPlatform;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockSQLitePlatform;
@@ -635,23 +634,6 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
 
         self::assertSame('"aField" & 1', $this->subject->bitAnd('aField', 1));
-    }
-
-    /**
-     * @test
-     */
-    public function bitwiseAndForOracle(): void
-    {
-        $databasePlatform = $this->createMock(MockOraclePlatform::class);
-        $databasePlatform->method('getName')->willReturn('pdo_oracle');
-
-        $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
-            return '"' . $identifier . '"';
-        });
-
-        $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
-
-        self::assertSame('BITAND("aField", 1)', $this->subject->bitAnd('aField', 1));
     }
 
     /**

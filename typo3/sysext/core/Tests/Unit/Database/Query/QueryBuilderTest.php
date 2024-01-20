@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
-use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
@@ -1298,10 +1297,6 @@ final class QueryBuilderTest extends UnitTestCase
             'Test cast for SqlitePlatform' => [
                 new DoctrineSQLitePlatform(),
                 'CAST(aField as TEXT)',
-            ],
-            'Test cast for OraclePlatform' => [
-                new DoctrineOraclePlatform(),
-                'CAST(aField as VARCHAR)',
             ],
         ];
     }

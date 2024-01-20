@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Database\Query\Expression;
 
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
-use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Platforms\TrimMode;
@@ -452,14 +451,6 @@ class ExpressionBuilder
      */
     public function bitAnd(string $fieldName, int $value): string
     {
-        $platform = $this->connection->getDatabasePlatform();
-        if ($platform instanceof DoctrineOraclePlatform) {
-            return sprintf(
-                'BITAND(%s, %s)',
-                $this->connection->quoteIdentifier($fieldName),
-                $value
-            );
-        }
         return $this->comparison(
             $this->connection->quoteIdentifier($fieldName),
             '&',

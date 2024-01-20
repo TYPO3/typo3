@@ -26,7 +26,6 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQL57Platform as DoctrineMySQL57Platform;
 use Doctrine\DBAL\Platforms\MySQL80Platform as DoctrineMySQL80Platform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
-use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL100Platform as DoctrinePostgreSQL100Platform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as DoctrinePostgreSQL94Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
@@ -38,7 +37,6 @@ use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform;
 use TYPO3\CMS\Core\Database\Platform\MySQL57Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQL80Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQLPlatform;
-use TYPO3\CMS\Core\Database\Platform\OraclePlatform;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQL100Platform;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQL94Platform;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform;
@@ -79,7 +77,6 @@ final class CustomPlatformDriverDecorator extends AbstractDriverMiddleware
             DoctrineMariaDB1052Platform::class => new MariaDB1052Platform(),
             DoctrineSQLitePlatform::class  => new SQLitePlatform(),
             DoctrinePostgreSQLPlatform::class => new PostgreSQLPlatform(),
-            DoctrineOraclePlatform::class => new OraclePlatform(),
             // @todo Remove following platforms with doctrine/dbal 4.0 (except default)
             DoctrinePostgreSQL94Platform::class => new PostgreSQL94Platform(),
             DoctrinePostgreSQL100Platform::class => new PostgreSQL100Platform(),

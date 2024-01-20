@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform as DoctrineAbstractMySQLPlatform;
-use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
@@ -56,7 +55,6 @@ final class CoreSchemaManagerFactory implements SchemaManagerFactory
             // MariaDBSchemaManager in doctrine, both are using the same one. TYPO3 aligns here to doctrine/dbal.
             $platform instanceof DoctrineAbstractMySQLPlatform => new MySQLSchemaManager($connection, $platform),
             $platform instanceof DoctrinePostgreSQLPlatform => new PostgreSQLSchemaManager($connection, $platform),
-            $platform instanceof DoctrineOraclePlatform => new OracleSchemaManager($connection, $platform),
             default => $platform->createSchemaManager($connection),
         };
     }

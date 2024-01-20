@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform as Typo3MariaDBPlatform;
 use TYPO3\CMS\Core\Database\Platform\MySQL57Platform as Typo3MySQL57Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQL80Platform as Typo3MySQL80Platform;
 use TYPO3\CMS\Core\Database\Platform\MySQLPlatform as Typo3MySQLPlatform;
-use TYPO3\CMS\Core\Database\Platform\OraclePlatform as Typo3OraclePlatform;
 use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQL100Platform as Typo3PostgreSQL100Platform;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQL94Platform as Typo3PostgreSQL94Platform;
@@ -74,7 +73,6 @@ final class PlatformHelperTest extends UnitTestCase
         // **unsupported platforms (compat check)**
         yield 'Unsupported ' . DoctrineDB2Platform::class => [new DoctrineDB2Platform()];
         yield 'Unsupported ' . DoctrineOraclePlatform::class => [new DoctrineOraclePlatform()];
-        yield 'Unsupported ' . Typo3OraclePlatform::class => [new Typo3OraclePlatform()];
 
         // @todo deprecated by Doctrine DBAL, remove with Doctrine DBAL 4.x upgrade
         yield 'Supported ' . DoctrineMySQL57Platform::class => [new DoctrineMySQL57Platform()];

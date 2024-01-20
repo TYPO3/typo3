@@ -22,7 +22,6 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
-use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSqlPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
@@ -405,7 +404,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             $platform instanceof DoctrineMariaDBPlatform => 'MySQL' . $version,
             $platform instanceof DoctrineMySQLPlatform => 'MySQL' . $version,
             $platform instanceof DoctrinePostgreSQLPlatform => 'PostgreSQL' . $version,
-            $platform instanceof DoctrineOraclePlatform => 'Oracle' . $version,
             default => (str_replace('Platform', '', array_reverse(explode('\\', $platform::class))[0] ?? '')) . $version,
         };
     }

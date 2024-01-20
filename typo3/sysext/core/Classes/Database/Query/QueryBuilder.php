@@ -21,7 +21,6 @@ use Doctrine\DBAL\Driver\Statement as DriverStatement;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
-use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
@@ -1245,10 +1244,6 @@ class QueryBuilder
         // https://www.sqlite.org/lang_expr.html#castexpr
         if ($databasePlatform instanceof DoctrineSQLitePlatform) {
             return sprintf('CAST(%s as TEXT)', $this->connection->quoteIdentifier($fieldName));
-        }
-        // https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqlj33562.html
-        if ($databasePlatform instanceof DoctrineOraclePlatform) {
-            return sprintf('CAST(%s as VARCHAR)', $this->connection->quoteIdentifier($fieldName));
         }
 
         throw new \RuntimeException(
