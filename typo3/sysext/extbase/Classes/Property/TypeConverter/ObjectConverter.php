@@ -188,7 +188,7 @@ class ObjectConverter extends AbstractTypeConverter
         }
 
         // Respect XCLASSed object target type
-        return (string)GeneralUtility::getClassName($targetType);
+        return GeneralUtility::getClassName($targetType);
     }
 
     /**

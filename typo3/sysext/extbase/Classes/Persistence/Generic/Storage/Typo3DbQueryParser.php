@@ -773,14 +773,14 @@ class Typo3DbQueryParser
         if (!$transOrigPointerField || !$languageAspect->getContentId()) {
             return $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $languageField,
-                [(int)$languageAspect->getContentId(), -1]
+                [$languageAspect->getContentId(), -1]
             );
         }
 
         if (!$languageAspect->doOverlays()) {
             return $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $languageField,
-                [(int)$languageAspect->getContentId(), -1]
+                [$languageAspect->getContentId(), -1]
             );
         }
 
@@ -1061,7 +1061,7 @@ class Typo3DbQueryParser
                 $relationTableAlias . '.' . $columnMap->getChildKeyFieldName(),
                 $this->queryBuilder->quoteIdentifier($childTableAlias . '.uid')
             );
-            $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, (string)$joinConditionExpression);
+            $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, $joinConditionExpression);
             $this->unionTableAliasCache[] = $childTableAlias;
             $this->suggestDistinctQuery = true;
         } else {

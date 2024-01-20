@@ -623,7 +623,7 @@ class Backend implements BackendInterface, SingletonInterface
         $uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
         $localizedUid = $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         $identifier = $uid . ($localizedUid ? '_' . $localizedUid : '');
-        $object->_setProperty(AbstractDomainObject::PROPERTY_UID, (int)$uid);
+        $object->_setProperty(AbstractDomainObject::PROPERTY_UID, $uid);
         $object->setPid((int)$row['pid']);
         if ($uid >= 1) {
             $this->eventDispatcher->dispatch(new EntityAddedToPersistenceEvent($object));
@@ -926,7 +926,7 @@ class Backend implements BackendInterface, SingletonInterface
             }
         }
         $storagePidList = GeneralUtility::intExplode(',', (string)($frameworkConfiguration['persistence']['storagePid'] ?? ''));
-        return (int)$storagePidList[0];
+        return $storagePidList[0];
     }
 
     /**
