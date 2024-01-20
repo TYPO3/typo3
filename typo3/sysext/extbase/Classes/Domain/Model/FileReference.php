@@ -27,12 +27,10 @@ class FileReference extends AbstractFileFolder
     /**
      * Uid of the referenced sys_file. Needed for extbase to serialize the
      * reference correctly.
-     *
-     * @var int
      */
-    protected $uidLocal;
+    protected ?int $uidLocal = null;
 
-    public function setOriginalResource(ResourceInterface $originalResource)
+    public function setOriginalResource(ResourceInterface $originalResource): void
     {
         $this->originalResource = $originalResource;
         $this->uidLocal = (int)$originalResource->getOriginalFile()->getUid();
@@ -41,7 +39,7 @@ class FileReference extends AbstractFileFolder
     /**
      * @return \TYPO3\CMS\Core\Resource\FileReference
      */
-    public function getOriginalResource()
+    public function getOriginalResource(): ?ResourceInterface
     {
         if ($this->originalResource === null) {
             $uid = $this->_localizedUid;

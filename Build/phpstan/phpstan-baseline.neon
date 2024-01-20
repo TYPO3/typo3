@@ -1036,12 +1036,7 @@ parameters:
 			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
 
 		-
-			message: "#^Instanceof between TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\Category\\|null and TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyLoadingProxy will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Domain/Model/Category.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\File\\:\\:getOriginalResource\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\File\\:\\:getOriginalResource\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|null but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Domain/Model/File.php
 
@@ -1051,7 +1046,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Domain/Model/FileReference.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\FileReference\\:\\:getOriginalResource\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\FileReference\\:\\:getOriginalResource\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\|null but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Domain/Model/FileReference.php
 

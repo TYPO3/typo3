@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -26,7 +27,7 @@ class File extends AbstractFileFolder
     /**
      * @return \TYPO3\CMS\Core\Resource\File
      */
-    public function getOriginalResource()
+    public function getOriginalResource(): ?ResourceInterface
     {
         if ($this->originalResource === null) {
             $this->originalResource = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($this->getUid());

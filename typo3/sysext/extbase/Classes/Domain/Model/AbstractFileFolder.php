@@ -27,20 +27,14 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 abstract class AbstractFileFolder extends AbstractEntity
 {
-    /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceInterface
-     */
-    protected $originalResource;
+    protected ?ResourceInterface $originalResource = null;
 
-    public function setOriginalResource(ResourceInterface $originalResource)
+    public function setOriginalResource(ResourceInterface $originalResource): void
     {
         $this->originalResource = $originalResource;
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Resource\ResourceInterface
-     */
-    public function getOriginalResource()
+    public function getOriginalResource(): ?ResourceInterface
     {
         return $this->originalResource;
     }
