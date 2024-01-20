@@ -18,15 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch\EventListener;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
-use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 use TYPO3\CMS\IndexedSearch\Event\EnableIndexingEvent;
 use TYPO3\CMS\IndexedSearch\Indexer;
@@ -37,15 +33,15 @@ use TYPO3\CMS\IndexedSearch\Indexer;
  *
  * @internal this is a TYPO3-internal Event listener implementation and not part of TYPO3's Core API.
  */
-class FrontendGenerationPageIndexingTrigger
+final readonly class FrontendGenerationPageIndexingTrigger
 {
     public function __construct(
-        protected readonly ExtensionConfiguration $extensionConfiguration,
-        protected readonly TimeTracker $timeTracker,
-        protected readonly PageTitleProviderManager $pageTitleProviderManager,
-        protected readonly Indexer $indexer,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly Context $context,
+        private ExtensionConfiguration $extensionConfiguration,
+        private TimeTracker $timeTracker,
+        private PageTitleProviderManager $pageTitleProviderManager,
+        private Indexer $indexer,
+        private EventDispatcherInterface $eventDispatcher,
+        private Context $context,
     ) {}
 
     /**
@@ -59,12 +55,14 @@ class FrontendGenerationPageIndexingTrigger
             return;
         }
         $request = $event->getRequest();
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        $pageArguments = $request->getAttribute('routing');
         $pageInformation = $request->getAttribute('frontend.page.information');
         $pageRecord = $pageInformation->getPageRecord();
+        $tsfe = $request->getAttribute('frontend.controller');
 
         // Determine if page should be indexed, and if so, configure and initialize indexer
-        $tsfe = $event->getController();
-        if (!($tsfe->config['config']['index_enable'] ?? false)) {
+        if (!($typoScriptConfigArray['index_enable'] ?? false)) {
             return;
         }
 
@@ -84,26 +82,15 @@ class FrontendGenerationPageIndexingTrigger
         }
         $languageAspect = $this->context->getAspect('language');
         if ($languageAspect->getId() !== $languageAspect->getContentId()) {
-            $this->timeTracker->setTSlogMessage('Index page? No, languageId was different from contentId which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
+            $this->timeTracker->setTSlogMessage(
+                'Index page? No, languageId was different from contentId which indicates that the page contains'
+                . ' fall-back content and that would be falsely indexed as localized content.'
+            );
             return;
         }
-        // Init and start indexing
-        $this->indexer->forceIndexing = $forceIndexing;
-        $this->indexer->init($this->initializeIndexerConfiguration($event->getRequest(), $tsfe, $languageAspect));
-        $this->indexer->indexTypo3PageContent();
-        $this->timeTracker->pull();
-    }
 
-    /**
-     * Setting up internal configuration from config array based on TypoScriptFrontendController
-     * Information about page for which the indexing takes place
-     */
-    protected function initializeIndexerConfiguration(ServerRequestInterface $request, TypoScriptFrontendController $tsfe, LanguageAspect $languageAspect): array
-    {
-        /** @var PageArguments $pageArguments */
-        $pageArguments = $request->getAttribute('routing');
-        $pageInformation = $request->getAttribute('frontend.page.information');
-        $pageRecord = $pageInformation->getPageRecord();
+        $this->indexer->forceIndexing = $forceIndexing;
+
         $configuration = [
             // Page id
             'id' => $pageInformation->getId(),
@@ -120,33 +107,28 @@ class FrontendGenerationPageIndexingTrigger
             // The creation date of the TYPO3 page
             'crdate' => $pageRecord['crdate'],
             'rootline_uids' => [],
+            'content' => $tsfe->content,
+            // Alternative title for indexing
+            'indexedDocTitle' => $this->pageTitleProviderManager->getTitle($request),
+            // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
+            'mtime' => $tsfe->register['SYS_LASTCHANGED'] ?? $pageRecord['SYS_LASTCHANGED'],
+            // Whether to index external documents like PDF, DOC etc.
+            'index_externals' => $typoScriptConfigArray['index_externals'] ?? true,
+            // Length of description text (max 250, default 200)
+            'index_descrLgd' => $typoScriptConfigArray['index_descrLgd'] ?? 0,
+            'index_metatags' => $typoScriptConfigArray['index_metatags'] ?? true,
+            // Set to zero (@todo: why is this needed?)
+            'recordUid' => 0,
+            'freeIndexUid' => 0,
+            'freeIndexSetId' => 0,
         ];
-
-        // Root line uids
         $localRootLine = $pageInformation->getLocalRootLine();
         foreach ($localRootLine as $rlkey => $rldat) {
             $configuration['rootline_uids'][$rlkey] = $rldat['uid'];
         }
-        // Content of page
-        // Content string (HTML of TYPO3 page)
-        $configuration['content'] = $tsfe->content;
 
-        // Alternative title for indexing
-        // @see https://forge.typo3.org/issues/88041
-        $configuration['indexedDocTitle'] = $this->pageTitleProviderManager->getTitle($request);
-
-        // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
-        $configuration['mtime'] = $tsfe->register['SYS_LASTCHANGED'] ?? $pageRecord['SYS_LASTCHANGED'];
-        // Configuration of behavior
-        $configuration['index_externals'] = $tsfe->config['config']['index_externals'] ?? true;
-        // Whether to index external documents like PDF, DOC etc. (if possible)
-        $configuration['index_descrLgd'] = $tsfe->config['config']['index_descrLgd'] ?? 0;
-        // Length of description text (max 250, default 200)
-        $configuration['index_metatags'] = $tsfe->config['config']['index_metatags'] ?? true;
-        // Set to zero
-        $configuration['recordUid'] = 0;
-        $configuration['freeIndexUid'] = 0;
-        $configuration['freeIndexSetId'] = 0;
-        return $configuration;
+        $this->indexer->init($configuration);
+        $this->indexer->indexTypo3PageContent();
+        $this->timeTracker->pull();
     }
 }

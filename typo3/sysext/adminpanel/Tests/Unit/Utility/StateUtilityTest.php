@@ -214,43 +214,4 @@ final class StateUtilityTest extends UnitTestCase
         $isOpen = StateUtility::isOpen();
         self::assertFalse($isOpen);
     }
-
-    public static function typoScriptDataProvider(): array
-    {
-        return [
-            'no config set' => [
-                [],
-                false,
-            ],
-            'Admin Panel is disabled' => [
-                [
-                    'config' => [
-                        'admPanel' => '0',
-                    ],
-                ],
-                false,
-            ],
-            'Admin Panel is enabled' => [
-                [
-                    'config' => [
-                        'admPanel' => '1',
-                    ],
-                ],
-                true,
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider typoScriptDataProvider
-     */
-    public function isActivatedInTypoScriptReturnsCorrectValue(array $typoScript, bool $expected): void
-    {
-        $tsfe = new \stdClass();
-        $tsfe->config = $typoScript;
-        $GLOBALS['TSFE'] = $tsfe;
-        $isEnabled = StateUtility::isActivatedInTypoScript();
-        self::assertSame($expected, $isEnabled);
-    }
 }

@@ -58,9 +58,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $linkResultType = LinkService::TYPE_PAGE;
         $conf['additionalParams'] = $conf['additionalParams'] ?? '';
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $request = $this->contentObjectRenderer->getRequest();
         if (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
             // If no id is given try to fetch it from PageInformation attribute, else fetch it from site.
-            $request = $this->contentObjectRenderer->getRequest();
             $pageId = $request->getAttribute('frontend.page.information')?->getId();
             if ($pageId === null) {
                 $site = $request->getAttribute('site');
@@ -78,11 +78,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         // Link to page even if access is missing?
-        $tsfe = $this->getTypoScriptFrontendController();
+        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
         if (isset($conf['linkAccessRestrictedPages'])) {
             $disableGroupAccessCheck = (bool)($conf['linkAccessRestrictedPages'] ?? false);
         } else {
-            $disableGroupAccessCheck = (bool)($tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false);
+            $disableGroupAccessCheck = (bool)($frontendTypoScriptConfigArray['typolinkLinkAccessRestrictedPages'] ?? false);
         }
 
         // Looking up the page record to verify its existence:
@@ -211,7 +211,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($this->shouldModifyUrlForAccessRestrictedPage($conf, $page)) {
             $url = $this->modifyUrlForAccessRestrictedPage($url, $page, $linkDetails['pagetype'] ?? '');
             $result = new LinkResult($linkResultType, $url);
-            $additionalAttributes = (string)($tsfe->config['config']['typolinkLinkAccessRestrictedPages.']['ATagParams'] ?? '');
+            $additionalAttributes = (string)($frontendTypoScriptConfigArray['typolinkLinkAccessRestrictedPages.']['ATagParams'] ?? '');
             if ($additionalAttributes !== '') {
                 $additionalAttributes = GeneralUtility::get_tag_attributes($additionalAttributes);
                 $result = $result->withAttributes($additionalAttributes);
@@ -305,9 +305,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     protected function calculateGlobalQueryParameters(): string
     {
         // @todo: The link builders should get the request hand over explicitly.
-        $requestQueryParams = $this->contentObjectRenderer->getRequest()->getQueryParams();
-        $tsfe = $this->getTypoScriptFrontendController();
-        $typoScriptConfigLinkVars = (string)($tsfe->config['config']['linkVars'] ?? '');
+        $request = $this->contentObjectRenderer->getRequest();
+        $requestQueryParams = $request->getQueryParams();
+        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
+        $typoScriptConfigLinkVars = (string)($frontendTypoScriptConfigArray['linkVars'] ?? '');
         return GeneralUtility::makeInstance(LinkVarsCalculator::class)
             ->getAllowedLinkVarsFromRequest(
                 $typoScriptConfigLinkVars,
@@ -323,8 +324,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     {
         // MountPoints, look for closest MPvar:
         $mountPointPairs = [];
-        $tsfe = $this->getTypoScriptFrontendController();
-        if (!($tsfe->config['config']['MP_disableTypolinkClosestMPvalue'] ?? false)) {
+        $frontendTypoScriptConfigArray = $this->contentObjectRenderer->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray();
+        if (!($frontendTypoScriptConfigArray['MP_disableTypolinkClosestMPvalue'] ?? false)) {
             $temp_MP = $this->getClosestMountPointValueForPage((int)$page['uid']);
             if ($temp_MP) {
                 $mountPointPairs['closest'] = $temp_MP;
@@ -382,9 +383,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function shouldModifyUrlForAccessRestrictedPage(array $conf, array $page): bool
     {
+        $frontendTypoScriptConfigArray = $this->contentObjectRenderer->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray();
+        $typolinkLinkAccessRestrictedPages = $frontendTypoScriptConfigArray['typolinkLinkAccessRestrictedPages'] ?? false;
         return empty($conf['linkAccessRestrictedPages'])
-            && (($tsfe = $this->getTypoScriptFrontendController())->config['config']['typolinkLinkAccessRestrictedPages'] ?? false)
-            && $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
+            && $typolinkLinkAccessRestrictedPages
+            && $typolinkLinkAccessRestrictedPages !== 'NONE'
             && !GeneralUtility::makeInstance(RecordAccessVoter::class)->groupAccessGranted('pages', $page, GeneralUtility::makeInstance(Context::class));
     }
 
@@ -395,9 +398,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function modifyUrlForAccessRestrictedPage(string $url, array $page, string $overridePageType): string
     {
-        $tsfe = $this->getTypoScriptFrontendController();
+        $frontendTypoScriptConfigArray = $this->contentObjectRenderer->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray();
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $thePage = $pageRepository->getPage((int)$tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
+        $thePage = $pageRepository->getPage((int)($frontendTypoScriptConfigArray ['typolinkLinkAccessRestrictedPages'] ?? 0));
         $addParams = str_replace(
             [
                 '###RETURN_URL###',
@@ -407,7 +410,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 rawurlencode($url),
                 $page['uid'],
             ],
-            $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] ?? ''
+            $frontendTypoScriptConfigArray['typolinkLinkAccessRestrictedPages_addParams'] ?? ''
         );
         return $this->contentObjectRenderer->createUrl(
             [
@@ -433,7 +436,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         // A page with doktype external and ?showModal=1 in url field leads to recursion in HMENU/Sitemap.
         // In the second call of this function $linkDetails['pageuid'] is different (=current page) to uid of Page
-        // object and it need to be fetched again.
+        // object, and it needs to be fetched again.
         if (($page['uid'] ?? false) !== $linkDetails['pageuid']) {
             $page = $pageRepository->getPage((int)$linkDetails['pageuid'], $disableGroupAccessCheck);
         }
@@ -521,16 +524,15 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function generateUrlForPageWithSiteConfiguration(array $page, Site $siteOfTargetPage, array $queryParameters, string $fragment, array $conf): UriInterface
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $currentSite = $this->getCurrentSite();
         $currentSiteLanguage = $this->getCurrentSiteLanguage() ?? $currentSite?->getDefaultLanguage();
-
         $siteLanguageOfTargetPage = $this->getSiteLanguageOfTargetPage($siteOfTargetPage, (string)($conf['language'] ?? 'current'));
+        $frontendTypoScriptConfigArray = $this->contentObjectRenderer->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray();
 
         // By default, it is assumed to ab an internal link or current domain's linking scheme should be used
         // Use the config option to override this.
         // Global option config.forceAbsoluteUrls = 1 overrides any setting for this specific link
-        if ($tsfe->config['config']['forceAbsoluteUrls'] ?? false) {
+        if ($frontendTypoScriptConfigArray['forceAbsoluteUrls'] ?? false) {
             $useAbsoluteUrl = true;
         } else {
             $useAbsoluteUrl = $conf['forceAbsoluteUrl'] ?? false;
@@ -553,7 +555,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             && $currentSiteLanguage === $siteLanguageOfTargetPage
             && $targetPageId === ($this->contentObjectRenderer->getRequest()->getAttribute('frontend.page.information')?->getId() ?? 0)
             && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
-            && !($tsfe->config['config']['baseURL'] ?? false)
+            && !($frontendTypoScriptConfigArray['baseURL'] ?? false)
             && count($queryParameters) === 1 // _language is always set
         ) {
             $uri = (new Uri())->withFragment($fragment);
@@ -645,12 +647,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     public function getMountPointParameterFromRootPointMaps(int $pageId): string
     {
         // Create map if not found already
-        $config = $this->getTypoScriptFrontendController()->config;
+        $frontendTypoScriptConfigArray = $this->contentObjectRenderer->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray();
         $mountPointMap = $this->initializeMountPointMap(
-            !empty($config['config']['MP_defaults']) ? $config['config']['MP_defaults'] : '',
-            !empty($config['config']['MP_mapRootPoints']) ? $config['config']['MP_mapRootPoints'] : ''
+            !empty($frontendTypoScriptConfigArray['MP_defaults']) ? $frontendTypoScriptConfigArray['MP_defaults'] : '',
+            !empty($frontendTypoScriptConfigArray['MP_mapRootPoints']) ? $frontendTypoScriptConfigArray['MP_mapRootPoints'] : ''
         );
-
         // Finding MP var for Page ID:
         if (!empty($mountPointMap[$pageId])) {
             return implode(',', $mountPointMap[$pageId]);

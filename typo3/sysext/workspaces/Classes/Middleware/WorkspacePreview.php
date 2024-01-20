@@ -24,6 +24,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -39,7 +40,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\RouteResultInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Event\AfterTypoScriptDeterminedEvent;
 use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
 
 /**
@@ -50,16 +51,17 @@ use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
  *
  * @internal
  */
-class WorkspacePreview implements MiddlewareInterface
+final class WorkspacePreview implements MiddlewareInterface
 {
     use CookieHeaderTrait;
 
     /**
      * The GET parameter to be used (also the cookie name)
-     *
-     * @var string
      */
-    protected $previewKey = 'ADMCMD_prev';
+    private const PREVIEW_KEY = 'ADMCMD_prev';
+
+    private bool $previewNotificationEnabled = false;
+    private ?string $previewMessage = null;
 
     public function __construct(private readonly Context $context) {}
 
@@ -76,9 +78,8 @@ class WorkspacePreview implements MiddlewareInterface
         $keyword = $this->getPreviewInputCode($request);
         $setCookieOnCurrentRequest = false;
         $normalizedParams = $request->getAttribute('normalizedParams');
-        $context = GeneralUtility::makeInstance(Context::class);
 
-        // First, if a Log out is happening, a custom HTML output page is shown and the request exits with removing
+        // First, if a Log-out is happening, a custom HTML output page is shown and the request exits with removing
         // the cookie for the backend preview.
         if ($keyword === 'LOGOUT') {
             // "log out", and unset the cookie
@@ -87,7 +88,7 @@ class WorkspacePreview implements MiddlewareInterface
             return $this->addCookie('', $normalizedParams, $response);
         }
 
-        // If the keyword is ignore, then the preview is not managed as "Preview User" but handled
+        // If the keyword is "IGNORE", then the preview is not managed as "Preview User" but handled
         // via the regular backend user or even no user if the GET parameter ADMCMD_noBeUser is set
         if (!empty($keyword) && $keyword !== 'IGNORE' && $keyword !== 'LIVE') {
             $routeResult = $request->getAttribute('routing', null);
@@ -103,7 +104,7 @@ class WorkspacePreview implements MiddlewareInterface
                     $this->setBackendUserAspect($previewUser);
                     // If the GET parameter is set, and we have a valid Preview User, the cookie needs to be
                     // set and the GET parameter should be removed.
-                    $setCookieOnCurrentRequest = $request->getQueryParams()[$this->previewKey] ?? false;
+                    $setCookieOnCurrentRequest = $request->getQueryParams()[self::PREVIEW_KEY] ?? false;
                 }
             }
         }
@@ -125,9 +126,8 @@ class WorkspacePreview implements MiddlewareInterface
         $response = $handler->handle($request);
 
         // Add an info box to the frontend content
-        $tsfe = $this->getTypoScriptFrontendController();
-        if ($tsfe !== null && $context->getPropertyFromAspect('workspace', 'isOffline', false)) {
-            $previewInfo = $this->renderPreviewInfo($tsfe, $request->getUri());
+        if ($this->context->getPropertyFromAspect('workspace', 'isOffline', false)) {
+            $previewInfo = $this->renderPreviewInfo($request->getUri());
             $body = $response->getBody();
             $body->rewind();
             $content = $body->getContents();
@@ -145,10 +145,29 @@ class WorkspacePreview implements MiddlewareInterface
     }
 
     /**
+     * This middleware is run pretty early in the FE chain to initialize correctly.
+     * To render the preview information however, it depends on TypoScript 'config',
+     * which is not available in the incoming Request, yet.
+     * It thus listens on the AfterTypoScriptDeterminedEvent to determine its preview
+     * details.
+     */
+    #[AsEventListener('typo3-workspaces/workspace-preview-middleware')]
+    public function typoScriptDeterminedListener(AfterTypoScriptDeterminedEvent $event): void
+    {
+        $typoScriptConfig = $event->getFrontendTypoScript()->getConfigArray();
+        if (!isset($typoScriptConfig['disablePreviewNotification']) || (int)$typoScriptConfig['disablePreviewNotification'] !== 1) {
+            $this->previewNotificationEnabled = true;
+        }
+        if ($typoScriptConfig['message_preview_workspace'] ?? false) {
+            $this->previewMessage = $typoScriptConfig['message_preview_workspace'];
+        }
+    }
+
+    /**
      * Renders the logout template when the "logout" button was pressed.
      * Returns a string which can be put into a HttpResponse.
      */
-    protected function getLogoutTemplateMessage(UriInterface $currentUrl): string
+    private function getLogoutTemplateMessage(UriInterface $currentUrl): string
     {
         $currentUrl = $this->removePreviewParameterFromUrl($currentUrl);
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['workspacePreviewLogoutTemplate']) {
@@ -175,14 +194,14 @@ class WorkspacePreview implements MiddlewareInterface
      * When the frontend is requested with this keyword the associated request parameters are
      * restored from the database AND the backend user is loaded - only for that request.
      * The main point is that a special URL valid for a limited time,
-     * eg. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will
+     * e.g. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will
      * open up for a preview that doesn't require login. Thus, it's useful for sending in an email
      * to someone without backend account.
      *
      * @return int|null Workspace ID stored in the preview configuration array of a sys_preview record.
      * @throws \Exception
      */
-    protected function getWorkspaceIdFromRequest(string $inputCode): ?int
+    private function getWorkspaceIdFromRequest(string $inputCode): ?int
     {
         $previewData = $this->getPreviewData($inputCode);
         if (!is_array($previewData)) {
@@ -203,7 +222,7 @@ class WorkspacePreview implements MiddlewareInterface
      * @param int $workspaceUid the workspace ID to set
      * @return PreviewUserAuthentication|null if the set up of the workspace was successful, the user is returned.
      */
-    protected function initializePreviewUser(int $workspaceUid): ?PreviewUserAuthentication
+    private function initializePreviewUser(int $workspaceUid): ?PreviewUserAuthentication
     {
         $previewUser = GeneralUtility::makeInstance(PreviewUserAuthentication::class);
         if ($previewUser->setTemporaryWorkspace($workspaceUid)) {
@@ -215,7 +234,7 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Adds a cookie for logging in a preview user into the HTTP response
      */
-    protected function addCookie(string $keyword, NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
+    private function addCookie(string $keyword, NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
     {
         $cookieSameSite = $this->sanitizeSameSiteCookieValue(
             strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
@@ -224,7 +243,7 @@ class WorkspacePreview implements MiddlewareInterface
         $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || $normalizedParams->isHttps();
 
         $cookie = new Cookie(
-            $this->previewKey,
+            self::PREVIEW_KEY,
             $keyword,
             0,
             $normalizedParams->getSitePath(),
@@ -239,13 +258,11 @@ class WorkspacePreview implements MiddlewareInterface
 
     /**
      * Returns the input code value from the admin command variable
-     * If no inputcode and a cookie is set, load input code from cookie
-     *
-     * @return string keyword
+     * If no input code and a cookie is set, load input code from cookie
      */
-    protected function getPreviewInputCode(ServerRequestInterface $request): string
+    private function getPreviewInputCode(ServerRequestInterface $request): string
     {
-        return $request->getQueryParams()[$this->previewKey] ?? $request->getCookieParams()[$this->previewKey] ?? '';
+        return $request->getQueryParams()[self::PREVIEW_KEY] ?? $request->getCookieParams()[self::PREVIEW_KEY] ?? '';
     }
 
     /**
@@ -253,22 +270,15 @@ class WorkspacePreview implements MiddlewareInterface
      *
      * @return mixed array of the result set or null
      */
-    protected function getPreviewData(string $keyword)
+    private function getPreviewData(string $keyword)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_preview');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_preview');
         return $queryBuilder
             ->select('*')
             ->from('sys_preview')
             ->where(
-                $queryBuilder->expr()->eq(
-                    'keyword',
-                    $queryBuilder->createNamedParameter($keyword)
-                ),
-                $queryBuilder->expr()->gt(
-                    'endtime',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
-                )
+                $queryBuilder->expr()->eq('keyword', $queryBuilder->createNamedParameter($keyword)),
+                $queryBuilder->expr()->gt('endtime', $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT))
             )
             ->setMaxResults(1)
             ->executeQuery()
@@ -276,33 +286,23 @@ class WorkspacePreview implements MiddlewareInterface
     }
 
     /**
-     * Code regarding adding a custom preview message, when previewing a workspace
-     */
-    /**
      * Renders a message at the bottom of the HTML page, can be modified via
-     *
      *   config.disablePreviewNotification = 1 (to disable the additional info text)
-     *
      * and
-     *
      *   config.message_preview_workspace = This is not the online version but the version of "%s" workspace (ID: %s).
-     *
      * via TypoScript.
-     *
-     * @param TypoScriptFrontendController $tsfe
-     * @param UriInterface $currentUrl
      */
-    protected function renderPreviewInfo(TypoScriptFrontendController $tsfe, UriInterface $currentUrl): string
+    private function renderPreviewInfo(UriInterface $currentUrl): string
     {
         $content = '';
-        if (!isset($tsfe->config['config']['disablePreviewNotification']) || (int)$tsfe->config['config']['disablePreviewNotification'] !== 1) {
+        if ($this->previewNotificationEnabled) {
             // get the title of the current workspace
             $currentWorkspaceId = $this->context->getPropertyFromAspect('workspace', 'id', 0);
             $currentWorkspaceTitle = $this->getWorkspaceTitle($currentWorkspaceId);
             $currentWorkspaceTitle = htmlspecialchars($currentWorkspaceTitle);
-            if ($tsfe->config['config']['message_preview_workspace'] ?? false) {
+            if ($this->previewMessage !== null) {
                 $content = sprintf(
-                    $tsfe->config['config']['message_preview_workspace'],
+                    $this->previewMessage,
                     $currentWorkspaceTitle,
                     $currentWorkspaceId
                 );
@@ -340,13 +340,10 @@ class WorkspacePreview implements MiddlewareInterface
 
     /**
      * Fetches the title of the workspace
-     *
-     * @return string the title of the workspace
      */
-    protected function getWorkspaceTitle(int $workspaceId): string
+    private function getWorkspaceTitle(int $workspaceId): string
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_workspace');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
         $title = $queryBuilder
             ->select('title')
             ->from('sys_workspace')
@@ -364,23 +361,23 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Used for generating URLs (e.g. in logout page) without the existing ADMCMD_prev keyword as GET variable
      */
-    protected function removePreviewParameterFromUrl(UriInterface $url, string $newAdminCommand = ''): UriInterface
+    private function removePreviewParameterFromUrl(UriInterface $url, string $newAdminCommand = ''): UriInterface
     {
         $queryString = $url->getQuery();
         if (!empty($queryString)) {
             $queryStringParts = GeneralUtility::explodeUrl2Array($queryString);
-            unset($queryStringParts[$this->previewKey]);
+            unset($queryStringParts[self::PREVIEW_KEY]);
         } else {
             $queryStringParts = [];
         }
         if ($newAdminCommand !== '') {
-            $queryStringParts[$this->previewKey] = $newAdminCommand;
+            $queryStringParts[self::PREVIEW_KEY] = $newAdminCommand;
         }
         $queryString = http_build_query($queryStringParts, '', '&', PHP_QUERY_RFC3986);
         return $url->withQuery($queryString);
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'] ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
@@ -388,14 +385,9 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Register or override the backend user as aspect, as well as the workspace information the user object is holding
      */
-    protected function setBackendUserAspect(BackendUserAuthentication $user = null)
+    private function setBackendUserAspect(BackendUserAuthentication $user = null)
     {
         $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
         $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
-    }
-
-    protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'] ?? null;
     }
 }

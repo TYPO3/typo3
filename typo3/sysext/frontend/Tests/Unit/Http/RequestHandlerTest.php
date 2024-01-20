@@ -136,20 +136,16 @@ final class RequestHandlerTest extends UnitTestCase
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray([
-            'page' => 'PAGE',
-            'page.' => [
-                'meta.' => [
-                    'refresh' => '10',
-                    'refresh.' => [
-                        'attribute' => 'http-equiv-new',
-                    ],
+        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setPageArray([
+            'meta.' => [
+                'refresh' => '10',
+                'refresh.' => [
+                    'attribute' => 'http-equiv-new',
                 ],
             ],
-            'types.' => [
-                '0' => 'page',
-            ],
         ]);
+        $frontendTypoScript->setConfigArray([]);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('routing', new PageArguments(1, '0', []))
@@ -295,9 +291,6 @@ final class RequestHandlerTest extends UnitTestCase
         $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
         $frontendController = $frontendControllerMock;
         $frontendController->cObj = $contentObjectRendererMock;
-        $frontendController->config = [
-            'config' => [],
-        ];
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
@@ -306,15 +299,11 @@ final class RequestHandlerTest extends UnitTestCase
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $pageRendererMock->expects(self::once())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray([
-            'page' => 'PAGE',
-            'page.' => [
-                'meta.' => $typoScript,
-            ],
-            'types.' => [
-                '0' => 'page',
-            ],
+        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setPageArray([
+            'meta.' => $typoScript,
         ]);
+        $frontendTypoScript->setConfigArray([]);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('routing', new PageArguments(1, '0', []))
@@ -351,9 +340,6 @@ final class RequestHandlerTest extends UnitTestCase
         $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
         $frontendController = $frontendControllerMock;
         $frontendController->cObj = $contentObjectRendererMock;
-        $frontendController->config = [
-            'config' => [],
-        ];
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
@@ -362,17 +348,13 @@ final class RequestHandlerTest extends UnitTestCase
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $pageRendererMock->expects(self::never())->method('setMetaTag');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray([
-            'page' => 'PAGE',
-            'page.' => [
-                'meta.' => [
-                    'custom:key' => '',
-                ],
-            ],
-            'types.' => [
-                '0' => 'page',
+        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setPageArray([
+            'meta.' => [
+                'custom:key' => '',
             ],
         ]);
+        $frontendTypoScript->setConfigArray([]);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('routing', new PageArguments(1, '0', []))
@@ -463,9 +445,6 @@ final class RequestHandlerTest extends UnitTestCase
         $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
         $frontendController = $frontendControllerMock;
         $frontendController->cObj = $contentObjectRendererMock;
-        $frontendController->config = [
-            'config' => [],
-        ];
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('This website is...');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
@@ -488,15 +467,11 @@ final class RequestHandlerTest extends UnitTestCase
                 self::assertSame($expectedArgs[4], $replace);
             });
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray([
-            'page' => 'PAGE',
-            'page.' => [
-                'meta.' => $typoScript,
-            ],
-            'types.' => [
-                '0' => 'page',
-            ],
+        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setPageArray([
+            'meta.' => $typoScript,
         ]);
+        $frontendTypoScript->setConfigArray([]);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('routing', new PageArguments(1, '0', []))

@@ -48,7 +48,8 @@ readonly class CanonicalGenerator
 
         $href = '';
         try {
-            if ($request->getAttribute('frontend.controller')->config['config']['disableCanonical'] ?? false) {
+            $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+            if ($typoScriptConfigArray['disableCanonical'] ?? false) {
                 throw new CanonicalGenerationDisabledException('Generation of the canonical tag is disabled via TypoScript "disableCanonical"', 1706104146);
             }
             if ((int)$pageRecord['no_index'] === 1) {

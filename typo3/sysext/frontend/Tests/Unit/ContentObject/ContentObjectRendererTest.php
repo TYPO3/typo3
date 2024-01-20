@@ -146,7 +146,6 @@ final class ContentObjectRendererTest extends UnitTestCase
             );
         $this->frontendControllerMock->_set('context', GeneralUtility::makeInstance(Context::class));
         $this->frontendControllerMock->config = [];
-        $GLOBALS['TSFE'] = $this->frontendControllerMock;
 
         $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
         GeneralUtility::setSingletonInstance(CacheManager::class, $this->cacheManagerMock);
@@ -1318,6 +1317,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $this->subject->setRequest($request);
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
+        $GLOBALS['TSFE'] = $this->frontendControllerMock;
         $GLOBALS['TSFE']->register[$key] = $value;
         self::assertEquals($value, $this->subject->getData('register:' . $key));
     }
@@ -1870,6 +1870,7 @@ final class ContentObjectRendererTest extends UnitTestCase
 
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
+        $GLOBALS['TSFE'] = $this->frontendControllerMock;
         $GLOBALS['TSFE']->register = [$key => $value];
 
         $expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
@@ -1924,10 +1925,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $this->subject->setRequest($request);
-
-        $result = $this->subject->getData('applicationContext');
-
-        self::assertSame('Production', $result);
+        self::assertSame('Production', $this->subject->getData('applicationContext'));
     }
 
     /**
@@ -1937,8 +1935,12 @@ final class ContentObjectRendererTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1414513947);
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture(false);
-        $this->subject->render($contentObjectFixture, []);
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject, false);
+        $this->subject->render($contentObjectFixture);
     }
 
     /**
@@ -1957,8 +1959,12 @@ final class ContentObjectRendererTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-        $this->subject->render($contentObjectFixture, []);
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
+        $this->subject->render($contentObjectFixture);
     }
 
     /**
@@ -1966,11 +1972,14 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function renderingContentObjectDoesNotThrowExceptionIfExceptionHandlerIsConfiguredLocally(): void
     {
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
         $configuration = [
             'exceptionHandler' => '1',
         ];
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
         $this->subject->render($contentObjectFixture, $configuration);
     }
 
@@ -1979,10 +1988,14 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function renderingContentObjectDoesNotThrowExceptionIfExceptionHandlerIsConfiguredGlobally(): void
     {
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-
-        $this->frontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
-        $this->subject->render($contentObjectFixture, []);
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([
+            'contentObjectExceptionHandler' => '1',
+        ]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
+        $this->subject->render($contentObjectFixture);
     }
 
     /**
@@ -1990,10 +2003,15 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function globalExceptionHandlerConfigurationCanBeOverriddenByLocalConfiguration(): void
     {
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture(false);
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1414513947);
-        $this->frontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject, false);
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([
+            'contentObjectExceptionHandler' => '1',
+        ]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
         $configuration = [
             'exceptionHandler' => '0',
         ];
@@ -2005,15 +2023,17 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function renderedErrorMessageCanBeCustomized(): void
     {
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
         $configuration = [
             'exceptionHandler' => '1',
             'exceptionHandler.' => [
                 'errorMessage' => 'New message for testing',
             ],
         ];
-
         self::assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
     }
 
@@ -2022,12 +2042,15 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function localConfigurationOverridesGlobalConfiguration(): void
     {
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-
-        $this->frontendControllerMock
-            ->config['config']['contentObjectExceptionHandler.'] = [
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([
+            'contentObjectExceptionHandler.' => [
                 'errorMessage' => 'Global message for testing',
-            ];
+            ],
+        ]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
         $configuration = [
             'exceptionHandler' => '1',
             'exceptionHandler.' => [
@@ -2043,29 +2066,31 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function specificExceptionsCanBeIgnoredByExceptionHandler(): void
     {
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
-
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1414513947);
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
         $configuration = [
             'exceptionHandler' => '1',
             'exceptionHandler.' => [
                 'ignoreCodes.' => ['10.' => '1414513947'],
             ],
         ];
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionCode(1414513947);
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
         $this->subject->render($contentObjectFixture, $configuration);
     }
 
-    private function createContentObjectThrowingExceptionFixture(bool $addProductionExceptionHandlerInstance = true): AbstractContentObject&MockObject
+    private function createContentObjectThrowingExceptionFixture(ContentObjectRenderer $subject, bool $addProductionExceptionHandlerInstance = true): AbstractContentObject&MockObject
     {
-        $contentObjectFixture = $this->getMockBuilder(AbstractContentObject::class)
-            ->getMock();
+        $contentObjectFixture = $this->getMockBuilder(AbstractContentObject::class)->getMock();
         $contentObjectFixture->expects(self::once())
             ->method('render')
             ->willReturnCallback(static function (array $conf = []): string {
                 throw new \LogicException('Exception during rendering', 1414513947);
             });
-        $contentObjectFixture->setContentObjectRenderer($this->subject);
+        $contentObjectFixture->setContentObjectRenderer($subject);
         if ($addProductionExceptionHandlerInstance) {
             GeneralUtility::addInstance(
                 ProductionExceptionHandler::class,
@@ -2134,6 +2159,10 @@ final class ContentObjectRendererTest extends UnitTestCase
             $linkFactory->method('create')->willReturn($linkResult);
             GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         }
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
         self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
 
@@ -2404,6 +2433,10 @@ final class ContentObjectRendererTest extends UnitTestCase
      */
     public function parseFuncParsesNestedTagsProperly(string $value, array $configuration, string $expectedResult): void
     {
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
         self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
 
@@ -3922,7 +3955,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $context = new Context();
         $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('2023-02-02 13:05:00')));
         GeneralUtility::setSingletonInstance(Context::class, $context);
-        $subject = new ContentObjectRenderer($this->frontendControllerMock);
+        $subject = new ContentObjectRenderer();
         $site = $this->createSiteWithLanguage([
             'base' => '/',
             'languageId' => 2,
@@ -6102,12 +6135,14 @@ final class ContentObjectRendererTest extends UnitTestCase
         int $times,
         string $will
     ): void {
-        $this->frontendControllerMock
-            ->config['config']['disablePrefixComment'] = $disable;
-        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->onlyMethods(['prefixComment'])->getMock();
-        $subject
-            ->expects(self::exactly($times))
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([
+            'disablePrefixComment' => $disable,
+        ]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)->onlyMethods(['prefixComment'])->getMock();
+        $subject->setRequest($request);
+        $subject->expects(self::exactly($times))
             ->method('prefixComment')
             ->with($conf['prefixComment'] ?? null, [], $content)
             ->willReturn($will);

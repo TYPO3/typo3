@@ -65,8 +65,9 @@ abstract class AbstractTypolinkBuilder
      */
     protected function forceAbsoluteUrl(string $url, array $configuration): string
     {
-        $tsfe = $this->getTypoScriptFrontendController();
-        if ($tsfe->config['config']['forceAbsoluteUrls'] ?? false) {
+        $request = $this->contentObjectRenderer->getRequest();
+        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
+        if ($frontendTypoScriptConfigArray['forceAbsoluteUrls'] ?? false) {
             $forceAbsoluteUrl = true;
         } else {
             $forceAbsoluteUrl = !empty($configuration['forceAbsoluteUrl']);
@@ -81,7 +82,7 @@ abstract class AbstractTypolinkBuilder
             $isUrlModified = false;
             // Set scheme and host if not yet part of the URL
             if (empty($urlParts['host'])) {
-                $normalizedParams = $this->contentObjectRenderer->getRequest()->getAttribute('normalizedParams');
+                $normalizedParams = $request->getAttribute('normalizedParams');
                 // @todo: This fallback should vanish mid-term: typolink has a dependency to ServerRequest
                 //        and should expect the normalizedParams argument is properly set as well. When for
                 //        instance CLI triggers this code, it should have set up a proper request.
@@ -92,7 +93,7 @@ abstract class AbstractTypolinkBuilder
                 // absRefPrefix has been prepended to $url beforehand
                 // so we only modify the path if no absRefPrefix has been set
                 // otherwise we would destroy the path
-                if ($tsfe->absRefPrefix === '') {
+                if ($this->getTypoScriptFrontendController()->absRefPrefix === '') {
                     $urlParts['path'] = $normalizedParams->getSitePath() . ltrim($urlParts['path'], '/');
                 }
                 $isUrlModified = true;
@@ -175,14 +176,14 @@ abstract class AbstractTypolinkBuilder
         if (isset($conf[$name]) && $conf[$name] !== '') {
             $target = $conf[$name];
         } elseif (!($conf['directImageLink'] ?? false)) {
-            $tsfe = $this->getTypoScriptFrontendController();
+            $frontendTypoScriptConfigArray = $this->contentObjectRenderer->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray();
             switch ($name) {
                 case 'extTarget':
                 case 'fileTarget':
-                    $target = (string)($tsfe->config['config'][$name] ?? '');
+                    $target = (string)($frontendTypoScriptConfigArray[$name] ?? '');
                     break;
                 case 'target':
-                    $target = (string)($tsfe->config['config']['intTarget'] ?? '');
+                    $target = (string)($frontendTypoScriptConfigArray['intTarget'] ?? '');
                     break;
             }
         }
@@ -192,7 +193,7 @@ abstract class AbstractTypolinkBuilder
         return $target;
     }
 
-    public function getTypoScriptFrontendController(): TypoScriptFrontendController
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         if ($this->typoScriptFrontendController instanceof TypoScriptFrontendController) {
             return $this->typoScriptFrontendController;

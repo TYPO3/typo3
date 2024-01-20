@@ -33,6 +33,8 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
@@ -671,9 +673,11 @@ final class ContentObjectRendererTest extends FunctionalTestCase
      */
     public function typolinkReturnsCorrectLinkForSpamEncryptedEmails(array $tsfeConfig, string $linkText, string $parameter, string $expected): void
     {
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $tsfe->config['config'] = $tsfeConfig;
-        $subject = new ContentObjectRenderer($tsfe);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setConfigArray($tsfeConfig);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $subject = new ContentObjectRenderer();
+        $subject->setRequest($request);
         self::assertEquals($expected, $subject->typoLink($linkText, ['parameter' => $parameter]));
     }
 
@@ -804,7 +808,9 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $tsfe->absRefPrefix = $absRefPrefix;
+        $request = new ServerRequest();
         $subject = new ContentObjectRenderer($tsfe);
+        $subject->setRequest($request);
         self::assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
     }
 
@@ -910,7 +916,10 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $subject = new ContentObjectRenderer($tsfe);
-        $subject->setRequest($this->getPreparedRequest());
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = $this->getPreparedRequest()->withAttribute('frontend.typoscript', $typoScript);
+        $subject->setRequest($request);
         $subject->setLogger(new NullLogger());
         $input = 'This is a simple inline text, no wrapping configured';
         $result = $subject->parseFunc($input, $this->getLibParseFunc());
@@ -1197,11 +1206,13 @@ And another one';
             'crop' => '{"default":{"cropArea":{"x":0,"y":0,"width":1,"height":1},"selectedRatio":"NaN","focusArea":null}}',
         ];
         $fileReference = new FileReference($fileReferenceData);
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('test');
         $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
         $subject->setCurrentFile($fileReference);
-        $subject->setRequest($this->getPreparedRequest());
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = $this->getPreparedRequest()->withAttribute('frontend.typoscript', $typoScript);
+        $subject->setRequest($request);
         $result = $subject->imageLinkWrap($content, $fileReference, $configuration);
 
         foreach ($expected as $expectedString => $shouldContain) {

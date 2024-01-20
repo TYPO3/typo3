@@ -25,7 +25,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * Render the admin panel via PSR-15 middleware
@@ -44,10 +43,9 @@ readonly class AdminPanelRenderer implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if (
-            $request->getAttribute('frontend.page.information') instanceof PageInformation
-            && StateUtility::isActivatedForUser()
-            && StateUtility::isActivatedInTypoScript()
+        $typoScriptConfig = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        if (StateUtility::isActivatedForUser()
+            && ($typoScriptConfig['admPanel'] ?? false)
             && !StateUtility::isHiddenForUser()
         ) {
             $body = $response->getBody();

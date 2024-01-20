@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Middleware;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Frontend\Event\AfterTypoScriptDeterminedEvent;
 
 /**
  * Initialization of TypoScriptFrontendController
@@ -33,6 +35,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 final class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 {
     public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly TimeTracker $timeTracker
     ) {}
 
@@ -49,9 +52,13 @@ final class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 
         $this->timeTracker->push('Get Page from cache');
         // Get from cache. Locks may be acquired here. After this, we should have a valid config-array ready.
-        $request = $controller->getFromCache($request);
+        $frontendTypoScript = $controller->getFromCache($request);
+        $this->eventDispatcher->dispatch(new AfterTypoScriptDeterminedEvent($frontendTypoScript));
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $this->timeTracker->pull();
 
+        // b/w compat
+        $controller->config['config'] = $request->getAttribute('frontend.typoscript')->getConfigArray();
         // Set new request which now has the frontend.typoscript attribute
         $GLOBALS['TYPO3_REQUEST'] = $request;
 

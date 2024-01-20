@@ -21,6 +21,8 @@ use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
@@ -180,6 +182,9 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         ];
         $pageInformation->setPageRecord($pageRecord);
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript->setConfigArray([]);
+        $request = $request->withAttribute('frontend.typoscript', $typoScript);
         $this->get(CanonicalGenerator::class)->generate(['request' => $request]);
 
         self::assertInstanceOf(ModifyUrlForCanonicalTagEvent::class, $modifyUrlForCanonicalTagEvent);

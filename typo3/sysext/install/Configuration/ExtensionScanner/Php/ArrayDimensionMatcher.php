@@ -1134,4 +1134,19 @@ return [
             'Breaking-102931-GifBuilderHookRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'configArrayPostProc\']' => [
+        'restFiles' => [
+            'Breaking-102932-RemovedTypoScriptFrontendControllerHooks.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'pageLoadedFromCache\']' => [
+        'restFiles' => [
+            'Breaking-102932-RemovedTypoScriptFrontendControllerHooks.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'createHashBase\']' => [
+        'restFiles' => [
+            'Breaking-102932-RemovedTypoScriptFrontendControllerHooks.rst',
+        ],
+    ],
 ];

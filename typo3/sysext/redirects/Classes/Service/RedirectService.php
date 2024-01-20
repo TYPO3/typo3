@@ -402,7 +402,8 @@ class RedirectService implements LoggerAwareInterface
         $originalRequest = $originalRequest->withAttribute('frontend.page.information', $pageInformation);
         $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $controller->initializePageRenderer($originalRequest);
-        $newRequest = $controller->getFromCache($originalRequest);
+        $frontendTypoScript = $controller->getFromCache($originalRequest);
+        $newRequest = $originalRequest->withAttribute('frontend.typoscript', $frontendTypoScript);
         $controller->releaseLocks();
         $controller->newCObj($newRequest);
         if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {

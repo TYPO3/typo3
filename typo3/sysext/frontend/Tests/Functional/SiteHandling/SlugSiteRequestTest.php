@@ -376,7 +376,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
             $response->getStatusCode()
         );
         self::assertStringContainsString(
-            'message: The page is not configured',
+            'message: No page configured for type=13.',
             (string)$response->getBody()
         );
     }

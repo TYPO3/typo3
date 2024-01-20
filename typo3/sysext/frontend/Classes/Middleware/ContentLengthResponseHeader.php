@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Add content-length HTTP header to the response.
@@ -33,25 +32,20 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * @internal
  */
-class ContentLengthResponseHeader implements MiddlewareInterface
+final readonly class ContentLengthResponseHeader implements MiddlewareInterface
 {
-    public function __construct(private readonly Context $context) {}
+    public function __construct(private Context $context) {}
 
-    /**
-     * Adds the content length
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        $tsfe = $request->getAttribute('frontend.controller');
-        if ($tsfe instanceof TypoScriptFrontendController) {
-            if (
-                (!isset($tsfe->config['config']['enableContentLengthHeader']) || $tsfe->config['config']['enableContentLengthHeader'])
-                && !$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
-                && !$this->context->getPropertyFromAspect('workspace', 'isOffline', false)
-            ) {
-                $response = $response->withHeader('Content-Length', (string)$response->getBody()->getSize());
-            }
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        if (
+            (!isset($typoScriptConfigArray['enableContentLengthHeader']) || $typoScriptConfigArray['enableContentLengthHeader'])
+            && !$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
+            && !$this->context->getPropertyFromAspect('workspace', 'isOffline', false)
+        ) {
+            $response = $response->withHeader('Content-Length', (string)$response->getBody()->getSize());
         }
         return $response;
     }

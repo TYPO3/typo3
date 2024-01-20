@@ -70,8 +70,9 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
         }
 
         // no processing happened, therefore, the default processing kicks in
-        $tsfe = $this->getTypoScriptFrontendController();
-        $spamProtectEmailAddresses = (int)($tsfe->config['config']['spamProtectEmailAddresses'] ?? 0);
+        $request = $this->contentObjectRenderer->getRequest();
+        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
+        $spamProtectEmailAddresses = (int)($frontendTypoScriptConfigArray['spamProtectEmailAddresses'] ?? 0);
         $spamProtectEmailAddresses = MathUtility::forceIntegerInRange($spamProtectEmailAddresses, -10, 10);
 
         if ($spamProtectEmailAddresses !== 0) {
@@ -81,14 +82,14 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
                 'data-mailto-vector' => $spamProtectEmailAddresses,
             ];
             $mailToUrl = '#';
-            $this->addDefaultFrontendJavaScript();
+            $this->addDefaultFrontendJavaScript($request);
             $atLabel = '(at)';
-            if (($atLabelFromConfig = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst'] ?? '')) !== '') {
+            if (($atLabelFromConfig = trim($frontendTypoScriptConfigArray['spamProtectEmailAddresses_atSubst'] ?? '')) !== '') {
                 $atLabel = $atLabelFromConfig;
             }
             $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));
-            if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst'] ?? false) {
-                $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
+            if ($frontendTypoScriptConfigArray['spamProtectEmailAddresses_lastDotSubst'] ?? false) {
+                $lastDotLabel = trim($frontendTypoScriptConfigArray['spamProtectEmailAddresses_lastDotSubst']);
                 $lastDotLabel = $lastDotLabel ?: '(dot)';
                 $spamProtectedMailAddress = preg_replace('/\\.([^\\.]+)$/', $lastDotLabel . '$1', $spamProtectedMailAddress);
                 if ($spamProtectedMailAddress === null) {

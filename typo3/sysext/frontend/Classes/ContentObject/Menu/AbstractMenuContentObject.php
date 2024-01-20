@@ -1208,19 +1208,16 @@ abstract class AbstractMenuContentObject
             return $runtimeCachedLink;
         }
 
-        $tsfe = $this->getTypoScriptFrontendController();
+        $typoScript = $this->request->getAttribute('frontend.typoscript');
+        $backupSetupConfigArray = $hackedSetupConfigArray = $typoScript->getConfigArray();
 
-        $SAVED_link_to_restricted_pages = '';
-        $SAVED_link_to_restricted_pages_additional_params = '';
-        $SAVED_link_to_restricted_pages_tag_attributes = '';
         // links to a specific page
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
-            $SAVED_link_to_restricted_pages = $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false;
-            $SAVED_link_to_restricted_pages_additional_params = $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] ?? null;
-            $SAVED_link_to_restricted_pages_tag_attributes = $tsfe->config['config']['typolinkLinkAccessRestrictedPages.']['ATagParams'] ?? '';
-            $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] = $this->mconf['showAccessRestrictedPages'];
-            $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] = $this->mconf['showAccessRestrictedPages.']['addParams'] ?? '';
-            $tsfe->config['config']['typolinkLinkAccessRestrictedPages.']['ATagParams'] = $this->mconf['showAccessRestrictedPages.']['ATagParams'] ?? '';
+            // @todo: Resetting config is a hack. This needs to be resolved differently. Consumed in PageLinkBuilder.
+            $hackedSetupConfigArray['typolinkLinkAccessRestrictedPages'] = $this->mconf['showAccessRestrictedPages'];
+            $hackedSetupConfigArray['typolinkLinkAccessRestrictedPages_addParams'] = $this->mconf['showAccessRestrictedPages.']['addParams'] ?? '';
+            $hackedSetupConfigArray['typolinkLinkAccessRestrictedPages.']['ATagParams'] = $this->mconf['showAccessRestrictedPages.']['ATagParams'] ?? '';
+            $typoScript->setConfigArray($hackedSetupConfigArray);
         }
         // If a user script returned the value overrideId in the menu array we use that as page id
         if (($this->mconf['overrideId'] ?? false) || ($this->menuArr[$key]['overrideId'] ?? false)) {
@@ -1253,9 +1250,7 @@ abstract class AbstractMenuContentObject
 
         // End showAccessRestrictedPages
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
-            $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] = $SAVED_link_to_restricted_pages;
-            $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] = $SAVED_link_to_restricted_pages_additional_params;
-            $tsfe->config['config']['typolinkLinkAccessRestrictedPages.']['ATagParams'] = $SAVED_link_to_restricted_pages_tag_attributes;
+            $typoScript->setConfigArray($backupSetupConfigArray);
         }
 
         return $linkResult;

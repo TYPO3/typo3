@@ -102,9 +102,8 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
      */
     private function getPageTitleProviderConfiguration(ServerRequestInterface $request): array
     {
-        $tsfe = $request->getAttribute('frontend.controller');
         $config = $this->typoScriptService->convertTypoScriptArrayToPlainArray(
-            $tsfe->config['config'] ?? []
+            $request->getAttribute('frontend.typoscript')->getConfigArray()
         );
         return $config['pageTitleProviders'] ?? [];
     }

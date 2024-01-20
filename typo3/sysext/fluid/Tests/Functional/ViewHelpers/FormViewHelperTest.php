@@ -263,6 +263,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupTree(new RootNode());
         $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setConfigArray([]);
         $serverRequest = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)

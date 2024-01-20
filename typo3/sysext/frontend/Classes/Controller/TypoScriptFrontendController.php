@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Error\Http\AbstractServerErrorException;
+use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
+use TYPO3\CMS\Core\TypoScript\AST\Merger\SetupConfigMerger;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -60,6 +61,8 @@ use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
+use TYPO3\CMS\Frontend\Event\BeforePageCacheIdentifierIsHashedEvent;
+use TYPO3\CMS\Frontend\Event\ModifyTypoScriptConfigEvent;
 use TYPO3\CMS\Frontend\Event\ModifyTypoScriptConstantsEvent;
 use TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -129,6 +132,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * 'INTincScript': (internal) List of INT instructions
      * 'INTincScript_ext': (internal) Further state for INT instructions
+     * 'pageTitleCache': (internal)
      *
      * Read-only! Extensions may read but never write this property!
      *
@@ -150,6 +154,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Set to the expiry time of cached content
      */
     protected int $cacheExpires = 0;
+    private int $cacheGenerated = 0;
 
     /**
      * This hash is unique to the page id, involved TS templates, TS condition verdicts, and
@@ -264,7 +269,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * If debug mode is enabled, this contains the information if a page is fetched from cache,
      * and sent as HTTP Response Header.
      */
-    protected string $debugInformationHeader = '';
+    protected ?string $debugInformationHeader = null;
 
     /**
      * @internal Extensions should usually not need to create own instances of TSFE
@@ -342,8 +347,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * and to prepare TypoScript as far as really needed.
      *
      * @throws PropagateResponseException
-     * @throws AbstractServerErrorException
-     * @return ServerRequestInterface New request object with typoscript attribute
+     * @throws StatusException
      *
      * @internal This method may vanish from TypoScriptFrontendController without further notice.
      * @todo: This method is typically called by PrepareTypoScriptFrontendRendering middleware.
@@ -351,7 +355,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *        calls this as well. We may want to put this code into some helper class, reduce class
      *        state as much as possible and carry really needed state as request attributes around?!
      */
-    public function getFromCache(ServerRequestInterface $request): ServerRequestInterface
+    public function getFromCache(ServerRequestInterface $request): FrontendTypoScript
     {
         $pageInformation = $request->getAttribute('frontend.page.information');
         $rootLine = $pageInformation->getRootLine();
@@ -519,7 +523,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($isCachingAllowed) {
             if ($this->shouldAcquireCacheData($request)) {
                 // Try to get a page cache row.
-                $this->getTimeTracker()->push('Cache Row');
                 $pageCacheRow = $this->pageCache->get($this->newHash);
                 if (!is_array($pageCacheRow)) {
                     // Nothing in the cache, we acquire an exclusive lock now.
@@ -549,10 +552,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // This indicates that we have to release the lock later in releaseLocks()!
                 }
                 if (is_array($pageCacheRow)) {
-                    // Note this especially populates $this->config!
-                    $this->populatePageDataFromCache($pageCacheRow);
+                    $this->config['INTincScript'] = $pageCacheRow['INTincScript'];
+                    $this->config['INTincScript_ext'] = $pageCacheRow['INTincScript_ext'];
+                    $this->config['pageTitleCache'] = $pageCacheRow['pageTitleCache'];
+                    $this->content = $pageCacheRow['content'];
+                    $this->contentType = $pageCacheRow['contentType'];
+                    $this->cacheExpires = $pageCacheRow['expires'];
+                    $this->pageCacheTags = $pageCacheRow['cacheTags'];
+                    $this->cacheGenerated = $pageCacheRow['tstamp'];
+                    $this->pageContentWasLoadedFromCache = true;
                 }
-                $this->getTimeTracker()->pull();
             } else {
                 // User forced page cache rebuilding. Get a lock for the page content so other processes can't interfere.
                 $this->lock->acquireLock('pages', $this->newHash);
@@ -562,19 +571,20 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->lock->acquireLock('pages', $this->newHash);
         }
 
-        if (!$isCachingAllowed || empty($this->config['config'] ?? []) || $this->isINTincScript()) {
+        $setupRawConfigAst = null;
+        if (!$isCachingAllowed || !$this->pageContentWasLoadedFromCache || $this->isINTincScript()) {
             // We don't need the full setup AST in many cached scenarios. However, if caching is not allowed, if no page
             // cache entry could be loaded or if the page cache entry has _INT object, then we still need the full setup AST.
             // If there is "just" an _INT object, we can use a possible cache entry for the setup AST, which speeds up _INT
             // parsing quite a bit. In other cases we calculate full setup AST and cache it if allowed.
             $setupTypoScriptCacheIdentifier = 'setup-' . sha1($serializedSysTemplateRows . $serializedConstantConditionList . serialize($setupConditionList));
             $gotSetupFromCache = false;
-            $setupArray = [];
             if ($isCachingAllowed) {
                 // We need AST, but we are allowed to potentially get it from cache.
                 if ($setupTypoScriptCache = $typoscriptCache->require($setupTypoScriptCacheIdentifier)) {
                     $frontendTypoScript->setSetupTree($setupTypoScriptCache['ast']);
-                    $setupArray = $setupTypoScriptCache['array'];
+                    $frontendTypoScript->setSetupArray($setupTypoScriptCache['array']);
+                    $setupRawConfigAst = $setupTypoScriptCache['ast']->getChildByName('config');
                     $gotSetupFromCache = true;
                 }
             }
@@ -596,140 +606,119 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupAstBuilderVisitor;
                 $includeTreeTraverserConditionVerdictAware->traverse($setupIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
                 $setupAst = $setupAstBuilderVisitor->getAst();
+                // @todo: It would be good to actively remove 'config' from AST and array here
+                //        to prevent people from using the unmerged variant. The same
+                //        is already done for the determined PAGE 'config' below. This works, but
+                //        is currently blocked by functional tests that assert details?
+                $setupRawConfigAst = $setupAst->getChildByName('config');
+                // $setupAst->removeChildByName('config');
                 $frontendTypoScript->setSetupTree($setupAst);
+                $frontendTypoScript->setSetupArray($setupAst->toArray());
 
-                // Create top-level setup AST 'types' node from all top-level PAGE objects.
-                // This is essentially a preparation for type-lookup below and should vanish later.
-                $typesNode = new ChildNode('types');
-                $gotTypeNumZero = false;
-                foreach ($setupAst->getNextChild() as $setupChild) {
-                    if ($setupChild->getValue() === 'PAGE') {
-                        $typeNumChild = $setupChild->getChildByName('typeNum');
-                        if ($typeNumChild) {
-                            $typeNumValue = $typeNumChild->getValue();
-                            $typesSubNode = new ChildNode($typeNumValue);
-                            $typesSubNode->setValue($setupChild->getName());
-                            $typesNode->addChild($typesSubNode);
-                            if ($typeNumValue === '0') {
-                                $gotTypeNumZero = true;
-                            }
-                        } elseif (!$gotTypeNumZero) {
-                            // The first PAGE node that has no typeNum = 0 is considered '0' automatically.
-                            $typesSubNode = new ChildNode('0');
-                            $typesSubNode->setValue($setupChild->getName());
-                            $typesNode->addChild($typesSubNode);
-                            $gotTypeNumZero = true;
-                        }
-                    }
-                }
-                if ($typesNode->hasChildren()) {
-                    $setupAst->addChild($typesNode);
-                }
-                $setupArray = $setupAst->toArray();
                 if ($isCachingAllowed) {
                     // Write cache entry for AST and its array representation, we're allowed to do it.
-                    $typoscriptCache->set($setupTypoScriptCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize(['ast' => $setupAst, 'array' => $setupArray]), '\'\\') . '\');');
+                    $typoscriptCache->set($setupTypoScriptCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize(['ast' => $setupAst, 'array' => $setupAst->toArray()]), '\'\\') . '\');');
                 }
             }
-
-            /** @var PageArguments $pageArguments */
-            $pageArguments = $request->getAttribute('routing');
-            $type = (int)($pageArguments->getPageType() ?: 0);
-            $typoScriptPageTypeName = $setupArray['types.'][$type] ?? '';
-            $typoScriptPageTypeSetup = $setupArray[$typoScriptPageTypeName . '.'] ?? null;
-            if (!is_array($typoScriptPageTypeSetup)) {
-                $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $type, 'type_name' => $typoScriptPageTypeName]);
-                try {
-                    $message = 'The page is not configured! [type=' . $type . '][' . $typoScriptPageTypeName . '].';
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
-                        $request,
-                        $message,
-                        ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
-                    );
-                    throw new PropagateResponseException($response, 1533931374);
-                } catch (AbstractServerErrorException $e) {
-                    $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $type . ' configured.';
-                    $exceptionClass = get_class($e);
-                    throw new $exceptionClass($message . ' ' . $explanation, 1294587217);
-                }
-            }
-
-            if (!isset($this->config['config'])) {
-                $this->config['config'] = [];
-            }
-            // Filling the config-array, first with the main "config." part
-            if (is_array($setupArray['config.'] ?? null)) {
-                // @todo: These operations should happen on AST instead and array is exported (and cached) afterwards
-                $setupArray['config.'] = array_replace_recursive($setupArray['config.'], $this->config['config']);
-                $this->config['config'] = $setupArray['config.'];
-            }
-            // Override it with the page/type-specific "config."
-            if (is_array($typoScriptPageTypeSetup['config.'] ?? null)) {
-                $this->config['config'] = array_replace_recursive($this->config['config'], $typoScriptPageTypeSetup['config.']);
-            }
-            $frontendTypoScript->setSetupArray($setupArray);
         }
 
-        // Disable cache if config.no_cache is set!
-        if ($this->config['config']['no_cache'] ?? false) {
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $request->getAttribute('routing');
+        $type = (int)($pageArguments->getPageType() ?: 0);
+
+        $gotSetupConfigFromCache = false;
+        $setupConfigTypoScriptCacheIdentifier = 'setup-config-' . sha1($serializedSysTemplateRows . $serializedConstantConditionList . serialize($setupConditionList) . $type);
+        if ($isCachingAllowed) {
+            if ($setupConfigTypoScriptCache = $typoscriptCache->require($setupConfigTypoScriptCacheIdentifier)) {
+                $frontendTypoScript->setConfigTree($setupConfigTypoScriptCache['ast']);
+                $frontendTypoScript->setConfigArray($setupConfigTypoScriptCache['array']);
+                $gotSetupConfigFromCache = true;
+            }
+        }
+
+        if (!$isCachingAllowed || !$this->pageContentWasLoadedFromCache || !$gotSetupConfigFromCache || $this->isINTincScript()) {
+            $setupAst = $frontendTypoScript->getSetupTree();
+            $rawSetupPageNodeFromType = null;
+            foreach ($setupAst->getNextChild() as $potentialPageNode) {
+                if ($potentialPageNode->getValue() === 'PAGE') {
+                    // @todo: We could potentially remove *all* PAGE objects from setup here. This prevents people
+                    //        from accessing other ones than the determined one in $frontendTypoScript->getSetupArray().
+                    $typeNumChild = $potentialPageNode->getChildByName('typeNum');
+                    if ($typeNumChild && $type === (int)$typeNumChild->getValue()) {
+                        $rawSetupPageNodeFromType = $potentialPageNode;
+                        break;
+                    }
+                    if (!$typeNumChild && $type === 0) {
+                        // The first PAGE node that has no typeNum is considered '0' automatically.
+                        $rawSetupPageNodeFromType = $potentialPageNode;
+                        break;
+                    }
+                }
+            }
+            if (!$rawSetupPageNodeFromType) {
+                $this->logger->error('No page configured for type={type}. There is no TypoScript object of type PAGE with typeNum={type}.', ['type' => $type]);
+                $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
+                    $request,
+                    'No page configured for type=' . $type . '.',
+                    ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
+                );
+                throw new PropagateResponseException($response, 1533931374);
+            }
+            $setupPageAst = new RootNode();
+            foreach ($rawSetupPageNodeFromType->getNextChild() as $child) {
+                $setupPageAst->addChild($child);
+            }
+            if (!$gotSetupConfigFromCache) {
+                $mergedSetupConfigAst = (new SetupConfigMerger())->merge($setupRawConfigAst, $setupPageAst->getChildByName('config'));
+
+                if ($mergedSetupConfigAst->getChildByName('absRefPrefix') === null) {
+                    // Make sure config.absRefPrefix is set, fallback to 'auto'.
+                    $absRefPrefixNode = new ChildNode('absRefPrefix');
+                    $absRefPrefixNode->setValue('auto');
+                    $mergedSetupConfigAst->addChild($absRefPrefixNode);
+                }
+                if ($mergedSetupConfigAst->getChildByName('doctype') === null) {
+                    // Make sure config.doctype is set, fallback to 'html5'.
+                    $doctypeNode = new ChildNode('doctype');
+                    $doctypeNode->setValue('html5');
+                    $mergedSetupConfigAst->addChild($doctypeNode);
+                }
+                $mergedSetupConfigAst = GeneralUtility::makeInstance(EventDispatcherInterface::class)
+                    ->dispatch(new ModifyTypoScriptConfigEvent($request, $setupAst, $mergedSetupConfigAst))->getConfigTree();
+                $frontendTypoScript->setConfigTree($mergedSetupConfigAst);
+                $setupConfigArray = $mergedSetupConfigAst->toArray();
+                $frontendTypoScript->setConfigArray($setupConfigArray);
+                if ($isCachingAllowed) {
+                    $typoscriptCache->set($setupConfigTypoScriptCacheIdentifier, 'return unserialize(\'' . addcslashes(serialize(['ast' => $mergedSetupConfigAst, 'array' => $setupConfigArray]), '\'\\') . '\');');
+                }
+            }
+            if (!$isCachingAllowed || !$this->pageContentWasLoadedFromCache || $this->isINTincScript()) {
+                // Remove "page.config" to prevent people from working with the not merged variant.
+                $setupPageAst->removeChildByName('config');
+                $frontendTypoScript->setPageTree($setupPageAst);
+                $frontendTypoScript->setPageArray($setupPageAst->toArray());
+            }
+        }
+
+        $setupConfigAst = $frontendTypoScript->getConfigTree();
+
+        if ($this->pageContentWasLoadedFromCache
+            && ($setupConfigAst->getChildByName('debug')?->getValue() || !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))
+        ) {
+            // Prepare X-TYPO3-Debug-Cache HTTP header
+            $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+            $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+            $this->debugInformationHeader = 'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $this->cacheGenerated)
+                . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $this->cacheExpires);
+        }
+
+        if ($setupConfigAst->getChildByName('no_cache')?->getValue()) {
+            // Disable cache if config.no_cache is set!
             $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
             $cacheInstruction->disableCache('EXT:frontend: Disabled cache due to TypoScript "config.no_cache = 1"');
         }
 
-        // Auto-configure settings when a site is configured
-        $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
-
-        // Hook for postProcessing the configuration array
-        $params = ['config' => &$this->config['config']];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] ?? [] as $funcRef) {
-            GeneralUtility::callUserFunction($funcRef, $params, $this);
-        }
-
-        return $request->withAttribute('frontend.typoscript', $frontendTypoScript);
-    }
-
-    /**
-     * This method properly sets the values given from the pages cache into the corresponding
-     * TSFE variables. The counterpart is setPageCacheContent() where all relevant information is fetched.
-     * This also contains all data that could be cached, even for pages that are partially cached, as they
-     * have non-cacheable content still to be rendered.
-     *
-     * @see getFromCache()
-     * @see setPageCacheContent()
-     */
-    protected function populatePageDataFromCache(array $cachedData): void
-    {
-        // Call hook when a page is retrieved from cache
-        $_params = ['pObj' => &$this, 'cache_pages_row' => &$cachedData];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-        // Preserve localRootLine, which is not cached.
-        $backupLocalRootLine = $this->config['rootLine'];
-        // Fetches the lowlevel config stored with the cached data
-        $this->config = $cachedData['cache_data'];
-        $this->config['rootLine'] = $backupLocalRootLine;
-        // Getting the content
-        $this->content = $cachedData['content'];
-        // Getting the content type
-        $this->contentType = $cachedData['contentType'] ?? $this->contentType;
-        // Setting flag, so we know, that some cached content has been loaded
-        $this->pageContentWasLoadedFromCache = true;
-        $this->cacheExpires = $cachedData['expires'];
-        // Restore the current tags as they can be retrieved by getPageCacheTags()
-        $this->pageCacheTags = $cachedData['cacheTags'] ?? [];
-
-        if (isset($this->config['config']['debug'])) {
-            $debugCacheTime = (bool)$this->config['config']['debug'];
-        } else {
-            $debugCacheTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
-        }
-        if ($debugCacheTime) {
-            $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-            $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-            $this->debugInformationHeader = 'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $cachedData['tstamp'])
-                . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $cachedData['expires']);
-        }
+        return $frontendTypoScript;
     }
 
     /**
@@ -760,22 +749,19 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function createHashBase(ServerRequestInterface $request, array $sysTemplateRows, array $constantConditionList, array $setupConditionList): string
     {
-        // Fetch the list of user groups
-        $userAspect = $this->context->getAspect('frontend.user');
         $pageInformation = $request->getAttribute('frontend.page.information');
         $pageId = $pageInformation->getId();
         $site = $request->getAttribute('site');
-        $language = $request->getAttribute('language', $site->getDefaultLanguage());
         $pageArguments = $request->getAttribute('routing');
-        $hashParameters = [
+        $pageCacheIdentifierParameters = [
             'id' => $pageId,
             'type' => (int)($pageArguments->getPageType() ?: 0),
-            'groupIds' => implode(',', $userAspect->getGroupIds()),
+            'groupIds' => implode(',', $this->context->getAspect('frontend.user')->getGroupIds()),
             'MP' => $pageInformation->getMountPoint(),
             'site' => $site->getIdentifier(),
             // Ensure the language base is used for the hash base calculation as well, otherwise TypoScript and page-related rendering
             // is not cached properly as we don't have any language-specific conditions anymore
-            'siteBase' => (string)$language->getBase(),
+            'siteBase' => (string)$request->getAttribute('language', $site->getDefaultLanguage())->getBase(),
             // additional variation trigger for static routes
             'staticRouteArguments' => $pageArguments->getStaticArguments(),
             // dynamic route arguments (if route was resolved)
@@ -784,14 +770,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'constantConditionList' => $constantConditionList,
             'setupConditionList' => $setupConditionList,
         ];
-        // Call hook to influence the hash calculation
-        $_params = [
-            'hashParameters' => &$hashParameters,
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-        return $pageId . '_' . sha1(serialize($hashParameters));
+        $pageCacheIdentifierParameters = GeneralUtility::makeInstance(EventDispatcherInterface::class)
+            ->dispatch(new BeforePageCacheIdentifierIsHashedEvent($request, $pageCacheIdentifierParameters))
+            ->getPageCacheIdentifierParameters();
+        return $pageId . '_' . sha1(serialize($pageCacheIdentifierParameters));
     }
 
     /**
@@ -808,12 +790,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Sets cache content; Inserts the content string into the pages cache.
      *
      * @param string $content The content to store in the HTML field of the cache table
-     * @param array $data The additional cache_data array, fx. $this->config
      * @param int $expirationTstamp Expiration timestamp
      * @see populatePageDataFromCache()
      */
-    protected function setPageCacheContent(ServerRequestInterface $request, string $content, array $data, int $expirationTstamp): array
-    {
+    protected function setPageCacheContent(
+        ServerRequestInterface $request,
+        string $content,
+        array $INTincScript,
+        array $INTincScript_ext,
+        array $pageTitleCache,
+        int $expirationTstamp
+    ): array {
         $pageInformation = $request->getAttribute('frontend.page.information');
         $pageId = $pageInformation->getId();
         $pageRecord = $pageInformation->getPageRecord();
@@ -821,7 +808,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'page_id' => $pageId,
             'content' => $content,
             'contentType' => $this->contentType,
-            'cache_data' => $data,
+            'INTincScript' => $INTincScript,
+            'INTincScript_ext' => $INTincScript_ext,
+            'pageTitleCache' => $pageTitleCache,
             'expires' => $expirationTstamp,
             'tstamp' => $GLOBALS['EXEC_TIME'],
         ];
@@ -897,28 +886,25 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function preparePageContentGeneration(ServerRequestInterface $request): void
     {
-        $this->getTimeTracker()->push('Prepare page content generation');
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         // calculate the absolute path prefix
-        if (!empty($this->absRefPrefix = trim($this->config['config']['absRefPrefix'] ?? ''))) {
+        if (!empty($this->absRefPrefix = trim($typoScriptConfigArray['absRefPrefix']))) {
             if ($this->absRefPrefix === 'auto') {
                 $normalizedParams = $request->getAttribute('normalizedParams');
                 $this->absRefPrefix = $normalizedParams->getSitePath();
             }
         }
         // config.forceAbsoluteUrls will override absRefPrefix
-        if ($this->config['config']['forceAbsoluteUrls'] ?? false) {
+        if ($typoScriptConfigArray['forceAbsoluteUrls'] ?? false) {
             $normalizedParams = $request->getAttribute('normalizedParams');
             $this->absRefPrefix = $normalizedParams->getSiteUrl();
         }
 
-        // We need to set the doctype to "something defined" otherwise (because this method is called also during USER_INT renderings)
-        $this->config['config']['doctype'] ??= 'html5';
-        $docType = DocType::createFromConfigurationKey($this->config['config']['doctype']);
+        $docType = DocType::createFromConfigurationKey($typoScriptConfigArray['doctype']);
         $this->pageRenderer->setDocType($docType);
 
         // Global content object
         $this->newCObj($request);
-        $this->getTimeTracker()->pull();
     }
 
     /**
@@ -942,10 +928,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
             // Write the page to cache, but do not cache localRootLine since that is always determined
             // and coming from PageInformation->getLocalRootLine().
-            $data = $this->config;
-            unset($data['rootLine']);
-            $cachedInformation = $this->setPageCacheContent($request, $this->content, $this->config, $timeOutTime);
-
+            $cachedInformation = $this->setPageCacheContent(
+                $request,
+                $this->content,
+                $this->config['INTincScript'] ?? [],
+                $this->config['INTincScript_ext'] ?? [],
+                $this->config['pageTitleCache'] ?? [],
+                $timeOutTime
+            );
             // Event for cache post processing (eg. writing static files)
             $event = new AfterCachedPageIsPersistedEvent($request, $this, $this->newHash, $cachedInformation, $cacheTimeout);
             $eventDispatcher->dispatch($event);
@@ -961,35 +951,42 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function generatePageTitle(ServerRequestInterface $request): string
     {
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         // config.noPageTitle = 2 - means do not render the page title
-        if ((int)($this->config['config']['noPageTitle'] ?? 0) === 2) {
+        if ((int)($typoScriptConfigArray['noPageTitle'] ?? 0) === 2) {
             return '';
         }
 
         // Check for a custom pageTitleSeparator, and perform stdWrap on it
-        $pageTitleSeparator = (string)$this->cObj->stdWrapValue('pageTitleSeparator', $this->config['config'] ?? []);
-        if ($pageTitleSeparator !== '' && $pageTitleSeparator === ($this->config['config']['pageTitleSeparator'] ?? '')) {
+        $pageTitleSeparator = (string)$this->cObj->stdWrapValue('pageTitleSeparator', $typoScriptConfigArray);
+        if ($pageTitleSeparator !== '' && $pageTitleSeparator === ($typoScriptConfigArray['pageTitleSeparator'] ?? '')) {
             $pageTitleSeparator .= ' ';
         }
 
         $titleProvider = GeneralUtility::makeInstance(PageTitleProviderManager::class);
-        if (!empty($this->config['config']['pageTitleCache'])) {
-            $titleProvider->setPageTitleCache($this->config['config']['pageTitleCache']);
+        if (!empty($this->config['pageTitleCache'])) {
+            $titleProvider->setPageTitleCache($this->config['pageTitleCache']);
         }
         $pageTitle = $titleProvider->getTitle($request);
-        $this->config['config']['pageTitleCache'] = $titleProvider->getPageTitleCache();
+        $this->config['pageTitleCache'] = $titleProvider->getPageTitleCache();
 
         $titleTagContent = $this->printTitle(
             $request,
             $pageTitle,
-            (bool)($this->config['config']['noPageTitle'] ?? false),
-            (bool)($this->config['config']['pageTitleFirst'] ?? false),
+            (bool)($typoScriptConfigArray['noPageTitle'] ?? false),
+            (bool)($typoScriptConfigArray['pageTitleFirst'] ?? false),
             $pageTitleSeparator,
-            (bool)($this->config['config']['showWebsiteTitle'] ?? true)
+            (bool)($typoScriptConfigArray['showWebsiteTitle'] ?? true)
         );
-        $this->config['config']['pageTitle'] = $titleTagContent;
-        // stdWrap around the title tag
-        $titleTagContent = $this->cObj->stdWrapValue('pageTitle', $this->config['config']);
+
+        if (isset($typoScriptConfigArray['pageTitle.']) && is_array($typoScriptConfigArray['pageTitle.'])) {
+            // stdWrap for pageTitle if set in config.pageTitle.
+            $pageTitleStdWrapArray = [
+                'pageTitle' => $titleTagContent,
+                'pageTitle.' => $typoScriptConfigArray['pageTitle.'],
+            ];
+            $titleTagContent = $this->cObj->stdWrapValue('pageTitle', $pageTitleStdWrapArray);
+        }
 
         if ($titleTagContent !== '') {
             $this->pageRenderer->setTitle($titleTagContent);
@@ -1166,7 +1163,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function INTincScript_loadJSCode(): void
     {
         // Prepare code and placeholders for additional header and footer files (and make sure that this isn't called twice)
-        if ($this->isINTincScript() && !isset($this->config['INTincScript_ext'])) {
+        if ($this->isINTincScript() && (!isset($this->config['INTincScript_ext']) || $this->config['INTincScript_ext'] === [])) {
             $substituteHash = $this->uniqueHash();
             $this->config['INTincScript_ext']['divKey'] = $substituteHash;
             // Storing the header-data array
@@ -1199,7 +1196,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function applyHttpHeadersToResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $response = $response->withHeader('Content-Type', $this->contentType);
-        if (empty($this->config['config']['disableLanguageHeader'])) {
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        if (empty($typoScriptConfigArray['disableLanguageHeader'])) {
             // Set header for content language unless disabled
             // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
             $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
@@ -1217,7 +1215,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $response = $response->withHeader($header, $value);
         }
         // Set additional headers if any have been configured via TypoScript
-        $additionalHeaders = $this->getAdditionalHeaders();
+        $additionalHeaders = $this->getAdditionalHeaders($request);
         foreach ($additionalHeaders as $headerConfig) {
             [$header, $value] = GeneralUtility::trimExplode(':', $headerConfig['header'], false, 2);
             if ($headerConfig['statusCode']) {
@@ -1246,7 +1244,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $isClientCachable = $doCache && !$isBackendUserLoggedIn && !$isInWorkspace;
         if ($isClientCachable) {
             // Only send the headers to the client that they are allowed to cache if explicitly activated.
-            if (!empty($this->config['config']['sendCacheHeaders'])) {
+            $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+            if (!empty($typoScriptConfigArray['sendCacheHeaders'])) {
                 $headers = [
                     'Expires' => gmdate('D, d M Y H:i:s T', $this->cacheExpires),
                     'ETag' => '"' . md5($this->content) . '"',
@@ -1444,11 +1443,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function get_cache_timeout(ServerRequestInterface $request): int
     {
         $pageInformation = $request->getAttribute('frontend.page.information');
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         return GeneralUtility::makeInstance(CacheLifetimeCalculator::class)
             ->calculateLifetimeForPage(
                 $pageInformation->getId(),
                 $pageInformation->getPageRecord(),
-                $this->config['config'] ?? [],
+                $typoScriptConfigArray,
                 $this->cacheTimeOutDefault,
                 $this->context
             );
@@ -1481,14 +1481,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Send additional headers from config.additionalHeaders
      */
-    protected function getAdditionalHeaders(): array
+    protected function getAdditionalHeaders(ServerRequestInterface $request): array
     {
-        if (!isset($this->config['config']['additionalHeaders.'])) {
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        if (!isset($typoScriptConfigArray['additionalHeaders.'])) {
             return [];
         }
         $additionalHeaders = [];
-        ksort($this->config['config']['additionalHeaders.']);
-        foreach ($this->config['config']['additionalHeaders.'] as $options) {
+        $additionalHeadersConfig = $typoScriptConfigArray['additionalHeaders.'];
+        ksort($additionalHeadersConfig);
+        foreach ($additionalHeadersConfig as $options) {
             if (!is_array($options)) {
                 continue;
             }

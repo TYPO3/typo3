@@ -375,6 +375,7 @@ class SearchController extends ActionController
      */
     protected function compileSingleResultRow(array $row, int $headerOnly = 0): array
     {
+        $typoScriptConfigArray = $this->request->getAttribute('frontend.typoscript')->getConfigArray();
         $resultData = $row;
         $resultData['headerOnly'] = $headerOnly;
         if (isset($row['static_page_arguments']) && $this->multiplePagesType($row['item_type'])) {
@@ -397,8 +398,8 @@ class SearchController extends ActionController
         if ($row['item_type']) {
             if ($row['show_resume']) {
                 $targetAttribute = '';
-                if ($this->getTypoScriptFrontendController()->config['config']['fileTarget'] ?? false) {
-                    $targetAttribute = ' target="' . htmlspecialchars($this->getTypoScriptFrontendController()->config['config']['fileTarget']) . '"';
+                if ($typoScriptConfigArray['fileTarget'] ?? false) {
+                    $targetAttribute = ' target="' . htmlspecialchars($typoScriptConfigArray['fileTarget']) . '"';
                 }
                 $title = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . htmlspecialchars($title) . '</a>';
             } else {
@@ -423,8 +424,8 @@ class SearchController extends ActionController
         $pI = parse_url($row['data_filename']);
         if ($pI['scheme'] ?? false) {
             $targetAttribute = '';
-            if ($this->getTypoScriptFrontendController()->config['config']['fileTarget'] ?? false) {
-                $targetAttribute = ' target="' . htmlspecialchars($this->getTypoScriptFrontendController()->config['config']['fileTarget']) . '"';
+            if ($typoScriptConfigArray['fileTarget'] ?? false) {
+                $targetAttribute = ' target="' . htmlspecialchars($typoScriptConfigArray['fileTarget']) . '"';
             }
             $resultData['pathTitle'] = $row['data_filename'];
             $resultData['pathUri'] = $row['data_filename'];

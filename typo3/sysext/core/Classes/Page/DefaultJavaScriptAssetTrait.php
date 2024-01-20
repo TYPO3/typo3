@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Trait used to add default JavaScript in frontend rendering context
@@ -29,33 +29,31 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 trait DefaultJavaScriptAssetTrait
 {
     protected string $defaultFrontendJavaScriptFile = 'EXT:frontend/Resources/Public/JavaScript/default_frontend.js';
-    protected function addDefaultFrontendJavaScript(): void
+    protected function addDefaultFrontendJavaScript(ServerRequestInterface $request): void
     {
         // `config.removeDefaultJS = 1` - remove default JavaScript, no action required
-        if ($this->shallRemoveDefaultFrontendJavaScript()) {
+        if ($this->shallRemoveDefaultFrontendJavaScript($request)) {
             return;
         }
         $filePath = $this->defaultFrontendJavaScriptFile;
         $collector = GeneralUtility::makeInstance(AssetCollector::class);
         // `config.removeDefaultJS = external` - persist JavaScript to `typo3temp/assets/`
-        if ($this->shallExportDefaultFrontendJavaScript()) {
+        if ($this->shallExportDefaultFrontendJavaScript($request)) {
             $source = file_get_contents(GeneralUtility::getFileAbsFileName($filePath));
             $filePath = GeneralUtility::writeJavaScriptContentToTemporaryFile((string)$source);
         }
         $collector->addJavaScript('frontend-default', $filePath, ['async' => 'async']);
     }
 
-    protected function shallRemoveDefaultFrontendJavaScript(): bool
+    protected function shallRemoveDefaultFrontendJavaScript(ServerRequestInterface $request): bool
     {
-        /** @var ?TypoScriptFrontendController $frontendController */
-        $frontendController = $GLOBALS['TSFE'] ?? null;
-        return $frontendController && ($frontendController->config['config']['removeDefaultJS'] ?? 'external') === '1';
+        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
+        return ($frontendTypoScriptConfigArray['removeDefaultJS'] ?? 'external') === '1';
     }
 
-    protected function shallExportDefaultFrontendJavaScript(): bool
+    protected function shallExportDefaultFrontendJavaScript(ServerRequestInterface $request): bool
     {
-        /** @var ?TypoScriptFrontendController $frontendController */
-        $frontendController = $GLOBALS['TSFE'] ?? null;
-        return $frontendController && ($frontendController->config['config']['removeDefaultJS'] ?? 'external') === 'external';
+        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
+        return ($frontendTypoScriptConfigArray['removeDefaultJS'] ?? 'external') === 'external';
     }
 }

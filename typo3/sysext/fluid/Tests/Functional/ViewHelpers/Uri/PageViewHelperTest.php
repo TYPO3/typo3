@@ -26,7 +26,6 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -246,7 +245,6 @@ final class PageViewHelperTest extends FunctionalTestCase
         $pageInformation->setId(1);
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
@@ -275,7 +273,6 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $request = new Request($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);

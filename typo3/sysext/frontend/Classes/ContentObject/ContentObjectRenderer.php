@@ -478,7 +478,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
      *
      * @param array $data The record array
-     * @param string $currentRecord This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation. Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
+     * @param string $currentRecord This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation.
      * @internal
      */
     public function setParent($data, $currentRecord)
@@ -672,11 +672,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Creates the content object exception handler from local content object configuration
      * or, from global configuration if not explicitly disabled in local configuration
      *
-     * @param array $configuration
-     * @return ExceptionHandlerInterface|null
      * @throws ContentRenderingException
      */
-    protected function createExceptionHandler($configuration = [])
+    protected function createExceptionHandler(array $configuration): ?ExceptionHandlerInterface
     {
         $exceptionHandler = null;
         $exceptionHandlerClassName = $this->determineExceptionHandlerClassName($configuration);
@@ -687,57 +685,46 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             $exceptionHandler->setConfiguration($this->mergeExceptionHandlerConfiguration($configuration));
         }
-
         return $exceptionHandler;
     }
 
     /**
      * Determine exception handler class name from global and content object configuration
-     *
-     * @param array $configuration
-     * @return string|null
      */
-    protected function determineExceptionHandlerClassName($configuration)
+    protected function determineExceptionHandlerClassName(array $configuration): ?string
     {
+        $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
         $exceptionHandlerClassName = null;
-        $tsfe = $this->getTypoScriptFrontendController();
-        if (!isset($tsfe->config['config']['contentObjectExceptionHandler'])) {
+        if (!isset($typoScriptConfigArray['contentObjectExceptionHandler'])) {
             if (Environment::getContext()->isProduction()) {
                 $exceptionHandlerClassName = '1';
             }
         } else {
-            $exceptionHandlerClassName = $tsfe->config['config']['contentObjectExceptionHandler'];
+            $exceptionHandlerClassName = $typoScriptConfigArray['contentObjectExceptionHandler'];
         }
-
         if (isset($configuration['exceptionHandler'])) {
             $exceptionHandlerClassName = $configuration['exceptionHandler'];
         }
-
         if ($exceptionHandlerClassName === '1') {
             $exceptionHandlerClassName = ProductionExceptionHandler::class;
         }
-
         return $exceptionHandlerClassName;
     }
 
     /**
      * Merges global exception handler configuration with the one from the content object
      * and returns the merged exception handler configuration
-     *
-     * @param array $configuration
-     * @return array
      */
-    protected function mergeExceptionHandlerConfiguration($configuration)
+    protected function mergeExceptionHandlerConfiguration(array $configuration): array
     {
         $exceptionHandlerConfiguration = [];
-        $tsfe = $this->getTypoScriptFrontendController();
-        if (!empty($tsfe->config['config']['contentObjectExceptionHandler.'])) {
-            $exceptionHandlerConfiguration = $tsfe->config['config']['contentObjectExceptionHandler.'];
+        $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
+        if (!empty($typoScriptConfigArray['contentObjectExceptionHandler.'])) {
+            $exceptionHandlerConfiguration = $typoScriptConfigArray['contentObjectExceptionHandler.'];
         }
         if (!empty($configuration['exceptionHandler.'])) {
             $exceptionHandlerConfiguration = array_replace_recursive($exceptionHandlerConfiguration, $configuration['exceptionHandler.']);
         }
-
         return $exceptionHandlerConfiguration;
     }
 
@@ -973,7 +960,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 $paramString = '';
                 foreach ($params as $paramKey => $paramValue) {
-                    $paramString .= htmlspecialchars((string)$paramKey) . '=' . htmlspecialchars((string)$paramValue) . ',';
+                    $paramString .= htmlspecialchars($paramKey) . '=' . htmlspecialchars((string)$paramValue) . ',';
                 }
 
                 $attrs = [
@@ -986,13 +973,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $attrs['target'] = $target;
                 }
 
+                $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
                 $a1 = sprintf(
                     '<a %s%s>',
                     GeneralUtility::implodeAttributes($attrs, true),
-                    trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->getTypoScriptFrontendController()->config['config']['ATagParams']) : ''
+                    trim($typoScriptConfigArray['ATagParams'] ?? '') ? ' ' . trim($typoScriptConfigArray['ATagParams']) : ''
                 );
                 $a2 = '</a>';
-                $this->addDefaultFrontendJavaScript();
+                $this->addDefaultFrontendJavaScript($this->getRequest());
             } else {
                 $conf['linkParams.']['directImageLink'] = (bool)($conf['directImageLink'] ?? false);
                 $conf['linkParams.']['parameter'] = $url;
@@ -2312,8 +2300,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_prefixComment($content = '', $conf = [])
     {
+        $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
         if (
-            (!isset($this->getTypoScriptFrontendController()->config['config']['disablePrefixComment']) || !$this->getTypoScriptFrontendController()->config['config']['disablePrefixComment'])
+            (!isset($typoScriptConfigArray['disablePrefixComment']) || !$typoScriptConfigArray['disablePrefixComment'])
             && !empty($conf['prefixComment'])
         ) {
             $content = $this->prefixComment($conf['prefixComment'], [], $content);
@@ -3818,8 +3807,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             array_shift($valueParts);
                             $retVal = $this->getValueFromRecursiveData($valueParts, $frontendUser);
                         } elseif (($valueParts[0] ?? '') === 'linkVars') {
-                            $tsfe = $this->getTypoScriptFrontendController();
-                            $typoScriptConfigLinkVars = (string)($tsfe->config['config']['linkVars'] ?? '');
+                            $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
+                            $typoScriptConfigLinkVars = (string)($typoScriptConfigArray['linkVars'] ?? '');
                             $retVal = GeneralUtility::makeInstance(LinkVarsCalculator::class)
                                 ->getAllowedLinkVarsFromRequest(
                                     $typoScriptConfigLinkVars,
@@ -3882,7 +3871,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $pointer = (int)($keyParts[0] ?? 0);
                         $field = $keyParts[1] ?? '';
                         $slide = $keyParts[2] ?? '';
-                        $tsfe = $this->getTypoScriptFrontendController();
                         $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
                         $numericKey = $this->getKey($pointer, $localRootLine);
                         $retVal = $this->rootLineValue($numericKey, $field, strtolower($slide) === 'slide');
@@ -3892,7 +3880,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $pointer = (int)($keyParts[0] ?? 0);
                         $field = $keyParts[1] ?? '';
                         $slide = $keyParts[2] ?? '';
-                        $tsfe = $this->getTypoScriptFrontendController();
                         $rootLine = $this->getRequest()->getAttribute('frontend.page.information')->getRootLine();
                         $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
                         $fullKey = $pointer - count($localRootLine) + count($rootLine);
@@ -5523,9 +5510,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     protected function shallDebug(): bool
     {
-        $tsfe = $this->getTypoScriptFrontendController();
-        if ($tsfe !== null && isset($tsfe->config['config']['debug'])) {
-            return (bool)($tsfe->config['config']['debug']);
+        $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
+        if (isset($typoScriptConfigArray['debug'])) {
+            return (bool)($typoScriptConfigArray['debug']);
         }
         return !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
     }

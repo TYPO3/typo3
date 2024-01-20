@@ -29,6 +29,10 @@ final class FrontendTypoScript
 {
     private RootNode|null $setupTree = null;
     private array|null $setupArray = null;
+    private RootNode $configTree;
+    private array $configArray;
+    private RootNode $pageTree;
+    private array $pageArray;
 
     public function __construct(
         private readonly RootNode $settingsTree,
@@ -133,5 +137,82 @@ final class FrontendTypoScript
             );
         }
         return $this->setupArray;
+    }
+
+    /**
+     * @internal
+     */
+    public function setConfigTree(RootNode $setupConfig): void
+    {
+        $this->configTree = $setupConfig;
+    }
+
+    /**
+     * @internal
+     */
+    public function getConfigTree(): RootNode
+    {
+        return $this->configTree;
+    }
+
+    /**
+     * @internal
+     */
+    public function setConfigArray(array $configArray): void
+    {
+        $this->configArray = $configArray;
+    }
+
+    /**
+     * The merged TypoScript 'config'.
+     *
+     * This is the result of the "global" TypoScript 'config' section, merged with
+     * the 'config' section of the determined PAGE object which can override
+     * "global" 'config' per type / typeNum.
+     */
+    public function getConfigArray(): array
+    {
+        return $this->configArray;
+    }
+
+    /**
+     * @internal
+     */
+    public function setPageTree(RootNode $pageTree): void
+    {
+        $this->pageTree = $pageTree;
+    }
+
+    /**
+     * @internal
+     */
+    public function getPageTree(): RootNode
+    {
+        return $this->pageTree;
+    }
+
+    /**
+     * @internal
+     */
+    public function setPageArray(array $pageArray): void
+    {
+        $this->pageArray = $pageArray;
+    }
+
+    /**
+     * The determined PAGE object from main TypoScript 'setup' that depends
+     * on type / typeNum.
+     *
+     * This is used internally by RequestHandler for page generation.
+     * It is *not* set in full cached page scenarios without _INT object.
+     *
+     * *If* this in made non-internal, a method "hasPage()" should be added
+     * for extensions to verify if page is actually set.
+     *
+     * @internal
+     */
+    public function getPageArray(): array
+    {
+        return $this->pageArray;
     }
 }

@@ -52,11 +52,6 @@ class StateUtility
         return (bool)($beUser->uc['AdminPanel']['display_top'] ?? false);
     }
 
-    public static function isActivatedInTypoScript(): bool
-    {
-        return (bool)($GLOBALS['TSFE']->config['config']['admPanel'] ?? false);
-    }
-
     public static function isHiddenForUser(): bool
     {
         $beUser = $GLOBALS['BE_USER'] ?? null;

@@ -28,7 +28,6 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -242,11 +241,6 @@ final class PageViewHelperTest extends FunctionalTestCase
                 '<f:link.page pageUid="3">link me</f:link.page>',
                 '<a href="/dummy-1-2/dummy-1-2-3">link me</a>',
                 [
-                    'config.' => [
-                        'intTarget' => '_self',
-                    ],
-                ],
-                [
                     'config' => [
                         'intTarget' => '_self',
                     ],
@@ -259,7 +253,7 @@ final class PageViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderDataProvider
      */
-    public function renderInFrontendWithCoreContext(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
+    public function renderInFrontendWithCoreContext(string $template, string $expected, array $frontendTypoScriptConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -267,15 +261,14 @@ final class PageViewHelperTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, '/'),
         );
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
+        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setConfigArray($frontendTypoScriptConfigArray);
         $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->config = $tsfeConfigArray;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
@@ -296,6 +289,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         );
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
+        $frontendTypoScript->setConfigArray([]);
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
@@ -307,7 +301,6 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $request = new Request($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);

@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -125,11 +124,6 @@ final class ActionViewHelperTest extends FunctionalTestCase
             '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
             '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
             [
-                'config.' => [
-                    'intTarget' => '_self',
-                ],
-            ],
-            [
                 'config' => [
                     'intTarget' => '_self',
                 ],
@@ -141,7 +135,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider
      */
-    public function renderInFrontendWithCoreContextAndAllNecessaryExtbaseArguments(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
+    public function renderInFrontendWithCoreContextAndAllNecessaryExtbaseArguments(string $template, string $expected, array $frontendTypoScriptConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -149,15 +143,13 @@ final class ActionViewHelperTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, '/'),
         );
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
+        $frontendTypoScript->setConfigArray($frontendTypoScriptConfigArray);
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->config = $tsfeConfigArray;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
@@ -234,11 +226,6 @@ final class ActionViewHelperTest extends FunctionalTestCase
             '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
             '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
             [
-                'config.' => [
-                    'intTarget' => '_self',
-                ],
-            ],
-            [
                 'config' => [
                     'intTarget' => '_self',
                 ],
@@ -250,7 +237,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderInFrontendWithExtbaseContextDataProvider
      */
-    public function renderInFrontendWithExtbaseContext(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
+    public function renderInFrontendWithExtbaseContext(string $template, string $expected, array $frontendTypoScriptConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -258,7 +245,8 @@ final class ActionViewHelperTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, '/'),
         );
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
+        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setConfigArray($frontendTypoScriptConfigArray);
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Examples');
         $extbaseRequestParameters->setControllerName('Detail');
@@ -275,8 +263,6 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $request = new Request($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE']->config = $tsfeConfigArray;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);

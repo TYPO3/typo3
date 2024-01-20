@@ -43,6 +43,8 @@ abstract class AbstractContentObject
      *
      * @param array $conf
      * @return string
+     * @throws ContentRenderingException
+     * @throws \Exception
      */
     abstract public function render($conf = []);
 

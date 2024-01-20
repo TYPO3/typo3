@@ -250,7 +250,7 @@ class LinkFactory implements LoggerAwareInterface
             ];
             $linkResult = $linkResult->withAttributes($JSwindowAttrs);
             $linkResult = $linkResult->withAttribute('target', $target);
-            $this->addDefaultFrontendJavaScript();
+            $this->addDefaultFrontendJavaScript($contentObjectRenderer->getRequest());
         }
         return $linkResult;
     }
@@ -261,9 +261,11 @@ class LinkFactory implements LoggerAwareInterface
      */
     protected function addAdditionalAnchorTagAttributes(LinkResultInterface $linkResult, array $linkConfiguration, ContentObjectRenderer $contentObjectRenderer): LinkResultInterface
     {
+        $request = $contentObjectRenderer->getRequest();
+        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
         $aTagParams = $contentObjectRenderer->stdWrapValue('ATagParams', $linkConfiguration);
         // Add the global config.ATagParams
-        $globalParams = $contentObjectRenderer->getTypoScriptFrontendController() ? trim($contentObjectRenderer->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '') : '';
+        $globalParams = $frontendTypoScriptConfigArray['ATagParams'] ?? '';
         $aTagParams = trim($globalParams . ' ' . $aTagParams);
         if (!empty($aTagParams)) {
             // Decode entities here, as they are doubly escaped again when using HTML output

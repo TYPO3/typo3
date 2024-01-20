@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsArray;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
@@ -602,8 +601,10 @@ class Indexer
     protected function createLocalPathUsingAbsRefPrefix(string $sourcePath): string
     {
         $localPath = '';
-        if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            $absRefPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'];
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
+        if ($frontendTypoScriptConfigArray) {
+            $absRefPrefix = $frontendTypoScriptConfigArray['absRefPrefix'] ?? '';
             $absRefPrefixLength = strlen($absRefPrefix);
             if ($absRefPrefixLength > 0 && str_starts_with($sourcePath, $absRefPrefix)) {
                 $sourcePath = substr($sourcePath, $absRefPrefixLength);

@@ -287,8 +287,7 @@ sys\_language\_uid
          sys\_language\_uid
 
    Description
-         Will contain the value of GLOBALS["TSFE"]->sys\_language\_uid, which
-         tells us the language of the page indexed.
+         Will contain the value of the language of the page being indexed.
 
 
 
