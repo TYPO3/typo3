@@ -566,11 +566,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:\\$jsInline \\(array\\<string, array\\>\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:copyTo\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
@@ -1756,6 +1751,11 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Functional/Service/TranslationServiceTest.php
 
 		-
+			message: "#^Offset 'pidInList\\.' on array\\{pidInList\\: string\\} in isset\\(\\) does not exist\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentContentObject.php
+
+		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
@@ -1894,11 +1894,6 @@ parameters:
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 3
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
-
-		-
-			message: "#^Offset 'pidInList\\.' on array\\{pidInList: string\\} in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentContentObject.php
 
 		-
 			message: "#^If condition is always true\\.$#"

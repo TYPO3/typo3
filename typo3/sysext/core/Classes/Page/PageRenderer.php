@@ -47,30 +47,11 @@ class PageRenderer implements SingletonInterface
     protected const PART_HEADER = 1;
     protected const PART_FOOTER = 2;
 
-    /**
-     * @var bool
-     */
-    protected $compressJavascript = false;
-
-    /**
-     * @var bool
-     */
-    protected $compressCss = false;
-
-    /**
-     * @var bool
-     */
-    protected $concatenateJavascript = false;
-
-    /**
-     * @var bool
-     */
-    protected $concatenateCss = false;
-
-    /**
-     * @var bool
-     */
-    protected $moveJsFromHeaderToFooter = false;
+    protected bool $compressJavascript = false;
+    protected bool $compressCss = false;
+    protected bool $concatenateJavascript = false;
+    protected bool $concatenateCss = false;
+    protected bool $moveJsFromHeaderToFooter = false;
 
     /**
      * The locale, used for the <html> tag (depending on the DocType) and possible translation files.
@@ -81,136 +62,57 @@ class PageRenderer implements SingletonInterface
     /**
      * @var array<string, array>
      */
-    protected $jsFiles = [];
-
-    /**
-     * @var array
-     */
-    protected $jsFooterFiles = [];
-
-    /**
-     * @var array
-     */
-    protected $jsLibs = [];
-
-    /**
-     * @var array
-     */
-    protected $jsFooterLibs = [];
+    protected array $jsFiles = [];
+    protected array $jsFooterFiles = [];
+    protected array $jsLibs = [];
+    protected array $jsFooterLibs = [];
 
     /**
      * @var array<string, array>
      */
-    protected $cssFiles = [];
+    protected array $cssFiles = [];
 
     /**
      * @var array<string, array>
      */
-    protected $cssLibs = [];
+    protected array $cssLibs = [];
 
     /**
      * The title of the page
-     *
-     * @var string
      */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $favIcon;
+    protected string $title = '';
+    protected string $favIcon = '';
 
     // Static header blocks
-    /**
-     * @var string
-     */
-    protected $xmlPrologAndDocType = '';
-
-    /**
-     * @var array
-     */
-    protected $inlineComments = [];
-
-    /**
-     * @var array
-     */
-    protected $headerData = [];
-
-    /**
-     * @var array
-     */
-    protected $footerData = [];
-
-    /**
-     * @var string
-     */
-    protected $titleTag = '<title>|</title>';
-
-    /**
-     * @var string
-     */
-    protected $htmlTag = '<html>';
-
-    /**
-     * @var string
-     */
-    protected $headTag = '<head>';
-
-    /**
-     * @var string
-     */
-    protected $iconMimeType = '';
-
-    /**
-     * @var string
-     */
-    protected $shortcutTag = '<link rel="icon" href="%1$s"%2$s />';
+    protected string $xmlPrologAndDocType = '';
+    protected array $inlineComments = [];
+    protected array $headerData = [];
+    protected array $footerData = [];
+    protected string $titleTag = '<title>|</title>';
+    protected string $htmlTag = '<html>';
+    protected string $headTag = '<head>';
+    protected string $iconMimeType = '';
+    protected string $shortcutTag = '<link rel="icon" href="%1$s"%2$s />';
 
     // Static inline code blocks
     /**
      * @var array<string, array>
      */
-    protected $jsInline = [];
-
-    /**
-     * @var array
-     */
-    protected $jsFooterInline = [];
+    protected array $jsInline = [];
+    protected array $jsFooterInline = [];
 
     /**
      * @var array<string, array>
      */
-    protected $cssInline = [];
-
-    /**
-     * @var string
-     */
-    protected $bodyContent;
-
-    /**
-     * @var string
-     */
-    protected $templateFile;
-
-    /**
-     * @var array
-     */
-    protected $inlineLanguageLabels = [];
-
-    /**
-     * @var array
-     */
-    protected $inlineLanguageLabelFiles = [];
-
-    /**
-     * @var array
-     */
-    protected $inlineSettings = [];
+    protected array $cssInline = [];
+    protected string $bodyContent = '';
+    protected string $templateFile = '';
+    protected array $inlineLanguageLabels = [];
+    protected array $inlineLanguageLabelFiles = [];
+    protected array $inlineSettings = [];
 
     /**
      * Is empty string for HTML and ' /' for XHTML rendering
-     *
-     * @var string
      */
     protected string $endingSlash = '';
 
@@ -2046,7 +1948,7 @@ class PageRenderer implements SingletonInterface
             GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['FE']['jsCompressHandler'], $params, $this);
         } else {
             // Traverse the arrays, compress files
-            foreach ($this->jsInline ?? [] as $name => $properties) {
+            foreach ($this->jsInline as $name => $properties) {
                 if ($properties['compress'] ?? false) {
                     $this->jsInline[$name]['code'] = $this->resourceCompressor->compressJavaScriptSource($properties['code'] ?? '');
                 }
