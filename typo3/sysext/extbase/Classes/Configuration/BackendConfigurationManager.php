@@ -26,7 +26,10 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
@@ -107,6 +110,7 @@ class BackendConfigurationManager implements SingletonInterface
         private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly LossyTokenizer $lossyTokenizer,
         private readonly ConditionVerdictAwareIncludeTreeTraverser $includeTreeTraverserConditionVerdictAware,
+        private readonly SiteFinder $siteFinder,
     ) {}
 
     public function setRequest(ServerRequestInterface $request): void
@@ -221,6 +225,19 @@ class BackendConfigurationManager implements SingletonInterface
         }
 
         $site = $request?->getAttribute('site');
+        if (($site === null || $site instanceof NullSite) && $pageId > 0) {
+            // Due to the weird magic of getting the pid of the first root template when
+            // not having a pageId (extbase BE modules without page tree / no page selected),
+            // we also have no proper site in this case.
+            // So we try to get the site for this pageId. This way, site settings for this
+            // first TS page are turned into constants and can be used in setup and setup
+            // conditions.
+            try {
+                $site = $this->siteFinder->getSiteByPageId($pageId);
+            } catch (SiteNotFoundException) {
+                // Keep null / NullSite when no site could be determined for whatever reason.
+            }
+        }
 
         $rootLine = [];
         $sysTemplateFakeRow = [
