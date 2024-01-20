@@ -86,14 +86,4 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
             connection: $this->_conn,
         );
     }
-
-    /**
-     * @todo Migrate usage of this and remove this. Will be removed with doctrine/dbal 4.0.
-     */
-    public function getDatabasePlatform(): DoctrineMariaDBPlatform|DoctrineMySQLPlatform
-    {
-        /** @var DoctrineMariaDBPlatform|DoctrineMySQLPlatform $platform */
-        $platform = $this->_platform;
-        return $platform;
-    }
 }

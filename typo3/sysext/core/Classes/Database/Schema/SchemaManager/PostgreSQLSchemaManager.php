@@ -54,14 +54,4 @@ class PostgreSQLSchemaManager extends \Doctrine\DBAL\Schema\PostgreSQLSchemaMana
         return $this->processCustomDoctrineTypesColumnDefinition(tableColumn: $tableColumn, platform: $platform)
             ?? parent::_getPortableTableColumnDefinition(tableColumn: $tableColumn);
     }
-
-    /**
-     * @todo Migrate usage of this and remove this. Will be removed with doctrine/dbal 4.0.
-     */
-    public function getDatabasePlatform(): DoctrinePostgreSQLPlatform
-    {
-        /** @var DoctrinePostgreSQLPlatform $platform */
-        $platform = $this->_platform;
-        return $platform;
-    }
 }
