@@ -87,6 +87,16 @@ lint php 8.2:
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.2
 
+lint php 8.3:
+  stage: integrity
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
+
 lint scss ts html:
   stage: integrity
   tags:

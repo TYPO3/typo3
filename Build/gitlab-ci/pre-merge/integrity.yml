@@ -66,6 +66,28 @@ integration various pre-merge:
     - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.2
     - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.2
 
+lint php 8.2 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - main
+  script:
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.2
+
+lint php 8.3 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - main
+  script:
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
+
 lint scss ts html pre-merge:
   stage: main
   tags:

@@ -1,4 +1,4 @@
-acceptance application mariadb php 8.3 pre-merge:
+acceptance application mariadb 10.4 php 8.3 pre-merge:
   stage: main
   tags:
     - metal2
