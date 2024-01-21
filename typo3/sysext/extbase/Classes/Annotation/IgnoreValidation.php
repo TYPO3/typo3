@@ -27,7 +27,7 @@ class IgnoreValidation
     /**
      * @var non-empty-string|null
      */
-    public $argumentName;
+    public ?string $argumentName = null;
 
     /**
      * @param array{value?: non-empty-string, argumentName?: non-empty-string} $values

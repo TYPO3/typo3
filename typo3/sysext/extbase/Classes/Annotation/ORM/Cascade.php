@@ -27,14 +27,14 @@ class Cascade
     /**
      * @Enum({"remove"})
      *
-     * @var non-empty-string
+     * @var non-empty-string|null
      *
      * Currently, Extbase does only support "remove".
      *
      * Other possible cascade operations would be: "persist", "merge", "detach", "refresh", "all"
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#transitive-persistence-cascade-operations
      */
-    public $value;
+    public ?string $value = null;
 
     /**
      * @param array{value?: non-empty-string} $values

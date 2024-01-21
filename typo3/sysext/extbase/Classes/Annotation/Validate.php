@@ -27,20 +27,16 @@ use Doctrine\Common\Annotations\Annotation\Required;
 class Validate
 {
     /**
-     * @var string
      * @Required
      */
-    public $validator = '';
+    public string $validator = '';
 
-    /**
-     * @var string
-     */
-    public $param = '';
+    public string $param = '';
 
     /**
      * @var array<string, mixed>
      */
-    public $options = [];
+    public array $options = [];
 
     /**
      * @param array{value?: non-empty-string, validator?: non-empty-string, options?: array<string, mixed>, param?: string} $values
@@ -64,10 +60,7 @@ class Validate
         }
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $strings = [];
 
