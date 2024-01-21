@@ -759,8 +759,7 @@ class GeneralUtility
             }
         }
         unset($value);
-        // @todo: refactor this method to first remove empty values using `array_filter`,
-        // and then `array_walk` with `intval` on the result
+
         /** @var array<int, int> $result */
         return $result;
     }
