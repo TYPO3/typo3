@@ -95,3 +95,9 @@ not happen.
 By using the option :guilabel:`Use First Supported Mode from Selection` you can
 define several fallback methods.
 
+
+.. note::
+
+   It is only possible to use domains, which are known to TYPO3. This means,
+   that domains must be configured as :code:`base` in site settings for websites
+   in the current TYPO3 instance.
