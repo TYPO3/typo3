@@ -1036,21 +1036,6 @@ parameters:
 			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\File\\:\\:getOriginalResource\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|null but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Domain/Model/File.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface\\:\\:getOriginalFile\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Domain/Model/FileReference.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\FileReference\\:\\:getOriginalResource\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\|null but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Domain/Model/FileReference.php
-
-		-
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfiguration.php
@@ -1124,6 +1109,11 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfigurationInterface\\:\\:traverseProperties\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Property/PropertyMappingConfiguration.php
+
+		-
+			message: "#^Parameter \\#1 \\$originalResource of method TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\File\\:\\:setOriginalResource\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/AbstractFileFolderConverter.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\IntegerConverter\\:\\:convertFrom\\(\\) should return int\\|TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Error but returns null\\.$#"

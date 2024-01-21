@@ -16,13 +16,13 @@
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * A file reference object (File Abstraction Layer)
  */
-class FileReference extends AbstractFileFolder
+class FileReference extends AbstractEntity
 {
     /**
      * Uid of the referenced sys_file. Needed for extbase to serialize the
@@ -30,16 +30,15 @@ class FileReference extends AbstractFileFolder
      */
     protected ?int $uidLocal = null;
 
-    public function setOriginalResource(ResourceInterface $originalResource): void
+    protected ?\TYPO3\CMS\Core\Resource\FileReference $originalResource = null;
+
+    public function setOriginalResource(\TYPO3\CMS\Core\Resource\FileReference $originalResource): void
     {
         $this->originalResource = $originalResource;
-        $this->uidLocal = (int)$originalResource->getOriginalFile()->getUid();
+        $this->uidLocal = $originalResource->getOriginalFile()->getUid();
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Resource\FileReference
-     */
-    public function getOriginalResource(): ?ResourceInterface
+    public function getOriginalResource(): \TYPO3\CMS\Core\Resource\FileReference
     {
         if ($this->originalResource === null) {
             $uid = $this->_localizedUid;

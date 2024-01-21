@@ -15,7 +15,22 @@
 
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * A folder object (File Abstraction Layer)
  */
-class Folder extends AbstractFileFolder {}
+class Folder extends AbstractEntity
+{
+    private ?\TYPO3\CMS\Core\Resource\Folder $originalResource = null;
+
+    public function setOriginalResource(\TYPO3\CMS\Core\Resource\Folder $originalResource): void
+    {
+        $this->originalResource = $originalResource;
+    }
+
+    public function getOriginalResource(): ?\TYPO3\CMS\Core\Resource\Folder
+    {
+        return $this->originalResource;
+    }
+}
