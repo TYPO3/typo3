@@ -162,19 +162,19 @@ cleanRenderedDocumentationFiles() {
 getPhpImageVersion() {
     case ${1} in
         7.4)
-            echo -n "2.5"
+            echo -n "2.6"
             ;;
         8.0)
-            echo -n "2.5"
+            echo -n "2.6"
             ;;
         8.1)
-            echo -n "2.9"
+            echo -n "2.10"
             ;;
         8.2)
-            echo -n "1.8"
+            echo -n "1.9"
             ;;
         8.3)
-            echo -n "1.9"
+            echo -n "1.10"
             ;;
     esac
 }
@@ -522,8 +522,8 @@ if ! type ${CONTAINER_BIN} >/dev/null 2>&1; then
 fi
 
 IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):$(getPhpImageVersion $PHP_VERSION)"
-IMAGE_NODEJS="ghcr.io/typo3/core-testing-js:1.3"
-IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-js-chrome:1.3"
+IMAGE_NODEJS="ghcr.io/typo3/core-testing-js:1.4"
+IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-js-chrome:1.4"
 IMAGE_ALPINE="docker.io/alpine:3.8"
 IMAGE_SELENIUM="docker.io/selenium/standalone-chrome:4.0.0-20211102"
 IMAGE_REDIS="docker.io/redis:4-alpine"
