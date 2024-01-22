@@ -37,7 +37,10 @@ class NormalizedParamsAttribute implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $normalizedParams = $request->getAttribute('normalizedParams', null);
+        if ($normalizedParams === null) {
+            $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        }
         return $handler->handle($request);
     }
 }

@@ -38,8 +38,10 @@ final class LinkViewHelperTest extends FunctionalTestCase
     {
         // Mock Uribuilder in this functional test so we don't have to work with existing routes
         $formProtectionFactoryMock = $this->createMock(FormProtectionFactory::class);
-        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([new Router($requestContextFactory), $formProtectionFactoryMock, $requestContextFactory])->getMock();
+        $backendEntryPointResolver = new BackendEntryPointResolver();
+        $requestContextFactory = new RequestContextFactory($backendEntryPointResolver);
+        $router = new Router($requestContextFactory, $backendEntryPointResolver);
+        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([$router, $formProtectionFactoryMock, $requestContextFactory])->getMock();
         $uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
             ->with('theRouteArgument', ['parameter' => 'to pass'], 'theReferenceTypeArgument')->willReturn('theUri');
         GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilderMock);
@@ -58,8 +60,10 @@ final class LinkViewHelperTest extends FunctionalTestCase
     {
         // Mock Uribuilder in this functional test so we don't have to work with existing routes
         $formProtectionFactoryMock = $this->createMock(FormProtectionFactory::class);
-        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([new Router($requestContextFactory), $formProtectionFactoryMock, $requestContextFactory])->getMock();
+        $backendEntryPointResolver = new BackendEntryPointResolver();
+        $requestContextFactory = new RequestContextFactory($backendEntryPointResolver);
+        $router = new Router($requestContextFactory, $backendEntryPointResolver);
+        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([$router, $formProtectionFactoryMock, $requestContextFactory])->getMock();
         $uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
             ->with('theRouteArgument', [], 'theReferenceTypeArgument')->willReturn('theUri');
         GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilderMock);

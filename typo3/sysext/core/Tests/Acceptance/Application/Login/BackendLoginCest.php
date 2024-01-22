@@ -32,7 +32,7 @@ final class BackendLoginCest
     public function loginButtonMouseOver(ApplicationTester $I): void
     {
         $I->wantTo('check login functions');
-        $I->amOnPage('/typo3/index.php');
+        $I->amOnPage('/typo3');
         $I->waitForElement('#t3-username', 10);
         $I->wantTo('mouse over css change login button');
 
@@ -57,7 +57,7 @@ final class BackendLoginCest
     public function loginDeniedWithInvalidCredentials(ApplicationTester $I): void
     {
         $I->wantTo('check login functions');
-        $I->amOnPage('/typo3/index.php');
+        $I->amOnPage('/typo3');
         $I->waitForElement('#t3-username');
 
         $I->wantTo('check empty credentials');
@@ -122,7 +122,7 @@ final class BackendLoginCest
     private function login(ApplicationTester $I, string $username, string $password): void
     {
         $I->amGoingTo('Step\Application\Login username: ' . $username);
-        $I->amOnPage('/typo3/index.php');
+        $I->amOnPage('/typo3');
         $I->waitForElement('#t3-username');
         $I->fillField('#t3-username', $username);
         $I->fillField('#t3-password', $password);

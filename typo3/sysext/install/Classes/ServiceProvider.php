@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
@@ -285,7 +286,8 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\LayoutController(
             $container->get(FailsafePackageManager::class),
             $container->get(Service\SilentConfigurationUpgradeService::class),
-            $container->get(Service\SilentTemplateFileUpgradeService::class)
+            $container->get(Service\SilentTemplateFileUpgradeService::class),
+            $container->get(BackendEntryPointResolver::class),
         );
     }
 

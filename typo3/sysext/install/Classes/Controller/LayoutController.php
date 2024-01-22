@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
@@ -50,7 +51,8 @@ class LayoutController extends AbstractController
     public function __construct(
         private readonly FailsafePackageManager $packageManager,
         private readonly SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
-        private readonly SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService
+        private readonly SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService,
+        private readonly BackendEntryPointResolver $backendEntryPointResolver,
     ) {}
 
     /**
@@ -102,6 +104,7 @@ class LayoutController extends AbstractController
     {
         $view = $this->initializeView($request);
         $view->assign('moduleName', 'tools_tools' . ($request->getQueryParams()['install']['module'] ?? 'layout'));
+        $view->assign('backendUrl', (string)$this->backendEntryPointResolver->getUriFromRequest($request));
         return new JsonResponse([
             'success' => true,
             'html' => $view->render('Layout/MainLayout'),

@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Routing\RouteCollection;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -43,7 +44,8 @@ class Router implements SingletonInterface
     protected RouteCollection $routeCollection;
 
     public function __construct(
-        protected readonly RequestContextFactory $requestContextFactory
+        protected readonly RequestContextFactory $requestContextFactory,
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver,
     ) {
         $this->routeCollection = new RouteCollection();
     }
@@ -127,11 +129,11 @@ class Router implements SingletonInterface
      */
     public function matchResult(ServerRequestInterface $request): RouteResult
     {
-        $path = $request->getUri()->getPath();
-        if (($normalizedParams = $request->getAttribute('normalizedParams')) !== null) {
-            // Remove the directory name of the script from the path. This will usually be `/typo3` in this context.
-            $path = substr($path, strlen(dirname($normalizedParams->getScriptName())));
+        $path = $this->backendEntryPointResolver->getBackendRoutePath($request);
+        if ($path === null) {
+            throw new ResourceNotFoundException('The requested resource "' . $request->getUri()->getPath() . '" does not contain a known backend route prefix.', 1704787661);
         }
+
         if ($path === '' || $path === '/' || $path === '/index.php') {
             // Allow the login page to be displayed if routing is not used and on index.php
             // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)

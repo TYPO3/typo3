@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Composer;
 
 use Composer\Script\Event;
+use TYPO3\CMS\Composer\Plugin\Core\InstallerScripts\EntryPoint;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScriptsRegistration;
 use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
 
@@ -29,13 +30,19 @@ class InstallerScripts implements InstallerScriptsRegistration
 {
     public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
     {
+        $scriptDispatcher->addInstallerScript(
+            new EntryPoint(
+                dirname(__DIR__, 2) . '/Resources/Private/Php/index.php',
+                'index.php'
+            )
+        );
         if ($event->getComposer()->getPackage()->getName() === 'typo3/cms') {
-            // We don't need the binary in Composer mode (as we have typo3/cms-cli providing it)
+            // We only need to provide the binary in monorepo classic mode (regular Composer mode receives it via typo3/cms-cli)
             $source = dirname(__DIR__, 2) . '/Resources/Private/Php/cli.php';
             $target = 'typo3/sysext/core/bin/typo3';
             $scriptDispatcher->addInstallerScript(new CliEntryPoint($source, $target));
         } else {
-            // We don't need package artifact creation for our dev package/ TYPO3 classic mode
+            // Provide package artifact in regular composer mode (not needed for monorepo classic mode)
             $scriptDispatcher->addInstallerScript(new PackageArtifactBuilder());
         }
     }

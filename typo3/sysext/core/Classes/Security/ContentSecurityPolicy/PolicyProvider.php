@@ -23,6 +23,7 @@ use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -42,7 +43,8 @@ final class PolicyProvider
         private readonly SiteFinder $siteFinder,
         private readonly PolicyRegistry $policyRegistry,
         private readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly MutationRepository $mutationRepository,
+        private readonly MutationRepository $mutationRepository,
+        private readonly BackendEntryPointResolver $backendEntryPointResolver,
     ) {}
 
     /**
@@ -102,9 +104,9 @@ final class PolicyProvider
         } else {
             $uri = new Uri($normalizedParams->getSitePath());
         }
-        // add `typo3/` path in backend scope
+        // add backend entryPoint route prefix in backend scope
         if ($scope->type->isBackend()) {
-            $uri = $uri->withPath($uri->getPath() . 'typo3/');
+            $uri = $this->backendEntryPointResolver->getUriFromRequest($request);
         }
         // prefix current require scheme, host, port in case it's not given
         if ($absolute && ($uri->getScheme() === '' || $uri->getHost() === '')) {

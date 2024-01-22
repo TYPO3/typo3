@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -75,6 +76,7 @@ class BackendController
         protected readonly BackendViewFactory $viewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly FlashMessageService $flashMessageService,
+        protected readonly BackendEntryPointResolver $backendEntryPointResolver,
     ) {
         $this->modules = $this->moduleProvider->getModulesForModuleMenu($this->getBackendUser());
     }
@@ -157,6 +159,7 @@ class BackendController
             'modulesCollapsed' => $this->getCollapseStateOfMenu(),
             'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
             'startupModule' => $this->getStartupModule($request),
+            'entryPoint' => $this->backendEntryPointResolver->getPathFromRequest($request),
             'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
             'sitename' => $title,
             'sitenameFirstInBackendTitle' => ($backendUser->uc['backendTitleFormat'] ?? '') === 'sitenameFirst',

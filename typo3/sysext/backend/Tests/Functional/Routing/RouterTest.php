@@ -52,7 +52,8 @@ final class RouterTest extends FunctionalTestCase
     public function matchResultFindsProperRoute(): void
     {
         $subject = $this->get(Router::class);
-        $request = new ServerRequest('https://example.com/login', 'GET');
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/login', 'GET', null, [], $serverParams);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $result = $subject->matchResult($request);
         self::assertEquals('/login', $result->getRoute()->getPath());
@@ -64,7 +65,8 @@ final class RouterTest extends FunctionalTestCase
     public function matchResultThrowsExceptionOnInvalidRoute(): void
     {
         $subject = $this->get(Router::class);
-        $request = new ServerRequest('https://example.com/this-path/does-not-exist', 'GET');
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/this-path/does-not-exist', 'GET', null, [], $serverParams);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $this->expectException(ResourceNotFoundException::class);
         $subject->matchResult($request);
@@ -76,7 +78,8 @@ final class RouterTest extends FunctionalTestCase
     public function matchResultThrowsInvalidMethodForValidRoute(): void
     {
         $subject = $this->get(Router::class);
-        $request = new ServerRequest('https://example.com/login/password-reset/initiate-reset', 'GET');
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/login/password-reset/initiate-reset', 'GET', null, [], $serverParams);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $this->expectException(MethodNotAllowedException::class);
         $subject->matchResult($request);
@@ -88,7 +91,8 @@ final class RouterTest extends FunctionalTestCase
     public function matchResultReturnsRouteWithMethodLimitation(): void
     {
         $subject = $this->get(Router::class);
-        $request = new ServerRequest('https://example.com/login/password-reset/initiate-reset', 'POST');
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/login/password-reset/initiate-reset', 'POST', null, [], $serverParams);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $result = $subject->matchResult($request);
         self::assertEquals('/login/password-reset/initiate-reset', $result->getRoute()->getPath());
@@ -100,7 +104,8 @@ final class RouterTest extends FunctionalTestCase
     public function matchResultReturnsRouteForBackendModuleWithMethodLimitation(): void
     {
         $subject = $this->get(Router::class);
-        $request = new ServerRequest('https://example.com/module/site/configuration/delete', 'POST');
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/module/site/configuration/delete', 'POST', null, [], $serverParams);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $result = $subject->matchResult($request);
         self::assertEquals('/module/site/configuration/delete', $result->getRoute()->getPath());
@@ -116,7 +121,8 @@ final class RouterTest extends FunctionalTestCase
         $this->expectExceptionCode(1612649842);
 
         $subject = $this->get(Router::class);
-        $request = new ServerRequest('https://example.com/module/site/configuration/delete', 'GET');
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/module/site/configuration/delete', 'GET', null, [], $serverParams);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject->matchResult($request);
     }
@@ -128,7 +134,8 @@ final class RouterTest extends FunctionalTestCase
     {
         $subject = $this->get(Router::class);
         $subject->addRoute('custom-route', (new Route('/my-path/{identifier}', []))->setMethods(['POST']));
-        $request = new ServerRequest('https://example.com/my-path/my-identifier', 'POST');
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+        $request = new ServerRequest('https://example.com/typo3/my-path/my-identifier', 'POST', null, [], $serverParams);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $result = $subject->matchResult($request);
         self::assertEquals('custom-route', $result->getRouteName());
@@ -148,11 +155,17 @@ final class RouterTest extends FunctionalTestCase
         $routeCollection->addPrefix('/module/main/module');
         $subject->addRouteCollection($routeCollection);
 
-        $resultMainModule = $subject->matchResult(new ServerRequest('/module/main/module'));
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php']);
+
+        $request = new ServerRequest('/typo3/module/main/module', 'GET', null, [], $serverParams);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $resultMainModule = $subject->matchResult($request);
         self::assertEquals('main_module', $resultMainModule->getRouteName());
         self::assertEquals('/module/main/module', $resultMainModule->getRoute()->getPath());
 
-        $resultSubRoute = $subject->matchResult(new ServerRequest('/module/main/module/subroute'));
+        $request = new ServerRequest('/typo3/module/main/module/subroute', 'GET', null, [], $serverParams);
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $resultSubRoute = $subject->matchResult($request);
         self::assertEquals('main_module.subroute', $resultSubRoute->getRouteName());
         self::assertEquals('/module/main/module/subroute', $resultSubRoute->getRoute()->getPath());
     }

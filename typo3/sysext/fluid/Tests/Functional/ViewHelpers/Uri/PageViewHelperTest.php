@@ -139,7 +139,7 @@ final class PageViewHelperTest extends FunctionalTestCase
      */
     public function renderInBackendCoreContextCreatesAbsoluteUri(): void
     {
-        $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
+        $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
         $GLOBALS['TYPO3_REQUEST'] = $request;

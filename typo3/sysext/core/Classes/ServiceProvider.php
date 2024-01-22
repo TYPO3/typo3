@@ -73,6 +73,8 @@ class ServiceProvider extends AbstractServiceProvider
             EventDispatcher\EventDispatcher::class => [ static::class, 'getEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'getEventListenerProvider' ],
             FormProtection\FormProtectionFactory::class => [ static::class, 'getFormProtectionFactory' ],
+            Http\Application::class => [ static::class, 'getHttpApplication' ],
+            Http\RequestHandler::class => [ static::class, 'getHttpRequestHandler' ],
             Http\Client\GuzzleClientFactory::class => [ static::class, 'getGuzzleClientFactory' ],
             Http\MiddlewareStackResolver::class => [ static::class, 'getMiddlewareStackResolver' ],
             Http\RequestFactory::class => [ static::class, 'getRequestFactory' ],
@@ -107,6 +109,7 @@ class ServiceProvider extends AbstractServiceProvider
             TypoScript\Tokenizer\LosslessTokenizer::class => [ static::class, 'getLosslessTokenizer'],
             'icons' => [ static::class, 'getIcons' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
+            'core.middlewares' => [ static::class, 'getCoreMiddlewares' ],
             'content.security.policies' => [ static::class, 'getContentSecurityPolicies' ],
         ];
     }
@@ -514,6 +517,26 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Routing\BackendEntryPointResolver::class);
     }
 
+    public static function getHttpApplication(ContainerInterface $container): Http\Application
+    {
+        $requestHandler = new Http\MiddlewareDispatcher(
+            $container->get(Http\RequestHandler::class),
+            $container->get('core.middlewares'),
+        );
+        return new Http\Application(
+            $requestHandler,
+            $container->get(Configuration\ConfigurationManager::class),
+        );
+    }
+
+    public static function getHttpRequestHandler(ContainerInterface $container): Http\RequestHandler
+    {
+        return new Http\RequestHandler(
+            $container,
+            $container->get(Routing\BackendEntryPointResolver::class),
+        );
+    }
+
     public static function getRequestContextFactory(ContainerInterface $container): Routing\RequestContextFactory
     {
         return self::new($container, Routing\RequestContextFactory::class, [
@@ -565,6 +588,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getContentSecurityPolicies(ContainerInterface $container): Map
     {
         return new Map();
+    }
+
+    public static function getCoreMiddlewares(ContainerInterface $container): \ArrayObject
+    {
+        return new \ArrayObject($container->get(Http\MiddlewareStackResolver::class)->resolve('core'));
     }
 
     public static function provideFallbackEventDispatcher(

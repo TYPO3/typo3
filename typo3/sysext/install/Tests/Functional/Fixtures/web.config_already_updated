@@ -6,10 +6,9 @@
     <match url="^typo3/(.*)$" ignoreCase="false" />
     <conditions logicalGrouping="MatchAll">
         <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
-        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
         <add input="{REQUEST_URI}" matchType="Pattern" pattern="^/typo3/.*$" />
     </conditions>
-    <action type="Rewrite" url="typo3/index.php" appendQueryString="true" />
+    <action type="Rewrite" url="index.php" appendQueryString="true" />
 </rule>
 <rule name="TYPO3 - If the file/directory does not exist => Redirect to index.php." stopProcessing="true">
     <match url="^.*$" ignoreCase="false" />

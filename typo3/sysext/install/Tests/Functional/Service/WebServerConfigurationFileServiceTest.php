@@ -68,55 +68,36 @@ final class WebServerConfigurationFileServiceTest extends FunctionalTestCase
 
     public static function webServerConfigurationIsChangedDataProvider(): \Generator
     {
-        yield '.htaccess with custom configuration - will not be changed' => [
-            'Apache',
-            '.htaccess_custom_config',
-        ];
-        yield '.htaccess with wrong order - will not be changed' => [
-            'Apache',
-            '.htaccess_wrong_order',
-        ];
         yield '.htaccess already updated -  will not be changed' => [
             'Apache',
             '.htaccess_already_updated',
         ];
-        yield '.htaccess without custom configuration - will be changed' => [
+        yield 'outdated .htaccess - will be changed' => [
             'Apache',
-            '.htaccess_valid',
+            '.htaccess_outdated',
             true,
             [
-                'TYPO3 automated migration',
-                '# If the file/symlink/directory does not exist but is below /typo3/, redirect to the TYPO3 Backend entry point.',
-                'RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]',
+                '# Stop rewrite processing, if we are in any known directory',
+                'RewriteRule ^typo3/(.*)$ %{ENV:CWD}index.php [QSA,L]',
             ],
             [
-                'Stop rewrite processing, if we are in the typo3/ directory',
-                'RewriteRule ^(?:typo3/|',
+                '# Stop rewrite processing, if we are in any other known directory',
+                'RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]',
             ],
-        ];
-        yield 'web.config with custom configuration - will not be changed' => [
-            'Microsoft-IIS',
-            'web.config_custom_config',
-        ];
-        yield 'web.config with wrong order - will not be changed' => [
-            'Microsoft-IIS',
-            'web.config_wrong_order',
         ];
         yield 'web.config already updated - will not be changed' => [
             'Microsoft-IIS',
             'web.config_already_updated',
         ];
-        yield 'web.config without custom configuration - will be changed' => [
+        yield 'outdated web.config - will be changed' => [
             'Microsoft-IIS',
-            'web.config_valid',
+            'web.config_outdated',
             true,
             [
-                'TYPO3 automated migration',
-                'TYPO3 - If the file/directory does not exist but is below /typo3/, redirect to the TYPO3 Backend entry point.',
-                '<action type="Rewrite" url="typo3/index.php" appendQueryString="true" />',
+                '<action type="Rewrite" url="index.php" appendQueryString="true" />',
             ],
             [
-                '<match url="^/(typo3|',
+                '<action type="Rewrite" url="typo3/index.php" appendQueryString="true" />',
             ],
         ];
     }

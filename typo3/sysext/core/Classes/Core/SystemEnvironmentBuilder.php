@@ -57,7 +57,7 @@ class SystemEnvironmentBuilder
      * @internal This method should not be used by 3rd party code. It will change without further notice.
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      */
-    public static function run(int $entryPointLevel = 0, int $requestType = self::REQUESTTYPE_FE)
+    public static function run(int $entryPointLevel = 0, int $requestType = 0)
     {
         self::defineBaseConstants();
         $scriptPath = self::calculateScriptPath($entryPointLevel, $requestType);
@@ -100,8 +100,8 @@ class SystemEnvironmentBuilder
 
     /**
      * Calculate script path. This is the absolute path to the entry script.
-     * Can be something like '.../public/index.php' or '.../public/typo3/index.php' for
-     * web calls, or '.../bin/typo3' or similar for cli calls.
+     * Can be something like '.../public/index.php' for web calls, or
+     * '.../bin/typo3' or similar for cli calls.
      *
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @return string Absolute path to entry script
@@ -308,8 +308,7 @@ class SystemEnvironmentBuilder
      * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php is located in the same directory
      * as the main project. The document root is identical to the directory the script is located at.
      * - The install tool, located under typo3/install.php.
-     * - A Backend script: This is the case for the typo3/index.php dispatcher and other entry scripts like 'typo3/sysext/core/bin/typo3'
-     * or 'typo3/index.php' that are located inside typo3/ directly.
+     * - The CLI script 'typo3/sysext/core/bin/typo3' which is located inside typo3/ directly.
      *
      * @param string $scriptPath Calculated path to the entry script
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
@@ -338,7 +337,7 @@ class SystemEnvironmentBuilder
     protected static function isCliRequestType(?int $requestType): bool
     {
         if ($requestType === null) {
-            $requestType = PHP_SAPI === 'cli' ? self::REQUESTTYPE_CLI : self::REQUESTTYPE_FE;
+            return PHP_SAPI === 'cli';
         }
 
         return ($requestType & self::REQUESTTYPE_CLI) === self::REQUESTTYPE_CLI;

@@ -31,9 +31,14 @@ class InstallerScripts implements InstallerScriptsRegistration
 {
     public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
     {
+        $extra = $event->getComposer()->getPackage()->getExtra();
+        $installDeprecatedTypo3IndexPhp = $extra['typo3/cms']['install-deprecated-typo3-index-php'] ?? true;
+        if (!$installDeprecatedTypo3IndexPhp) {
+            return;
+        }
         $scriptDispatcher->addInstallerScript(
             new EntryPoint(
-                dirname(__DIR__, 2) . '/Resources/Private/Php/backend.php',
+                dirname(__DIR__, 2) . '/Resources/Private/Php/legacy-backend.php',
                 'typo3/index.php'
             )
         );

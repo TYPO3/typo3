@@ -61,7 +61,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'SCRIPT_NAME' => '/typo3/index.php']);
+        $serverParams = array_replace($_SERVER, ['HTTP_HOST' => 'example.com', 'SCRIPT_NAME' => '/index.php']);
         $request = new ServerRequest('http://example.com/typo3/index.php', 'GET', null, $serverParams);
         $GLOBALS['TYPO3_REQUEST'] = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)

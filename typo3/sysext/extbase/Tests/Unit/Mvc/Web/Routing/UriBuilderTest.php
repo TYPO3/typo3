@@ -51,8 +51,9 @@ final class UriBuilderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $router = new Router($requestContextFactory);
+        $backendEntryPointResolver = new BackendEntryPointResolver();
+        $requestContextFactory = new RequestContextFactory($backendEntryPointResolver);
+        $router = new Router($requestContextFactory, $backendEntryPointResolver);
         $router->addRoute('module_key', new Route('/test/Path', []));
         $router->addRoute('module_key.controller_action', new Route('/test/Path/Controller/action', []));
         $router->addRoute('module_key.controller2_action2', new Route('/test/Path/Controller2/action2', []));

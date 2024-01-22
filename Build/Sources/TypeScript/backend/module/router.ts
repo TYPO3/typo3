@@ -50,6 +50,7 @@ export class ModuleRouter extends LitElement {
   @property({ type: String, attribute: 'state-tracker' }) stateTrackerUrl: string;
   @property({ type: String, attribute: 'sitename' }) sitename: string;
   @property({ type: Boolean, attribute: 'sitename-first' }) sitenameFirst: boolean;
+  @property({ type: String, attribute: 'entry-point' }) entryPoint: string;
   @query('slot', true) slotElement: HTMLSlotElement;
 
   constructor() {
@@ -212,7 +213,7 @@ export class ModuleRouter extends LitElement {
         const controller = params.get('install[controller]');
         params.delete('install[controller]');
         params.delete('install[context]');
-        url.pathname = url.pathname.replace('/typo3/install.php', '/typo3/module/tools/' + controller);
+        url.pathname = url.pathname.replace('/typo3/install.php', this.entryPoint + 'module/tools/' + controller);
       } else {
         // non token-urls cannot be mapped by
         // the main backend controller right now

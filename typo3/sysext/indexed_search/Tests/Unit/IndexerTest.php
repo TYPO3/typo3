@@ -78,18 +78,6 @@ final class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractHyperLinksFindsCorrectPathForPathWithinTypo3Directory(): void
-    {
-        $html = 'test <a href="typo3/index.php">test</a> test';
-        $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
-        $result = $subject->extractHyperLinks($html);
-        self::assertCount(1, $result);
-        self::assertEquals(Environment::getPublicPath() . '/typo3/index.php', $result[0]['localPath']);
-    }
-
-    /**
-     * @test
-     */
     public function extractHyperLinksFindsCorrectPathUsingAbsRefPrefix(): void
     {
         $absRefPrefix = '/' . StringUtility::getUniqueId();

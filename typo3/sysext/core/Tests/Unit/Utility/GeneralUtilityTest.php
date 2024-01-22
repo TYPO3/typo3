@@ -1354,9 +1354,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getVarPath(),
             Environment::getConfigPath(),
             // needs to be a subpath in order to validate ".." references
-            Environment::getPublicPath() . '/typo3/index.php',
+            Environment::getPublicPath() . '/subdir/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SCRIPT_NAME'] = '/subdir/index.php';
         self::assertEquals($path, GeneralUtility::sanitizeLocalUrl($path));
     }
 
@@ -1375,9 +1377,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getVarPath(),
             Environment::getConfigPath(),
             // needs to be a subpath in order to validate ".." references
-            Environment::getPublicPath() . '/typo3/index.php',
+            Environment::getPublicPath() . '/subdir/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SCRIPT_NAME'] = '/subdir/index.php';
         self::assertEquals(rawurlencode($path), GeneralUtility::sanitizeLocalUrl(rawurlencode($path)));
     }
 
@@ -1426,12 +1430,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            // needs to be a subpath in order to validate ".." references
-            Environment::getPublicPath() . '/typo3/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $_SERVER['HTTP_HOST'] = $host;
-        $_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
+        $_SERVER['SCRIPT_NAME'] = $subDirectory . 'index.php';
         self::assertEquals($url, GeneralUtility::sanitizeLocalUrl($url));
     }
 
@@ -1449,12 +1452,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            // needs to be a subpath in order to validate ".." references
-            Environment::getPublicPath() . '/typo3/index.php',
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $_SERVER['HTTP_HOST'] = $host;
-        $_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
+        $_SERVER['SCRIPT_NAME'] = $subDirectory . 'index.php';
         self::assertEquals(rawurlencode($url), GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
     }
 
@@ -1517,7 +1519,7 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['SCRIPT_NAME'] = 'index.php';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
     }
 

@@ -1,0 +1,13 @@
+# Stop rewrite processing, if we are in any other known directory
+RewriteRule ^(?:typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/) - [L]
+#
+# If the file does not exist but is below /typo3/, redirect to the main TYPO3 entry point.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^.*$ %{ENV:CWD}index.php [QSA,L]

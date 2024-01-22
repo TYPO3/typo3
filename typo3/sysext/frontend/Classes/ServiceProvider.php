@@ -22,13 +22,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
-use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 
 /**
  * @internal
@@ -69,9 +67,7 @@ class ServiceProvider extends AbstractServiceProvider
         );
         return new Http\Application(
             $requestHandler,
-            $container->get(ConfigurationManager::class),
             $container->get(Context::class),
-            $container->get(BackendEntryPointResolver::class)
         );
     }
 

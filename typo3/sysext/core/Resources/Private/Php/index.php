@@ -13,9 +13,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-// Set up the application for the backend
+// Set up the application for the frontend
 call_user_func(static function () {
     $classLoader = require __DIR__ . '/../../../../../../vendor/autoload.php';
-    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(1, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_BE);
-    \TYPO3\CMS\Core\Core\Bootstrap::init($classLoader)->get(\TYPO3\CMS\Backend\Http\Application::class)->run();
+    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run();
+    \TYPO3\CMS\Core\Core\Bootstrap::init($classLoader)->get(\TYPO3\CMS\Core\Http\Application::class)->run();
 });

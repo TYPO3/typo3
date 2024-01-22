@@ -82,8 +82,9 @@ final class UriBuilderTest extends UnitTestCase
         array $routeParameters,
         string $expectation
     ): void {
-        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $router = new Router($requestContextFactory);
+        $backendEntryPointResolver = new BackendEntryPointResolver();
+        $requestContextFactory = new RequestContextFactory($backendEntryPointResolver);
+        $router = new Router($requestContextFactory, $backendEntryPointResolver);
         foreach ($routes as $nameRoute => $route) {
             $router->addRoute($nameRoute, $route);
         }
@@ -108,8 +109,9 @@ final class UriBuilderTest extends UnitTestCase
 
         $this->expectException(RouteNotFoundException::class);
         $this->expectExceptionCode(1476050190);
-        $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new UriBuilder(new Router($requestContextFactory), $formProtectionFactory, $requestContextFactory);
+        $backendEntryPointResolver = new BackendEntryPointResolver();
+        $requestContextFactory = new RequestContextFactory($backendEntryPointResolver);
+        $subject = new UriBuilder(new Router($requestContextFactory, $backendEntryPointResolver), $formProtectionFactory, $requestContextFactory);
         $subject->buildUriFromRoute(StringUtility::getUniqueId('any'));
     }
 }
