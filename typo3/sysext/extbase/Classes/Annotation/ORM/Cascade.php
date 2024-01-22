@@ -27,6 +27,8 @@ class Cascade
     /**
      * @Enum({"remove"})
      *
+     * @var non-empty-string
+     *
      * Currently, Extbase does only support "remove".
      *
      * Other possible cascade operations would be: "persist", "merge", "detach", "refresh", "all"
@@ -35,7 +37,7 @@ class Cascade
     public $value;
 
     /**
-     * @param array{value?: mixed} $values
+     * @param array{value?: non-empty-string} $values
      */
     public function __construct(array $values)
     {

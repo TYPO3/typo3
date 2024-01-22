@@ -30,7 +30,7 @@ class IgnoreValidation
     public $argumentName;
 
     /**
-     * @param array{value?: mixed, argumentName?: non-empty-string} $values
+     * @param array{value?: non-empty-string, argumentName?: non-empty-string} $values
      * @throws \InvalidArgumentException
      */
     public function __construct(array $values)
