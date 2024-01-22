@@ -1,0 +1,6 @@
+page = PAGE
+
+[tree.pagelayout == 'pagets__extra']
+  page.10 = TEXT
+  page.10.value = Extra Layout
+[end]

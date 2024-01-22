@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","title","backend_layout","backend_layout_next_level","TSconfig"
+,1,0,"Homepage","pagets__default","pagets__inherit","
+[tree.pagelayout == 'pagets__inherit']
+    layout = Inherited Layout
+[end]"
+,2,1,"Subpage","pagets__default","",""
+,3,2,"Subpage 2","","pagets__default",""

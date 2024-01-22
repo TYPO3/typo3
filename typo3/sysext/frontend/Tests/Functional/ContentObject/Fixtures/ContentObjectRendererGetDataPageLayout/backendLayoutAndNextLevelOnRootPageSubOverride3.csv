@@ -1,0 +1,6 @@
+"pages"
+,"uid","pid","title","backend_layout","backend_layout_next_level"
+,1,0,"Homepage","pagets__default","pagets__inherit"
+,2,1,"Subpage","","pagets__foo"
+,3,2,"Subpage 2","","pagets__extra"
+,4,3,"Subpage 3","",""
