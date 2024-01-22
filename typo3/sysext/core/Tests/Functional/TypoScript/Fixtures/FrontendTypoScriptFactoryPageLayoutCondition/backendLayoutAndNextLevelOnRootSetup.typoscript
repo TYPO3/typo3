@@ -1,0 +1,6 @@
+page = PAGE
+
+[tree.pagelayout == 'pagets__inherit']
+  page.10 = TEXT
+  page.10.value = Inherited Layout
+[end]

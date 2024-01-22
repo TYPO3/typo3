@@ -118,9 +118,11 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
             $tree->rootLineParentIds = array_slice(array_column($localRootLine, 'pid'), 1);
             // We're feeding the "full" RootLine here, not the "local" one that stops at sys_template record having 'root' set.
             // This is to be in-line with backend here: A 'backend_layout_next_level' on a page above sys_template 'root' page should
-            // still be considered. Additionally, $fullRootLine is "deepest page first, then up" for getLayoutForPage() to find
-            // the 'nearest' parent.
-            $tree->pagelayout = $this->pageLayoutResolver->getLayoutForPage($variables['page'], $fullRootLine);
+            // still be considered. Normally, $fullRootLine is "deepest page first, then up". This is needed for getLayoutForPage() to find
+            // the 'nearest' parent. However, here it is always passed sorted, so it is a top-down rootLine. Hence, this needs to be once
+            // again reversed at this point.
+            $bottomUpFullRootLine = array_reverse($fullRootLine);
+            $tree->pagelayout = $this->pageLayoutResolver->getLayoutForPage($variables['page'], $bottomUpFullRootLine);
             $enrichedVariables['tree'] = $tree;
         }
 

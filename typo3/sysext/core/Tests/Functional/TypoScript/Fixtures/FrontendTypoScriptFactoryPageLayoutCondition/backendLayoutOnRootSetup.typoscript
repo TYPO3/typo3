@@ -1,0 +1,6 @@
+page = PAGE
+
+[tree.pagelayout == 'pagets__default']
+  page.10 = TEXT
+  page.10.value = Default Layout
+[end]
