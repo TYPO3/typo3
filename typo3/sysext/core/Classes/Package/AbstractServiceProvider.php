@@ -57,7 +57,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             // @deprecated since v12, will be removed with v13 together with class PageTsConfigLoader.
             'globalPageTsConfig' => [ static::class, 'configureGlobalPageTsConfig' ],
             'backend.modules' => [ static::class, 'configureBackendModules' ],
-            'content.security.policies' => [static::class, 'configureContentSecurityPolicies'],
+            'content.security.policies' => [ static::class, 'configureContentSecurityPolicies' ],
             'icons' => [ static::class, 'configureIcons' ],
         ];
     }

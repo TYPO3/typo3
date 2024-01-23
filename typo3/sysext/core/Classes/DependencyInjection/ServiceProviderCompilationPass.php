@@ -197,6 +197,19 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
             return $callable;
         }
 
+        if ($callable instanceof \Closure) {
+            $reflection = new \ReflectionFunction($callable);
+            $reflectionScope = $reflection->getClosureScopeClass();
+            $usedVariables = count($reflection->getClosureUsedVariables());
+
+            if ($reflection->isStatic() && !str_contains($reflection->getName(), '{closure}') && $reflectionScope !== null && $usedVariables === 0) {
+                return [
+                    $reflectionScope->getName(),
+                    $reflection->getName(),
+                ];
+            }
+        }
+
         return null;
     }
 

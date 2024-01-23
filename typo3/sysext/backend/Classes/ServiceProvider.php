@@ -63,26 +63,26 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            Application::class => [ static::class, 'getApplication' ],
-            RequestHandler::class => [ static::class, 'getRequestHandler' ],
-            RouteDispatcher::class => [ static::class, 'getRouteDispatcher' ],
-            UriBuilder::class => [ static::class, 'getUriBuilder' ],
-            ModuleProvider::class => [ static::class, 'getModuleProvider' ],
-            ModuleFactory::class => [ static::class, 'getModuleFactory' ],
-            ModuleRegistry::class => [ static::class, 'getModuleRegistry' ],
-            'backend.middlewares' => [ static::class, 'getBackendMiddlewares' ],
-            'backend.routes' => [ static::class, 'getBackendRoutes' ],
-            'backend.routes.warmer' => [ static::class, 'getBackendRoutesWarmer' ],
-            'backend.modules' => [ static::class, 'getBackendModules' ],
-            'backend.modules.warmer' => [ static::class, 'getBackendModulesWarmer' ],
+            Application::class => self::getApplication(...),
+            RequestHandler::class => self::getRequestHandler(...),
+            RouteDispatcher::class => self::getRouteDispatcher(...),
+            UriBuilder::class => self::getUriBuilder(...),
+            ModuleProvider::class => self::getModuleProvider(...),
+            ModuleFactory::class => self::getModuleFactory(...),
+            ModuleRegistry::class => self::getModuleRegistry(...),
+            'backend.middlewares' => self::getBackendMiddlewares(...),
+            'backend.routes' => self::getBackendRoutes(...),
+            'backend.routes.warmer' => self::getBackendRoutesWarmer(...),
+            'backend.modules' => self::getBackendModules(...),
+            'backend.modules.warmer' => self::getBackendModulesWarmer(...),
         ];
     }
 
     public function getExtensions(): array
     {
         return [
-            Router::class => [ static::class, 'configureBackendRouter' ],
-            ListenerProvider::class => [ static::class, 'addEventListeners' ],
+            Router::class => self::configureBackendRouter(...),
+            ListenerProvider::class => self::addEventListeners(...),
         ] + parent::getExtensions();
     }
 

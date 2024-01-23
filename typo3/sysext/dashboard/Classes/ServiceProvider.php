@@ -45,22 +45,22 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            'dashboard.presets' => [ static::class, 'getDashboardPresets' ],
-            'dashboard.widgetGroups' => [ static::class, 'getWidgetGroups' ],
-            'dashboard.widgets' => [ static::class, 'getWidgets' ],
-            'dashboard.configuration.warmer' => [ static::class, 'getConfigurationWarmer' ],
+            'dashboard.presets' => self::getDashboardPresets(...),
+            'dashboard.widgetGroups' => self::getWidgetGroups(...),
+            'dashboard.widgets' => self::getWidgets(...),
+            'dashboard.configuration.warmer' => self::getConfigurationWarmer(...),
         ];
     }
 
     public function getExtensions(): array
     {
         return [
-            DashboardPresetRegistry::class => [ static::class, 'configureDashboardPresetRegistry' ],
-            ListenerProvider::class => [ static::class, 'addEventListeners' ],
-            WidgetGroupRegistry::class => [ static::class, 'configureWidgetGroupRegistry' ],
-            'dashboard.presets' => [ static::class, 'configureDashboardPresets' ],
-            'dashboard.widgetGroups' => [ static::class, 'configureWidgetGroups' ],
-            'dashboard.widgets' => [ static::class, 'configureWidgets' ],
+            DashboardPresetRegistry::class => self::configureDashboardPresetRegistry(...),
+            ListenerProvider::class => self::addEventListeners(...),
+            WidgetGroupRegistry::class => self::configureWidgetGroupRegistry(...),
+            'dashboard.presets' => self::configureDashboardPresets(...),
+            'dashboard.widgetGroups' => self::configureWidgetGroups(...),
+            'dashboard.widgets' => self::configureWidgets(...),
         ] + parent::getExtensions();
     }
 

@@ -48,10 +48,11 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            Http\Application::class => [ static::class, 'getApplication' ],
-            Http\RequestHandler::class => [ static::class, 'getRequestHandler' ],
-            'frontend.middlewares' => [ static::class, 'getFrontendMiddlewares' ],
+            Http\Application::class => self::getApplication(...),
+            Http\RequestHandler::class => self::getRequestHandler(...),
+            'frontend.middlewares' => self::getFrontendMiddlewares(...),
         ];
+
     }
 
     public static function getApplication(ContainerInterface $container): Http\Application

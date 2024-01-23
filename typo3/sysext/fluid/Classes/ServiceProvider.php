@@ -39,9 +39,9 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            Core\Rendering\RenderingContextFactory::class => [ static::class, 'getRenderingContextFactory' ],
-            Core\ViewHelper\ViewHelperResolverFactory::class => [ static::class, 'getViewHelperResolverFactory' ],
-            Core\ViewHelper\ViewHelperResolverFactoryInterface::class => [ static::class, 'getViewHelperResolverFactoryInterface' ],
+            Core\Rendering\RenderingContextFactory::class => self::getRenderingContextFactory(...),
+            Core\ViewHelper\ViewHelperResolverFactory::class => self::getViewHelperResolverFactory(...),
+            Core\ViewHelper\ViewHelperResolverFactoryInterface::class => self::getViewHelperResolverFactoryInterface(...),
         ];
     }
 
