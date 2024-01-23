@@ -31,19 +31,6 @@ Target pid
     Set the target page ID for the Extbase variant of the plugin. An empty
     value (default) falls back to the current page ID.
 
-..  _displayRules:
-
-Display Rules
--------------
-
-..  confval:: displayRules
-
-    :Type: boolean
-    :Default: 1
-    :Path: plugin.tx_indexedsearch.settings
-
-    Display the search rules.
-
 ..  _show-advancedsearchlink:
 
 Display advanced search link

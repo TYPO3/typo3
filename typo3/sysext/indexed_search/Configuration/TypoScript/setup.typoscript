@@ -7,8 +7,6 @@ plugin.tx_indexedsearch {
 
 	settings {
 		targetPid = {$plugin.tx_indexedsearch.settings.targetPid}
-		# show the rules
-		displayRules = 1
 
 		# show a link to the advanced search
 		displayAdvancedSearchLink = 1

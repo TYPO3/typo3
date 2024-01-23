@@ -13,19 +13,6 @@
 				<source>NOT</source>
 			</trans-unit>
 
-			<trans-unit id="rules.headline" resname="rules.headline">
-				<source>Rules</source>
-			</trans-unit>
-			<trans-unit id="rules.text" resname="rules.text" xml:space="preserve">
-				<source><![CDATA[Only words with 2 or more characters are accepted<br />
-Max 200 chars total<br />
-Space is used to split words, "" can be used to search for a whole string (not indexed search then)<br />
-AND, OR and NOT are prefix words, overruling the default operator<br />
-+/|/- equals AND, OR and NOT as operators.<br />
-All search words are converted to lowercase.
-]]></source>
-			</trans-unit>
-
 			<trans-unit id="form.legend" resname="form.legend">
 				<source>Search form</source>
 			</trans-unit>
