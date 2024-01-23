@@ -2,9 +2,9 @@
 
 .. _breaking-101820:
 
-======================================================================
-Breaking: #101820 - Remove bootstap jQuery interface and window.jQuery
-======================================================================
+=======================================================================
+Breaking: #101820 - Remove bootstrap jQuery interface and window.jQuery
+=======================================================================
 
 See :issue:`101820`
 
@@ -53,6 +53,6 @@ Following method calls are affected:
 Migration
 =========
 
-Use bootstraps ES6 exports :js:`import { Carousel } from 'bootstrap';` instead.
+Use bootstrap's ES6 exports :js:`import { Carousel } from 'bootstrap';` instead.
 
 .. index:: Backend, JavaScript, NotScanned, ext:core

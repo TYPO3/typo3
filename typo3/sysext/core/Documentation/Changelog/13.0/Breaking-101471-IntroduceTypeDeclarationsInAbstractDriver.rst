@@ -12,7 +12,7 @@ Description
 ===========
 
 Return and param type declarations have been introduced for all methods and method
-stubs of of :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractDriver` and
+stubs of :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractDriver` and
 :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver`
 
 

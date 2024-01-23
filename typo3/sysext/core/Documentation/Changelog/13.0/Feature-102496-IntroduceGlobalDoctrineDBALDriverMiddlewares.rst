@@ -30,12 +30,12 @@ has been introduced as a configuration per connection.
 Now it's also possible to register global driver middlewares once, which are applied
 to all configured connections and then the specific connection middlewares.
 
-See :ref:`sortable Doctrine DBAL middleware registration <_feature-102586-1701536342>` feature
+See :ref:`sortable Doctrine DBAL middleware registration <feature-102586-1701536342>` feature
 changelog for further details about the middleware configuration block.
 
 ..  warning::
 
-    Do not remove or disable provided global core driver middlewares which are
+    Do not remove or disable provided global Core driver middlewares which are
     essential.
 
 Registering a new global driver middleware
@@ -50,7 +50,7 @@ Registering a new global driver middleware
       'target' => CustomGlobalDriverMiddleware::class,
       'after' [
         // NOTE: Custom driver middleware should be registered after essential
-        //       TYPO3 core driver middlewares. Use the following identifiers
+        //       TYPO3 Core driver middlewares. Use the following identifiers
         //       to ensure that.
         'typo3/core/custom-platform-driver-middleware',
         'typo3/core/custom-pdo-driver-result-middleware',
@@ -69,7 +69,7 @@ Disable a global middleware for a specific connection
       'target' => CustomGlobalDriverMiddleware::class,
       'after' [
         // NOTE: Custom driver middleware should be registered after essential
-        //       TYPO3 core driver middlewares. Use the following identifiers
+        //       TYPO3 Core driver middlewares. Use the following identifiers
         //       to ensure that.
         'typo3/core/custom-platform-driver-middleware',
         'typo3/core/custom-pdo-driver-result-middleware',

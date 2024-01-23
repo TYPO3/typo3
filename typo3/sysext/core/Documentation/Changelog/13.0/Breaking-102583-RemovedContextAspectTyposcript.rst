@@ -11,10 +11,10 @@ See :issue:`102583`
 Description
 ===========
 
-The :php:`TYPO3\CMS\Core\Context\Context` aspect :php:`typoscript` has been
+The :php:`\TYPO3\CMS\Core\Context\Context` aspect :php:`typoscript` has been
 removed without direct substitution. This aspect was implemented by now removed
-class :php:`TYPO3\CMS\Core\Context\TypoScriptAspect`, handling the EXT:adminpanel
-related property :php:`forcedTemplateParsing`.
+class :php:`\TYPO3\CMS\Core\Context\TypoScriptAspect`, handling the
+EXT:adminpanel-related property :php:`forcedTemplateParsing`.
 
 
 Impact
@@ -34,7 +34,7 @@ Affected installations
 ======================
 
 Extensions typically do not use this context aspect since it only carried an
-EXT:adminpanel related information.
+EXT:adminpanel-related information.
 
 
 Migration

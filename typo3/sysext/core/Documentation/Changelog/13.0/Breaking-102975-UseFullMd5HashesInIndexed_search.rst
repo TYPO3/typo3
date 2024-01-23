@@ -13,7 +13,7 @@ Description
 
 For historical reasons an integer representation for castrated md5 hashes has
 been used in several places for the `ext:indexed_search` provided database schema
-and functionality. This led to conflicts that manifested as `duplicate key` errors.
+and functionality. This led to conflicts that manifested as "duplicate key" errors.
 
 Therefore, the database fields are transformed to varchar fields and the whole
 indexed search codebase changed to work with full md5 hashes now.
@@ -53,7 +53,7 @@ Migration
 =========
 
 The database analyzer takes care of updating affected columns and truncates
-index related tables to be ready for re-indexing.
+index related tables to be ready for reindexing.
 
 
 .. index:: Database, NotScanned, ext:indexed_search

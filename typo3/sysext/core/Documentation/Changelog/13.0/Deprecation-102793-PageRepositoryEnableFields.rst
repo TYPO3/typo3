@@ -12,7 +12,7 @@ Description
 ===========
 
 One of the common PHP APIs used in TYPO3 Core for fetching records is
-:php:`TYPO3\CMS\Core\Domain\Repository\PageRepository`. The method
+:php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository`. The method
 :php:`enableFields()` is used to enhance a database query with additional
 restrictions such as filtering out versioned records from workspaces, hidden
 database entries or scheduled database entries.
@@ -43,10 +43,14 @@ Before (TYPO3 v12)
 ------------------
 
 .. code-block:: php
+   :emphasize-lines: 5,10
 
-    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        ->getQueryBuilderForTable($tableName);
 
-    $constraints = GeneralUtility::makeInstance(PageRepository::class)->enableFields($tableName);
+    $constraints = GeneralUtility::makeInstance(PageRepository::class)
+        ->enableFields($tableName);
+
     $queryBuilder
         ->select('*')
         ->from($tableName);
@@ -58,11 +62,17 @@ After (TYPO3 v13)
 -----------------
 
 .. code-block:: php
+   :emphasize-lines: 5,11-13
 
-    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-    $queryBuilder->select('*')->from($tableName);
+    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        ->getQueryBuilderForTable($tableName);
 
-    $constraints = GeneralUtility::makeInstance(PageRepository::class)->getDefaultConstraints($tableName);
+    $constraints = GeneralUtility::makeInstance(PageRepository::class)
+        ->getDefaultConstraints($tableName);
+
+    $queryBuilder
+        ->select('*')
+        ->from($tableName);
 
     if ($constraints !== []) {
         $queryBuilder->where(...$constraints);

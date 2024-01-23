@@ -11,15 +11,16 @@ See :issue:`94501`
 Description
 ===========
 
-The FlexFormProcessor is now able to resolve FAL references by its own.
+The :php:`FlexFormProcessor` is now able to resolve :abbr:`FAL (File Abstraction Layer)`
+references by its own.
 
 Each FlexForm field, which should be resolved, needs a reference definition
-to the `foreign_match_fields`. This reference is later used in the
+to the :php:`foreign_match_fields`. This reference is later used in the
 :php:`FilesProcessor` to resolve the correct FAL resource.
 
 Example of an advanced TypoScript configuration, which processes the field
-`my_flexform_field`, resolves its FAL references and assigns the array to the
-`myOutputVariable` variable:
+:typoscript:`my_flexform_field`, resolves its FAL references and assigns the
+array to the :typoscript:`myOutputVariable` variable:
 
 .. code-block:: typoscript
 
@@ -89,8 +90,8 @@ Example of an advanced TypoScript configuration, which processes the field
 Impact
 ======
 
-FAL references within a FlexForm can now easily be resolved for the direct usage
+FAL references within a FlexForm can now be resolved for the direct usage
 in Fluid templates. This makes resolving the file references by using additional
-DataProcessors obsolete.
+data processors obsolete.
 
 .. index:: Frontend, FlexForm, TypoScript, ext:frontend

@@ -21,8 +21,8 @@ Impact
 In consequence, all implementations of :php:`\TYPO3\CMS\Core\Resource\FileInterface` need
 to reflect those changes and add the same return and param type declarations.
 
-In case, any of the core implementations are extended, overridden methods might need
-to be adjusted. The core classes, implementing :php:`\TYPO3\CMS\Core\Resource\FileInterface` are:
+In case, any of the Core implementations are extended, overridden methods might need
+to be adjusted. The Core classes, implementing :php:`\TYPO3\CMS\Core\Resource\FileInterface`, are:
 
 - :php:`\TYPO3\CMS\Core\Resource\AbstractFile`
 - :php:`\TYPO3\CMS\Core\Resource\File`

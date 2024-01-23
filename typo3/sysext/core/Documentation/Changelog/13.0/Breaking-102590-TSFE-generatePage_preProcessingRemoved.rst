@@ -11,7 +11,7 @@ See :issue:`102590`
 Description
 ===========
 
-Frontend related method :php:`TypoScriptFrontendController->generatePage_preProcessing()`
+Frontend-related method :php:`TypoScriptFrontendController->generatePage_preProcessing()`
 has been removed without substitution.
 
 

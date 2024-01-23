@@ -37,6 +37,6 @@ Impact
 ======
 
 It's now possible to automatically tag a backend controller by adding the new
-PHP attribute :php:`TYPO3\CMS\Backend\Attribute\AsController`.
+PHP attribute :php:`\TYPO3\CMS\Backend\Attribute\AsController`.
 
 .. index:: Backend, PHP-API, ext:backend

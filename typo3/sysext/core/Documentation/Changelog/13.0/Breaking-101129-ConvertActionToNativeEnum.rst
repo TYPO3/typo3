@@ -14,7 +14,7 @@ Description
 The class :php:`\TYPO3\CMS\Scheduler\Task\Enumeration\Action` is now
 converted to a native backed enum. In addition the class is moved to
 the namespace :php:`\TYPO3\CMS\Scheduler` and renamed to
-SchedulerManagementAction.
+:php:`SchedulerManagementAction`.
 
 Impact
 ======
@@ -40,8 +40,8 @@ Class instantiation:
 Migration
 =========
 
-Include enum :php:`SchedulerManagementAction` from namespace :php:`\TYPO3\CMS\Scheduler`
-as a replacement for :php:`Action`
+Include the enum :php:`SchedulerManagementAction` from namespace :php:`\TYPO3\CMS\Scheduler`
+as a replacement for :php:`Action`.
 
 Use the new syntax
 
@@ -49,7 +49,7 @@ Use the new syntax
 - :php:`\TYPO3\CMS\Scheduler\SchedulerManagementAction::EDIT`
 - :php:`\TYPO3\CMS\Scheduler\SchedulerManagementAction::LIST`
 
-as well as the :php:`tryFrom($aString)` static method of the Backed enum.
+as well as the :php:`tryFrom($aString)` static method of the backed enum.
 
 
 .. index:: Backend, NotScanned, ext:linkvalidator, ext:recycler, ext:reports, ext:scheduler

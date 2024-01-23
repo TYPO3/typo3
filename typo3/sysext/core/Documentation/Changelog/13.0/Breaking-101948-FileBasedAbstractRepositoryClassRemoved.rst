@@ -14,19 +14,19 @@ Description
 When the base architecture of File Abstraction Layer (FAL) was introduced in
 TYPO3 v6.0, various functionality was based on concepts based on Extbase's
 architecture. Some concepts never flourished. One of them being the
-:php:`TYPO3\CMS\Core\Resource\AbstractRepository` class from FAL.
+:php:`\TYPO3\CMS\Core\Resource\AbstractRepository` class from FAL.
 
 This PHP class served as a basis for 2 PHP classes,
-:php:`TYPO3\CMS\Core\Resource\FileRepository` and
-:php:`TYPO3\CMS\Core\Resource\ProcessedFileRepository`.
+:php:`\TYPO3\CMS\Core\Resource\FileRepository` and
+:php:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository`.
 
 Nowadays, it is obvious that some decisions in this area were not useful:
 
-1. The coupling to Extbase's Repository architecture does not work out, as the
+1. The coupling to Extbase's repository architecture does not work out, as the
 manual database queries that return objects should not be bound to Extbase's
 QueryRestrictions.
 
-These never worked and were never implemented in the mentioned Repository
+These never worked and were never implemented in the mentioned repository
 classes from FAL.
 
 It becomes abundantly clear that the concepts do not match by looking at the
@@ -57,7 +57,7 @@ Affected installations
 
 As all three PHP classes are low-level in the FAL API, the impact for regular
 installations will be rather low. Third-party extensions that extend from the
-AbstractRepository of FAL, which is a wild use-case will stop working. It is
+:php:`AbstractRepository` of FAL, which is a wild use-case will stop working. It is
 safe to say, that only edge-case extensions that worked with the FAL API might
 be affected, but regular installations will see no difference.
 
@@ -68,7 +68,7 @@ Migration
 Only extension authors working with the low-level API of File Abstraction Layer
 would need to adapt their code to be type-safe. Extensions that extend from the
 :php:`AbstractRepository` class of FAL should implement the necessary methods
-themselves and remove the dependency from AbstractRepository.
+themselves and remove the dependency from :php:`AbstractRepository`.
 
 It is highly recommended to not use any of these classes, but rather stick
 to high-level API of FAL, such as :php:`ResourceFactory`, :php:`File`

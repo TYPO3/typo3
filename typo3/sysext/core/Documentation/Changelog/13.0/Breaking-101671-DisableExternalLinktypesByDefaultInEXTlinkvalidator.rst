@@ -11,14 +11,13 @@ See :issue:`101671`
 Description
 ===========
 
-There are several known problems with external link checking  in Linkvalidator,
+There are several known problems with external link checking in Linkvalidator,
 such as:
 
 *   "False positives": Some links are reported broken, but are not broken, see
-    `issue <https://forge.typo3.org/issues/101670>`__.
+    :issue:`101670`.
 *   External sites are checked without rate limit which may cause sites which
-    perform link checking to be blocked, see
-    `issue <https://forge.typo3.org/issues/89287>`__.
+    perform link checking to be blocked, see :issue:`89287`.
 *   No caching of results (except for a runtime cache during link checking which
     will be invalid on next run)
 
@@ -80,8 +79,8 @@ More information is available in the Linkvalidator documentation:
 Example for activating external linktype
 ----------------------------------------
 
-..  code-block::
-    :caption: EXT:my_sitepackage/Configuration/TsConfig/Page/Extension/Linkvalidator.typoscript
+..  code-block:: typoscript
+    :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
     mod.linkvalidator.linktypes = db,file,external
 

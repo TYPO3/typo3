@@ -32,7 +32,7 @@ will be detected by the extension scanner.
 Affected installations
 ======================
 
-All installations with 3rd party extensions using
+All installations with third-party extensions using
 :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_*` constants
 are affected.
 

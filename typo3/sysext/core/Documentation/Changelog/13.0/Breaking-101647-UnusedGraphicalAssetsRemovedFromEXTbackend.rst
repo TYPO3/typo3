@@ -11,7 +11,8 @@ See :issue:`101647`
 Description
 ===========
 
-The TYPO3 system extension "backend" accumulated many graphical assets over the years that became unused piece by piece.
+The TYPO3 system extension "backend" accumulated many graphical assets over the
+years that became unused piece by piece.
 
 The following icons have been removed from the Icon Registry:
 
@@ -33,8 +34,8 @@ The following assets have been removed from the directory :file:`EXT:backend/Res
 Impact
 ======
 
-Calling any of the removed icons from the Icon Registry will render the default icon. Accessing any of the removed files
-directly will lead to a 404 error.
+Calling any of the removed icons from the Icon Registry will render the default
+icon. Accessing any of the removed files directly will lead to a 404 error.
 
 
 Affected installations

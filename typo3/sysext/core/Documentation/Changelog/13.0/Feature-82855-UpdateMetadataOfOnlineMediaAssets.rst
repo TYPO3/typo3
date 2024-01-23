@@ -12,12 +12,12 @@ Description
 ===========
 
 A new action :guilabel:`Reload Metadata` has been added to the secondary
-options dropdown of online media assets, such as youtube and vimeo videos,
-in the :guilabel:`Filelist` module. Additonally also the context menu of
+options' dropdown of online media assets, such as YouTube and Vimeo videos,
+in the :guilabel:`File > Filelist` module. Additionally, also the context menu of
 such files has been extended for the new action.
 
 The action allows to reload the corresponding information from the external
-service. Those information are e.g. the preview image, the author or the
+service. Those information are, for example, the preview image, the author or the
 dimensions of the online media asset.
 
 Impact

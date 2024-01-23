@@ -11,19 +11,19 @@ See :issue:`102806`
 Description
 ===========
 
-A new PSR-14 Event :php:`TYPO3\CMS\Core\Domain\Event\BeforePageIsRetrievedEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Core\Domain\Event\BeforePageIsRetrievedEvent`
 has been introduced, which serves as a more powerful replacement of the removed
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage']`
 hook.
 
-The new Event therefore allows to modify the resolving of page records within
-:php:`TYPO3\CMS\Core\Domain\PageRepository->getPage()`.
+The new event therefore allows to modify the resolving of page records within
+:php:`\TYPO3\CMS\Core\Domain\PageRepository->getPage()`.
 
 Impact
 ======
 
-The Event can be used to alter the incoming Page ID or to even fetch a fully
-loaded Page object before the default TYPO3 behaviour is executed, effectively
+The event can be used to alter the incoming page ID or to even fetch a fully
+loaded page object before the default TYPO3 behaviour is executed, effectively
 bypassing the default page resolving.
 
 To modify the incoming parameters, the following methods are available:
@@ -60,7 +60,7 @@ registration:
 Impact
 ======
 
-Using the new PSR-14 Event, it's now possible to fully customize the page
-resolving in TYPO3's Core API class :php:`TYPO3\CMS\Core\Domain\PageRepository`.
+Using the new PSR-14 event, it's now possible to fully customize the page
+resolving in TYPO3's Core API class :php:`\TYPO3\CMS\Core\Domain\PageRepository`.
 
 .. index:: PHP-API, ext:core

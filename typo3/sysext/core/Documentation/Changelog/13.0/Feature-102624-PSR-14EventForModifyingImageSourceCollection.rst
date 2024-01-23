@@ -3,7 +3,7 @@
 .. _feature-102624-1701943870:
 
 =====================================================================
-Feature: #102624 - PSR-14 Event for modifying image source collection
+Feature: #102624 - PSR-14 event for modifying image source collection
 =====================================================================
 
 See :issue:`102624`
@@ -12,7 +12,7 @@ See :issue:`102624`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent`
 has been introduced which serves as a drop-in replacement for the now removed
 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection']`.
 
@@ -52,7 +52,7 @@ registration:
 Impact
 ======
 
-Using the new PSR-14 Event, it's now possible to manipulate the
+Using the new PSR-14 event, it's now possible to manipulate the
 :typoscript:`sourceCollection`'s, used for an :php:`ImageContentObject`.
 
 

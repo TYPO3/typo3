@@ -11,28 +11,28 @@ See :issue:`102895`
 Description
 ===========
 
-The PHP method :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon`
-has been deprecated in favor of :php:`TYPO3\CMS\Core\Package\Package->getPackageIcon`.
+The PHP method :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon`
+has been deprecated in favor of :php:`\TYPO3\CMS\Core\Package\Package->getPackageIcon`.
 
 
 Impact
 ======
 
-Calling the method :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon`
+Calling the method :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon`
 will trigger a PHP deprecation warning.
 
 
 Affected installations
 ======================
 
-TYPO3 Installations with custom extensions calling the method.
+TYPO3 installations with custom extensions calling the method.
 
 
 Migration
 =========
 
-Migrate towards the PackageManager implementation, which can be added
-via Dependency Injection or retrieved via :php:`GeneralUtility::makeInstance`.
+Migrate towards the :php:`PackageManager` implementation, which can be added
+via Dependency Injection or retrieved via :php:`GeneralUtility::makeInstance()`.
 
 Before
 ------

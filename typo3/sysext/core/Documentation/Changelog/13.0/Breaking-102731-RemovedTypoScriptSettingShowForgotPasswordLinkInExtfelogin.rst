@@ -13,7 +13,7 @@ Description
 
 The :php:`showForgotPasswordLink` setting in ext:felogin has never been used in
 default Fluid templates and was only been kept for backward compatibility
-reasons. The setting has been deprecated with #98122, but it has been forgotten
+reasons. The setting has been deprecated with :issue:`98122`, but it has been forgotten
 to be removed in TYPO3 v12.
 
 

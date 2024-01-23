@@ -37,7 +37,7 @@ By default, this affects the following occurrences:
 * Composer status view in Extension Manager
 
 Also, checks whether the extension is installed via
-:php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3editor')`
+:php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3editor')`
 are now obsolete.
 
 
@@ -50,10 +50,10 @@ All installations are affected.
 Migration
 =========
 
-Extension checks using :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3editor')`
+Extension checks using :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3editor')`
 don't have an effect anymore and must get removed.
 
-In addition, please see <Deprecation-102440-EXTt3editorMergedIntoEXTBackend>.
+In addition, please see :ref:`deprecation-102440-1700638677`.
 
 
 .. index:: Backend, JavaScript, PHP-API, NotScanned, ext:t3editor

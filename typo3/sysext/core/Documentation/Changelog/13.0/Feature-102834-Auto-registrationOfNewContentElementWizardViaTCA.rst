@@ -11,7 +11,7 @@ See :issue:`102834`
 Description
 ===========
 
-Content Elements types defined in TCA field :php:`CType` are now automatically
+Content element types defined in TCA field :php:`CType` are now automatically
 registered for the New Content Element Wizard. This replaces the former extra
 step to define a wizard entry in page TSconfig :typoscript:`mod.wizards.newContentElement.wizardItems.<group>`.
 
@@ -35,28 +35,28 @@ The migration looks as follows:
 
 .. code-block:: php
 
-<?php
+    <?php
 
-return [
-    'columns' => [
-        'CType' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
-                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
-                        'value' => 'header',
-                        'icon' => 'content-header',
-                        'group' => 'default',
+    return [
+        'columns' => [
+            'CType' => [
+                'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type',
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'items' => [
+                        [
+                            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
+                            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
+                            'value' => 'header',
+                            'icon' => 'content-header',
+                            'group' => 'default',
+                        ],
                     ],
                 ],
             ],
         ],
-    ],
-];
+    ];
 
 .. note::
 
@@ -157,8 +157,8 @@ Impact
 ======
 
 The groups and elements of the new Content Element Wizard are now registered
-automatically from the TCA type field. This eases the creation of new Content
-Elements and Plugins for integrators and developers, since the whole definition
+automatically from the TCA type field. This eases the creation of new content
+elements and plugins for integrators and developers, since the whole definition
 is done at a central place.
 
 .. index:: Backend, TCA, TSConfig, ext:backend

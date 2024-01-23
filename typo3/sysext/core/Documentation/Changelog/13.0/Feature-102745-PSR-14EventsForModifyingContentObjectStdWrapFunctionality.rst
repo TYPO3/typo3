@@ -3,7 +3,7 @@
 .. _feature-102745-1705054628:
 
 ==================================================================================
-Feature: #102745 - PSR-14 Events for modifying ContentObject stdWrap functionality
+Feature: #102745 - PSR-14 events for modifying ContentObject stdWrap functionality
 ==================================================================================
 
 See :issue:`102745`
@@ -11,7 +11,7 @@ See :issue:`102745`
 Description
 ===========
 
-Four new PSR-14 Events have been introduced:
+Four new PSR-14 events have been introduced:
 
 * :php:`\TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsInitializedEvent`
 * :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsInitializedEvent`
@@ -24,12 +24,12 @@ They serve as more powerful replacement of the :doc:`removed <../13.0/Breaking-1
 Instead of registering one hook class, implementing four different methods - due
 to the :doc:`deprecated interface <../13.0/Deprecation-102745-UnusedInterfaceForStdWrapHook>`
 - extension authors are now able to register dedicated listeners. Next to the
-individual Events, it's also possible to register listeners to listen on the
+individual events, it's also possible to register listeners to listen on the
 parent :php:`\TYPO3\CMS\Frontend\ContentObject\Event\EnhanceStdWrapEvent`. Since
 this event is extended by all other events, registered listeners are called
 on each occurrence.
 
-All Events provide the same functionality. The difference is only the execution
+All events provide the same functionality. The difference is only the execution
 order in which they are called in the stdWrap processing chain.
 
 Available methods:
@@ -77,10 +77,10 @@ registration:
 Impact
 ======
 
-Using the new PSR-14 Events, it's now possible to fully influence the stdWrap
+Using the new PSR-14 events, it's now possible to fully influence the stdWrap
 functionality in TYPO3's Core API class :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`.
 
-Using the new individual Events, developers are now also able to simplify their
+Using the new individual events, developers are now also able to simplify their
 code by just listening for the relevant parts in the stdWrap processing.
 
 .. index:: Frontend, PHP-API, ext:frontend

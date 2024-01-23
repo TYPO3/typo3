@@ -11,8 +11,8 @@ See :issue:`97330`
 Description
 ===========
 
-When editing records in the Backend, the "FormEngine" class structure located
-within :file:`EXT:backend/Classes/Form` handles generation of the editing view.
+When editing records in the backend, the :php:`FormEngine` class structure located
+within :file:`EXT:backend/Classes/Form/` handles the generation of the editing view.
 
 A change has been applied related to the rendering of single field labels, which
 is no longer done automatically by "container" classes: Single elements have to
@@ -33,25 +33,27 @@ Affected installations
 ======================
 
 Instances with custom FormEngine elements are affected. Custom elements need to be
-registered to the FormEngine :php:`NodeFactory`, candidates are found by looking at
+registered to the FormEngine's :php:`NodeFactory`, candidates are found by looking at
 the :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']` array (for instance
-using the :php:`EXT:lowlevel` "Configuration" module). Classes registered using the
-sub keys keys :php:`nodeRegistry` and :php:`nodeResolver` may be affected. The
-extension scanner does not find affected classes.
+using the :guilabel:`System > Configuration` backend module provided by
+EXT:lowlevel). Classes registered using the sub keys :php:`nodeRegistry` and
+:php:`nodeResolver` may be affected. The extension scanner does not find
+affected classes.
 
 
 Migration
 =========
 
-Custom elements must create take care of creating a :html:`<label>` or :html:`<legend>`
-tag on their own: If the element creates a :html:`input`, or :html:`select` tag,
+Custom elements must take care of creating a :html:`<label>` or :html:`<legend>`
+tag on their own: If the element creates an :html:`<input>`, or :html:`<select>` tag,
 the :html:`<label>` should have a :html:`for` attribute that points to a field having
 an :html:`id` attribute. This is important especially for accessibility. When no such
 target element exists, a :html:`<legend>` embedded in a :html:`<fieldset>` can be used.
-There are two helper methods in :php:`AbstractFormElement` to help with this:
+There are two helper methods in
+:php:`\TYPO3\CMS\Backend\Form\Element\AbstractFormElement` to help with this:
 :php:`renderLabel()` and :php:`wrapWithFieldsetAndLegend()`.
 
-In practice, an element having a :html:`input`, or :html:`select` field should
+In practice, an element having an :html:`<input>`, or :html:`<select>` field should
 essentially look like this:
 
 .. code-block:: php
@@ -74,11 +76,11 @@ essentially look like this:
     $resultArray['html'] = implode(LF, $html);
     return $resultArray;
 
-The :php:`renderLabel()` is a helper method to generate a :html:`label` tag with a
+The :php:`renderLabel()` is a helper method to generate a :html:`<label>` tag with a
 :html:`for` attribute, and the same fieldId is used as :html:`id` attribute in the
-:html:`input` field to connect :html:`label` and :html:`input` with each other.
+:html:`<input>` field to connect :html:`<label>` and :html:`<input>` with each other.
 
-If there is no such field, a :html:`legend` tag should be used:
+If there is no such field, a :html:`<legend>` tag should be used:
 
 .. code-block:: php
 

@@ -11,9 +11,9 @@ See :issue:`102605`
 Description
 ===========
 
-Frontend related property :php:`TypoScriptFrontendController->fe_user` has been removed.
+Frontend-related property :php:`TypoScriptFrontendController->fe_user` has been removed.
 
-When looking at the TYPO3 Frontend rendering chain, class :php:`TypoScriptFrontendController`
+When looking at the TYPO3 frontend rendering chain, class :php:`TypoScriptFrontendController`
 is by far the biggest technical debt: It mixes a lot of concerns and carries tons of state
 and functionality that should be modeled differently, which leads to easier to understand
 and more flexible code. The class is shrinking since various major versions already and will
@@ -22,7 +22,7 @@ with TYPO3 v13. Any code using the class will need adaptions at some point, sing
 will continue to communicate alternatives.
 
 In case of the :php:`fe_user` property, two alternatives exist: The frontend user
-can be retrieved from the :php:`Request` attribute :php:`frontend.user`, and basic frontend user
+can be retrieved from the PSR-7 request attribute :php:`frontend.user`, and basic frontend user
 information is available using the :php:`Context` aspect :php:`frontend.user`.
 
 Note accessing TypoScript :typoscript:`TSFE:fe_user` details continues to work for now, using
@@ -50,7 +50,7 @@ Migration
 There are two possible migrations.
 
 First, a limited information list of frontend user details can be retrieved using the :php:`Context`
-aspect :php:`frontend.user` in Frontend calls. See class :php:`TYPO3\CMS\Core\Context\UserAspect` for a
+aspect :php:`frontend.user` in frontend calls. See class :php:`\TYPO3\CMS\Core\Context\UserAspect` for a
 full list. The current context can retrieved using dependency injection. Example:
 
 .. code-block:: php
@@ -67,10 +67,10 @@ full list. The current context can retrieved using dependency injection. Example
         }
     }
 
-Additionally, the full :php:`TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication` object is
+Additionally, the full :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication` object is
 available as request attribute :php:`frontend.user` in the frontend. Note some details of that object
 are marked :php:`@internal`, using the context aspect is thus the preferred way. Example of an extension
-using the extbase :php:`ActionController`:
+using Extbase's :php:`ActionController`:
 
 .. code-block:: php
 

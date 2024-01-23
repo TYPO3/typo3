@@ -13,7 +13,7 @@ Description
 
 Using the simple :php:`'identifier' => MyClass::class,'` configuration schema to register
 Doctrine DBAL middlewares for connection is now deprecated in favour of using a sortable
-registration configuration similar to the PSR-15 Middleware registration.
+registration configuration similar to the PSR-15 middleware registration.
 
 Impact
 ======
@@ -26,9 +26,9 @@ array configuration.
 Affected installations
 ======================
 
-TYPO3 instances using 3rd party extension providing custom Doctrine DBAL driver
+TYPO3 instances using third-party extension providing custom Doctrine DBAL driver
 middlewares and having them registered for one or more connections will emit a
-deprecation message since TYPO3 v13 and either a exception with TYPO3 v14 or
+deprecation message since TYPO3 v13 and either an exception with TYPO3 v14 or
 an PHP type error.
 
 Migration
@@ -56,7 +56,7 @@ needs to be converted to
       ],
     ];
 
-Registration for Driver Middlewares for TYPO3 v12 and v13
+Registration for driver middlewares for TYPO3 v12 and v13
 ---------------------------------------------------------
 
 Extension authors providing dual Core support with one extension version can use the

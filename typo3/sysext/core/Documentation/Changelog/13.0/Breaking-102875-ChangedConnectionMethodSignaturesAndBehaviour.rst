@@ -17,12 +17,13 @@ Signature and behaviour of following methods has been changed:
 *   :php:`quote()` no longer has a type argument and the value must be a string.
 
 Public :php:`Connection::PARAM_*` class constants has been replaced with the
-Doctrine DBAL 4 ParameterType and ArrayParameterType enum definitions.
+Doctrine DBAL 4 :php:`ParameterType` and :php:`ArrayParameterType` enum definitions.
 
 ..  note::
-    Doctrine DBAL dropped the support for using the `\PDO::PARAM_*` constants in
+    Doctrine DBAL dropped the support for using the :php:`\PDO::PARAM_*` constants in
     favour of the enum types on several methods. Be aware of this and use the
-    `Connection::PARAM_*` constants to reduce required work on upgrading.
+    :php:`\TYPO3\CMS\Core\Database\Connection::PARAM_*` constants to reduce
+    required work on upgrading.
 
 Impact
 ======
@@ -46,8 +47,7 @@ Migration
 :php:`lastInsertId()`
 ---------------------
 
-Returns the last inserted id (auto-created) on the connection. If a record is
-inserted and the identity value given, for example when
+Returns the last inserted ID (auto-created) on the connection.
 
 ..  note::
     That means, that the `last inserted id` needs to be retrieved directly before
@@ -57,6 +57,7 @@ inserted and the identity value given, for example when
 **BEFORE**
 
 ..  code-block:: php
+    :emphasize-lines: 20
 
     use TYPO3\CMS\Core\Database\Connection as Typo3Connection;
     use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -73,8 +74,8 @@ inserted and the identity value given, for example when
             'some_string' => $someString,
         ],
         [
-            Connection::PARAM_INT,
-            Connection::PARAM_STR,
+            Typo3Connection::PARAM_INT,
+            Typo3Connection::PARAM_STR,
         ]
     );
     $uid = $connection->lastInsertId('tx_myextension_mytable');
@@ -82,6 +83,7 @@ inserted and the identity value given, for example when
 **AFTER**
 
 ..  code-block:: php
+    :emphasize-lines: 20
 
     use TYPO3\CMS\Core\Database\Connection as Typo3Connection;
     use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -98,8 +100,8 @@ inserted and the identity value given, for example when
             'some_string' => $someString,
         ],
         [
-            Connection::PARAM_INT,
-            Connection::PARAM_STR,
+            Typo3Connection::PARAM_INT,
+            Typo3Connection::PARAM_STR,
         ]
     );
     $uid = $connection->lastInsertId();

@@ -23,7 +23,7 @@ page properties :php:`no_index`. If disabled, the new
 thrown in the :php:`CanonicalGenerator`. The exception is caught and transferred
 to the event, allowing listeners to determine whether generation is disabled,
 using the new :php:`getCanonicalGenerationDisabledException()` method, which
-either returns the exception with the corresponding reason or :php:`NULL`.
+either returns the exception with the corresponding reason or :php:`null`.
 
 Impact
 ======

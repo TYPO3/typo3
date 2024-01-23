@@ -13,18 +13,21 @@ Description
 
 The internal search of TYPO3, Indexed Search exists since over 20 years. Some
 functionality that is shipped with the search form is not considered up-to-date
-anymore, in regards to templating, as Indexed Search has a Extbase- and
+anymore, in regards to templating, as Indexed Search has an Extbase and
 Fluid-based plugin since TYPO3 v6.2 (10 years).
 
 Some functionality was never removed, which is now the case:
 
-* The ability to customize the styling of a specific page via :typoscript:`plugin.tx_indexedsearch.settings.specialConfiguration`
-* The ability to customize a result icon (used as Gif images) based on the type via :typoscript:`plugin.tx_indexedsearch.settings.iconRendering`
-* The ability to customize a result language symbol icon (used as Gif images) based on the page language via :typoscript:`plugin.tx_indexedsearch.settings.flagRendering`
+* The ability to customize the styling of a specific page via
+  :typoscript:`plugin.tx_indexedsearch.settings.specialConfiguration`
+* The ability to customize a result icon (used as Gif images) based on the type
+  via :typoscript:`plugin.tx_indexedsearch.settings.iconRendering`
+* The ability to customize a result language symbol icon (used as Gif images)
+  based on the page language via :typoscript:`plugin.tx_indexedsearch.settings.flagRendering`
 
 In addition, the possibility for visitors to change only search for results in
 a language other than the current language is removed. It proved little sense
-to search for e.g. japanese content on a french websites.
+to search for e.g. Japanese content on a French websites.
 
 
 Impact

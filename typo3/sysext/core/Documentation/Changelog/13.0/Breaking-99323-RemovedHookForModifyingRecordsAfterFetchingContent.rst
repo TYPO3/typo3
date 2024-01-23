@@ -33,9 +33,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v12 (using the hook) and v13+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Events <../13.0/Feature-99323-AddModifyRecordsAfterFetchingContentEvent>`
+to work with TYPO3 v12 (using the hook) and v13+ (using the new event)
+when implementing the event as well without any further deprecations.
+Use the :doc:`PSR-14 event <../13.0/Feature-99323-AddModifyRecordsAfterFetchingContentEvent>`
 to allow greater influence in the functionality.
 
 .. index:: PHP-API, FullyScanned, ext:frontend

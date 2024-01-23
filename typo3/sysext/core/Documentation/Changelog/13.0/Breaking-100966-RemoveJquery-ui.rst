@@ -15,7 +15,7 @@ The `NPM package jquery-ui <https://www.npmjs.com/package/jquery-ui>`__ has
 been removed completely for TYPO3 v13 without any substitute.
 
 According to the `TYPO3 Deprecation Policy <https://typo3.org/article/typo3-deprecation-policy>`__,
-JavaScript code and packages used in only in the TYPO3 backend are not
+JavaScript code and packages used only in the TYPO3 backend are not
 considered to be part of that policy:
 
     The deprecation policy does not cover the deprecations of backend components
@@ -25,7 +25,7 @@ considered to be part of that policy:
 Impact
 ======
 
-TYPO3 does not ship the NPM package `jquery-ui` any longer. 3rd party
+TYPO3 does not ship the NPM package `jquery-ui` any longer. Third-party
 extensions that rely on this package will be broken and need to be adjusted.
 
 Since TYPO3 exposed only parts of `jquery-ui`, only the components `core`,
@@ -36,7 +36,7 @@ Since TYPO3 exposed only parts of `jquery-ui`, only the components `core`,
 Affected installations
 ======================
 
-Those having custom or 3rd party extensions using `jquery-ui` from
+Those having custom or third-party extensions using `jquery-ui` from
 :file:`typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui/`.
 
 

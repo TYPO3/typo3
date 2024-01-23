@@ -21,7 +21,7 @@ TYPO3 v13 supports these database products and versions:
 Impact
 ======
 
-Environments with older MariaDB or MySQL database engines will reporting a unsupported
+Environments with older MariaDB or MySQL database engines will reporting an unsupported
 database version and stop working properly with the upcoming Doctrine DBAL v4 upgrade.
 
 Affected installations

@@ -13,7 +13,7 @@ Description
 
 :php:`TCA` columns type fields like :php:`input` and :php:`text` obey the :php:`config` key
 :php:`softref`. One of the allowed soft reference parsers is :php:`notify` implemented
-by class :php:`TYPO3\CMS\Core\DataHandling\SoftReference\NotifySoftReferenceParser`.
+by class :php:`\TYPO3\CMS\Core\DataHandling\SoftReference\NotifySoftReferenceParser`.
 
 This soft reference parser fits no apparent use case and has been removed.
 
@@ -21,7 +21,7 @@ This soft reference parser fits no apparent use case and has been removed.
 Impact
 ======
 
-Involving the :php:`notify` key in the comma separated list of TCA columns config
+Involving the :php:`notify` key in the comma-separated list of TCA columns config
 :php:`softref` or a flex form data structure column definition does not trigger
 any action anymore and may log a warning this parser hasn't been found.
 
@@ -29,7 +29,7 @@ any action anymore and may log a warning this parser hasn't been found.
 Affected installations
 ======================
 
-There was little reason to activate this "soft reference" parser in the first place
+There was little reason to activate this soft reference parser in the first place
 since it essentially did nothing. Instances with extensions having TCA column config
 :php:`softref` set to a value including :php:`notify` will be affected. That's a very
 rare use case. The extension scanner will not notify about this, but the

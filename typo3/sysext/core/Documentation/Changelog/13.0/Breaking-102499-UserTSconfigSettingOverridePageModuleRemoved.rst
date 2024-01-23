@@ -2,16 +2,16 @@
 
 .. _breaking-102499-1700813634:
 
-=====================================================================
-Breaking: #102499 - UserTSconfig setting "overridePageModule" removed
-=====================================================================
+======================================================================
+Breaking: #102499 - User TSconfig setting "overridePageModule" removed
+======================================================================
 
 See :issue:`102499`
 
 Description
 ===========
 
-The UserTSconfig setting :typoscript:`options.overridePageModule` has been
+The user TSconfig setting :typoscript:`options.overridePageModule` has been
 removed.
 
 This option allowed to change links within some modules to be redirected to an
@@ -23,7 +23,7 @@ provided by TYPO3 Core, it has been removed. The only few places within TYPO3
 Core where this option was still evaluated was within the Workspaces
 Administration and the Info module.
 
-The alternative, using a different routing endpoint and support for Module
+The alternative, using a different routing endpoint and support for module
 aliases via the introduced Module API in TYPO3 v12, is much more robust and
 consistent.
 
@@ -31,14 +31,14 @@ consistent.
 Impact
 ======
 
-Setting the UserTSconfig option :typoscript:`options.overridePageModule` has
+Setting the user TSconfig option :typoscript:`options.overridePageModule` has
 no effect anymore.
 
 
 Affected installations
 ======================
 
-TYPO3 installations using this setting in UserTSconfig, mainly when used in
+TYPO3 installations using this setting in user TSconfig, mainly when used in
 conjunction with TemplaVoila and having mixed installations where both
 TemplaVoila page module and the default Page module are used for different
 editors.
@@ -47,8 +47,8 @@ editors.
 Migration
 =========
 
-In order to replace the Page Module within a third-party extension such as
-TemplaVoila, it is possible to create a custom Module entry in an
+In order to replace the Page module within a third-party extension such as
+TemplaVoila, it is possible to create a custom module entry in an
 extensions' :file:`Configuration/Backend/Modules.php` with the following entry:
 
 .. code-block:: php

@@ -28,20 +28,20 @@ options.
 Impact
 ======
 
-Using the Page TSconfig option :typoscript:`mod.wizards.newContentElement.wizardItems.<group>.show`
+Using the page TSconfig option :typoscript:`mod.wizards.newContentElement.wizardItems.<group>.show`
 to show / hide elements is not evaluated anymore.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions using the Page TSconfig
+TYPO3 installations with custom extensions using the page TSconfig
 option :typoscript:`mod.wizards.newContentElement.wizardItems.<group>.show` to
 show / hide elements in the New Content Element Wizard.
 
 Migration
 =========
 
-To hide elements, migrate your Page TSconfig from
+To hide elements, migrate your page TSconfig from
 :typoscript:`mod.wizards.newContentElement.wizardItems.<group>.show := removeFromList(html)` to
 :typoscript:`mod.wizards.newContentElement.wizardItems.<group>.removeItems := addToList(html)`.
 

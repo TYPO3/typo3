@@ -39,7 +39,7 @@ shipped with TYPO3. Usages of the ViewHelpers `is:pageBrowsingResults` and
 `is:pageBrowsing` have been removed.
 
 The Fluid template file `Private/Templates/Search/Search.html` loads a new
-JavaScript via `f:asset.script`:
+JavaScript via :html:`<f:asset.script>`:
 
 ..  code-block:: html
 
@@ -69,7 +69,7 @@ The following options are now passed to the `Searchresult` partial:
 * `searchParams: searchParams`
 * `firstRow: firstRow`
 
-The `Searchresult` partial now registers the `search` namespace for Fluid ViewHelpers:
+The `Searchresult` partial now registers the `is` namespace for Fluid ViewHelpers:
 
 ..  code-block:: html
 
@@ -91,7 +91,7 @@ Rules
 -----
 
 Remove any overrides for the partial file :file:`Resources/Private/Partials/Rules.html`,
-as well as the `<f:render partial="Rules" />` invocation from a potentially
+as well as the :html:`<f:render partial="Rules" />` invocation from a potentially
 overridden :file:`Resources/Private/Partials/Form.html` partial file.
 
 .. index:: Fluid, Frontend, NotScanned, ext:indexed_search

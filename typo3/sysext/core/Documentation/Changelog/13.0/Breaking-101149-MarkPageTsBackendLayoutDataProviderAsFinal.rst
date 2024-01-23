@@ -29,7 +29,7 @@ Classes extending :php:`\TYPO3\CMS\Backend\View\BackendLayout\PageTsBackendLayou
 Migration
 =========
 
-Instead of extending the data provider, it is recommende to register a custom
-DataProvider for Backend Layouts, which can already be used since TYPO3 v7.
+Instead of extending the data provider, it is recommended to register a custom
+DataProvider for backend layouts, which can already be used since TYPO3 v7.
 
 .. index:: Backend, NotScanned, ext:backend

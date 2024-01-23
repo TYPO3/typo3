@@ -11,9 +11,9 @@ See :issue:`102402`
 Description
 ===========
 
-The core needs to adapt some internal classes to prepare towards `doctrine/dbal`
-major version 4.x. The doctrine team deprecated especially the doctrine
-event manager, the core used to populate custom adaptions.
+The Core needs to adapt some internal classes to prepare towards `doctrine/dbal`
+major version 4.x. The Doctrine team deprecated especially the Doctrine
+event manager, the Core used to populate custom adaptions.
 
 The proposed way to mitigate the old events is to extend classes and integrate
 custom handling code directly. TYPO3 thus extends a couple of classes and replaces
@@ -21,9 +21,9 @@ them using a factory.
 
 Affected code is marked :php:`@internal`. Extension author must not rely on the
 TYPO3 class names for :php:`instanceof` checks and should check using the original
-doctrine classes instead.
+Doctrine classes instead.
 
-For example, doctrine/dbal has following inheritance chain:
+For example, `doctrine/dbal` has the following inheritance chain:
 
 ..  code-block:: php
 
@@ -40,7 +40,7 @@ TYPO3 now extends the concrete platform classes:
 *   :php:`\TYPO3\CMS\Core\Database\Platform\MySQL57Platform` extends :php:`\Doctrine\DBAL\Platforms\MySQL57Platform`
 *   :php:`\TYPO3\CMS\Core\Database\Platform\MySQLPlatform` extends :php:`\Doctrine\DBAL\Platforms\MySQLPlatform`
 
-The TYPO3 core classes are only used as top layer, example:
+The TYPO3 Core classes are only used as top layer, for example:
 
 #.  :php:`\TYPO3\CMS\Core\Database\Platform\MySQL80Platform` extends :php:`\Doctrine\DBAL\Platforms\MySQL80Platform`
 #.  :php:`\Doctrine\DBAL\Platforms\MySQL80Platform` extends :php:`\Doctrine\DBAL\Platforms\MySQL57Platform`
@@ -49,7 +49,7 @@ The TYPO3 core classes are only used as top layer, example:
 #.  :php:`\Doctrine\DBAL\Platforms\AbstractMySQLPlatform` extends :php:`\Doctrine\DBAL\Platforms\AbstractPlatform`
 
 Custom extension code that needs to implement :php:`instanceof` checks for specific platforms
-should use the doctrine classes and not the TYPO3 core classes, example:
+should use the Doctrine classes and not the TYPO3 Core classes, for example:
 
 ..  code-block:: php
 

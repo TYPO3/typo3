@@ -11,7 +11,7 @@ See :issue:`101266`
 Description
 ===========
 
-The RequireJS project has been discontinued_ and was therefore
+The RequireJS project has been `discontinued`_ and was therefore
 deprecated in TYPO3 v12 with :issue:`96510` in favor of native ECMAScript
 v6/v11 modules (added in :issue:`96510`).
 
@@ -24,10 +24,10 @@ Impact
 
 Registering FormEngine JavaScript modules via :php:`'requireJsModules'` will
 have no effect. The PageRenderer endpoints
-:php:`TYPO3\CMS\Core\Page\PageRenderer::loadRequireJs()` and
-:php:`TYPO3\CMS\Core\Page\PageRenderer::loadRequireJsModule()`
+:php:`\TYPO3\CMS\Core\Page\PageRenderer::loadRequireJs()` and
+:php:`\TYPO3\CMS\Core\Page\PageRenderer::loadRequireJsModule()`
 have been removed and must no longer be called.
-The respective `includeJavaScriptModules` property of the ViewHelper
+The respective :html:`includeJavaScriptModules` property of the ViewHelper
 :html:`<f:be.pageRenderer>` ViewHelper has also been removed.
 
 
@@ -59,13 +59,13 @@ for more information:
         ],
     ];
 
-Then use :php:`TYPO3\CMS\Core\Page\PageRenderer::loadJavaScriptModules()` instead
-of :php:`TYPO3\CMS\Core\Page\PageRenderer::loadRequireJsModule()` to load the ES6 module:
+Then use :php:`\TYPO3\CMS\Core\Page\PageRenderer::loadJavaScriptModules()` instead
+of :php:`\TYPO3\CMS\Core\Page\PageRenderer::loadRequireJsModule()` to load the ES6 module:
 
 .. code-block:: php
 
     // via PageRenderer
-    $this->packageRenderer->loadJavaScriptModule('@vendor/my-extension/example.js');
+    $this->pageRenderer->loadJavaScriptModule('@vendor/my-extension/example.js');
 
 
 In Fluid templates `includeJavaScriptModules` is to be used instead of

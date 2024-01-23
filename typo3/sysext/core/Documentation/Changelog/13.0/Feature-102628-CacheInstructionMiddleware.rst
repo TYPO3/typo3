@@ -11,15 +11,15 @@ See :issue:`102628`
 Description
 ===========
 
-TYPO3 v13 introduces the new Frontend related Request attribute :php`frontend.cache.instruction`
-implemented by class :php:`TYPO3\CMS\Frontend\Cache\CacheInstruction`. This replaces the
-previous :php:`TyposcriptFrontendController->no_cache` property and boolean php:`noCache` Request
+TYPO3 v13 introduces the new frontend-related PSR-7 request attribute :php`frontend.cache.instruction`
+implemented by class :php:`\TYPO3\CMS\Frontend\Cache\CacheInstruction`. This replaces the
+previous :php:`TyposcriptFrontendController->no_cache` property and boolean php:`noCache` request
 attribute.
 
 Impact
 ======
 
-The attribute can be used by middlewares to disable cache mechanics of the Frontend rendering.
+The attribute can be used by middlewares to disable cache mechanics of the frontend rendering.
 
 In early middlewares before :php:`typo3/cms-frontend/tsfe`, the attribute may or may not exist
 already. A safe way to interact with it is like this:

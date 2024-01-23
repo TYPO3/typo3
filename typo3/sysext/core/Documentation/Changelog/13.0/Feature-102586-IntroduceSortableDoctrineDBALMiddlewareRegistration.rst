@@ -20,7 +20,7 @@ level, allow extension authors to register middleware once but using it for all 
 :ref:`Global driver middlewares <feature-102496-1700775381>` and :ref:`connection driver middlewares <feature-100089-1677961107>`
 are combined for a connection. The simple configuration approach introduced for the
 :ref:`connection driver middlewares <feature-100089-1677961107>` is no longer suitable
-for a easy dependency configuration or disabling a global driver middleware by connection.
+for an easy dependency configuration or disabling a global driver middleware by connection.
 
 The way to register and order PSR-15 middlewares has proven to be a reliable way,
 and understood by extension authors and integrators.
@@ -42,7 +42,7 @@ similar to the PSR-15 middleware stack. Available structure for a middleware con
       // list of middleware identifiers, the current middleware should be registered after
       'after' => [
         // NOTE: Custom driver middleware should be registered after essential
-        //       TYPO3 core driver middlewares. Use the following identifiers
+        //       TYPO3 Core driver middlewares. Use the following identifiers
         //       to ensure that.
         'typo3/core/custom-platform-driver-middleware',
         'typo3/core/custom-pdo-driver-result-middleware',
@@ -68,11 +68,11 @@ similar to the PSR-15 middleware stack. Available structure for a middleware con
       'disabled' => false,
     ];
 
-..  info::
+..  note::
 
     All custom driver middlewares, `global` or `connection` based, should be placed after the
     `'typo3/core/custom-platform-driver-middleware'` and `'typo3/core/custom-pdo-driver-result-middleware'`
-    driver middleware to ensure essential core driver middlewares has been processed first.
+    driver middleware to ensure essential Core driver middlewares has been processed first.
 
 ..  tip::
 

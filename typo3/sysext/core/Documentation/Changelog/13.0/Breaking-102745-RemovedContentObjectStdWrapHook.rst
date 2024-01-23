@@ -12,7 +12,7 @@ Description
 ===========
 
 The ContentObject stdWrap hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap']`
-has been removed in favor of the more powerful PSR-14 Events:
+has been removed in favor of the more powerful PSR-14 events:
 
 * :php:`\TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsInitializedEvent`
 * :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterStdWrapFunctionsInitializedEvent`
@@ -36,9 +36,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v12 (using the hook) and v13+ (using the new Events)
-when implementing the Events as well without any further deprecations.
-Use the :doc:`PSR-14 Events <../13.0/Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality>`
+to work with TYPO3 v12 (using the hook) and v13+ (using the new events)
+when implementing the events as well without any further deprecations.
+Use the :doc:`PSR-14 events <../13.0/Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality>`
 to allow greater influence in the functionality.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

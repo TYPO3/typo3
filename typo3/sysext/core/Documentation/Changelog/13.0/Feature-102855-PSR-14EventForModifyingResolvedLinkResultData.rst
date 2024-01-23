@@ -3,7 +3,7 @@
 .. _feature-102855-1705568085:
 
 =======================================================================
-Feature: #102855 - PSR-14 Event for modifying resolved link result data
+Feature: #102855 - PSR-14 event for modifying resolved link result data
 =======================================================================
 
 See :issue:`102855`
@@ -11,7 +11,7 @@ See :issue:`102855`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Core\LinkHandling\Event\AfterLinkResolvedByStringRepresentationEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Core\LinkHandling\Event\AfterLinkResolvedByStringRepresentationEvent`
 has been introduced which serves as a more powerful replacement for the now removed
 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation']`.
 
@@ -30,7 +30,7 @@ The event features the following methods:
 
 * :php:`getResult()` - Returns the resolved link result data
 * :php:`setResult()` - Allows to modify the final link result data
-* :php:`getUrn()` - Returns the link parameter (urn) to be resolved
+* :php:`getUrn()` - Returns the link parameter (URN) to be resolved
 * :php:`getResolveException()` - Returns the exception, which will be thrown in case no link type has been resolved
 
 Example
@@ -60,7 +60,7 @@ registration:
 Impact
 ======
 
-Using the new PSR-14 Event, it's now possible to fully modify the resolved
+Using the new PSR-14 event, it's now possible to fully modify the resolved
 link result data from :php:`LinkService->resolveByStringRepresentation()`,
 just before the result is being returned. Therefore, even the resolved data
 of existing handlers can be manipulated.

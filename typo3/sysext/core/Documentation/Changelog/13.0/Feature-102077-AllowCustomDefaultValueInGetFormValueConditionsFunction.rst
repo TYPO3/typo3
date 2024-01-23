@@ -11,9 +11,9 @@ See :issue:`102077`
 Description
 ===========
 
-The `getFormValue()` function can be used in conditions of form variants to
+The :yaml:`getFormValue()` function can be used in conditions of form variants to
 safely retrieve form values. Before, `null` was returned as default value. This
-made it impossible to use this, for example, with the `in` operator to check
+made it impossible to use this, for example, with the :yaml:`in` operator to check
 values in multi-value form fields. An additional check was necessary to avoid
 type issues:
 

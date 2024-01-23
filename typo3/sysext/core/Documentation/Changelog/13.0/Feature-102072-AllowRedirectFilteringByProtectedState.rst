@@ -14,14 +14,14 @@ Description
 The :guilabel:`Redirects` administration module now allows to filter redirects
 based on the :php:`protected` state. Additionally, protected redirects now
 show a lock icon in the list of redirects, so it is better visualized, that a
-redirect is protected and excluded from automatic deletion (e.g. with
+redirect is protected and excluded from automatic deletion (for example, with
 `redirects:cleanup`).
 
 
 Impact
 ======
 
-The administration of redirects has become more user friendly, because users
+The administration of redirects has become more user-friendly, because users
 can now easily filter protected redirects in the :guilabel:`Redirects`
 administration module.
 

@@ -27,22 +27,29 @@ recommended.
 A hotkey is registered with the :js:`register()` method. The method takes three
 arguments:
 
-* :js:`hotkey` - An array defining the keys that must be pressed
-* :js:`handler` - A callback that is executed when the hotkey is invoked
-* :js:`options` - Object that configured a hotkey's behavior.
+*   :js:`hotkey` - An array defining the keys that must be pressed
+*   :js:`handler` - A callback that is executed when the hotkey is invoked
+*   :js:`options` - Object that configured a hotkey's behavior.
 
-    * :js:`scope` - The scope a hotkey is registered in
-    * :js:`allowOnEditables` - If :js:`false` (default), handlers are not executed when an editable element is focussed
-    * :js:`allowRepeat` - If :js:`false` (default), handlers are not executed when the hotkey is pressed for a long time
-    * :js:`bindElement` - If given, an `aria-keyshortcuts` attribute is added to the element. This is recommended for accessibility reasons.
+    *   :js:`scope` - The scope a hotkey is registered in
+    *   :js:`allowOnEditables` - If :js:`false` (default), handlers are not executed when an editable element is focussed
+    *   :js:`allowRepeat` - If :js:`false` (default), handlers are not executed when the hotkey is pressed for a long time
+    *   :js:`bindElement` - If given, an `aria-keyshortcuts` attribute is added to the element. This is recommended for accessibility reasons.
 
 ..  code-block:: js
 
     import { Hotkeys, ModifierKeys } from '@typo3/backend/hotkeys.js';
 
-    Hotkeys.register([Hotkeys.normalizedCtrlModifierKey, ModifierKeys.ALT, 'e'], function (keyboardEvent) => {
-        console.log('Triggered on Ctrl/Cmd+Alt+E');
-    }, { scope: 'my-extension/module', bindElement: document.querySelector('.some-element') });
+    Hotkeys.register(
+        [Hotkeys.normalizedCtrlModifierKey, ModifierKeys.ALT, 'e'],
+        function (keyboardEvent) => {
+            console.log('Triggered on Ctrl/Cmd+Alt+E');
+        },
+        {
+            scope: 'my-extension/module',
+            bindElement: document.querySelector('.some-element')
+        }
+    );
 
     // Get the currently active scope
     const currentScope = Hotkeys.getScope();

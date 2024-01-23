@@ -2,47 +2,47 @@
 
 .. _breaking-102970-1706447911:
 
-=========================================================================
-Breaking: #102970 - No database relations in flex form container sections
-=========================================================================
+========================================================================
+Breaking: #102970 - No database relations in FlexForm container sections
+========================================================================
 
 See :issue:`102970`
 
 Description
 ===========
 
-Flex form handling details can be troublesome in certain scenarios. The core
+FlexForm handling details can be troublesome in certain scenarios. The Core
 suffers from some nasty issues in this area, especially when relations
-to other tables are used in flex forms - the system for instance tends to mix
+to other tables are used in FlexForms - the system for instance tends to mix
 up things with language and workspace on this level.
 
-The core strives to get these scenarios sorted out, and a couple of patches to
+The Core strives to get these scenarios sorted out, and a couple of patches to
 prepare towards better flex form handling have been done with v13.0 already.
 
 To unblock further development in this area, one detail is restricted a bit more
-than with previous versions: Flex form container section data structures must no
+than with previous versions: FlexForm container section data structures must no
 longer contain fields that configure relations to other database tables.
 
 This has already been restricted since TYPO3 v8 for TCA :php:`type="inline"` and
 has been partially extended to :php:`type="category"` and others later, if they
-configured :php:`MM` relations in flex form sections containers. Now, especially
+configured :php:`MM` relations in FlexForm sections containers. Now, especially
 :php:`type="select"` with :php:`foreign_table` will also throw an exception.
 
-In general, anonymous flex form container section data can and should not point to
+In general, anonymous FlexForm container section data can and should not point to
 database entities. Their use is tailored for "simple" types like :php:`input`,
 :php:`email` and similar, support of those will not be restricted.
 
-Note this does *not* restrict using casual flex forms without containers sections,
-like flex form data structures that rely on casual fields in sheets: Those can
+Note this does *not* restrict using casual FlexForms without containers sections,
+like FlexForm data structures that rely on casual fields in sheets: Those can
 continue to work with TCA types like :php:`inline`, :php:`group` and :php:`select`,
-and the core development tries to actively fix existing problematic scenarios
+and the Core development tries to actively fix existing problematic scenarios
 in this area.
 
 
 Impact
 ======
 
-When editing records that configure flex forms with container sections that use
+When editing records that configure FlexForms with container sections that use
 database relation-aware :php:`TCA` types, an exception will be thrown by
 FormEngine. The related code may later be relocated to a lower level place
 that can be triggered by DataHandler as well.
@@ -51,24 +51,25 @@ that can be triggered by DataHandler as well.
 Affected installations
 ======================
 
-Instances with extensions that use flex form container sections configuring
+Instances with extensions that use FlexForm container sections configuring
 database relations to tables.
 
-Since previous core versions restricted database relations within flex form
+Since previous core versions restricted database relations within FlexForm
 container sections already, and since container sections are a relatively rarely
 used feature in the first place, we don't expect too many extensions to be
 affected by this.
 
-You can easily spot custom usage of flex form sections by searching for a :xml:`<section>`
-tag within your flex form :file:`.xml` files, or within a :php:`TCA` definition
+You can easily spot custom usage of FlexForm sections by searching for a :xml:`<section>`
+tag within your FlexForm :file:`.xml` files, or within a TCA definition
 with :php:`type="flex"`. These will be the instances you need to migrate,
 when those sections contain :php:`type="select"` fields (or others mentioned above).
 
-Affected flex form xml:
------------------------
+Affected FlexForm XML
+---------------------
 
 ..  code-block:: xml
     :caption: EXT:my_extension/Configuration/FlexForms/Example.xml
+    :emphasize-lines: 15-38
 
     <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
     <T3DataStructure>
@@ -117,11 +118,12 @@ Affected flex form xml:
     </T3DataStructure>
 
 
-Affected flex form TCA:
------------------------
+Affected FlexForm TCA
+---------------------
 
 ..  code-block:: php
     :caption: EXT:my_extension/Configuration/TCA/tx_myextension_flex.php
+    :emphasize-lines: 22-45
 
     [
         'columns' => [

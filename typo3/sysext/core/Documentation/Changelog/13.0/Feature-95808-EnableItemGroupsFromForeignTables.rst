@@ -11,8 +11,8 @@ See :issue:`95808`
 Description
 ===========
 
-A new TCA option :php:`foreign_table_item_group` has been introduced for TCA
-type `select` and `category`, which allows extension authors to define a
+A new TCA option :php:`foreign_table_item_group` has been introduced for the TCA
+types `select` and `category`. It allows extension authors to define a
 specific field in the foreign table, holding an item group identifier.
 As described in the :ref:`TCA reference <t3tca:columns-select-properties-items>`,
 this needs to be a :php:`string`.

@@ -33,7 +33,9 @@ Migration
 .. code-block:: php
 
     // Before
-    $state = \TYPO3\CMS\Core\Type\Icon\IconState::cast(\TYPO3\CMS\Core\Type\Icon\IconState::STATE_DEFAULT);
+    $state = \TYPO3\CMS\Core\Type\Icon\IconState::cast(
+        \TYPO3\CMS\Core\Type\Icon\IconState::STATE_DEFAULT
+    );
 
     // After
     $state = \TYPO3\CMS\Core\Imaging\IconState::STATE_DEFAULT;

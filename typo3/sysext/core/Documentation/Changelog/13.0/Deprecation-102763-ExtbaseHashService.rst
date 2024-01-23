@@ -12,7 +12,7 @@ Description
 ===========
 
 Internal class :php:`\TYPO3\CMS\Extbase\Security\Cryptography\HashService`
-is deprecated in favor of :php:`TYPO3\CMS\Core\Crypto\HashService`,
+is deprecated in favor of :php:`\TYPO3\CMS\Core\Crypto\HashService`,
 which requires an additional secret to prevent re-using generated hashes in
 different contexts.
 
@@ -34,7 +34,7 @@ TYPO3 installations with custom extensions using
 Migration
 =========
 
-Class :php:`TYPO3\CMS\Core\Crypto\HashService` must be used to migrate.
+Class :php:`\TYPO3\CMS\Core\Crypto\HashService` must be used to migrate.
 
 Before
 ------
@@ -62,7 +62,7 @@ After
     $stringWithAppendedHash = $hashService->appendHmac('123', 'myAdditionalSecret');
     $validatedStringWithHashRemoved = $hashService->validateAndStripHmac($stringWithAppendedHash, 'myAdditionalSecret');
 
-Note, :php`$additionalSecret` string must be unique per
+Note, :php:`$additionalSecret` string must be unique per
 context, so hashes for the same input are different depending on scope.
 
 .. index:: PHP-API, FullyScanned, ext:extbase

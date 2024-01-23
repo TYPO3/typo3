@@ -11,12 +11,13 @@ See :issue:`102980`
 Description
 ===========
 
-A method has been added to :php:`TYPO3\CMS\Core\Pagination\PaginationInterface`
+A method has been added to :php:`\TYPO3\CMS\Core\Pagination\PaginationInterface`
 with this signature: :php:`public function getAllPageNumbers(): array;`. It should
 return a list of all available page numbers.
 
-The method has already been implemented in :php:`SimplePagination` and
-:php:`SlidingWindowPagination`.
+The method has already been implemented in
+:php:`\TYPO3\CMS\Core\Pagination\SimplePagination` and
+:php:`\TYPO3\CMS\Core\Pagination\SlidingWindowPagination`.
 
 
 Impact
@@ -36,7 +37,7 @@ Instances with extensions that provide own pagination classes that implement
 Migration
 =========
 
-See the two core classes :php:`SimplePagination` and :php:`SlidingWindowPagination`
+See the two Core classes :php:`SimplePagination` and :php:`SlidingWindowPagination`
 for examples on how the method is implemented.
 
 

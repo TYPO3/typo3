@@ -11,7 +11,7 @@ See :issue:`102976`
 Description
 ===========
 
-Class :php:`TYPO3\CMS\Core\TimeTracker` is used in the TYPO3 Frontend rendering.
+Class :php:`\TYPO3\CMS\Core\TimeTracker` is used in the TYPO3 frontend rendering.
 It allows tracking time consumed by single code sections. The admin panel uses
 gathered data and renders a "time elapsed" overview from it.
 

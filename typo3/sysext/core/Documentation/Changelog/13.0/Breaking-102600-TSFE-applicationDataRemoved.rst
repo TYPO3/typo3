@@ -11,13 +11,13 @@ See :issue:`102600`
 Description
 ===========
 
-Frontend related property :php:`TypoScriptFrontendController->applicationData`
+Frontend-related property :php:`TypoScriptFrontendController->applicationData`
 has been removed without substitution.
 
 This property has been used by a few rather old-school extensions to park and
-communicate state using this global "extension specific state array".
+communicate state using this global "extension-specific state array".
 
-When looking at the TYPO3 Frontend rendering chain, class :php:`TypoScriptFrontendController`
+When looking at the TYPO3 frontend rendering chain, class :php:`TypoScriptFrontendController`
 is by far the biggest technical debt: It mixes a lot of concerns and carries tons of state
 and functionality that should be modeled differently, which leads to easier to understand
 and more flexible code. The class is shrinking since various major versions already and will
@@ -49,13 +49,13 @@ Migration
 
 There are various solutions to communicate state to avoid :php:`applicationData`:
 
-In some cases, an extension could establish a Frontend middleware and attach a
-Request attribute that carries the state.
+In some cases, an extension could establish a frontend middleware and attach a
+request attribute that carries the state.
 
 In other cases an event could be fired to gather information from other extensions.
 One example is the indexed_search extension which dispatches the new event
-:php:`EnableIndexingEvent` to get know if indexing should be performed. The 3rd
-party crawler extension should use this instead of setting that information
+:php:`EnableIndexingEvent` to get know if indexing should be performed. The
+third-party crawler extension should use this instead of setting that information
 on :php:`$GLOBALS['TSFE']`.
 
 

@@ -12,8 +12,8 @@ Description
 ===========
 
 The second argument :php:`$addPrologue = false` on
-:php:`TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->flexArray2Xml()`
-has been dropped: When imploding a flex form array to an XML string using
+:php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->flexArray2Xml()`
+has been dropped: When imploding a FlexForm array to an XML string using
 this method, the "XML prologue" is always added.
 
 
@@ -21,7 +21,7 @@ Impact
 ======
 
 This should have no impact for consumers of this method. The counterpart method
-:php:`TYPO3\CMS\Core\Utility\GeneralUtility::xml2array()` happily deals with this.
+:php:`\TYPO3\CMS\Core\Utility\GeneralUtility::xml2array()` happily deals with this.
 
 
 Affected installations
@@ -30,7 +30,7 @@ Affected installations
 Instances with extensions using :php:`FlexFormTools->flexArray2Xml()` can drop
 the second argument. The extension scanner will find usages with a weak match.
 
-Since this is a detail method of the TYPO3 core flex form handling, not often
+Since this is a detail method of the TYPO3 Core FlexForm handling, not often
 handled by extensions themselves, few instances will be affected in the first place.
 
 

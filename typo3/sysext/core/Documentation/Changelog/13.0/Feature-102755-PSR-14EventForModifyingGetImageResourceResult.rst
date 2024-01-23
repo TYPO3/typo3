@@ -3,7 +3,7 @@
 .. _feature-102755-1704381990:
 
 =====================================================================
-Feature: #102755 - PSR-14 Event for modifying getImageResource result
+Feature: #102755 - PSR-14 event for modifying getImageResource result
 =====================================================================
 
 See :issue:`102755`
@@ -11,21 +11,21 @@ See :issue:`102755`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent`
 has been introduced which serves as a replacement for the now removed
 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource']`.
 
-The Event is being dispatched just before :php:`ContentObjectRenderer->getImgResource()`
+The event is being dispatched just before :php:`ContentObjectRenderer->getImgResource()`
 is about to return the resolved :php:`\TYPO3\CMS\Core\Imaging\ImageResource` DTO.
-The Event is therefore in comparison to the removed hook always dispatched,
+The event is therefore in comparison to the removed hook always dispatched,
 even if no :php:`ImageResource` could be resolved. In this case, the
 corresponding return value is :php:`null`.
 
 .. note::
 
     Instead of an :php:`array` :php:`ContentObjectRenderer` now handles
-    the image resource with the new :php:`ImageResource` DTO. This means,
-    :php:`ContentObjectRenderer->getImgResource()` returns either the new
+    the image resource with the new :php:`ImageResource` :abbr:`DTO (Data Transfer Object)`.
+    This means, :php:`ContentObjectRenderer->getImgResource()` returns either the new
     DTO or null.
 
 To modify the :php:`getImgResource()` result, the following methods are available:

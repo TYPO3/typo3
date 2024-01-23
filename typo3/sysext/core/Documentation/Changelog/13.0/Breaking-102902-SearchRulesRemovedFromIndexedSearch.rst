@@ -39,7 +39,7 @@ Fluid
 -----
 
 Remove any overrides for the partial file :file:`Resources/Private/Partials/Rules.html`,
-as well as the `<f:render partial="Rules" />` invocation from a potentially
+as well as the :html:`<f:render partial="Rules" />` invocation from a potentially
 overridden :file:`Resources/Private/Partials/Form.html` partial file.
 
 

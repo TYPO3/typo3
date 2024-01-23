@@ -12,7 +12,7 @@ Description
 ===========
 
 A new native backed enum :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`
-is introduced for streamlined usage within:
+has been introduced for streamlined usage within:
 
 * :php:`\TYPO3\CMS\Backend\Controller\File\FileController`
 * :php:`\TYPO3\CMS\Core\Resource\AbstractFile`

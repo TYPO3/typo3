@@ -12,7 +12,7 @@ Description
 ===========
 
 Various methods in of the main TYPO3 Core classes
-:php:`TYPO3\CMS\Core\Domain\Repository\PageRepository`
+:php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository`
 now have native PHP types in their method signature, requiring the caller code
 to use exactly the required PHP types for the corresponding method arguments.
 

@@ -11,8 +11,8 @@ See :issue:`101933`
 Description
 ===========
 
-The :php:`AfterUserLoggedInEvent` PSR-14 event is now also dispatched for
-a successful frontend user login.
+The :php:`\TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent` PSR-14
+event is now also dispatched for a successful frontend user login.
 
 
 Impact

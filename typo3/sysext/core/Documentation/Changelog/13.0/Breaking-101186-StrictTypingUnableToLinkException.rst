@@ -12,7 +12,7 @@ Description
 ===========
 
 The class constructor in :php:`\TYPO3\CMS\Frontend\Exception\UnableToLinkException`
-is now strictly typed. In addition the variable :php:`$linkText` has type :php:`string`.
+is now strictly typed. In addition, the variable :php:`$linkText` has type :php:`string`.
 
 Impact
 ======
@@ -31,7 +31,12 @@ Ensure that the class constructor is called properly, according to the changed s
 
 .. code-block:: php
 
-    __construct(string $message = '', int $code = 0, ?\Throwable $previous = null, string $linkText = '')
+    public function __construct(
+        string $message = '',
+        int $code = 0,
+        ?\Throwable $previous = null,
+        string $linkText = ''
+    );
 
 
 .. index:: Backend, NotScanned, ext:fluid, ext:frontend, ext:redirects

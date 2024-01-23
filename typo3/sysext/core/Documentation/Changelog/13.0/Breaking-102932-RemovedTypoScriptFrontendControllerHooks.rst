@@ -11,7 +11,7 @@ See :issue:`102932`
 Description
 ===========
 
-The following Frontend TypoScript and Page rendering related hooks
+The following frontend TypoScript and page rendering related hooks
 have been removed:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc']`,
@@ -39,7 +39,7 @@ TYPO3 installations with custom extensions using above listed hooks.
 Migration
 =========
 
-See :doc:`PSR-14 Event <../13.0/Feature-102932-NewTypoScriptRelatedFrontendEvents>`
+See :doc:`PSR-14 event <../13.0/Feature-102932-NewTypoScriptRelatedFrontendEvents>`
 for substitutions. The new events are tailored for more restricted use cases and can
 be used when existing hook usages have not been "side" usages. Any "off label" hook
 usages should be converted to custom middlewares instead.

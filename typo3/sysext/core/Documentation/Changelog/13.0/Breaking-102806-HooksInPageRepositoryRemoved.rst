@@ -11,14 +11,14 @@ See :issue:`102806`
 Description
 ===========
 
-The following hooks in TYPO3's Core API class :php:`TYPO3\CMS\Core\Domain\PageRepository`
+The following hooks in TYPO3's Core API class :php:`\TYPO3\CMS\Core\Domain\PageRepository`
 have been removed:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Domain\PageRepository::class]['init']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage']`
 
-Later hook has been replaced by the new PSR-14
-:php:`TYPO3\CMS\Core\Domain\Event\BeforePageIsRetrievedEvent`.
+Later hook has been replaced by the new PSR-14 event
+:php:`\TYPO3\CMS\Core\Domain\Event\BeforePageIsRetrievedEvent`.
 
 Impact
 ======
@@ -43,9 +43,9 @@ based on the Context API when instantiated.
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage']`
 is removed without deprecation in order to allow extensions to work with TYPO3
-v12 (using the hook) and v13+ (using the new Event) when implementing the Event
+v12 (using the hook) and v13+ (using the new Event) when implementing the event
 as well without any further deprecations. Use the
-:doc:`PSR-14 Event <../13.0/Feature-102806-BeforePageIsRetrievedEventInPageRepository>`
+:doc:`PSR-14 event <../13.0/Feature-102806-BeforePageIsRetrievedEventInPageRepository>`
 to allow greater influence in the functionality.
 
 .. index:: PHP-API, FullyScanned, ext:core

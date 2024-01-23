@@ -34,7 +34,7 @@ because the results are so bad.
 
 On a code level, the removal affects these areas:
 
-* Class :php:`TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility` has been
+* Class :php:`\TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility` has been
   removed.
 * The "hook" :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']
   to register an own "metaphone" solution has been removed.
@@ -50,7 +50,7 @@ Impact
 
 Frontend users can no longer select the "Sounds like" option when searching the
 website. Backend users do not see statistics about this search variant in the
-Backend module.
+backend module.
 
 
 Affected installations

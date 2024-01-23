@@ -11,7 +11,7 @@ See :issue:`102067`
 Description
 ===========
 
-A new PSR-14 :php:`\TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent`
 has been introduced, enabling developers to listen to the state between loaded
 base TCA and merging of TCA overrides.
 
@@ -24,14 +24,14 @@ Example
 
     declare(strict_types=1);
 
-    namespace Vendor\MyExtension\EventListener;
+    namespace MyVendor\MyExtension\EventListener;
 
     use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent;
 
     final class AddTcaBeforeTcaOverrides
     {
-        #[AsEventListener('vendor/my-extension/before-tca-overrides')]
+        #[AsEventListener('my-vendor/my-extension/before-tca-overrides')]
         public function __invoke(BeforeTcaOverridesEvent $event): void
         {
             $tca = $event->getTca();
@@ -44,7 +44,7 @@ Example
 Impact
 ======
 
-The new PSR-14 can be used to dynamically generate TCA and add it as additional
+The new PSR-14 event can be used to dynamically generate TCA and add it as additional
 base TCA. This is especially useful for "TCA generator" extensions, which add
 TCA based on another resource, while still enabling users to override TCA via
 the known TCA overrides API.
@@ -56,8 +56,8 @@ only work on the TCA coming from :php:`$event->getTca()` and must not access
 .. note::
 
     Please note that TCA is always "runtime cached". This means that dynamic
-    additions must never depend on runtime state, e.g. the current PSR-7
+    additions must never depend on runtime state, for example, the current PSR-7
     request or similar, because such information might not even exist when
-    the first call is e.g. done from CLI.
+    the first call is done, for example, from CLI.
 
 .. index:: Backend, PHP-API, TCA, ext:core

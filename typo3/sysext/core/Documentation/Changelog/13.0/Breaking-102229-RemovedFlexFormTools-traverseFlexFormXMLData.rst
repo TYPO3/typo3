@@ -11,7 +11,7 @@ See :issue:`102229`
 Description
 ===========
 
-Class :php:`TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` got a series
+Class :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` got a series
 of cleanup and removal patches.
 
 The following public class properties have been removed:
@@ -41,7 +41,7 @@ Impact
 ======
 
 In general, these changes should have relatively low impact on extensions, if they
-don't built additional low level functionality on top of the general TYPO3 core
+don't built additional low level functionality on top of the general TYPO3 Core
 FlexForm related features. Extensions like the TemplaVoila forks may need to have
 a look for required adaptions, though.
 
@@ -70,10 +70,10 @@ to an own class.
 
 Extension developers are however encouraged to refactor their code since
 :php:`traverseFlexFormXMLData()` with its callback logic was ugly, hard to follow
-and maintain. The core switched away from the method by implementing own traversers
+and maintain. The Core switched away from the method by implementing own traversers
 that match the specific use cases. Method :php:`cleanFlexFormXML()` is an
 example of such an implementation. Note FlexForms are *not* recursive since
-since section containers can not be nested since TYPO3 v8 anymore. The core thus
+section containers can not be nested since TYPO3 v8 anymore. The Core thus
 uses some nested foreach loops instead of a recursive approach.
 
 

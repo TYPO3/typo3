@@ -19,7 +19,7 @@ password recovery hashes of frontend users being invalid.
 Impact
 ======
 
-A frontend user with a valid and not expired password recovery link created with
+A frontend user with a valid and unexpired password recovery link created with
 a TYPO3 version < 13 can not use the password recovery link to reset the
 password.
 

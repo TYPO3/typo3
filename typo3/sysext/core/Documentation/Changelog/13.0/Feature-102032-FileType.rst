@@ -19,7 +19,7 @@ Impact
 ======
 
 The new :php:`\TYPO3\CMS\Core\Resource\FileType` native backed enum is meant
-to be a drop-in replacement for the former public FILETYPE_* constants:
+to be a drop-in replacement for the former public :php:`FILETYPE_*` constants:
 
 * :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_UNKNOWN`
 * :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_TEXT`

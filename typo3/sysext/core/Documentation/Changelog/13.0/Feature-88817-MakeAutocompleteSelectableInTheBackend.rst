@@ -15,7 +15,7 @@ Autocomplete options can already be added to input
 fields in `EXT:form` via editing the YAML. This was
 hard or impossible to do for editors.
 
-The autocomplete tag has to be set on form inputs
+The autocomplete tag has to be set for form fields
 to be accessibility compliant, where applicable.
 
 The parameter can have arbitrary content according

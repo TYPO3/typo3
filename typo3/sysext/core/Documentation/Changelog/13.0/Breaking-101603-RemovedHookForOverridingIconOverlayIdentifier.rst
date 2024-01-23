@@ -12,7 +12,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Imaging\IconFactory']['overrideIconOverlay']`
-has been removed in favor of a new PSR-14 Event :php:`\TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent`.
+has been removed in favor of a new PSR-14 event :php:`\TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent`.
 
 Impact
 ======
@@ -29,10 +29,10 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v12 (using the hook) and v13+ (using the new Event)
-when implementing the Event as well without any further deprecations.
+to work with TYPO3 v12 (using the hook) and v13+ (using the new event)
+when implementing the event as well without any further deprecations.
 
 Replace any hook usage with the new
-:doc:`PSR-14 Event <../13.0/Feature-101603-PSR-14EventForModifyingRecordOverlayIconIdentifier>`.
+:doc:`PSR-14 event <../13.0/Feature-101603-PSR-14EventForModifyingRecordOverlayIconIdentifier>`.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:core

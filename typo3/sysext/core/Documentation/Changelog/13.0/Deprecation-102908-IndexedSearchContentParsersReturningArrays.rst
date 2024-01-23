@@ -13,7 +13,7 @@ Description
 
 Content parsers implemented in Indexed Search return an array solely defined for
 the internal indexer. It is now encouraged to return an instance of
-:php:`TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString` instead.
+:php:`\TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString` instead.
 
 
 Impact

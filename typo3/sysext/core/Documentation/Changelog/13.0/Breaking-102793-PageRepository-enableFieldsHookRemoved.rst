@@ -12,7 +12,7 @@ Description
 ===========
 
 One of the common PHP APIs used in TYPO3 Core for fetching records is
-:php:`TYPO3\CMS\Core\Domain\Repository\PageRepository`. The method
+:php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository`. The method
 :php:`enableFields()` is marked as deprecated, and the according hook
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']`
 has been removed.
@@ -35,6 +35,6 @@ Migration
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']`
 can be replaced by a listener to the newly introduced
-:doc:`PSR-14 Event <../13.0/Feature-102793-PSR-14EventForModifyingDefaultConstraintsInPageRepository>`.
+:doc:`PSR-14 event <../13.0/Feature-102793-PSR-14EventForModifyingDefaultConstraintsInPageRepository>`.
 
 .. index:: Database, Frontend, PHP-API, NotScanned, ext:core

@@ -26,8 +26,8 @@ Before:
 
 After:
 
-The registration can be removed from the :file:`Services.yaml` file and the
-attribute is assigned to the handler class instead:
+The registration can be removed from the :file:`Configuration/Services.yaml`
+file and the attribute is assigned to the handler class instead:
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Queue/Handler.php
@@ -76,7 +76,7 @@ Impact
 The registration of services as message handlers has been simplified by
 respecting the :php:`\Symfony\Component\Messenger\Attribute\AsMessageHandler`
 attribute. When using this attribute, there is no need to register such
-service in the :file:`Services.yaml` file anymore. Existing configuration
-will work as before.
+service in the :file:`Configuration/Services.yaml` file anymore. Existing
+configuration will work as before.
 
 .. index:: Backend, CLI, PHP-API, ext:core

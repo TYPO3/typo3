@@ -16,9 +16,9 @@ possibility to shift the event handler execution to the beginning of the
 debounce sequence, enabled via the optional :js:`immediate` parameter.
 
 The parameter is unused in TYPO3 and using this feature has a negative impact
-on UX. If used, the event handler is directly executed and the user has to wait
-a specific time after the last event was triggered, before any further execution
-is possible.
+on :abbr:`UX (User Experience)`. If used, the event handler is directly executed
+and the user has to wait a specific time after the last event was triggered,
+before any further execution is possible.
 
 The flag :js:`immediate` has been therefore removed.
 
@@ -28,8 +28,8 @@ Impact
 
 The :js:`DebounceEvent` module now always waits until a certain time has passed
 after the last trigger of the event happened before executing the event handler.
-This is mostly used in potential heavy tasks, e.g. an AJAX request that is sent
-depending on the content of a search field.
+This is mostly used in potential heavy tasks, for example, an Ajax request that
+is sent depending on the content of a search field.
 
 
 Affected installations

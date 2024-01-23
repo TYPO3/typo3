@@ -11,9 +11,9 @@ See :issue:`101291`
 Description
 ===========
 
-The capabilities property of ResourceStorage and Drivers
-(LocalDriver/AbstractDriver) have been converted from an integer (holding a bit
-value) to an instance of a new BitSet class
+The capabilities property of the :php:`ResourceStorage` and drivers
+(:php:`LocalDriver`/:php:`AbstractDriver`) have been converted from an integer
+(holding a bit value) to an instance of a new :php:`BitSet` class
 :php:`\TYPO3\CMS\Core\Resource\Capabilities`.
 
 This affects the public API of the following interface methods:

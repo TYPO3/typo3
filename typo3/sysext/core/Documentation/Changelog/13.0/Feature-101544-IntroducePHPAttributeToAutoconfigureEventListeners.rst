@@ -16,7 +16,7 @@ has been added in order to autoconfigure a class as a PSR-14 event listener.
 
 The attribute supports the following properties, which are all optional,
 as if you would register the listener by manually tagging it in the
-:file:`Services.yaml` or :file:`Services.php` file:
+:file:`Configuration/Services.yaml` or :file:`Configuration/Services.php` file:
 
 *   `identifier` - Event listener identifier (unique) - uses the service name,
     if not provided

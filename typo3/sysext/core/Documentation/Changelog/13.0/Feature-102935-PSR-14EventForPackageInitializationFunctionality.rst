@@ -3,7 +3,7 @@
 .. _feature-102935-1706258668:
 
 ========================================================================
-Feature: #102935 - PSR-14 Event for package initialization functionality
+Feature: #102935 - PSR-14 event for package initialization functionality
 ========================================================================
 
 See :issue:`102935`
@@ -30,19 +30,19 @@ TYPO3 already registers a couple of listeners to this event:
 * :php:`\TYPO3\CMS\Impexp\Initialization\ImportContentOnPackageInitialization`
 * :php:`\TYPO3\CMS\Impexp\Initialization\ImportSiteConfigurationsOnPackageInitialization`
 
-Developers are able to listen to the new Event before or after TYPO3 core
+Developers are able to listen to the new event before or after TYPO3 Core
 listeners have been executed, using :php:`before` and :php:`after` in the
 listener registration. All listeners are able to store arbitrary data
 in the Event using the :php:`addStorageEntry()` method. This is also used
 by the core listeners to store their result, which was previously passed
 to the :doc:`removed <../13.0/Breaking-102935-OverhauledExtensionInstallationInExtensionManager>`
-`EXT:extensionmanager` PSR-14 Events.
+`EXT:extensionmanager` PSR-14 events.
 
 Listeners can access those information using corresponding :php:`getStorageEntry()`
 method. Those entries are a :php:`PackageInitializationResult` object, which
 features the following methods:
 
-* :php:`getIdentifier()` - Returns the entry identifier, which is the listener serivce name for the TYPO3 core listeners
+* :php:`getIdentifier()` - Returns the entry identifier, which is the listener service name for the TYPO3 Core listeners
 * :php:`getResult()` - Returns the result data, added by the corresponding listener
 
 Using the new Event, listeners are equipped with following methods:
@@ -53,7 +53,7 @@ Using the new Event, listeners are equipped with following methods:
 * :php:`getEmitter()` - Returns the emitter / the service, which has dispatched the event
 * :php:`hasStorageEntry()` - Whether a storage entry for a given identifier exists
 * :php:`getStorageEntry()` - Returns a storage entry for a given identifier
-* :php:`addStorageEntry()` - Adds a storage entry (:php:`PackageInitializationResult`) to the Event
+* :php:`addStorageEntry()` - Adds a storage entry (:php:`PackageInitializationResult`) to the event
 * :php:`removeStorageEntry()` - Removes a storage entry by a given identifier
 
 .. note::
@@ -89,10 +89,10 @@ recommended and also done by TYPO3 Core):
 Impact
 ======
 
-Using the new PSR-14 Event, it's now possible to execute custom functionality
+Using the new PSR-14 event, it's now possible to execute custom functionality
 when a package has been activated. Since TYPO3 Core also uses listeners to
-this Event, custom extensions can easily place their functionality in between
-and fetch necessary information directly from the Event's storage, instead of
+this event, custom extensions can easily place their functionality in between
+and fetch necessary information directly from the event's storage, instead of
 registering dedicated listeners.
 
 .. index:: Backend, PHP-API, ext:core

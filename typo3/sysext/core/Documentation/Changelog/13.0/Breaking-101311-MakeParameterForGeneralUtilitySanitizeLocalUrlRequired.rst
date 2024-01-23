@@ -11,19 +11,19 @@ See :issue:`101311`
 Description
 ===========
 
-The (only) parameter for :php:`GeneralUtility::sanitizeLocalUrl` is now
-required.
+The (only) parameter for :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl()`
+is now required.
 
 Impact
 ======
 
-Calling :php:`GeneralUtility::sanitizeLocalUrl` without an argument will result
+Calling :php:`GeneralUtility::sanitizeLocalUrl()` without an argument will result
 in a PHP error.
 
 Affected installations
 ======================
 
-Only those installations that call :php:`GeneralUtility::sanitizeLocalUrl`
+Only those installations that call :php:`GeneralUtility::sanitizeLocalUrl()`
 without an argument.
 
 The extension scanner will detect affected usages as a strong match.
@@ -31,6 +31,6 @@ The extension scanner will detect affected usages as a strong match.
 Migration
 =========
 
-Make sure to pass an argument to :php:`GeneralUtility::sanitizeLocalUrl`.
+Make sure to pass an argument to :php:`GeneralUtility::sanitizeLocalUrl()`.
 
 .. index:: PHP-API, FullyScanned, ext:core

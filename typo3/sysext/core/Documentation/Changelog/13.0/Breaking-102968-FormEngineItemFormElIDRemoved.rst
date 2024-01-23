@@ -20,7 +20,7 @@ has been removed. The intention of that key was to prepare some unique id
 to be used as :html:`id` attribute. This never made a lot of sense, single
 element classes can easily take care of this on their own if needed.
 
-Since the core can't actively deprecate and log access to members of the main
+Since the Core can't actively deprecate and log access to members of the main
 data array as such, there is no point in declaring a deprecation for it, and
 the array entry has been removed directly.
 
@@ -28,7 +28,7 @@ the array entry has been removed directly.
 Impact
 ======
 
-Extensions with custom Backend FormEngine elements may raise an
+Extensions with custom backend FormEngine elements may raise an
 "undefined array key" PHP warning, or may create empty id attributes in
 their HTML output if accessing :php:`itemFormElID`.
 

@@ -43,7 +43,7 @@ Impact
 When generating thumbnail images or images via GIFBUILDER from various sources which
 aren't supported by TYPO3's graphical processing, a PNG is now created instead of a GIF.
 
-This can happen for instance when previewing PDF files. JPG files are still kept the same.
+This can happen, for instance, when previewing PDF files. JPG files are still kept the same.
 
 
 Affected installations
@@ -55,7 +55,7 @@ TYPO3 installations which used these settings or customized GifBuilder code.
 Migration
 =========
 
-For 99% of the installations, these options have been activated already so there is no change
+For 99% of the installations, these options have been activated already, so there is no change
 necessary when upgrading and also no visual change.
 
 .. index:: FAL, Frontend, LocalConfiguration, PHP-API, TypoScript, FullyScanned, ext:core

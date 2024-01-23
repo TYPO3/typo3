@@ -17,7 +17,7 @@ are now strictly typed.
 Impact
 ======
 
-Classes implementing the interface must now ensure all are strictly typed.
+Classes implementing the interface must now ensure all methods are strictly typed.
 
 Affected installations
 ======================

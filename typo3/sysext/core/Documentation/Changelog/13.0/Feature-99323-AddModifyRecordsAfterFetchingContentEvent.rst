@@ -3,7 +3,7 @@
 .. _feature-99323:
 
 ===========================================================================
-Feature: #99323 - PSR-14 Event for modifying records after fetching content
+Feature: #99323 - PSR-14 event for modifying records after fetching content
 ===========================================================================
 
 See :issue:`99323`
@@ -11,13 +11,13 @@ See :issue:`99323`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent`
 has been introduced which serves as a more powerful replacement for the now
 :doc:`removed <../13.0/Breaking-99323-RemovedHookForModifyingRecordsAfterFetchingContent>`
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow']`
 hook.
 
-The Event allows to modify the fetched records next to the possibility to
+The event allows to modify the fetched records next to the possibility to
 manipulate most of the options, such as `slide`. Listeners are also able
 to set the final content and change the whole TypoScript configuration,
 used for further processing.
@@ -66,7 +66,7 @@ registration:
 Impact
 ======
 
-Using the new PSR-14 Event, it's now possible to modify the records
+Using the new PSR-14 event, it's now possible to modify the records
 fetched by the "Content" ContentObject, before they are being further
 processed, or even skip TYPO3's default processing of records by setting
 an empty array for the records to be rendered.

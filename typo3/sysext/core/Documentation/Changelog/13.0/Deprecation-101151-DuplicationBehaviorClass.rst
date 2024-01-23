@@ -31,7 +31,9 @@ Migration
 .. code-block:: php
 
     // Before
-    $behaviour = \TYPO3\CMS\Core\Resource\DuplicationBehavior::cast(\TYPO3\CMS\Core\Resource\DuplicationBehavior::RENAME);
+    $behaviour = \TYPO3\CMS\Core\Resource\DuplicationBehavior::cast(
+        \TYPO3\CMS\Core\Resource\DuplicationBehavior::RENAME
+    );
 
     // After
     $behaviour = \TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior::RENAME;

@@ -18,7 +18,7 @@ palettes. Palettes then may be used within FormEngine.
 Impact
 ======
 
-In case commonly used colors or e.g. colors defined in a corporate design should
+In case commonly used colors or, for example, colors defined in a corporate design should
 be made accessible in an easy way, integrators may configure multiple color palettes
 to be used in FormEngine via page TSconfig.
 

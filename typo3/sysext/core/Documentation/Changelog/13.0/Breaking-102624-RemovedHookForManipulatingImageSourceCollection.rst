@@ -12,7 +12,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection']`
-has been removed in favor of the new PSR-14
+has been removed in favor of the new PSR-14 event
 :php:`\TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent`.
 
 
@@ -33,9 +33,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v12 (using the hook) and v13+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Event <../13.0/Feature-102624-PSR-14EventForModifyingImageSourceCollection>`
+to work with TYPO3 v12 (using the hook) and v13+ (using the new event)
+when implementing the event as well without any further deprecations.
+Use the :doc:`PSR-14 event <../13.0/Feature-102624-PSR-14EventForModifyingImageSourceCollection>`
 to allow greater influence in the functionality.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

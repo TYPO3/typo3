@@ -3,7 +3,7 @@
 .. _feature-101970-1695205584:
 
 =======================================================================================
-Feature: #101970 - AJAX API accepts native URL and URLSearchParams objects as arguments
+Feature: #101970 - Ajax API accepts native URL and URLSearchParams objects as arguments
 =======================================================================================
 
 See :issue:`101970`
@@ -11,7 +11,7 @@ See :issue:`101970`
 Description
 ===========
 
-The AJAX API (:js:`@typo3/core/ajax/ajax-request`) has been enhanced to accept
+The Ajax API (:js:`@typo3/core/ajax/ajax-request`) has been enhanced to accept
 native URL-related objects.
 
 

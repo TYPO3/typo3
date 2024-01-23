@@ -12,7 +12,7 @@ Description
 ===========
 
 Handling of two settings has been removed from the
-TYPO3 core codebase:
+TYPO3 Core codebase:
 
 * `$GLOBALS['TCA']['someTable']['types']['bitmask_excludelist_bits']`
 * `$GLOBALS['TCA']['someTable']['types']['bitmask_value_field']`
@@ -31,7 +31,7 @@ rendering records in the backend record editing interface.
 Affected installations
 ======================
 
-Both settings have been used very rarely: Neither core nor published TER extensions
+Both settings have been used very rarely: Neither Core nor published TER extensions
 revealed a single usage. The extension scanner will find affected extensions.
 
 

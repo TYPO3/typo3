@@ -11,9 +11,9 @@ See :issue:`101133`
 Description
 ===========
 
-A new native backed enum :php:`\TYPO3\CMS\Core\Imaging\IconState` is
-introduced for streamlined usage within :php:`TYPO3\CMS\Core\Imaging\Icon` and
-:php:`TYPO3\CMS\Core\Imaging\IconFactory`.
+A new native backed enum :php:`\TYPO3\CMS\Core\Imaging\IconState` has been
+introduced for streamlined usage within :php:`\TYPO3\CMS\Core\Imaging\Icon` and
+:php:`\TYPO3\CMS\Core\Imaging\IconFactory`.
 
 Impact
 ======

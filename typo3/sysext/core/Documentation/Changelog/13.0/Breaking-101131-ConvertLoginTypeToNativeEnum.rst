@@ -36,7 +36,7 @@ Use the new syntax:
 :php:`\TYPO3\CMS\Core\Authentication\LoginType::LOGOUT->value`
 
 Alternatively, use the enum method :php:`tryFrom` to convert a
-value to an enum. For direct comparison of two enums, the null coalescing
+value to an enum. For direct comparison of two enums, the null-coalescing
 operator shall be used to ensure that the parameter is a string:
 
 .. code-block:: php

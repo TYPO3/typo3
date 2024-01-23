@@ -11,7 +11,7 @@ See :issue:`100926`
 Description
 ===========
 
-TYPO3 log files tend to grow over time if not manually cleaned on a regular
+TYPO3 log files tend to grow over time, if not manually cleaned on a regular
 basis, potentially leading to full disks. Also, reading its contents may be
 hard when several weeks of log entries are printed as a wall of text.
 
@@ -20,7 +20,7 @@ a long time already. However, TYPO3 may be installed on a hosting environment
 where `logrotate` is not available and cannot be installed by the customer.
 To cover such cases, a simple log rotation approach has been implemented,
 following the "copytruncate" approach: when rotating files, the currently
-opened log file is copied (e.g. to `typo3_[hash].log.20230616094812`) and
+opened log file is copied (for example, to `typo3_[hash].log.20230616094812`) and
 the original log file is emptied. This saves the hassle with properly
 closing and re-creating open file handles.
 
@@ -89,7 +89,7 @@ value.
 Example:
 
 ..  code-block:: console
-    :caption: Directory listing of :file:`var/log` with rotated logs
+    :caption: Directory listing of :file:`var/log/` with rotated logs
 
     $ ls -1 var/log
     typo3_[hash].log

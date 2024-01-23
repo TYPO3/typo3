@@ -11,8 +11,8 @@ See :issue:`97664`
 Description
 ===========
 
-Once there are numerous form definitions in the system, it can become difficult
-for an editor to find the correct form definition to edit.
+It can be difficult for an editor to find the right form definition to edit, if
+there are many form definitions in the system.
 To make it easier, a search field is displayed in the form manager.
 This allows a case-insensitive search by name or persistenceIdentifier.
 

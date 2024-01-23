@@ -12,10 +12,10 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource']`
-has been removed in favor of the new PSR-14 Event
+has been removed in favor of the new PSR-14 event
 :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent`.
 
-The new Event is using the new :php:`\TYPO3\CMS\Core\Imaging\ImageResource` DTO,
+The new event is using the new :php:`\TYPO3\CMS\Core\Imaging\ImageResource` :abbr:`DTO (Data Transfer Object)`,
 which allows an improved API as developers do no longer have to deal with
 unnamed array keys but benefit from the object-oriented approach, using
 corresponding getter and setter. Therefore, the return types of the following
@@ -45,9 +45,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v12 (using the hook) and v13+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Event <../13.0/Feature-102755-PSR-14EventForModifyingGetImageResourceResult>`
+to work with TYPO3 v12 (using the hook) and v13+ (using the new event)
+when implementing the event as well without any further deprecations.
+Use the :doc:`PSR-14 event <../13.0/Feature-102755-PSR-14EventForModifyingGetImageResourceResult>`
 to allow greater influence in the functionality.
 
 Additionally, adjust your code to handle the new return types appropriately.

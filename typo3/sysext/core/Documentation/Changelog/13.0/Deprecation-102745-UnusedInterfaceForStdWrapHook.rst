@@ -31,10 +31,10 @@ TYPO3 installations using the PHP interface in custom extension code.
 Migration
 =========
 
-The PHP interface is still available for TYPO3 v13.x, so extensions can
+The PHP interface is still available for TYPO3 v13, so extensions can
 provide a version which is compatible with TYPO3 v12 (using the hook)
-and TYPO3 v13.x (using the new :doc:`PSR-14 Events <../13.0/Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality>`),
+and TYPO3 v13 (using the new :doc:`PSR-14 events <../13.0/Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality>`),
 at the same time. Remove any usage of the PHP interface and use the new PSR-14
-Events to avoid any further problems in TYPO3 v14+.
+events to avoid any further problems in TYPO3 v14+.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

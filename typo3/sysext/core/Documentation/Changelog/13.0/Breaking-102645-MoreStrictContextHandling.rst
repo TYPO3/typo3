@@ -11,17 +11,17 @@ See :issue:`102645`
 Description
 ===========
 
-Class :php:`TYPO3\CMS\Core\Context\Context` is a stateful singleton class set up
-pretty early by the Frontend or Backend application after the Request object has been created.
-Its state is then further changed by various Frontend and Backend middlewares. It can
+Class :php:`\TYPO3\CMS\Core\Context\Context` is a stateful singleton class set up
+pretty early by the frontend or backend application after the request object has been created.
+Its state is then further changed by various frontend and backend middlewares. It can
 be retrieved using dependency injection or :php:`GeneralUtility::makeInstance()` in consuming
 classes.
 
-To clean up Context related code a bit, the following changes have been made:
+To clean up Context-related code a bit, the following changes have been made:
 
-* Method :php:`__construct()` removed from :php:`TYPO3\CMS\Core\Context\Context`
-* Class :php:`TYPO3\CMS\Core\Context\ContextAwareInterface` removed
-* Trait :php:`TYPO3\CMS\Core\Context\ContextAwareTrait` removed
+* Method :php:`__construct()` removed from :php:`\TYPO3\CMS\Core\Context\Context`
+* Class :php:`\TYPO3\CMS\Core\Context\ContextAwareInterface` removed
+* Trait :php:`\TYPO3\CMS\Core\Context\ContextAwareTrait` removed
 
 
 Impact
@@ -35,7 +35,7 @@ Affected installations
 ======================
 
 Most likely, not too many instances are affected: An instance of :php:`Context` is
-typically created by core bootstrap and retrieved using dependency injection, extensions
+typically created by Core bootstrap and retrieved using dependency injection, extensions
 usually do not need to create own instances.
 
 There are also not many routing aspects with context dependencies that may use the

@@ -42,7 +42,7 @@ for example the concrete :php:`$connectionParams['driver']`.
 
 ..  note::
 
-    Real use-cases to use this interface should be rare edge cases, usually
+    Real use cases to use this interface should be rare edge cases, usually
     a driver middleware should only be configured on a connection where is
     needed - or does not harm if used for all connection types as global
     driver middleware.
@@ -51,7 +51,7 @@ Custom driver middleware example using the interface
 ----------------------------------------------------
 
 ..  code-block:: php
-    :caption: myext/Classes/DoctrineDBAL/CustomDriver.php (driver decorator)
+    :caption: my_extension/Classes/DoctrineDBAL/CustomDriver.php (driver decorator)
 
     namespace MyVendor\MyExt\DoctrineDBAL;
 
@@ -75,7 +75,7 @@ Custom driver middleware example using the interface
     }
 
 ..  code-block:: php
-    :caption: myextension/Classes/DoctrineDBAL/CustomMiddleware.php (driver middleware)
+    :caption: my_extension/Classes/DoctrineDBAL/CustomMiddleware.php (driver middleware)
 
     namespace MyVendor\MyExt\DoctrineDBAL;
 
@@ -103,7 +103,7 @@ Custom driver middleware example using the interface
     }
 
 ..  code-block:: php
-    :caption: myext/ext_localconf.php (Register custom driver middleware)
+    :caption: my_extension/ext_localconf.php (Register custom driver middleware)
 
     use MyVendor\MyExt\DoctrineDBAL\CustomMiddleware;
 
@@ -111,7 +111,7 @@ Custom driver middleware example using the interface
       'target' => CustomMiddleware::class,
       'after' => [
         // NOTE: Custom driver middleware should be registered after essential
-        //       TYPO3 core driver middlewares. Use the following identifiers
+        //       TYPO3 Core driver middlewares. Use the following identifiers
         //       to ensure that.
         'typo3/core/custom-platform-driver-middleware',
         'typo3/core/custom-pdo-driver-result-middleware',
@@ -126,7 +126,7 @@ Custom driver middleware example using the interface
 Impact
 ======
 
-Extension author can provide conditional-based doctrine driver middlewares by
+Extension author can provide conditional-based Doctrine driver middlewares by
 implementing the :php:`\TYPO3\CMS\Core\Database\Middleware\UsableForConnectionInterface`
 along with the :php:`canBeUsedForConnection()` method.
 

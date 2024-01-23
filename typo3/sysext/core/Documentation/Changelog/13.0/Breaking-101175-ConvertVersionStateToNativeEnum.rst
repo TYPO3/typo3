@@ -22,7 +22,7 @@ a class, the existing class constants are no longer available, but are
 enum instances instead.
 
 In addition it's not possible to instantiate it anymore or call
-the :php:`equals` method.
+the :php:`equals()` method.
 
 Affected installations
 ======================

@@ -23,22 +23,22 @@ Impact
 
 The TCA configuration option :php:`MM_hasUidField` is obsolete and can be removed.
 
-The :php:`TcaMigration` performed during TCA warmup will automatically remove the
-option and creates according log entries if needed.
+The TCA migration, which is performed during TCA warmup, will automatically
+remove this option and creates according log entries, if needed.
 
 
 Affected installations
 ======================
 
-Instances with extensions using MM relations may be affected.
+Instances with extensions using :php:`MM` relations may be affected.
 
 
 Migration
 =========
 
 Remove all occurrences of php:`MM_hasUidField` from TCA. The :sql:`uid` column
-is added as primary key automatically if :php:`multiple = true` is set, otherwise
-a combined primary key of fields :sql:`uid_local`, :sql:`uid_foreign` plus
+is added as primary key automatically, if :php:`multiple = true` is set, otherwise
+a combined primary key of the fields :sql:`uid_local`, :sql:`uid_foreign` plus
 eventually :sql:`tablenames` and :sql:`fieldname` is used.
 
 

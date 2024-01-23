@@ -12,22 +12,22 @@ Description
 ===========
 
 A few additional classes of extension "workspaces" have been declared :php:`@internal`.
-With this, most of the classes are now considered internal handling, except of
-course dispatched events.
+With this, most of the classes are now considered internal handling, except, of
+course, dispatched events.
 
 
 Impact
 ======
 
 Extensions extending or using workspace classes as PHP API that are now marked
-:php:`@internal` may break, when the core changes such classes. This will not
+:php:`@internal` may break, when the Core changes such classes. This will not
 be considered breaking.
 
 
 Affected installations
 ======================
 
-Few extensions extend workspaces as such, and the Backend workspaces
+Few extensions extend workspaces as such, and the backend workspaces
 application in particular.
 
 

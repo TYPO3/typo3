@@ -14,8 +14,8 @@ Description
 The :php:`\TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent` has been
 :doc:`improved <../13.0/Feature-99807-ImproveModifyUrlForCanonicalTagEvent>`.
 
-Therefore the event is now always dispatched after the standard functionality,
-such as fetching the URL from the page properties, has been executed.
+Therefore, the event is now always dispatched after the standard functionality
+has been executed, such as fetching the URL from the page properties.
 
 The event is furthermore also dispatched in case the canonical tag generation
 has been disabled via TypoScript or the page properties. This allows greater

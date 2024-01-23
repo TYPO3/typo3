@@ -3,7 +3,7 @@
 .. _feature-101807-1693473782:
 
 =====================================================================
-Feature: #101807 - Automatic inclusion of User TSconfig of extensions
+Feature: #101807 - Automatic inclusion of user TSconfig of extensions
 =====================================================================
 
 See :issue:`101807`
@@ -14,7 +14,7 @@ Description
 Extension authors can now put a file named
 :file:`Configuration/user.tsconfig` in their extension folder.
 
-This file is then recognized to load the contents as global User TSconfig
+This file is then recognized to load the contents as global user TSconfig
 for the whole TYPO3 installation during build-time. This is
 more performant than the existing solution using
 :php:`ExtensionManagementUtility::addUserTSConfig()` in
@@ -25,7 +25,7 @@ more performant than the existing solution using
 Impact
 ======
 
-When a file is created, the User TSconfig is loaded automatically without a
+When a file is created, the user TSconfig is loaded automatically without a
 custom registration, cached within the Core caches, and more
 performant than the existing registration format. The old registration
 format has been been marked as deprecated, see

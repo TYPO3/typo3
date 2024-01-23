@@ -15,7 +15,8 @@ Signature changes for following methods
 ---------------------------------------
 
 *  :php:`ExpressionBuilder::literal(string $value)`: Value must be a string now.
-*  :php:`ExpressionBuilder::trim(): Only `TrimMode` enum for `$position` argument.
+*  :php:`ExpressionBuilder::trim()`: Only :php:`\Doctrine\DBAL\Platforms\TrimMode`
+   enum for :php:`$position` argument.
 
 Following class constants have been removed
 -------------------------------------------
@@ -47,7 +48,7 @@ Extension author need to ensure that a string is passed to :php:`literal()`.
 --------------------------------
 
 Extension author need to pass the Doctrine DBAL enum :php:`TrimMode` instead of
-a integer.
+an integer.
 
 TRIM_LEADING
 
@@ -63,6 +64,7 @@ TRIM_LEADING
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Domain/Repository/MyTableRepository.php
 
+    use Doctrine\DBAL\Platforms\TrimMode;
     use TYPO3\CMS\Core\Database\Connection
     use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 
@@ -92,7 +94,7 @@ TRIM_LEADING
 
 ..  tip::
 
-    With Doctrine DBAL 3.x the TrimMode was a class with class constants. Using
+    With Doctrine DBAL 3.x the :php:`TrimMode` was a class with class constants. Using
     these no code changes are needed for TYPO3 v12 and v13 compatible code. Only
     method call type hinting needs to be adjusted to use the enum instead of
     int.

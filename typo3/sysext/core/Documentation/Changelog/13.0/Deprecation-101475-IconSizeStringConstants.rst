@@ -43,7 +43,7 @@ deprecation log entry.
 Affected installations
 ======================
 
-All installations with 3rd party extensions using the Icon API are affected.
+All installations with third-party extensions using the Icon API are affected.
 
 
 Migration

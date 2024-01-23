@@ -11,7 +11,7 @@ See :issue:`101793`
 Description
 ===========
 
-The Backend :php:`DataHandler` had a functionality to verify written records
+The backend :php:`DataHandler` had a functionality to verify written records
 after they have been persisted in the database and log unexpected collisions.
 
 This feature has been removed since it is rather useless with many databases
@@ -26,14 +26,14 @@ Two :php:`TYPO3_CONF_VARS` toggles have been obsoleted:
 
 Two :php:`DataHandler` properties have been marked as deprecated:
 
-* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->checkStoredRecords`
-* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->checkStoredRecords_loose`
+* :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->checkStoredRecords`
+* :php:`\TYPO3\CMS\Core\DataHandling\DataHandler->checkStoredRecords_loose`
 
 Impact
 ======
 
 There should be little to no impact for instances, except some less database
-queries when using the DataHandler. Extensions setting the DataHandler
+queries when using the :php:`DataHandler`. Extensions setting the :php:`DataHandler`
 properties should stop using them, they will be removed with TYPO3 v14 and
 have no functionality with v13 anymore.
 
@@ -41,7 +41,7 @@ have no functionality with v13 anymore.
 Affected installations
 ======================
 
-In rare cases, instances with extensions setting the DataHandler properties
+In rare cases, instances with extensions setting the :php:`DataHandler` properties
 are affected. The extension scanner will find possible usages with a weak
 match.
 

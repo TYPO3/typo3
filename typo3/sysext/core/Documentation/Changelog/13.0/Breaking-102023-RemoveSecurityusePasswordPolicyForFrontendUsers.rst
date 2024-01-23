@@ -12,8 +12,8 @@ Description
 ===========
 
 The feature toggle :php:`security.usePasswordPolicyForFrontendUsers` has been
-removed, because TypoScript based password validation in ext:felogin has been
-removed too.
+removed, because TypoScript-based password validation in ext:felogin has been
+removed, too.
 
 
 Impact

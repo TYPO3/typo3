@@ -2,21 +2,21 @@
 
 .. _breaking-101612-1691447955:
 
-===========================================================
-Breaking: #101612 - LinkParameterProvider Interface changed
-===========================================================
+==========================================================
+Breaking: #101612 - LinkParameterProviderInterface changed
+==========================================================
 
 See :issue:`101612`
 
 Description
 ===========
 
-The PHP interface :php:`TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface`
+The PHP interface :php:`\TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface`
 has changed. The interface is used to generate URLs with query parameters for links
-within Element Browsers or Link Browsers in the TYPO3 Backend.
+within element browsers or link browsers in the TYPO3 backend.
 
 The methods :php:`getScriptUrl()` and :php:`isCurrentlySelectedItem()` have been removed
-from the interface, as the implementing Link Browsers do not need this information anymore
+from the interface, as the implementing link browsers do not need this information anymore
 due to simplification in routing.
 
 The method :php:`getUrlParameters()` now has a native return type :php:`array`, whereas

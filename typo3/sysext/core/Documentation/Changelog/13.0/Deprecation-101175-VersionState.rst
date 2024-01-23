@@ -36,13 +36,17 @@ Before:
 ..  code-block:: php
 
     $versionState = \TYPO3\CMS\Core\Versioning\VersionState::cast($value);
-    if ($versionState->equals(VersionState::MOVE_POINTER) ... 
+    if ($versionState->equals(VersionState::MOVE_POINTER) {
+        // ...
+    }
 
 After:
 
 ..  code-block:: php
 
     $versionState = \TYPO3\CMS\Core\Versioning\VersionState::tryFrom($value)
-    if ($versionState === VersionState::MOVE_POINTER) ...
+    if ($versionState === VersionState::MOVE_POINTER) {
+        // ...
+    }
 
 .. index:: Backend, NotScanned

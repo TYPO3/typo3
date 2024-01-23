@@ -12,7 +12,7 @@ Description
 ===========
 
 Doctrine DBAL 4 removed methods from the :php:`QueryBuilder` which has been
-adopted to extended the :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder`.
+adopted to the extended :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder`.
 
 Removed methods:
 
@@ -61,11 +61,11 @@ Use the direct set/select methods instead:
 ..  csv-table:: Replacements
     :header: "before", "after"
 
-    "->add('select', $array)", "->select(...$array)"
-    "->add('where', $wheres)", "->where(...$wheres)"
-    "->add('having', $havings)', "->having(...$havings)"
-    "->add('orderBy', $orderBy)", "->orderBy($orderByField, $orderByDirection)->addOrderBy($orderByField2)"
-    "->add('groupBy', $groupBy)", "->groupBy($groupField)->addGroupBy($groupField2)"
+    ":php:`->add('select', $array)`", ":php:`->select(...$array)`"
+    ":php:`->add('where', $wheres)`", ":php:`->where(...$wheres)`"
+    ":php:`->add('having', $havings)`", ":php:`->having(...$havings)`"
+    ":php:`->add('orderBy', $orderBy)`", ":php:`->orderBy($orderByField, $orderByDirection)->addOrderBy($orderByField2)`"
+    ":php:`->add('groupBy', $groupBy)`", ":php:`->groupBy($groupField)->addGroupBy($groupField2)`"
 
 ..  note::
     This can be done already in TYPO3 v12 with at least Doctrine DBAL 3.8.
@@ -79,13 +79,13 @@ However, several replacements have been put in place depending on the
 ..  csv-table:: Replacements
     :header: "before", "after"
 
-    "'select'", "Call `->select()` with a new set of Columns"
-    "'distinct'", "->distinct(false)"
-    "'where'", "->resetWhere()"
-    "'having'", "->resetHaving()"
-    "'groupBy'", "->resetGroupBy()"
-    "'orderBy", "->resetOrderBy()"
-    "'values'", "Call `->values()` with a new set of values."
+    "'select'", "Call :php:`->select()` with a new set of columns"
+    "'distinct'", ":php:`->distinct(false)`"
+    "'where'", ":php:`->resetWhere()`"
+    "'having'", ":php:`->resetHaving()`"
+    "'groupBy'", ":php:`->resetGroupBy()`"
+    "'orderBy", ":php:`->resetOrderBy()`"
+    "'values'", "Call :php:`->values()` with a new set of values."
 
 ..  note::
     This can be done already in TYPO3 v12 with at least Doctrine DBAL 3.8.
@@ -93,13 +93,15 @@ However, several replacements have been put in place depending on the
 :php:`QueryBuilder::execute()`
 ------------------------------
 
-Doctrine DBAL 4 removed :php:`QueryBuilder::execute()` in favour of of the two
+Doctrine DBAL 4 removed :php:`QueryBuilder::execute()` in favour of the two
 methods :php:`QueryBuilder::executeQuery()` for select/count and :php:`QueryBuilder::executeStatement()`
 for insert, delete and update queries.
 
-**BEFORE**
+Before
+~~~~~~
 
 ..  code-block:: php
+    :emphasize-lines: 9,20
 
     use TYPO3\CMS\Core\Database\ConnectionPool;
 
@@ -122,9 +124,14 @@ for insert, delete and update queries.
         )
         ->execute();
 
-**AFTER**
+After
+~~~~~
 
 ..  code-block:: php
+    :emphasize-lines: 9,20
+
+    use TYPO3\CMS\Core\Database\ConnectionPool;
+
     // select query
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
       ->getQueryBuilderForTable('pages');
@@ -150,9 +157,11 @@ for insert, delete and update queries.
 :php:`quote()` uses :php:`Connection::quote()` and therefore adopts the changed
 signature and behaviour.
 
-**BEFORE**
+Before
+~~~~~~
 
 ..  code-block:: php
+    :emphasize-lines: 15
 
     use TYPO3\CMS\Core\Database\Connection as Typo3Connection;
     use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -161,7 +170,7 @@ signature and behaviour.
     // select query
     $pageId = 123;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-      ->getQueryBuilderForTable('pages');
+        ->getQueryBuilderForTable('pages');
     $rows = $queryBuilder
         ->select('*')
         ->from('pages')
@@ -171,12 +180,14 @@ signature and behaviour.
                 $queryBuilder->quote($pageId, Typo3Connection::PARAM_INT)
             ),
         )
-        ->execute()
+        ->executeQuery()
         ->fetchAllAssociative();
 
-**AFTER**
+After
+~~~~~
 
 ..  code-block:: php
+    :emphasize-lines: 14
 
     use TYPO3\CMS\Core\Database\ConnectionPool;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -184,7 +195,7 @@ signature and behaviour.
     // select query
     $pageId = 123;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-      ->getQueryBuilderForTable('pages');
+        ->getQueryBuilderForTable('pages');
     $rows = $queryBuilder
         ->select('*')
         ->from('pages')
@@ -194,12 +205,12 @@ signature and behaviour.
                 $queryBuilder->quote((string)$pageId)
             ),
         )
-        ->execute()
+        ->executeQuery()
         ->fetchAllAssociative();
 
 ..  tip::
     To provide TYPO3 v12 and v13 with one code base, :php:`->quote((string)$value)`
-    can be used to ensure dual core compatibility.
+    can be used to ensure dual Core compatibility.
 
 :php:`QueryBuilder::setMaxResults()`
 ------------------------------------
@@ -207,9 +218,11 @@ signature and behaviour.
 Using `(int)0` as `max result` will no longer work and retrieve no records.
 Use `NULL` instead to allow all results.
 
-**BEFORE**
+Before
+~~~~~~
 
 ..  code-block:: php
+    :emphasize-lines: 12
 
     use TYPO3\CMS\Core\Database\ConnectionPool;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -217,18 +230,20 @@ Use `NULL` instead to allow all results.
     // select query
     $pageId = 123;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-      ->getQueryBuilderForTable('pages');
+        ->getQueryBuilderForTable('pages');
     $rows = $queryBuilder
         ->select('*')
         ->from('pages')
         ->setFirstResult(0)
         ->setMaxResults(0)
-        ->execute()
+        ->executeQuery()
         ->fetchAllAssociative();
 
-**AFTER**
+After
+~~~~~
 
 ..  code-block:: php
+    :emphasize-lines: 12
 
     use TYPO3\CMS\Core\Database\ConnectionPool;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -236,13 +251,13 @@ Use `NULL` instead to allow all results.
     // select query
     $pageId = 123;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-      ->getQueryBuilderForTable('pages');
+        ->getQueryBuilderForTable('pages');
     $rows = $queryBuilder
         ->select('*')
         ->from('pages')
         ->setFirstResult(0)
         ->setMaxResults(null)
-        ->execute()
+        ->executeQuery()
         ->fetchAllAssociative();
 
 

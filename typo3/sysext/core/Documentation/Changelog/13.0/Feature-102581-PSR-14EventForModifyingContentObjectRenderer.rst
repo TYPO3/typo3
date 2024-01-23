@@ -2,16 +2,16 @@
 
 .. _feature-102581-1701449291:
 
-====================================================================
-Feature: #102581 - PSR-14 Event for modifying ContentObjectRenderer
-====================================================================
+===================================================================
+Feature: #102581 - PSR-14 event for modifying ContentObjectRenderer
+===================================================================
 
 See :issue:`102581`
 
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent`
 has been introduced which serves as a drop-in replacement for the now removed
 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit']`.
 
@@ -42,7 +42,7 @@ registration:
 Impact
 ======
 
-Using the new PSR-14 Event, it's now possible to modify the
+Using the new PSR-14 event, it's now possible to modify the
 :php:`ContentObjectRenderer` instance, after it has been initialized.
 
 .. index:: Frontend, PHP-API, ext:frontend

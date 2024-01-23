@@ -24,8 +24,8 @@ Impact
 In consequence, all implementations of :php:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface` need
 to reflect those changes and add the same return and param type declarations.
 
-In case, any of the core implementations are extended, overridden methods might need to be adjusted.
-The core classes, implementing :php:`\TYPO3\CMS\Core\Resource\DriverInterface` are:
+In case, any of the Core implementations are extended, overridden methods might need to be adjusted.
+The Core classes, implementing :php:`\TYPO3\CMS\Core\Resource\DriverInterface`, are:
 
 - :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractDriver`
 - :php:`\TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver`

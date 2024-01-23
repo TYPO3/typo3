@@ -3,7 +3,7 @@
 .. _feature-102614-1701869725:
 
 ============================================================
-Feature: #102614 - PSR-14 Event for modifying GetData result
+Feature: #102614 - PSR-14 event for modifying GetData result
 ============================================================
 
 See :issue:`102614`
@@ -11,7 +11,7 @@ See :issue:`102614`
 Description
 ===========
 
-A new PSR-14 Event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent`
+A new PSR-14 event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent`
 has been introduced which serves as a drop-in replacement for the now removed
 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData']`.
 
@@ -51,7 +51,7 @@ registration:
 Impact
 ======
 
-Using the new PSR-14 Event, it's now possible to modify the resolved
+Using the new PSR-14 event, it's now possible to modify the resolved
 :php:`getData()` result.
 
 .. index:: Frontend, PHP-API, ext:frontend

@@ -12,7 +12,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore']`
-has been removed in favor of the new PSR-14
+has been removed in favor of the new PSR-14 event
 :php:`\TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapContentStoredInCacheEvent`.
 
 Impact
@@ -32,9 +32,9 @@ Migration
 =========
 
 The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v12 (using the hook) and v13+ (using the new Event)
-when implementing the Event as well without any further deprecations.
-Use the :doc:`PSR-14 Event <../13.0/Feature-102849-PSR-14EventForManipulatingStoreCacheFunctionalityOfStdWrap>`
+to work with TYPO3 v12 (using the hook) and v13+ (using the new event)
+when implementing the event as well without any further deprecations.
+Use the :doc:`PSR-14 event <../13.0/Feature-102849-PSR-14EventForManipulatingStoreCacheFunctionalityOfStdWrap>`
 to allow greater influence in the functionality.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

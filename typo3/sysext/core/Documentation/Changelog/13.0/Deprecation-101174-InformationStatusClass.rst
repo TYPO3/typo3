@@ -18,7 +18,7 @@ been marked as deprecated in favour of the new nativ
 
 Additionally, passing a :php:`string` as :php:`$status` to either
 :php:`addSystemInformation()` or :php:`addSystemMessage()` of
-class :php:`TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem`
+class :php:`\TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem`
 has been deprecated as well. An instance of the new enum has to be provided.
 
 Impact
@@ -30,7 +30,7 @@ class will be removed in TYPO3 v14.0.
 
 Passing a :php:`string` as :php:`$status` to either :php:`addSystemInformation()`
 or :php:`addSystemMessage()` of class
-:php:`TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem` will
+:php:`\TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem` will
 trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
@@ -40,7 +40,7 @@ Affected installations
 All installations using the class
 :php:`\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus` directly or
 passing a :php:`string` as :php:`$status` to either :php:`addSystemInformation()`
-or :php:`addSystemMessage()` of class :php:`TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem`.
+or :php:`addSystemMessage()` of class :php:`\TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem`.
 
 The extension scanner will report any usage of the deprecated class as
 strong match.
@@ -51,7 +51,9 @@ Migration
 .. code-block:: php
 
     // Before
-    $status = \TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus::cast(\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus::STATUS_INFO);
+    $status = \TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus::cast(
+        \TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus::STATUS_INFO
+    );
     $statusString = (string)$status;
 
 
