@@ -27,6 +27,7 @@ import BrowserSession from '@typo3/backend/storage/browser-session';
 import { ResultContainer, componentName as resultContainerComponentName } from '@typo3/backend/live-search/element/result/result-container';
 import { ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
 import { Pagination, ResultPagination } from '@typo3/backend/live-search/element/result/result-pagination';
+import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 
 enum Identifiers {
   toolbarItem = '.t3js-topbar-button-search',
@@ -71,6 +72,10 @@ class LiveSearch {
 
   private openSearchModal(): void {
     const url = new URL(TYPO3.settings.ajaxUrls.livesearch_form, window.location.origin);
+    const moduleStateStorage = ModuleStateStorage.current('web');
+    if (moduleStateStorage.selection) {
+      url.searchParams.set('pageId', moduleStateStorage.selection);
+    }
     url.searchParams.set('query', BrowserSession.get('livesearch-term') ?? '');
     url.searchParams.set('offset', BrowserSession.get('livesearch-offset') ?? '0');
 

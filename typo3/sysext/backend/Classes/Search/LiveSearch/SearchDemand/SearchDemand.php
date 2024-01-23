@@ -58,6 +58,11 @@ class SearchDemand
         return $this->demandProperties;
     }
 
+    public function getPageId(): int
+    {
+        return (int)($this->getProperty(DemandPropertyName::pageId)?->getValue() ?? 0);
+    }
+
     public function getQuery(): string
     {
         return $this->getProperty(DemandPropertyName::query)?->getValue() ?? '';
