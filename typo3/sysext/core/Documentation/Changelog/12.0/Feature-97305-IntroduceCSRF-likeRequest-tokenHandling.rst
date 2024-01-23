@@ -167,7 +167,7 @@ can be used to generate the token individually.
             // validate individual requirements/checks
             // ...
             $event->setRequestToken(
-                RequestToken::create('core/user-auth/' . $user->loginType)
+                RequestToken::create('core/user-auth/' . strtolower($user->loginType))
             );
         }
     }
