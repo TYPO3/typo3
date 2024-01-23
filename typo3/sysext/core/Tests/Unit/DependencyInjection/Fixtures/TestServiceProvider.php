@@ -52,6 +52,7 @@ class TestServiceProvider implements ServiceProviderInterface
                     return new \stdClass();
                 }
             },
+            'serviceE' => TestServiceProvider::createServiceE(...),
             'function' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\DependencyInjection\\Fixtures\\myFunctionFactory',
         ];
     }
@@ -60,6 +61,13 @@ class TestServiceProvider implements ServiceProviderInterface
     {
         $instance = new \stdClass();
         $instance->parameter = 'localhost';
+        return $instance;
+    }
+
+    public static function createServiceE(ContainerInterface $container): \stdClass
+    {
+        $instance = new \stdClass();
+        $instance->parameter = 'baz';
         return $instance;
     }
 

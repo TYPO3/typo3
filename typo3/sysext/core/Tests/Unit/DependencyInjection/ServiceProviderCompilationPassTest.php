@@ -76,9 +76,11 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
 
         $serviceA = $container->get('serviceA');
         $serviceD = $container->get('serviceD');
+        $serviceE = $container->get('serviceE');
 
         self::assertInstanceOf(\stdClass::class, $serviceA);
         self::assertInstanceOf(\stdClass::class, $serviceD);
+        self::assertInstanceOf(\stdClass::class, $serviceE);
         self::assertIsObject($container->get('function'));
     }
 
@@ -95,11 +97,13 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
 
         $serviceA = $container->get('serviceA');
         $serviceC = $container->get('serviceC');
+        $serviceE = $container->get('serviceE');
 
         self::assertInstanceOf(\stdClass::class, $serviceA);
         self::assertEquals('foo', $serviceA->newProperty);
         self::assertEquals('bar', $serviceA->newProperty2);
         self::assertEquals('localhost', $serviceC->serviceB->parameter);
+        self::assertEquals('baz', $serviceE->parameter);
     }
 
     /**

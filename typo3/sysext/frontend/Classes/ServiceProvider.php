@@ -46,15 +46,15 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            Http\Application::class => [ static::class, 'getApplication' ],
-            'frontend.middlewares' => [ static::class, 'getFrontendMiddlewares' ],
+            Http\Application::class => self::getApplication(...),
+            'frontend.middlewares' => self::getFrontendMiddlewares(...),
         ];
     }
 
     public function getExtensions(): array
     {
         return [
-            Http\RequestHandler::class => [ static::class, 'provideFallbackRequestHandler' ],
+            Http\RequestHandler::class => self::provideFallbackRequestHandler(...),
         ] + parent::getExtensions();
     }
 

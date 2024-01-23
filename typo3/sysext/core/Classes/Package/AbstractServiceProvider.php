@@ -55,7 +55,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             'middlewares' => [ static::class, 'configureMiddlewares' ],
             'backend.routes' => [ static::class, 'configureBackendRoutes' ],
             'backend.modules' => [ static::class, 'configureBackendModules' ],
-            'content.security.policies' => [static::class, 'configureContentSecurityPolicies'],
+            'content.security.policies' => [ static::class, 'configureContentSecurityPolicies' ],
             'icons' => [ static::class, 'configureIcons' ],
         ];
     }
