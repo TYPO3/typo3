@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
 
 enum DemandPropertyName
 {
+    case pageId;
     case query;
     case limit;
     case offset;
