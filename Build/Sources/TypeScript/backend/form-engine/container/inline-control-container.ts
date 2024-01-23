@@ -364,6 +364,17 @@ class InlineControlContainer {
         }
       });
     }
+
+    if (e.data.actionName === 'typo3:foreignRelation:delete') {
+      if (e.data.objectGroup !== this.container.dataset.objectGroup) {
+        // Received message isn't provisioned for current FilesContainer instance
+        return;
+      }
+
+      const forceDirectRemoval = e.data.directRemoval || false;
+      const objectId = [e.data.objectGroup, e.data.uid].join('-');
+      this.deleteRecord(objectId, forceDirectRemoval);
+    }
   };
 
   /**
