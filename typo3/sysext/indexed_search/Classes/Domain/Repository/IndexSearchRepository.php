@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Indexer;
+use TYPO3\CMS\IndexedSearch\Type\MediaType;
+use TYPO3\CMS\IndexedSearch\Type\SearchType;
+use TYPO3\CMS\IndexedSearch\Type\SectionType;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 
@@ -60,7 +63,7 @@ class IndexSearchRepository
      * Search type
      * formally known as $this->piVars['type']
      */
-    protected int $searchType = 0;
+    protected SearchType $searchType = SearchType::DISTINCT;
 
     /**
      * Language uid
@@ -72,7 +75,7 @@ class IndexSearchRepository
      * Media type
      * formally known as $this->piVars['media']
      */
-    protected int $mediaType = 0;
+    protected MediaType $mediaType = MediaType::INTERNAL_PAGES;
 
     /**
      * Sort order
@@ -147,9 +150,9 @@ class IndexSearchRepository
             $this->displayForbiddenRecords = true;
         }
         $this->sections = (string)($searchData['sections'] ?? '');
-        $this->searchType = (int)($searchData['searchType'] ?? 0);
+        $this->searchType = SearchType::tryFrom((int)($searchData['searchType'] ?? 0)) ?? SearchType::DISTINCT;
         $this->languageUid = (int)($searchData['languageUid'] ?? 0);
-        $this->mediaType = (int)($searchData['mediaType'] ?? 0);
+        $this->mediaType = MediaType::tryFrom((int)($searchData['mediaType'] ?? 0)) ?? MediaType::INTERNAL_PAGES;
         $this->sortOrder = (string)($searchData['sortOrder'] ?? '');
         $this->descendingSortOrderFlag = (bool)($searchData['desc'] ?? false);
         $this->resultpagePointer = (int)($searchData['pointer'] ?? 0);
@@ -398,7 +401,7 @@ class IndexSearchRepository
         // This holds the result if the search is boolean (contains +/-/| operators)
         $booleanSearchString = '';
 
-        $searchType = $this->getSearchType();
+        $searchType = $this->searchType;
 
         // Traverse searchwords and prefix them with corresponding operator
         foreach ($searchWordArray as $searchWordData) {
@@ -406,23 +409,26 @@ class IndexSearchRepository
             $searchWord = $searchWordData['sword'];
             $wildcard = '';
             if (str_contains($searchWord, ' ')) {
-                $searchType = 20;
+                $searchType = SearchType::SENTENCE;
             }
             switch ($searchType) {
-                case 1:
-                case 2:
-                case 3:
+                case SearchType::DISTINCT:
+                    // Intended fall-thru
+                    break;
+                case SearchType::PART_OF_WORD:
+                case SearchType::FIRST_PART_OF_WORD:
+                case SearchType::LAST_PART_OF_WORD:
                     // First part of word
                     $wildcard = '*';
                     // Part-of-word search requires boolean mode!
                     $searchBoolean = true;
                     break;
-                case 10:
+                case SearchType::SOUNDS_LIKE:
                     $indexerObj = GeneralUtility::makeInstance(Indexer::class);
                     $searchWord = $indexerObj->metaphone($searchWord, $indexerObj->storeMetaphoneInfoAsWords);
                     $fulltextIndex = 'index_fulltext.metaphonedata';
                     break;
-                case 20:
+                case SearchType::SENTENCE:
                     $searchBoolean = true;
                     // Remove existing quotes and fix misplaced quotes.
                     $searchWord = trim(str_replace('"', ' ', $searchWord));
@@ -443,7 +449,7 @@ class IndexSearchRepository
                     $naturalSearchString .= ' ' . $searchWord;
             }
         }
-        if ($searchType === 20) {
+        if ($searchType === SearchType::SENTENCE) {
             $searchString = '"' . trim($naturalSearchString) . '"';
         } elseif ($searchBoolean) {
             $searchString = trim($booleanSearchString);
@@ -574,38 +580,34 @@ class IndexSearchRepository
         // This array accumulates the phash-values
         $totalHashList = [];
         $this->wSelClauses = [];
-        // Traverse searchwords; for each, select all phash integers and merge/diff/intersect them with previous word (based on operator)
+        // Traverse searchWords; for each, select all phash integers and merge/diff/intersect them with previous word (based on operator)
         foreach ($searchWords as $v) {
             // Making the query for a single search word based on the search-type
             $sWord = (string)($v['sword'] ?? '');
             $theType = $this->searchType;
             // If there are spaces in the search-word, make a full text search instead.
             if (str_contains($sWord, ' ')) {
-                $theType = 20;
+                $theType = SearchType::SENTENCE;
             }
-            $this->getTimeTracker()->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
+            $this->getTimeTracker()->push('SearchWord "' . $sWord . '" - $theType=' . $theType->value);
             // Perform search for word:
             switch ($theType) {
-                case 1:
-                    // Part of word
+                case SearchType::PART_OF_WORD:
                     $res = $this->searchWord($sWord, LikeWildcard::BOTH);
                     break;
-                case 2:
-                    // First part of word
+                case SearchType::FIRST_PART_OF_WORD:
                     $res = $this->searchWord($sWord, LikeWildcard::RIGHT);
                     break;
-                case 3:
-                    // Last part of word
+                case SearchType::LAST_PART_OF_WORD:
                     $res = $this->searchWord($sWord, LikeWildcard::LEFT);
                     break;
-                case 10:
-                    // Sounds like
+                case SearchType::SOUNDS_LIKE:
                     $indexerObj = GeneralUtility::makeInstance(Indexer::class);
                     // Perform metaphone search
                     $storeMetaphoneInfoAsWords = !IndexedSearchUtility::isTableUsed('index_words');
                     $res = $this->searchMetaphone((string)$indexerObj->metaphone($sWord, $storeMetaphoneInfoAsWords));
                     break;
-                case 20:
+                case SearchType::SENTENCE:
                     // Sentence
                     $res = $this->searchSentence($sWord);
                     // If there is a fulltext search for a sentence there is
@@ -793,17 +795,17 @@ class IndexSearchRepository
         // If no match above, test the static types:
         if (!$match) {
             switch ($this->sections) {
-                case '-1':
+                case (string)SectionType::ONLY_THIS_PAGE->value:
                     // @todo: This repository either needs to retrieve the request or page uid.
                     $pageId = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId();
                     $whereClause = $whereClause->with(
                         $expressionBuilder->eq('ISEC.page_id', $pageId)
                     );
                     break;
-                case '-2':
+                case (string)SectionType::TOP_AND_CHILDREN->value:
                     $whereClause = $whereClause->with($expressionBuilder->eq('ISEC.rl2', 0));
                     break;
-                case '-3':
+                case (string)SectionType::LEVEL_TWO_AND_OUT->value:
                     $whereClause = $whereClause->with($expressionBuilder->gt('ISEC.rl2', 0));
                     break;
             }
@@ -822,24 +824,11 @@ class IndexSearchRepository
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('index_phash')
             ->expr();
-        switch ($this->mediaType) {
-            case '0':
-                // '0' => 'only TYPO3 pages',
-                $whereClause = $expressionBuilder->eq('IP.item_type', $expressionBuilder->literal('0'));
-                break;
-            case '-2':
-                // All external documents
-                $whereClause = $expressionBuilder->neq('IP.item_type', $expressionBuilder->literal('0'));
-                break;
-            case false:
-                // Intentional fall-through
-            case '-1':
-                // All content
-                $whereClause = '';
-                break;
-            default:
-                $whereClause = $expressionBuilder->eq('IP.item_type', $expressionBuilder->literal($this->mediaType));
-        }
+        $whereClause = match ($this->mediaType) {
+            MediaType::ALL_EXTERNAL => $expressionBuilder->neq('IP.item_type', $expressionBuilder->literal((string)MediaType::INTERNAL_PAGES->value)),
+            MediaType::ALL_MEDIA => '', // include TYPO3 pages and external media
+            default => $expressionBuilder->eq('IP.item_type', $expressionBuilder->literal((string)$this->mediaType->value)),
+        };
         return $whereClause ? ' AND ' . $whereClause : '';
     }
 
@@ -1198,15 +1187,6 @@ class IndexSearchRepository
             }
         }
         return null;
-    }
-
-    /**
-     * Search type
-     * e.g. sentence (20), any part of the word (1)
-     */
-    protected function getSearchType(): int
-    {
-        return $this->searchType;
     }
 
     /**

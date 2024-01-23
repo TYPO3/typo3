@@ -37,6 +37,12 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
 use TYPO3\CMS\IndexedSearch\Lexer;
+use TYPO3\CMS\IndexedSearch\Type\DefaultOperand;
+use TYPO3\CMS\IndexedSearch\Type\GroupOption;
+use TYPO3\CMS\IndexedSearch\Type\IndexingConfiguration;
+use TYPO3\CMS\IndexedSearch\Type\MediaType;
+use TYPO3\CMS\IndexedSearch\Type\SearchType;
+use TYPO3\CMS\IndexedSearch\Type\SectionType;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
@@ -346,7 +352,7 @@ class SearchController extends ActionController
             // Browsing box
             if ($resultData['count']) {
                 // could we get this in the view?
-                if (($this->searchData['group'] ?? '') === 'sections' && $freeIndexUid <= 0) {
+                if (($this->searchData['group'] ?? '') === GroupOption::SECTIONS->value && $freeIndexUid <= 0) {
                     $resultSectionsCount = count($this->resultSections);
                     $result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . ($resultSectionsCount > 1 ? 'inNsections' : 'inNsection'), 'IndexedSearch') ?? '', $resultSectionsCount);
                 }
@@ -399,7 +405,7 @@ class SearchController extends ActionController
         }
         $resultRows = $newResultRows;
         $this->resultSections = [];
-        if ($freeIndexUid <= 0 && ($this->searchData['group'] ?? '') === 'sections') {
+        if ($freeIndexUid <= 0 && ($this->searchData['group'] ?? '') === GroupOption::SECTIONS->value) {
             $rl2flag = str_starts_with($this->searchData['sections'], 'rl');
             $sections = [];
             foreach ($resultRows as $row) {
@@ -842,32 +848,29 @@ class SearchController extends ActionController
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {
             $sWordArray = $hookObj->getSearchWords_splitSWords($searchWords, $defaultOperator);
+        } elseif ((int)$this->searchData['searchType'] === SearchType::SENTENCE->value) {
+            $sWordArray = [
+                [
+                    'sword' => trim($searchWords),
+                    'oper' => 'AND',
+                ],
+            ];
         } else {
-            // sentence
-            if ($this->searchData['searchType'] == 20) {
-                $sWordArray = [
-                    [
-                        'sword' => trim($searchWords),
-                        'oper' => 'AND',
-                    ],
-                ];
-            } else {
-                // case-sensitive. Defines the words, which will be
-                // operators between words
-                $operatorTranslateTable = [
-                    ['+', 'AND'],
-                    ['|', 'OR'],
-                    ['-', 'AND NOT'],
-                    // Add operators for various languages
-                    // Converts the operators to lowercase
-                    [mb_strtolower(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch') ?? '', 'utf-8'), 'AND'],
-                    [mb_strtolower(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch') ?? '', 'utf-8'), 'OR'],
-                    [mb_strtolower(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch') ?? '', 'utf-8'), 'AND NOT'],
-                ];
-                $swordArray = IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
-                if (is_array($swordArray)) {
-                    $sWordArray = $this->procSearchWordsByLexer($swordArray);
-                }
+            // case-sensitive. Defines the words, which will be
+            // operators between words
+            $operatorTranslateTable = [
+                ['+', 'AND'],
+                ['|', 'OR'],
+                ['-', 'AND NOT'],
+                // Add operators for various languages
+                // Converts the operators to lowercase
+                [mb_strtolower(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch') ?? '', 'utf-8'), 'AND'],
+                [mb_strtolower(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch') ?? '', 'utf-8'), 'OR'],
+                [mb_strtolower(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch') ?? '', 'utf-8'), 'AND NOT'],
+            ];
+            $swordArray = IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
+            if (is_array($swordArray)) {
+                $sWordArray = $this->procSearchWordsByLexer($swordArray);
             }
         }
         return $sWordArray;
@@ -953,16 +956,16 @@ class SearchController extends ActionController
     protected function getAllAvailableSearchTypeOptions(): array
     {
         $allOptions = [];
-        $types = [0, 1, 2, 3, 10, 20];
         $blindSettings = $this->settings['blind'];
         if (!$blindSettings['searchType']) {
-            foreach ($types as $typeNum) {
+            foreach (SearchType::cases() as $searchType) {
+                $typeNum = $searchType->value;
                 $allOptions[$typeNum] = LocalizationUtility::translate('searchTypes.' . $typeNum, 'IndexedSearch');
             }
         }
-        // Remove this option if metaphone search is disabled)
+        // Remove "sounds like" option if metaphone search is disabled
         if (!$this->enableMetaphoneSearch) {
-            unset($allOptions[10]);
+            unset($allOptions[SearchType::SOUNDS_LIKE->value]);
         }
         // disable single entries by TypoScript
         return $this->removeOptionsFromOptionList($allOptions, $blindSettings['searchType']);
@@ -978,14 +981,13 @@ class SearchController extends ActionController
         $allOptions = [];
         $blindSettings = $this->settings['blind'];
         if (!$blindSettings['defaultOperand']) {
-            $allOptions = [
-                0 => LocalizationUtility::translate('defaultOperands.0', 'IndexedSearch'),
-                1 => LocalizationUtility::translate('defaultOperands.1', 'IndexedSearch'),
-            ];
+            foreach (DefaultOperand::cases() as $defaultOperand) {
+                $operand = $defaultOperand->value;
+                $allOptions[$operand] = LocalizationUtility::translate('defaultOperands.' . $operand, 'IndexedSearch');
+            }
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['defaultOperand']);
-        return $allOptions;
+        return $this->removeOptionsFromOptionList($allOptions, $blindSettings['defaultOperand']);
     }
 
     /**
@@ -996,10 +998,10 @@ class SearchController extends ActionController
     protected function getAllAvailableMediaTypesOptions(): array
     {
         $allOptions = [];
-        $mediaTypes = [-1, 0, -2];
         $blindSettings = $this->settings['blind'];
         if (!$blindSettings['mediaType']) {
-            foreach ($mediaTypes as $mediaType) {
+            foreach ([MediaType::ALL_MEDIA, MediaType::INTERNAL_PAGES, MediaType::ALL_EXTERNAL] as $mediaTypeCase) {
+                $mediaType = $mediaTypeCase->value;
                 $allOptions[$mediaType] = LocalizationUtility::translate('mediaTypes.' . $mediaType, 'IndexedSearch');
             }
             // Add media to search in:
@@ -1021,8 +1023,7 @@ class SearchController extends ActionController
             }
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['mediaType']);
-        return $allOptions;
+        return $this->removeOptionsFromOptionList($allOptions, $blindSettings['mediaType']);
     }
 
     /**
@@ -1061,10 +1062,10 @@ class SearchController extends ActionController
     protected function getAllAvailableSectionsOptions(): array
     {
         $allOptions = [];
-        $sections = [0, -1, -2, -3];
         $blindSettings = $this->settings['blind'];
         if (!$blindSettings['sections']) {
-            foreach ($sections as $section) {
+            foreach (SectionType::cases() as $sectionType) {
+                $section = $sectionType->value;
                 $allOptions[$section] = LocalizationUtility::translate('sections.' . $section, 'IndexedSearch');
             }
         }
@@ -1095,8 +1096,7 @@ class SearchController extends ActionController
             $allOptions['rl1_' . implode(',', array_keys($firstLevelMenu))] = LocalizationUtility::translate('sections.rootLevel1All', 'IndexedSearch');
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['sections']);
-        return $allOptions;
+        return $this->removeOptionsFromOptionList($allOptions, $blindSettings['sections']);
     }
 
     /**
@@ -1106,11 +1106,10 @@ class SearchController extends ActionController
      */
     protected function getAllAvailableIndexConfigurationsOptions(): array
     {
-        $allOptions = [
-            '-1' => LocalizationUtility::translate('indexingConfigurations.-1', 'IndexedSearch'),
-            '-2' => LocalizationUtility::translate('indexingConfigurations.-2', 'IndexedSearch'),
-            '0' => LocalizationUtility::translate('indexingConfigurations.0', 'IndexedSearch'),
-        ];
+        foreach ([IndexingConfiguration::ALL_MIXED, IndexingConfiguration::ALL_CATEGORIZED, IndexingConfiguration::PAGES] as $indexingConfiguration) {
+            $value = $indexingConfiguration->value;
+            $allOptions[$value] = LocalizationUtility::translate('indexingConfigurations.' . $value, 'IndexedSearch');
+        }
         $blindSettings = $this->settings['blind'];
         if (!($blindSettings['indexingConfigurations'] ?? false)) {
             // add an additional index configuration
@@ -1168,14 +1167,13 @@ class SearchController extends ActionController
         $allOptions = [];
         $blindSettings = $this->settings['blind'];
         if (!($blindSettings['groupBy'] ?? false)) {
-            $allOptions = [
-                'sections' => LocalizationUtility::translate('groupBy.sections', 'IndexedSearch'),
-                'flat' => LocalizationUtility::translate('groupBy.flat', 'IndexedSearch'),
-            ];
+            foreach (GroupOption::cases() as $groupOption) {
+                $value = $groupOption->value;
+                $allOptions[$value] = LocalizationUtility::translate('groupBy.' . $value, 'IndexedSearch');
+            }
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, ($blindSettings['groupBy.'] ?? []));
-        return $allOptions;
+        return $this->removeOptionsFromOptionList($allOptions, ($blindSettings['groupBy.'] ?? []));
     }
 
     /**
