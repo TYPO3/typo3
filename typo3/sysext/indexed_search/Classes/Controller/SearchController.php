@@ -21,9 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Html\HtmlParser;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,6 +32,9 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Typolink\LinkFactory;
+use TYPO3\CMS\Frontend\Typolink\LinkResult;
+use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
 use TYPO3\CMS\IndexedSearch\Lexer;
 use TYPO3\CMS\IndexedSearch\Type\DefaultOperand;
@@ -117,14 +118,6 @@ class SearchController extends ActionController
      * @var array
      */
     protected $firstRow = [];
-
-    /**
-     * @todo remove
-     * sys_domain records
-     *
-     * @var array
-     */
-    protected $domainRecords = [];
 
     /**
      * Required fe_groups memberships for display of a result.
@@ -476,17 +469,11 @@ class SearchController extends ActionController
                 // Suspicious, so linking to page instead...
                 $copiedRow = $row;
                 unset($copiedRow['static_page_arguments']);
-                $title = $this->linkPageATagWrap(
-                    htmlspecialchars($title),
-                    $this->linkPage($row['page_id'], $copiedRow)
-                );
+                $title = LinkResult::adapt($this->linkPage((int)$row['page_id'], $copiedRow, $title))->getHtml();
             }
         } else {
             // Else the page
-            $title = $this->linkPageATagWrap(
-                htmlspecialchars($title),
-                $this->linkPage($row['data_page_id'], $row)
-            );
+            $title = LinkResult::adapt($this->linkPage((int)$row['data_page_id'], $row, $title))->getHtml();
         }
         $resultData['title'] = $title;
         $resultData['icon'] = $this->makeItemTypeIcon($row['item_type'], '', $specRowConf);
@@ -513,19 +500,11 @@ class SearchController extends ActionController
             $pathId = $row['data_page_id'] ?: $row['page_id'];
             $pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
             $pathStr = $this->getPathFromPageId($pathId, $pathMP);
-            $pathLinkData = $this->linkPage(
-                $pathId,
-                [
-                    'data_page_type' => $row['data_page_type'],
-                    'data_page_mp' => $pathMP,
-                    'sys_language_uid' => $row['sys_language_uid'],
-                    'static_page_arguments' => $row['static_page_arguments'],
-                ]
-            );
+            $pathLinkResult = $this->linkPage((int)$pathId, $row, $pathStr);
 
             $resultData['pathTitle'] = $pathStr;
-            $resultData['pathUri'] = $pathLinkData['uri'];
-            $resultData['path'] = $this->linkPageATagWrap($pathStr, $pathLinkData);
+            $resultData['pathUri'] = $pathLinkResult->getUrl();
+            $resultData['path'] = LinkResult::adapt($pathLinkResult)->getHtml();
 
             // check if the access is restricted
             if (is_array($this->requiredFrontendUsergroups[$pathId]) && !empty($this->requiredFrontendUsergroups[$pathId])) {
@@ -1210,31 +1189,34 @@ class SearchController extends ActionController
 
     /**
      * Links the $linkText to page $pageUid
-     *
-     * @param int $pageUid Page id
-     * @param array $row Result row
-     * @return array
      */
-    protected function linkPage($pageUid, $row = [])
+    protected function linkPage(int $pageUid, array $row, string $linkText): LinkResultInterface
     {
         $pageLanguage = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'contentId', 0);
+
+        $linkConfiguration = [
+            'parameter' => $pageUid . ',' . $row['data_page_type'],
+        ];
+
         // Parameters for link
         $urlParameters = [];
-        if ($row['static_page_arguments'] !== null) {
+        if (isset($row['static_page_arguments'])) {
             $urlParameters = json_decode($row['static_page_arguments'], true);
         }
-        // Add &type and &MP variable:
-        if ($row['data_page_mp']) {
+        if (!empty($row['data_page_mp'] ?? false)) {
             $urlParameters['MP'] = $row['data_page_mp'];
         }
         if (($pageLanguage === 0 && $row['sys_language_uid'] > 0) || $pageLanguage > 0) {
-            $urlParameters['L'] = (int)$row['sys_language_uid'];
+            $linkConfiguration['_language'] = (int)$row['sys_language_uid'];
         }
-        // This will make sure that the path is retrieved if it hasn't been
-        // already. Used only for the sake of the domain_record thing.
-        $this->getPathFromPageId($pageUid);
 
-        return $this->preparePageLink($pageUid, $row, $urlParameters);
+        if ($urlParameters !== []) {
+            $linkConfiguration['additionalParams'] = GeneralUtility::implodeArrayForUrl('', $urlParameters);
+        }
+
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj->start($row, 'pages');
+        return GeneralUtility::makeInstance(LinkFactory::class)->create($linkText, $linkConfiguration, $cObj);
     }
 
     /**
@@ -1264,7 +1246,6 @@ class SearchController extends ActionController
         $identStr = $id . '|' . $pathMP;
         if (!isset($this->pathCache[$identStr])) {
             $this->requiredFrontendUsergroups[$id] = [];
-            $this->domainRecords[$id] = [];
             try {
                 $rl = GeneralUtility::makeInstance(RootlineUtility::class, $id, $pathMP)->get();
                 $path = '';
@@ -1286,16 +1267,6 @@ class SearchController extends ActionController
                         if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {
                             $this->requiredFrontendUsergroups[$id][] = $v['fe_group'];
                         }
-                        // Check sys_domain
-                        if ($this->settings['detectDomainRecords']) {
-                            $domainName = $this->getFirstDomainForPage((int)$v['uid']);
-                            if ($domainName) {
-                                $this->domainRecords[$id][] = $domainName;
-                                // Set path accordingly
-                                $path = $domainName . $path;
-                                break;
-                            }
-                        }
                         // Stop, if we find that the current id is the current root page.
                         $localRootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
                         if ($v['uid'] == $localRootLine[0]['uid']) {
@@ -1311,26 +1282,6 @@ class SearchController extends ActionController
             $this->pathCache[$identStr] = $path;
         }
         return $this->pathCache[$identStr];
-    }
-
-    /**
-     * Gets the first domain for the page
-     *
-     * @param int $id Page id
-     * @return string Domain name
-     */
-    protected function getFirstDomainForPage(int $id): string
-    {
-        $domain = '';
-        try {
-            $domain = GeneralUtility::makeInstance(SiteFinder::class)
-                ->getSiteByRootPageId($id)
-                ->getBase()
-                ->getHost();
-        } catch (SiteNotFoundException $e) {
-            // site was not found, we return an empty string as default
-        }
-        return $domain;
     }
 
     /**
@@ -1420,8 +1371,6 @@ class SearchController extends ActionController
             $this->settings['results.'] = [];
         }
         $fullTypoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);
-        $this->settings['detectDomainRecords'] = $fullTypoScriptArray['detectDomainRecords'] ?? 0;
-        $this->settings['detectDomainRecords.'] = $fullTypoScriptArray['detectDomainRecords.'] ?? [];
         $typoScriptArray = $fullTypoScriptArray['results.'];
 
         $this->settings['results.']['summaryCropAfter'] = MathUtility::forceIntegerInRange(
@@ -1477,51 +1426,6 @@ class SearchController extends ActionController
         $numberOfResults = (int)$numberOfResults;
         return in_array($numberOfResults, $this->availableResultsNumbers) ?
             $numberOfResults : $this->defaultResultNumber;
-    }
-
-    /**
-     * Internal method to build the page uri and link target.
-     * @todo make use of the UriBuilder
-     */
-    protected function preparePageLink(int $pageUid, array $row, array $urlParameters): array
-    {
-        $target = '';
-        $uri = $this->uriBuilder
-                ->setTargetPageUid($pageUid)
-                ->setTargetPageType($row['data_page_type'])
-                ->setArguments($urlParameters)
-                ->build();
-
-        // If external domain, then link to that:
-        if (!empty($this->domainRecords[$pageUid])) {
-            $scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-            $firstDomain = reset($this->domainRecords[$pageUid]);
-            $uri = $scheme . $firstDomain . $uri;
-            $target = $this->settings['detectDomainRecords.']['target'] ?? '';
-        }
-
-        return ['uri' => $uri, 'target' => $target];
-    }
-
-    /**
-     * Create a tag for "path" key in search result
-     *
-     * @param string $linkText Link text (nodeValue) (should be hsc'ed already)
-     * @return string HTML <A> tag wrapped title string.
-     */
-    protected function linkPageATagWrap(string $linkText, array $linkData): string
-    {
-        $attributes = [
-            'href' => $linkData['uri'],
-        ];
-        if (!empty($linkData['target'])) {
-            $attributes['target'] = $linkData['target'];
-        }
-        return sprintf(
-            '<a %s>%s</a>',
-            GeneralUtility::implodeAttributes($attributes, true),
-            $linkText
-        );
     }
 
     /**

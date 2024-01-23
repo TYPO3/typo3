@@ -185,35 +185,6 @@ Page links
 
     The maximum number of result pages is defined here.
 
-..  _search-detect-sys-domain-records:
-
-Detect domain records
----------------------
-
-..  confval:: detectDomainRecords
-
-    :Type: boolean
-    :Default: 0
-    :Path: plugin.tx_indexedsearch.settings
-
-    If set, the search results are linked to the proper domains where
-    they are found.
-
-..   _search-detect-sys-domain-records-target:
-
-Target
-~~~~~~
-
-..  confval:: detectDomainRecords.target
-
-    :Type: string
-    :Default: empty
-    :Path: plugin.tx_indexedsearch.settings
-
-    Target for external URLs.
-
-..  _search-defaultfreeindexuidlist:
-
 Default free index UID list
 ---------------------------
 

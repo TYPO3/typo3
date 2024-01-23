@@ -27,7 +27,6 @@ plugin.tx_indexedsearch {
 
 		rootPidList = {$plugin.tx_indexedsearch.settings.rootPidList}
 		page_links = 10
-		detectDomainRecords = 0
 		defaultFreeIndexUidList =
 		exactCount = 0
 
