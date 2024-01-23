@@ -35,9 +35,11 @@ Within this paths, fluid will search for a file which is named like the ``<formE
 
 For example:
 
-templateRootPaths.10 = EXT:form/Resources/Private/Frontend/Templates/
-$renderable->getType() == 'Form'
-Expected template file: EXT:form/Resources/Private/Frontend/Templates/Form.html
+.. code-block:: none
+
+   templateRootPaths.10 = EXT:form/Resources/Private/Frontend/Templates/
+   $renderable->getType() == 'Form'
+   Expected template file: EXT:form/Resources/Private/Frontend/Templates/Form.html
 
 Only the root element (``FormDefinition``) has to be a template file. All child form elements are partials. By default, the root element is called ``Form``.
 
@@ -83,9 +85,11 @@ Within this paths, fluid will search for a file which is named like the ``<formE
 
 For example:
 
-templateRootPaths.10 = EXT:form/Resources/Private/Frontend/Partials/
-$renderable->getType() == 'Text'
-Expected template file: EXT:form/Resources/Private/Frontend/Partials/Text.html
+.. code-block:: none
+
+   templateRootPaths.10 = EXT:form/Resources/Private/Frontend/Partials/
+   $renderable->getType() == 'Text'
+   Expected template file: EXT:form/Resources/Private/Frontend/Partials/Text.html
 
 There is a setting available to set a custom partial name. Please read the section :ref:`templateName<apireference-frontendrendering-fluidformrenderer-options-templatename>`.
 
@@ -109,17 +113,21 @@ By default, the renderable type will be taken as the name for the partial.
 
 For example:
 
-partialRootPaths.10 = EXT:form/Resources/Private/Frontend/Partials/
-$renderable->getType() == 'Text'
-Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Text.html
+.. code-block:: none
+
+   partialRootPaths.10 = EXT:form/Resources/Private/Frontend/Partials/
+   $renderable->getType() == 'Text'
+   Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Text.html
 
 Set ``templateName`` to define a custom name which should be used instead.
 
 For example:
 
-$renderable->getTemplateName() == 'Text'
-$renderable->getType() = Foo
-Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Text.html
+.. code-block:: none
+
+   $renderable->getTemplateName() == 'Text'
+   $renderable->getType() = Foo
+   Expected partial file: EXT:form/Resources/Private/Frontend/Partials/Text.html
 
 .. code-block:: yaml
 
