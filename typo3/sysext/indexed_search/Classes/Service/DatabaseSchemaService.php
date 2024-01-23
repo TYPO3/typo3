@@ -38,9 +38,7 @@ final class DatabaseSchemaService
             // @todo: With MySQL 5.7 fulltext index on InnoDB is possible, check for that and keep inno if so.
             $event->addSqlData('CREATE TABLE index_fulltext ('
                 . LF . 'fulltextdata mediumtext,'
-                . LF . 'metaphonedata mediumtext,'
                 . LF . 'FULLTEXT fulltextdata (fulltextdata),'
-                . LF . 'FULLTEXT metaphonedata (metaphonedata)'
                 . LF . ') ENGINE=MyISAM;');
         }
     }

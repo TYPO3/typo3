@@ -83,9 +83,6 @@ All search words are converted to lowercase.
 			<trans-unit id="searchTypes.3" resname="searchTypes.3">
 				<source>Last part of word</source>
 			</trans-unit>
-			<trans-unit id="searchTypes.10" resname="searchTypes.10">
-				<source>Sounds like</source>
-			</trans-unit>
 			<trans-unit id="searchTypes.20" resname="searchTypes.20">
 				<source>Sentence</source>
 			</trans-unit>
@@ -399,9 +396,6 @@ All search words are converted to lowercase.
 			<trans-unit id="field.flag" resname="field.flag">
 				<source>Flag</source>
 			</trans-unit>
-			<trans-unit id="field.metaphone" resname="field.metaphone">
-				<source>Metaphone</source>
-			</trans-unit>
 			<trans-unit id="field.content" resname="field.content">
 				<source>Content</source>
 			</trans-unit>
@@ -450,9 +444,6 @@ All search words are converted to lowercase.
 			</trans-unit>
 			<trans-unit id="administration.statistics.lexer" resname="administration.statistics.lexer">
 				<source>Lexer</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.metaphone" resname="administration.statistics.metaphone">
-				<source>Metaphone</source>
 			</trans-unit>
 			<trans-unit id="administration.statistics.view.overview" resname="administration.statistics.view.overview">
 				<source>Overview</source>

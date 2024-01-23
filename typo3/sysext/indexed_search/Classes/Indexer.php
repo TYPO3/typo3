@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
@@ -62,15 +61,6 @@ class Indexer
      * @var array
      */
     public $external_parsers = [];
-
-    /**
-     * External parser objects, keys are file extension names. Values are objects with certain methods.
-     * Fe-group list (pages might be indexed separately for each usergroup combination to support search
-     * in access limited pages!)
-     *
-     * @var string
-     */
-    public $defaultGrList = '0,-1';
 
     /**
      * Min/Max times
@@ -186,26 +176,6 @@ class Indexer
     public $freqMax = 0.1;
 
     /**
-     * @var bool
-     */
-    public $enableMetaphoneSearch = false;
-
-    /**
-     * @var bool
-     */
-    public $storeMetaphoneInfoAsWords;
-
-    /**
-     * @var string
-     */
-    public $metaphoneContent = '';
-
-    /**
-     * Metaphone object, if any
-     */
-    public ?DoubleMetaPhoneUtility $metaphoneObj = null;
-
-    /**
      * Lexer object for word splitting
      *
      * @var \TYPO3\CMS\IndexedSearch\Lexer
@@ -234,9 +204,6 @@ class Indexer
         $this->tstamp_maxAge = MathUtility::forceIntegerInRange((int)($this->indexerConfig['maxAge'] ?? 0) * 3600, 0);
         $this->maxExternalFiles = MathUtility::forceIntegerInRange((int)($this->indexerConfig['maxExternalFiles'] ?? 5), 0, 1000);
         $this->flagBitMask = MathUtility::forceIntegerInRange((int)($this->indexerConfig['flagBitMask'] ?? 0), 0, 255);
-        // Workaround: If the extension configuration was not updated yet, the value is not existing
-        $this->enableMetaphoneSearch = !isset($this->indexerConfig['enableMetaphoneSearch']) || $this->indexerConfig['enableMetaphoneSearch'];
-        $this->storeMetaphoneInfoAsWords = !IndexedSearchUtility::isTableUsed('index_words') && $this->enableMetaphoneSearch;
     }
 
     /********************************
@@ -267,14 +234,6 @@ class Indexer
         $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
         $this->lexerObj = $lexer;
         $this->lexerObj->debug = (bool)($this->indexerConfig['debugMode'] ?? false);
-        // Initialize metaphone hook:
-        // Make sure that the hook is loaded _after_ indexed_search as this may overwrite the hook depending on the configuration.
-        if ($this->enableMetaphoneSearch && ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone'] ?? false)) {
-            /** @var DoubleMetaPhoneUtility $metaphoneObj */
-            $metaphoneObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']);
-            $this->metaphoneObj = $metaphoneObj;
-            $this->metaphoneObj->pObj = $this;
-        }
     }
 
     /**
@@ -1076,13 +1035,6 @@ class Indexer
             if (!isset($retArr[$val])) {
                 // Word ID (wid)
                 $retArr[$val]['hash'] = IndexedSearchUtility::md5inthash($val);
-                // Metaphone value is also 60 only chars long
-                $metaphone = $this->enableMetaphoneSearch ? substr($this->metaphone($val, $this->storeMetaphoneInfoAsWords), 0, 60) : '';
-                $retArr[$val]['metaphone'] = $metaphone;
-            }
-            // Build metaphone fulltext string (can be used for fulltext indexing)
-            if ($this->storeMetaphoneInfoAsWords) {
-                $this->metaphoneContent .= ' ' . $retArr[$val]['metaphone'];
             }
             // Priority used for flagBitMask feature (see extension configuration)
             $retArr[$val]['cmp'] = ($retArr[$val]['cmp'] ?? 0) | 2 ** $offset;
@@ -1112,13 +1064,6 @@ class Indexer
                 $retArr[$val]['first'] = $key;
                 // Word ID (wid)
                 $retArr[$val]['hash'] = IndexedSearchUtility::md5inthash($val);
-                // Metaphone value is also only 60 chars long
-                $metaphone = $this->enableMetaphoneSearch ? substr($this->metaphone($val, $this->storeMetaphoneInfoAsWords), 0, 60) : '';
-                $retArr[$val]['metaphone'] = $metaphone;
-            }
-            // Build metaphone fulltext string (can be used for fulltext indexing)
-            if ($this->storeMetaphoneInfoAsWords) {
-                $this->metaphoneContent .= ' ' . $retArr[$val]['metaphone'];
             }
             if (!($retArr[$val]['count'] ?? false)) {
                 $retArr[$val]['count'] = 0;
@@ -1128,32 +1073,6 @@ class Indexer
             $retArr[$val]['count']++;
             $this->wordcount++;
         }
-    }
-
-    /**
-     * Creating metaphone based hash from input word
-     *
-     * @param string $word Word to convert
-     * @param bool $returnRawMetaphoneValue If set, returns the raw metaphone value (not hashed)
-     * @return mixed Metaphone hash integer (or raw value, string)
-     */
-    public function metaphone($word, $returnRawMetaphoneValue = false)
-    {
-        if (is_object($this->metaphoneObj)) {
-            $metaphoneRawValue = $this->metaphoneObj->metaphone($word, $this->conf['sys_language_uid']);
-        } else {
-            // Use native PHP functions instead of advanced doubleMetaphone class
-            $metaphoneRawValue = metaphone($word);
-        }
-        if ($returnRawMetaphoneValue) {
-            $result = $metaphoneRawValue;
-        } elseif ($metaphoneRawValue !== '') {
-            // Create hash and return integer
-            $result = IndexedSearchUtility::md5inthash($metaphoneRawValue);
-        } else {
-            $result = 0;
-        }
-        return $result;
     }
 
     /********************************
@@ -1211,7 +1130,6 @@ class Indexer
         $fields = [
             'phash' => $this->hash['phash'],
             'fulltextdata' => implode(' ', $this->contentParts),
-            'metaphonedata' => $this->metaphoneContent,
         ];
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
@@ -1373,7 +1291,6 @@ class Indexer
         $fields = [
             'phash' => $hash['phash'],
             'fulltextdata' => implode(' ', $contentParts),
-            'metaphonedata' => $this->metaphoneContent,
         ];
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
@@ -1817,7 +1734,6 @@ class Indexer
                     [
                         'wid' => $val['hash'],
                         'baseword' => $key,
-                        'metaphone' => $val['metaphone'],
                     ]
                 );
             }

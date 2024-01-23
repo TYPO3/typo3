@@ -43,43 +43,6 @@
                 <f:format.raw>{lexer}</f:format.raw>
             </f:if>
 
-            <f:if condition="{metaphone}">
-                <h3>
-                    <f:translate key="administration.statistics.metaphone" />
-                </h3>
-                <div class="table-fit">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th>
-                                <f:translate key="field.metaphone" />
-                            </th>
-                            <th>
-                                <f:translate key="field.pHash" />
-                            </th>
-                            <th>
-                                <f:translate key="field.wordCount" />
-                            </th>
-                            <th>
-                                <f:translate key="field.words" />
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <f:for each="{metaphone}" as="row">
-                            <tr>
-                                <td>{row.metaphone}</td>
-                                <td>{row.hash}</td>
-                                <td>{f:count(subject:row.words)}</td>
-                                <td><f:for each="{row.words}" as="word">
-                                    {word},
-                                </f:for></td>
-                            </tr>
-                        </f:for>
-                        </tbody>
-                    </table>
-                </div>
-            </f:if>
             <f:if condition="{sections}">
                 <h3><f:translate key="administration.statistics.sectionRecords" /></h3>
                 <div class="table-fit">

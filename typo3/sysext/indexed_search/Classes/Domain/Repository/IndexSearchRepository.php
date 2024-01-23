@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\IndexedSearch\FileContentParser;
-use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Type\MediaType;
 use TYPO3\CMS\IndexedSearch\Type\SearchType;
 use TYPO3\CMS\IndexedSearch\Type\SectionType;
@@ -395,7 +394,6 @@ class IndexSearchRepository
     {
         // Change this to TRUE to force BOOLEAN SEARCH MODE (useful if fulltext index is still empty)
         $searchBoolean = false;
-        $fulltextIndex = 'index_fulltext.fulltextdata';
         // This holds the result if the search is natural (doesn't contain any boolean operators)
         $naturalSearchString = '';
         // This holds the result if the search is boolean (contains +/-/| operators)
@@ -422,11 +420,6 @@ class IndexSearchRepository
                     $wildcard = '*';
                     // Part-of-word search requires boolean mode!
                     $searchBoolean = true;
-                    break;
-                case SearchType::SOUNDS_LIKE:
-                    $indexerObj = GeneralUtility::makeInstance(Indexer::class);
-                    $searchWord = $indexerObj->metaphone($searchWord, $indexerObj->storeMetaphoneInfoAsWords);
-                    $fulltextIndex = 'index_fulltext.metaphonedata';
                     break;
                 case SearchType::SENTENCE:
                     $searchBoolean = true;
@@ -459,7 +452,7 @@ class IndexSearchRepository
         return [
             'searchBoolean' => $searchBoolean,
             'searchString' => $searchString,
-            'fulltextIndex' => $fulltextIndex,
+            'fulltextIndex' => 'index_fulltext.fulltextdata',
         ];
     }
 
@@ -601,12 +594,6 @@ class IndexSearchRepository
                 case SearchType::LAST_PART_OF_WORD:
                     $res = $this->searchWord($sWord, LikeWildcard::LEFT);
                     break;
-                case SearchType::SOUNDS_LIKE:
-                    $indexerObj = GeneralUtility::makeInstance(Indexer::class);
-                    // Perform metaphone search
-                    $storeMetaphoneInfoAsWords = !IndexedSearchUtility::isTableUsed('index_words');
-                    $res = $this->searchMetaphone((string)$indexerObj->metaphone($sWord, $storeMetaphoneInfoAsWords));
-                    break;
                 case SearchType::SENTENCE:
                     // Sentence
                     $res = $this->searchSentence($sWord);
@@ -732,21 +719,6 @@ class IndexSearchRepository
             )
             ->groupBy('ISEC.phash')
             ->executeQuery();
-    }
-
-    /**
-     * Search for a metaphone word
-     *
-     * @param string $sWord the search word
-     */
-    protected function searchMetaphone(string $sWord): Result
-    {
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_words')
-            ->expr();
-        $wSel = $expressionBuilder->eq('IW.metaphone', $expressionBuilder->literal($sWord));
-        $this->wSelClauses[] = $wSel;
-        return $this->execPHashListQuery($wSel, $expressionBuilder->eq('is_stopword', 0));
     }
 
     /**

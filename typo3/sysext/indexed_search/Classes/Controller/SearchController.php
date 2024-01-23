@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
@@ -156,20 +155,6 @@ class SearchController extends ActionController
     protected $iconFileNameCache = [];
 
     /**
-     * Indexer configuration, coming from TYPO3's system configuration for EXT:indexed_search
-     *
-     * @var array
-     */
-    protected $indexerConfig = [];
-
-    /**
-     * Flag whether metaphone search should be enabled
-     *
-     * @var bool
-     */
-    protected $enableMetaphoneSearch = false;
-
-    /**
      * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService
      */
     protected $typoScriptService;
@@ -210,9 +195,6 @@ class SearchController extends ActionController
             $searchData['languageUid'] = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
         }
 
-        // Indexer configuration from Extension Manager interface:
-        $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
-        $this->enableMetaphoneSearch = (bool)($this->indexerConfig['enableMetaphoneSearch'] ?? false);
         $this->initializeExternalParsers();
         // If "_sections" is set, this value overrides any existing value.
         if ($searchData['_sections'] ?? false) {
@@ -962,10 +944,6 @@ class SearchController extends ActionController
                 $typeNum = $searchType->value;
                 $allOptions[$typeNum] = LocalizationUtility::translate('searchTypes.' . $typeNum, 'IndexedSearch');
             }
-        }
-        // Remove "sounds like" option if metaphone search is disabled
-        if (!$this->enableMetaphoneSearch) {
-            unset($allOptions[SearchType::SOUNDS_LIKE->value]);
         }
         // disable single entries by TypoScript
         return $this->removeOptionsFromOptionList($allOptions, $blindSettings['searchType']);

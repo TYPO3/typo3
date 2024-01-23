@@ -93,18 +93,6 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
         self::assertIsNotArray($searchResults['resultRows'] ?? false);
     }
 
-    /**
-     * @test
-     */
-    public function doSearchReturnsLurimIpasomResultsWithMetaphoneSearch(): void
-    {
-        $searchRepository = $this->getSearchRepository(10);
-        $searchResults = $searchRepository->doSearch([['sword' => 'lurim']], -1);
-        self::assertTrue(isset($searchResults['resultRows']));
-        self::assertCount(1, $searchResults['resultRows']);
-        self::assertStringContainsStringIgnoringCase('lorem', $searchResults['resultRows'][0]['item_description']);
-    }
-
     private function getSearchRepository($searchType = 1): IndexSearchRepository
     {
         $searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);

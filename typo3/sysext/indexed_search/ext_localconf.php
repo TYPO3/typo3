@@ -8,7 +8,6 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\IndexedSearch\Controller\SearchController;
 use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Hook\DeleteIndexedData;
-use TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility;
 
 defined('TYPO3') or die();
 
@@ -66,8 +65,4 @@ if (isset($extConf['useMysqlFulltext']) && (bool)$extConf['useMysqlFulltext']) {
         'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_word,index_debug,index_config';
 }
 
-// Use the advanced doubleMetaphone parser instead of the internal one (usage of metaphone parsers is generally disabled by default)
-if (isset($extConf['enableMetaphoneSearch']) && (int)$extConf['enableMetaphoneSearch'] == 2) {
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone'] = DoubleMetaPhoneUtility::class;
-}
 unset($extConf);

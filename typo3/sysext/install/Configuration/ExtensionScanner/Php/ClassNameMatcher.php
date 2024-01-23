@@ -2473,4 +2473,9 @@ return [
             'Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility' => [
+        'restFiles' => [
+            'Breaking-102900-MetaphoneSearchRemovedFromIndexed_search.rst',
+        ],
+    ],
 ];

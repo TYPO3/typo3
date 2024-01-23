@@ -53,7 +53,7 @@ The indexing engine has several features:
 
 - Wordcounting and frequency used to rate results
 
-- Exact, partially or metaphone search
+- Exact or partial search
 
 - Searching freely for sentences (non-indexed).
 
@@ -68,7 +68,7 @@ Features of the search frontend (the plugin)
 The search interface has several options for advanced searching. Any
 of those can be disabled and/or preset with default values:
 
-- Searching whole word, part of word, sounds like, sentence
+- Searching whole word, part of word, sentence
 
 - Logical AND and OR search including syntactical recognition of AND, OR
   and NOT as logical keywords. Furthermore sentences encapsulated in

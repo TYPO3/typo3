@@ -26,6 +26,5 @@ enum SearchType: int
     case PART_OF_WORD = 1;
     case FIRST_PART_OF_WORD = 2;
     case LAST_PART_OF_WORD = 3;
-    case SOUNDS_LIKE = 10;
     case SENTENCE = 20;
 }

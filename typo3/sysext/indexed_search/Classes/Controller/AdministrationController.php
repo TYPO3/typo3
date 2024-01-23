@@ -291,24 +291,6 @@ class AdministrationController extends ActionController
                 $wordRecords[$id]['is_keyword'] = true;
             }
         }
-        $metaphoneRows = $metaphone = [];
-        $enableMetaphoneSearch = (bool)($this->indexerConfig['enableMetaphoneSearch'] ?? false);
-        if ($enableMetaphoneSearch && is_array($wordRecords)) {
-            // Group metaphone hash
-            foreach ($wordRecords as $row) {
-                $metaphoneRows[$row['metaphone']][] = $row['baseword'];
-            }
-
-            foreach ($metaphoneRows as $hash => $words) {
-                if (count($words) > 1) {
-                    $metaphone[] = [
-                        'metaphone' => $this->indexer->metaphone($words[0], true), $hash,
-                        'words' => $words,
-                        'hash' => $hash,
-                    ];
-                }
-            }
-        }
 
         // sections
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_section');
@@ -327,7 +309,7 @@ class AdministrationController extends ActionController
         // top words
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $topCountWords = $queryBuilder
-            ->select('index_words.baseword', 'index_words.metaphone', 'index_rel.*')
+            ->select('index_words.baseword', 'index_rel.*')
             ->from('index_words')
             ->from('index_rel')
             ->setMaxResults(20)
@@ -352,7 +334,7 @@ class AdministrationController extends ActionController
         // top frequency
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $topFrequency = $queryBuilder
-            ->select('index_words.baseword', 'index_words.metaphone', 'index_rel.*')
+            ->select('index_words.baseword', 'index_rel.*')
             ->from('index_words')
             ->from('index_rel')
             ->setMaxResults(20)
@@ -384,7 +366,6 @@ class AdministrationController extends ActionController
             'topFrequency' => $topFrequency,
             'debug' => $debugInfo,
             'lexer' => $lexer,
-            'metaphone' => $metaphone,
             'page' => $pageRecord,
             'keywords' => $keywords,
         ]);

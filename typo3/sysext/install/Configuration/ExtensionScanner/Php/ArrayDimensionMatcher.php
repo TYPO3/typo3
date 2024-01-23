@@ -1124,4 +1124,9 @@ return [
             'Feature-102855-PSR-14EventForModifyingResolvedLinkResultData.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'metaphone\']' => [
+        'restFiles' => [
+            'Breaking-102900-MetaphoneSearchRemovedFromIndexed_search.rst',
+        ],
+    ],
 ];
