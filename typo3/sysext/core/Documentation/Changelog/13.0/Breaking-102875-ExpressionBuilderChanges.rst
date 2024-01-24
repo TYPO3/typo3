@@ -11,10 +11,18 @@ See :issue:`102875`
 Description
 ===========
 
-Signature changes:
+Signature changes for following methods
+---------------------------------------
 
 *  :php:`ExpressionBuilder::literal(string $value)`: Value must be a string now.
 *  :php:`ExpressionBuilder::trim(): Only `TrimMode` enum for `$position` argument.
+
+Following class constants have been removed
+-------------------------------------------
+
+*   :php:`QUOTE_NOTHING`: Not used since already TYPO3 v12 and Doctrine DBAL 3.x.
+*   :php:`QUOTE_IDENTIFIER`: Not used since already TYPO3 v12 and Doctrine DBAL 3.x.
+*   :php:`QUOTE_PARAMETER`: Not used since already TYPO3 v12 and Doctrine DBAL 3.x.
 
 Impact
 ======

@@ -38,10 +38,6 @@ use Doctrine\DBAL\Query\Expression\ExpressionBuilder as DoctrineExpressionBuilde
  */
 class ExpressionBuilder extends DoctrineExpressionBuilder
 {
-    final public const QUOTE_NOTHING = 0;
-    final public const QUOTE_IDENTIFIER = 1;
-    final public const QUOTE_PARAMETER = 2;
-
     public function __construct(protected readonly DoctrineConnection $connection)
     {
         // parent::__construct() skipped by intention, otherwise the private property
