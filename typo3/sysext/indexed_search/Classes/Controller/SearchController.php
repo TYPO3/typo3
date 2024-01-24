@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -401,8 +402,8 @@ class SearchController extends ActionController
         if ($row['item_type']) {
             if ($row['show_resume']) {
                 $targetAttribute = '';
-                if ($GLOBALS['TSFE']->config['config']['fileTarget'] ?? false) {
-                    $targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
+                if ($this->getTypoScriptFrontendController()->config['config']['fileTarget'] ?? false) {
+                    $targetAttribute = ' target="' . htmlspecialchars($this->getTypoScriptFrontendController()->config['config']['fileTarget']) . '"';
                 }
                 $title = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . htmlspecialchars($title) . '</a>';
             } else {
@@ -430,8 +431,8 @@ class SearchController extends ActionController
         $pI = parse_url($row['data_filename']);
         if ($pI['scheme'] ?? false) {
             $targetAttribute = '';
-            if ($GLOBALS['TSFE']->config['config']['fileTarget'] ?? false) {
-                $targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
+            if ($this->getTypoScriptFrontendController()->config['config']['fileTarget'] ?? false) {
+                $targetAttribute = ' target="' . htmlspecialchars($this->getTypoScriptFrontendController()->config['config']['fileTarget']) . '"';
             }
             $resultData['pathTitle'] = $row['data_filename'];
             $resultData['pathUri'] = $row['data_filename'];
@@ -524,9 +525,9 @@ class SearchController extends ActionController
                 $total = MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
                 return ceil(log($total) / log($max) * 100) . '%';
             case 'crdate':
-                return $GLOBALS['TSFE']->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
+                return $this->getTypoScriptFrontendController()->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], '0');
             case 'mtime':
-                return $GLOBALS['TSFE']->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
+                return $this->getTypoScriptFrontendController()->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], '0');
             default:
                 return $default;
         }
@@ -578,7 +579,7 @@ class SearchController extends ActionController
                 $icon = '';
                 if ($imageType === '0' || str_starts_with($imageType, '0:')) {
                     if (is_array($specRowConf['pageIcon'] ?? false)) {
-                        $this->iconFileNameCache[$imageType] = $GLOBALS['TSFE']->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
+                        $this->iconFileNameCache[$imageType] = $this->getTypoScriptFrontendController()->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
                     } else {
                         $icon = 'EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif';
                     }
@@ -1193,7 +1194,7 @@ class SearchController extends ActionController
                             array_pop($breadcrumbWraps);
                             break;
                         }
-                        $path = $GLOBALS['TSFE']->cObj->wrap(htmlspecialchars($v['title']), array_pop($breadcrumbWraps)['wrap']) . $path;
+                        $path = $this->getTypoScriptFrontendController()->cObj->wrap(htmlspecialchars($v['title']), array_pop($breadcrumbWraps)['wrap']) . $path;
                     }
                 }
             } catch (RootLineException $e) {
@@ -1293,46 +1294,47 @@ class SearchController extends ActionController
         $fullTypoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);
         $typoScriptArray = $fullTypoScriptArray['results.'];
 
+        $typoScriptFrontendController = $this->getTypoScriptFrontendController();
         $this->settings['results.']['summaryCropAfter'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('summaryCropAfter', $typoScriptArray ?? []),
+            $typoScriptFrontendController->cObj->stdWrapValue('summaryCropAfter', $typoScriptArray ?? []),
             10,
             5000,
             180
         );
-        $this->settings['results.']['summaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('summaryCropSignifier', $typoScriptArray ?? []);
+        $this->settings['results.']['summaryCropSignifier'] = $typoScriptFrontendController->cObj->stdWrapValue('summaryCropSignifier', $typoScriptArray ?? []);
         $this->settings['results.']['titleCropAfter'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('titleCropAfter', $typoScriptArray ?? []),
+            $typoScriptFrontendController->cObj->stdWrapValue('titleCropAfter', $typoScriptArray ?? []),
             10,
             500,
             50
         );
-        $this->settings['results.']['titleCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('titleCropSignifier', $typoScriptArray ?? []);
+        $this->settings['results.']['titleCropSignifier'] = $typoScriptFrontendController->cObj->stdWrapValue('titleCropSignifier', $typoScriptArray ?? []);
         $this->settings['results.']['markupSW_summaryMax'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_summaryMax', $typoScriptArray ?? []),
+            $typoScriptFrontendController->cObj->stdWrapValue('markupSW_summaryMax', $typoScriptArray ?? []),
             10,
             5000,
             300
         );
         $this->settings['results.']['markupSW_postPreLgd'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_postPreLgd', $typoScriptArray ?? []),
+            $typoScriptFrontendController->cObj->stdWrapValue('markupSW_postPreLgd', $typoScriptArray ?? []),
             1,
             500,
             60
         );
         $this->settings['results.']['markupSW_postPreLgd_offset'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_postPreLgd_offset', $typoScriptArray ?? []),
+            $typoScriptFrontendController->cObj->stdWrapValue('markupSW_postPreLgd_offset', $typoScriptArray ?? []),
             1,
             50,
             5
         );
-        $this->settings['results.']['markupSW_divider'] = $GLOBALS['TSFE']->cObj->stdWrapValue('markupSW_divider', $typoScriptArray ?? []);
+        $this->settings['results.']['markupSW_divider'] = $typoScriptFrontendController->cObj->stdWrapValue('markupSW_divider', $typoScriptArray ?? []);
         $this->settings['results.']['hrefInSummaryCropAfter'] = MathUtility::forceIntegerInRange(
-            $GLOBALS['TSFE']->cObj->stdWrapValue('hrefInSummaryCropAfter', $typoScriptArray ?? []),
+            $typoScriptFrontendController->cObj->stdWrapValue('hrefInSummaryCropAfter', $typoScriptArray ?? []),
             10,
             400,
             60
         );
-        $this->settings['results.']['hrefInSummaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrapValue('hrefInSummaryCropSignifier', $typoScriptArray ?? []);
+        $this->settings['results.']['hrefInSummaryCropSignifier'] = $typoScriptFrontendController->cObj->stdWrapValue('hrefInSummaryCropSignifier', $typoScriptArray ?? []);
     }
 
     /**
@@ -1370,5 +1372,10 @@ class SearchController extends ActionController
     public function getSword(): string
     {
         return $this->sword;
+    }
+
+    private function getTypoScriptFrontendController(): TypoScriptFrontendController
+    {
+        return $this->request->getAttribute('frontend.controller');
     }
 }
