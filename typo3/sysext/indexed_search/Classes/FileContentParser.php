@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
 
 /**
  * External standard parsers for indexed_search
@@ -458,11 +459,11 @@ class FileContentParser
      * @param string $ext File extension, eg. "pdf", "doc" etc.
      * @param string $absFile Absolute filename of file (must exist and be validated OK before calling function)
      * @param string $cPKey Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be split.)
-     * @return array|false|null Standard content array (title, description, keywords, body keys), false if the extension is not supported or null if nothing found
+     * @return IndexingDataAsString|false|null Indexing DTO, false if the extension is not supported or null if nothing found
      */
-    public function readFileContent($ext, $absFile, $cPKey)
+    public function readFileContent(string $ext, string $absFile, string $cPKey): IndexingDataAsString|false|null
     {
-        $contentArr = null;
+        $indexingDataDto = new IndexingDataAsString();
         // Return immediately if initialization didn't set support up:
         if (!$this->supportedExtensions[$ext]) {
             return false;
@@ -493,12 +494,12 @@ class FileContentParser
                             $content = '';
                             $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:pdfToolsFailed'), $absFile), LogLevel::WARNING);
                         }
-                        if ((string)$content !== '') {
-                            $contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
+                        if ($content !== '') {
+                            $indexingDataDto = $this->pObj->splitRegularContent($this->removeEndJunk($content));
                         }
                     }
                     if (!empty($pdfInfo['title'])) {
-                        $contentArr['title'] = $pdfInfo['title'];
+                        $indexingDataDto->title = $pdfInfo['title'];
                     }
                     $this->setLocaleForServerFileSystem(true);
                 }
@@ -510,7 +511,7 @@ class FileContentParser
                     CommandUtility::exec($cmd, $res);
                     $content = implode(LF, $res);
                     unset($res);
-                    $contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
+                    $indexingDataDto = $this->pObj->splitRegularContent($this->removeEndJunk($content));
                     $this->setLocaleForServerFileSystem(true);
                 }
                 break;
@@ -523,8 +524,8 @@ class FileContentParser
                     $content = implode(LF, $res);
                     unset($res);
                     $content = $this->pObj->convertHTMLToUtf8($content);
-                    $contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
-                    $contentArr['title'] = PathUtility::basename($absFile);
+                    $indexingDataDto = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
+                    $indexingDataDto->title = PathUtility::basename($absFile);
                     $this->setLocaleForServerFileSystem(true);
                 }
                 break;
@@ -536,8 +537,8 @@ class FileContentParser
                     $content = implode(LF, $res);
                     unset($res);
                     $content = $this->pObj->convertHTMLToUtf8($content);
-                    $contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
-                    $contentArr['title'] = PathUtility::basename($absFile);
+                    $indexingDataDto = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
+                    $indexingDataDto->title = PathUtility::basename($absFile);
                     $this->setLocaleForServerFileSystem(true);
                 }
                 break;
@@ -575,9 +576,9 @@ class FileContentParser
                     $content_xml = implode(LF, $res);
                     unset($res);
                     $utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
-                    $contentArr = $this->pObj->splitRegularContent($utf8_content);
+                    $indexingDataDto = $this->pObj->splitRegularContent($utf8_content);
                     // Make sure the title doesn't expose the absolute path!
-                    $contentArr['title'] = PathUtility::basename($absFile);
+                    $indexingDataDto->title = PathUtility::basename($absFile);
                     // Meta information
                     $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' docProps/core.xml';
                     CommandUtility::exec($cmd, $res);
@@ -585,10 +586,10 @@ class FileContentParser
                     unset($res);
                     $metaContent = GeneralUtility::xml2tree($meta_xml);
                     if (is_array($metaContent)) {
-                        $contentArr['title'] .= ' ' . ($metaContent['cp:coreProperties'][0]['ch']['dc:title'][0]['values'][0] ?? '');
-                        $contentArr['description'] = ($metaContent['cp:coreProperties'][0]['ch']['dc:subject'][0]['values'][0] ?? '');
-                        $contentArr['description'] .= ' ' . ($metaContent['cp:coreProperties'][0]['ch']['dc:description'][0]['values'][0] ?? '');
-                        $contentArr['keywords'] = ($metaContent['cp:coreProperties'][0]['ch']['cp:keywords'][0]['values'][0] ?? '');
+                        $indexingDataDto->title .= ' ' . ($metaContent['cp:coreProperties'][0]['ch']['dc:title'][0]['values'][0] ?? '');
+                        $indexingDataDto->description = ($metaContent['cp:coreProperties'][0]['ch']['dc:subject'][0]['values'][0] ?? '');
+                        $indexingDataDto->description .= ' ' . ($metaContent['cp:coreProperties'][0]['ch']['dc:description'][0]['values'][0] ?? '');
+                        $indexingDataDto->keywords = ($metaContent['cp:coreProperties'][0]['ch']['cp:keywords'][0]['values'][0] ?? '');
                     }
                     $this->setLocaleForServerFileSystem(true);
                 }
@@ -612,19 +613,19 @@ class FileContentParser
                     $meta_xml = implode(LF, $res);
                     unset($res);
                     $utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
-                    $contentArr = $this->pObj->splitRegularContent($utf8_content);
-                    $contentArr['title'] = PathUtility::basename($absFile);
+                    $indexingDataDto = $this->pObj->splitRegularContent($utf8_content);
+                    $indexingDataDto->title = PathUtility::basename($absFile);
                     // Make sure the title doesn't expose the absolute path!
                     // Meta information
                     $metaContent = GeneralUtility::xml2tree($meta_xml);
                     $metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
                     if (is_array($metaContent)) {
-                        $contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ?: $contentArr['title'];
-                        $contentArr['description'] = $metaContent['dc:subject'][0]['values'][0] . ' ' . $metaContent['dc:description'][0]['values'][0];
+                        $indexingDataDto->title = $metaContent['dc:title'][0]['values'][0] ?: $indexingDataDto->title;
+                        $indexingDataDto->description = $metaContent['dc:subject'][0]['values'][0] . ' ' . $metaContent['dc:description'][0]['values'][0];
                         // Keywords collected:
                         if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword'])) {
                             foreach ($metaContent['meta:keywords'][0]['ch']['meta:keyword'] as $kwDat) {
-                                $contentArr['keywords'] .= $kwDat['values'][0] . ' ';
+                                $indexingDataDto->keywords .= $kwDat['values'][0] . ' ';
                             }
                         }
                     }
@@ -639,7 +640,7 @@ class FileContentParser
                     $fileContent = implode(LF, $res);
                     unset($res);
                     $fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
-                    $contentArr = $this->pObj->splitHTMLContent($fileContent);
+                    $indexingDataDto = $this->pObj->splitHTMLContent($fileContent);
                     $this->setLocaleForServerFileSystem(true);
                 }
                 break;
@@ -651,8 +652,8 @@ class FileContentParser
                 // @todo Implement auto detection of charset (currently assuming utf-8)
                 $contentCharset = 'utf-8';
                 $content = $this->pObj->convertHTMLToUtf8($content, $contentCharset);
-                $contentArr = $this->pObj->splitRegularContent($content);
-                $contentArr['title'] = PathUtility::basename($absFile);
+                $indexingDataDto = $this->pObj->splitRegularContent($content);
+                $indexingDataDto->title = PathUtility::basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
                 $this->setLocaleForServerFileSystem(true);
                 break;
@@ -660,7 +661,7 @@ class FileContentParser
             case 'htm':
                 $fileContent = GeneralUtility::getUrl($absFile);
                 $fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
-                $contentArr = $this->pObj->splitHTMLContent($fileContent);
+                $indexingDataDto = $this->pObj->splitHTMLContent($fileContent);
                 break;
             case 'xml':
                 $this->setLocaleForServerFileSystem();
@@ -671,8 +672,8 @@ class FileContentParser
                 $charset = $reg[1] ? trim(strtolower($reg[1])) : 'utf-8';
                 // Converting content:
                 $fileContent = $this->pObj->convertHTMLToUtf8(strip_tags(str_replace('<', ' <', $fileContent)), $charset);
-                $contentArr = $this->pObj->splitRegularContent($fileContent);
-                $contentArr['title'] = PathUtility::basename($absFile);
+                $indexingDataDto = $this->pObj->splitRegularContent($fileContent);
+                $indexingDataDto->title = PathUtility::basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
                 $this->setLocaleForServerFileSystem(true);
                 break;
@@ -691,8 +692,8 @@ class FileContentParser
                 } else {
                     $comment = '';
                 }
-                $contentArr = $this->pObj->splitRegularContent($comment);
-                $contentArr['title'] = PathUtility::basename($absFile);
+                $indexingDataDto = $this->pObj->splitRegularContent($comment);
+                $indexingDataDto->title = PathUtility::basename($absFile);
                 // Make sure the title doesn't expose the absolute path!
                 $this->setLocaleForServerFileSystem(true);
                 break;
@@ -700,11 +701,11 @@ class FileContentParser
                 return false;
         }
         // If no title (and why should there be...) then the file-name is set as title. This will raise the hits considerably if the search matches the document name.
-        if (is_array($contentArr) && !$contentArr['title']) {
+        if (!$indexingDataDto->title) {
             // Substituting "_" for " " because many filenames may have this instead of a space char.
-            $contentArr['title'] = str_replace('_', ' ', PathUtility::basename($absFile));
+            $indexingDataDto->title = str_replace('_', ' ', PathUtility::basename($absFile));
         }
-        return $contentArr;
+        return $indexingDataDto;
     }
 
     /**

@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsArray;
+use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
@@ -91,12 +93,7 @@ class Indexer
      */
     public $forceIndexing = false;
 
-    /**
-     * Set when crawler is detected (internal)
-     *
-     * @var array
-     */
-    public $defaultContentArray = [
+    public array $defaultIndexingDataPayload = [
         'title' => '',
         'description' => '',
         'keywords' => '',
@@ -139,12 +136,7 @@ class Indexer
      */
     public $file_phash_arr = [];
 
-    /**
-     * Hash array for files
-     *
-     * @var array
-     */
-    public $contentParts = [];
+    public IndexingDataAsString $indexingDataStringDto;
 
     /**
      * Content of TYPO3 page
@@ -277,13 +269,13 @@ class Indexer
             }
             // Divide into title,keywords,description and body:
             $this->log_push('Split content', '');
-            $this->contentParts = $this->splitHTMLContent($this->conf['content']);
+            $this->indexingDataStringDto = $this->splitHTMLContent($this->conf['content']);
             if ($this->conf['indexedDocTitle']) {
-                $this->contentParts['title'] = $this->conf['indexedDocTitle'];
+                $this->indexingDataStringDto->title = $this->conf['indexedDocTitle'];
             }
             $this->log_pull();
             // Calculating a hash over what is to be the actual page content. Maybe this hash should not include title,description and keywords? The bodytext is the primary concern. (on the other hand a changed page-title would make no difference then, so don't!)
-            $this->content_md5h = IndexedSearchUtility::md5inthash(implode('', $this->contentParts));
+            $this->content_md5h = IndexedSearchUtility::md5inthash(implode('', $this->indexingDataStringDto->toArray()));
             // This function checks if there is already a page (with gr_list = 0,-1) indexed and if that page has the very same contentHash.
             // If the contentHash is the same, then we can rest assured that this page is already indexed and regardless of mtime and origContent we don't need to do anything more.
             // This will also prevent pages from being indexed if a fe_users has logged in and it turns out that the page content is not changed anyway. fe_users logged in should always search with hash_gr_list = "0,-1" OR "[their_group_list]". This situation will be prevented only if the page has been indexed with no user login on before hand. Else the page will be indexed by users until that event. However that does not present a serious problem.
@@ -291,11 +283,11 @@ class Indexer
             if (!is_array($checkCHash) || $check === 1) {
                 $Pstart = IndexedSearchUtility::milliseconds();
                 $this->log_push('Converting entities of content', '');
-                $this->charsetEntity2utf8($this->contentParts);
+                $this->charsetEntity2utf8($this->indexingDataStringDto);
                 $this->log_pull();
                 // Splitting words
                 $this->log_push('Extract words from content', '');
-                $splitInWords = $this->processWordsInArrays($this->contentParts);
+                $splitInWords = $this->processWordsInArrays($this->indexingDataStringDto);
                 $this->log_pull();
                 // Analyze the indexed words.
                 $this->log_push('Analyze the extracted words', '');
@@ -338,20 +330,17 @@ class Indexer
     /**
      * Splits HTML content and returns an associative array, with title, a list of metatags, and a list of words in the body.
      *
-     * @param string $content HTML content to index. To some degree expected to be made by TYPO3 (ei. splitting the header by ":")
-     * @return array Array of content, having keys "title", "body", "keywords" and "description" set.
-     * @see splitRegularContent()
+     * @param string $content HTML content to index. To some degree expected to be made by TYPO3 (i.e. splitting the header by ":")
      */
-    public function splitHTMLContent($content)
+    public function splitHTMLContent(string $content): IndexingDataAsString
     {
-        // divide head from body ( u-ouh :) )
-        $contentArr = $this->defaultContentArray;
-        $contentArr['body'] = stristr($content, '<body') ?: '';
-        $headPart = substr($content, 0, -strlen($contentArr['body']));
+        $indexingDataDto = IndexingDataAsString::fromArray($this->defaultIndexingDataPayload);
+        $indexingDataDto->body = stristr($content, '<body') ?: '';
+        $headPart = substr($content, 0, -strlen($indexingDataDto->body));
         // get title
-        $this->embracingTags($headPart, 'TITLE', $contentArr['title'], $dummy2, $dummy);
-        $titleParts = explode(':', $contentArr['title'], 2);
-        $contentArr['title'] = trim($titleParts[1] ?? $titleParts[0]);
+        $this->embracingTags($headPart, 'TITLE', $indexingDataDto->title, $dummy2, $dummy);
+        $titleParts = explode(':', $indexingDataDto->title, 2);
+        $indexingDataDto->title = trim($titleParts[1] ?? $titleParts[0]);
         // get keywords and description metatags
         if ($this->conf['index_metatags']) {
             $meta = [];
@@ -364,28 +353,28 @@ class Indexer
                 // decode HTML entities, meta tag content needs to be encoded later
                 $meta[$i] = GeneralUtility::get_tag_attributes($meta[$i], true);
                 if (stripos(($meta[$i]['name'] ?? ''), 'keywords') !== false) {
-                    $contentArr['keywords'] .= ',' . $this->addSpacesToKeywordList($meta[$i]['content']);
+                    $indexingDataDto->keywords .= ',' . $this->addSpacesToKeywordList($meta[$i]['content']);
                 }
                 if (stripos(($meta[$i]['name'] ?? ''), 'description') !== false) {
-                    $contentArr['description'] .= ',' . $meta[$i]['content'];
+                    $indexingDataDto->description .= ',' . $meta[$i]['content'];
                 }
             }
         }
         // Process <!--TYPO3SEARCH_begin--> or <!--TYPO3SEARCH_end--> tags:
-        $this->typoSearchTags($contentArr['body']);
+        $this->typoSearchTags($indexingDataDto->body);
         // Get rid of unwanted sections (ie. scripting and style stuff) in body
         $tagList = explode(',', $this->excludeSections);
         foreach ($tagList as $tag) {
-            while ($this->embracingTags($contentArr['body'], $tag, $dummy, $contentArr['body'], $dummy2)) {
+            while ($this->embracingTags($indexingDataDto->body, $tag, $dummy, $indexingDataDto->body, $dummy2)) {
             }
         }
         // remove tags, but first make sure we don't concatenate words by doing it
-        $contentArr['body'] = str_replace('<', ' <', $contentArr['body']);
-        $contentArr['body'] = trim(strip_tags($contentArr['body']));
-        $contentArr['keywords'] = trim($contentArr['keywords']);
-        $contentArr['description'] = trim($contentArr['description']);
-        // Return array
-        return $contentArr;
+        $indexingDataDto->body = str_replace('<', ' <', $indexingDataDto->body);
+        $indexingDataDto->body = trim(strip_tags($indexingDataDto->body));
+        $indexingDataDto->keywords = trim($indexingDataDto->keywords);
+        $indexingDataDto->description = trim($indexingDataDto->description);
+
+        return $indexingDataDto;
     }
 
     /**
@@ -834,17 +823,17 @@ class Indexer
                         if ($this->externalFileCounter < $this->maxExternalFiles || $force) {
                             // Divide into title,keywords,description and body:
                             $this->log_push('Split content', '');
-                            $contentParts = $this->readFileContent($ext, $absFile, $cPKey);
+                            $indexingDataDtoAsString = $this->readFileContent($ext, $absFile, $cPKey);
                             $this->log_pull();
-                            if (is_array($contentParts)) {
+                            if ($indexingDataDtoAsString !== null) {
                                 // Calculating a hash over what is to be the actual content. (see indexTypo3PageContent())
-                                $content_md5h = IndexedSearchUtility::md5inthash(implode('', $contentParts));
+                                $content_md5h = IndexedSearchUtility::md5inthash(implode('', $indexingDataDtoAsString->toArray()));
                                 if ($this->checkExternalDocContentHash($phash_arr['phash_grouping'], $content_md5h) || $force) {
                                     // Increment counter:
                                     $this->externalFileCounter++;
                                     // Splitting words
                                     $this->log_push('Extract words from content', '');
-                                    $splitInWords = $this->processWordsInArrays($contentParts);
+                                    $splitInWords = $this->processWordsInArrays($indexingDataDtoAsString);
                                     $this->log_pull();
                                     // Analyze the indexed words.
                                     $this->log_push('Analyze the extracted words', '');
@@ -853,7 +842,7 @@ class Indexer
                                     // Submitting page (phash) record
                                     $this->log_push('Submitting page', '');
                                     // Unfortunately I cannot determine WHEN a file is originally made - so I must return the modification time...
-                                    $this->submitFilePage($phash_arr, $file, $subinfo, $ext, $fileInfo['mtime'], $fileInfo['ctime'], $fileInfo['size'], $content_md5h, $contentParts);
+                                    $this->submitFilePage($phash_arr, $file, $subinfo, $ext, $fileInfo['mtime'], $fileInfo['ctime'], $fileInfo['size'], $content_md5h, $indexingDataDtoAsString);
                                     $this->log_pull();
                                     // Check words and submit to word list if not there
                                     $this->log_push('Check word list and submit words', '');
@@ -899,16 +888,32 @@ class Indexer
      * @param string $fileExtension File extension, eg. "pdf", "doc" etc.
      * @param string $absoluteFileName Absolute filename of file (must exist and be validated OK before calling function)
      * @param string $sectionPointer Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
-     * @return array|null Standard content array (title, description, keywords, body keys)
      */
-    public function readFileContent($fileExtension, $absoluteFileName, $sectionPointer)
+    public function readFileContent(string $fileExtension, string $absoluteFileName, string $sectionPointer): ?IndexingDataAsString
     {
-        $contentArray = null;
+        $indexingDataDto = null;
         // Consult relevant external document parser:
         if (is_object($this->external_parsers[$fileExtension])) {
-            $contentArray = $this->external_parsers[$fileExtension]->readFileContent($fileExtension, $absoluteFileName, $sectionPointer);
+            $indexingDataDto = $this->external_parsers[$fileExtension]->readFileContent($fileExtension, $absoluteFileName, $sectionPointer);
         }
-        return $contentArray;
+
+        if (is_array($indexingDataDto)) {
+            trigger_error(
+                sprintf(
+                    'The method %s returns an array, which is deprecated and will stop working in TYPO3 v14.0. Return an instance of %s instead.',
+                    get_class($this->external_parsers[$fileExtension]) . '::readFileContent()',
+                    IndexingDataAsString::class
+                ),
+                E_USER_DEPRECATED
+            );
+            $indexingDataDto = IndexingDataAsString::fromArray($indexingDataDto);
+        }
+
+        if ($indexingDataDto instanceof IndexingDataAsString) {
+            return $indexingDataDto;
+        }
+
+        return null;
     }
 
     /**
@@ -930,16 +935,13 @@ class Indexer
 
     /**
      * Splits non-HTML content (from external files for instance)
-     *
-     * @param string $content Input content (non-HTML) to index.
-     * @return array Array of content, having the key "body" set (plus "title", "description" and "keywords", but empty)
-     * @see splitHTMLContent()
      */
-    public function splitRegularContent($content)
+    public function splitRegularContent(string $content): IndexingDataAsString
     {
-        $contentArr = $this->defaultContentArray;
-        $contentArr['body'] = $content;
-        return $contentArr;
+        $indexingDataDto = IndexingDataAsString::fromArray($this->defaultIndexingDataPayload);
+        $indexingDataDto->body = $content;
+
+        return $indexingDataDto;
     }
 
     /**********************************
@@ -949,53 +951,50 @@ class Indexer
      **********************************/
     /**
      * Convert character set and HTML entities in the value of input content array keys
-     *
-     * @param array $contentArr Standard content array
      */
-    public function charsetEntity2utf8(&$contentArr)
+    public function charsetEntity2utf8(IndexingDataAsString $indexingDataDto): void
     {
         // Convert charset if necessary
-        foreach ($contentArr as $key => $value) {
-            if ((string)$contentArr[$key] !== '') {
+        foreach ($indexingDataDto->toArray() as $key => $value) {
+            if ((string)$value !== '') {
                 // decode all numeric / html-entities in the string to real characters:
-                $contentArr[$key] = html_entity_decode($contentArr[$key]);
+                $indexingDataDto->{$key} = html_entity_decode($value);
             }
         }
     }
 
     /**
-     * Processing words in the array from split*Content -functions
-     *
-     * @param array $contentArr Array of content to index, see splitHTMLContent() and splitRegularContent()
-     * @return array Content input array modified so each key is not a unique array of words
+     * Processing words in the array from split*Content -functions. Values are ensured to be unique.
      */
-    public function processWordsInArrays($contentArr)
+    public function processWordsInArrays(IndexingDataAsString $input): IndexingDataAsArray
     {
+        $contentArr = [];
+
         // split all parts to words
-        foreach ($contentArr as $key => $value) {
-            $contentArr[$key] = $this->lexerObj->split2Words($contentArr[$key]);
+        foreach ($input->toArray() as $key => $value) {
+            $contentArr[$key] = $this->lexerObj->split2Words($value);
         }
-        // For title, keywords, and description we don't want duplicates:
-        $contentArr['title'] = array_unique($contentArr['title']);
-        $contentArr['keywords'] = array_unique($contentArr['keywords']);
-        $contentArr['description'] = array_unique($contentArr['description']);
-        // Return modified array:
-        return $contentArr;
+
+        $indexingDataDto = IndexingDataAsArray::fromArray($contentArr);
+
+        // For title, keywords, and description we don't want duplicates
+        $indexingDataDto->title = array_unique($indexingDataDto->title);
+        $indexingDataDto->keywords = array_unique($indexingDataDto->keywords);
+        $indexingDataDto->description = array_unique($indexingDataDto->description);
+
+        return $indexingDataDto;
     }
 
     /**
      * Extracts the sample description text from the content array.
-     *
-     * @param array $contentArr Content array
-     * @return string Description string
      */
-    public function bodyDescription($contentArr)
+    public function bodyDescription(IndexingDataAsString $indexingDataDto): string
     {
         $bodyDescription = '';
         // Setting description
         $maxL = MathUtility::forceIntegerInRange($this->conf['index_descrLgd'], 0, 255, 200);
         if ($maxL) {
-            $bodyDescription = preg_replace('/\s+/u', ' ', $contentArr['body']);
+            $bodyDescription = preg_replace('/\s+/u', ' ', $indexingDataDto->body);
             // Shorten the string. If the database has the wrong character set,
             // the string is probably truncated again.
             $bodyDescription = \mb_strcut($bodyDescription, 0, $maxL, 'utf-8');
@@ -1006,16 +1005,15 @@ class Indexer
     /**
      * Analyzes content to use for indexing,
      *
-     * @param array $content Standard content array: an array with the keys title,keywords,description and body, which all contain an array of words.
      * @return array Index Array (whatever that is...)
      */
-    public function indexAnalyze($content)
+    public function indexAnalyze(IndexingDataAsArray $indexingDataDto): array
     {
         $indexArr = [];
-        $this->analyzeHeaderinfo($indexArr, $content, 'title', 7);
-        $this->analyzeHeaderinfo($indexArr, $content, 'keywords', 6);
-        $this->analyzeHeaderinfo($indexArr, $content, 'description', 5);
-        $this->analyzeBody($indexArr, $content);
+        $this->analyzeHeaderinfo($indexArr, $indexingDataDto->title, 7);
+        $this->analyzeHeaderinfo($indexArr, $indexingDataDto->keywords, 6);
+        $this->analyzeHeaderinfo($indexArr, $indexingDataDto->description, 5);
+        $this->analyzeBody($indexArr, $indexingDataDto);
         return $indexArr;
     }
 
@@ -1024,12 +1022,11 @@ class Indexer
      *
      * @param array $retArr Index array, passed by reference
      * @param array $content Standard content array
-     * @param string $key Key from standard content array
      * @param int $offset Bit-wise priority to type
      */
-    public function analyzeHeaderinfo(&$retArr, $content, $key, $offset)
+    public function analyzeHeaderinfo(array &$retArr, array $content, int $offset): void
     {
-        foreach ($content[$key] as $val) {
+        foreach ($content as $val) {
             $val = mb_substr($val, 0, 60);
             // Cut after 60 chars because the index_words.baseword varchar field has this length. This MUST be the same.
             if (!isset($retArr[$val])) {
@@ -1052,11 +1049,10 @@ class Indexer
      * Calculates relevant information for bodycontent
      *
      * @param array $retArr Index array, passed by reference
-     * @param array $content Standard content array
      */
-    public function analyzeBody(&$retArr, $content)
+    public function analyzeBody(array &$retArr, IndexingDataAsArray $indexingDataDto): void
     {
-        foreach ($content['body'] as $key => $val) {
+        foreach ($indexingDataDto->body as $key => $val) {
             $val = substr($val, 0, 60);
             // Cut after 60 chars because the index_words.baseword varchar field has this length. This MUST be the same.
             if (!isset($retArr[$val])) {
@@ -1083,7 +1079,7 @@ class Indexer
     /**
      * Updates db with information about the page (TYPO3 page, not external media)
      */
-    public function submitPage()
+    public function submitPage(): void
     {
         // Remove any current data for this phash:
         $this->removeOldIndexedPages($this->hash['phash']);
@@ -1099,8 +1095,8 @@ class Indexer
             'gr_list' => $this->conf['gr_list'],
             'item_type' => 0,
             // TYPO3 page
-            'item_title' => $this->contentParts['title'],
-            'item_description' => $this->bodyDescription($this->contentParts),
+            'item_title' => $this->indexingDataStringDto->title,
+            'item_description' => $this->bodyDescription($this->indexingDataStringDto),
             'item_mtime' => (int)$this->conf['mtime'],
             'item_size' => strlen($this->conf['content']),
             'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -1129,7 +1125,7 @@ class Indexer
         // PROCESSING index_fulltext
         $fields = [
             'phash' => $this->hash['phash'],
-            'fulltextdata' => implode(' ', $this->contentParts),
+            'fulltextdata' => implode(' ', $this->indexingDataStringDto->toArray()),
         ];
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
@@ -1146,10 +1142,10 @@ class Indexer
                 'debuginfo' => json_encode([
                     'external_parsers initialized' => array_keys($this->external_parsers),
                     'conf' => array_merge($this->conf, ['content' => substr($this->conf['content'], 0, 1000)]),
-                    'contentParts' => array_merge($this->contentParts, ['body' => substr($this->contentParts['body'], 0, 1000)]),
+                    'contentParts' => array_merge($this->indexingDataStringDto->toArray(), ['body' => substr($this->indexingDataStringDto->body, 0, 1000)]),
                     'logs' => $this->internal_log,
                     'lexer' => $this->lexerObj->debugString,
-                ]),
+                ], JSON_THROW_ON_ERROR),
             ];
             if (IndexedSearchUtility::isTableUsed('index_debug')) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1246,9 +1242,8 @@ class Indexer
      * @param int $ctime Creation time of file.
      * @param int $size Size of file in bytes
      * @param int $content_md5h Content HASH value.
-     * @param array $contentParts Standard content array (using only title and body for a file)
      */
-    public function submitFilePage($hash, $file, $subinfo, $ext, $mtime, $ctime, $size, $content_md5h, $contentParts)
+    public function submitFilePage(array $hash, string $file, array $subinfo, string $ext, int $mtime, int $ctime, int $size, int $content_md5h, IndexingDataAsString $indexingDataDto)
     {
         // Find item Type:
         $storeItemType = $this->external_parsers[$ext]->ext2itemtype_map[$ext];
@@ -1265,8 +1260,8 @@ class Indexer
             'contentHash' => $content_md5h,
             'data_filename' => $file,
             'item_type' => $storeItemType,
-            'item_title' => trim($contentParts['title']) ?: PathUtility::basename($file),
-            'item_description' => $this->bodyDescription($contentParts),
+            'item_title' => trim($indexingDataDto->title) ?: PathUtility::basename($file),
+            'item_description' => $this->bodyDescription($indexingDataDto),
             'item_mtime' => $mtime,
             'item_size' => $size,
             'item_crdate' => $ctime,
@@ -1290,7 +1285,7 @@ class Indexer
         // PROCESSING index_fulltext
         $fields = [
             'phash' => $hash['phash'],
-            'fulltextdata' => implode(' ', $contentParts),
+            'fulltextdata' => implode(' ', $indexingDataDto->toArray()),
         ];
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
@@ -1306,10 +1301,10 @@ class Indexer
                 'phash' => $hash['phash'],
                 'debuginfo' => json_encode([
                     'static_page_arguments' => $subinfo,
-                    'contentParts' => array_merge($contentParts, ['body' => substr($contentParts['body'], 0, 1000)]),
+                    'contentParts' => array_merge($indexingDataDto->toArray(), ['body' => substr($indexingDataDto->body, 0, 1000)]),
                     'logs' => $this->internal_log,
                     'lexer' => $this->lexerObj->debugString,
-                ]),
+                ], JSON_THROW_ON_ERROR),
             ];
             if (IndexedSearchUtility::isTableUsed('index_debug')) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
