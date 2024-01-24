@@ -770,7 +770,7 @@ final class ExpressionBuilderTest extends UnitTestCase
      * @test
      * @dataProvider trimQuotesIdentifierDataProvider
      */
-    public function trimQuotesIdentifier(int|TrimMode $position, string $char, string $expected): void
+    public function trimQuotesIdentifier(TrimMode $position, string $char, string $expected): void
     {
         $platform = new MockPlatform();
         $this->connectionMock->expects(self::atLeastOnce())->method('getDatabasePlatform')->willReturn($platform);

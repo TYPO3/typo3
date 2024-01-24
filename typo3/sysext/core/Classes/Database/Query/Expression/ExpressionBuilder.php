@@ -538,30 +538,11 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      * Creates a TRIM expression for the given field.
      *
      * @param string $fieldName Field name to build expression for
-     * @param TrimMode|int $position Either constant out of LEADING, TRAILING, BOTH
+     * @param TrimMode $position Either constant out of LEADING, TRAILING, BOTH
      * @param string|null $char Character to be trimmed (defaults to space)
      */
-    public function trim(string $fieldName, TrimMode|int $position = TrimMode::UNSPECIFIED, ?string $char = null): string
+    public function trim(string $fieldName, TrimMode $position = TrimMode::UNSPECIFIED, ?string $char = null): string
     {
-        if (is_int($position)) {
-            trigger_error(
-                sprintf(
-                    'Integer value for argument trim mode in %s deprecated since v12, will be removed in v13.'
-                    . ' Use TrimMode::* enum types directly instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
-
-            // match old integer mode values to TrimMode enum cases.
-            $position = match ($position) {
-                1 => TrimMode::LEADING,
-                2 => TrimMode::TRAILING,
-                3 => TrimMode::BOTH,
-                default => TrimMode::UNSPECIFIED,
-            };
-        }
-
         return $this->connection->getDatabasePlatform()->getTrimExpression(
             $this->connection->quoteIdentifier($fieldName),
             $position,
