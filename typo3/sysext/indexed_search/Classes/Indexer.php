@@ -2009,16 +2009,13 @@ class Indexer
         $this->timeTracker->pull();
     }
 
-    /**
-     * Set log message function wrapper for TT logging
-     *
-     * @param string $msg Message to set
-     * @param int|string $logLevel
-     */
-    public function log_setTSlogMessage($msg, $logLevel = LogLevel::INFO)
+    public function log_setTSlogMessage(string $msg, string $logLevel = LogLevel::INFO): void
     {
         $this->timeTracker->setTSlogMessage($msg, $logLevel);
-        $this->internal_log[] = $msg;
+
+        if ($this->indexerConfig['debugMode'] ?? false) {
+            $this->internal_log[] = $msg;
+        }
     }
 
     /**
