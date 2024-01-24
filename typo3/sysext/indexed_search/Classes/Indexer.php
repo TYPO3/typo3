@@ -647,33 +647,29 @@ class Indexer
     /**
      * Checks if the file is local
      *
-     * @param string $sourcePath
      * @return string Absolute path to file if file is local, else empty string
      */
-    protected function createLocalPath($sourcePath)
+    protected function createLocalPath(string $sourcePath): string
     {
-        $pathFunctions = [
-            'createLocalPathUsingAbsRefPrefix',
-            'createLocalPathUsingDomainURL',
-            'createLocalPathFromAbsoluteURL',
-            'createLocalPathFromRelativeURL',
-        ];
-        foreach ($pathFunctions as $functionName) {
-            $localPath = $this->{$functionName}($sourcePath);
-            if ($localPath != '') {
-                break;
-            }
+        $localPath = $this->createLocalPathUsingAbsRefPrefix($sourcePath);
+        if ($localPath !== '') {
+            return $localPath;
         }
-        return $localPath;
+        $localPath = $this->createLocalPathUsingDomainURL($sourcePath);
+        if ($localPath !== '') {
+            return $localPath;
+        }
+        $localPath = $this->createLocalPathFromAbsoluteURL($sourcePath);
+        if ($localPath !== '') {
+            return $localPath;
+        }
+        return $this->createLocalPathFromRelativeURL($sourcePath);
     }
 
     /**
      * Attempts to create a local file path by matching a current request URL.
-     *
-     * @param string $sourcePath
-     * @return string
      */
-    protected function createLocalPathUsingDomainURL($sourcePath)
+    protected function createLocalPathUsingDomainURL(string $sourcePath): string
     {
         $localPath = '';
         $baseURL = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl();
@@ -691,11 +687,8 @@ class Indexer
     /**
      * Attempts to create a local file path by matching absRefPrefix. This
      * requires TSFE. If TSFE is missing, this function does nothing.
-     *
-     * @param string $sourcePath
-     * @return string
      */
-    protected function createLocalPathUsingAbsRefPrefix($sourcePath)
+    protected function createLocalPathUsingAbsRefPrefix(string $sourcePath): string
     {
         $localPath = '';
         if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
@@ -713,16 +706,12 @@ class Indexer
     }
 
     /**
-     * Attempts to create a local file path from the absolute URL without
-     * schema.
-     *
-     * @param string $sourcePath
-     * @return string
+     * Attempts to create a local file path from the absolute URL without schema.
      */
-    protected function createLocalPathFromAbsoluteURL($sourcePath)
+    protected function createLocalPathFromAbsoluteURL(string $sourcePath): string
     {
         $localPath = '';
-        if (substr(($sourcePath[0] ?? ''), 0, 1) === '/') {
+        if (str_starts_with($sourcePath, '/')) {
             $sourcePath = substr($sourcePath, 1);
             $localPath = Environment::getPublicPath() . '/' . $sourcePath;
             if (!self::isAllowedLocalFile($localPath)) {
@@ -734,11 +723,8 @@ class Indexer
 
     /**
      * Attempts to create a local file path from the relative URL.
-     *
-     * @param string $sourcePath
-     * @return string
      */
-    protected function createLocalPathFromRelativeURL($sourcePath)
+    protected function createLocalPathFromRelativeURL(string $sourcePath): string
     {
         $localPath = '';
         if (self::isRelativeURL($sourcePath)) {
