@@ -76,7 +76,7 @@ class FormManagerController extends AbstractBackendController
         $moduleTemplate->assignMultiple([
             'paginator' => $arrayPaginator,
             'pagination' => $pagination,
-            'stylesheets' => $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']),
+            'stylesheets' => $this->formSettings['formManager']['stylesheets'],
             'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData()),
         ]);
         if (!empty($this->formSettings['formManager']['javaScriptTranslationFile'])) {
