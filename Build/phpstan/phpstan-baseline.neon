@@ -2041,16 +2041,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
 
 		-
-			message: "#^Negated boolean expression is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Lexer.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Lexer.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\CodeStatistics\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/CodeStatistics.php

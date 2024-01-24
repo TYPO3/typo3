@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -39,9 +41,9 @@ use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 class Indexer
 {
     /**
-     * @var array
+     * @var array<int, string>
      */
-    public $reasons = [
+    public array $reasons = [
         -1 => 'mtime matched the document, so no changes detected and no content updated',
         -2 => 'The minimum age was not exceeded',
         1 => 'The configured max-age was exceeded for the document and thus it\'s indexed.',
@@ -52,46 +54,34 @@ class Indexer
 
     /**
      * HTML code blocks to exclude from indexing
-     *
-     * @var string
      */
-    public $excludeSections = 'script,style';
+    public string $excludeSections = 'script,style';
 
     /**
      * Supported Extensions for external files
-     *
-     * @var array
      */
-    public $external_parsers = [];
+    public array $external_parsers = [];
 
     /**
      * Min/Max times
-     *
-     * @var int
      */
-    public $tstamp_maxAge = 0;
+    public int $tstamp_maxAge = 0;
 
     /**
      * If set, this tells a number of seconds that is the maximum age of an indexed document.
      * Regardless of mtime the document will be re-indexed if this limit is exceeded.
-     *
-     * @var int
      */
-    public $tstamp_minAge = 0;
+    public int $tstamp_minAge = 0;
 
     /**
      * If set, this tells a minimum limit before a document can be indexed again. This is regardless of mtime.
-     *
-     * @var int
      */
-    public $maxExternalFiles = 0;
+    public int $maxExternalFiles = 0;
 
     /**
      * Max number of external files to index.
-     *
-     * @var bool
      */
-    public $forceIndexing = false;
+    public bool $forceIndexing = false;
 
     public array $defaultIndexingDataPayload = [
         'title' => '',
@@ -100,93 +90,40 @@ class Indexer
         'body' => '',
     ];
 
-    /**
-     * @var int
-     */
-    public $wordcount = 0;
-
-    /**
-     * @var int
-     */
-    public $externalFileCounter = 0;
-
-    /**
-     * @var array
-     */
-    public $conf = [];
+    public int $wordcount = 0;
+    public int $externalFileCounter = 0;
+    public array $conf = [];
 
     /**
      * Configuration set internally (see init functions for required keys and their meaning)
-     *
-     * @var array
      */
-    public $indexerConfig = [];
+    public array $indexerConfig = [];
 
     /**
      * Indexer configuration, coming from TYPO3's system configuration for EXT:indexed_search
-     *
-     * @var array
      */
-    public $hash = [];
+    public array $hash = [];
 
     /**
      * Hash array, contains phash and phash_grouping
-     *
-     * @var array
      */
-    public $file_phash_arr = [];
+    public array $file_phash_arr = [];
 
     public IndexingDataAsString $indexingDataStringDto;
 
     /**
      * Content of TYPO3 page
-     *
-     * @var int
      */
-    public $content_md5h;
+    public int $content_md5h;
 
-    /**
-     * @var array
-     */
-    public $internal_log = [];
+    public array $internal_log = [];
+    public string $indexExternalUrl_content = '';
+    public int $freqRange = 32000;
+    public float $freqMax = 0.1;
+    public Lexer $lexerObj;
+    public int $flagBitMask;
+    protected TimeTracker $timeTracker;
 
-    /**
-     * Internal log
-     *
-     * @var string
-     */
-    public $indexExternalUrl_content = '';
-
-    /**
-     * @var int
-     */
-    public $freqRange = 32000;
-
-    /**
-     * @var float
-     */
-    public $freqMax = 0.1;
-
-    /**
-     * Lexer object for word splitting
-     *
-     * @var \TYPO3\CMS\IndexedSearch\Lexer
-     */
-    public $lexerObj;
-
-    /**
-     * @var int
-     */
-    public $flagBitMask;
-
-    /**
-     * @var TimeTracker
-     */
-    protected $timeTracker;
-
-    /**
-     * Indexer constructor.
-     */
     public function __construct()
     {
         $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
@@ -208,7 +145,7 @@ class Indexer
      * Initializes the object.
      * @param array|null $configuration will be used to set $this->conf, otherwise $this->conf MUST be set with proper values prior to this call
      */
-    public function init(array $configuration = null)
+    public function init(array $configuration = null): void
     {
         if (is_array($configuration)) {
             $this->conf = $configuration;
@@ -232,9 +169,8 @@ class Indexer
      * Initialize external parsers
      *
      * @internal
-     * @see init()
      */
-    public function initializeExternalParsers()
+    public function initializeExternalParsers(): void
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
             $this->external_parsers[$extension] = GeneralUtility::makeInstance($className);
@@ -254,7 +190,7 @@ class Indexer
     /**
      * Start indexing of the TYPO3 page
      */
-    public function indexTypo3PageContent()
+    public function indexTypo3PageContent(): void
     {
         $check = $this->checkMtimeTstamp($this->conf['mtime'], $this->hash['phash']);
         $is_grlist = $this->is_grlist_set($this->hash['phash']);
@@ -390,7 +326,7 @@ class Indexer
      * @param string $content HTML content
      * @return string The charset value if found.
      */
-    public function getHTMLcharset($content)
+    public function getHTMLcharset(string $content): string
     {
         if (preg_match('/<meta[[:space:]]+[^>]*http-equiv[[:space:]]*=[[:space:]]*["\']CONTENT-TYPE["\'][^>]*>/i', $content, $reg)) {
             if (preg_match('/charset[[:space:]]*=[[:space:]]*([[:alnum:]-]+)/i', $reg[0], $reg2)) {
@@ -403,16 +339,12 @@ class Indexer
 
     /**
      * Converts a HTML document to utf-8
-     *
-     * @param string $content HTML content, any charset
-     * @param string $charset Optional charset (otherwise extracted from HTML)
-     * @return string Converted HTML
      */
-    public function convertHTMLToUtf8($content, $charset = '')
+    public function convertHTMLToUtf8(string $content, string $charset = ''): string
     {
         // Find charset:
         $charset = $charset ?: $this->getHTMLcharset($content);
-        $charset = trim(strtolower($charset));
+        $charset = strtolower(trim($charset));
         // Convert charset:
         if ($charset && $charset !== 'utf-8') {
             $content = mb_convert_encoding($content, 'utf-8', $charset);
@@ -428,12 +360,12 @@ class Indexer
      *
      * @param string $string String to search in
      * @param string $tagName Tag name, eg. "script
-     * @param string $tagContent Passed by reference: Content inside found tag
-     * @param string $stringAfter Passed by reference: Content after found tag
-     * @param string $paramList Passed by reference: Attributes of the found tag.
+     * @param string|null $tagContent Passed by reference: Content inside found tag
+     * @param string|null $stringAfter Passed by reference: Content after found tag
+     * @param string|null $paramList Passed by reference: Attributes of the found tag.
      * @return bool Returns FALSE if tag was not found, otherwise TRUE.
      */
-    public function embracingTags($string, $tagName, &$tagContent, &$stringAfter, &$paramList)
+    public function embracingTags(string $string, string $tagName, ?string &$tagContent, ?string &$stringAfter, ?string &$paramList): bool
     {
         $endTag = '</' . $tagName . '>';
         $startTag = '<' . $tagName;
@@ -446,7 +378,7 @@ class Indexer
         [$paramList, $isTagInText] = explode('>', substr($isTagInText, strlen($startTag)), 2);
         $afterTagInText = stristr($isTagInText, $endTag);
         if ($afterTagInText) {
-            $stringBefore = substr($string, 0, (int)strpos(strtolower($string), strtolower($startTag)));
+            $stringBefore = substr($string, 0, (int)stripos($string, $startTag));
             $tagContent = substr($isTagInText, 0, strlen($isTagInText) - strlen($afterTagInText));
             $stringAfter = $stringBefore . substr($afterTagInText, strlen($endTag));
         } else {
@@ -462,7 +394,7 @@ class Indexer
      * @param string $body HTML Content, passed by reference
      * @return bool Returns TRUE if a TYPOSEARCH_ tag was found, otherwise FALSE.
      */
-    public function typoSearchTags(&$body)
+    public function typoSearchTags(string &$body): bool
     {
         $expBody = preg_split('/\\<\\!\\-\\-[\\s]?TYPO3SEARCH_/', $body);
         $expBody = $expBody ?: [];
@@ -487,10 +419,8 @@ class Indexer
 
     /**
      * Extract links (hrefs) from HTML content and if indexable media is found, it is indexed.
-     *
-     * @param string $content HTML content
      */
-    public function extractLinks($content)
+    public function extractLinks(string $content): void
     {
         // Get links:
         $list = $this->extractHyperLinks($content);
@@ -541,10 +471,9 @@ class Indexer
      * Extracts all links to external documents from the HTML content string
      *
      * @param string $html
-     * @return array Array of hyperlinks (keys: tag, href, localPath (empty if not local))
-     * @see extractLinks()
+     * @return array<int, array{tag: string, href: string, localPath: string}>
      */
-    public function extractHyperLinks($html)
+    public function extractHyperLinks(string $html): array
     {
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $htmlParts = $htmlParser->splitTags('a', $html);
@@ -569,11 +498,8 @@ class Indexer
 
     /**
      * Extracts the "base href" from content string.
-     *
-     * @param string $html Content to analyze
-     * @return string The base href or an empty string if not found
      */
-    public function extractBaseHref($html)
+    public function extractBaseHref(string $html): string
     {
         $href = '';
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
@@ -602,9 +528,8 @@ class Indexer
      * Index External URLs HTML content
      *
      * @param string $externalUrl URL, eg. "https://typo3.org/
-     * @see indexRegularDocument()
      */
-    public function indexExternalUrl($externalUrl)
+    public function indexExternalUrl(string $externalUrl): void
     {
         // Get headers:
         $urlHeaders = $this->getUrlHeaders($externalUrl);
@@ -626,9 +551,9 @@ class Indexer
      * Getting HTTP request headers of URL
      *
      * @param string $url The URL
-     * @return mixed If no answer, returns FALSE. Otherwise an array where HTTP headers are keys
+     * @return array|false If no answer, returns FALSE. Otherwise, an array where HTTP headers are keys
      */
-    public function getUrlHeaders($url)
+    public function getUrlHeaders(string $url): array|false
     {
         try {
             $response = GeneralUtility::makeInstance(RequestFactory::class)->request($url, 'HEAD');
@@ -738,23 +663,17 @@ class Indexer
 
     /**
      * Checks if URL is relative.
-     *
-     * @param string $url
-     * @return bool
      */
-    protected static function isRelativeURL($url)
+    protected static function isRelativeURL(string $url): bool
     {
         $urlParts = @parse_url($url);
         return (!isset($urlParts['scheme']) || $urlParts['scheme'] === '') && substr(($urlParts['path'][0] ?? ''), 0, 1) !== '/';
     }
 
     /**
-     * Checks if the path points to the file inside the web site
-     *
-     * @param string $filePath
-     * @return bool
+     * Checks if the path points to the file inside the website
      */
-    protected static function isAllowedLocalFile($filePath)
+    protected static function isAllowedLocalFile(string $filePath): bool
     {
         $filePath = GeneralUtility::resolveBackPath($filePath);
         $insideWebPath = str_starts_with($filePath, Environment::getPublicPath());
@@ -775,7 +694,7 @@ class Indexer
      * @param string $contentTmpFile Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
      * @param string $altExtension File extension for temporary file.
      */
-    public function indexRegularDocument($file, $force = false, $contentTmpFile = '', $altExtension = '')
+    public function indexRegularDocument(string $file, bool $force = false, string $contentTmpFile = '', string $altExtension = '')
     {
         // Init
         $fI = pathinfo($file);
@@ -886,9 +805,9 @@ class Indexer
      *
      * @param string $fileExtension File extension, eg. "pdf", "doc" etc.
      * @param string $absoluteFileName Absolute filename of file (must exist and be validated OK before calling function)
-     * @param string $sectionPointer Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
+     * @param string|int $sectionPointer Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
      */
-    public function readFileContent(string $fileExtension, string $absoluteFileName, string $sectionPointer): ?IndexingDataAsString
+    public function readFileContent(string $fileExtension, string $absoluteFileName, string|int $sectionPointer): ?IndexingDataAsString
     {
         $indexingDataDto = null;
         // Consult relevant external document parser:
@@ -922,7 +841,7 @@ class Indexer
      * @param string $absFile Absolute filename (must exist and be validated OK before calling function)
      * @return array Array of pointers to sections that the document should be divided into
      */
-    public function fileContentParts($ext, $absFile)
+    public function fileContentParts(string $ext, string $absFile): array
     {
         $cParts = [0];
         // Consult relevant external document parser:
@@ -1159,9 +1078,8 @@ class Indexer
      *
      * @param int $hash Search result record phash
      * @param int $phash_x Actual phash of current content
-     * @see update_grlist()
      */
-    public function submit_grlist($hash, $phash_x)
+    public function submit_grlist(int $hash, int $phash_x): void
     {
         // Setting the gr_list record
         $fields = [
@@ -1184,7 +1102,7 @@ class Indexer
      * @param int $hash phash of TYPO3 parent search result record
      * @param int $hash_t3 phash of the file indexation search record
      */
-    public function submit_section($hash, $hash_t3)
+    public function submit_section(int $hash, int $hash_t3): void
     {
         $fields = [
             'phash' => $hash,
@@ -1204,7 +1122,7 @@ class Indexer
      *
      * @param int $phash phash value to flush
      */
-    public function removeOldIndexedPages($phash)
+    public function removeOldIndexedPages(int $phash): void
     {
         // Removing old registrations for all tables. Because the pages are TYPO3 pages
         // there can be nothing else than 1-1 relations here.
@@ -1212,7 +1130,7 @@ class Indexer
         $tableArray = ['index_phash', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug'];
         foreach ($tableArray as $table) {
             if (IndexedSearchUtility::isTableUsed($table)) {
-                $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => (int)$phash]);
+                $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
             }
         }
 
@@ -1221,7 +1139,7 @@ class Indexer
         // are done in indexRegularDocument($file).
         if (IndexedSearchUtility::isTableUsed('index_section')) {
             $connectionPool->getConnectionForTable('index_section')
-                ->delete('index_section', ['phash_t3' => (int)$phash]);
+                ->delete('index_section', ['phash_t3' => $phash]);
         }
     }
 
@@ -1242,7 +1160,7 @@ class Indexer
      * @param int $size Size of file in bytes
      * @param int $content_md5h Content HASH value.
      */
-    public function submitFilePage(array $hash, string $file, array $subinfo, string $ext, int $mtime, int $ctime, int $size, int $content_md5h, IndexingDataAsString $indexingDataDto)
+    public function submitFilePage(array $hash, string $file, array $subinfo, string $ext, int $mtime, int $ctime, int $size, int $content_md5h, IndexingDataAsString $indexingDataDto): void
     {
         // Find item Type:
         $storeItemType = $this->external_parsers[$ext]->ext2itemtype_map[$ext];
@@ -1318,7 +1236,7 @@ class Indexer
      *
      * @param int $hash phash value of file
      */
-    public function submitFile_section($hash)
+    public function submitFile_section(int $hash): void
     {
         // Testing if there is already a section
         if (!IndexedSearchUtility::isTableUsed('index_section')) {
@@ -1352,7 +1270,7 @@ class Indexer
      *
      * @param int $phash phash value to flush
      */
-    public function removeOldIndexedFiles($phash)
+    public function removeOldIndexedFiles(int $phash): void
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         // Removing old registrations for tables.
@@ -1361,7 +1279,7 @@ class Indexer
             if (!IndexedSearchUtility::isTableUsed($table)) {
                 continue;
             }
-            $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => (int)$phash]);
+            $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
         }
     }
 
@@ -1378,7 +1296,7 @@ class Indexer
      * @param int $phash "phash" used to select any already indexed page to see what its mtime is.
      * @return int Result integer: Generally: <0 = No indexing, >0 = Do indexing (see $this->reasons): -2) Min age was NOT exceeded and so indexing cannot occur.  -1) mtime matched so no need to reindex page. 0) N/A   1) Max age exceeded, page must be indexed again.   2) mtime of indexed page doesn't match mtime given for current content and we must index page.  3) No mtime was set, so we will index...  4) No indexed page found, so of course we will index.
      */
-    public function checkMtimeTstamp($mtime, $phash)
+    public function checkMtimeTstamp(int $mtime, int $phash): int
     {
         if (!IndexedSearchUtility::isTableUsed('index_phash')) {
             // Not indexed (not in index_phash)
@@ -1388,7 +1306,7 @@ class Indexer
                 ->select(
                     ['item_mtime', 'tstamp'],
                     'index_phash',
-                    ['phash' => (int)$phash],
+                    ['phash' => $phash],
                     [],
                     [],
                     1
@@ -1439,9 +1357,9 @@ class Indexer
     /**
      * Check content hash in phash table
      *
-     * @return mixed Returns TRUE if the page needs to be indexed (that is, there was no result), otherwise the phash value (in an array) of the phash record to which the grlist_record should be related!
+     * @return array|true Returns TRUE if the page needs to be indexed (that is, there was no result), otherwise the phash value (in an array) of the phash record to which the grlist_record should be related!
      */
-    public function checkContentHash()
+    public function checkContentHash(): array|true
     {
         // With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
         $result = true;
@@ -1452,7 +1370,7 @@ class Indexer
                     'index_phash',
                     [
                         'phash_grouping' => (int)$this->hash['phash_grouping'],
-                        'contentHash' => (int)$this->content_md5h,
+                        'contentHash' => $this->content_md5h,
                     ],
                     [],
                     [],
@@ -1475,18 +1393,18 @@ class Indexer
      * @param int $content_md5h Content hash to check
      * @return bool Returns TRUE if the document needs to be indexed (that is, there was no result)
      */
-    public function checkExternalDocContentHash($hashGr, $content_md5h)
+    public function checkExternalDocContentHash(int $hashGr, int $content_md5h): bool
     {
         $result = true;
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $count = (int)GeneralUtility::makeInstance(ConnectionPool::class)
+            $count = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('index_phash')
                 ->count(
                     '*',
                     'index_phash',
                     [
-                        'phash_grouping' => (int)$hashGr,
-                        'contentHash' => (int)$content_md5h,
+                        'phash_grouping' => $hashGr,
+                        'contentHash' => $content_md5h,
                     ]
                 );
 
@@ -1501,16 +1419,16 @@ class Indexer
      * @param int $phash_x Phash integer to test.
      * @return bool
      */
-    public function is_grlist_set($phash_x)
+    public function is_grlist_set(int $phash_x): bool
     {
         $result = false;
         if (IndexedSearchUtility::isTableUsed('index_grlist')) {
-            $count = (int)GeneralUtility::makeInstance(ConnectionPool::class)
+            $count = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('index_grlist')
                 ->count(
                     'phash_x',
                     'index_grlist',
-                    ['phash_x' => (int)$phash_x]
+                    ['phash_x' => $phash_x]
                 );
 
             $result = $count > 0;
@@ -1523,18 +1441,17 @@ class Indexer
      *
      * @param int $phash phash of the search result that should be found
      * @param int $phash_x The real phash of the current content. The two values are different when a page with userlogin turns out to contain the exact same content as another already indexed version of the page; This is the whole reason for the grlist table in fact...
-     * @see submit_grlist()
      */
-    public function update_grlist($phash, $phash_x)
+    public function update_grlist(int $phash, int $phash_x)
     {
         if (IndexedSearchUtility::isTableUsed('index_grlist')) {
-            $count = (int)GeneralUtility::makeInstance(ConnectionPool::class)
+            $count = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('index_grlist')
                 ->count(
                     'phash',
                     'index_grlist',
                     [
-                        'phash' => (int)$phash,
+                        'phash' => $phash,
                         'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list']),
                     ]
                 );
@@ -1552,7 +1469,7 @@ class Indexer
      * @param int $phash phash value
      * @param int $mtime If set, update the mtime field to this value.
      */
-    public function updateTstamp($phash, $mtime = 0)
+    public function updateTstamp(int $phash, int $mtime = 0)
     {
         if (!IndexedSearchUtility::isTableUsed('index_phash')) {
             return;
@@ -1563,7 +1480,7 @@ class Indexer
         ];
 
         if ($mtime) {
-            $updateFields['item_mtime'] = (int)$mtime;
+            $updateFields['item_mtime'] = $mtime;
         }
 
         GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1572,7 +1489,7 @@ class Indexer
                 'index_phash',
                 $updateFields,
                 [
-                    'phash' => (int)$phash,
+                    'phash' => $phash,
                 ]
             );
     }
@@ -1582,7 +1499,7 @@ class Indexer
      *
      * @param int $phash phash value
      */
-    public function updateSetId($phash)
+    public function updateSetId(int $phash): void
     {
         if (!IndexedSearchUtility::isTableUsed('index_phash')) {
             return;
@@ -1596,7 +1513,7 @@ class Indexer
                     'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
                 ],
                 [
-                    'phash' => (int)$phash,
+                    'phash' => $phash,
                 ]
             );
     }
@@ -1607,7 +1524,7 @@ class Indexer
      * @param int $phash phash value.
      * @param int $parsetime Parsetime value to set.
      */
-    public function updateParsetime($phash, $parsetime)
+    public function updateParsetime(int $phash, int $parsetime)
     {
         if (!IndexedSearchUtility::isTableUsed('index_phash')) {
             return;
@@ -1618,10 +1535,10 @@ class Indexer
             ->update(
                 'index_phash',
                 [
-                    'parsetime' => (int)$parsetime,
+                    'parsetime' => $parsetime,
                 ],
                 [
-                    'phash' => (int)$phash,
+                    'phash' => $phash,
                 ]
             );
     }
@@ -1629,7 +1546,7 @@ class Indexer
     /**
      * Update section rootline for the page
      */
-    public function updateRootline()
+    public function updateRootline(): void
     {
         if (!IndexedSearchUtility::isTableUsed('index_section')) {
             return;
@@ -1655,7 +1572,7 @@ class Indexer
      *
      * @param array $fieldArray Field array, passed by reference
      */
-    public function getRootLineFields(array &$fieldArray)
+    public function getRootLineFields(array &$fieldArray): void
     {
         $fieldArray['rl0'] = (int)($this->conf['rootline_uids'][0] ?? 0);
         $fieldArray['rl1'] = (int)($this->conf['rootline_uids'][1] ?? 0);
@@ -1673,11 +1590,11 @@ class Indexer
     /**
      * Adds new words to db
      *
-     * @param array $wordListArray Word List array (where each word has information about position etc).
+     * @param array $wordListArray Word List array (where each word has information about position, etc.).
      */
-    public function checkWordList($wordListArray)
+    public function checkWordList(array $wordListArray): void
     {
-        if (!IndexedSearchUtility::isTableUsed('index_words') || empty($wordListArray)) {
+        if ($wordListArray === [] || !IndexedSearchUtility::isTableUsed('index_words')) {
             return;
         }
 
@@ -1740,7 +1657,7 @@ class Indexer
      * @param array $wordList Word list array
      * @param int $phash phash value
      */
-    public function submitWords($wordList, $phash)
+    public function submitWords(array $wordList, int $phash): void
     {
         if (!IndexedSearchUtility::isTableUsed('index_rel')) {
             return;
@@ -1760,7 +1677,7 @@ class Indexer
             $stopWords[$row['wid']] = $row;
         }
 
-        $connectionPool->getConnectionForTable('index_rel')->delete('index_rel', ['phash' => (int)$phash]);
+        $connectionPool->getConnectionForTable('index_rel')->delete('index_rel', ['phash' => $phash]);
 
         $fields = ['phash', 'wid', 'count', 'first', 'freq', 'flags'];
         $rows = [];
@@ -1769,7 +1686,7 @@ class Indexer
                 continue;
             }
             $rows[] = [
-                (int)$phash,
+                $phash,
                 (int)$val['hash'],
                 (int)$val['count'],
                 (int)($val['first'] ?? 0),
@@ -1790,12 +1707,12 @@ class Indexer
      * @param float $freq Frequency
      * @return int Frequency in range.
      */
-    public function freqMap($freq)
+    public function freqMap(float $freq): int
     {
         $mapFactor = $this->freqMax * 100 * $this->freqRange;
         if ($freq <= 1) {
             $newFreq = $freq * $mapFactor;
-            $newFreq = $newFreq > $this->freqRange ? $this->freqRange : $newFreq;
+            $newFreq = min($newFreq, $this->freqRange);
         } else {
             $newFreq = $freq / $mapFactor;
         }
@@ -1810,7 +1727,7 @@ class Indexer
     /**
      * Get search hash, T3 pages
      */
-    public function setT3Hashes()
+    public function setT3Hashes(): void
     {
         //  Set main array:
         $hArray = [
@@ -1834,7 +1751,7 @@ class Indexer
      * @param array $subinfo Additional content identifying the (subpart of) content. For instance; PDF files are divided into groups of pages for indexing.
      * @return array Array with "phash_grouping" and "phash" inside.
      */
-    public function setExtHashes($file, $subinfo = [])
+    public function setExtHashes(string $file, array $subinfo = []): array
     {
         //  Set main array:
         $hash = [];
@@ -1866,7 +1783,7 @@ class Indexer
      * @return string
      * @see https://forge.typo3.org/issues/14959
      */
-    protected function addSpacesToKeywordList($keywordList)
+    protected function addSpacesToKeywordList(string $keywordList): string
     {
         $keywords = GeneralUtility::trimExplode(',', $keywordList);
         return ' ' . implode(', ', $keywords) . ' ';

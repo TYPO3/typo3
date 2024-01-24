@@ -19,10 +19,12 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
 
 /**
@@ -36,40 +38,14 @@ class FileContentParser
      * This value is also overridden from config.
      * zero: whole PDF file is indexed in one. positive value: Indicates number of pages at a time, eg. "5" would means 1-5,6-10,....
      * Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10
-     *
-     * @var int
      */
-    public $pdf_mode = -20;
-
-    /**
-     * @var array
-     */
-    public $app = [];
-
-    /**
-     * @var array
-     */
-    public $ext2itemtype_map = [];
-
-    /**
-     * @var array
-     */
-    public $supportedExtensions = [];
-
-    /**
-     * @var \TYPO3\CMS\IndexedSearch\Indexer
-     */
-    public $pObj;
-
-    /**
-     * @var \TYPO3\CMS\Core\Localization\LanguageService|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected $langObject;
-
-    /**
-     * @var string|null Backup for setLocaleForServerFileSystem()
-     */
-    protected $lastLocale;
+    public int $pdf_mode = -20;
+    public array $app = [];
+    public array $ext2itemtype_map = [];
+    public array $supportedExtensions = [];
+    public Indexer $pObj;
+    protected LanguageService|TypoScriptFrontendController $langObject;
+    protected ?string $lastLocale = null;
 
     /**
      * Constructs this external parsers object
@@ -86,7 +62,7 @@ class FileContentParser
      * @param string $extension File extension
      * @return bool Returns TRUE if extension is supported/enabled, otherwise FALSE.
      */
-    public function initParser($extension)
+    public function initParser(string $extension): bool
     {
         // Then read indexer-config and set if appropriate:
         $indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
@@ -255,7 +231,7 @@ class FileContentParser
      * @param string $extension File extension to initialize for.
      * @return bool Returns TRUE if the extension is supported and enabled, otherwise FALSE.
      */
-    public function softInit($extension)
+    public function softInit(string $extension): bool
     {
         switch ($extension) {
             case 'pdf':
@@ -297,13 +273,13 @@ class FileContentParser
      * @param string $extension File extension
      * @return string|false String with label value of entry in media type search selector box (frontend plugin).
      */
-    public function searchTypeMediaTitle($extension)
+    public function searchTypeMediaTitle(string $extension): false|string
     {
         // Read indexer-config
         $indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         // Ignore extensions
         $ignoreExtensions = GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), true);
-        if (in_array($extension, $ignoreExtensions)) {
+        if (in_array($extension, $ignoreExtensions, true)) {
             return false;
         }
         // Switch on file extension:
@@ -427,14 +403,9 @@ class FileContentParser
      * @param string $extension Extension / item_type string
      * @return bool Return TRUE if multi-page
      */
-    public function isMultiplePageExtension($extension)
+    public function isMultiplePageExtension(string $extension): bool
     {
-        // Switch on file extension:
-        switch ((string)$extension) {
-            case 'pdf':
-                return true;
-        }
-        return false;
+        return $extension === 'pdf';
     }
 
     /**
@@ -443,7 +414,7 @@ class FileContentParser
      * @param string $reference Reference/key of the label
      * @return string The label of the reference/key to be fetched
      */
-    protected function sL($reference)
+    protected function sL(string $reference): string
     {
         return $this->langObject->sL($reference);
     }
@@ -458,10 +429,10 @@ class FileContentParser
      *
      * @param string $ext File extension, eg. "pdf", "doc" etc.
      * @param string $absFile Absolute filename of file (must exist and be validated OK before calling function)
-     * @param string $cPKey Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be split.)
+     * @param string|int $cPKey Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be split.)
      * @return IndexingDataAsString|false|null Indexing DTO, false if the extension is not supported or null if nothing found
      */
-    public function readFileContent(string $ext, string $absFile, string $cPKey): IndexingDataAsString|false|null
+    public function readFileContent(string $ext, string $absFile, string|int $cPKey): IndexingDataAsString|false|null
     {
         $indexingDataDto = new IndexingDataAsString();
         // Return immediately if initialization didn't set support up:
@@ -718,14 +689,14 @@ class FileContentParser
      * @param bool $resetLocale TRUE resets the locale to $lastLocale.
      * @throws \RuntimeException
      */
-    protected function setLocaleForServerFileSystem($resetLocale = false)
+    protected function setLocaleForServerFileSystem(bool $resetLocale = false): void
     {
         if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             return;
         }
 
         if ($resetLocale) {
-            if ($this->lastLocale == null) {
+            if ($this->lastLocale === null) {
                 throw new \RuntimeException('Cannot reset locale to NULL.', 1357064326);
             }
             setlocale(LC_CTYPE, $this->lastLocale);
@@ -751,7 +722,7 @@ class FileContentParser
      * @param string $absFile Absolute filename (must exist and be validated OK before calling function)
      * @return array Array of pointers to sections that the document should be divided into
      */
-    public function fileContentParts($ext, $absFile)
+    public function fileContentParts(string $ext, string $absFile): array
     {
         $cParts = [0];
         switch ($ext) {
@@ -792,15 +763,13 @@ class FileContentParser
      * @internal
      * @see fileContentParts()
      */
-    public function splitPdfInfo($pdfInfoArray)
+    public function splitPdfInfo(array $pdfInfoArray): array
     {
         $res = [];
-        if (is_array($pdfInfoArray)) {
-            foreach ($pdfInfoArray as $line) {
-                $parts = explode(':', $line, 2);
-                if (count($parts) > 1 && trim($parts[0])) {
-                    $res[strtolower(trim($parts[0]))] = trim($parts[1]);
-                }
+        foreach ($pdfInfoArray as $line) {
+            $parts = explode(':', $line, 2);
+            if (count($parts) > 1 && trim($parts[0])) {
+                $res[strtolower(trim($parts[0]))] = trim($parts[1]);
             }
         }
         return $res;
@@ -812,7 +781,7 @@ class FileContentParser
      * @param string $string String to clean up
      * @return string String
      */
-    public function removeEndJunk($string)
+    public function removeEndJunk(string $string): string
     {
         return trim((string)preg_replace('/[' . LF . chr(12) . ']*$/', '', $string));
     }
@@ -828,7 +797,7 @@ class FileContentParser
      * @param string $extension File extension, lowercase.
      * @return string Relative file reference, resolvable by GeneralUtility::getFileAbsFileName()
      */
-    public function getIcon($extension)
+    public function getIcon(string $extension): string
     {
         if ($extension === 'htm') {
             $extension = 'html';

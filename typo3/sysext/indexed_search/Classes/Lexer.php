@@ -30,26 +30,14 @@ class Lexer
     // CJK (Chinese / Japanese / Korean)
     protected const CHARTYPE_CJK = 'cjk';
 
-    /**
-     * Debugging options:
-     *
-     * @var bool
-     */
-    public $debug = false;
+    public bool $debug = false;
 
     /**
      * If set, the debugString is filled with HTML output highlighting search / non-search words (for backend display)
-     *
-     * @var string
      */
-    public $debugString = '';
+    public string $debugString = '';
 
-    /**
-     * Configuration of the lexer:
-     *
-     * @var array
-     */
-    public $lexerConf = [
+    public array $lexerConf = [
         'printjoins' => [
             46, // .
             45, // -
@@ -69,7 +57,7 @@ class Lexer
      * @param string $wordString String with UTF-8 content to process.
      * @return array Array of words in utf-8
      */
-    public function split2Words($wordString)
+    public function split2Words(string $wordString): array
     {
         // Reset debug string:
         $this->debugString = '';
@@ -114,7 +102,7 @@ class Lexer
      * @param int $start Start position of word in input string
      * @param int $len The Length of the word string from start position
      */
-    public function addWords(&$words, &$wordString, $start, $len)
+    public function addWords(array &$words, string &$wordString, int $start, int $len): void
     {
         // Get word out of string:
         $theWord = substr($wordString, $start, $len);
@@ -139,7 +127,7 @@ class Lexer
             $strlen = mb_strlen($theWord, 'utf-8');
             // Traverse string length and add words as pairs of two chars:
             for ($a = 0; $a < $strlen; $a++) {
-                if ($strlen == 1 || $a < $strlen - 1) {
+                if ($strlen === 1 || $a < $strlen - 1) {
                     $words[] = mb_substr($theWord, $a, 2, 'utf-8');
                 }
             }
@@ -162,7 +150,7 @@ class Lexer
      * @param int $pos Starting position in input string
      * @return array|bool 0: start, 1: len or FALSE if no word has been found
      */
-    public function get_word(&$str, $pos = 0)
+    public function get_word(string &$str, int $pos = 0): bool|array
     {
         $len = 0;
         // If return is TRUE, a word was found starting at this position, so returning position and length:
@@ -187,7 +175,7 @@ class Lexer
      * @param int $pos Starting position in input string
      * @return bool letter (or word) found
      */
-    public function utf8_is_letter(&$str, &$len, $pos = 0)
+    public function utf8_is_letter(string &$str, int &$len, int $pos = 0): bool
     {
         $len = 0;
         $bc = 0;
@@ -197,11 +185,11 @@ class Lexer
         // Letter type
         $letter = true;
         // looking for a letter?
-        if ((string)($str[$pos] ?? '') === '') {
+        if (($str[$pos] ?? '') === '') {
             // Return FALSE on end-of-string at this stage
             return false;
         }
-        while (1) {
+        while (true) {
             // If characters has been obtained we will know whether the string starts as a sequence of letters or not:
             if ($len) {
                 if ($letter) {
@@ -212,7 +200,7 @@ class Lexer
                         || $cType === self::CHARTYPE_CJK && ($cType_prev === self::CHARTYPE_NUMBER || $cType_prev === self::CHARTYPE_ALPHA)
                     ) {
                         // Check if the non-letter char is NOT a print-join char because then it signifies the end of the word.
-                        if (!in_array($cp, $this->lexerConf['printjoins'])) {
+                        if (!in_array($cp, $this->lexerConf['printjoins'], true)) {
                             // If a printjoin start length has been recorded, set that back now so the length is right (filtering out multiple end chars)
                             if ($printJoinLgd) {
                                 $len = $printJoinLgd;
@@ -227,7 +215,7 @@ class Lexer
                         // When a true letter is found, reset printJoinLgd counter:
                         $printJoinLgd = 0;
                     }
-                } elseif (!$letter && $cType) {
+                } elseif ($cType) {
                     // end of non-word reached
                     return false;
                 }
@@ -252,7 +240,6 @@ class Lexer
                 $letter = false;
             }
         }
-        return false;
     }
 
     /**
@@ -261,7 +248,7 @@ class Lexer
      * @param int $cp Unicode number to evaluate
      * @return string|null Type of char; the main type: num, alpha or CJK (Chinese / Japanese / Korean)
      */
-    public function charType($cp)
+    public function charType(int $cp): ?string
     {
         // Numeric?
         if ($cp >= 48 && $cp <= 57) {
@@ -289,12 +276,12 @@ class Lexer
      * @param bool $hex If set, then a hex. number is returned
      * @return int|string UNICODE codepoint
      */
-    public function utf8_ord(&$str, &$len, $pos = 0, $hex = false)
+    public function utf8_ord(string &$str, int &$len, int $pos = 0, bool $hex = false): int|string
     {
         $ord = ord($str[$pos]);
         $len = 1;
         if ($ord > 128) {
-            for ($bc = -1, $mbs = $ord; $mbs & 128; $mbs = $mbs << 1) {
+            for ($bc = -1, $mbs = $ord; $mbs & 128; $mbs <<= 1) {
                 // calculate number of extra bytes
                 $bc++;
             }

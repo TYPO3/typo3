@@ -136,7 +136,7 @@ class AdministrationController extends ActionController
         $arguments = $request->getArguments();
         $beUser = $this->getBackendUserAuthentication();
 
-        if (is_array($arguments) && isset($arguments['action']) && method_exists($this, $arguments['action'] . 'Action')) {
+        if (isset($arguments['action']) && method_exists($this, $arguments['action'] . 'Action')) {
             $action = $arguments['action'];
             switch ($action) {
                 case 'saveStopwordsKeywords':
@@ -212,14 +212,11 @@ class AdministrationController extends ActionController
 
     /**
      * Statistics for a given page hash
-     *
-     * @param int $pageHash
      */
-    protected function statisticDetailsAction($pageHash = 0): ResponseInterface
+    protected function statisticDetailsAction(int $pageHash = 0): ResponseInterface
     {
         $view = $this->initializeModuleTemplate($this->request);
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $pageHash = (int)$pageHash;
 
         // Set back button
         $backButton = $buttonBar
@@ -358,7 +355,7 @@ class AdministrationController extends ActionController
 
         $view->assignMultiple([
             'extensionConfiguration' => $this->indexerConfig,
-            'phash' => (int)$pageHash,
+            'phash' => $pageHash,
             'phashRow' => $pageHashRow,
             'words' => $wordRecords,
             'sections' => $sections,
@@ -375,13 +372,8 @@ class AdministrationController extends ActionController
 
     /**
      * Save stop words and keywords
-     *
-     * @param string $pageHash
-     * @param int $pageId
-     * @param array $stopwords
-     * @param array $keywords
      */
-    protected function saveStopwordsKeywordsAction($pageHash, $pageId, $stopwords = [], $keywords = []): ResponseInterface
+    protected function saveStopwordsKeywordsAction(string $pageHash, int $pageId, array $stopwords = [], array $keywords = []): ResponseInterface
     {
         if ($this->getBackendUserAuthentication()->isAdmin()) {
             if (is_array($stopwords) && !empty($stopwords)) {
@@ -396,11 +388,8 @@ class AdministrationController extends ActionController
 
     /**
      * Statistics for a given word id
-     *
-     * @param int $id
-     * @param int $pageHash
      */
-    protected function wordDetailAction($id = 0, $pageHash = 0): ResponseInterface
+    protected function wordDetailAction(int $id = 0, int $pageHash = 0): ResponseInterface
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_phash');
         $rows = $queryBuilder
@@ -437,11 +426,8 @@ class AdministrationController extends ActionController
 
     /**
      * General statistics
-     *
-     * @param int $depth
-     * @param string $mode
      */
-    protected function statisticAction($depth = 1, $mode = 'overview'): ResponseInterface
+    protected function statisticAction(int $depth = 1, string $mode = 'overview'): ResponseInterface
     {
         $externalParsers = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
@@ -467,12 +453,8 @@ class AdministrationController extends ActionController
 
     /**
      * Remove item from index
-     *
-     * @param string $itemId
-     * @param int $depth
-     * @param string $mode
      */
-    protected function deleteIndexedItemAction($itemId, $depth = 1, $mode = 'overview'): ResponseInterface
+    protected function deleteIndexedItemAction(string $itemId, int $depth = 1, string $mode = 'overview'): ResponseInterface
     {
         $this->administrationRepository->removeIndexedPhashRow($itemId, $this->pageUid, $depth);
         return $this->redirect('statistic', null, null, ['depth' => $depth, 'mode' => $mode]);

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
 use TYPO3\CMS\IndexedSearch\Indexer;
+use TYPO3\CMS\IndexedSearch\Type\SearchType;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class IndexSearchRepositoryTest extends FunctionalTestCase
@@ -37,7 +38,6 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
      */
     protected function setUp(): void
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         parent::setUp();
         $indexer = new Indexer();
         $indexer->init([
@@ -93,7 +93,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
         self::assertIsNotArray($searchResults['resultRows'] ?? false);
     }
 
-    private function getSearchRepository($searchType = 1): IndexSearchRepository
+    private function getSearchRepository(SearchType $searchType = SearchType::PART_OF_WORD): IndexSearchRepository
     {
         $searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);
         $searchRepositoryDefaultOptions = [
@@ -103,7 +103,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
             'sortOrder' => 'rank_flag',
             'languageUid' => 'current',
             'sortDesc' => 1,
-            'searchType' => $searchType,
+            'searchType' => $searchType->value,
             'extResume' => 1,
         ];
         $searchRepository->initialize([], $searchRepositoryDefaultOptions, [], -1);

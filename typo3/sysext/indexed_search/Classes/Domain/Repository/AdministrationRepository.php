@@ -38,29 +38,17 @@ use TYPO3\CMS\IndexedSearch\FileContentParser;
 class AdministrationRepository
 {
     /**
-     * List of fileContentParsers
-     *
      * @var FileContentParser[]
      */
-    public $external_parsers = [];
+    public array $external_parsers = [];
 
-    /**
-     * @var array
-     */
-    protected $allPhashListed = [];
-
-    /**
-     * @var array
-     */
-    protected $iconFileNameCache = [];
+    protected array $allPhashListed = [];
+    protected array $iconFileNameCache = [];
 
     /**
      * Get group list information
-     *
-     * @param int $phash
-     * @return array
      */
-    public function getGrlistRecord($phash)
+    public function getGrlistRecord(int $phash): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_grlist');
         $result = $queryBuilder
@@ -87,11 +75,8 @@ class AdministrationRepository
 
     /**
      * Get number of fulltext records
-     *
-     * @param int $phash
-     * @return int|bool
      */
-    public function getNumberOfFulltextRecords($phash)
+    public function getNumberOfFulltextRecords(int $phash): bool|int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
         return $queryBuilder
@@ -109,11 +94,8 @@ class AdministrationRepository
 
     /**
      * Get number of words
-     *
-     * @param int $phash
-     * @return int|bool
      */
-    public function getNumberOfWords($phash)
+    public function getNumberOfWords(int $phash): bool|int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_rel');
         return $queryBuilder
@@ -131,10 +113,8 @@ class AdministrationRepository
 
     /**
      * Get statistic of external documents
-     *
-     * @return array
      */
-    public function getExternalDocumentsStatistic()
+    public function getExternalDocumentsStatistic(): array
     {
         $result = [];
 
@@ -203,10 +183,8 @@ class AdministrationRepository
 
     /**
      * Get count of the tables used for indexed_search
-     *
-     * @return array
      */
-    public function getRecordsNumbers()
+    public function getRecordsNumbers(): array
     {
         $tables = [
             'index_phash',
@@ -230,10 +208,8 @@ class AdministrationRepository
 
     /**
      * Get hash types
-     *
-     * @return array
      */
-    public function getPageHashTypes()
+    public function getPageHashTypes(): array
     {
         $counts = [];
         $types = [
@@ -269,11 +245,8 @@ class AdministrationRepository
 
     /**
      * Count unique types
-     *
-     * @param string $itemType
-     * @return int
      */
-    protected function countUniqueTypes($itemType)
+    protected function countUniqueTypes(string $itemType): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
         $items = $queryBuilder
@@ -294,11 +267,8 @@ class AdministrationRepository
 
     /**
      * Get number of section records
-     *
-     * @param int $pageHash
-     * @return int
      */
-    public function getNumberOfSections($pageHash)
+    public function getNumberOfSections(int $pageHash): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_section');
         return (int)$queryBuilder
@@ -316,10 +286,8 @@ class AdministrationRepository
 
     /**
      * Get page statistic
-     *
-     * @return array
      */
-    public function getPageStatistic()
+    public function getPageStatistic(): array
     {
         $result = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
@@ -386,13 +354,8 @@ class AdministrationRepository
 
     /**
      * Get general statistic
-     *
-     * @param string $additionalWhere
-     * @param int $pageUid
-     * @param int $max
-     * @return array|null
      */
-    public function getGeneralSearchStatistic($additionalWhere, $pageUid, $max = 50)
+    public function getGeneralSearchStatistic(string $additionalWhere, int $pageUid, int $max = 50): ?array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('index_stat_word');
@@ -444,7 +407,7 @@ class AdministrationRepository
     /**
      * Add additional information to the result row
      */
-    protected function addAdditionalInformation(array &$row)
+    protected function addAdditionalInformation(array &$row): void
     {
         $grListRec = $this->getGrlistRecord($row['phash']);
         $row['static_page_arguments'] = $row['static_page_arguments'] ? json_decode($row['static_page_arguments'], true) : null;
@@ -457,13 +420,8 @@ class AdministrationRepository
 
     /**
      * Get the page tree by using \TYPO3\CMS\Backend\Tree\View\PageTreeView
-     *
-     * @param int $pageId
-     * @param int $depth
-     * @param string $mode
-     * @return array
      */
-    public function getTree($pageId, $depth, $mode)
+    public function getTree(int $pageId, int $depth, string $mode): array
     {
         $allLines = [];
         $pageRecord = BackendUtility::getRecord('pages', (int)$pageId);
@@ -717,12 +675,8 @@ class AdministrationRepository
 
     /**
      * Remove indexed phash row
-     *
-     * @param string $phashList
-     * @param int $pageId
-     * @param int $depth
      */
-    public function removeIndexedPhashRow($phashList, $pageId, $depth = 4)
+    public function removeIndexedPhashRow(string $phashList, int $pageId, int $depth = 4)
     {
         if ($phashList === 'ALL') {
             if ($depth === 0) {
@@ -784,10 +738,8 @@ class AdministrationRepository
 
     /**
      * Save stop words
-     *
-     * @param array $words stop words
      */
-    public function saveStopWords(array $words)
+    public function saveStopWords(array $words): void
     {
         foreach ($words as $wid => $state) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
@@ -806,11 +758,8 @@ class AdministrationRepository
 
     /**
      * Save keywords
-     *
-     * @param array $words keywords
-     * @param int $pageId page id
      */
-    public function saveKeywords(array $words, $pageId)
+    public function saveKeywords(array $words, int $pageId): void
     {
         // Get pages current keywords
         $pageRec = BackendUtility::getRecord('pages', $pageId);
@@ -836,11 +785,8 @@ class AdministrationRepository
 
     /**
      * Collect the type icons
-     *
-     * @param string $itemType
-     * @return string
      */
-    protected function makeItemTypeIcon($itemType)
+    protected function makeItemTypeIcon(string $itemType): string
     {
         if (!isset($this->iconFileNameCache[$itemType])) {
             $icon = '';

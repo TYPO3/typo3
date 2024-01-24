@@ -54,103 +54,44 @@ use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
  */
 class SearchController extends ActionController
 {
-    /**
-     * previously known as $this->piVars['sword']
-     *
-     * @var string
-     */
-    protected $sword = '';
-
-    /**
-     * @var array
-     */
-    protected $searchWords = [];
-
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected string $sword = '';
+    protected array $searchWords = [];
+    protected array $searchData;
 
     /**
      * This is the id of the site root.
      * This value may be a comma separated list of integer (prepared for this)
      * Root-page PIDs to search in (rl0 field where clause, see initialize() function)
      *
-     * If this value is set to less than zero (eg. -1) searching will happen
+     * If this value is set to less than zero (e.g. -1) searching will happen
      * in ALL of the page tree with no regard to branches at all.
-     * @var int|string
      */
-    protected $searchRootPageIdList = 0;
+    protected string|int $searchRootPageIdList = 0;
 
-    /**
-     * @var int
-     */
-    protected $defaultResultNumber = 10;
-
-    /**
-     * @var int[]
-     */
-    protected $availableResultsNumbers = [];
-
-    /**
-     * Search repository
-     *
-     * @var \TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository
-     */
-    protected $searchRepository;
-
-    /**
-     * Lexer object
-     *
-     * @var \TYPO3\CMS\IndexedSearch\Lexer
-     */
-    protected $lexerObj;
-
-    /**
-     * External parser objects
-     * @var array
-     */
-    protected $externalParsers = [];
+    protected int $defaultResultNumber = 10;
+    protected array $availableResultsNumbers = [];
+    protected IndexSearchRepository $searchRepository;
+    protected Lexer $lexerObj;
+    protected array $externalParsers = [];
 
     /**
      * Will hold the first row in result - used to calculate relative hit-ratings.
-     *
-     * @var array
      */
-    protected $firstRow = [];
+    protected array $firstRow = [];
 
     /**
      * Required fe_groups memberships for display of a result.
-     *
-     * @var array
      */
-    protected $requiredFrontendUsergroups = [];
+    protected array $requiredFrontendUsergroups = [];
 
     /**
      * Page tree sections for search result.
-     *
-     * @var array
      */
-    protected $resultSections = [];
+    protected array $resultSections = [];
 
-    /**
-     * Caching of page path
-     *
-     * @var array
-     */
-    protected $pathCache = [];
-
-    /**
-     * Storage of icons
-     *
-     * @var array
-     */
-    protected $iconFileNameCache = [];
-
-    /**
-     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService
-     */
-    protected $typoScriptService;
+    protected array $pathCache = [];
+    protected array $iconFileNameCache = [];
+    protected TypoScriptService $typoScriptService;
 
     public function injectTypoScriptService(TypoScriptService $typoScriptService)
     {
@@ -159,11 +100,8 @@ class SearchController extends ActionController
 
     /**
      * sets up all necessary object for searching
-     *
-     * @param array $searchData The incoming search parameters
-     * @return array Search parameters
      */
-    protected function initialize($searchData = [])
+    protected function initialize(array $searchData = []): array
     {
         if (!is_array($searchData)) {
             $searchData = [];
@@ -197,7 +135,7 @@ class SearchController extends ActionController
         if (($searchData['_freeIndexUid'] ?? '') !== '' && ($searchData['_freeIndexUid'] ?? '') !== '_') {
             $searchData['freeIndexUid'] = $searchData['_freeIndexUid'];
         }
-        $searchData['numberOfResults'] = $this->getNumberOfResults($searchData['numberOfResults'] ?? 0);
+        $searchData['numberOfResults'] = $this->getNumberOfResults((int)($searchData['numberOfResults'] ?? 0));
         // This gets the search-words into the $searchWordArray
         $this->setSword($searchData['sword'] ?? '');
         // Add previous search words to current
@@ -224,7 +162,7 @@ class SearchController extends ActionController
         $this->searchRepository->initialize($this->settings, $searchData, $this->externalParsers, $this->searchRootPageIdList);
         $this->searchData = $searchData;
         // $this->searchData is used in $this->getSearchWords
-        $this->searchWords = $this->getSearchWords($searchData['defaultOperand']);
+        $this->searchWords = $this->getSearchWords((bool)$searchData['defaultOperand']);
         // Calling hook for modification of initialized content
         if ($hookObj = $this->hookRequest('initialize_postProc')) {
             $hookObj->initialize_postProc();
@@ -235,10 +173,9 @@ class SearchController extends ActionController
     /**
      * Performs the search, the display and writing stats
      *
-     * @param array $search the search parameters, an associative array
      * @Extbase\IgnoreValidation("search")
      */
-    public function searchAction($search = []): ResponseInterface
+    public function searchAction(array $search = []): ResponseInterface
     {
         // check if TypoScript is loaded
         if (!isset($this->settings['results'])) {
@@ -247,6 +184,7 @@ class SearchController extends ActionController
 
         $searchData = $this->initialize($search);
         // Find free index uid:
+        // @todo: what exactly is this? Apparently, it can either be an int or a string (╯°□°）╯︵ ┻━┻
         $freeIndexUid = $searchData['freeIndexUid'];
         if ($freeIndexUid == -2) {
             $freeIndexUid = $this->settings['defaultFreeIndexUidList'];
@@ -307,11 +245,10 @@ class SearchController extends ActionController
      * Compiles the HTML display of the incoming array of result rows.
      *
      * @param array $searchWords Search words array (for display of text describing what was searched for)
-     * @param array $resultData Array with result rows, count, first row.
+     * @param array|bool $resultData Array with result rows, count, first row.
      * @param int $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return array
      */
-    protected function getDisplayResults($searchWords, $resultData, $freeIndexUid = -1)
+    protected function getDisplayResults(array $searchWords, array|bool $resultData, int $freeIndexUid = -1): array
     {
         $result = [
             'count' => $resultData['count'] ?? 0,
@@ -353,7 +290,7 @@ class SearchController extends ActionController
      * @param int $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
      * @return array the result rows with additional information
      */
-    protected function compileResultRows($resultRows, $freeIndexUid = -1)
+    protected function compileResultRows(array $resultRows, int $freeIndexUid = -1): array
     {
         $finalResultRows = [];
         // Transfer result rows to new variable,
@@ -390,14 +327,14 @@ class SearchController extends ActionController
             $this->resultSections = [];
             foreach ($sections as $id => $resultRows) {
                 $rlParts = explode('-', $id);
-                if ($rlParts[2] ?? false) {
+                if ($rlParts[2] ?? null) {
                     $theId = $rlParts[2];
                     $theRLid = 'rl2_' . $rlParts[2];
-                } elseif ($rlParts[1] ?? false) {
+                } elseif ($rlParts[1] ?? null) {
                     $theId = $rlParts[1];
                     $theRLid = 'rl1_' . $rlParts[1];
                 } else {
-                    $theId = $rlParts[0] ?? 0;
+                    $theId = $rlParts[0] ?? '0';
                     $theRLid = '0';
                 }
                 $sectionName = $this->getPathFromPageId((int)$theId);
@@ -438,21 +375,24 @@ class SearchController extends ActionController
      * @param int $headerOnly 1=Display only header (for sub-rows!), 2=nothing at all
      * @return array the result row with additional information
      */
-    protected function compileSingleResultRow($row, $headerOnly = 0)
+    protected function compileSingleResultRow(array $row, int $headerOnly = 0): array
     {
         $specRowConf = $this->getSpecialConfigurationForResultRow($row);
         $resultData = $row;
         $resultData['headerOnly'] = $headerOnly;
         $resultData['CSSsuffix'] = ($specRowConf['CSSsuffix'] ?? false) ? '-' . $specRowConf['CSSsuffix'] : '';
-        if ($this->multiplePagesType($row['item_type']) && isset($row['static_page_arguments'])) {
-            $dat = json_decode($row['static_page_arguments'], true);
-            if (is_array($dat) && is_string($dat['key'] ?? null) && $dat['key'] !== '') {
-                $pp = explode('-', $dat['key']);
-                if ($pp[0] != $pp[1]) {
-                    $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.pages', 'IndexedSearch') . ' ' . $dat['key'];
-                } else {
-                    $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.page', 'IndexedSearch') . ' ' . $pp[0];
+        if (isset($row['static_page_arguments']) && $this->multiplePagesType($row['item_type'])) {
+            try {
+                $dat = json_decode($row['static_page_arguments'], true, 512, JSON_THROW_ON_ERROR);
+                if (is_string($dat['key'] ?? null) && $dat['key'] !== '') {
+                    $pp = explode('-', $dat['key']);
+                    if ($pp[0] !== $pp[1]) {
+                        $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.pages', 'IndexedSearch') . ' ' . $dat['key'];
+                    } else {
+                        $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.page', 'IndexedSearch') . ' ' . $pp[0];
+                    }
                 }
+            } catch (\JsonException) {
             }
         }
         $title = $resultData['item_title'] . ($resultData['titleaddition'] ?? '');
@@ -480,7 +420,7 @@ class SearchController extends ActionController
         $resultData['rating'] = $this->makeRating($row);
         $resultData['description'] = $this->makeDescription(
             $row,
-            (bool)!($this->searchData['extResume'] && !$headerOnly),
+            !($this->searchData['extResume'] && !$headerOnly),
             $this->settings['results.']['summaryCropAfter']
         );
         $resultData['language'] = $this->makeLanguageIndication($row);
@@ -515,7 +455,7 @@ class SearchController extends ActionController
                     . '" alt="" />';
             }
         }
-        // If there are subrows (eg. subpages in a PDF-file or if a duplicate page
+        // If there are subrows (e.g. subpages in a PDF-file or if a duplicate page
         // is selected due to user-login (phash_grouping))
         if (is_array($row['_sub'] ?? false)) {
             $resultData['subresults'] = [];
@@ -535,11 +475,8 @@ class SearchController extends ActionController
     /**
      * Returns configuration from TypoScript for result row based
      * on ID / location in page tree!
-     *
-     * @param array $row Result row
-     * @return array Configuration array
      */
-    protected function getSpecialConfigurationForResultRow($row)
+    protected function getSpecialConfigurationForResultRow(array $row): array
     {
         $pathId = $row['data_page_id'] ?: $row['page_id'];
         $pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
@@ -562,11 +499,9 @@ class SearchController extends ActionController
     /**
      * Return the rating-HTML code for the result row. This makes use of the $this->firstRow
      *
-     * @param array $row Result row array
-     * @return string String showing ranking value
      * @todo can this be a ViewHelper?
      */
-    protected function makeRating($row)
+    protected function makeRating(array $row): string
     {
         $default = ' ';
         switch ((string)$this->searchData['sortOrder']) {
@@ -599,11 +534,8 @@ class SearchController extends ActionController
 
     /**
      * Returns the HTML code for language indication.
-     *
-     * @param array $row Result row
-     * @return string HTML code for result row.
      */
-    protected function makeLanguageIndication($row)
+    protected function makeLanguageIndication(array $row): string
     {
         $output = '&nbsp;';
         // If search result is a TYPO3 page:
@@ -621,13 +553,8 @@ class SearchController extends ActionController
 
     /**
      * Return icon for file extension
-     *
-     * @param string $imageType File extension / item type
-     * @param string $alt Title attribute value in icon.
-     * @param array $specRowConf TypoScript configuration specifically for search result.
-     * @return string HTML <img> tag for icon
      */
-    public function makeItemTypeIcon($imageType, $alt, $specRowConf)
+    public function makeItemTypeIcon(string $imageType, string $alt, array $specRowConf): string
     {
         // Build compound key if item type is 0, iconRendering is not used
         // and specialConfiguration.[pid].pageIcon was set in TS
@@ -679,13 +606,10 @@ class SearchController extends ActionController
     /**
      * Returns the resume for the search-result.
      *
-     * @param array $row Search result row
      * @param bool $noMarkup If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
-     * @param int $length String length
-     * @return string HTML string
      * @todo overwork this
      */
-    protected function makeDescription($row, $noMarkup = false, $length = 180)
+    protected function makeDescription(array $row, bool $noMarkup = false, int $length = 180): string
     {
         $markedSW = '';
         $outputStr = '';
@@ -713,9 +637,8 @@ class SearchController extends ActionController
      * Marks up the search words from $this->searchWords in the $str with a color.
      *
      * @param string $str Text in which to find and mark up search words. This text is assumed to be UTF-8 like the search words internally is.
-     * @return string Processed content
      */
-    protected function markupSWpartsOfString($str)
+    protected function markupSWpartsOfString(string $str): string
     {
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         // Init:
@@ -744,7 +667,7 @@ class SearchController extends ActionController
         $output = [];
         // Shorten in-between strings:
         foreach ($parts as $k => $strP) {
-            if ($k % 2 == 0) {
+            if ($k % 2 === 0) {
                 // Find length of the summary part:
                 $strLen = mb_strlen($parts[$k], 'utf-8');
                 $output[$k] = $parts[$k];
@@ -788,7 +711,7 @@ class SearchController extends ActionController
 
     /**
      * Splits the search word input into an array where each word is represented by an array with key "sword"
-     * holding the search word and key "oper" holding the SQL operator (eg. AND, OR)
+     * holding the search word and key "oper" holding the SQL operator (e.g. AND, OR)
      *
      * Only words with 2 or more characters are accepted
      * Max 200 chars total
@@ -799,16 +722,15 @@ class SearchController extends ActionController
      *
      * $defOp is the default operator. 1=OR, 0=AND
      *
-     * @param bool $defaultOperator If TRUE, the default operator will be OR, not AND
-     * @return array Search words if any found
+     * @param bool $useDefaultOperator If TRUE, the default operator will be OR, not AND
      */
-    protected function getSearchWords($defaultOperator)
+    protected function getSearchWords(bool $useDefaultOperator): array
     {
         // Shorten search-word string to max 200 bytes - shortening the string here is only a run-away feature!
         $searchWords = mb_substr($this->getSword(), 0, 200);
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {
-            $sWordArray = $hookObj->getSearchWords_splitSWords($searchWords, $defaultOperator);
+            $sWordArray = $hookObj->getSearchWords_splitSWords($searchWords, $useDefaultOperator);
         } elseif ((int)$this->searchData['searchType'] === SearchType::SENTENCE->value) {
             $sWordArray = [
                 [
@@ -829,22 +751,21 @@ class SearchController extends ActionController
                 [mb_strtolower(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch') ?? '', 'utf-8'), 'OR'],
                 [mb_strtolower(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch') ?? '', 'utf-8'), 'AND NOT'],
             ];
-            $swordArray = IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
-            if (is_array($swordArray)) {
-                $sWordArray = $this->procSearchWordsByLexer($swordArray);
-            }
+            $defaultOperator = $useDefaultOperator ? 'OR' : 'AND';
+            $swordArray = IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator, $operatorTranslateTable);
+            $sWordArray = $this->procSearchWordsByLexer($swordArray);
         }
         return $sWordArray;
     }
 
     /**
-     * Post-process the search word array so it will match the words that was indexed (including case-folding if any)
-     * If any words are splitted into multiple words (eg. CJK will be!) the operator of the main word will remain.
+     * Post-process the search word array, so it will match the words that was indexed (including case-folding if any).
+     * If any words are split into multiple words (e.g. CJK will be!) the operator of the main word will remain.
      *
      * @param array $searchWords Search word array
      * @return array Search word array, processed through lexer
      */
-    protected function procSearchWordsByLexer($searchWords)
+    protected function procSearchWordsByLexer(array $searchWords): array
     {
         $newSearchWords = [];
         // Init lexer (used to post-processing of search words)
@@ -876,10 +797,9 @@ class SearchController extends ActionController
     /**
      * Sort options about the search form
      *
-     * @param array $search The search data / params
      * @Extbase\IgnoreValidation("search")
      */
-    public function formAction($search = []): ResponseInterface
+    public function formAction(array $search = []): ResponseInterface
     {
         // check if TypoScript is loaded
         if (!isset($this->settings['results'])) {
@@ -970,7 +890,7 @@ class SearchController extends ActionController
             }
             foreach ($this->externalParsers as $extension => $obj) {
                 // Skip unwanted extensions
-                if (!empty($additionalMedia) && !in_array($extension, $additionalMedia)) {
+                if (!empty($additionalMedia) && !in_array($extension, $additionalMedia, true)) {
                     continue;
                 }
                 if ($name = $obj->searchTypeMediaTitle($extension)) {
@@ -1009,10 +929,10 @@ class SearchController extends ActionController
 
     /**
      * get the values for the "section" selector
-     * Here values like "rl1_" and "rl2_" + a rootlevel 1/2 id can be added
-     * to perform searches in rootlevel 1+2 specifically. The id-values can even
-     * be commaseparated. Eg. "rl1_1,2" would search for stuff inside pages on
-     * menu-level 1 which has the uid's 1 and 2.
+     * Here values like "rl1_" and "rl2_" + a root level 1/2 id can be added
+     * to perform searches in root level 1+2 specifically. The id-values can even
+     * be comma-separated. e.g. "rl1_1,2" would search for stuff inside pages on
+     * menu-level 1 which has the uids 1 and 2.
      *
      * @return array Associative array with options
      */
@@ -1027,7 +947,7 @@ class SearchController extends ActionController
             }
         }
         // Creating levels for section menu:
-        // This selects the first and secondary menus for the "sections" selector - so we can search in sections and sub sections.
+        // This selects the first and secondary menus for the "sections" selector - so we can search in sections and sub-sections.
         if ($this->settings['displayLevel1Sections']) {
             $firstLevelMenu = $this->getMenuOfPages((int)$this->searchRootPageIdList);
             $labelLevel1 = LocalizationUtility::translate('sections.rootLevel1', 'IndexedSearch');
@@ -1092,10 +1012,10 @@ class SearchController extends ActionController
 
     /**
      * get the values for the "section" selector
-     * Here values like "rl1_" and "rl2_" + a rootlevel 1/2 id can be added
-     * to perform searches in rootlevel 1+2 specifically. The id-values can even
-     * be commaseparated. Eg. "rl1_1,2" would search for stuff inside pages on
-     * menu-level 1 which has the uid's 1 and 2.
+     * Here values like "rl1_" and "rl2_" + a root level 1/2 id can be added
+     * to perform searches in root level 1+2 specifically. The id-values can even
+     * be comma-separated. e.g. "rl1_1,2" would search for stuff inside pages on
+     * menu-level 1 which has the uids 1 and 2.
      *
      * @return array Associative array with options
      */
@@ -1110,8 +1030,7 @@ class SearchController extends ActionController
             }
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, ($blindSettings['sortOrder.'] ?? []));
-        return $allOptions;
+        return $this->removeOptionsFromOptionList($allOptions, $blindSettings['sortOrder.'] ?? []);
     }
 
     /**
@@ -1149,8 +1068,7 @@ class SearchController extends ActionController
             ];
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, ($blindSettings['descending.'] ?? []));
-        return $allOptions;
+        return $this->removeOptionsFromOptionList($allOptions, $blindSettings['descending.'] ?? []);
     }
 
     /**
@@ -1165,21 +1083,21 @@ class SearchController extends ActionController
             $allOptions = array_combine($this->availableResultsNumbers, $this->availableResultsNumbers);
         }
         // disable single entries by TypoScript
-        return $this->removeOptionsFromOptionList($allOptions, $this->settings['blind']['numberOfResults']);
+        return $this->removeOptionsFromOptionList($allOptions, $this->settings['blind']['numberOfResults'] ?? []);
     }
 
     /**
      * removes blinding entries from the option list of a selector
      *
      * @param array $allOptions associative array containing all options
-     * @param array $blindOptions associative array containing the optionkey as they key and the value = 1 if it should be removed
+     * @param mixed $blindOptions Either associative array containing the option key to be removed, or anything else (= not configured)
      * @return array Options from $allOptions with some options removed
      */
-    protected function removeOptionsFromOptionList(array $allOptions, $blindOptions): array
+    protected function removeOptionsFromOptionList(array $allOptions, mixed $blindOptions): array
     {
         if (is_array($blindOptions)) {
             foreach ($blindOptions as $key => $val) {
-                if ($val == 1) {
+                if ((int)$val === 1) {
                     unset($allOptions[$key]);
                 }
             }
@@ -1225,7 +1143,7 @@ class SearchController extends ActionController
      * @param int $pageUid Page ID for which to return menu
      * @return array Menu items (for making the section selector box)
      */
-    protected function getMenuOfPages($pageUid)
+    protected function getMenuOfPages(int $pageUid): array
     {
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         if ($this->settings['displayLevelxAllTypes']) {
@@ -1241,7 +1159,7 @@ class SearchController extends ActionController
      * @param string $pathMP Content of the MP (mount point) variable
      * @return string Path (HTML-escaped)
      */
-    protected function getPathFromPageId($id, $pathMP = '')
+    protected function getPathFromPageId(int $id, string $pathMP = ''): string
     {
         $identStr = $id . '|' . $pathMP;
         if (!isset($this->pathCache[$identStr])) {
@@ -1259,17 +1177,19 @@ class SearchController extends ActionController
                     $breadcrumbWrap = $this->settings['breadcrumbWrap'] ?? '/';
                     $breadcrumbWraps = GeneralUtility::makeInstance(TypoScriptService::class)
                         ->explodeConfigurationForOptionSplit(['wrap' => $breadcrumbWrap], $pageCount);
-                    foreach ($rl as $k => $v) {
+                    foreach ($rl as $v) {
+                        $uid = (int)$v['uid'];
+
                         if (in_array($v['doktype'], $excludeDoktypesFromPath, false)) {
                             continue;
                         }
                         // Check fe_user
-                        if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {
+                        if ($v['fe_group'] && ($uid === $id || $v['extendToSubpages'])) {
                             $this->requiredFrontendUsergroups[$id][] = $v['fe_group'];
                         }
                         // Stop, if we find that the current id is the current root page.
                         $localRootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
-                        if ($v['uid'] == $localRootLine[0]['uid']) {
+                        if ($uid === (int)$localRootLine[0]['uid']) {
                             array_pop($breadcrumbWraps);
                             break;
                         }
@@ -1288,7 +1208,7 @@ class SearchController extends ActionController
      * simple function to initialize possible external parsers
      * feeds the $this->externalParsers array
      */
-    protected function initializeExternalParsers()
+    protected function initializeExternalParsers(): void
     {
         // Initialize external document parsers for icon display and other soft operations
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
@@ -1304,12 +1224,12 @@ class SearchController extends ActionController
      * Returns an object reference to the hook object if any
      *
      * @param string $functionName Name of the function you want to call / hook key
-     * @return object|null Hook object, if any. Otherwise NULL.
+     * @return object|null Hook object, if any, otherwise null.
      */
-    protected function hookRequest($functionName)
+    protected function hookRequest(string $functionName): ?object
     {
         // Hook: menuConfig_preProcessModMenu
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName] ?? false) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName] ?? null) {
             $hookObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
             if (method_exists($hookObj, $functionName)) {
                 $hookObj->pObj = $this;
@@ -1325,7 +1245,7 @@ class SearchController extends ActionController
      * @param string $item_type Item type
      * @return bool TRUE if multipage capable
      */
-    protected function multiplePagesType($item_type)
+    protected function multiplePagesType(string $item_type): bool
     {
         return is_object($this->externalParsers[$item_type] ?? false) && $this->externalParsers[$item_type]->isMultiplePageExtension($item_type);
     }
@@ -1335,7 +1255,7 @@ class SearchController extends ActionController
      * Populate select boxes and setting some flags.
      * The returned data can be passed directly into the view by assignMultiple()
      *
-     * @return array Variables to pass into the view so they can be used in fluid template
+     * @return array Variables to pass into the view, so they can be used in fluid template
      */
     protected function processExtendedSearchParameters(): array
     {
@@ -1365,7 +1285,7 @@ class SearchController extends ActionController
     /**
      * Load settings and apply stdWrap to them
      */
-    protected function loadSettings()
+    protected function loadSettings(): void
     {
         if (!is_array($this->settings['results.'] ?? false)) {
             $this->settings['results.'] = [];
@@ -1417,14 +1337,10 @@ class SearchController extends ActionController
 
     /**
      * Returns number of results to display
-     *
-     * @param int $numberOfResults Requested number of results
-     * @return int
      */
-    protected function getNumberOfResults($numberOfResults)
+    protected function getNumberOfResults(int $numberOfResults): int
     {
-        $numberOfResults = (int)$numberOfResults;
-        return in_array($numberOfResults, $this->availableResultsNumbers) ?
+        return in_array($numberOfResults, $this->availableResultsNumbers, true) ?
             $numberOfResults : $this->defaultResultNumber;
     }
 
@@ -1442,19 +1358,17 @@ class SearchController extends ActionController
 
     /**
      * Set the search word
-     * @param string $sword
      */
-    public function setSword($sword)
+    public function setSword($sword): void
     {
         $this->sword = (string)$sword;
     }
 
     /**
      * Returns the search word
-     * @return string
      */
-    public function getSword()
+    public function getSword(): string
     {
-        return (string)$this->sword;
+        return $this->sword;
     }
 }
