@@ -161,6 +161,11 @@ class ConnectionPool
             unset($connectionParams['tableoptions']);
         }
 
+        // Ensure integer value for port.
+        if (array_key_exists('port', $connectionParams)) {
+            $connectionParams['port'] = (int)($connectionParams['port'] ?? 0);
+        }
+
         return $connectionParams;
     }
 
