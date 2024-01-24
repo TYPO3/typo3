@@ -32,7 +32,7 @@ final class EvaluateModifierFunctionEvent
 
     public function __construct(
         private readonly string $functionName,
-        private readonly ?string $functionArgument,
+        private readonly string $functionArgument,
         private readonly ?string $originalValue,
     ) {}
 
@@ -46,8 +46,9 @@ final class EvaluateModifierFunctionEvent
 
     /**
      * Optional function argument, for example "myArgument" when using "foo := extNewsSortFunction(myArgument)"
+     * If the argument contained constants, those have been resolved at this point.
      */
-    public function getFunctionArgument(): ?string
+    public function getFunctionArgument(): string
     {
         return $this->functionArgument;
     }

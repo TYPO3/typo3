@@ -28,8 +28,10 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierCopyLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierReferenceLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierUnsetLine;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\ConstantAwareTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStreamInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -200,22 +202,24 @@ abstract class AbstractAstBuilder
      * Evaluate operator functions, example TypoScript:
      * "page.10.value := appendString(foo)"
      */
-    protected function evaluateValueModifier(Token $functionNameToken, ?Token $functionArgumentToken, ?string $originalValue): ?string
+    protected function evaluateValueModifier(Token $functionNameToken, TokenStreamInterface $functionArgumentTokenStream, ?string $originalValue): ?string
     {
         $functionName = $functionNameToken->getValue();
-        $functionArgument = null;
-        if ($functionArgumentToken) {
-            $functionArgument = $functionArgumentToken->getValue();
+        // Constants are evaluated via __toString() of ConstantAwareTokenStream and thus need current constants.
+        // This implements constants in function arguments: "foo := addToList({$my.constant})"
+        if ($functionArgumentTokenStream instanceof ConstantAwareTokenStream) {
+            $functionArgumentTokenStream->setFlatConstants($this->flatConstants);
         }
+        $functionArgument = (string)$functionArgumentTokenStream;
         switch ($functionName) {
             case 'prependString':
                 return $functionArgument . $originalValue;
             case 'appendString':
                 return $originalValue . $functionArgument;
             case 'removeString':
-                return str_replace((string)$functionArgument, '', $originalValue);
+                return str_replace($functionArgument, '', $originalValue);
             case 'replaceString':
-                $functionValueArray = explode('|', (string)$functionArgument, 2);
+                $functionValueArray = explode('|', $functionArgument, 2);
                 $fromStr = $functionValueArray[0] ?? '';
                 $toStr = $functionValueArray[1] ?? '';
                 return str_replace($fromStr, $toStr, $originalValue);
@@ -223,7 +227,7 @@ abstract class AbstractAstBuilder
                 return ($originalValue !== null ? $originalValue . ',' : '') . $functionArgument;
             case 'removeFromList':
                 $existingElements = GeneralUtility::trimExplode(',', $originalValue);
-                $removeElements = GeneralUtility::trimExplode(',', (string)$functionArgument);
+                $removeElements = GeneralUtility::trimExplode(',', $functionArgument);
                 if (!empty($removeElements)) {
                     return implode(',', array_diff($existingElements, $removeElements));
                 }
@@ -236,7 +240,7 @@ abstract class AbstractAstBuilder
                 return implode(',', array_reverse($elements));
             case 'sortList':
                 $elements = GeneralUtility::trimExplode(',', $originalValue);
-                $arguments = GeneralUtility::trimExplode(',', (string)$functionArgument);
+                $arguments = GeneralUtility::trimExplode(',', $functionArgument);
                 $arguments = array_map('strtolower', $arguments);
                 $sortFlags = SORT_REGULAR;
                 if (in_array('numeric', $arguments)) {
@@ -260,7 +264,7 @@ abstract class AbstractAstBuilder
                 }
                 return implode(',', $elements);
             case 'getEnv':
-                $environmentValue = getenv(trim((string)$functionArgument));
+                $environmentValue = getenv(trim($functionArgument));
                 if ($environmentValue !== false) {
                     return $environmentValue;
                 }

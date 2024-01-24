@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\TypoScript\Tokenizer\Line;
 
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStreamInterface;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 
 /**
@@ -34,7 +35,7 @@ final class IdentifierFunctionLine extends AbstractLine
 {
     private ?IdentifierTokenStream $identifierTokenStream = null;
     private ?Token $functionNameToken = null;
-    private ?Token $functionValueToken = null;
+    private ?TokenStreamInterface $functionValueTokenStream = null;
 
     public function setIdentifierTokenStream(IdentifierTokenStream $tokenStream): IdentifierFunctionLine
     {
@@ -70,17 +71,17 @@ final class IdentifierFunctionLine extends AbstractLine
         return $this->functionNameToken;
     }
 
-    public function setFunctionValueToken(Token $token): IdentifierFunctionLine
+    public function setFunctionValueTokenStream(TokenStreamInterface $tokenStream): IdentifierFunctionLine
     {
-        if ($token->getType() !== TokenType::T_VALUE) {
-            throw new \LogicException('Function value token must be of type T_VALUE', 1655825122);
-        }
-        $this->functionValueToken = $token;
+        $this->functionValueTokenStream = $tokenStream;
         return $this;
     }
 
-    public function getFunctionValueToken(): ?Token
+    public function getFunctionValueTokenStream(): TokenStreamInterface
     {
-        return $this->functionValueToken;
+        if ($this->functionValueTokenStream === null) {
+            throw new \RuntimeException('Function value token stream has not been set', 1717495996);
+        }
+        return $this->functionValueTokenStream;
     }
 }

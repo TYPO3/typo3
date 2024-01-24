@@ -3150,6 +3150,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream((new TokenStream()))
                     ),
                 (new LineStream())
                     ->append(
@@ -3159,6 +3160,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream((new TokenStream()))
                     ),
             ],
             'identifier, function, function name whitespace value' => [
@@ -3182,7 +3184,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, ' ', 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, ' ', 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3192,7 +3194,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, ' '))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, ' ')))
                     ),
             ],
             'identifier, function, function name whitespace encapsulated value' => [
@@ -3216,7 +3218,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, ' bar ', 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, ' bar ', 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3226,7 +3228,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, ' bar '))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, ' bar ')))
                     ),
             ],
             'identifier, function, function name tabs value' => [
@@ -3250,7 +3252,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, "\t", 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, "\t", 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3260,7 +3262,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, "\t"))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, "\t")))
                     ),
             ],
             'identifier, function, function name tabs encapsulated value' => [
@@ -3284,7 +3286,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, "\tbar\t", 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, "\tbar\t", 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3294,7 +3296,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, "\tbar\t"))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, "\tbar\t")))
                     ),
             ],
             'identifier, tabs, function, function name empty value' => [
@@ -3317,6 +3319,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream((new TokenStream()))
                     ),
                 (new LineStream())
                     ->append(
@@ -3326,6 +3329,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream((new TokenStream()))
                     ),
             ],
             'identifier, function, function name with value' => [
@@ -3349,7 +3353,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1', 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1', 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3359,7 +3363,96 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1'))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1')))
+                    ),
+            ],
+            'identifier, function, function name, value is constant' => [
+                'foo := addToList({$some.constant})',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_FUNCTION, ':=', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_START, '(', 0, 16))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}', 0, 17))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_STOP, ')', 0, 33))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}', 0, 17))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}'))
+                            )
+                    ),
+            ],
+            'identifier, function, function name, value with constants and values' => [
+                'foo := addToList(23{$some.constant}{$other.constant}42)',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_FUNCTION, ':=', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_START, '(', 0, 16))
+                                    ->append(new Token(TokenType::T_VALUE, '23', 0, 17))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}', 0, 19))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 0, 35))
+                                    ->append(new Token(TokenType::T_VALUE, '42', 0, 52))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_STOP, ')', 0, 54))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, '23', 0, 17))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}', 0, 19))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 0, 35))
+                                    ->append(new Token(TokenType::T_VALUE, '42', 0, 52))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, '23'))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}'))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}'))
+                                    ->append(new Token(TokenType::T_VALUE, '42'))
+                            )
                     ),
             ],
             'identifier, function, function name with value, hash comment' => [
@@ -3385,7 +3478,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1', 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1', 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3395,7 +3488,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1'))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1')))
                     ),
             ],
             'identifier, function, function name with value, broken forced comment' => [
@@ -3421,7 +3514,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1', 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1', 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3431,7 +3524,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1'))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1')))
                     ),
             ],
             'identifier, function, function name with value, doubleslash comment' => [
@@ -3457,7 +3550,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1', 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1', 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3467,7 +3560,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1'))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1')))
                     ),
             ],
             'identifier, function, function name with value, multiline comment' => [
@@ -3494,7 +3587,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1', 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1', 0, 17)))
                     ),
                 (new LineStream())
                     ->append(
@@ -3504,7 +3597,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1'))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1')))
                     ),
             ],
             'identifier, function, function name with value, multiline comment, identifier' => [
@@ -3540,7 +3633,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1', 0, 17))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1', 0, 17)))
                     )
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -3569,7 +3662,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                     ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
                             )
                             ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
-                            ->setFunctionValueToken(new Token(TokenType::T_VALUE, '1'))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1')))
                     )
                     ->append(
                         (new IdentifierAssignmentLine())

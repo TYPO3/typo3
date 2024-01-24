@@ -1997,6 +1997,145 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 'foo' => "  bar1Valuebaz\n  bar2Value",
             ],
         ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('3,23,{$bar}');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$bar}', 1, 17))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'function with non existing constant is kept as string literal' => [
+            "foo = 3,23\n" .
+            'foo := addToList({$bar})',
+            [],
+            $expectedAst,
+            [
+                'foo' => '3,23,{$bar}',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('3,23,42');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$my.constant}', 1, 17))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'function with existing constant' => [
+            "foo = 3,23\n" .
+            'foo := addToList({$my.constant})',
+            ['my.constant' => '42'],
+            $expectedAst,
+            [
+                'foo' => '3,23,42',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('3,23,42');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$my.escaped\.constant}', 1, 17))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'function with existing escaped constant' => [
+            "foo = 3,23\n" .
+            "foo := addToList({\$my.escaped\.constant})",
+            ['my.escaped\.constant' => '42'],
+            $expectedAst,
+            [
+                'foo' => '3,23,42',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('23, 42');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_VALUE, '23, ', 0, 17))
+                ->append(new Token(TokenType::T_CONSTANT, '{$my.constant}', 0, 21))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'function with constant and not previously set value' => [
+            'foo := addToList(23, {$my.constant})',
+            ['my.constant' => '42'],
+            $expectedAst,
+            [
+                'foo' => '23, 42',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('3, 23, 42');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$my.constant}', 0, 17))
+                ->append(new Token(TokenType::T_VALUE, ', 23, ', 0, 31))
+                ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 0, 37))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'function with multi constants' => [
+            'foo := addToList({$my.constant}, 23, {$other.constant})',
+            [
+                'my.constant' => '3',
+                'other.constant' => '42',
+            ],
+            $expectedAst,
+            [
+                'foo' => '3, 23, 42',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('23,42');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$my.constant}', 1, 17))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'multiple functions with existing constant' => [
+            "foo = 3,23\n" .
+            "foo := addToList({\$my.constant})\n" .
+            'foo := removeFromList(3)',
+            ['my.constant' => '42'],
+            $expectedAst,
+            [
+                'foo' => '23,42',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('23,42');
+        // @todo: With the current construct, only the *last* value manipulating function is
+        //        parked in setOriginalValueTokenStream(), the information that a previous
+        //        function may have used a constant is lost. Therefor, the BE modules can't
+        //        reflect multi function changes. Also see the CommentAwareAstBuilder comment.
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 2, 22))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'multiple functions with multiple constants' => [
+            "foo = 3,23\n" .
+            "foo := addToList({\$my.constant})\n" .
+            'foo := removeFromList({$other.constant})',
+            [
+                'my.constant' => '42',
+                'other.constant' => '3',
+            ],
+            $expectedAst,
+            [
+                'foo' => '23,42',
+            ],
+        ];
     }
 
     #[DataProvider('buildConstantDataProvider')]

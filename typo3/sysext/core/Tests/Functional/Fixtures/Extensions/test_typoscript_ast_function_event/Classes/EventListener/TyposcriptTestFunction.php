@@ -24,7 +24,7 @@ final class TyposcriptTestFunction
     public function __invoke(EvaluateModifierFunctionEvent $event): void
     {
         if ($event->getFunctionName() === 'testFunction') {
-            $event->setValue(($event->getOriginalValue() ?? '') . ' ' . ($event->getFunctionArgument() ?? ''));
+            $event->setValue(($event->getOriginalValue() ?? '') . ' ' . ($event->getFunctionArgument()));
         }
     }
 }

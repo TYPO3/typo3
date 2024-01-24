@@ -81,7 +81,7 @@ final class AstBuilder extends AbstractAstBuilder implements AstBuilderInterface
             } elseif ($line instanceof IdentifierFunctionLine) {
                 // "foo := addToList(42)": Evaluate functions
                 $node = $this->getOrAddNodeFromIdentifierStream($currentObjectPath, $line->getIdentifierTokenStream());
-                $node->setValue($this->evaluateValueModifier($line->getFunctionNameToken(), $line->getFunctionValueToken(), $node->getValue()));
+                $node->setValue($this->evaluateValueModifier($line->getFunctionNameToken(), $line->getFunctionValueTokenStream(), $node->getValue()));
             } elseif ($line instanceof IdentifierReferenceLine) {
                 // "foo =< bar": Prepare a reference resolving
                 $this->handleIdentifierReferenceLine($line, $currentObjectPath);
