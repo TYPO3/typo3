@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -51,29 +50,12 @@ abstract class AbstractBackendController extends ActionController
     }
 
     /**
-     * Convert arrays with EXT: resource paths to web paths
-     *
-     * Input:
-     * [
-     *   100 => 'EXT:form/Resources/Public/Css/form.css'
-     * ]
-     *
-     * Output:
-     *
-     * [
-     *   0 => 'typo3/sysext/form/Resources/Public/Css/form.css'
-     * ]
+     * The functionality of this method has been removed because it caused problems with open_basedir restrictions.
+     * See https://forge.typo3.org/issues/98545 for details.
+     * This method will be removed in TYPO3 v13.
      */
     protected function resolveResourcePaths(array $resourcePaths): array
     {
-        $return = [];
-        foreach ($resourcePaths as $resourcePath) {
-            $resourcePath = PathUtility::getPublicResourceWebPath($resourcePath);
-            if (empty($resourcePath)) {
-                continue;
-            }
-            $return[] = $resourcePath;
-        }
-        return $return;
+        return $resourcePaths;
     }
 }
