@@ -163,7 +163,7 @@ class FormEditorController extends AbstractBackendController
         );
         $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
-        $stylesheets = $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']);
+        $stylesheets = $this->prototypeConfiguration['formEditor']['stylesheets'];
         foreach ($stylesheets as $stylesheet) {
             $pageRenderer->addCssFile($stylesheet);
         }

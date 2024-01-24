@@ -89,7 +89,7 @@ class FormManagerController extends AbstractBackendController
             [
                 'paginator' => $arrayPaginator,
                 'pagination' => $pagination,
-                'stylesheets' => $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']),
+                'stylesheets' => $this->formSettings['formManager']['stylesheets'],
                 'dynamicRequireJsModules' => $this->formSettings['formManager']['dynamicRequireJsModules'],
                 'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData()),
             ]
