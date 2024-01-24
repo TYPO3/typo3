@@ -572,9 +572,9 @@ final class LossyTokenizer implements TokenizerInterface
             $functionNameCharCount++;
         }
         $functionBodyStartPosition = $functionNameCharCount;
-        $functionBody = '';
+        $functionBodyPart = '';
         $functionBodyCharCount = 0;
-        $functionValueToken = false;
+        $functionValueStream = new TokenStream();
         while (true) {
             $nextChar = $functionChars[$functionBodyStartPosition + $functionBodyCharCount] ?? null;
             if ($nextChar === null) {
@@ -582,21 +582,20 @@ final class LossyTokenizer implements TokenizerInterface
             }
             if ($nextChar === ')') {
                 if ($functionBodyCharCount) {
-                    $functionValueToken = new Token(TokenType::T_VALUE, $functionBody);
+                    $functionValueStream = $this->parseValueForConstants($functionValueStream, $functionBodyPart);
                     $functionBodyCharCount++;
                 }
                 break;
             }
-            $functionBody .= $nextChar;
+            $functionBodyPart .= $nextChar;
             $functionBodyCharCount++;
         }
-        $line = (new IdentifierFunctionLine())
-            ->setIdentifierTokenStream($this->identifierStream)
-            ->setFunctionNameToken($functionNameToken); /** @phpstan-ignore-line phpstan is wrong here. We *know* a $functionNameToken exists at this point. */
-        if ($functionValueToken) {
-            $line->setFunctionValueToken($functionValueToken);
-        }
-        $this->lineStream->append($line);
+        $this->lineStream->append(
+            (new IdentifierFunctionLine())
+                ->setIdentifierTokenStream($this->identifierStream)
+                ->setFunctionNameToken($functionNameToken) /** @phpstan-ignore-line phpstan is wrong here. We *know* a $functionNameToken exists. */
+                ->setFunctionValueTokenStream($functionValueStream)
+        );
         // Check for multiline comment
         $this->currentLineString = implode('', array_slice($functionChars, $functionBodyStartPosition + $functionBodyCharCount + 1));
         if (mb_strlen($this->currentLineString) >= 1 && str_starts_with($this->currentLineString, '/*')) {

@@ -822,14 +822,14 @@ final class LosslessTokenizer implements TokenizerInterface
             $functionNameCharCount++;
         }
         $functionBodyStartPosition = $functionNameCharCount;
-        $functionBody = '';
+        $functionBodyPart = '';
         $functionBodyCharCount = 0;
-        $functionValueToken = false;
+        $functionValueStream = new TokenStream();
         while (true) {
             $nextChar = $functionChars[$functionBodyStartPosition + $functionBodyCharCount] ?? null;
             if ($nextChar === null) {
                 if ($functionBodyCharCount) {
-                    $this->tokenStream->append(new Token(TokenType::T_VALUE, $functionBody, $this->currentLineNumber, $functionBodyCharCount));
+                    $this->tokenStream->append(new Token(TokenType::T_VALUE, $functionBodyPart, $this->currentLineNumber, $functionBodyStartPosition));
                 }
                 ($this->currentLinebreakCallback)();
                 $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
@@ -837,37 +837,35 @@ final class LosslessTokenizer implements TokenizerInterface
             }
             if ($nextChar === ')') {
                 if ($functionBodyCharCount) {
-                    $functionValueToken = new Token(TokenType::T_VALUE, $functionBody, $this->currentLineNumber, $this->currentColumnInLine + $functionNameCharCount);
-                    $this->tokenStream->append($functionValueToken);
+                    [$functionValueStream, $this->tokenStream] = $this->parseValueForConstants($functionValueStream, $this->tokenStream, $functionBodyPart, $this->currentLineNumber, $this->currentColumnInLine, $functionBodyStartPosition);
                 }
                 $this->tokenStream->append(new Token(TokenType::T_FUNCTION_VALUE_STOP, ')', $this->currentLineNumber, $this->currentColumnInLine + $functionNameCharCount + $functionBodyCharCount));
                 $functionBodyCharCount++;
                 break;
             }
-            $functionBody .= $nextChar;
+            $functionBodyPart .= $nextChar;
             $functionBodyCharCount++;
         }
         $this->currentColumnInLine = $this->currentColumnInLine + $functionNameCharCount + $functionBodyCharCount;
         $this->currentLineString = substr($this->currentLineString, $functionNameCharCount + $functionBodyCharCount);
         $this->parseTabsAndWhitespaces();
         $this->makeComment();
-        $line = (new IdentifierFunctionLine())
-            ->setIdentifierTokenStream($this->identifierStream)
-            ->setFunctionNameToken($functionNameToken) /** @phpstan-ignore-line phpstan is wrong here. We *know* a $functionNameToken exists at this point. */
-            ->setTokenStream($this->tokenStream);
-        if ($functionValueToken) {
-            $line->setFunctionValueToken($functionValueToken);
-        }
-        $this->lineStream->append($line);
+        $this->lineStream->append(
+            (new IdentifierFunctionLine())
+                ->setIdentifierTokenStream($this->identifierStream)
+                ->setFunctionNameToken($functionNameToken) /** @phpstan-ignore-line phpstan is wrong here. We *know* a $functionNameToken exists. */
+                ->setTokenStream($this->tokenStream)
+                ->setFunctionValueTokenStream($functionValueStream)
+        );
     }
 
     /**
      * @return array{0: TokenStreamInterface, 1: TokenStreamInterface}
      */
-    private function parseValueForConstants(TokenStreamInterface $valueStream, TokenStreamInterface $tokenStream, string $value, int $line, int $column): array
+    private function parseValueForConstants(TokenStreamInterface $valueStream, TokenStreamInterface $tokenStream, string $value, int $line, int $column, int $tokenOffsetPosition = 0): array
     {
         if (!str_contains($value, '{$')) {
-            $valueToken = new Token(TokenType::T_VALUE, $value, $line, $column);
+            $valueToken = new Token(TokenType::T_VALUE, $value, $line, $column + $tokenOffsetPosition);
             $valueStream->append($valueToken);
             $tokenStream->append($valueToken);
             return [$valueStream, $tokenStream];
@@ -882,7 +880,7 @@ final class LosslessTokenizer implements TokenizerInterface
             $char = $splitLine[$currentPosition] ?? null;
             if ($char === null) {
                 if ($currentStringLength) {
-                    $valueToken = new Token(TokenType::T_VALUE, $currentString, $line, $column + $lastTokenEndPosition);
+                    $valueToken = new Token(TokenType::T_VALUE, $currentString, $line, $column + $lastTokenEndPosition + $tokenOffsetPosition);
                     $valueStream->append($valueToken);
                     $tokenStream->append($valueToken);
                 }
@@ -892,7 +890,7 @@ final class LosslessTokenizer implements TokenizerInterface
             if ($nextTwoChars === '{$') {
                 $isInConstant = true;
                 if ($currentStringLength) {
-                    $valueToken = new Token(TokenType::T_VALUE, $currentString, $line, $column + $lastTokenEndPosition);
+                    $valueToken = new Token(TokenType::T_VALUE, $currentString, $line, $column + $lastTokenEndPosition + $tokenOffsetPosition);
                     $valueStream->append($valueToken);
                     $tokenStream->append($valueToken);
                     $lastTokenEndPosition = $currentPosition;
@@ -902,7 +900,7 @@ final class LosslessTokenizer implements TokenizerInterface
                 continue;
             }
             if ($isInConstant && $char === '}') {
-                $valueToken = new Token(TokenType::T_CONSTANT, $currentString . '}', $line, $column + $lastTokenEndPosition);
+                $valueToken = new Token(TokenType::T_CONSTANT, $currentString . '}', $line, $column + $lastTokenEndPosition + $tokenOffsetPosition);
                 if (!$valueStream instanceof ConstantAwareTokenStream) {
                     $valueStream = (new ConstantAwareTokenStream())->setAll($valueStream->getAll());
                 }

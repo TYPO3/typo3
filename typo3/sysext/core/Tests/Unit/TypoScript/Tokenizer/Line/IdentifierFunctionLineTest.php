@@ -59,10 +59,10 @@ final class IdentifierFunctionLineTest extends UnitTestCase
     }
 
     #[Test]
-    public function setFunctionValueTokenThrowsIfTokenIsNotOfTypeValue(): void
+    public function getFunctionValueTokenStreamThrowsIfNotSet(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionCode(1655825122);
-        (new IdentifierFunctionLine())->setFunctionValueToken(new Token(TokenType::T_BLANK, ''));
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1717495996);
+        (new IdentifierFunctionLine())->getFunctionValueTokenStream();
     }
 }

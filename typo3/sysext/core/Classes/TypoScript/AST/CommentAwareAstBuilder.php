@@ -111,7 +111,19 @@ final class CommentAwareAstBuilder extends AbstractAstBuilder implements AstBuil
             } elseif ($line instanceof IdentifierFunctionLine) {
                 // "foo := addToList(42)": Evaluate functions
                 $node = $this->getOrAddNodeFromIdentifierStream($currentObjectPath, $line->getIdentifierTokenStream());
-                $node->setValue($this->evaluateValueModifier($line->getFunctionNameToken(), $line->getFunctionValueToken(), $node->getValue()));
+                $functionValueTokenStream = $line->getFunctionValueTokenStream();
+                $node->setValue($this->evaluateValueModifier($line->getFunctionNameToken(), clone $functionValueTokenStream, $node->getValue()));
+                if ($functionValueTokenStream instanceof ConstantAwareTokenStream) {
+                    // @todo: This is a bit unfortunate. When multiple functions manipulate a value after each other,
+                    //        only the stream of the last one is preserved, previous ones are lost. This way, the BE modules
+                    //        can not reflect when previous functions used constants. One idea to solve this is to turn existing
+                    //        nodes into special "function" nodes that park single operations, which are then executed lazy when
+                    //        a node value is string'ified. The BE modules could then render full lists of value manipulations and
+                    //        show how values evolve. Another idea is to change setOriginalValueTokenStream() to gather multiple
+                    //        streams - probably together with the current value at this point in time, which would also allow
+                    //        rendering how a value evolves over time as well.
+                    $node->setOriginalValueTokenStream($functionValueTokenStream);
+                }
                 if ($previousLineComments) {
                     foreach ($previousLineComments as $previousLineComment) {
                         $node->addComment($previousLineComment);
@@ -161,11 +173,11 @@ final class CommentAwareAstBuilder extends AbstractAstBuilder implements AstBuil
         $node = $this->getOrAddNodeFromIdentifierStream($currentObjectPath, $line->getIdentifierTokenStream());
         $valueTokenStream = $line->getValueTokenStream();
         if ($valueTokenStream instanceof ConstantAwareTokenStream) {
+            $node->setOriginalValueTokenStream($valueTokenStream);
+            $valueTokenStream = clone $valueTokenStream;
             $valueTokenStream->setFlatConstants($this->flatConstants);
             $node->setPreviousValue($node->getValue());
             $node->setValue((string)$valueTokenStream);
-            $valueTokenStream->setFlatConstants(null);
-            $node->setOriginalValueTokenStream($valueTokenStream);
             return $node;
         }
         $node->setPreviousValue($node->getValue());
