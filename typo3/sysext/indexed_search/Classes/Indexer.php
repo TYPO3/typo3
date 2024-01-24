@@ -268,12 +268,12 @@ class Indexer
                 $this->log_setTSlogMessage('Indexing needed, reason: Updates gr_list!', LogLevel::NOTICE);
             }
             // Divide into title,keywords,description and body:
-            $this->log_push('Split content', '');
+            $this->timeTracker->push('Split content');
             $this->indexingDataStringDto = $this->splitHTMLContent($this->conf['content']);
             if ($this->conf['indexedDocTitle']) {
                 $this->indexingDataStringDto->title = $this->conf['indexedDocTitle'];
             }
-            $this->log_pull();
+            $this->timeTracker->pull();
             // Calculating a hash over what is to be the actual page content. Maybe this hash should not include title,description and keywords? The bodytext is the primary concern. (on the other hand a changed page-title would make no difference then, so don't!)
             $this->content_md5h = IndexedSearchUtility::md5inthash(implode('', $this->indexingDataStringDto->toArray()));
             // This function checks if there is already a page (with gr_list = 0,-1) indexed and if that page has the very same contentHash.
@@ -282,41 +282,48 @@ class Indexer
             $checkCHash = $this->checkContentHash();
             if (!is_array($checkCHash) || $check === 1) {
                 $Pstart = IndexedSearchUtility::milliseconds();
-                $this->log_push('Converting entities of content', '');
+                $this->timeTracker->push('Converting entities of content');
                 $this->charsetEntity2utf8($this->indexingDataStringDto);
-                $this->log_pull();
+                $this->timeTracker->pull();
+
                 // Splitting words
-                $this->log_push('Extract words from content', '');
+                $this->timeTracker->push('Extract words from content');
                 $splitInWords = $this->processWordsInArrays($this->indexingDataStringDto);
-                $this->log_pull();
+                $this->timeTracker->pull();
+
                 // Analyze the indexed words.
-                $this->log_push('Analyze the extracted words', '');
+                $this->timeTracker->push('Analyze the extracted words');
                 $indexArr = $this->indexAnalyze($splitInWords);
-                $this->log_pull();
+                $this->timeTracker->pull();
+
                 // Submitting page (phash) record
-                $this->log_push('Submitting page', '');
+                $this->timeTracker->push('Submitting page');
                 $this->submitPage();
-                $this->log_pull();
+                $this->timeTracker->pull();
+
                 // Check words and submit to word list if not there
-                $this->log_push('Check word list and submit words', '');
+                $this->timeTracker->push('Check word list and submit words');
                 if (IndexedSearchUtility::isTableUsed('index_words')) {
                     $indexArr = $this->removePhashCollisions($indexArr);
                     $this->checkWordList($indexArr);
                     $this->submitWords($indexArr, $this->hash['phash']);
                 }
-                $this->log_pull();
+                $this->timeTracker->pull();
+
                 // Set parsetime
                 $this->updateParsetime($this->hash['phash'], IndexedSearchUtility::milliseconds() - $Pstart);
+
                 // Checking external files if configured for.
-                $this->log_push('Checking external files', '');
+                $this->timeTracker->push('Checking external files');
                 if ($this->conf['index_externals']) {
                     $this->extractLinks($this->conf['content']);
                 }
-                $this->log_pull();
+                $this->timeTracker->pull();
             } else {
                 // Update the timestamp
                 $this->updateTstamp($this->hash['phash'], $this->conf['mtime']);
                 $this->updateSetId($this->hash['phash']);
+
                 // $checkCHash['phash'] is the phash of the result row that is similar to the current phash regarding the content hash.
                 $this->update_grlist($checkCHash['phash'], $this->hash['phash']);
                 $this->updateRootline();
@@ -807,7 +814,7 @@ class Indexer
                 $cParts = $this->fileContentParts($ext, $absFile);
                 foreach ($cParts as $cPKey) {
                     $this->internal_log = [];
-                    $this->log_push('Index: ' . str_replace('.', '_', PathUtility::basename($file)) . ($cPKey ? '#' . $cPKey : ''), '');
+                    $this->timeTracker->push('Index: ' . str_replace('.', '_', PathUtility::basename($file)) . ($cPKey ? '#' . $cPKey : ''));
                     $Pstart = IndexedSearchUtility::milliseconds();
                     $subinfo = ['key' => $cPKey];
                     // Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
@@ -822,36 +829,42 @@ class Indexer
                         // Check external file counter:
                         if ($this->externalFileCounter < $this->maxExternalFiles || $force) {
                             // Divide into title,keywords,description and body:
-                            $this->log_push('Split content', '');
+                            $this->timeTracker->push('Split content');
                             $indexingDataDtoAsString = $this->readFileContent($ext, $absFile, $cPKey);
-                            $this->log_pull();
+                            $this->timeTracker->pull();
                             if ($indexingDataDtoAsString !== null) {
                                 // Calculating a hash over what is to be the actual content. (see indexTypo3PageContent())
                                 $content_md5h = IndexedSearchUtility::md5inthash(implode('', $indexingDataDtoAsString->toArray()));
                                 if ($this->checkExternalDocContentHash($phash_arr['phash_grouping'], $content_md5h) || $force) {
                                     // Increment counter:
                                     $this->externalFileCounter++;
+
                                     // Splitting words
-                                    $this->log_push('Extract words from content', '');
+                                    $this->timeTracker->push('Extract words from content');
                                     $splitInWords = $this->processWordsInArrays($indexingDataDtoAsString);
-                                    $this->log_pull();
+                                    $this->timeTracker->pull();
+
                                     // Analyze the indexed words.
-                                    $this->log_push('Analyze the extracted words', '');
+                                    $this->timeTracker->push('Analyze the extracted words');
                                     $indexArr = $this->indexAnalyze($splitInWords);
-                                    $this->log_pull();
+                                    $this->timeTracker->pull();
+
                                     // Submitting page (phash) record
-                                    $this->log_push('Submitting page', '');
+                                    $this->timeTracker->push('Submitting page');
+
                                     // Unfortunately I cannot determine WHEN a file is originally made - so I must return the modification time...
                                     $this->submitFilePage($phash_arr, $file, $subinfo, $ext, $fileInfo['mtime'], $fileInfo['ctime'], $fileInfo['size'], $content_md5h, $indexingDataDtoAsString);
-                                    $this->log_pull();
+                                    $this->timeTracker->pull();
+
                                     // Check words and submit to word list if not there
-                                    $this->log_push('Check word list and submit words', '');
+                                    $this->timeTracker->push('Check word list and submit words');
                                     if (IndexedSearchUtility::isTableUsed('index_words')) {
                                         $indexArr = $this->removePhashCollisions($indexArr);
                                         $this->checkWordList($indexArr);
                                         $this->submitWords($indexArr, $phash_arr['phash']);
                                     }
-                                    $this->log_pull();
+                                    $this->timeTracker->pull();
+
                                     // Set parsetime
                                     $this->updateParsetime($phash_arr['phash'], IndexedSearchUtility::milliseconds() - $Pstart);
                                 } else {
@@ -871,7 +884,7 @@ class Indexer
                     // Checking and setting sections:
                     $this->submitFile_section($phash_arr['phash']);
                     // Setting a section-record for the file. This is done also if the file is not indexed. Notice that section records are deleted when the page is indexed.
-                    $this->log_pull();
+                    $this->timeTracker->pull();
                 }
             } else {
                 $this->log_setTSlogMessage('Indexing not possible; The extension "' . $ext . '" was not supported.');
@@ -1848,30 +1861,6 @@ class Indexer
         $hArray['subinfo'] = $subinfo;
         $hash['phash'] = IndexedSearchUtility::md5inthash(serialize($hArray));
         return $hash;
-    }
-
-    /*********************************
-     *
-     * Internal logging functions
-     *
-     *********************************/
-    /**
-     * Push function wrapper for TT logging
-     *
-     * @param string $msg Title to set
-     * @param string $key Key (?)
-     */
-    public function log_push($msg, $key)
-    {
-        $this->timeTracker->push($msg, $key);
-    }
-
-    /**
-     * Pull function wrapper for TT logging
-     */
-    public function log_pull()
-    {
-        $this->timeTracker->pull();
     }
 
     public function log_setTSlogMessage(string $msg, string $logLevel = LogLevel::INFO): void
