@@ -23,6 +23,7 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Schema\Index;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Provide custom portable index listing for MySQL and MariDB platforms using the custom MySQLSchemaManager.
@@ -64,9 +65,7 @@ trait CustomPortableTableIndexesListTrait
 
             $subPartColumns = array_filter(
                 $tableIndexes,
-                static function (array $column): ?int {
-                    return $column['Sub_Part'];
-                }
+                static fn(array $column): bool => $column['Sub_Part'] !== null && MathUtility::canBeInterpretedAsInteger($column['Sub_Part'])
             );
 
             if (!empty($subPartColumns)) {
