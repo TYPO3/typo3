@@ -73,10 +73,7 @@ class AdministrationRepository
         return $allRows;
     }
 
-    /**
-     * Get number of fulltext records
-     */
-    public function getNumberOfFulltextRecords(int $phash): bool|int
+    public function getNumberOfFulltextRecords(int $phash): int|false
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
         return $queryBuilder
@@ -92,10 +89,7 @@ class AdministrationRepository
             ->fetchOne();
     }
 
-    /**
-     * Get number of words
-     */
-    public function getNumberOfWords(int $phash): bool|int
+    public function getNumberOfWords(int $phash): int|false
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_rel');
         return $queryBuilder
@@ -424,7 +418,7 @@ class AdministrationRepository
     public function getTree(int $pageId, int $depth, string $mode): array
     {
         $allLines = [];
-        $pageRecord = BackendUtility::getRecord('pages', (int)$pageId);
+        $pageRecord = BackendUtility::getRecord('pages', $pageId);
         if (!$pageRecord) {
             return $allLines;
         }
@@ -439,7 +433,7 @@ class AdministrationRepository
         ];
 
         if ($depth > 0) {
-            $tree->getTree((int)$pageId, $depth);
+            $tree->getTree($pageId, $depth);
         }
 
         foreach ($tree->tree as $singleLine) {
@@ -623,7 +617,6 @@ class AdministrationRepository
      * Generates a list of Page-uid's from $id.
      * The only pages excluded from the list are deleted pages.
      *
-     * @param int $id page id
      * @return array Returns an array with all page IDs
      */
     protected function extGetTreeList(int $id): array
@@ -676,7 +669,7 @@ class AdministrationRepository
     /**
      * Remove indexed phash row
      */
-    public function removeIndexedPhashRow(string $phashList, int $pageId, int $depth = 4)
+    public function removeIndexedPhashRow(string $phashList, int $pageId, int $depth = 4): void
     {
         if ($phashList === 'ALL') {
             if ($depth === 0) {

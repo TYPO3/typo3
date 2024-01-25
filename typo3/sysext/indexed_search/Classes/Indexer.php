@@ -115,7 +115,6 @@ class Indexer
      * Content of TYPO3 page
      */
     public int $content_md5h;
-
     public array $internal_log = [];
     public string $indexExternalUrl_content = '';
     public int $freqRange = 32000;
@@ -133,16 +132,18 @@ class Indexer
         $this->tstamp_maxAge = MathUtility::forceIntegerInRange((int)($this->indexerConfig['maxAge'] ?? 0) * 3600, 0);
         $this->maxExternalFiles = MathUtility::forceIntegerInRange((int)($this->indexerConfig['maxExternalFiles'] ?? 5), 0, 1000);
         $this->flagBitMask = MathUtility::forceIntegerInRange((int)($this->indexerConfig['flagBitMask'] ?? 0), 0, 255);
+
+        // Initialize lexer (class that deconstructs the text into words):
+        $lexerObjectClassName = ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?? null)
+            ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer']
+            : Lexer::class;
+        /** @var Lexer $lexer */
+        $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
+        $this->lexerObj = $lexer;
+        $this->lexerObj->debug = (bool)($this->indexerConfig['debugMode'] ?? false);
     }
 
-    /********************************
-     *
-     * Initialization
-     *
-     *******************************/
-
     /**
-     * Initializes the object.
      * @param array|null $configuration will be used to set $this->conf, otherwise $this->conf MUST be set with proper values prior to this call
      */
     public function init(array $configuration = null): void
@@ -157,19 +158,8 @@ class Indexer
         if ($this->conf['index_externals']) {
             $this->initializeExternalParsers();
         }
-        // Initialize lexer (class that deconstructs the text into words):
-        $lexerObjectClassName = ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?? false) ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : Lexer::class;
-        /** @var Lexer $lexer */
-        $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
-        $this->lexerObj = $lexer;
-        $this->lexerObj->debug = (bool)($this->indexerConfig['debugMode'] ?? false);
     }
 
-    /**
-     * Initialize external parsers
-     *
-     * @internal
-     */
     public function initializeExternalParsers(): void
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
@@ -192,14 +182,14 @@ class Indexer
      */
     public function indexTypo3PageContent(): void
     {
-        $check = $this->checkMtimeTstamp($this->conf['mtime'], $this->hash['phash']);
+        $reindexingRequired = $this->checkMtimeTstamp($this->conf['mtime'], $this->hash['phash']);
         $is_grlist = $this->is_grlist_set($this->hash['phash']);
-        if ($check > 0 || !$is_grlist || $this->forceIndexing) {
+        if ($reindexingRequired > 0 || !$is_grlist || $this->forceIndexing) {
             // Setting message:
             if ($this->forceIndexing) {
                 $this->log_setTSlogMessage('Indexing needed, reason: Forced', LogLevel::NOTICE);
-            } elseif ($check > 0) {
-                $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$check], LogLevel::NOTICE);
+            } elseif ($reindexingRequired > 0) {
+                $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$reindexingRequired], LogLevel::NOTICE);
             } else {
                 $this->log_setTSlogMessage('Indexing needed, reason: Updates gr_list!', LogLevel::NOTICE);
             }
@@ -214,9 +204,9 @@ class Indexer
             $this->content_md5h = IndexedSearchUtility::md5inthash(implode('', $this->indexingDataStringDto->toArray()));
             // This function checks if there is already a page (with gr_list = 0,-1) indexed and if that page has the very same contentHash.
             // If the contentHash is the same, then we can rest assured that this page is already indexed and regardless of mtime and origContent we don't need to do anything more.
-            // This will also prevent pages from being indexed if a fe_users has logged in and it turns out that the page content is not changed anyway. fe_users logged in should always search with hash_gr_list = "0,-1" OR "[their_group_list]". This situation will be prevented only if the page has been indexed with no user login on before hand. Else the page will be indexed by users until that event. However that does not present a serious problem.
+            // This will also prevent pages from being indexed if a fe_users has logged in, and it turns out that the page content is not changed anyway. fe_users logged in should always search with hash_gr_list = "0,-1" OR "[their_group_list]". This situation will be prevented only if the page has been indexed with no user login on before hand. Else the page will be indexed by users until that event. However that does not present a serious problem.
             $checkCHash = $this->checkContentHash();
-            if (!is_array($checkCHash) || $check === 1) {
+            if (!is_array($checkCHash) || $reindexingRequired === 1) {
                 $Pstart = $this->milliseconds();
                 $this->timeTracker->push('Converting entities of content');
                 $this->charsetEntity2utf8($this->indexingDataStringDto);
@@ -246,15 +236,15 @@ class Indexer
                 }
                 $this->timeTracker->pull();
 
-                // Set parsetime
+                // Set parse time
                 $this->updateParsetime($this->hash['phash'], $this->milliseconds() - $Pstart);
 
                 // Checking external files if configured for.
-                $this->timeTracker->push('Checking external files');
                 if ($this->conf['index_externals']) {
+                    $this->timeTracker->push('Checking external files', '');
                     $this->extractLinks($this->conf['content']);
+                    $this->timeTracker->pull();
                 }
-                $this->timeTracker->pull();
             } else {
                 // Update the timestamp
                 $this->updateTstamp($this->hash['phash'], $this->conf['mtime']);
@@ -266,12 +256,12 @@ class Indexer
                 $this->log_setTSlogMessage('Indexing not needed, the contentHash, ' . $this->content_md5h . ', has not changed. Timestamp, grlist and rootline updated if necessary.');
             }
         } else {
-            $this->log_setTSlogMessage('Indexing not needed, reason: ' . $this->reasons[$check]);
+            $this->log_setTSlogMessage('Indexing not needed, reason: ' . $this->reasons[$reindexingRequired]);
         }
     }
 
     /**
-     * Splits HTML content and returns an associative array, with title, a list of metatags, and a list of words in the body.
+     * Splits HTML content and returns an associative array, with title, a list of meta tags, and a list of words in the body.
      *
      * @param string $content HTML content to index. To some degree expected to be made by TYPO3 (i.e. splitting the header by ":")
      */
@@ -284,7 +274,7 @@ class Indexer
         $this->embracingTags($headPart, 'TITLE', $indexingDataDto->title, $dummy2, $dummy);
         $titleParts = explode(':', $indexingDataDto->title, 2);
         $indexingDataDto->title = trim($titleParts[1] ?? $titleParts[0]);
-        // get keywords and description metatags
+        // get keywords and description meta tags
         if ($this->conf['index_metatags']) {
             $meta = [];
             $i = 0;
@@ -305,7 +295,7 @@ class Indexer
         }
         // Process <!--TYPO3SEARCH_begin--> or <!--TYPO3SEARCH_end--> tags:
         $this->typoSearchTags($indexingDataDto->body);
-        // Get rid of unwanted sections (ie. scripting and style stuff) in body
+        // Get rid of unwanted sections (i.e. scripting and style stuff) in body
         $tagList = explode(',', $this->excludeSections);
         foreach ($tagList as $tag) {
             while ($this->embracingTags($indexingDataDto->body, $tag, $dummy, $indexingDataDto->body, $dummy2)) {
@@ -322,16 +312,14 @@ class Indexer
 
     /**
      * Extract the charset value from HTML meta tag.
-     *
-     * @param string $content HTML content
-     * @return string The charset value if found.
      */
     public function getHTMLcharset(string $content): string
     {
-        if (preg_match('/<meta[[:space:]]+[^>]*http-equiv[[:space:]]*=[[:space:]]*["\']CONTENT-TYPE["\'][^>]*>/i', $content, $reg)) {
-            if (preg_match('/charset[[:space:]]*=[[:space:]]*([[:alnum:]-]+)/i', $reg[0], $reg2)) {
-                return $reg2[1];
-            }
+        // @todo: Use \DOMDocument and DOMXpath
+        if (preg_match('/<meta[[:space:]]+[^>]*http-equiv[[:space:]]*=[[:space:]]*["\']CONTENT-TYPE["\'][^>]*>/i', $content, $reg)
+            && preg_match('/charset[[:space:]]*=[[:space:]]*([[:alnum:]-]+)/i', $reg[0], $reg2)
+        ) {
+            return $reg2[1];
         }
 
         return '';
@@ -342,20 +330,20 @@ class Indexer
      */
     public function convertHTMLToUtf8(string $content, string $charset = ''): string
     {
-        // Find charset:
+        // Find charset
         $charset = $charset ?: $this->getHTMLcharset($content);
         $charset = strtolower(trim($charset));
-        // Convert charset:
+        // Convert charset
         if ($charset && $charset !== 'utf-8') {
             $content = mb_convert_encoding($content, 'utf-8', $charset);
         }
-        // Convert entities, assuming document is now UTF-8:
+        // Convert entities, assuming document is now UTF-8
         return html_entity_decode($content);
     }
 
     /**
      * Finds first occurrence of embracing tags and returns the embraced content and the original string with
-     * the tag removed in the two passed variables. Returns FALSE if no match found. ie. useful for finding
+     * the tag removed in the two passed variables. Returns FALSE if no match found. i.e. useful for finding
      * <title> of document or removing <script>-sections
      *
      * @param string $string String to search in
@@ -363,7 +351,6 @@ class Indexer
      * @param string|null $tagContent Passed by reference: Content inside found tag
      * @param string|null $stringAfter Passed by reference: Content after found tag
      * @param string|null $paramList Passed by reference: Attributes of the found tag.
-     * @return bool Returns FALSE if tag was not found, otherwise TRUE.
      */
     public function embracingTags(string $string, string $tagName, ?string &$tagContent, ?string &$stringAfter, ?string &$paramList): bool
     {
@@ -470,7 +457,6 @@ class Indexer
     /**
      * Extracts all links to external documents from the HTML content string
      *
-     * @param string $html
      * @return array<int, array{tag: string, href: string, localPath: string}>
      */
     public function extractHyperLinks(string $html): array
@@ -483,7 +469,7 @@ class Indexer
                 $tagAttributes = $htmlParser->get_tag_attributes($tagData, true);
                 $firstTagName = $htmlParser->getFirstTagName($tagData);
                 if (strtolower($firstTagName) === 'a') {
-                    if (!empty($tagAttributes[0]['href']) && substr($tagAttributes[0]['href'], 0, 1) !== '#') {
+                    if (!empty($tagAttributes[0]['href']) && !str_starts_with($tagAttributes[0]['href'], '#')) {
                         $hyperLinksData[] = [
                             'tag' => $tagData,
                             'href' => $tagAttributes[0]['href'],
@@ -551,7 +537,7 @@ class Indexer
      * Getting HTTP request headers of URL
      *
      * @param string $url The URL
-     * @return array|false If no answer, returns FALSE. Otherwise, an array where HTTP headers are keys
+     * @return array<string, string>|false If no answer, returns FALSE. Otherwise, an array where HTTP headers are keys
      */
     public function getUrlHeaders(string $url): array|false
     {
@@ -667,7 +653,7 @@ class Indexer
     protected static function isRelativeURL(string $url): bool
     {
         $urlParts = @parse_url($url);
-        return (!isset($urlParts['scheme']) || $urlParts['scheme'] === '') && substr(($urlParts['path'][0] ?? ''), 0, 1) !== '/';
+        return (!isset($urlParts['scheme']) || $urlParts['scheme'] === '') && !str_starts_with(($urlParts['path'][0] ?? ''), '/');
     }
 
     /**
@@ -694,12 +680,11 @@ class Indexer
      * @param string $contentTmpFile Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
      * @param string $altExtension File extension for temporary file.
      */
-    public function indexRegularDocument(string $file, bool $force = false, string $contentTmpFile = '', string $altExtension = '')
+    public function indexRegularDocument(string $file, bool $force = false, string $contentTmpFile = '', string $altExtension = ''): void
     {
-        // Init
         $fI = pathinfo($file);
         $ext = $altExtension ?: strtolower($fI['extension']);
-        // Create abs-path:
+        // Create abs-path
         if (!$contentTmpFile) {
             if (!PathUtility::isAbsolutePath($file)) {
                 // Relative, prepend public web path:
@@ -724,10 +709,10 @@ class Indexer
                     $subinfo = ['key' => $cPKey];
                     // Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
                     $phash_arr = ($this->file_phash_arr = $this->setExtHashes($file, $subinfo));
-                    $check = $this->checkMtimeTstamp($fileInfo['mtime'], $phash_arr['phash']);
-                    if ($check > 0 || $force) {
-                        if ($check > 0) {
-                            $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$check], LogLevel::NOTICE);
+                    $reindexingRequired = $this->checkMtimeTstamp($fileInfo['mtime'], $phash_arr['phash']);
+                    if ($reindexingRequired > 0 || $force) {
+                        if ($reindexingRequired > 0) {
+                            $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$reindexingRequired], LogLevel::NOTICE);
                         } else {
                             $this->log_setTSlogMessage('Indexing forced by flag', LogLevel::NOTICE);
                         }
@@ -757,7 +742,7 @@ class Indexer
                                     // Submitting page (phash) record
                                     $this->timeTracker->push('Submitting page');
 
-                                    // Unfortunately I cannot determine WHEN a file is originally made - so I must return the modification time...
+                                    // Unfortunately the original creation time cannot be determined, therefore we fall back to the modification date
                                     $this->submitFilePage($phash_arr, $file, $subinfo, $ext, $fileInfo['mtime'], $fileInfo['ctime'], $fileInfo['size'], $content_md5h, $indexingDataDtoAsString);
                                     $this->timeTracker->pull();
 
@@ -784,7 +769,7 @@ class Indexer
                             $this->log_setTSlogMessage('The limit of ' . $this->maxExternalFiles . ' has already been exceeded, so no indexing will take place this time.');
                         }
                     } else {
-                        $this->log_setTSlogMessage('Indexing not needed, reason: ' . $this->reasons[$check]);
+                        $this->log_setTSlogMessage('Indexing not needed, reason: ' . $this->reasons[$reindexingRequired]);
                     }
                     // Checking and setting sections:
                     $this->submitFile_section($phash_arr['phash']);
@@ -810,7 +795,7 @@ class Indexer
     public function readFileContent(string $fileExtension, string $absoluteFileName, string|int $sectionPointer): ?IndexingDataAsString
     {
         $indexingDataDto = null;
-        // Consult relevant external document parser:
+        // Consult relevant external document parser
         if (is_object($this->external_parsers[$fileExtension])) {
             $indexingDataDto = $this->external_parsers[$fileExtension]->readFileContent($fileExtension, $absoluteFileName, $sectionPointer);
         }
@@ -964,7 +949,7 @@ class Indexer
     }
 
     /**
-     * Calculates relevant information for bodycontent
+     * Calculates relevant information for body content
      *
      * @param array $retArr Index array, passed by reference
      */
@@ -1295,6 +1280,7 @@ class Indexer
      * @param int $mtime mtime value to test against limits and indexed page (usually this is the mtime of the cached document)
      * @param int $phash "phash" used to select any already indexed page to see what its mtime is.
      * @return int Result integer: Generally: <0 = No indexing, >0 = Do indexing (see $this->reasons): -2) Min age was NOT exceeded and so indexing cannot occur.  -1) mtime matched so no need to reindex page. 0) N/A   1) Max age exceeded, page must be indexed again.   2) mtime of indexed page doesn't match mtime given for current content and we must index page.  3) No mtime was set, so we will index...  4) No indexed page found, so of course we will index.
+     * @todo: return an enum instead of an int
      */
     public function checkMtimeTstamp(int $mtime, int $phash): int
     {
@@ -1316,35 +1302,33 @@ class Indexer
             if (!empty($row)) {
                 if ($this->tstamp_maxAge && $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_maxAge) {
                     // If max age is exceeded, index the page
-                    // The configured max-age was exceeded for the document and thus it's indexed.
+                    // The configured max-age was exceeded for the document, and thus it's indexed.
                     $result = 1;
-                } else {
-                    if (!$this->tstamp_minAge || $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_minAge) {
-                        // if minAge is not set or if minAge is exceeded, consider at mtime
-                        if ($mtime) {
-                            // It mtime is set, then it's tested. If not, the page must clearly be indexed.
-                            if ($row['item_mtime'] != $mtime) {
-                                // And if mtime is different from the index_phash mtime, it's about time to re-index.
-                                // The minimum age was exceed and mtime was set and the mtime was different, so the page was indexed.
-                                $result = 2;
-                            } else {
-                                // mtime matched the document, so no changes detected and no content updated
-                                $result = -1;
-                                if ($this->tstamp_maxAge) {
-                                    $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', LogLevel::WARNING);
-                                } else {
-                                    $this->updateTstamp($phash);
-                                    $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
-                                }
-                            }
+                } elseif (!$this->tstamp_minAge || $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_minAge) {
+                    // if minAge is not set or if minAge is exceeded, consider at mtime
+                    if ($mtime) {
+                        // It mtime is set, then it's tested. If not, the page must clearly be indexed.
+                        if ((int)$row['item_mtime'] !== $mtime) {
+                            // And if mtime is different from the index_phash mtime, it's about time to re-index.
+                            // The minimum age has exceeded and mtime was set and the mtime was different, so the page was indexed.
+                            $result = 2;
                         } else {
-                            // The minimum age was exceed, but mtime was not set, so the page was indexed.
-                            $result = 3;
+                            // mtime matched the document, so no changes detected and no content updated
+                            $result = -1;
+                            if ($this->tstamp_maxAge) {
+                                $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', LogLevel::WARNING);
+                            } else {
+                                $this->updateTstamp($phash);
+                                $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
+                            }
                         }
                     } else {
-                        // The minimum age was not exceeded
-                        $result = -2;
+                        // The minimum age has exceeded, but mtime was not set, so the page was indexed.
+                        $result = 3;
                     }
+                } else {
+                    // The minimum age was not exceeded
+                    $result = -2;
                 }
             } else {
                 // Page has never been indexed (is not represented in the index_phash table).
@@ -1391,7 +1375,6 @@ class Indexer
      *
      * @param int $hashGr phash value to check (phash_grouping)
      * @param int $content_md5h Content hash to check
-     * @return bool Returns TRUE if the document needs to be indexed (that is, there was no result)
      */
     public function checkExternalDocContentHash(int $hashGr, int $content_md5h): bool
     {
@@ -1415,9 +1398,6 @@ class Indexer
 
     /**
      * Checks if a grlist record has been set for the phash value input (looking at the "real" phash of the current content, not the linked-to phash of the common search result page)
-     *
-     * @param int $phash_x Phash integer to test.
-     * @return bool
      */
     public function is_grlist_set(int $phash_x): bool
     {
@@ -1442,7 +1422,7 @@ class Indexer
      * @param int $phash phash of the search result that should be found
      * @param int $phash_x The real phash of the current content. The two values are different when a page with userlogin turns out to contain the exact same content as another already indexed version of the page; This is the whole reason for the grlist table in fact...
      */
-    public function update_grlist(int $phash, int $phash_x)
+    public function update_grlist(int $phash, int $phash_x): void
     {
         if (IndexedSearchUtility::isTableUsed('index_grlist')) {
             $count = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1465,11 +1445,8 @@ class Indexer
 
     /**
      * Update tstamp for a phash row.
-     *
-     * @param int $phash phash value
-     * @param int $mtime If set, update the mtime field to this value.
      */
-    public function updateTstamp(int $phash, int $mtime = 0)
+    public function updateTstamp(int $phash, int $mtime = 0): void
     {
         if (!IndexedSearchUtility::isTableUsed('index_phash')) {
             return;
@@ -1496,8 +1473,6 @@ class Indexer
 
     /**
      * Update SetID of the index_phash record.
-     *
-     * @param int $phash phash value
      */
     public function updateSetId(int $phash): void
     {
@@ -1519,12 +1494,9 @@ class Indexer
     }
 
     /**
-     * Update parsetime for phash row.
-     *
-     * @param int $phash phash value.
-     * @param int $parsetime Parsetime value to set.
+     * Update parse time for phash row.
      */
-    public function updateParsetime(int $phash, int $parsetime)
+    public function updateParsetime(int $phash, int $parsetime): void
     {
         if (!IndexedSearchUtility::isTableUsed('index_phash')) {
             return;
@@ -1638,7 +1610,7 @@ class Indexer
 
             foreach ($wordListArray as $key => $val) {
                 // A duplicate-key error will occur here if a word is NOT unset in the unset() line. However as
-                // long as the words in $wl are NOT longer as 60 chars (the baseword varchar is 60 characters...)
+                // long as the words in $wl are NO longer as 60 chars (the baseword varchar is 60 characters...)
                 // this is not a problem.
                 $connection->insert(
                     'index_words',
@@ -1653,9 +1625,6 @@ class Indexer
 
     /**
      * Submits RELATIONS between words and phash
-     *
-     * @param array $wordList Word list array
-     * @param int $phash phash value
      */
     public function submitWords(array $wordList, int $phash): void
     {
@@ -1737,7 +1706,7 @@ class Indexer
             'MP' => (string)$this->conf['MP'],
             'staticPageArguments' => is_array($this->conf['staticPageArguments']) ? json_encode($this->conf['staticPageArguments']) : null,
         ];
-        // Set grouping hash (Identifies a "page" combined of id, type, language, mountpoint and cHash parameters):
+        // Set grouping hash (Identifies a "page" combined of id, type, language, mount point and cHash parameters):
         $this->hash['phash_grouping'] = IndexedSearchUtility::md5inthash(serialize($hArray));
         // Add gr_list and set plain phash (Subdivision where special page composition based on login is taken into account as well. It is expected that such pages are normally similar regardless of the login.)
         $hArray['gr_list'] = (string)$this->conf['gr_list'];
@@ -1749,7 +1718,7 @@ class Indexer
      *
      * @param string $file File name / path which identifies it on the server
      * @param array $subinfo Additional content identifying the (subpart of) content. For instance; PDF files are divided into groups of pages for indexing.
-     * @return array Array with "phash_grouping" and "phash" inside.
+     * @return array{phash_grouping: int, phash: int}
      */
     public function setExtHashes(string $file, array $subinfo = []): array
     {

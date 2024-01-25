@@ -235,7 +235,7 @@ class IndexSearchRepository
                             $row['result_number'] = $c;
                             $resultRows[] = $row;
                             // This may lead to a problem: If the result check is not stopped here, the search will take longer.
-                            // However the result counter will not filter out grouped cHashes/pHashes that were not processed yet.
+                            // However, the result counter will not filter out grouped cHashes/pHashes that were not processed yet.
                             // You can change this behavior using the "settings.exactCount" property (see above).
                             if (!$this->useExactCount && $c + 1 > ($pointer + 1) * $this->numberOfResults) {
                                 break;
@@ -398,7 +398,6 @@ class IndexSearchRepository
         $naturalSearchString = '';
         // This holds the result if the search is boolean (contains +/-/| operators)
         $booleanSearchString = '';
-
         $searchType = $this->searchType;
 
         // Traverse searchwords and prefix them with corresponding operator
@@ -616,17 +615,11 @@ class IndexSearchRepository
             }
             // Here the phash list are merged with the existing result based on whether we are dealing with OR, NOT or AND operations.
             if ($c) {
-                switch ($v['oper']) {
-                    case 'OR':
-                        $totalHashList = array_unique(array_merge($phashList, $totalHashList));
-                        break;
-                    case 'AND NOT':
-                        $totalHashList = array_diff($totalHashList, $phashList);
-                        break;
-                    default:
-                        // AND...
-                        $totalHashList = array_intersect($totalHashList, $phashList);
-                }
+                $totalHashList = match ($v['oper']) {
+                    'OR' => array_unique(array_merge($phashList, $totalHashList)),
+                    'AND NOT' => array_diff($totalHashList, $phashList),
+                    default => array_intersect($totalHashList, $phashList),
+                };
             } else {
                 // First search
                 $totalHashList = $phashList;
@@ -1146,7 +1139,7 @@ class IndexSearchRepository
      * Returns an object reference to the hook object if any
      *
      * @param string $functionName Name of the function you want to call / hook key
-     * @return object|null Hook object, if any. Otherwise NULL.
+     * @return object|null Hook object, if any, otherwise NULL.
      */
     protected function hookRequest(string $functionName): ?object
     {
