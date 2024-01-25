@@ -165,12 +165,4 @@ class IndexedSearchUtility
 
         return null;
     }
-
-    /**
-     * Gets the unixtime as milliseconds.
-     */
-    public static function milliseconds(): int
-    {
-        return (int)round(microtime(true) * 1000);
-    }
 }

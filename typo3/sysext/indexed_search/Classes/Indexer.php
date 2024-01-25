@@ -217,7 +217,7 @@ class Indexer
             // This will also prevent pages from being indexed if a fe_users has logged in and it turns out that the page content is not changed anyway. fe_users logged in should always search with hash_gr_list = "0,-1" OR "[their_group_list]". This situation will be prevented only if the page has been indexed with no user login on before hand. Else the page will be indexed by users until that event. However that does not present a serious problem.
             $checkCHash = $this->checkContentHash();
             if (!is_array($checkCHash) || $check === 1) {
-                $Pstart = IndexedSearchUtility::milliseconds();
+                $Pstart = $this->milliseconds();
                 $this->timeTracker->push('Converting entities of content');
                 $this->charsetEntity2utf8($this->indexingDataStringDto);
                 $this->timeTracker->pull();
@@ -247,7 +247,7 @@ class Indexer
                 $this->timeTracker->pull();
 
                 // Set parsetime
-                $this->updateParsetime($this->hash['phash'], IndexedSearchUtility::milliseconds() - $Pstart);
+                $this->updateParsetime($this->hash['phash'], $this->milliseconds() - $Pstart);
 
                 // Checking external files if configured for.
                 $this->timeTracker->push('Checking external files');
@@ -720,7 +720,7 @@ class Indexer
                 foreach ($cParts as $cPKey) {
                     $this->internal_log = [];
                     $this->timeTracker->push('Index: ' . str_replace('.', '_', PathUtility::basename($file)) . ($cPKey ? '#' . $cPKey : ''));
-                    $Pstart = IndexedSearchUtility::milliseconds();
+                    $Pstart = $this->milliseconds();
                     $subinfo = ['key' => $cPKey];
                     // Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
                     $phash_arr = ($this->file_phash_arr = $this->setExtHashes($file, $subinfo));
@@ -771,7 +771,7 @@ class Indexer
                                     $this->timeTracker->pull();
 
                                     // Set parsetime
-                                    $this->updateParsetime($phash_arr['phash'], IndexedSearchUtility::milliseconds() - $Pstart);
+                                    $this->updateParsetime($phash_arr['phash'], $this->milliseconds() - $Pstart);
                                 } else {
                                     // Update the timestamp
                                     $this->updateTstamp($phash_arr['phash'], $fileInfo['mtime']);
@@ -1807,5 +1807,13 @@ class Indexer
             $uniquePhashes[] = $wordData['hash'];
         }
         return $wordList;
+    }
+
+    /**
+     * Gets the unixtime as milliseconds.
+     */
+    protected function milliseconds(): int
+    {
+        return (int)round(microtime(true) * 1000);
     }
 }
