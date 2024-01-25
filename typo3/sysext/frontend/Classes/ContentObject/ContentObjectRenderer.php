@@ -4550,12 +4550,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Returns the 'age' of the tstamp $seconds
      *
      * @param int $seconds Seconds to return age for. Example: "70" => "1 min", "3601" => "1 hrs
-     * @param string $labels The labels of the individual units. Defaults to : ' min| hrs| days| yrs'
+     * @param string|int|null $labels The labels of the individual units. Defaults to : ' min| hrs| days| yrs'
      * @return string The formatted string
      */
-    public function calcAge($seconds, $labels)
+    public function calcAge($seconds, $labels = null)
     {
-        if (MathUtility::canBeInterpretedAsInteger($labels)) {
+        if ($labels === null || MathUtility::canBeInterpretedAsInteger($labels)) {
             $labels = ' min| hrs| days| yrs| min| hour| day| year';
         } else {
             $labels = str_replace('"', '', $labels);

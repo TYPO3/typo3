@@ -229,6 +229,8 @@ class SearchController extends ActionController
         }
         $this->view->assign('resultsets', $resultsets);
         $this->view->assign('searchParams', $searchData);
+        $this->view->assign('searchData', $this->searchData);
+        $this->view->assign('firstRow', $this->firstRow);
         $this->view->assign('searchWords', array_map([$this, 'addOperatorLabel'], $this->searchWords));
 
         return $this->htmlResponse();
@@ -411,7 +413,6 @@ class SearchController extends ActionController
             $title = LinkResult::adapt($this->linkPage((int)$row['data_page_id'], $row, $title))->getHtml();
         }
         $resultData['title'] = $title;
-        $resultData['rating'] = $this->makeRating($row);
         $resultData['description'] = $this->makeDescription(
             $row,
             !($this->searchData['extResume'] && !$headerOnly),
@@ -463,42 +464,6 @@ class SearchController extends ActionController
             }
         }
         return $resultData;
-    }
-
-    /**
-     * Return the rating-HTML code for the result row. This makes use of the $this->firstRow
-     *
-     * @todo can this be a ViewHelper?
-     */
-    protected function makeRating(array $row): string
-    {
-        $default = ' ';
-        switch ((string)$this->searchData['sortOrder']) {
-            case 'rank_count':
-                return $row['order_val'] . ' ' . LocalizationUtility::translate('result.ratingMatches', 'IndexedSearch');
-            case 'rank_first':
-                return ceil(MathUtility::forceIntegerInRange(255 - $row['order_val'], 1, 255) / 255 * 100) . '%';
-            case 'rank_flag':
-                if ($this->firstRow['order_val2'] ?? 0) {
-                    // (3 MSB bit, 224 is highest value of order_val1 currently)
-                    $base = $row['order_val1'] * 256;
-                    // 15-3 MSB = 12
-                    $freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * 2 ** 12;
-                    $total = MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
-                    return ceil(log($total) / log(32767) * 100) . '%';
-                }
-                return $default;
-            case 'rank_freq':
-                $max = 10000;
-                $total = MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
-                return ceil(log($total) / log($max) * 100) . '%';
-            case 'crdate':
-                return $this->getTypoScriptFrontendController()->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], '0');
-            case 'mtime':
-                return $this->getTypoScriptFrontendController()->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], '0');
-            default:
-                return $default;
-        }
     }
 
     /**
