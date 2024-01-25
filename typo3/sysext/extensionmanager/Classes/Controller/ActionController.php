@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
-use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Package\PackageActivationService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,7 +44,7 @@ class ActionController extends AbstractController
     public function __construct(
         protected readonly InstallUtility $installUtility,
         protected readonly ExtensionManagementService $managementService,
-        protected readonly Registry $registry,
+        protected readonly PackageActivationService $packageActivationService,
     ) {}
 
     /**
@@ -156,14 +156,9 @@ class ActionController extends AbstractController
     /**
      * Reloads the static SQL data of an extension
      */
-    protected function reloadExtensionDataAction(string $extension): ResponseInterface
+    protected function reloadExtensionDataAction(string $extensionKey): ResponseInterface
     {
-        $extension = $this->installUtility->enrichExtensionWithDetails($extension, false);
-        $registryKey = PathUtility::stripPathSitePrefix($extension['packagePath']) . 'ext_tables_static+adt.sql';
-
-        $this->registry->remove('extensionDataImport', $registryKey);
-
-        $this->installUtility->processExtensionSetup($extension['key']);
+        $this->packageActivationService->reloadExtensionData([$extensionKey], $this);
 
         return $this->redirect('index', 'List');
     }

@@ -232,8 +232,9 @@ class ExtensionManagementService implements SingletonInterface
         }
         $this->eventDispatcher->dispatch(new BeforePackageActivationEvent($installQueue));
         $resolvedDependencies = [];
-        $this->installUtility->install(...array_keys($installQueue));
-        foreach ($installQueue as $extensionKey => $_) {
+        $extensionKeys = array_keys($installQueue);
+        $this->installUtility->install(...$extensionKeys);
+        foreach ($extensionKeys as $extensionKey) {
             if (!isset($resolvedDependencies['installed']) || !is_array($resolvedDependencies['installed'])) {
                 $resolvedDependencies['installed'] = [];
             }

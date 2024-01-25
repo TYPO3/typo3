@@ -1,0 +1,16 @@
+base: /
+languages:
+  -
+    title: English
+    enabled: true
+    languageId: 0
+    base: /
+    typo3Language: default
+    locale: en_US.UTF-8
+    iso-639-1: en
+    navigationTitle: English
+    hreflang: en-US
+    direction: ''
+    flag: us
+rootPageId: 1
+websiteTitle: 'TYPO3 Demo Site'

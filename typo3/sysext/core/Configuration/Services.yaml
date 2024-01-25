@@ -46,6 +46,13 @@ services:
         description: 'Shows the configuration of the specified site'
         schedulable: false
 
+  TYPO3\CMS\Core\Command\SetupExtensionsCommand:
+    tags:
+      - name: 'console.command'
+        description: 'Set up extensions'
+        command: 'extension:setup'
+        schedulable: false
+
   TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools:
     public: true
 
@@ -139,6 +146,9 @@ services:
 
   TYPO3\CMS\Core\Routing\Enhancer\VariableProcessorCache:
     shared: true
+
+  TYPO3\CMS\Core\Package\PackageActivationService:
+    public: true
 
   # Soft Reference Parsers
   TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser:

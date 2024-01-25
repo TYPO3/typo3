@@ -6283,5 +6283,12 @@ return [
             'Deprecation-102793-PageRepositoryEnableFields.rst',
         ],
     ],
-
+    'TYPO3\CMS\Extensionmanager\Utility\InstallUtility->processExtensionSetup' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-102935-OverhauledExtensionInstallationInExtensionManager.rst',
+            'Feature-102935-PSR-14EventForPackageInitializationFunctionality.rst',
+        ],
+    ],
 ];

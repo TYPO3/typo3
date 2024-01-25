@@ -2488,4 +2488,28 @@ return [
             'Deprecation-102943-AbstractDownloadExtensionUpdateMovedToExtextensionmanager.rst',
         ],
     ],
+    'TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent' => [
+        'restFiles' => [
+            'Breaking-102935-OverhauledExtensionInstallationInExtensionManager.rst',
+            'Feature-102935-PSR-14EventForPackageInitializationFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent' => [
+        'restFiles' => [
+            'Breaking-102935-OverhauledExtensionInstallationInExtensionManager.rst',
+            'Feature-102935-PSR-14EventForPackageInitializationFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Event\AfterExtensionSiteFilesHaveBeenImportedEvent' => [
+        'restFiles' => [
+            'Breaking-102935-OverhauledExtensionInstallationInExtensionManager.rst',
+            'Feature-102935-PSR-14EventForPackageInitializationFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent' => [
+        'restFiles' => [
+            'Breaking-102935-OverhauledExtensionInstallationInExtensionManager.rst',
+            'Feature-102935-PSR-14EventForPackageInitializationFunctionality.rst',
+        ],
+    ],
 ];

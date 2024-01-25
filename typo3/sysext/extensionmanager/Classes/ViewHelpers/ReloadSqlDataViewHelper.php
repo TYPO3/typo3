@@ -87,7 +87,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
         $uriBuilder->reset();
         $uri = $uriBuilder->uriFor(
             'reloadExtensionData',
-            ['extension' => $extension['key']],
+            ['extensionKey' => $extension['key']],
             'Action'
         );
         $this->tag->addAttribute('href', $uri);

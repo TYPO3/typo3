@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extensionmanager\Command;
+namespace TYPO3\CMS\Core\Command;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\Command;
@@ -24,9 +24,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
+use TYPO3\CMS\Core\Package\Initialization\CheckForImportRequirements;
+use TYPO3\CMS\Core\Package\PackageActivationService;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Command for setting up all extensions via CLI.
@@ -34,9 +36,9 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 class SetupExtensionsCommand extends Command
 {
     public function __construct(
+        private readonly PackageManager $packageManager,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly InstallUtility $installUtility,
-        private readonly PackageManager $packageManager
+        private readonly PackageActivationService $packageActivationService,
     ) {
         parent::__construct();
     }
@@ -77,24 +79,32 @@ EOD
 
         $io = new SymfonyStyle($input, $output);
         $extensionKeys = $input->getOption('extension');
-        $extensionKeysToSetUp = array_keys($this->packageManager->getActivePackages());
+        $extensionsToSetUp = $this->packageManager->getActivePackages();
         if (!empty($extensionKeys)) {
-            $extensionKeysToSetUp = array_filter(
-                $extensionKeysToSetUp,
+            $extensionsToSetUp = array_filter(
+                $extensionsToSetUp,
                 static function ($extKey) use ($extensionKeys) {
                     return in_array($extKey, $extensionKeys, true);
-                }
+                },
+                ARRAY_FILTER_USE_KEY
             );
         }
-        $this->installUtility->updateDatabase();
-        foreach ($extensionKeysToSetUp as $extensionKey) {
-            $this->installUtility->processExtensionSetup($extensionKey);
-        }
-        if (empty($extensionKeysToSetUp)) {
-            $io->error('Given extensions "' . implode(', ', $extensionKeys) . '" not found in the system.');
+        if (empty($extensionsToSetUp)) {
+            $io->error('Given extension(s) "' . implode(', ', $extensionKeys) . '" not found in the system.');
             return Command::FAILURE;
         }
-        $io->success('Extension(s) "' . implode(', ', $extensionKeysToSetUp) . '" successfully set up.');
+        $this->packageActivationService->updateDatabase();
+        foreach ($extensionsToSetUp as $extensionKey => $package) {
+            $event = $this->eventDispatcher->dispatch(
+                new PackageInitializationEvent(extensionKey: $extensionKey, package: $package, emitter: $this)
+            );
+            if ($event->hasStorageEntry(CheckForImportRequirements::class)) {
+                $io->warning(
+                    $event->getStorageEntry(CheckForImportRequirements::class)->getResult()['exception']?->getMessage() ?? ''
+                );
+            }
+        }
+        $io->success('Extension(s) "' . implode(', ', array_keys($extensionsToSetUp)) . '" successfully set up.');
 
         return Command::SUCCESS;
     }

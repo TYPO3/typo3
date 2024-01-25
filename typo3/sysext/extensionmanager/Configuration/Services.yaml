@@ -42,13 +42,6 @@ services:
         alias: true
         schedulable: false
 
-  TYPO3\CMS\Extensionmanager\Command\SetupExtensionsCommand:
-    tags:
-      - name: 'console.command'
-        description: 'Set up extensions'
-        command: 'extension:setup'
-        schedulable: false
-
   TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry:
     public: true
 

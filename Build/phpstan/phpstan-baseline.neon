@@ -521,6 +521,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/Cache/PackageStatesPackageCache.php
 
 		-
+			message: "#^Parameter \\#2 \\$selectedStatements of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\SchemaMigrator\\:\\:migrate\\(\\) expects array\\<string\\>, array\\<int\\|string, true\\> given\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Package/PackageActivationService.php
+
+		-
 			message: "#^Offset string does not exist on null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
@@ -1459,11 +1464,6 @@ parameters:
 			message: "#^Offset string does not exist on null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Utility/EmConfUtility.php
-
-		-
-			message: "#^Parameter \\#2 \\$selectedStatements of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\SchemaMigrator\\:\\:migrate\\(\\) expects array\\<string\\>, array\\<int\\|string, true\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Utility/InstallUtility.php
 
 		-
 			message: "#^Method PHPUnit\\\\Framework\\\\TestCase\\:\\:count\\(\\) invoked with 1 parameter, 0 required\\.$#"
