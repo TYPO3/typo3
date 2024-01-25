@@ -1129,4 +1129,9 @@ return [
             'Breaking-102900-MetaphoneSearchRemovedFromIndexed_search.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_gifbuilder.php\'][\'gifbuilder-ConfPreProcess\']' => [
+        'restFiles' => [
+            'Breaking-102931-GifBuilderHookRemoved.rst',
+        ],
+    ],
 ];

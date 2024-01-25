@@ -212,29 +212,18 @@ class GifBuilder
      * @param array $data The current data record from \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer. Stored internally in the variable ->data
      * @see ContentObjectRenderer::getImgResource()
      */
-    public function start($conf, $data)
+    public function start(array $conf, array $data): void
     {
-        if (!is_array($conf) || !class_exists(\GdImage::class)) {
+        if (!class_exists(\GdImage::class)) {
             return;
         }
         $this->setup = $conf;
         $this->data = $data;
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $this->cObj->start($this->data);
-        // Hook preprocess gifbuilder conf
-        // Added by Julle for 3.8.0
-        //
-        // Lets you pre-process the gifbuilder configuration. for
-        // example you can split a string up into lines and render each
-        // line as TEXT obj, see extension julle_gifbconf
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'] ?? [] as $_funcRef) {
-            $_params = $this->setup;
-            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
-            $this->setup = GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
-        }
         // Initializing Char Range Map
         $this->charRangeMap = [];
-        foreach (($conf['charRangeMap.'] ?? []) as $cRMcfgkey => $cRMcfg) {
+        foreach ($conf['charRangeMap.'] ?? [] as $cRMcfgkey => $cRMcfg) {
             if (is_array($cRMcfg)) {
                 $cRMkey = $conf['charRangeMap.'][substr($cRMcfgkey, 0, -1)];
                 $this->charRangeMap[$cRMkey] = [];
@@ -316,14 +305,10 @@ class GifBuilder
                         break;
                 }
                 // Checks if disabled is set
-                if ($conf['if.'] ?? false) {
-                    $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-                    $cObj->start($this->data);
-                    if (!$cObj->checkIf($conf['if.'])) {
-                        unset($this->setup[$theKey]);
-                        unset($this->setup[$theKey . '.']);
-                        unset($this->objBB[$theKey]);
-                    }
+                if (($conf['if.'] ?? false) && !$this->cObj->checkIf($conf['if.'])) {
+                    unset($this->setup[$theKey]);
+                    unset($this->setup[$theKey . '.']);
+                    unset($this->objBB[$theKey]);
                 }
             }
         }
@@ -2596,7 +2581,7 @@ class GifBuilder
      * @see scale()
      * @see output()
      */
-    public function ImageWrite(\GdImage &$destImg, $theImage, $quality = 0)
+    public function ImageWrite(\GdImage &$destImg, string $theImage, int $quality = 0): bool
     {
         imageinterlace($destImg, false);
         $ext = strtolower(substr($theImage, (int)strrpos($theImage, '.') + 1));
@@ -2638,7 +2623,7 @@ class GifBuilder
      * @param string $sourceImg Image filename
      * @return \GdImage Image Resource pointer
      */
-    public function imageCreateFromFile(string $sourceImg)
+    public function imageCreateFromFile(string $sourceImg): \GdImage
     {
         $imgInf = pathinfo($sourceImg);
         $ext = strtolower($imgInf['extension']);
