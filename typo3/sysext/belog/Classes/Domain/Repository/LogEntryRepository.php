@@ -22,83 +22,91 @@ use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Log\LogLevel as Typo3LogLevel;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Sys log entry repository
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
- * @extends Repository<LogEntry>
  */
-class LogEntryRepository extends Repository
+class LogEntryRepository
 {
-    public ?QuerySettingsInterface $querySettings = null;
-
-    public function injectQuerySettings(QuerySettingsInterface $querySettings): void
+    public function findByUid($uid): ?LogEntry
     {
-        $this->querySettings = $querySettings;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+        $row = $queryBuilder
+            ->select('*')
+            ->from('sys_log')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+            )
+            ->fetchAssociative();
+        return $row ? LogEntry::createFromDatabaseRecord($row) : null;
     }
 
-    /**
-     * Initialize some local variables to be used during creation of objects
-     */
-    public function initializeObject(): void
+    protected function createQuery(): QueryBuilder
     {
-        $this->setDefaultQuerySettings($this->querySettings->setRespectStoragePage(false));
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+        $queryBuilder
+            ->select('*')
+            ->from('sys_log')
+            ->orderBy('uid', 'DESC');
+        return $queryBuilder;
     }
 
     /**
      * Finds all log entries that match all given constraints.
+     *
+     * @return array<LogEntry>
      */
-    public function findByConstraint(Constraint $constraint): QueryResultInterface
+    public function findByConstraint(Constraint $constraint): array
     {
         $query = $this->createQuery();
         $queryConstraints = $this->createQueryConstraints($query, $constraint);
-        if (count($queryConstraints) === 1) {
-            $query->matching(reset($queryConstraints));
-        } elseif (count($queryConstraints) >= 2) {
-            $query->matching($query->logicalAnd(...$queryConstraints));
+        $stmt = $query
+            ->where(...$queryConstraints)
+            ->setMaxResults($constraint->getNumber())
+            ->executeQuery();
+
+        $result = [];
+        while ($row = $stmt->fetchAssociative()) {
+            $result[] = LogEntry::createFromDatabaseRecord($row);
         }
-        $query->setOrderings(['uid' => QueryInterface::ORDER_DESCENDING]);
-        $query->setLimit($constraint->getNumber());
-        return $query->execute();
+        return $result;
     }
 
     /**
      * Create an array of query constraints from constraint object
-     *
-     * @return ConstraintInterface[]
      */
-    protected function createQueryConstraints(QueryInterface $query, Constraint $constraint): array
+    protected function createQueryConstraints(QueryBuilder $query, Constraint $constraint): array
     {
-        $queryConstraints = [];
         // User / group handling
-        $this->addUsersAndGroupsToQueryConstraints($constraint, $query, $queryConstraints);
+        $queryConstraints = $this->addUsersAndGroupsToQueryConstraints($constraint, $query);
         // Workspace
         if ($constraint->getWorkspaceUid() !== -99) {
-            $queryConstraints[] = $query->equals('workspace', $constraint->getWorkspaceUid());
+            $queryConstraints[] = $query->expr()->eq('workspace', $query->createNamedParameter($constraint->getWorkspaceUid(), Connection::PARAM_INT));
         }
         // Channel
         if ($channel = $constraint->getChannel()) {
-            $queryConstraints[] = $query->equals('channel', $channel);
+            $queryConstraints[] = $query->expr()->eq('channel', $query->createNamedParameter($channel));
         }
         // Level
         if ($level = $constraint->getLevel()) {
-            $queryConstraints[] = $query->in('level', Typo3LogLevel::atLeast($level));
+            $queryConstraints[] = $query->expr()->in('level', $query->createNamedParameter(Typo3LogLevel::atLeast($level), Connection::PARAM_INT_ARRAY));
         }
         // Start / endtime handling: The timestamp calculation was already done
         // in the controller, since we need those calculated values in the view as well.
-        $queryConstraints[] = $query->greaterThanOrEqual('tstamp', $constraint->getStartTimestamp());
-        $queryConstraints[] = $query->lessThan('tstamp', $constraint->getEndTimestamp());
+        $queryConstraints[] = $query->expr()->gte('tstamp', $query->createNamedParameter($constraint->getStartTimestamp(), Connection::PARAM_INT));
+        $queryConstraints[] = $query->expr()->lt('tstamp', $query->createNamedParameter($constraint->getEndTimestamp(), Connection::PARAM_INT));
         // Page and level constraint if in page context
-        $this->addPageTreeConstraintsToQuery($constraint, $query, $queryConstraints);
+        $constraint = $this->addPageTreeConstraintsToQuery($constraint, $query);
+        if ($constraint) {
+            $queryConstraints[] = $constraint;
+        }
         return $queryConstraints;
     }
 
@@ -108,9 +116,8 @@ class LogEntryRepository extends Repository
      */
     protected function addPageTreeConstraintsToQuery(
         Constraint $constraint,
-        QueryInterface $query,
-        array &$queryConstraints
-    ): void {
+        QueryBuilder $query,
+    ): ?string {
         $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
@@ -125,8 +132,9 @@ class LogEntryRepository extends Repository
             $pageIds[] = $constraint->getPageId();
         }
         if (!empty($pageIds)) {
-            $queryConstraints[] = $query->in('eventPid', $pageIds);
+            return $query->expr()->in('event_pid', $query->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY));
         }
+        return null;
     }
 
     /**
@@ -134,13 +142,13 @@ class LogEntryRepository extends Repository
      */
     protected function addUsersAndGroupsToQueryConstraints(
         Constraint $constraint,
-        QueryInterface $query,
-        array &$queryConstraints
-    ): void {
+        QueryBuilder $query
+    ): array {
         $userOrGroup = $constraint->getUserOrGroup();
         if ($userOrGroup === '') {
-            return;
+            return [];
         }
+        $queryConstraints = [];
         // Constraint for a group
         if (str_starts_with($userOrGroup, 'gr-')) {
             $groupId = (int)substr($userOrGroup, 3);
@@ -149,16 +157,17 @@ class LogEntryRepository extends Repository
             if (!empty($userIds)) {
                 $userIds = array_column($userIds, 'uid');
                 $userIds = array_map(intval(...), $userIds);
-                $queryConstraints[] = $query->in('userid', $userIds);
+                $queryConstraints[] = $query->expr()->in('userid', $query->createNamedParameter($userIds, Connection::PARAM_INT_ARRAY));
             } else {
                 // If there are no group members -> use -1 as constraint to not find anything
-                $queryConstraints[] = $query->in('userid', [-1]);
+                $queryConstraints[] = $query->expr()->eq('userid', $query->createNamedParameter(-1, Connection::PARAM_INT));
             }
         } elseif (str_starts_with($userOrGroup, 'us-')) {
-            $queryConstraints[] = $query->equals('userid', (int)substr($userOrGroup, 3));
+            $queryConstraints[] = $query->expr()->in('userid', $query->createNamedParameter((int)substr($userOrGroup, 3), Connection::PARAM_INT));
         } elseif ($userOrGroup === '-1') {
-            $queryConstraints[] = $query->equals('userid', (int)$GLOBALS['BE_USER']->user['uid']);
+            $queryConstraints[] = $query->expr()->in('userid', $query->createNamedParameter((int)$GLOBALS['BE_USER']->user['uid'], Connection::PARAM_INT));
         }
+        return $queryConstraints;
     }
 
     /**
@@ -172,7 +181,7 @@ class LogEntryRepository extends Repository
         $constraints[] = $queryBuilder->expr()->eq('details', $queryBuilder->createNamedParameter($logEntry->getDetails()));
         // If the detailsNo is 11 or 12 we got messages that are heavily using placeholders. In this case
         // we need to compare both the message and the actual log data to not remove too many log entries.
-        if (GeneralUtility::inList('11,12', (string)$logEntry->getDetailsNumber())) {
+        if (in_array($logEntry->getDetailsNumber(), [11, 12], true)) {
             $constraints[] = $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter($logEntry->getLogData()));
         }
         return (int)$queryBuilder->delete('sys_log')

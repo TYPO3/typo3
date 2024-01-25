@@ -43,13 +43,12 @@ class ReferenceIndex
 
     /**
      * Key list of tables to exclude from ReferenceIndex. Only $GLOBALS['TCA'] need to be listed here, if at all.
-     * This is a performance improvement to skip tables "irrelevant" in refindex scope, for instance sys_log.
+     * This is a performance improvement to skip tables "irrelevant" in refindex scope, for instance tx_extensionmanager_domain_model_extension.
      * An event may alter this.
      * The list depends on TCA and an event, entries are managed once per class instance.
      * Array with fields as keys and booleans as values for fast isset() lookup instead of slower in_array().
      */
     private array $excludedTables = [
-        'sys_log' => true,
         'tx_extensionmanager_domain_model_extension' => true,
     ];
 

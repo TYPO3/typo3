@@ -276,6 +276,8 @@ CREATE TABLE sys_refindex (
 # Table structure for table 'sys_log'
 #
 CREATE TABLE sys_log (
+	uid int(11) unsigned NOT NULL auto_increment,
+	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	userid int(11) unsigned DEFAULT '0' NOT NULL,
 	action tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	recuid int(11) unsigned DEFAULT '0' NOT NULL,
@@ -297,14 +299,16 @@ CREATE TABLE sys_log (
 	level varchar(10) DEFAULT 'info' NOT NULL,
 	message text,
 	data text,
-	KEY event (userid,event_pid),
+
+	PRIMARY KEY (uid),
+	KEY event (userid, event_pid),
 	KEY recuidIdx (recuid),
-	KEY user_auth (type,action,tstamp),
+	KEY user_auth (type, action, tstamp),
 	KEY request (request_id),
 	KEY combined_1 (tstamp, type, userid),
-	KEY errorcount (tstamp,error),
-	KEY channel (channel),
-	KEY level (level)
+	KEY errorcount (tstamp, error),
+	KEY index_channel (channel),
+	KEY index_level (level)
 ) ENGINE=InnoDB;
 
 #
