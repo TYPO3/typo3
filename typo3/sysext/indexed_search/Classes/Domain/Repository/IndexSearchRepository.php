@@ -1072,10 +1072,6 @@ class IndexSearchRepository
             // current users gr_list exists will help us to know. If this is NOT found, there is still a theoretical
             // possibility that another user accessible page would display a link, so maybe the resume of such a
             // document here may be unjustified hidden. But better safe than sorry.
-            if (!IndexedSearchUtility::isTableUsed('index_grlist')) {
-                return false;
-            }
-
             return (bool)$connection->count(
                 'phash',
                 'index_grlist',
@@ -1090,10 +1086,6 @@ class IndexSearchRepository
             // Selecting for the grlist records belonging to the phash-row where the current users gr_list exists.
             // If it is found it is proof that this user has direct access to the phash-rows content although
             // he did not himself initiate the indexing...
-            if (!IndexedSearchUtility::isTableUsed('index_grlist')) {
-                return false;
-            }
-
             return (bool)$connection->count(
                 'phash',
                 'index_grlist',

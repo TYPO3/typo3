@@ -229,7 +229,7 @@ class Indexer
 
                 // Check words and submit to word list if not there
                 $this->timeTracker->push('Check word list and submit words');
-                if (IndexedSearchUtility::isTableUsed('index_words')) {
+                if (!IndexedSearchUtility::isMysqlFullTextEnabled()) {
                     $indexArr = $this->removePhashCollisions($indexArr);
                     $this->checkWordList($indexArr);
                     $this->submitWords($indexArr, $this->hash['phash']);
@@ -748,7 +748,7 @@ class Indexer
 
                                     // Check words and submit to word list if not there
                                     $this->timeTracker->push('Check word list and submit words');
-                                    if (IndexedSearchUtility::isTableUsed('index_words')) {
+                                    if (!IndexedSearchUtility::isMysqlFullTextEnabled()) {
                                         $indexArr = $this->removePhashCollisions($indexArr);
                                         $this->checkWordList($indexArr);
                                         $this->submitWords($indexArr, $phash_arr['phash']);
@@ -1013,14 +1013,12 @@ class Indexer
             'freeIndexUid' => (int)$this->conf['freeIndexUid'],
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
         ];
-        if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_phash');
-            $connection->insert(
-                'index_phash',
-                $fields
-            );
-        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_phash');
+        $connection->insert(
+            'index_phash',
+            $fields
+        );
         // PROCESSING index_section
         $this->submit_section($this->hash['phash'], $this->hash['phash']);
         // PROCESSING index_grlist
@@ -1033,11 +1031,9 @@ class Indexer
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
         }
-        if (IndexedSearchUtility::isTableUsed('index_fulltext')) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_fulltext');
-            $connection->insert('index_fulltext', $fields);
-        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_fulltext');
+        $connection->insert('index_fulltext', $fields);
         // PROCESSING index_debug
         if ($this->indexerConfig['debugMode'] ?? false) {
             $fields = [
@@ -1050,11 +1046,9 @@ class Indexer
                     'lexer' => $this->lexerObj->debugString,
                 ], JSON_THROW_ON_ERROR),
             ];
-            if (IndexedSearchUtility::isTableUsed('index_debug')) {
-                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable('index_debug');
-                $connection->insert('index_debug', $fields);
-            }
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('index_debug');
+            $connection->insert('index_debug', $fields);
         }
     }
 
@@ -1073,11 +1067,9 @@ class Indexer
             'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list']),
             'gr_list' => $this->conf['gr_list'],
         ];
-        if (IndexedSearchUtility::isTableUsed('index_grlist')) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_grlist');
-            $connection->insert('index_grlist', $fields);
-        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_grlist');
+        $connection->insert('index_grlist', $fields);
     }
 
     /**
@@ -1095,11 +1087,9 @@ class Indexer
             'page_id' => (int)$this->conf['id'],
         ];
         $this->getRootLineFields($fields);
-        if (IndexedSearchUtility::isTableUsed('index_section')) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_section');
-            $connection->insert('index_section', $fields);
-        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_section');
+        $connection->insert('index_section', $fields);
     }
 
     /**
@@ -1114,18 +1104,13 @@ class Indexer
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $tableArray = ['index_phash', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug'];
         foreach ($tableArray as $table) {
-            if (IndexedSearchUtility::isTableUsed($table)) {
-                $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
-            }
+            $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
         }
 
         // Removing all index_section records with hash_t3 set to this hash (this includes such
         // records set for external media on the page as well!). The re-insert of these records
         // are done in indexRegularDocument($file).
-        if (IndexedSearchUtility::isTableUsed('index_section')) {
-            $connectionPool->getConnectionForTable('index_section')
-                ->delete('index_section', ['phash_t3' => $phash]);
-        }
+        $connectionPool->getConnectionForTable('index_section')->delete('index_section', ['phash_t3' => $phash]);
     }
 
     /********************************
@@ -1176,14 +1161,12 @@ class Indexer
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
             'sys_language_uid' => (int)$this->conf['sys_language_uid'],
         ];
-        if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_phash');
-            $connection->insert(
-                'index_phash',
-                $fields
-            );
-        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_phash');
+        $connection->insert(
+            'index_phash',
+            $fields
+        );
         // PROCESSING index_fulltext
         $fields = [
             'phash' => $hash['phash'],
@@ -1192,11 +1175,9 @@ class Indexer
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
         }
-        if (IndexedSearchUtility::isTableUsed('index_fulltext')) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_fulltext');
-            $connection->insert('index_fulltext', $fields);
-        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_fulltext');
+        $connection->insert('index_fulltext', $fields);
         // PROCESSING index_debug
         if ($this->indexerConfig['debugMode'] ?? false) {
             $fields = [
@@ -1208,11 +1189,9 @@ class Indexer
                     'lexer' => $this->lexerObj->debugString,
                 ], JSON_THROW_ON_ERROR),
             ];
-            if (IndexedSearchUtility::isTableUsed('index_debug')) {
-                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable('index_debug');
-                $connection->insert('index_debug', $fields);
-            }
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('index_debug');
+            $connection->insert('index_debug', $fields);
         }
     }
 
@@ -1224,10 +1203,6 @@ class Indexer
     public function submitFile_section(int $hash): void
     {
         // Testing if there is already a section
-        if (!IndexedSearchUtility::isTableUsed('index_section')) {
-            return;
-        }
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('index_section');
         $count = (int)$queryBuilder->count('phash')
@@ -1261,9 +1236,6 @@ class Indexer
         // Removing old registrations for tables.
         $tableArray = ['index_phash', 'index_grlist', 'index_fulltext', 'index_debug'];
         foreach ($tableArray as $table) {
-            if (!IndexedSearchUtility::isTableUsed($table)) {
-                continue;
-            }
             $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
         }
     }
@@ -1284,56 +1256,51 @@ class Indexer
      */
     public function checkMtimeTstamp(int $mtime, int $phash): int
     {
-        if (!IndexedSearchUtility::isTableUsed('index_phash')) {
-            // Not indexed (not in index_phash)
-            $result = 4;
-        } else {
-            $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
-                ->select(
-                    ['item_mtime', 'tstamp'],
-                    'index_phash',
-                    ['phash' => $phash],
-                    [],
-                    [],
-                    1
-                )
-                ->fetchAssociative();
-            // If there was an indexing of the page...:
-            if (!empty($row)) {
-                if ($this->tstamp_maxAge && $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_maxAge) {
-                    // If max age is exceeded, index the page
-                    // The configured max-age was exceeded for the document, and thus it's indexed.
-                    $result = 1;
-                } elseif (!$this->tstamp_minAge || $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_minAge) {
-                    // if minAge is not set or if minAge is exceeded, consider at mtime
-                    if ($mtime) {
-                        // It mtime is set, then it's tested. If not, the page must clearly be indexed.
-                        if ((int)$row['item_mtime'] !== $mtime) {
-                            // And if mtime is different from the index_phash mtime, it's about time to re-index.
-                            // The minimum age has exceeded and mtime was set and the mtime was different, so the page was indexed.
-                            $result = 2;
-                        } else {
-                            // mtime matched the document, so no changes detected and no content updated
-                            $result = -1;
-                            if ($this->tstamp_maxAge) {
-                                $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', LogLevel::WARNING);
-                            } else {
-                                $this->updateTstamp($phash);
-                                $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
-                            }
-                        }
+        $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
+            ->select(
+                ['item_mtime', 'tstamp'],
+                'index_phash',
+                ['phash' => $phash],
+                [],
+                [],
+                1
+            )
+            ->fetchAssociative();
+        // If there was an indexing of the page...:
+        if (!empty($row)) {
+            if ($this->tstamp_maxAge && $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_maxAge) {
+                // If max age is exceeded, index the page
+                // The configured max-age was exceeded for the document, and thus it's indexed.
+                $result = 1;
+            } elseif (!$this->tstamp_minAge || $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_minAge) {
+                // if minAge is not set or if minAge is exceeded, consider at mtime
+                if ($mtime) {
+                    // It mtime is set, then it's tested. If not, the page must clearly be indexed.
+                    if ((int)$row['item_mtime'] !== $mtime) {
+                        // And if mtime is different from the index_phash mtime, it's about time to re-index.
+                        // The minimum age has exceeded and mtime was set and the mtime was different, so the page was indexed.
+                        $result = 2;
                     } else {
-                        // The minimum age has exceeded, but mtime was not set, so the page was indexed.
-                        $result = 3;
+                        // mtime matched the document, so no changes detected and no content updated
+                        $result = -1;
+                        if ($this->tstamp_maxAge) {
+                            $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', LogLevel::WARNING);
+                        } else {
+                            $this->updateTstamp($phash);
+                            $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
+                        }
                     }
                 } else {
-                    // The minimum age was not exceeded
-                    $result = -2;
+                    // The minimum age has exceeded, but mtime was not set, so the page was indexed.
+                    $result = 3;
                 }
             } else {
-                // Page has never been indexed (is not represented in the index_phash table).
-                $result = 4;
+                // The minimum age was not exceeded
+                $result = -2;
             }
+        } else {
+            // Page has never been indexed (is not represented in the index_phash table).
+            $result = 4;
         }
         return $result;
     }
@@ -1346,27 +1313,21 @@ class Indexer
     public function checkContentHash(): array|true
     {
         // With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
-        $result = true;
-        if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
-                ->select(
-                    ['phash'],
-                    'index_phash',
-                    [
-                        'phash_grouping' => (int)$this->hash['phash_grouping'],
-                        'contentHash' => $this->content_md5h,
-                    ],
-                    [],
-                    [],
-                    1
-                )
-                ->fetchAssociative();
+        $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
+            ->select(
+                ['phash'],
+                'index_phash',
+                [
+                    'phash_grouping' => (int)$this->hash['phash_grouping'],
+                    'contentHash' => $this->content_md5h,
+                ],
+                [],
+                [],
+                1
+            )
+            ->fetchAssociative();
 
-            if (!empty($row)) {
-                $result = $row;
-            }
-        }
-        return $result;
+        return $row ?: true;
     }
 
     /**
@@ -1378,22 +1339,17 @@ class Indexer
      */
     public function checkExternalDocContentHash(int $hashGr, int $content_md5h): bool
     {
-        $result = true;
-        if (IndexedSearchUtility::isTableUsed('index_phash')) {
-            $count = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_phash')
-                ->count(
-                    '*',
-                    'index_phash',
-                    [
-                        'phash_grouping' => $hashGr,
-                        'contentHash' => $content_md5h,
-                    ]
-                );
-
-            $result = $count === 0;
-        }
-        return $result;
+        $count = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_phash')
+            ->count(
+                '*',
+                'index_phash',
+                [
+                    'phash_grouping' => $hashGr,
+                    'contentHash' => $content_md5h,
+                ]
+            );
+        return $count === 0;
     }
 
     /**
@@ -1401,19 +1357,14 @@ class Indexer
      */
     public function is_grlist_set(int $phash_x): bool
     {
-        $result = false;
-        if (IndexedSearchUtility::isTableUsed('index_grlist')) {
-            $count = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_grlist')
-                ->count(
-                    'phash_x',
-                    'index_grlist',
-                    ['phash_x' => $phash_x]
-                );
-
-            $result = $count > 0;
-        }
-        return $result;
+        $count = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_grlist')
+            ->count(
+                'phash_x',
+                'index_grlist',
+                ['phash_x' => $phash_x]
+            );
+        return $count > 0;
     }
 
     /**
@@ -1424,22 +1375,20 @@ class Indexer
      */
     public function update_grlist(int $phash, int $phash_x): void
     {
-        if (IndexedSearchUtility::isTableUsed('index_grlist')) {
-            $count = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_grlist')
-                ->count(
-                    'phash',
-                    'index_grlist',
-                    [
-                        'phash' => $phash,
-                        'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list']),
-                    ]
-                );
+        $count = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_grlist')
+            ->count(
+                'phash',
+                'index_grlist',
+                [
+                    'phash' => $phash,
+                    'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list']),
+                ]
+            );
 
-            if ($count === 0) {
-                $this->submit_grlist($phash, $phash_x);
-                $this->log_setTSlogMessage('Inserted gr_list \'' . $this->conf['gr_list'] . '\' for phash \'' . $phash . '\'', LogLevel::NOTICE);
-            }
+        if ($count === 0) {
+            $this->submit_grlist($phash, $phash_x);
+            $this->log_setTSlogMessage('Inserted gr_list \'' . $this->conf['gr_list'] . '\' for phash \'' . $phash . '\'', LogLevel::NOTICE);
         }
     }
 
@@ -1448,10 +1397,6 @@ class Indexer
      */
     public function updateTstamp(int $phash, int $mtime = 0): void
     {
-        if (!IndexedSearchUtility::isTableUsed('index_phash')) {
-            return;
-        }
-
         $updateFields = [
             'tstamp' => $GLOBALS['EXEC_TIME'],
         ];
@@ -1476,10 +1421,6 @@ class Indexer
      */
     public function updateSetId(int $phash): void
     {
-        if (!IndexedSearchUtility::isTableUsed('index_phash')) {
-            return;
-        }
-
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('index_phash')
             ->update(
@@ -1498,10 +1439,6 @@ class Indexer
      */
     public function updateParsetime(int $phash, int $parsetime): void
     {
-        if (!IndexedSearchUtility::isTableUsed('index_phash')) {
-            return;
-        }
-
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('index_phash')
             ->update(
@@ -1520,10 +1457,6 @@ class Indexer
      */
     public function updateRootline(): void
     {
-        if (!IndexedSearchUtility::isTableUsed('index_section')) {
-            return;
-        }
-
         $updateFields = [];
         $this->getRootLineFields($updateFields);
 
@@ -1566,7 +1499,7 @@ class Indexer
      */
     public function checkWordList(array $wordListArray): void
     {
-        if ($wordListArray === [] || !IndexedSearchUtility::isTableUsed('index_words')) {
+        if ($wordListArray === [] || IndexedSearchUtility::isMysqlFullTextEnabled()) {
             return;
         }
 
@@ -1628,7 +1561,7 @@ class Indexer
      */
     public function submitWords(array $wordList, int $phash): void
     {
-        if (!IndexedSearchUtility::isTableUsed('index_rel')) {
+        if (IndexedSearchUtility::isMysqlFullTextEnabled()) {
             return;
         }
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
