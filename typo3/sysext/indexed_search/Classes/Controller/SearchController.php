@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Html\HtmlParser;
-use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -91,7 +90,6 @@ class SearchController extends ActionController
     protected array $resultSections = [];
 
     protected array $pathCache = [];
-    protected array $iconFileNameCache = [];
     protected TypoScriptService $typoScriptService;
 
     public function injectTypoScriptService(TypoScriptService $typoScriptService)
@@ -122,10 +120,8 @@ class SearchController extends ActionController
         if (is_array($this->settings['defaultOptions'])) {
             $searchData = array_merge($this->settings['defaultOptions'], $searchData);
         }
-        // if "languageUid" was set to "current", take the current site language
-        if (($searchData['languageUid'] ?? '') === 'current') {
-            $searchData['languageUid'] = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
-        }
+        // Hand in the current site language as languageUid
+        $searchData['languageUid'] = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
 
         $this->initializeExternalParsers();
         // If "_sections" is set, this value overrides any existing value.
@@ -378,10 +374,8 @@ class SearchController extends ActionController
      */
     protected function compileSingleResultRow(array $row, int $headerOnly = 0): array
     {
-        $specRowConf = $this->getSpecialConfigurationForResultRow($row);
         $resultData = $row;
         $resultData['headerOnly'] = $headerOnly;
-        $resultData['CSSsuffix'] = ($specRowConf['CSSsuffix'] ?? false) ? '-' . $specRowConf['CSSsuffix'] : '';
         if (isset($row['static_page_arguments']) && $this->multiplePagesType($row['item_type'])) {
             try {
                 $dat = json_decode($row['static_page_arguments'], true, 512, JSON_THROW_ON_ERROR);
@@ -417,14 +411,12 @@ class SearchController extends ActionController
             $title = LinkResult::adapt($this->linkPage((int)$row['data_page_id'], $row, $title))->getHtml();
         }
         $resultData['title'] = $title;
-        $resultData['icon'] = $this->makeItemTypeIcon($row['item_type'], '', $specRowConf);
         $resultData['rating'] = $this->makeRating($row);
         $resultData['description'] = $this->makeDescription(
             $row,
             !($this->searchData['extResume'] && !$headerOnly),
             $this->settings['results.']['summaryCropAfter']
         );
-        $resultData['language'] = $this->makeLanguageIndication($row);
         $resultData['size'] = GeneralUtility::formatSize($row['item_size']);
         $resultData['created'] = $row['item_crdate'];
         $resultData['modified'] = $row['item_mtime'];
@@ -474,30 +466,6 @@ class SearchController extends ActionController
     }
 
     /**
-     * Returns configuration from TypoScript for result row based
-     * on ID / location in page tree!
-     */
-    protected function getSpecialConfigurationForResultRow(array $row): array
-    {
-        $pathId = $row['data_page_id'] ?: $row['page_id'];
-        $pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
-        $specConf = $this->settings['specialConfiguration']['0'] ?? [];
-        try {
-            $rl = GeneralUtility::makeInstance(RootlineUtility::class, $pathId, $pathMP)->get();
-            foreach ($rl as $dat) {
-                if (is_array($this->settings['specialConfiguration'][$dat['uid']] ?? false)) {
-                    $specConf = $this->settings['specialConfiguration'][$dat['uid']];
-                    $specConf['_pid'] = $dat['uid'];
-                    break;
-                }
-            }
-        } catch (RootLineException $e) {
-            // do nothing
-        }
-        return $specConf;
-    }
-
-    /**
      * Return the rating-HTML code for the result row. This makes use of the $this->firstRow
      *
      * @todo can this be a ViewHelper?
@@ -531,77 +499,6 @@ class SearchController extends ActionController
             default:
                 return $default;
         }
-    }
-
-    /**
-     * Returns the HTML code for language indication.
-     */
-    protected function makeLanguageIndication(array $row): string
-    {
-        $output = '&nbsp;';
-        // If search result is a TYPO3 page:
-        if ((string)$row['item_type'] === '0') {
-            // If TypoScript is used to render the flag:
-            if (is_array($this->settings['flagRendering'] ?? false)) {
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-                $cObj->setCurrentVal($row['sys_language_uid']);
-                $typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['flagRendering']);
-                $output = $cObj->cObjGetSingle($this->settings['flagRendering']['_typoScriptNodeValue'], $typoScriptArray);
-            }
-        }
-        return $output;
-    }
-
-    /**
-     * Return icon for file extension
-     */
-    public function makeItemTypeIcon(string $imageType, string $alt, array $specRowConf): string
-    {
-        // Build compound key if item type is 0, iconRendering is not used
-        // and specialConfiguration.[pid].pageIcon was set in TS
-        if (
-            $imageType === '0' && ($specRowConf['_pid'] ?? false)
-            && is_array($specRowConf['pageIcon'] ?? false)
-            && !is_array($this->settings['iconRendering'] ?? false)
-        ) {
-            $imageType .= ':' . $specRowConf['_pid'];
-        }
-        if (!isset($this->iconFileNameCache[$imageType])) {
-            $this->iconFileNameCache[$imageType] = '';
-            // If TypoScript is used to render the icon:
-            if (is_array($this->settings['iconRendering'] ?? false)) {
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-                $cObj->setCurrentVal($imageType);
-                $typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['iconRendering']);
-                $this->iconFileNameCache[$imageType] = $cObj->cObjGetSingle($this->settings['iconRendering']['_typoScriptNodeValue'], $typoScriptArray);
-            } else {
-                // Default creation / finding of icon:
-                $icon = '';
-                if ($imageType === '0' || str_starts_with($imageType, '0:')) {
-                    if (is_array($specRowConf['pageIcon'] ?? false)) {
-                        $this->iconFileNameCache[$imageType] = $this->getTypoScriptFrontendController()->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
-                    } else {
-                        $icon = 'EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif';
-                    }
-                } elseif ($this->externalParsers[$imageType]) {
-                    $icon = $this->externalParsers[$imageType]->getIcon($imageType);
-                }
-                if ($icon) {
-                    $fullPath = GeneralUtility::getFileAbsFileName($icon);
-                    if ($fullPath) {
-                        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullPath);
-                        $iconPath = PathUtility::getAbsoluteWebPath($fullPath);
-                        $this->iconFileNameCache[$imageType] = $imageInfo->getWidth() > 0
-                            ? '<img src="' . $iconPath
-                              . '" width="' . $imageInfo->getWidth()
-                              . '" height="' . $imageInfo->getHeight()
-                              . '" title="' . htmlspecialchars($alt) . '" alt="" />'
-                            : '';
-                    }
-                }
-            }
-        }
-        return $this->iconFileNameCache[$imageType];
     }
 
     /**
@@ -902,30 +799,6 @@ class SearchController extends ActionController
         }
         // disable single entries by TypoScript
         return $this->removeOptionsFromOptionList($allOptions, $blindSettings['mediaType']);
-    }
-
-    /**
-     * get the values for the "language" selector
-     *
-     * @return array Associative array with options
-     */
-    protected function getAllAvailableLanguageOptions(): array
-    {
-        $allOptions = [
-            '-1' => LocalizationUtility::translate('languageUids.-1', 'IndexedSearch'),
-        ];
-        $blindSettings = $this->settings['blind'];
-        if (!$blindSettings['languageUid']) {
-            $languages = $this->request->getAttribute('site')->getLanguages();
-            foreach ($languages as $language) {
-                $allOptions[$language->getLanguageId()] = $language->getNavigationTitle();
-            }
-            // disable single entries by TypoScript
-            $allOptions = $this->removeOptionsFromOptionList($allOptions, (array)$blindSettings['languageUid']);
-        } else {
-            $allOptions = [];
-        }
-        return $allOptions;
     }
 
     /**
@@ -1263,7 +1136,6 @@ class SearchController extends ActionController
         $allSearchTypes = $this->getAllAvailableSearchTypeOptions();
         $allDefaultOperands = $this->getAllAvailableOperandsOptions();
         $allMediaTypes = $this->getAllAvailableMediaTypesOptions();
-        $allLanguageUids = $this->getAllAvailableLanguageOptions();
         $allSortOrders = $this->getAllAvailableSortOrderOptions();
         $allSortDescendings = $this->getAllAvailableSortDescendingOptions();
         return [
@@ -1271,8 +1143,6 @@ class SearchController extends ActionController
             'allDefaultOperands' => $allDefaultOperands,
             'showTypeSearch' => !empty($allSearchTypes) || !empty($allDefaultOperands),
             'allMediaTypes' => $allMediaTypes,
-            'allLanguageUids' => $allLanguageUids,
-            'showMediaAndLanguageSearch' => !empty($allMediaTypes) || !empty($allLanguageUids),
             'allSections' => $this->getAllAvailableSectionsOptions(),
             'allIndexConfigurations' => $this->getAllAvailableIndexConfigurationsOptions(),
             'allSortOrders' => $allSortOrders,

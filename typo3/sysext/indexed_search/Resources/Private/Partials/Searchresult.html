@@ -1,9 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <div class="tx-indexedsearch-res">
     <h3>
-        <span class="tx-indexedsearch-icon">{row.icon -> f:format.raw()}</span>
         <f:if condition="{settings.displayResultNumber}"><span class="tx-indexedsearch-result-number">{row.result_number}</span></f:if>
-        <span class="tx-indexedsearch-title{row.CSSsuffix}">{row.title -> f:format.raw()}</span>
+        <span class="tx-indexedsearch-title">{row.title -> f:format.raw()}</span>
         <span class="tx-indexedsearch-percent">{row.rating}</span>
     </h3>
     <f:if condition="{row.headerOnly} == 0">

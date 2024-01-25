@@ -76,7 +76,6 @@ final class IndexedSearchCest
             '#tx-indexedsearch-selectbox-searchtype',
             '#tx-indexedsearch-selectbox-defaultoperand',
             '#tx-indexedsearch-selectbox-media',
-            '#tx-indexedsearch-selectbox-lang',
             '#tx-indexedsearch-selectbox-sections',
             '#tx-indexedsearch-selectbox-freeIndexUid',
             '#tx-indexedsearch-selectbox-order',

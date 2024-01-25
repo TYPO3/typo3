@@ -11,7 +11,6 @@
             <f:form.hidden name="search[mediaType]" value="{searchParams.mediaType}" />
             <f:form.hidden name="search[sortOrder]" value="{searchParams.sortOrder}" />
             <f:form.hidden name="search[group]" value="{searchParams.group}" />
-            <f:form.hidden name="search[languageUid]" value="{searchParams.languageUid}" />
             <f:form.hidden name="search[desc]" value="{searchParams.desc}" />
             <f:form.hidden name="search[numberOfResults]" value="{searchParams.numberOfResults}" />
             <f:form.hidden name="search[extendedSearch]" value="{searchParams.extendedSearch}" />
@@ -34,15 +33,10 @@
                         </f:if>
                     </div>
                 </f:if>
-                <f:if condition="{showMediaAndLanguageSearch}">
+                <f:if condition="{allMediaTypes}">
                     <div class="tx-indexedsearch-search-in">
                         <label for="tx-indexedsearch-selectbox-media"><f:translate key="form.searchIn" />:</label>
-                        <f:if condition="{allMediaTypes}">
-                            <f:form.select name="search[mediaType]" options="{allMediaTypes}" value="{searchParams.mediaType}" id="tx-indexedsearch-selectbox-media" class="tx-indexedsearch-selectbox-media media" />
-                        </f:if>
-                        <f:if condition="{allLanguageUids}">
-                            <f:form.select name="search[languageUid]" options="{allLanguageUids}" value="{searchParams.languageUid}" id="tx-indexedsearch-selectbox-lang" class="tx-indexedsearch-selectbox-lang lang" />
-                        </f:if>
+                        <f:form.select name="search[mediaType]" options="{allMediaTypes}" value="{searchParams.mediaType}" id="tx-indexedsearch-selectbox-media" class="tx-indexedsearch-selectbox-media media" />
                     </div>
                 </f:if>
                 <f:if condition="{allSections}">

@@ -80,14 +80,6 @@
 			<trans-unit id="defaultOperands.1" resname="defaultOperands.1">
 				<source>Any words (OR)</source>
 			</trans-unit>
-
-			<trans-unit id="languageUids.-1" resname="languageUids.-1">
-				<source>All languages</source>
-			</trans-unit>
-			<trans-unit id="languageUids.0" resname="languageUids.0">
-				<source>Default</source>
-			</trans-unit>
-
 			<trans-unit id="sections.0" resname="sections.0">
 				<source>Whole site</source>
 			</trans-unit>

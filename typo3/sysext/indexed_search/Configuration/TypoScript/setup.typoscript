@@ -16,8 +16,6 @@ plugin.tx_indexedsearch {
 
 		breadcrumbWrap = / || /
 
-		# show the parse times
-		displayParsetimes = 0
 		displayLevel1Sections = 1
 		displayLevel2Sections = 0
 		displayLevelxAllTypes = 0
@@ -55,53 +53,24 @@ plugin.tx_indexedsearch {
 			mediaType = 0
 			sortOrder = 0
 			group = 0
-			languageUid = 0
 			desc = 0
 			# List of available number of results. First will be used as default.
 			numberOfResults = 10,25,50,100
 			# defaultOperand.1 = 1
 			# extResume=1
 		}
-/*
-		flagRendering = CASE
-		flagRendering {
-			key.current = 1
-			2 = TEXT
-			2.value = German
-			default = TEXT
-			default.value = English
-		}
 
-		iconRendering = CASE
-		iconRendering {
-			key.current = 1
-			html = TEXT
-			html.value = HtmL
-			default = TEXT
-			default.value = TYPO3 pages
-		}
-
-		specialConfiguration {
-			0.pageIcon = IMAGE
-			0.pageIcon.file = typo3/sysext/indexed_search/Resources/Public/Icons/FileTypes/pages.gif
-			1.pageIcon = IMAGE
-			1.pageIcon.file = typo3/sysext/indexed_search/Resources/Public/Icons/FileTypes/pdf.gif
-		}
-*/
 		defaultOptions {
 			defaultOperand = 0
 			sections = 0
 			freeIndexUid = -1
 			mediaType = -1
 			sortOrder = rank_flag
-			languageUid = current
 			sortDesc = 1
 			searchType = 1
 			extResume = 1
 		}
-
 	}
-
 
 	view {
 		templateRootPaths {
