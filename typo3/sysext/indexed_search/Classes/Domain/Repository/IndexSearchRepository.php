@@ -172,11 +172,8 @@ class IndexSearchRepository
         $useMysqlFulltext = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'useMysqlFulltext');
         // Getting SQL result pointer:
         $this->getTimeTracker()->push('Searching result');
-        // @todo Change hook and method signatures to return the QueryBuilder instead the Result. Consider to move
-        //       from hook to a proper PSR-14 event.
-        if ($hookObj = $this->hookRequest('getResultRows_SQLpointer')) {
-            $result = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
-        } elseif ($useMysqlFulltext) {
+        // @todo Change method signatures to return the QueryBuilder instead the Result.
+        if ($useMysqlFulltext) {
             $result = $this->getResultRows_SQLpointerMysqlFulltext($searchWords, $freeIndexUid);
         } else {
             $result = $this->getResultRows_SQLpointer($searchWords, $freeIndexUid);
@@ -482,12 +479,8 @@ class IndexSearchRepository
                 $queryBuilder->expr()->eq('IP.phash', $queryBuilder->quoteIdentifier('ISEC.phash'))
             );
 
-        // Calling hook for alternative creation of page ID list
         $searchRootPageIdList = $this->getSearchRootPageIdList();
-        if ($hookObj = $this->hookRequest('execFinalQuery_idList')) {
-            $pageWhere = $hookObj->execFinalQuery_idList('');
-            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($pageWhere));
-        } elseif ($searchRootPageIdList[0] >= 0) {
+        if ($searchRootPageIdList[0] >= 0) {
             // Collecting all pages IDs in which to search
             // filtering out ALL pages that are not accessible due to restriction containers. Does NOT look for "no_search" field!
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
@@ -953,13 +946,7 @@ class IndexSearchRepository
 
         // Setting up methods of filtering results
         // based on page types, access, etc.
-        if ($hookObj = $this->hookRequest('execFinalQuery_idList')) {
-            // Calling hook for alternative creation of page ID list
-            $hookWhere = QueryHelper::stripLogicalOperatorPrefix($hookObj->execFinalQuery_idList($list));
-            if (!empty($hookWhere)) {
-                $queryBuilder->andWhere($hookWhere);
-            }
-        } elseif ($this->searchRootPageIdList >= 0) {
+        if ($this->searchRootPageIdList >= 0) {
             // Collecting all pages IDs in which to search,
             // filtering out ALL pages that are not accessible due to restriction containers.
             // Does NOT look for "no_search" field!
@@ -1125,25 +1112,6 @@ class IndexSearchRepository
         /** @var FileContentParser|null $fileContentParser */
         $fileContentParser = $this->externalParsers[$itemType] ?? null;
         return is_object($fileContentParser) && $fileContentParser->isMultiplePageExtension($itemType);
-    }
-
-    /**
-     * Returns an object reference to the hook object if any
-     *
-     * @param string $functionName Name of the function you want to call / hook key
-     * @return object|null Hook object, if any, otherwise NULL.
-     */
-    protected function hookRequest(string $functionName): ?object
-    {
-        // Hook: menuConfig_preProcessModMenu
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName] ?? null) {
-            $hookObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
-            if (method_exists($hookObj, $functionName)) {
-                $hookObj->pObj = $this;
-                return $hookObj;
-            }
-        }
-        return null;
     }
 
     /**

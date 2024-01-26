@@ -1129,6 +1129,41 @@ return [
             'Breaking-102900-MetaphoneSearchRemovedFromIndexed_search.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'pi1_hooks\'][\'initialize_postProc\']' => [
+        'restFiles' => [
+            'Breaking-102937-Pi1_hooksHookRemovedFromIndexedSearch.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'pi1_hooks\'][\'getResultRows\']' => [
+        'restFiles' => [
+            'Breaking-102937-Pi1_hooksHookRemovedFromIndexedSearch.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'pi1_hooks\'][\'getDisplayResults\']' => [
+        'restFiles' => [
+            'Breaking-102937-Pi1_hooksHookRemovedFromIndexedSearch.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'pi1_hooks\'][\'getDisplayResults_postProc\']' => [
+        'restFiles' => [
+            'Breaking-102937-Pi1_hooksHookRemovedFromIndexedSearch.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'pi1_hooks\'][\'getSearchWords\']' => [
+        'restFiles' => [
+            'Breaking-102937-Pi1_hooksHookRemovedFromIndexedSearch.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'pi1_hooks\'][\'getResultRows_SQLpointer\']' => [
+        'restFiles' => [
+            'Breaking-102937-Pi1_hooksHookRemovedFromIndexedSearch.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'indexed_search\'][\'pi1_hooks\'][\'execFinalQuery_idList\']' => [
+        'restFiles' => [
+            'Breaking-102937-Pi1_hooksHookRemovedFromIndexedSearch.rst',
+        ],
+    ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_gifbuilder.php\'][\'gifbuilder-ConfPreProcess\']' => [
         'restFiles' => [
             'Breaking-102931-GifBuilderHookRemoved.rst',

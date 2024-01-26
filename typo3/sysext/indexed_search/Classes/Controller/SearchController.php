@@ -160,10 +160,7 @@ class SearchController extends ActionController
         $this->searchData = $searchData;
         // $this->searchData is used in $this->getSearchWords
         $this->searchWords = $this->getSearchWords((bool)$searchData['defaultOperand']);
-        // Calling hook for modification of initialized content
-        if ($hookObj = $this->hookRequest('initialize_postProc')) {
-            $hookObj->initialize_postProc();
-        }
+
         return $searchData;
     }
 
@@ -198,17 +195,11 @@ class SearchController extends ActionController
         $resultsets = [];
         foreach ($indexCfgs as $freeIndexUid) {
             // Get result rows
-            if ($hookObj = $this->hookRequest('getResultRows')) {
-                $resultData = $hookObj->getResultRows($this->searchWords, $freeIndexUid);
-            } else {
-                $resultData = $this->searchRepository->doSearch($this->searchWords, $freeIndexUid);
-            }
+            $resultData = $this->searchRepository->doSearch($this->searchWords, $freeIndexUid);
+
             // Display search results
-            if ($hookObj = $this->hookRequest('getDisplayResults')) {
-                $resultsets[$freeIndexUid] = $hookObj->getDisplayResults($this->searchWords, $resultData, $freeIndexUid);
-            } else {
-                $resultsets[$freeIndexUid] = $this->getDisplayResults($this->searchWords, $resultData, $freeIndexUid);
-            }
+            $resultsets[$freeIndexUid] = $this->getDisplayResults($this->searchWords, $resultData, $freeIndexUid);
+
             // Create header if we are searching more than one indexing configuration
             if (count($indexCfgs) > 1) {
                 if ($freeIndexUid > 0) {
@@ -271,10 +262,6 @@ class SearchController extends ActionController
         // Print a message telling which words in which sections we searched for
         if (str_starts_with($this->searchData['sections'], 'rl')) {
             $result['searchedInSectionInfo'] = (LocalizationUtility::translate('result.inSection', 'IndexedSearch') ?? '') . ' "' . $this->getPathFromPageId((int)substr($this->searchData['sections'], 4)) . '"';
-        }
-
-        if ($hookObj = $this->hookRequest('getDisplayResults_postProc')) {
-            $result = $hookObj->getDisplayResults_postProc($result);
         }
 
         return $result;
@@ -591,10 +578,7 @@ class SearchController extends ActionController
     {
         // Shorten search-word string to max 200 bytes - shortening the string here is only a run-away feature!
         $searchWords = mb_substr($this->getSword(), 0, 200);
-        $sWordArray = false;
-        if ($hookObj = $this->hookRequest('getSearchWords')) {
-            $sWordArray = $hookObj->getSearchWords_splitSWords($searchWords, $useDefaultOperator);
-        } elseif ((int)$this->searchData['searchType'] === SearchType::SENTENCE->value) {
+        if ((int)$this->searchData['searchType'] === SearchType::SENTENCE->value) {
             $sWordArray = [
                 [
                     'sword' => trim($searchWords),
@@ -1057,25 +1041,6 @@ class SearchController extends ActionController
                 unset($this->externalParsers[$extension]);
             }
         }
-    }
-
-    /**
-     * Returns an object reference to the hook object if any
-     *
-     * @param string $functionName Name of the function you want to call / hook key
-     * @return object|null Hook object, if any, otherwise null.
-     */
-    protected function hookRequest(string $functionName): ?object
-    {
-        // Hook: menuConfig_preProcessModMenu
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName] ?? null) {
-            $hookObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
-            if (method_exists($hookObj, $functionName)) {
-                $hookObj->pObj = $this;
-                return $hookObj;
-            }
-        }
-        return null;
     }
 
     /**
