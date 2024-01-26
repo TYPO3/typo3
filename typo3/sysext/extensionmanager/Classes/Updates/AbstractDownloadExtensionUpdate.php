@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,32 +15,53 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Extensionmanager\Updates;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Remote\DownloadFailedException;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Remote\VerificationFailedException;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use TYPO3\CMS\Install\Updates\ChattyInterface;
+use TYPO3\CMS\Install\Updates\ConfirmableInterface;
+use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Download extension from TER
  */
 abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface, ConfirmableInterface, ChattyInterface
 {
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    protected OutputInterface $output;
+    protected ExtensionModel $extension;
 
-    /**
-     * @var \TYPO3\CMS\Install\Updates\ExtensionModel
-     */
-    protected $extension;
+    protected FileHandlingUtility $fileHandlingUtility;
+    protected ListUtility $listUtility;
+    protected InstallUtility $installUtility;
+    protected RemoteRegistry $remoteRegistry;
+
+    public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility): void
+    {
+        $this->fileHandlingUtility = $fileHandlingUtility;
+    }
+
+    public function injectListUtility(ListUtility $listUtility): void
+    {
+        $this->listUtility = $listUtility;
+    }
+
+    public function injectInstallUtility(InstallUtility $installUtility): void
+    {
+        $this->installUtility = $installUtility;
+    }
+
+    public function injectRemoteRegistry(RemoteRegistry $remoteRegistry): void
+    {
+        $this->remoteRegistry = $remoteRegistry;
+    }
 
     public function setOutput(OutputInterface $output): void
     {
@@ -59,30 +82,27 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
      * (e.g. installing in extList, respecting priority, etc.)
      *
      * @return bool whether the installation worked or not
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+     * @throws ExtensionManagerException
      */
     protected function installExtension(ExtensionModel $extension): bool
     {
         $updateSuccessful = true;
 
-        $extensionListUtility = GeneralUtility::makeInstance(ListUtility::class);
-        $availableExtensions = $extensionListUtility->getAvailableExtensions();
+        $availableExtensions = $this->listUtility->getAvailableExtensions();
 
         $extensionKey = $extension->getKey();
         $isExtensionAvailable = !empty($availableExtensions[$extensionKey]);
         $isComposerMode = Environment::isComposerMode();
 
         if (!$isComposerMode && !$isExtensionAvailable) {
-            $extensionFileHandlingUtility = GeneralUtility::makeInstance(FileHandlingUtility::class);
-            $remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
-            if ($remoteRegistry->hasDefaultRemote()) {
-                $terRemote = $remoteRegistry->getDefaultRemote();
+            if ($this->remoteRegistry->hasDefaultRemote()) {
+                $terRemote = $this->remoteRegistry->getDefaultRemote();
                 try {
-                    $terRemote->downloadExtension($extensionKey, $extension->getVersionString(), $extensionFileHandlingUtility);
-                } catch (DownloadFailedException $e) {
+                    $terRemote->downloadExtension($extensionKey, $extension->getVersionString(), $this->fileHandlingUtility);
+                } catch (DownloadFailedException) {
                     $updateSuccessful = false;
                     $this->output->writeln('<error>The extension ' . $extensionKey . ' could not be downloaded.</error>');
-                } catch (VerificationFailedException $e) {
+                } catch (VerificationFailedException) {
                     $updateSuccessful = false;
                     $this->output->writeln('<error>The extension ' . $extensionKey . ' could not be extracted.</error>');
                 }
@@ -93,7 +113,7 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
                 );
             }
             // The listUtility now needs to have the regenerated list of packages
-            $extensionListUtility->reloadAvailableExtensions();
+            $this->listUtility->reloadAvailableExtensions();
         }
 
         if ($isComposerMode && !$isExtensionAvailable) {
@@ -107,8 +127,7 @@ abstract class AbstractDownloadExtensionUpdate implements UpgradeWizardInterface
         }
 
         if ($updateSuccessful) {
-            $extensionInstallUtility = GeneralUtility::makeInstance(InstallUtility::class);
-            $extensionInstallUtility->install($extensionKey);
+            $this->installUtility->install($extensionKey);
         }
 
         return $updateSuccessful;

@@ -15,21 +15,22 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Extensionmanager\Updates;
 
 /**
  * Model for extensions installed by upgrade wizards
  *
  * @internal
+ * @todo: Declare 'final readonly' in v14 when ext:install class alias is gone.
  */
 class ExtensionModel
 {
     public function __construct(
-        protected readonly string $key,
-        protected readonly string $title,
-        protected readonly string $versionString,
-        protected readonly string $composerName,
-        protected readonly string $description
+        protected string $key,
+        protected string $title,
+        protected string $versionString,
+        protected string $composerName,
+        protected string $description
     ) {}
 
     public function getDescription(): string

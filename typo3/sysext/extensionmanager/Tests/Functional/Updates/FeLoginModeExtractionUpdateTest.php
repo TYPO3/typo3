@@ -15,14 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Tests\Functional\Updates;
+namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Updates;
 
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\IntegerType;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Updates\FeLoginModeExtractionUpdate;
+use TYPO3\CMS\Extensionmanager\Updates\FeLoginModeExtractionUpdate;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
@@ -33,7 +33,7 @@ final class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
     public function columnDoesNotExistTest(): void
     {
         // "updateNecessary" will return FALSE since the "fe_login_mode" column is no longer defined by TYPO3
-        self::assertFalse((new FeLoginModeExtractionUpdate())->updateNecessary());
+        self::assertFalse((new FeLoginModeExtractionUpdate($this->get(ConnectionPool::class)))->updateNecessary());
     }
 
     /**
@@ -67,7 +67,7 @@ final class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
         }
 
         $this->importCSVDataSet(__DIR__ . '/Fixtures/' . $csvDataSet . '.csv');
-        self::assertEquals($updateNecessary, (new FeLoginModeExtractionUpdate())->updateNecessary());
+        self::assertEquals($updateNecessary, (new FeLoginModeExtractionUpdate($this->get(ConnectionPool::class)))->updateNecessary());
     }
 
     public static function functionalityUsedTestDataProvider(): \Generator

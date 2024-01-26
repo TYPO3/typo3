@@ -15,12 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Extensionmanager\Updates;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
+use TYPO3\CMS\Install\Updates\Confirmation;
 
 /**
  * Installs and downloads EXT:fe_login_mode
@@ -29,14 +29,12 @@ use TYPO3\CMS\Install\Attribute\UpgradeWizard;
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('feLoginModeExtension')]
-class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
+final class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
 {
     private const TABLE_NAME = 'pages';
     private const FIELD_NAME = 'fe_login_mode';
 
-    protected Confirmation $confirmation;
-
-    public function __construct()
+    public function __construct(private readonly ConnectionPool $connectionPool)
     {
         $this->extension = new ExtensionModel(
             'fe_login_mode',
@@ -45,12 +43,6 @@ class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
             'o-ba/fe-login-mode',
             'This extension provides the frontend user login mode functionality, used in previous TYPO3 versions to reduce the amount of cache variants for complex user and group setups.'
         );
-
-        $this->confirmation = new Confirmation(
-            'Are you sure?',
-            'You should install EXT:fe_login_mode only if you really need it. ' . $this->extension->getDescription(),
-            false
-        );
     }
 
     /**
@@ -58,7 +50,11 @@ class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
      */
     public function getConfirmation(): Confirmation
     {
-        return $this->confirmation;
+        return new Confirmation(
+            'Are you sure?',
+            'You should install EXT:fe_login_mode only if you really need it. ' . $this->extension->getDescription(),
+            false
+        );
     }
 
     /**
@@ -106,11 +102,10 @@ class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
      */
     protected function columnExists(): bool
     {
-        $tableColumns = $this->getConnectionPool()
+        $tableColumns = $this->connectionPool
             ->getConnectionForTable(self::TABLE_NAME)
             ->createSchemaManager()
             ->listTableColumns(self::TABLE_NAME);
-
         return isset($tableColumns[self::FIELD_NAME]);
     }
 
@@ -120,18 +115,12 @@ class FeLoginModeExtractionUpdate extends AbstractDownloadExtensionUpdate
      */
     protected function functionalityUsed(): bool
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable(self::TABLE_NAME);
-
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         return (bool)$queryBuilder
             ->count(self::FIELD_NAME)
             ->from(self::TABLE_NAME)
             ->where($queryBuilder->expr()->neq(self::FIELD_NAME, 0))
             ->executeQuery()
             ->fetchOne();
-    }
-
-    protected function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

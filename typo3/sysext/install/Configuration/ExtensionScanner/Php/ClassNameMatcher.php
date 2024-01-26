@@ -2478,4 +2478,14 @@ return [
             'Breaking-102900-MetaphoneSearchRemovedFromIndexed_search.rst',
         ],
     ],
+    'TYPO3\CMS\Install\Updates\AbstractDownloadExtensionUpdate' => [
+        'restFiles' => [
+            'Deprecation-102943-AbstractDownloadExtensionUpdateMovedToExtextensionmanager.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\ExtensionModel' => [
+        'restFiles' => [
+            'Deprecation-102943-AbstractDownloadExtensionUpdateMovedToExtextensionmanager.rst',
+        ],
+    ],
 ];
