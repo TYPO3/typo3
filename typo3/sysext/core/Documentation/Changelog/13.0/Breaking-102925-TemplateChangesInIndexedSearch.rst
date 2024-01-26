@@ -46,7 +46,7 @@ The `Searchresult` partial now registers the `search` namespace for Fluid ViewHe
 
     <html
         xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-        xmlns:search="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers"
+        xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers"
         data-namespace-typo3-fluid="true">
 
 
@@ -55,7 +55,7 @@ ViewHelper invocation:
 
 ..  code-block:: html
 
-    {search:searchResult.rating(firstRow: firstRow, sortOrder: searchParams.sortOrder, row: row)}
+    {is:searchResult.rating(firstRow: firstRow, sortOrder: searchParams.sortOrder, row: row)}
 
 
 Rules
