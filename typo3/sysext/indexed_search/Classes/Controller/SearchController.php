@@ -133,10 +133,10 @@ class SearchController extends ActionController
         }
         $searchData['numberOfResults'] = $this->getNumberOfResults((int)($searchData['numberOfResults'] ?? 0));
         // This gets the search-words into the $searchWordArray
-        $this->setSword($searchData['sword'] ?? '');
+        $this->sword = $searchData['sword'] ?? '';
         // Add previous search words to current
         if (($searchData['sword_prev_include'] ?? false) && ($searchData['sword_prev'] ?? false)) {
-            $this->setSword(trim($searchData['sword_prev']) . ' ' . $this->getSword());
+            $this->sword = trim($searchData['sword_prev']) . ' ' . $this->sword;
         }
         // This is the id of the site root.
         // This value may be a commalist of integer (prepared for this)
@@ -575,7 +575,7 @@ class SearchController extends ActionController
     protected function getSearchWords(array $searchData, bool $useDefaultOperator): array
     {
         // Shorten search-word string to max 200 bytes - shortening the string here is only a run-away feature!
-        $searchWords = mb_substr($this->getSword(), 0, 200);
+        $searchWords = mb_substr($this->sword, 0, 200);
         if ((int)$searchData['searchType'] === SearchType::SENTENCE->value) {
             $sWordArray = [
                 [
@@ -653,7 +653,7 @@ class SearchController extends ActionController
 
         $searchData = $this->initialize($search);
         // Adding search field value
-        $this->view->assign('sword', $this->getSword());
+        $this->view->assign('sword', $this->sword);
         // Extended search
         if (!empty($searchData['extendedSearch'])) {
             $this->view->assignMultiple($this->processExtendedSearchParameters());
@@ -1154,22 +1154,6 @@ class SearchController extends ActionController
         }
 
         return $searchWord;
-    }
-
-    /**
-     * Set the search word
-     */
-    public function setSword($sword): void
-    {
-        $this->sword = (string)$sword;
-    }
-
-    /**
-     * Returns the search word
-     */
-    public function getSword(): string
-    {
-        return $this->sword;
     }
 
     private function getTypoScriptFrontendController(): TypoScriptFrontendController
