@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
 use TYPO3\CMS\IndexedSearch\Lexer;
+use TYPO3\CMS\IndexedSearch\Pagination\SlicePaginator;
 use TYPO3\CMS\IndexedSearch\Type\DefaultOperand;
 use TYPO3\CMS\IndexedSearch\Type\GroupOption;
 use TYPO3\CMS\IndexedSearch\Type\IndexingConfiguration;
@@ -240,6 +242,7 @@ class SearchController extends ActionController
         $result = [
             'count' => $resultData['count'] ?? 0,
             'searchWords' => $searchWords,
+            'pagination' => null,
         ];
         // Perform display of result rows array
         if ($resultData) {
@@ -256,6 +259,14 @@ class SearchController extends ActionController
                     $result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . ($resultSectionsCount > 1 ? 'inNsections' : 'inNsection'), 'IndexedSearch') ?? '', $resultSectionsCount);
                 }
             }
+
+            $paginator = new SlicePaginator(
+                $result['rows'],
+                ((int)$searchData['pointer']) + 1,
+                $resultData['count'],
+                $searchData['numberOfResults'],
+            );
+            $result['pagination'] = new SimplePagination($paginator);
         }
         // Print a message telling which words in which sections we searched for
         if (str_starts_with($searchData['sections'], 'rl')) {

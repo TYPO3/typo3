@@ -51,6 +51,9 @@
             "@typo3/impexp/*": [
                 "impexp/*"
             ],
+            "@typo3/indexed-search/*": [
+                "indexed_search/*"
+            ],
             "@typo3/info/*": [
                 "info/*"
             ],
