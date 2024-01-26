@@ -229,7 +229,6 @@ class SearchController extends ActionController
         }
         $this->view->assign('resultsets', $resultsets);
         $this->view->assign('searchParams', $searchData);
-        $this->view->assign('searchData', $this->searchData);
         $this->view->assign('firstRow', $this->firstRow);
         $this->view->assign('searchWords', array_map([$this, 'addOperatorLabel'], $this->searchWords));
 

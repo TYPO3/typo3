@@ -37,7 +37,7 @@ Search result items
 The following options are now passed to the `Searchresult` partial:
 
 * `row: row`
-* `searchData: searchData`
+* `searchParams: searchParams`
 * `firstRow: firstRow`
 
 The `Searchresult` partial now registers the `search` namespace for Fluid ViewHelpers:
@@ -55,7 +55,7 @@ ViewHelper invocation:
 
 ..  code-block:: html
 
-    {search:searchResult.rating(firstRow: firstRow, sortOrder: searchData.sortOrder, row: row)}
+    {search:searchResult.rating(firstRow: firstRow, sortOrder: searchParams.sortOrder, row: row)}
 
 
 Rules

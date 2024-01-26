@@ -6,7 +6,7 @@
     <h3>
         <f:if condition="{settings.displayResultNumber}"><span class="tx-indexedsearch-result-number">{row.result_number}</span></f:if>
         <span class="tx-indexedsearch-title">{row.title -> f:format.raw()}</span>
-        <span class="tx-indexedsearch-percent">{search:searchResult.rating(firstRow: firstRow, sortOrder: searchData.sortOrder, row: row)}</span>
+        <span class="tx-indexedsearch-percent">{search:searchResult.rating(firstRow: firstRow, sortOrder: searchParams.sortOrder, row: row)}</span>
     </h3>
     <f:if condition="{row.headerOnly} == 0">
     <p class="tx-indexedsearch-description">{row.description -> f:format.raw()}</p>
