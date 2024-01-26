@@ -611,37 +611,35 @@ final class InstallerController
         $uriBuilder = $container->get(UriBuilder::class);
         $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
         // Let the admin user redirect to the distributions page on first login
-        switch ($request->getParsedBody()['install']['values']['sitesetup']) {
+        if ($request->getParsedBody()['install']['values']['sitesetup'] === 'createsite') {
+            // Create a page with UID 1 and PID1 and fluid_styled_content for page TS config, respect ownership
+            $pageUid = $this->setupService->createSite();
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            if (!($normalizedParams instanceof NormalizedParams)) {
+                $normalizedParams = NormalizedParams::createFromRequest($request);
+            }
+            // Check for siteUrl, despite there currently is no UI to provide it,
+            // to allow TYPO3 Console (for TYPO3 v10) to set this value to something reasonable,
+            // because on cli there is no way to find out which hostname the site is supposed to have.
+            // In the future this controller should be refactored to a generic service, where site URL is
+            // just one input argument.
+            $siteUrl = $request->getParsedBody()['install']['values']['siteUrl'] ?? $normalizedParams->getSiteUrl();
+            $this->setupService->createSiteConfiguration('main', (int)$pageUid, $siteUrl);
+        } elseif ($request->getParsedBody()['install']['values']['sitesetup'] === 'loaddistribution'
+            && !Environment::isComposerMode()
+            && $this->packageManager->isPackageActive('extensionmanager')
+        ) {
             // Update the URL to redirect after login to the extension manager distributions list
-            case 'loaddistribution':
-                $nextStepUrl = $uriBuilder->buildUriWithRedirect(
-                    'login',
-                    [],
-                    RouteRedirect::create(
-                        'tools_ExtensionmanagerExtensionmanager',
-                        [
-                            'action' => 'distributions',
-                        ]
-                    )
-                );
-                break;
-
-                // Create a page with UID 1 and PID1 and fluid_styled_content for page TS config, respect ownership
-            case 'createsite':
-                $pageUid = $this->setupService->createSite();
-
-                $normalizedParams = $request->getAttribute('normalizedParams');
-                if (!($normalizedParams instanceof NormalizedParams)) {
-                    $normalizedParams = NormalizedParams::createFromRequest($request);
-                }
-                // Check for siteUrl, despite there currently is no UI to provide it,
-                // to allow TYPO3 Console (for TYPO3 v10) to set this value to something reasonable,
-                // because on cli there is no way to find out which hostname the site is supposed to have.
-                // In the future this controller should be refactored to a generic service, where site URL is
-                // just one input argument.
-                $siteUrl = $request->getParsedBody()['install']['values']['siteUrl'] ?? $normalizedParams->getSiteUrl();
-                $this->setupService->createSiteConfiguration('main', (int)$pageUid, $siteUrl);
-                break;
+            $nextStepUrl = $uriBuilder->buildUriWithRedirect(
+                'login',
+                [],
+                RouteRedirect::create(
+                    'tools_ExtensionmanagerExtensionmanager',
+                    [
+                        'action' => 'distributions',
+                    ]
+                )
+            );
         }
 
         // Mark upgrade wizards as done

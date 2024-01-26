@@ -74,6 +74,7 @@ class ServiceProvider extends AbstractServiceProvider
             Http\Application::class => [ static::class, 'getApplication' ],
             Http\NotFoundRequestHandler::class => [ static::class, 'getNotFoundRequestHandler' ],
             Service\ClearCacheService::class => [ static::class, 'getClearCacheService' ],
+            Service\ClearTableService::class => [ static::class, 'getClearTableService' ],
             Service\CoreUpdateService::class => [ static::class, 'getCoreUpdateService' ],
             Service\CoreVersionService::class => [ static::class, 'getCoreVersionService' ],
             Service\LanguagePackService::class => [ static::class, 'getLanguagePackService' ],
@@ -146,6 +147,13 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\ClearCacheService(
             $container->get(Service\LateBootService::class),
             $container->get('cache.di')
+        );
+    }
+
+    public static function getClearTableService(ContainerInterface $container): Service\ClearTableService
+    {
+        return new Service\ClearTableService(
+            $container->get(FailsafePackageManager::class),
         );
     }
 
@@ -304,6 +312,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\MaintenanceController(
             $container->get(Service\LateBootService::class),
             $container->get(Service\ClearCacheService::class),
+            $container->get(Service\ClearTableService::class),
             $container->get(ConfigurationManager::class),
             $container->get(PasswordHashFactory::class),
             $container->get(Locales::class),

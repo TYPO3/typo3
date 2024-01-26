@@ -18,58 +18,25 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Service handling clearing and statistics of semi-persistent
- * core tables.
+ * Service handling clearing and statistics of semi-persistent core tables.
+ *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class ClearTableService
+final readonly class ClearTableService
 {
-    /**
-     * @var array List of table and their description
-     */
-    protected $tableList = [
-        [
-            'name' => 'be_sessions',
-            'description' => 'Backend user sessions',
-        ],
-        [
-            'name' => 'fe_sessions',
-            'description' => 'Frontend user sessions',
-        ],
-        [
-            'name' => 'sys_history',
-            'description' => 'Tracking of database record changes through TYPO3 backend forms',
-        ],
-        [
-            'name' => 'sys_lockedrecords',
-            'description' => 'Record locking of backend user editing',
-        ],
-        [
-            'name' => 'sys_log',
-            'description' => 'General log table',
-        ],
-        [
-            'name' => 'sys_preview',
-            'description' => 'Workspace preview links',
-        ],
-        [
-            'name' => 'tx_extensionmanager_domain_model_extension',
-            'description' => 'List of TER extensions',
-        ],
-    ];
+    public function __construct(private FailsafePackageManager $packageManager) {}
 
     /**
      * Get an array of all affected tables, a short description and their row counts
-     *
-     * @return array Details per table
      */
     public function getTableStatistics(): array
     {
         $tableStatistics = [];
-        foreach ($this->tableList as $table) {
+        foreach ($this->getTableList() as $table) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table['name']);
             if ($connection->createSchemaManager()->tablesExist([$table['name']])) {
                 $table['rowCount'] = $connection->count(
@@ -85,13 +52,11 @@ class ClearTableService
 
     /**
      * Truncate a table from $this->tableList
-     *
-     * @throws \RuntimeException
      */
-    public function clearSelectedTable(string $tableName)
+    public function clearSelectedTable(string $tableName): void
     {
         $tableFound = false;
-        foreach ($this->tableList as $table) {
+        foreach ($this->getTableList() as $table) {
             if ($table['name'] === $tableName) {
                 $tableFound = true;
                 break;
@@ -104,5 +69,45 @@ class ClearTableService
             );
         }
         GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->truncate($tableName);
+    }
+
+    /**
+     * List of tables and their description
+     */
+    private function getTableList(): array
+    {
+        $tableList = [
+            [
+                'name' => 'be_sessions',
+                'description' => 'Backend user sessions',
+            ],
+            [
+                'name' => 'fe_sessions',
+                'description' => 'Frontend user sessions',
+            ],
+            [
+                'name' => 'sys_history',
+                'description' => 'Tracking of database record changes through TYPO3 backend forms',
+            ],
+            [
+                'name' => 'sys_lockedrecords',
+                'description' => 'Record locking of backend user editing',
+            ],
+            [
+                'name' => 'sys_log',
+                'description' => 'General log table',
+            ],
+            [
+                'name' => 'sys_preview',
+                'description' => 'Workspace preview links',
+            ],
+        ];
+        if ($this->packageManager->isPackageActive('extensionmanager')) {
+            $tableList[] = [
+                'name' => 'tx_extensionmanager_domain_model_extension',
+                'description' => 'List of TER extensions',
+            ];
+        }
+        return $tableList;
     }
 }

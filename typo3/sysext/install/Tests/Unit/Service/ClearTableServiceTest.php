@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Install\Service\ClearTableService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -29,6 +31,6 @@ final class ClearTableServiceTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501942151);
-        (new ClearTableService())->clearSelectedTable('foo');
+        (new ClearTableService(new FailsafePackageManager(new DependencyOrderingService())))->clearSelectedTable('foo');
     }
 }

@@ -57,6 +57,7 @@ class MaintenanceController extends AbstractController
     public function __construct(
         private readonly LateBootService $lateBootService,
         private readonly ClearCacheService $clearCacheService,
+        private readonly ClearTableService $clearTableService,
         private readonly ConfigurationManager $configurationManager,
         private readonly PasswordHashFactory $passwordHashFactory,
         private readonly Locales $locales,
@@ -420,7 +421,7 @@ class MaintenanceController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'stats' => (new ClearTableService())->getTableStatistics(),
+            'stats' => $this->clearTableService->getTableStatistics(),
             'html' => $view->render('Maintenance/ClearTables'),
             'buttons' => [
                 [
@@ -445,7 +446,7 @@ class MaintenanceController extends AbstractController
                 1501944076
             );
         }
-        (new ClearTableService())->clearSelectedTable($table);
+        $this->clearTableService->clearSelectedTable($table);
         $messageQueue = new FlashMessageQueue('install');
         $messageQueue->enqueue(
             new FlashMessage('The table ' . $table . ' has been cleared.', 'Table cleared')
