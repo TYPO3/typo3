@@ -161,6 +161,7 @@ export class LanguageMatrixElement extends LitElement {
             <div class="btn-group">
               ${this.renderLanguageActions(language)}
             </div>
+            ${language.name}
           </td>
           <td>${language.iso}</td>
           <td>${language.dependencies.join(', ')}</td>

@@ -65,6 +65,7 @@ var __decorate=function(t,e,a,n){var i,s=arguments.length,o=s<3?e:null===n?n=Obj
             <div class="btn-group">
               ${this.renderLanguageActions(t)}
             </div>
+            ${t.name}
           </td>
           <td>${t.iso}</td>
           <td>${t.dependencies.join(", ")}</td>
