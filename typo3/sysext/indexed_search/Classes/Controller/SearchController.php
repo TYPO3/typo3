@@ -56,7 +56,6 @@ class SearchController extends ActionController
 {
     protected string $sword = '';
     protected array $searchWords = [];
-    protected array $searchData;
 
     /**
      * This is the id of the site root.
@@ -157,9 +156,8 @@ class SearchController extends ActionController
         }
         $this->searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);
         $this->searchRepository->initialize($this->settings, $searchData, $this->externalParsers, $this->searchRootPageIdList);
-        $this->searchData = $searchData;
         // $this->searchData is used in $this->getSearchWords
-        $this->searchWords = $this->getSearchWords((bool)$searchData['defaultOperand']);
+        $this->searchWords = $this->getSearchWords($searchData, (bool)$searchData['defaultOperand']);
 
         return $searchData;
     }
@@ -198,7 +196,7 @@ class SearchController extends ActionController
             $resultData = $this->searchRepository->doSearch($this->searchWords, $freeIndexUid);
 
             // Display search results
-            $resultsets[$freeIndexUid] = $this->getDisplayResults($this->searchWords, $resultData, $freeIndexUid);
+            $resultsets[$freeIndexUid] = $this->getDisplayResults($searchData, $this->searchWords, $resultData, $freeIndexUid);
 
             // Create header if we are searching more than one indexing configuration
             if (count($indexCfgs) > 1) {
@@ -237,7 +235,7 @@ class SearchController extends ActionController
      * @param array|bool $resultData Array with result rows, count, first row.
      * @param int $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
      */
-    protected function getDisplayResults(array $searchWords, array|bool $resultData, int $freeIndexUid = -1): array
+    protected function getDisplayResults(array $searchData, array $searchWords, array|bool $resultData, int $freeIndexUid = -1): array
     {
         $result = [
             'count' => $resultData['count'] ?? 0,
@@ -248,20 +246,20 @@ class SearchController extends ActionController
             // Set first selected row (for calculation of ranking later)
             $this->firstRow = $resultData['firstRow'];
             // Result display here
-            $result['rows'] = $this->compileResultRows($resultData['resultRows'], $freeIndexUid);
+            $result['rows'] = $this->compileResultRows($searchData, $resultData['resultRows'], $freeIndexUid);
             $result['affectedSections'] = $this->resultSections;
             // Browsing box
             if ($resultData['count']) {
                 // could we get this in the view?
-                if (($this->searchData['group'] ?? '') === GroupOption::SECTIONS->value && $freeIndexUid <= 0) {
+                if (($searchData['group'] ?? '') === GroupOption::SECTIONS->value && $freeIndexUid <= 0) {
                     $resultSectionsCount = count($this->resultSections);
                     $result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . ($resultSectionsCount > 1 ? 'inNsections' : 'inNsection'), 'IndexedSearch') ?? '', $resultSectionsCount);
                 }
             }
         }
         // Print a message telling which words in which sections we searched for
-        if (str_starts_with($this->searchData['sections'], 'rl')) {
-            $result['searchedInSectionInfo'] = (LocalizationUtility::translate('result.inSection', 'IndexedSearch') ?? '') . ' "' . $this->getPathFromPageId((int)substr($this->searchData['sections'], 4)) . '"';
+        if (str_starts_with($searchData['sections'], 'rl')) {
+            $result['searchedInSectionInfo'] = (LocalizationUtility::translate('result.inSection', 'IndexedSearch') ?? '') . ' "' . $this->getPathFromPageId((int)substr($searchData['sections'], 4)) . '"';
         }
 
         return $result;
@@ -275,7 +273,7 @@ class SearchController extends ActionController
      * @param int $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
      * @return array the result rows with additional information
      */
-    protected function compileResultRows(array $resultRows, int $freeIndexUid = -1): array
+    protected function compileResultRows(array $searchData, array $resultRows, int $freeIndexUid = -1): array
     {
         $finalResultRows = [];
         // Transfer result rows to new variable,
@@ -302,8 +300,8 @@ class SearchController extends ActionController
         }
         $resultRows = $newResultRows;
         $this->resultSections = [];
-        if ($freeIndexUid <= 0 && ($this->searchData['group'] ?? '') === GroupOption::SECTIONS->value) {
-            $rl2flag = str_starts_with($this->searchData['sections'], 'rl');
+        if ($freeIndexUid <= 0 && ($searchData['group'] ?? '') === GroupOption::SECTIONS->value) {
+            $rl2flag = str_starts_with($searchData['sections'], 'rl');
             $sections = [];
             foreach ($resultRows as $row) {
                 $id = $row['rl0'] . '-' . $row['rl1'] . ($rl2flag ? '-' . $row['rl2'] : '');
@@ -341,13 +339,13 @@ class SearchController extends ActionController
                 ];
                 // Render result rows
                 foreach ($resultRows as $row) {
-                    $finalResultRows[] = $this->compileSingleResultRow($row);
+                    $finalResultRows[] = $this->compileSingleResultRow($searchData, $row);
                 }
             }
         } else {
             // flat mode or no sections at all
             foreach ($resultRows as $row) {
-                $finalResultRows[] = $this->compileSingleResultRow($row);
+                $finalResultRows[] = $this->compileSingleResultRow($searchData, $row);
             }
         }
         return $finalResultRows;
@@ -360,7 +358,7 @@ class SearchController extends ActionController
      * @param int $headerOnly 1=Display only header (for sub-rows!), 2=nothing at all
      * @return array the result row with additional information
      */
-    protected function compileSingleResultRow(array $row, int $headerOnly = 0): array
+    protected function compileSingleResultRow(array $searchData, array $row, int $headerOnly = 0): array
     {
         $typoScriptConfigArray = $this->request->getAttribute('frontend.typoscript')->getConfigArray();
         $resultData = $row;
@@ -402,7 +400,7 @@ class SearchController extends ActionController
         $resultData['title'] = $title;
         $resultData['description'] = $this->makeDescription(
             $row,
-            !($this->searchData['extResume'] && !$headerOnly),
+            !($searchData['extResume'] && !$headerOnly),
             $this->settings['results.']['summaryCropAfter']
         );
         $resultData['size'] = GeneralUtility::formatSize($row['item_size']);
@@ -443,7 +441,7 @@ class SearchController extends ActionController
             if ($this->multiplePagesType($row['item_type'])) {
                 $resultData['subresults']['header'] = LocalizationUtility::translate('result.otherMatching', 'IndexedSearch');
                 foreach ($row['_sub'] as $subRow) {
-                    $resultData['subresults']['items'][] = $this->compileSingleResultRow($subRow, 1);
+                    $resultData['subresults']['items'][] = $this->compileSingleResultRow($searchData, $subRow, 1);
                 }
             } else {
                 $resultData['subresults']['header'] = LocalizationUtility::translate('result.otherMatching', 'IndexedSearch');
@@ -574,11 +572,11 @@ class SearchController extends ActionController
      *
      * @param bool $useDefaultOperator If TRUE, the default operator will be OR, not AND
      */
-    protected function getSearchWords(bool $useDefaultOperator): array
+    protected function getSearchWords(array $searchData, bool $useDefaultOperator): array
     {
         // Shorten search-word string to max 200 bytes - shortening the string here is only a run-away feature!
         $searchWords = mb_substr($this->getSword(), 0, 200);
-        if ((int)$this->searchData['searchType'] === SearchType::SENTENCE->value) {
+        if ((int)$searchData['searchType'] === SearchType::SENTENCE->value) {
             $sWordArray = [
                 [
                     'sword' => trim($searchWords),
