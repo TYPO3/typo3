@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Redirects\Event\AfterAutoCreateRedirectHasBeenPersistedEvent;
@@ -619,12 +618,12 @@ final class SlugServiceTest extends FunctionalTestCase
         GeneralUtility::makeInstance(SiteMatcher::class)->refresh();
         $this->subject = new SlugService(
             context: GeneralUtility::makeInstance(Context::class),
-            siteFinder: GeneralUtility::makeInstance(SiteFinder::class),
             pageRepository: GeneralUtility::makeInstance(PageRepository::class),
             linkService: GeneralUtility::makeInstance(LinkService::class),
             redirectCacheService: GeneralUtility::makeInstance(RedirectCacheService::class),
             slugRedirectChangeItemFactory: $this->get(SlugRedirectChangeItemFactory::class),
             eventDispatcher: $this->get(EventDispatcherInterface::class),
+            connectionPool: $this->getConnectionPool(),
         );
         $this->subject->setLogger(new NullLogger());
     }

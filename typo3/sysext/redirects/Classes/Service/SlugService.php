@@ -37,8 +37,6 @@ use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Redirects\Event\AfterAutoCreateRedirectHasBeenPersistedEvent;
@@ -46,7 +44,6 @@ use TYPO3\CMS\Redirects\Event\ModifyAutoCreateRedirectRecordBeforePersistingEven
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
-use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
  * @internal Due to some possible refactorings in TYPO3 v10+
@@ -58,51 +55,23 @@ class SlugService implements LoggerAwareInterface
     /**
      * `dechex(1569615472)` (similar to timestamps used with exceptions, but in hex)
      */
-    public const CORRELATION_ID_IDENTIFIER = '5d8e6e70';
+    final public const CORRELATION_ID_IDENTIFIER = '5d8e6e70';
 
-    /**
-     * @var SiteInterface
-     */
-    protected $site;
-
-    /**
-     * @var CorrelationId|string
-     */
-    protected $correlationIdRedirectCreation = '';
-
-    /**
-     * @var CorrelationId|string
-     */
-    protected $correlationIdSlugUpdate = '';
-
-    /**
-     * @var bool
-     */
-    protected $autoUpdateSlugs;
-
-    /**
-     * @var bool
-     */
-    protected $autoCreateRedirects;
-
-    /**
-     * @var int
-     */
-    protected $redirectTTL;
-
-    /**
-     * @var int
-     */
-    protected $httpStatusCode;
+    protected CorrelationId|string $correlationIdRedirectCreation = '';
+    protected CorrelationId|string $correlationIdSlugUpdate = '';
+    protected bool $autoUpdateSlugs = false;
+    protected bool $autoCreateRedirects = false;
+    protected int $redirectTTL = 0;
+    protected int $httpStatusCode = 307;
 
     public function __construct(
-        protected readonly Context $context,
-        protected readonly SiteFinder $siteFinder,
-        protected readonly PageRepository $pageRepository,
-        protected readonly LinkService $linkService,
-        protected readonly RedirectCacheService $redirectCacheService,
-        protected readonly SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
-        protected readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Context $context,
+        private readonly PageRepository $pageRepository,
+        private readonly LinkService $linkService,
+        private readonly RedirectCacheService $redirectCacheService,
+        private readonly SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ConnectionPool $connectionPool,
     ) {}
 
     public function rebuildSlugsForSlugChange(int $pageId, SlugRedirectChangeItem $changeItem, CorrelationId $correlationId): void
@@ -171,29 +140,29 @@ class SlugService implements LoggerAwareInterface
                 'pageuid' => $pageId,
                 'parameters' => HttpUtility::buildQueryString($targetLinkParameters),
             ]);
-            // @todo Default values should be first filled reading TCA defaults and only overridden with values
-            //       available here - and not defining a hardcoded default handling here.
-            $record = [
-                'pid' => $storagePid,
-                'updatedon' => $date->get('timestamp'),
-                'createdon' => $date->get('timestamp'),
-                'deleted' => 0,
-                'disabled' => 0,
-                'starttime' => 0,
-                'endtime' => $this->redirectTTL > 0 ? $endtime->getTimestamp() : 0,
-                'source_host' => $source->getHost(),
-                'source_path' => $source->getPath(),
-                'is_regexp' => 0,
-                'force_https' => 0,
-                'respect_query_parameters' => 0,
-                'target' => $targetLink,
-                'target_statuscode' => $this->httpStatusCode,
-                'hitcount' => 0,
-                'lasthiton' => 0,
-                'disable_hitcount' => 0,
-                'creation_type' => 0,
-                'integrity_status' => RedirectConflict::NO_CONFLICT,
-            ];
+            $record = array_replace(
+                $this->getTableDefaultValues('sys_redirect'),
+                [
+                    'pid' => $storagePid,
+                    'updatedon' => $date->get('timestamp'),
+                    'createdon' => $date->get('timestamp'),
+                    'deleted' => 0,
+                    'disabled' => 0,
+                    'starttime' => 0,
+                    'endtime' => $this->redirectTTL > 0 ? $endtime->getTimestamp() : 0,
+                    'source_host' => $source->getHost(),
+                    'source_path' => $source->getPath(),
+                    'is_regexp' => 0,
+                    'force_https' => 0,
+                    'respect_query_parameters' => 0,
+                    'target' => $targetLink,
+                    'target_statuscode' => $this->httpStatusCode,
+                    'hitcount' => 0,
+                    'lasthiton' => 0,
+                    'disable_hitcount' => 0,
+                    'creation_type' => 0,
+                ]
+            );
 
             $record = $this->eventDispatcher->dispatch(
                 new ModifyAutoCreateRedirectRecordBeforePersistingEvent(
@@ -390,5 +359,45 @@ class SlugService implements LoggerAwareInterface
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Gather table default values from TCA and from the cached table schema information as fallback.
+     *
+     * @param string $tableName
+     * @return array<non-empty-string, string|float|int|bool|null>
+     * @todo Consider to provide this in Connection if use-full for different places.
+     */
+    private function getTableDefaultValues(string $tableName): array
+    {
+        $defaults = [];
+        foreach ($GLOBALS['TCA'][$tableName]['columns'] ?? [] as $columnName => $columnConfig) {
+            if (!array_key_exists('default', $columnConfig['config'] ?? [])) {
+                continue;
+            }
+            $defaults[$columnName] = $columnConfig['config']['default'];
+        }
+        $connection = $this->connectionPool->getConnectionForTable($tableName);
+        $table = $connection->getSchemaInformation()->introspectTable($tableName);
+        foreach ($table->getColumns() as $column) {
+            $columnName = $column->getName();
+            if ($columnName === 'uid' || $column->getAutoincrement() === true) {
+                // Autoincrement fields and therefore the default TYPO3 `uid` column
+                // should be not provided in a data array to ensure the behaviour
+                // kicks correctly in.
+                continue;
+            }
+            if (array_key_exists($columnName, $defaults)) {
+                // Already having TCA default value, which weigths higher.
+                continue;
+            }
+            $columnDefaultValue = $column->getDefault();
+            if ($columnDefaultValue === null && $column->getNotnull() === false) {
+                // No need to set null as default value for a nullable column.
+                continue;
+            }
+            $defaults[$columnName] = $columnDefaultValue;
+        }
+        return $defaults;
     }
 }
