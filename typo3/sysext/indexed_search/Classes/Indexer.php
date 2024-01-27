@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsArray;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
+use TYPO3\CMS\IndexedSearch\Type\IndexStatus;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
@@ -39,18 +40,6 @@ use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
  */
 class Indexer
 {
-    /**
-     * @var array<int, string>
-     */
-    public array $reasons = [
-        -1 => 'mtime matched the document, so no changes detected and no content updated',
-        -2 => 'The minimum age was not exceeded',
-        1 => 'The configured max-age was exceeded for the document and thus it\'s indexed.',
-        2 => 'The minimum age was exceed and mtime was set and the mtime was different, so the page was indexed.',
-        3 => 'The minimum age was exceed, but mtime was not set, so the page was indexed.',
-        4 => 'Page has never been indexed (is not represented in the index_phash table).',
-    ];
-
     /**
      * HTML code blocks to exclude from indexing
      */
@@ -181,14 +170,15 @@ class Indexer
      */
     public function indexTypo3PageContent(): void
     {
-        $reindexingRequired = $this->checkMtimeTstamp($this->conf['mtime'], $this->hash['phash']);
+        $indexStatus = $this->getIndexStatus($this->conf['mtime'], $this->hash['phash']);
+        $reindexingRequired = $indexStatus->reindexRequired();
         $is_grlist = $this->is_grlist_set($this->hash['phash']);
-        if ($reindexingRequired > 0 || !$is_grlist || $this->forceIndexing) {
+        if ($reindexingRequired || !$is_grlist || $this->forceIndexing) {
             // Setting message:
             if ($this->forceIndexing) {
                 $this->log_setTSlogMessage('Indexing needed, reason: Forced', LogLevel::NOTICE);
-            } elseif ($reindexingRequired > 0) {
-                $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$reindexingRequired], LogLevel::NOTICE);
+            } elseif ($reindexingRequired) {
+                $this->log_setTSlogMessage('Indexing needed, reason: ' . $indexStatus->reason(), LogLevel::NOTICE);
             } else {
                 $this->log_setTSlogMessage('Indexing needed, reason: Updates gr_list!', LogLevel::NOTICE);
             }
@@ -205,7 +195,7 @@ class Indexer
             // If the contentHash is the same, then we can rest assured that this page is already indexed and regardless of mtime and origContent we don't need to do anything more.
             // This will also prevent pages from being indexed if a fe_users has logged in, and it turns out that the page content is not changed anyway. fe_users logged in should always search with hash_gr_list = "0,-1" OR "[their_group_list]". This situation will be prevented only if the page has been indexed with no user login on before hand. Else the page will be indexed by users until that event. However that does not present a serious problem.
             $checkCHash = $this->checkContentHash();
-            if (!is_array($checkCHash) || $reindexingRequired === 1) {
+            if (!is_array($checkCHash) || $reindexingRequired) {
                 $Pstart = $this->milliseconds();
                 $this->timeTracker->push('Converting entities of content');
                 $this->charsetEntity2utf8($this->indexingDataStringDto);
@@ -255,7 +245,7 @@ class Indexer
                 $this->log_setTSlogMessage('Indexing not needed, the contentHash, ' . $this->content_md5h . ', has not changed. Timestamp, grlist and rootline updated if necessary.');
             }
         } else {
-            $this->log_setTSlogMessage('Indexing not needed, reason: ' . $this->reasons[$reindexingRequired]);
+            $this->log_setTSlogMessage('Indexing not needed, reason: ' . $indexStatus->reason());
         }
     }
 
@@ -710,10 +700,11 @@ class Indexer
                     $subinfo = ['key' => $cPKey];
                     // Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
                     $phash_arr = ($this->file_phash_arr = $this->setExtHashes($file, $subinfo));
-                    $reindexingRequired = $this->checkMtimeTstamp($fileInfo['mtime'], $phash_arr['phash']);
-                    if ($reindexingRequired > 0 || $force) {
-                        if ($reindexingRequired > 0) {
-                            $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$reindexingRequired], LogLevel::NOTICE);
+                    $indexStatus = $this->getIndexStatus($fileInfo['mtime'], $phash_arr['phash']);
+                    $reindexingRequired = $indexStatus->reindexRequired();
+                    if ($reindexingRequired || $force) {
+                        if ($reindexingRequired) {
+                            $this->log_setTSlogMessage('Indexing needed, reason: ' . $indexStatus->reason(), LogLevel::NOTICE);
                         } else {
                             $this->log_setTSlogMessage('Indexing forced by flag', LogLevel::NOTICE);
                         }
@@ -770,7 +761,7 @@ class Indexer
                             $this->log_setTSlogMessage('The limit of ' . $this->maxExternalFiles . ' has already been exceeded, so no indexing will take place this time.');
                         }
                     } else {
-                        $this->log_setTSlogMessage('Indexing not needed, reason: ' . $this->reasons[$reindexingRequired]);
+                        $this->log_setTSlogMessage('Indexing not needed, reason: ' . $indexStatus->reason());
                     }
                     // Checking and setting sections:
                     $this->submitFile_section($phash_arr['phash']);
@@ -1241,21 +1232,13 @@ class Indexer
         }
     }
 
-    /********************************
-     *
-     * SQL Helper functions
-     *
-     *******************************/
     /**
      * Check the mtime / tstamp of the currently indexed page/file (based on phash)
-     * Return positive integer if the page needs to be indexed
      *
      * @param int $mtime mtime value to test against limits and indexed page (usually this is the mtime of the cached document)
      * @param string $phash "phash" used to select any already indexed page to see what its mtime is.
-     * @return int Result integer: Generally: <0 = No indexing, >0 = Do indexing (see $this->reasons): -2) Min age was NOT exceeded and so indexing cannot occur.  -1) mtime matched so no need to reindex page. 0) N/A   1) Max age exceeded, page must be indexed again.   2) mtime of indexed page doesn't match mtime given for current content and we must index page.  3) No mtime was set, so we will index...  4) No indexed page found, so of course we will index.
-     * @todo: return an enum instead of an int
      */
-    public function checkMtimeTstamp(int $mtime, string $phash): int
+    public function getIndexStatus(int $mtime, string $phash): IndexStatus
     {
         $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
             ->select(
@@ -1267,43 +1250,44 @@ class Indexer
                 1
             )
             ->fetchAssociative();
-        // If there was an indexing of the page...:
-        if (!empty($row)) {
-            if ($this->tstamp_maxAge && $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_maxAge) {
-                // If max age is exceeded, index the page
-                // The configured max-age was exceeded for the document, and thus it's indexed.
-                $result = 1;
-            } elseif (!$this->tstamp_minAge || $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_minAge) {
-                // if minAge is not set or if minAge is exceeded, consider at mtime
-                if ($mtime) {
-                    // It mtime is set, then it's tested. If not, the page must clearly be indexed.
-                    if ((int)$row['item_mtime'] !== $mtime) {
-                        // And if mtime is different from the index_phash mtime, it's about time to re-index.
-                        // The minimum age has exceeded and mtime was set and the mtime was different, so the page was indexed.
-                        $result = 2;
-                    } else {
-                        // mtime matched the document, so no changes detected and no content updated
-                        $result = -1;
-                        if ($this->tstamp_maxAge) {
-                            $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', LogLevel::WARNING);
-                        } else {
-                            $this->updateTstamp($phash);
-                            $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
-                        }
-                    }
-                } else {
-                    // The minimum age has exceeded, but mtime was not set, so the page was indexed.
-                    $result = 3;
-                }
-            } else {
-                // The minimum age was not exceeded
-                $result = -2;
-            }
-        } else {
+
+        if (empty($row)) {
             // Page has never been indexed (is not represented in the index_phash table).
-            $result = 4;
+            return IndexStatus::NEW_DOCUMENT;
         }
-        return $result;
+
+        if ($this->tstamp_maxAge && $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_maxAge) {
+            // If max age is exceeded, index the page
+            // The configured max-age was exceeded for the document, and thus it's indexed.
+            return IndexStatus::MAXIMUM_AGE_EXCEEDED;
+        }
+
+        if (!$this->tstamp_minAge || $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_minAge) {
+            // if minAge is not set or if minAge is exceeded, consider at mtime
+            if ($mtime) {
+                // It mtime is set, then it's tested. If not, the page must clearly be indexed.
+                if ((int)$row['item_mtime'] !== $mtime) {
+                    // And if mtime is different from the index_phash mtime, it's about time to re-index.
+                    // The minimum age has exceeded and mtime was set and the mtime was different, so the page was indexed.
+                    return IndexStatus::MODIFICATION_TIME_DIFFERS;
+                }
+
+                // mtime matched the document, so no changes detected and no content updated
+                if ($this->tstamp_maxAge) {
+                    $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', LogLevel::WARNING);
+                } else {
+                    $this->updateTstamp($phash);
+                    $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
+                }
+                return IndexStatus::MTIME_MATCHED;
+            }
+
+            // The minimum age has exceeded, but mtime was not set, so the page was indexed.
+            return IndexStatus::MODIFICATION_TIME_NOT_SET;
+        }
+
+        // The minimum age was not exceeded
+        return IndexStatus::MINIMUM_AGE_NOT_EXCEEDED;
     }
 
     /**
