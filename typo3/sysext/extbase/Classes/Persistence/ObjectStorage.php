@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
  *
  * Opposed to the `SplObjectStorage`, the `ObjectStorage` does not implement the `Serializable` interface.
  *
- * @template TEntity
+ * @template TEntity of object
  * @implements \ArrayAccess<string, TEntity>
  * @implements \Iterator<string, TEntity>
  */
@@ -155,7 +155,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Associates information to an object in the storage. `offsetSet()` is an alias of `attach()`.
      *
-     * @param TEntity $object The object to add.
+     * @param TEntity|string|null $object The object to add.
      * @param mixed $information The information to associate with the object.
      */
     public function offsetSet($object, $information): void
@@ -170,7 +170,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Checks whether an object exists in the storage.
      *
-     * @param TEntity|int $value The object to look for, or the key in the storage.
+     * @param TEntity|int|string $value The object to look for, or the key in the storage.
      */
     public function offsetExists($value): bool
     {
@@ -181,7 +181,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Removes an object from the storage. `offsetUnset()` is an alias of `detach()`.
      *
-     * @param TEntity|int $value The object to remove, or its key in the storage.
+     * @param TEntity|int|string $value The object to remove, or its key in the storage.
      */
     public function offsetUnset($value): void
     {
@@ -206,7 +206,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Returns the information associated with an object, or the object itself if an integer is passed.
      *
-     * @param TEntity|int $value The object to look for, or its key in the storage.
+     * @param TEntity|int|string $value The object to look for, or its key in the storage.
      * @return mixed The information associated with an object in the storage, or the object itself if an integer is passed.
      *
      * @todo: Set return type to mixed in v13
@@ -281,23 +281,23 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Adds all object-information pairs from a different storage in the current storage.
      *
-     * @param ObjectStorage<TEntity> $objectStorage
+     * @param ObjectStorage<TEntity> $storage
      */
-    public function addAll(ObjectStorage $objectStorage)
+    public function addAll(ObjectStorage $storage)
     {
-        foreach ($objectStorage as $object) {
-            $this->attach($object, $objectStorage->getInfo());
+        foreach ($storage as $object) {
+            $this->attach($object, $storage->getInfo());
         }
     }
 
     /**
      * Removes objects contained in another storage from the current storage.
      *
-     * @param ObjectStorage<TEntity> $objectStorage The storage containing the elements to remove.
+     * @param ObjectStorage<TEntity> $storage The storage containing the elements to remove.
      */
-    public function removeAll(ObjectStorage $objectStorage)
+    public function removeAll(ObjectStorage $storage)
     {
-        foreach ($objectStorage as $object) {
+        foreach ($storage as $object) {
             $this->detach($object);
         }
     }

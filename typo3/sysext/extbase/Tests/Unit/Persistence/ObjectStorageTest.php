@@ -319,7 +319,6 @@ final class ObjectStorageTest extends UnitTestCase
         /** @var ObjectStorage<Entity> $objectStorage */
         $objectStorage = new ObjectStorage();
 
-        // @phpstan-ignore-next-line We're explicitly testing with a key that lies outside the contract.
         self::assertFalse($objectStorage->offsetExists('0'));
     }
 
