@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  *
- * @template TEntity
+ * @template TEntity of object
  * @extends ObjectStorage<TEntity>
  */
 class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterface
@@ -217,7 +217,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param TEntity $value The object to look for, or the key in the storage.
+     * @param TEntity|int|string $value The object to look for, or the key in the storage.
      *
      * @see `ObjectStorage::offsetExists`
      */
@@ -228,7 +228,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param TEntity $value The object to look for, or its key in the storage.
+     * @param TEntity|int|string $value The object to look for, or its key in the storage.
      *
      * @see `ObjectStorage::offsetGet`
      */
@@ -239,7 +239,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param TEntity $object The object to add.
+     * @param TEntity|string|null $object The object to add.
      * @param mixed $information The information to associate with the object.
      *
      * @see `ObjectStorage::offsetSet`
@@ -251,7 +251,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param TEntity $value The object to remove, or its key in the storage.
+     * @param TEntity|string|null $value The object to remove, or its key in the storage.
      *
      * @see `ObjectStorage::offsetUnset`
      */

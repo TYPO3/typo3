@@ -212,8 +212,9 @@ final class RelationTest extends FunctionalTestCase
         $postRepository = $this->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
-        $post->setTags(new ObjectStorage());
-
+        /** @var ObjectStorage<Tag> $emptyTagStorage */
+        $emptyTagStorage = new ObjectStorage();
+        $post->setTags($emptyTagStorage);
         $newTag = new Tag('INSERTED TAG at position 6 : ');
 
         $counter = 1;
@@ -266,7 +267,9 @@ final class RelationTest extends FunctionalTestCase
         $tagsArray = $tags->toArray();
         $latestTag = array_pop($tagsArray);
         $post->removeTag($latestTag);
-        $post->setTags(new ObjectStorage());
+        /** @var ObjectStorage<Tag> $emptyTagStorage */
+        $emptyTagStorage = new ObjectStorage();
+        $post->setTags($emptyTagStorage);
 
         $counter = 1;
         $tagCount = $tags->count();
