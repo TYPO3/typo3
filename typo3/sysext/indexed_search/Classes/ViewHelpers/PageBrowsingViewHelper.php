@@ -135,7 +135,7 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
             'class' => 'tx-indexedsearch-page-selector',
             'data-prefix' => self::$prefixId,
             'data-pointer' => $p,
-            'data-freeIndexUid' => $freeIndexUid,
+            'data-free-index-uid' => $freeIndexUid,
         ];
         if ($isCurrentPage) {
             $attributes['aria-current'] = 'page';
