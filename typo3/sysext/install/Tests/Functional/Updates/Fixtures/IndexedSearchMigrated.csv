@@ -1,0 +1,16 @@
+"tt_content",,,
+,"uid","CType","list_type"
+,1,"",""
+,2,"list",""
+,3,"indexedsearch_pi2",""
+,4,"list","another_plugin"
+,5,"indexedsearch_pi2",""
+,6,"indexedsearch_pi2","indexedsearch_pi2"
+"be_groups",,
+,"uid","explicit_allowdeny"
+,1,""
+,2,"tt_content:CType:list"
+,3,"tt_content:CType:indexedsearch_pi2"
+,4,"tt_content:CType:list,tt_content:list_type:another_plugin,tt_content:CType:indexedsearch_pi2"
+,5,"tt_content:CType:list,tt_content:CType:indexedsearch_pi2,tt_content:list_type:another_plugin"
+,6,"tt_content:CType:list,tt_content:CType:indexedsearch_pi2,tt_content:list_type:another_plugin"

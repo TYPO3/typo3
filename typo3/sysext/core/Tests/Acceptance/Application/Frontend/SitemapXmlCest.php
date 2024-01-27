@@ -56,7 +56,7 @@ final class SitemapXmlCest
             ['slug' => '/table'],
             ['slug' => '/felogin-login'],
             ['slug' => '/form-formframework'],
-            ['slug' => '/list'],
+            ['slug' => '/indexedsearch-pi2'],
             ['slug' => '/shortcut'],
             ['slug' => '/uploads'],
             ['slug' => '/menu-categorized-pages'],

@@ -14,7 +14,8 @@ ExtensionUtility::configurePlugin(
     'IndexedSearch',
     'Pi2',
     [SearchController::class => ['form', 'search', 'noTypoScript']],
-    [SearchController::class => ['form', 'search']]
+    [SearchController::class => ['form', 'search']],
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['indexed_search'] = DeleteIndexedData::class . '->delete';

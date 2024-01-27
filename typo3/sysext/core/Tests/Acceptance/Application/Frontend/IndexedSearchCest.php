@@ -48,8 +48,8 @@ final class IndexedSearchCest
         });
         $I->wait(1);
         $I->see('TYPO3 Styleguide Frontend', '.content');
-        $I->scrollTo('//a[contains(., "list")]');
-        $I->click('list', $this->sidebarSelector);
+        $I->scrollTo('//a[contains(., "indexedsearch_pi2")]');
+        $I->click('indexedsearch_pi2', $this->sidebarSelector);
     }
 
     public function _after(ApplicationTester $I): void

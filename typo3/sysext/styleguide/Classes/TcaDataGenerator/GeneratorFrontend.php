@@ -354,10 +354,9 @@ final class GeneratorFrontend extends AbstractGenerator
                     ],
                 ],
             ],
-            'list' => [
+            'indexedsearch_pi2' => [
                 [
                     'header' => 'Indexed Search',
-                    'list_type' => 'indexedsearch_pi2',
                 ],
             ],
             'shortcut' => [
