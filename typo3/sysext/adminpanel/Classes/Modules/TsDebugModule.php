@@ -47,7 +47,7 @@ class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface
     public function getShortInfo(): string
     {
         $messageCount = 0;
-        foreach ($this->getTimeTracker()->tsStackLog as $log) {
+        foreach ($this->getTimeTracker()->getTypoScriptLogStack() as $log) {
             $messageCount += count($log['message'] ?? []);
         }
         return sprintf(

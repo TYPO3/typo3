@@ -33,6 +33,7 @@ use TYPO3\CMS\Frontend\Event\AfterTypoScriptDeterminedEvent;
 final class TimeTrackerInitialization implements MiddlewareInterface
 {
     private bool $isDebugEnabledInTypoScriptConfig = false;
+
     public function __construct(protected readonly TimeTracker $timeTracker) {}
 
     /**

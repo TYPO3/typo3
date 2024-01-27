@@ -22,11 +22,13 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Frontend Timetracking functions
- * Is used to register how much time is used with operations in TypoScript
+ * Is used to register how much time is used with operations in TypoScript.
+ *
+ * Note: Only push() (with first argument only), pull() and setTSlogMessage()
+ *       are considered API, everything else is internal.
  */
 class TimeTracker implements SingletonInterface
 {
@@ -38,7 +40,7 @@ class TimeTracker implements SingletonInterface
     /**
      * Is loaded with the millisecond time when this object is created
      */
-    public int $starttime = 0;
+    protected int $starttime = 0;
 
     /**
      * Is set via finish() with the millisecond time when the request handler is finished.
@@ -48,78 +50,46 @@ class TimeTracker implements SingletonInterface
     /**
      * Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle().
      * This determines whether the TypoScript parsing activity is logged. But it also slows down the rendering.
+     *
+     * @internal
      */
     public bool $LR = true;
 
-    public array $printConf = [
-        'showParentKeys' => true,
-        'contentLength' => 10000,
-        // Determines max length of displayed content before it gets cropped.
-        'contentLength_FILE' => 400,
-        // Determines max length of displayed content FROM FILE cObjects before it gets cropped. Reason is that most FILE cObjects are huge and often used as template-code.
-        'flag_tree' => true,
-        'flag_messages' => true,
-        'flag_content' => false,
-        'allTime' => false,
-        'keyLgd' => 40,
-    ];
-
-    public array $wrapError = [
+    protected array $wrapError = [
         LogLevel::INFO => ['', ''],
         LogLevel::NOTICE => ['<strong>', '</strong>'],
         LogLevel::WARNING => ['<strong style="color:#ff6600;">', '</strong>'],
         LogLevel::ERROR => ['<strong style="color:#ff0000;">', '</strong>'],
     ];
 
-    public array $wrapIcon = [
+    protected array $wrapIcon = [
         LogLevel::INFO => '',
         LogLevel::NOTICE => 'actions-document-info',
         LogLevel::WARNING => 'status-dialog-warning',
         LogLevel::ERROR => 'status-dialog-error',
     ];
 
-    public int $uniqueCounter = 0;
-    public array $tsStack = [[]];
-    public int $tsStackLevel = 0;
-    public array $tsStackLevelMax = [];
-    public array $tsStackLog = [];
-    public int $tsStackPointer = 0;
-    public array $currentHashPointer = [];
+    protected int $uniqueCounter = 0;
+    protected array $tsStack = [[]];
+    protected int $tsStackLevel = 0;
+    protected array $tsStackLevelMax = [];
+    protected array $tsStackLog = [];
+    protected int $tsStackPointer = 0;
+    protected array $currentHashPointer = [];
 
     /**
-     * Log entries that take than this number of milliseconds (own time) will be highlighted during
-     * log display. Set 0 to disable highlighting.
+     * @internal
      */
-    public int $highlightLongerThan = 0;
-
     public function __construct(bool $isEnabled = true)
     {
         $this->isEnabled = $isEnabled;
-    }
-
-    public function setEnabled(bool $isEnabled = true)
-    {
-        $this->isEnabled = $isEnabled;
-    }
-
-    /**
-     * Sets the starting time
-     *
-     * @see finish()
-     */
-    public function start(?float $starttime = null)
-    {
-        if (!$this->isEnabled) {
-            return;
-        }
-        $this->starttime = $this->getMilliseconds($starttime);
     }
 
     /**
      * Pushes an element to the TypoScript tracking array
      *
      * @param string $tslabel Label string for the entry, eg. TypoScript property name
-     * @param string $value Additional value(?)
+     * @param string $value Additional value (@internal, may vanish)
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      * @see pull()
      */
@@ -170,7 +140,7 @@ class TimeTracker implements SingletonInterface
      * @param string $logLevel Message type: see LogLevel constants
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::CONTENT()
      */
-    public function setTSlogMessage(string $content, string $logLevel = LogLevel::INFO)
+    public function setTSlogMessage(string $content, string $logLevel = LogLevel::INFO): void
     {
         if (!$this->isEnabled) {
             return;
@@ -187,22 +157,25 @@ class TimeTracker implements SingletonInterface
     }
 
     /**
-     * Set TSselectQuery - for messages in TypoScript debugger.
-     *
-     * @param array $data Query array
-     * @param string $msg Message/Label to attach
+     * @internal
      */
-    public function setTSselectQuery(array $data, string $msg = ''): void
+    public function setEnabled(bool $isEnabled = true): void
+    {
+        $this->isEnabled = $isEnabled;
+    }
+
+    /**
+     * Sets the starting time
+     *
+     * @see finish()
+     * @internal
+     */
+    public function start(?float $starttime = null): void
     {
         if (!$this->isEnabled) {
             return;
         }
-        end($this->currentHashPointer);
-        $k = current($this->currentHashPointer);
-        if ($msg !== '') {
-            $data['msg'] = $msg;
-        }
-        $this->tsStackLog[$k]['selectQuery'][] = $data;
+        $this->starttime = $this->getMilliseconds($starttime);
     }
 
     /**
@@ -211,6 +184,7 @@ class TimeTracker implements SingletonInterface
      * @see decStackPointer()
      * @see \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
+     * @internal
      */
     public function incStackPointer(): void
     {
@@ -227,6 +201,7 @@ class TimeTracker implements SingletonInterface
      * @see incStackPointer()
      * @see \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
+     * @internal
      */
     public function decStackPointer(): void
     {
@@ -243,7 +218,7 @@ class TimeTracker implements SingletonInterface
      * @param float|null $microtime The microtime value - if not set the current time is used
      * @return int The microtime value as milliseconds value
      */
-    public function getMilliseconds(?float $microtime = null): int
+    protected function getMilliseconds(?float $microtime = null): int
     {
         if (!$this->isEnabled) {
             return 0;
@@ -259,6 +234,7 @@ class TimeTracker implements SingletonInterface
      *
      * @param float|null $microtime The microtime value - if not set the current time is used
      * @return int The difference between a given microtime value and starting time as milliseconds
+     * @internal
      */
     public function getDifferenceToStarttime(float $microtime = null): int
     {
@@ -269,6 +245,7 @@ class TimeTracker implements SingletonInterface
      * Usually called when the page generation and output is prepared.
      *
      * @see start()
+     * @internal
      */
     public function finish(): void
     {
@@ -279,6 +256,7 @@ class TimeTracker implements SingletonInterface
 
     /**
      * Get total parse time in milliseconds
+     * @internal
      */
     public function getParseTime(): int
     {
@@ -291,254 +269,19 @@ class TimeTracker implements SingletonInterface
         return $this->getDifferenceToStarttime($this->finishtime ?? null);
     }
 
-    /*******************************************
-     *
-     * Printing the parsing time information (for Admin Panel)
-     *
-     *******************************************/
     /**
-     * Print TypoScript parsing log
-     *
-     * @return string HTML table with the information about parsing times.
-     */
-    public function printTSlog(): string
-    {
-        if (!$this->isEnabled) {
-            return '';
-        }
-        // Calculate times and keys for the tsStackLog
-        foreach ($this->tsStackLog as &$data) {
-            $data['endtime'] = $this->getDifferenceToStarttime($data['endtime'] ?? 0);
-            $data['starttime'] = $this->getDifferenceToStarttime($data['starttime'] ?? 0);
-            $data['deltatime'] = $data['endtime'] - $data['starttime'];
-            if (isset($data['tsStack']) && is_array($data['tsStack'])) {
-                $data['key'] = implode($data['stackPointer'] ? '.' : '/', end($data['tsStack']));
-            }
-        }
-        unset($data);
-        // Create hierarchical array of keys pointing to the stack
-        $arr = [];
-        foreach ($this->tsStackLog as $uniqueId => $data) {
-            $this->createHierarchyArray($arr, $data['level'] ?? 0, $uniqueId);
-        }
-        // Parsing the registered content and create icon-html for the tree
-        $this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.'], $this->tsStackLog[$arr['0.'][0]]['content'] ?? '', '', $arr['0.'][0]);
-        // Displaying the tree:
-        $outputArr = [];
-        $outputArr[] = $this->fw('TypoScript Key');
-        $outputArr[] = $this->fw('Value');
-        if ($this->printConf['allTime']) {
-            $outputArr[] = $this->fw('Time');
-            $outputArr[] = $this->fw('Own');
-            $outputArr[] = $this->fw('Sub');
-            $outputArr[] = $this->fw('Total');
-        } else {
-            $outputArr[] = $this->fw('Own');
-        }
-        $outputArr[] = $this->fw('Details');
-        $out = '';
-        foreach ($outputArr as $row) {
-            $out .= '<th>' . $row . '</th>';
-        }
-        $out = '<thead><tr>' . $out . '</tr></thead>';
-        $flag_tree = $this->printConf['flag_tree'];
-        $flag_messages = $this->printConf['flag_messages'];
-        $flag_content = $this->printConf['flag_content'];
-        $keyLgd = (int)$this->printConf['keyLgd'];
-        $c = 0;
-        foreach ($this->tsStackLog as $data) {
-            $logRowClass = '';
-            if ($this->highlightLongerThan && (int)$data['owntime'] > $this->highlightLongerThan) {
-                $logRowClass = 'typo3-adminPanel-logRow-highlight';
-            }
-            $item = '';
-            // If first...
-            if (!$c) {
-                $data['icons'] = '';
-                $data['key'] = 'Script Start';
-                $data['value'] = '';
-            }
-            // Key label:
-            $keyLabel = '';
-            $stackPointer = $data['stackPointer'] ?? false;
-            if (!$flag_tree && $stackPointer) {
-                $temp = [];
-                foreach ($data['tsStack'] as $k => $v) {
-                    $temp[] = GeneralUtility::fixed_lgd_cs(implode($k ? '.' : '/', $v), -$keyLgd);
-                }
-                array_pop($temp);
-                $temp = array_reverse($temp);
-                array_pop($temp);
-                if (!empty($temp)) {
-                    $keyLabel = '<br /><span style="color:#999999;">' . implode('<br />', $temp) . '</span>';
-                }
-            }
-            if ($flag_tree) {
-                $tmp = GeneralUtility::trimExplode('.', $data['key'], true);
-                $theLabel = end($tmp);
-            } else {
-                $theLabel = $data['key'];
-            }
-            $theLabel = GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
-            $theLabel = $stackPointer ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
-            $keyLabel = $theLabel . $keyLabel;
-            $item .= '<th scope="row" class="typo3-adminPanel-table-cell-key ' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</th>';
-            // Key value:
-            $keyValue = $data['value'];
-            $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
-            $ownTime = (string)($data['owntime'] ?? '');
-            if ($this->printConf['allTime']) {
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw((string)$data['starttime']) . '</td>';
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($ownTime) . '</td>';
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw(($data['subtime'] ? '+' . $data['subtime'] : '')) . '</td>';
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw(($data['subtime'] ? '=' . $data['deltatime'] : '')) . '</td>';
-            } else {
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($ownTime) . '</td>';
-            }
-            // Messages:
-            $msgArr = [];
-            $msg = '';
-            if ($flag_messages && is_array($data['message'] ?? null)) {
-                foreach ($data['message'] as $v) {
-                    $msgArr[] = nl2br($v);
-                }
-            }
-            if ($flag_content && (string)$data['content'] !== '') {
-                $maxlen = 120;
-                // Break lines which are too longer than $maxlen chars (can happen if content contains long paths...)
-                if (preg_match_all('/(\\S{' . $maxlen . ',})/', $data['content'], $reg)) {
-                    foreach ($reg[1] as $key => $match) {
-                        $match = preg_replace('/(.{' . $maxlen . '})/', '$1 ', $match);
-                        $data['content'] = str_replace($reg[0][$key], $match, $data['content']);
-                    }
-                }
-                $msgArr[] = nl2br($data['content']);
-            }
-            if (!empty($msgArr)) {
-                $msg = implode('<br>', $msgArr);
-            }
-            $item .= '<td class="typo3-adminPanel-table-cell-content">' . $this->fw($msg) . '</td>';
-            $out .= '<tr>' . $item . '</tr>';
-            $c++;
-        }
-        return '<div class="typo3-adminPanel-table-overflow"><table class="typo3-adminPanel-table typo3-adminPanel-table-debug">' . $out . '</table></div>';
-    }
-
-    /**
-     * Recursively generates the content to display
-     *
-     * @param array $arr Array which is modified with content. Reference
-     * @param string $content Current content string for the level
-     * @param string $depthData Prefixed icons for new PM icons
-     * @param string $vKey Seems to be the previous tsStackLog key
-     * @return string Returns the $content string generated/modified. Also the $arr array is modified!
-     */
-    protected function fixContent(array &$arr, string $content, string $depthData = '', string $vKey = ''): string
-    {
-        $entriesCount = 0;
-        $c = 0;
-        // First, find number of entries
-        foreach ($arr as $k => $v) {
-            //do not count subentries (the one ending with dot, eg. '9.'
-            if (MathUtility::canBeInterpretedAsInteger($k)) {
-                $entriesCount++;
-            }
-        }
-        // Traverse through entries
-        $subtime = 0;
-        foreach ($arr as $k => $v) {
-            if (MathUtility::canBeInterpretedAsInteger($k)) {
-                $c++;
-                $hasChildren = isset($arr[$k . '.']);
-                $lastEntry = $entriesCount === $c;
-
-                $PM = '<span class="treeline-icon treeline-icon-join' . ($lastEntry ? 'bottom' : '') . '"></span>';
-
-                $this->tsStackLog[$v]['icons'] = $depthData . $PM;
-                if (($this->tsStackLog[$v]['content'] ?? '') !== '') {
-                    $content = str_replace($this->tsStackLog[$v]['content'], $v, $content);
-                }
-                if ($hasChildren) {
-                    $lineClass = $lastEntry ? 'treeline-icon-clear' : 'treeline-icon-line';
-                    $this->tsStackLog[$v]['content'] = $this->fixContent(
-                        $arr[$k . '.'],
-                        ($this->tsStackLog[$v]['content'] ?? ''),
-                        $depthData . '<span class="treeline-icon ' . $lineClass . '"></span>',
-                        $v
-                    );
-                } else {
-                    $this->tsStackLog[$v]['content'] = $this->fixCLen(($this->tsStackLog[$v]['content'] ?? ''), $this->tsStackLog[$v]['value']);
-                    $this->tsStackLog[$v]['subtime'] = '';
-                    $this->tsStackLog[$v]['owntime'] = $this->tsStackLog[$v]['deltatime'];
-                }
-                $subtime += $this->tsStackLog[$v]['deltatime'];
-            }
-        }
-        // Set content with special chars
-        if (isset($this->tsStackLog[$vKey])) {
-            $this->tsStackLog[$vKey]['subtime'] = $subtime;
-            $this->tsStackLog[$vKey]['owntime'] = $this->tsStackLog[$vKey]['deltatime'] - $subtime;
-        }
-        $content = $this->fixCLen($content, $this->tsStackLog[$vKey]['value']);
-        // Traverse array again, this time substitute the unique hash with the red key
-        foreach ($arr as $k => $v) {
-            if (MathUtility::canBeInterpretedAsInteger($k)) {
-                if ($this->tsStackLog[$v]['content'] !== '') {
-                    $content = str_replace($v, '<strong style="color:red;">[' . $this->tsStackLog[$v]['key'] . ']</strong>', $content);
-                }
-            }
-        }
-        // Return the content
-        return $content;
-    }
-
-    /**
-     * Wraps the input content string in green colored span-tags IF the length of the input string exceeds $this->printConf['contentLength'] (or $this->printConf['contentLength_FILE'] if $v == "FILE"
-     *
-     * @param string $c The content string
-     * @param string $v Command: If "FILE" then $this->printConf['contentLength_FILE'] is used for content length comparison, otherwise $this->printConf['contentLength']
-     */
-    protected function fixCLen(string $c, string $v): string
-    {
-        $len = (int)($v === 'FILE' ? $this->printConf['contentLength_FILE'] : $this->printConf['contentLength']);
-        if (strlen($c) > $len) {
-            $c = '<span style="color:green;">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($c, $len)) . '</span>';
-        } else {
-            $c = htmlspecialchars($c);
-        }
-        return $c;
-    }
-
-    /**
-     * Wraps input string in a <span> tag
-     *
-     * @param string $str The string to be wrapped
-     */
-    protected function fw(string $str): string
-    {
-        return '<span>' . $str . '</span>';
-    }
-
-    /**
-     * Helper function for internal data manipulation
-     *
-     * @param array $arr Array (passed by reference) and modified
-     * @param int $pointer Pointer value
-     * @param string $uniqueId Unique ID string
      * @internal
-     * @see printTSlog()
      */
-    protected function createHierarchyArray(array &$arr, int $pointer, string $uniqueId): void
+    public function isEnabled(): bool
     {
-        if ($pointer > 0) {
-            end($arr);
-            $k = key($arr);
-            if (!is_array($arr[(int)$k . '.'] ?? null)) {
-                $arr[(int)$k . '.'] = [];
-            }
-            $this->createHierarchyArray($arr[(int)$k . '.'], $pointer - 1, $uniqueId);
-        } else {
-            $arr[] = $uniqueId;
-        }
+        return $this->isEnabled;
+    }
+
+    /**
+     * @internal
+     */
+    public function getTypoScriptLogStack(): array
+    {
+        return $this->tsStackLog;
     }
 }
