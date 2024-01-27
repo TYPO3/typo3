@@ -27,7 +27,7 @@ to migrate.
     Doctrine DBAL 4.0 will be released slightly after the 13.0 and
     therefore it's raised to a development version for now. This will
     be changed to 4.0 after a release is out. As a intermediate solution
-    it's required to use `composer require "doctrine/dbal":"4.0.x-dev@dev"`
+    it's required to use `composer require "doctrine/dbal":"4.0.0-RC2@rc"`
     to add it or lower the minimum-stability in the root `composer.json`.
 
 See `Doctrine DBAL 4.x Upgrade Guide <https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md>`_

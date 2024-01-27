@@ -93,6 +93,6 @@
 		"typo3/cms-t3editor": "@dev",
 		"typo3/cms-tstemplate": "@dev",
 		"typo3/cms-viewpage": "@dev",
-		"doctrine/dbal": "4.0.x-dev@dev"
+		"doctrine/dbal": "4.0.0-RC2@rc"
 	}
 }

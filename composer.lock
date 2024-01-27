@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2f4c33a42ca5c2a983a60aa53c2c8fb",
+    "content-hash": "35f00466a6cd04abedce9fe3d97e5800",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -247,16 +247,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "4.0.x-dev",
+            "version": "4.0.0-RC2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "0a3df2e90f21a38f8716ecfe940b61ae985e34fe"
+                "reference": "d2aed19fdc7e945455fd864dd7df6245fce3222f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/0a3df2e90f21a38f8716ecfe940b61ae985e34fe",
-                "reference": "0a3df2e90f21a38f8716ecfe940b61ae985e34fe",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/d2aed19fdc7e945455fd864dd7df6245fce3222f",
+                "reference": "d2aed19fdc7e945455fd864dd7df6245fce3222f",
                 "shasum": ""
             },
             "require": {
@@ -335,7 +335,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/4.0.x"
+                "source": "https://github.com/doctrine/dbal/tree/4.0.0-RC2"
             },
             "funding": [
                 {
@@ -351,7 +351,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-20T15:01:02+00:00"
+            "time": "2024-01-25T22:31:17+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -8810,7 +8810,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doctrine/dbal": 20,
+        "doctrine/dbal": 5,
         "typo3/testing-framework": 20
     },
     "prefer-stable": false,
