@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
@@ -1990,9 +1991,17 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->releaseLockedRecords((int)$GLOBALS['BE_USER']->user['uid']);
 
             if ($this->isSystemMaintainer()) {
-                // If user is system maintainer, destroy its possibly valid install tool session.
-                $session = new SessionService();
-                $session->destroySession($GLOBALS['TYPO3_REQUEST'] ?? null);
+                // @todo: This should be turned into a dispatched event EXT:install can listen on.
+                //        This might be useful for others as well. The reasons this has not been
+                //        implemented yet, is, that the method should be refactored to at least
+                //        receive Request and probably be-user object correctly, instead of
+                //        fetching it from globals, before creating API with an event.
+                $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+                if ($packageManager->isPackageActive('install')) {
+                    // If user is system maintainer, destroy its possibly valid install tool session.
+                    $session = new SessionService();
+                    $session->destroySession($GLOBALS['TYPO3_REQUEST'] ?? null);
+                }
             }
         }
         parent::logoff();
