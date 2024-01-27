@@ -6291,4 +6291,36 @@ return [
             'Feature-102935-PSR-14EventForPackageInitializationFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Security\Cryptography\HashService->generateHmac' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-102763-ExtbaseHashService.rst',
+            'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Security\Cryptography\HashService->appendHmac' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-102763-ExtbaseHashService.rst',
+            'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Security\Cryptography\HashService->validateHmac' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-102763-ExtbaseHashService.rst',
+            'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Security\Cryptography\HashService->validateAndStripHmac' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-102763-ExtbaseHashService.rst',
+            'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
+        ],
+    ],
 ];

@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -45,7 +46,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
+use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
@@ -583,13 +584,13 @@ abstract class ActionController implements ControllerInterface
         $referringRequestArguments = $extbaseRequestParameters->getInternalArgument('__referrer') ?? null;
         if (is_string($referringRequestArguments['@request'] ?? null)) {
             $referrerArray = json_decode(
-                $this->hashService->validateAndStripHmac($referringRequestArguments['@request']),
+                $this->hashService->validateAndStripHmac($referringRequestArguments['@request'], HashScope::ReferringRequest->prefix()),
                 true
             );
             $arguments = [];
             if (is_string($referringRequestArguments['arguments'] ?? null)) {
                 $arguments = unserialize(
-                    base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments']))
+                    base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments'], HashScope::ReferringArguments->prefix()))
                 );
             }
             $replacedArguments = array_replace_recursive($arguments, $referrerArray);

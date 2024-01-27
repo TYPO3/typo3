@@ -24,9 +24,9 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\FrontendLogin\Configuration\IncompleteConfigurationException;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -61,19 +61,18 @@ final class RecoveryConfigurationTest extends UnitTestCase
 
     protected function setupSubject(Context $context = null): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
+
         $context ??= new Context();
 
         $this->configurationManager->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)
             ->willReturn($this->settings);
 
-        $hashService = $this->getMockBuilder(HashService::class)->disableOriginalConstructor()->getMock();
-        $hashService->method('generateHmac')->willReturn('some hash');
-
         $this->subject = new RecoveryConfiguration(
             $context,
             $this->configurationManager,
             new Random(),
-            $hashService
+            new HashService()
         );
 
         $this->subject->setLogger($this->logger);
@@ -158,16 +157,12 @@ final class RecoveryConfigurationTest extends UnitTestCase
     {
         $timestamp = time();
         $expectedTimestamp = $timestamp + 3600 * $this->settings['forgotLinkHashValidTime'];
-        $expected = "{$expectedTimestamp}|some hash";
 
         $context = new Context();
         $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $timestamp)));
         $this->setupSubject($context);
 
-        self::assertSame(
-            $expected,
-            $this->subject->getForgotHash()
-        );
+        self::assertStringStartsWith((string)$expectedTimestamp, $this->subject->getForgotHash());
     }
 
     /**

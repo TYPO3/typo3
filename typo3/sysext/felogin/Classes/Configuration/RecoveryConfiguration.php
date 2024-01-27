@@ -21,9 +21,9 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 
 /**
@@ -123,7 +123,7 @@ class RecoveryConfiguration implements LoggerAwareInterface
     {
         $randomString = $random->generateRandomHexString(16);
 
-        return $hashService->generateHmac($randomString);
+        return $hashService->hmac($randomString, self::class);
     }
 
     protected function resolveFromTypoScript(): void

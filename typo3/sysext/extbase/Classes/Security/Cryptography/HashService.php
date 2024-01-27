@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Security\Cryptography;
 
-use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Crypto\HashService as CoreHashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
 
@@ -26,9 +26,13 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
  *
  * It will use some salt / encryption key in the future.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
+ *
+ * @deprecated will be removed in TYPO3 v14.0. Use \TYPO3\CMS\Core\Crypto\HashService instead.
  */
-class HashService implements SingletonInterface
+class HashService
 {
+    public function __construct(protected readonly CoreHashService $hashService) {}
+
     /**
      * Generate a hash (HMAC) for a given string
      *
@@ -37,8 +41,11 @@ class HashService implements SingletonInterface
      */
     public function generateHmac(string $string): string
     {
-        $secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-        return hash_hmac('sha1', $string, $secret);
+        trigger_error(
+            __CLASS__ . ' has been marked as deprecated in TYPO3 v13. Use \TYPO3\CMS\Core\Crypto\HashService instead.',
+            E_USER_DEPRECATED,
+        );
+        return $this->hashService->hmac($string, self::class);
     }
 
     /**
@@ -51,8 +58,11 @@ class HashService implements SingletonInterface
      */
     public function appendHmac(string $string): string
     {
-        $hmac = $this->generateHmac($string);
-        return $string . $hmac;
+        trigger_error(
+            __CLASS__ . ' has been marked as deprecated in TYPO3 v13. Use \TYPO3\CMS\Core\Crypto\HashService instead.',
+            E_USER_DEPRECATED,
+        );
+        return $this->hashService->appendHmac($string, self::class);
     }
 
     /**
@@ -64,7 +74,11 @@ class HashService implements SingletonInterface
      */
     public function validateHmac(string $string, string $hmac): bool
     {
-        return hash_equals($this->generateHmac($string), $hmac);
+        trigger_error(
+            __CLASS__ . ' has been marked as deprecated in TYPO3 v13. Use \TYPO3\CMS\Core\Crypto\HashService instead.',
+            E_USER_DEPRECATED,
+        );
+        return $this->hashService->validateHmac($string, self::class, $hmac);
     }
 
     /**
@@ -82,6 +96,11 @@ class HashService implements SingletonInterface
      */
     public function validateAndStripHmac(string $string): string
     {
+        trigger_error(
+            __CLASS__ . ' has been marked as deprecated in TYPO3 v13. Use \TYPO3\CMS\Core\Crypto\HashService instead.',
+            E_USER_DEPRECATED,
+        );
+
         if (strlen($string) < 40) {
             throw new InvalidArgumentForHashGenerationException('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string) . ' characters long.', 1320830276);
         }

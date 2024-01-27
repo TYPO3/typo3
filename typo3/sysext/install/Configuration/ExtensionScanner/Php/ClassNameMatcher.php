@@ -2512,4 +2512,9 @@ return [
             'Feature-102935-PSR-14EventForPackageInitializationFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Security\Cryptography\HashService' => [
+        'restFiles' => [
+            'Deprecation-102763-ExtbaseHashService.rst',
+        ],
+    ],
 ];

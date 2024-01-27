@@ -53,7 +53,7 @@ class PasswordRecoveryController extends ActionController
         protected FrontendUserRepository $userRepository,
         protected RecoveryConfiguration $recoveryConfiguration,
         protected readonly Features $features,
-        protected readonly PageRepository $pageRepository,
+        protected readonly PageRepository $pageRepository
     ) {}
 
     /**
@@ -74,7 +74,7 @@ class PasswordRecoveryController extends ActionController
 
         if ($userData && GeneralUtility::validEmail($userData['email'])) {
             $hash = $this->recoveryConfiguration->getForgotHash();
-            $this->userRepository->updateForgotHashForUserByUid($userData['uid'], GeneralUtility::hmac($hash));
+            $this->userRepository->updateForgotHashForUserByUid($userData['uid'], $this->hashService->hmac($hash, self::class));
             $this->recoveryService->sendRecoveryEmail($this->request, $userData, $hash);
         }
 
@@ -113,7 +113,7 @@ class PasswordRecoveryController extends ActionController
         $currentTimestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
 
         // timestamp is expired or hash can not be assigned to a user
-        if ($currentTimestamp > $timestamp || !$this->userRepository->existsUserWithHash(GeneralUtility::hmac($hash))) {
+        if ($currentTimestamp > $timestamp || !$this->userRepository->existsUserWithHash($this->hashService->hmac($hash, self::class))) {
             /** @var ExtbaseRequestParameters $extbaseRequestParameters */
             $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
             $originalResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
@@ -209,11 +209,11 @@ class PasswordRecoveryController extends ActionController
             ->getDefaultHashInstance('FE')
             ->getHashedPassword($newPass);
 
-        $user = $this->userRepository->findOneByForgotPasswordHash(GeneralUtility::hmac($hash));
+        $user = $this->userRepository->findOneByForgotPasswordHash($this->hashService->hmac($hash, self::class));
         $event = new PasswordChangeEvent($user, $hashedPassword, $newPass);
         $this->eventDispatcher->dispatch($event);
 
-        $this->userRepository->updatePasswordAndInvalidateHash(GeneralUtility::hmac($hash), $hashedPassword);
+        $this->userRepository->updatePasswordAndInvalidateHash($this->hashService->hmac($hash, self::class), $hashedPassword);
         $this->invalidateUserSessions($user['uid']);
 
         $this->addFlashMessage($this->getTranslation('change_password_done_message'));
@@ -234,7 +234,7 @@ class PasswordRecoveryController extends ActionController
         }
 
         $hash = $this->request->getArgument('hash');
-        $userData = $this->userRepository->findOneByForgotPasswordHash(GeneralUtility::hmac($hash));
+        $userData = $this->userRepository->findOneByForgotPasswordHash($this->hashService->hmac($hash, self::class));
 
         // Validate against password policy
         $passwordPolicyValidator = $this->getPasswordPolicyValidator();

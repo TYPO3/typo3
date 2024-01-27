@@ -15,8 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Security\Cryptography;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Cryptography;
 
+use TYPO3\CMS\Core\Crypto\HashService as CoreHashService;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
@@ -29,7 +30,7 @@ final class HashServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->hashService = new HashService();
+        $this->hashService = new HashService(new CoreHashService());
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'Testing';
     }
 

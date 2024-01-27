@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Property\TypeConverter;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -33,9 +34,9 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Form\Mvc\Property\Exception\TypeConverterException;
+use TYPO3\CMS\Form\Security\HashScope;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\Slot\ResourcePublicationSlot;
 
@@ -90,7 +91,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     protected $resourceFactory;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
+     * @var HashService
      */
     protected $hashService;
 
@@ -144,7 +145,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
                 try {
                     // File references use numeric resource pointers, direct
                     // file relations are using "file:" prefix (e.g. "file:5")
-                    $resourcePointer = $this->hashService->validateAndStripHmac($source['submittedFile']['resourcePointer']);
+                    $resourcePointer = $this->hashService->validateAndStripHmac($source['submittedFile']['resourcePointer'], HashScope::ResourcePointer->prefix());
                     if (str_starts_with($resourcePointer, 'file:')) {
                         $fileUid = (int)substr($resourcePointer, 5);
                         $resource = $this->createFileReferenceFromFalFileObject($this->resourceFactory->getFileObject($fileUid));
@@ -226,7 +227,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         $uploadedFile = $uploadFolder->addUploadedFile($uploadInfo, $conflictMode);
 
         $resourcePointer = isset($uploadInfo['submittedFile']['resourcePointer']) && !str_contains($uploadInfo['submittedFile']['resourcePointer'], 'file:')
-            ? (int)$this->hashService->validateAndStripHmac($uploadInfo['submittedFile']['resourcePointer'])
+            ? (int)$this->hashService->validateAndStripHmac($uploadInfo['submittedFile']['resourcePointer'], HashScope::ResourcePointer->prefix())
             : null;
 
         $fileReferenceModel = $this->createFileReferenceFromFalFileObject($uploadedFile, $resourcePointer);

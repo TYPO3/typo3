@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Validation;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -28,7 +29,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
+use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Controller\BlogController;
 
@@ -85,7 +86,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
+            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix())]
         );
 
         $titleMappingResults = new Result();
@@ -150,7 +151,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
+            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix())]
         );
 
         $isDispatched = false;
@@ -213,7 +214,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
+            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix())]
         );
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
@@ -240,10 +241,5 @@ final class ActionControllerValidationTest extends FunctionalTestCase
             MvcPropertyMappingConfigurationService::class
         );
         return $mvcPropertyMappingConfigurationService->generateTrustedPropertiesToken($formFieldNames, '');
-    }
-
-    protected function getHashService(): HashService
-    {
-        return $this->get(HashService::class);
     }
 }

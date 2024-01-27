@@ -24,7 +24,9 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
+use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
 use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\ApplicationType;
@@ -39,9 +41,6 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
-use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
-use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
@@ -58,6 +57,7 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\FormSession;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
+use TYPO3\CMS\Form\Security\HashScope;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -236,8 +236,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $this->formState = GeneralUtility::makeInstance(FormState::class);
         } else {
             try {
-                $serializedFormState = $this->hashService->validateAndStripHmac($serializedFormStateWithHmac);
-            } catch (InvalidHashException | InvalidArgumentForHashGenerationException $e) {
+                $serializedFormState = $this->hashService->validateAndStripHmac($serializedFormStateWithHmac, HashScope::FormState->prefix());
+            } catch (InvalidHashStringException $e) {
                 throw new BadRequestException('The HMAC of the form state could not be validated.', 1581862823);
             }
             $this->formState = unserialize(base64_decode($serializedFormState));

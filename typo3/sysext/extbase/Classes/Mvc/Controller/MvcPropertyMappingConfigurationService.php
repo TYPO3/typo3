@@ -17,15 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
+use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
-use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
+use TYPO3\CMS\Extbase\Security\HashScope;
 
 /**
  * This is a service which can generate a request hash and check whether the currently given arguments
@@ -48,12 +49,7 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
  */
 class MvcPropertyMappingConfigurationService implements SingletonInterface
 {
-    /**
-     * The hash service class to use
-     *
-     * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
-     */
-    protected $hashService;
+    protected HashService $hashService;
 
     public function injectHashService(HashService $hashService)
     {
@@ -119,7 +115,7 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
     protected function encodeAndHashFormFieldArray(array $formFieldArray)
     {
         $encodedFormFieldArray = json_encode($formFieldArray);
-        return $this->hashService->appendHmac($encodedFormFieldArray);
+        return $this->hashService->appendHmac($encodedFormFieldArray, HashScope::TrustedProperties->prefix());
     }
 
     /**
@@ -138,8 +134,8 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
         }
 
         try {
-            $encodedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
-        } catch (InvalidHashException | InvalidArgumentForHashGenerationException $e) {
+            $encodedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken, HashScope::TrustedProperties->prefix());
+        } catch (InvalidHashStringException $e) {
             throw new BadRequestException('The HMAC of the form could not be validated.', 1581862822);
         }
         $trustedProperties = json_decode($encodedTrustedProperties, true);
