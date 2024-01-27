@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -26,47 +28,47 @@ interface QuerySettingsInterface
      * Sets the flag if the storage page should be respected for the query.
      *
      * @param bool $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+     * @return $this fluent interface
      */
-    public function setRespectStoragePage($respectStoragePage);
+    public function setRespectStoragePage(bool $respectStoragePage): self;
 
     /**
      * Returns the state, if the storage page should be respected for the query.
      *
      * @return bool TRUE, if the storage page should be respected; otherwise FALSE.
      */
-    public function getRespectStoragePage();
+    public function getRespectStoragePage(): bool;
 
     /**
      * Sets the pid(s) of the storage page(s) that should be respected for the query.
      *
      * @param int[] $storagePageIds If TRUE the storage page ID will be determined and the statement will be extended accordingly.
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+     * @return $this fluent interface
      */
-    public function setStoragePageIds(array $storagePageIds);
+    public function setStoragePageIds(array $storagePageIds): self;
 
     /**
      * Returns the pid(s) of the storage page(s) that should be respected for the query.
      *
      * @return int[] list of integers that each represent a storage page id
      */
-    public function getStoragePageIds();
+    public function getStoragePageIds(): array;
 
     /**
      * Sets the flag if record language should be respected when querying.
      * Other settings defines whether overlay should happen or not.
      *
      * @param bool $respectSysLanguage TRUE if only record language should be respected when querying
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+     * @return $this fluent interface
      */
-    public function setRespectSysLanguage($respectSysLanguage);
+    public function setRespectSysLanguage(bool $respectSysLanguage): self;
 
     /**
      * Returns the state, if record language should be checked when querying
      *
      * @return bool if TRUE record language is checked.
      */
-    public function getRespectSysLanguage();
+    public function getRespectSysLanguage(): bool;
 
     /**
      * Sets a flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
@@ -74,10 +76,10 @@ interface QuerySettingsInterface
      * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
      *
      * @param bool $ignoreEnableFields
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+     * @return $this fluent interface
      * @see setEnableFieldsToBeIgnored()
      */
-    public function setIgnoreEnableFields($ignoreEnableFields);
+    public function setIgnoreEnableFields(bool $ignoreEnableFields): self;
 
     /**
      * The returned value indicates whether all or some enable fields should be ignored.
@@ -85,10 +87,9 @@ interface QuerySettingsInterface
      * If TRUE, all enable fields are ignored. If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored.
      * If FALSE, all enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
      *
-     * @return bool
      * @see getEnableFieldsToBeIgnored()
      */
-    public function getIgnoreEnableFields();
+    public function getIgnoreEnableFields(): bool;
 
     /**
      * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
@@ -96,10 +97,10 @@ interface QuerySettingsInterface
      * by this column. This setting is only taken into account if $this->ignoreEnableFields = TRUE.
      *
      * @param string[] $enableFieldsToBeIgnored
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+     * @return $this fluent interface
      * @see setIgnoreEnableFields()
      */
-    public function setEnableFieldsToBeIgnored($enableFieldsToBeIgnored);
+    public function setEnableFieldsToBeIgnored(array $enableFieldsToBeIgnored): self;
 
     /**
      * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
@@ -108,31 +109,26 @@ interface QuerySettingsInterface
      * @return string[]
      * @see getIgnoreEnableFields()
      */
-    public function getEnableFieldsToBeIgnored();
+    public function getEnableFieldsToBeIgnored(): array;
 
     /**
      * Sets the flag if the query should return objects that are deleted.
      *
      * @param bool $includeDeleted
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+     * @return $this fluent interface
      */
-    public function setIncludeDeleted($includeDeleted);
+    public function setIncludeDeleted(bool $includeDeleted): self;
 
     /**
      * Returns if the query should return objects that are deleted.
-     *
-     * @return bool
      */
-    public function getIncludeDeleted();
+    public function getIncludeDeleted(): bool;
 
-    /**
-     * Returns the language aspect
-     */
     public function getLanguageAspect(): LanguageAspect;
 
     /**
      * Overrides the main language aspect, defined in the main Context API
-     * @return $this to allow method chaining
+     * @return $this fluent interface
      */
-    public function setLanguageAspect(LanguageAspect $languageAspect);
+    public function setLanguageAspect(LanguageAspect $languageAspect): self;
 }

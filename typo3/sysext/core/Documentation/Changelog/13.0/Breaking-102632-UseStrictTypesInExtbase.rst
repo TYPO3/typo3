@@ -10,6 +10,7 @@ See :issue:`102632`
 See :issue:`102878`
 See :issue:`102879`
 See :issue:`102885`
+See :issue:`102954`
 See :issue:`102956`
 See :issue:`102966`
 See :issue:`102969`
@@ -39,6 +40,8 @@ In summary, the following classes have received strict types:
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\File`
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage`
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager`
+- :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface`
+- :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings`
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\ObjectStorage`
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface`
 

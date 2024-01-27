@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -77,9 +79,8 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * Sets the flag if the storage page should be respected for the query.
      *
      * @param bool $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
-     * @return QuerySettingsInterface
      */
-    public function setRespectStoragePage($respectStoragePage)
+    public function setRespectStoragePage(bool $respectStoragePage): QuerySettingsInterface
     {
         $this->respectStoragePage = $respectStoragePage;
         return $this;
@@ -90,7 +91,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @return bool TRUE, if the storage page should be respected; otherwise FALSE.
      */
-    public function getRespectStoragePage()
+    public function getRespectStoragePage(): bool
     {
         return $this->respectStoragePage;
     }
@@ -99,9 +100,8 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * Sets the pid(s) of the storage page(s) that should be respected for the query.
      *
      * @param array $storagePageIds If given the storage page IDs will be determined and the statement will be extended accordingly.
-     * @return QuerySettingsInterface
      */
-    public function setStoragePageIds(array $storagePageIds)
+    public function setStoragePageIds(array $storagePageIds): self
     {
         $this->storagePageIds = $storagePageIds;
         return $this;
@@ -112,16 +112,15 @@ class Typo3QuerySettings implements QuerySettingsInterface
      *
      * @return array list of integers that each represent a storage page id
      */
-    public function getStoragePageIds()
+    public function getStoragePageIds(): array
     {
         return $this->storagePageIds;
     }
 
     /**
      * @param bool $respectSysLanguage TRUE if TYPO3 language settings are to be applied
-     * @return QuerySettingsInterface
      */
-    public function setRespectSysLanguage($respectSysLanguage)
+    public function setRespectSysLanguage(bool $respectSysLanguage): self
     {
         $this->respectSysLanguage = $respectSysLanguage;
         return $this;
@@ -130,7 +129,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
     /**
      * @return bool TRUE if TYPO3 language settings are to be applied
      */
-    public function getRespectSysLanguage()
+    public function getRespectSysLanguage(): bool
     {
         return $this->respectSysLanguage;
     }
@@ -140,10 +139,7 @@ class Typo3QuerySettings implements QuerySettingsInterface
         return $this->languageAspect;
     }
 
-    /**
-     * @return $this to allow method chaining
-     */
-    public function setLanguageAspect(LanguageAspect $languageAspect)
+    public function setLanguageAspect(LanguageAspect $languageAspect): self
     {
         $this->languageAspect = $languageAspect;
         return $this;
@@ -154,11 +150,9 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
      * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
      *
-     * @param bool $ignoreEnableFields
-     * @return QuerySettingsInterface
      * @see setEnableFieldsToBeIgnored()
      */
-    public function setIgnoreEnableFields($ignoreEnableFields)
+    public function setIgnoreEnableFields(bool $ignoreEnableFields): self
     {
         $this->ignoreEnableFields = $ignoreEnableFields;
         return $this;
@@ -170,10 +164,9 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * If TRUE, all enable fields are ignored. If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored.
      * If FALSE, all enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
      *
-     * @return bool
      * @see getEnableFieldsToBeIgnored()
      */
-    public function getIgnoreEnableFields()
+    public function getIgnoreEnableFields(): bool
     {
         return $this->ignoreEnableFields;
     }
@@ -183,11 +176,9 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * to be ignored while building the query statement. Adding a column name here effectively switches off filtering
      * by this column. This setting is only taken into account if $this->ignoreEnableFields = TRUE.
      *
-     * @param array $enableFieldsToBeIgnored
-     * @return QuerySettingsInterface
      * @see setIgnoreEnableFields()
      */
-    public function setEnableFieldsToBeIgnored($enableFieldsToBeIgnored)
+    public function setEnableFieldsToBeIgnored(array $enableFieldsToBeIgnored): self
     {
         $this->enableFieldsToBeIgnored = $enableFieldsToBeIgnored;
         return $this;
@@ -197,21 +188,17 @@ class Typo3QuerySettings implements QuerySettingsInterface
      * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
      * to be ignored while building the query statement.
      *
-     * @return array
      * @see getIgnoreEnableFields()
      */
-    public function getEnableFieldsToBeIgnored()
+    public function getEnableFieldsToBeIgnored(): array
     {
         return $this->enableFieldsToBeIgnored;
     }
 
     /**
      * Sets the flag if the query should return objects that are deleted.
-     *
-     * @param bool $includeDeleted
-     * @return QuerySettingsInterface
      */
-    public function setIncludeDeleted($includeDeleted)
+    public function setIncludeDeleted(bool $includeDeleted): self
     {
         $this->includeDeleted = $includeDeleted;
         return $this;
@@ -219,10 +206,8 @@ class Typo3QuerySettings implements QuerySettingsInterface
 
     /**
      * Returns if the query should return objects that are deleted.
-     *
-     * @return bool
      */
-    public function getIncludeDeleted()
+    public function getIncludeDeleted(): bool
     {
         return $this->includeDeleted;
     }
