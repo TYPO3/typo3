@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -40,43 +41,29 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * instead of calling the current() method of the interface.
      *
      * We use this unusual behavior of PHP to return the warning below in this case.
-     *
-     * @var string
      */
-    private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
+    private string $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
 
     protected DataMapper $dataMapper;
 
     /**
      * The object this property is contained in.
-     *
-     * @var \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface
      */
-    protected $parentObject;
+    protected DomainObjectInterface $parentObject;
 
     /**
      * The name of the property represented by this proxy.
-     *
-     * @var string
      */
-    protected $propertyName;
+    protected string $propertyName;
 
     /**
      * The raw field value.
-     *
-     * @var mixed
      */
-    protected $fieldValue;
+    protected mixed $fieldValue;
 
-    /**
-     * @var bool
-     */
-    protected $isInitialized = false;
+    protected bool $isInitialized = false;
 
-    /**
-     * @return bool
-     */
-    public function isInitialized()
+    public function isInitialized(): bool
     {
         return $this->isInitialized;
     }
@@ -86,7 +73,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * @param string $propertyName The name of the proxied property in its parent
      * @param mixed $fieldValue The raw field value.
      */
-    public function __construct($parentObject, $propertyName, $fieldValue, ?DataMapper $dataMapper = null)
+    public function __construct(object $parentObject, string $propertyName, mixed $fieldValue, ?DataMapper $dataMapper = null)
     {
         $this->parentObject = $parentObject;
         $this->propertyName = $propertyName;
@@ -101,7 +88,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * Lazily initializes the object storage.
      */
-    protected function initialize()
+    protected function initialize(): void
     {
         if ($this->isInitialized) {
             return;
@@ -140,7 +127,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see `ObjectStorage::attach`
      */
-    public function attach($object, $information = null): void
+    public function attach(object $object, mixed $information = null): void
     {
         $this->initialize();
         parent::attach($object, $information);
@@ -151,7 +138,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see `ObjectStorage::contains`
      */
-    public function contains($object): bool
+    public function contains(object $object): bool
     {
         $this->initialize();
         return parent::contains($object);
@@ -179,7 +166,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * @return TEntity|null The object at the current iterator position.
      * @see `ObjectStorage::current`
      */
-    public function current(): mixed
+    public function current(): ?object
     {
         $this->initialize();
         return parent::current();
@@ -190,7 +177,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see `ObjectStorage::detach`
      */
-    public function detach($object): void
+    public function detach(object $object): void
     {
         $this->initialize();
         parent::detach($object);
@@ -221,7 +208,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see `ObjectStorage::offsetExists`
      */
-    public function offsetExists($value): bool
+    public function offsetExists(mixed $value): bool
     {
         $this->initialize();
         return parent::offsetExists($value);
@@ -232,7 +219,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see `ObjectStorage::offsetGet`
      */
-    public function offsetGet($value): mixed
+    public function offsetGet(mixed $value): mixed
     {
         $this->initialize();
         return parent::offsetGet($value);
@@ -244,18 +231,18 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see `ObjectStorage::offsetSet`
      */
-    public function offsetSet($object, $information): void
+    public function offsetSet(mixed $object, mixed $information): void
     {
         $this->initialize();
         parent::offsetSet($object, $information);
     }
 
     /**
-     * @param TEntity|string|null $value The object to remove, or its key in the storage.
+     * @param TEntity|int|string $value The object to remove, or its key in the storage.
      *
      * @see `ObjectStorage::offsetUnset`
      */
-    public function offsetUnset($value): void
+    public function offsetUnset(mixed $value): void
     {
         $this->initialize();
         parent::offsetUnset($value);

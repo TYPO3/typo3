@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -37,10 +39,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * instead of calling the `current()` method of the interface.
      *
      * We use this unusual behavior of PHP to return the warning below in this case.
-     *
-     * @var string
      */
-    private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
+    private string $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
 
     /**
      * An array holding the objects and the stored information. The key of the array items ist the
@@ -54,43 +54,33 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *   ],
      * ]
      * ```
-     *
-     * @var array
      */
-    protected $storage = [];
+    protected array $storage = [];
 
     /**
      * A flag indication if the object storage was modified after reconstitution (e.g., by adding a new object)
-     *
-     * @var bool
      */
-    protected $isModified = false;
+    protected bool $isModified = false;
 
     /**
      * An array holding the internal position the object was added.
      *
      * The object entry is unset when the object gets removed from the object storage.
-     *
-     * @var array
      */
-    protected $addedObjectsPositions = [];
+    protected array $addedObjectsPositions = [];
 
     /**
      * An array holding the internal position the object was added before, when it would
      * be removed from the object storage.
-     *
-     * @var array
      */
-    protected $removedObjectsPositions = [];
+    protected array $removedObjectsPositions = [];
 
     /**
      * An internal variable holding the count of added objects to be stored as position.
      *
      * It will be reset when all objects are be removed from the object storage.
-     *
-     * @var int
      */
-    protected $positionCounter = 0;
+    protected int $positionCounter = 0;
 
     /**
      * Rewinds the iterator to the first storage element.
@@ -125,7 +115,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @return TEntity|null The object at the current iterator position.
      */
-    public function current(): mixed
+    public function current(): ?object
     {
         $item = current($this->storage);
         return $item['obj'] ?? null;
@@ -155,7 +145,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * @param TEntity|string|null $object The object to add.
      * @param mixed $information The information to associate with the object.
      */
-    public function offsetSet($object, $information): void
+    public function offsetSet(mixed $object, mixed $information): void
     {
         $this->isModified = true;
         $this->storage[spl_object_hash($object)] = ['obj' => $object, 'inf' => $information];
@@ -169,7 +159,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param TEntity|int|string $value The object to look for, or the key in the storage.
      */
-    public function offsetExists($value): bool
+    public function offsetExists(mixed $value): bool
     {
         return (is_object($value) && isset($this->storage[spl_object_hash($value)]))
             || (MathUtility::canBeInterpretedAsInteger($value) && isset(array_values($this->storage)[$value]));
@@ -180,7 +170,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param TEntity|int|string $value The object to remove, or its key in the storage.
      */
-    public function offsetUnset($value): void
+    public function offsetUnset(mixed $value): void
     {
         $this->isModified = true;
 
@@ -206,7 +196,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * @param TEntity|int|string $value The object to look for, or its key in the storage.
      * @return mixed The information associated with an object in the storage, or the object itself if an integer is passed.
      */
-    public function offsetGet($value): mixed
+    public function offsetGet(mixed $value): mixed
     {
         if (MathUtility::canBeInterpretedAsInteger($value)) {
             return array_values($this->storage)[$value]['obj'] ?? null;
@@ -220,9 +210,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Checks if the storage contains a specific object.
      *
      * @param TEntity $object The object to look for.
-     * @return bool
      */
-    public function contains($object)
+    public function contains(object $object): bool
     {
         return $this->offsetExists($object);
     }
@@ -233,7 +222,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * @param TEntity $object The object to add.
      * @param mixed $information The information to associate with the object.
      */
-    public function attach($object, $information = null)
+    public function attach(object $object, mixed $information = null): void
     {
         $this->offsetSet($object, $information);
     }
@@ -243,7 +232,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param TEntity $object The object to remove.
      */
-    public function detach($object)
+    public function detach(object $object): void
     {
         $this->offsetUnset($object);
     }
@@ -253,7 +242,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @return mixed The information associated with the current iterator position.
      */
-    public function getInfo()
+    public function getInfo(): mixed
     {
         $item = current($this->storage);
 
@@ -262,10 +251,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * Associates information with the object currently pointed to by the iterator.
-     *
-     * @param mixed $information
      */
-    public function setInfo($information)
+    public function setInfo(mixed $information): void
     {
         $this->isModified = true;
         $key = key($this->storage);
@@ -277,7 +264,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param ObjectStorage<TEntity> $storage
      */
-    public function addAll(ObjectStorage $storage)
+    public function addAll(ObjectStorage $storage): void
     {
         foreach ($storage as $object) {
             $this->attach($object, $storage->getInfo());
@@ -289,7 +276,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param ObjectStorage<TEntity> $storage The storage containing the elements to remove.
      */
-    public function removeAll(ObjectStorage $storage)
+    public function removeAll(ObjectStorage $storage): void
     {
         foreach ($storage as $object) {
             $this->detach($object);
@@ -301,7 +288,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @return list<TEntity>
      */
-    public function toArray()
+    public function toArray(): array
     {
         $array = [];
         $storage = array_values($this->storage);
@@ -318,7 +305,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @return list<TEntity>
      */
-    public function getArray()
+    public function getArray(): array
     {
         return $this->toArray();
     }
@@ -345,22 +332,15 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * Returns `true` if an object was added, then removed and added at a different position.
-     *
-     * @param mixed $object
-     * @return bool
      */
-    public function isRelationDirty($object)
+    public function isRelationDirty(object $object): bool
     {
         return isset($this->addedObjectsPositions[spl_object_hash($object)])
                 && isset($this->removedObjectsPositions[spl_object_hash($object)])
                 && ($this->addedObjectsPositions[spl_object_hash($object)] !== $this->removedObjectsPositions[spl_object_hash($object)]);
     }
 
-    /**
-     * @param mixed $object
-     * @return int|null
-     */
-    public function getPosition($object)
+    public function getPosition(object $object): ?int
     {
         if (!isset($this->addedObjectsPositions[spl_object_hash($object)])) {
             return null;
