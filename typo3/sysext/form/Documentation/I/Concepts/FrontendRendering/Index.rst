@@ -752,6 +752,9 @@ defined by:
 
 With the provided hooks, this ``FormElement`` can now be manipulated.
 
+..  seealso::
+    *   :ref:`Hooks for runtime manipulation <apireference-frontendrendering-runtimemanipulation-hooks>`
+
 If you insist on your own implementation, the abstract class ``TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement``
 offers a perfect entry point. In addition, we recommend checking-out ``TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable``.
 All of your own form element implementations must be programmed to the
