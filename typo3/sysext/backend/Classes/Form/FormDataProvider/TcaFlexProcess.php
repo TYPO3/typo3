@@ -97,26 +97,24 @@ class TcaFlexProcess implements FormDataProviderInterface
                         foreach ($dataStructureFieldDefinition['el'] as $containerName => $containerConfiguration) {
                             if (isset($containerConfiguration['el']) && is_array($containerConfiguration['el'])) {
                                 foreach ($containerConfiguration['el'] as $singleFieldName => $singleFieldConfiguration) {
-                                    // Nesting type=inline in container sections is not supported. Throw an exception if configured.
+                                    // Nesting types that use DB relations in container sections is not supported.
                                     if (isset($singleFieldConfiguration['config']['type'])) {
-                                        if ($singleFieldConfiguration['config']['type'] === 'inline') {
+                                        if (
+                                            // inline, file, group and category are always DB relations
+                                            in_array($singleFieldConfiguration['config']['type'], ['inline', 'file', 'folder', 'group', 'category'], true)
+                                            // MM is not allowed (usually type=select, otherwise the upper check should kick in)
+                                            || isset($singleFieldConfiguration['config']['MM'])
+                                            // foreign_table is not allowed (usually type=select, otherwise the upper check should kick in)
+                                            || isset($singleFieldConfiguration['config']['foreign_table'])
+                                        ) {
                                             throw new \UnexpectedValueException(
                                                 'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
-                                                . ' in section container "' . $containerName . '": Nesting inline elements in flex form'
+                                                . ' in section container "' . $containerName . '": Nesting elements that have database relations in flex form'
                                                 . ' sections is not allowed.',
                                                 1458745468
                                             );
                                         }
-                                        if ($singleFieldConfiguration['config']['type'] === 'file') {
-                                            throw new \UnexpectedValueException(
-                                                'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
-                                                . ' in section container "' . $containerName . '": Nesting file elements in flex form'
-                                                . ' sections is not allowed.',
-                                                1664473929
-                                            );
-                                        }
                                     }
-
                                     // Nesting sections is not supported. Throw an exception if configured.
                                     if (is_array($singleFieldConfiguration)
                                         && isset($singleFieldConfiguration['type']) && $singleFieldConfiguration['type'] === 'array'
@@ -127,21 +125,6 @@ class TcaFlexProcess implements FormDataProviderInterface
                                             . ' in section container "' . $containerName . '": Nesting sections in container elements'
                                             . ' sections is not allowed.',
                                             1458745712
-                                        );
-                                    }
-
-                                    // Nesting type="select", type="category" and type="group" within section
-                                    // containers is not supported, the data storage can not deal with that and in
-                                    // general it is not supported to add a named reference to the anonymous section
-                                    // container structure.
-                                    if (isset($singleFieldConfiguration['config']['MM'])
-                                        && in_array($singleFieldConfiguration['config']['type'] ?? '', ['select', 'category', 'group'], true)
-                                    ) {
-                                        throw new \UnexpectedValueException(
-                                            'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
-                                            . ' in section container "' . $containerName . '": Nesting select, category and group elements in flex form'
-                                            . ' sections is not allowed with MM relations.',
-                                            1481647089
                                         );
                                     }
                                 }

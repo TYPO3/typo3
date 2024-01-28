@@ -261,36 +261,6 @@ return [
                                     </ROOT>
                                 </sDb>
 
-                                <sSection>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <sheetTitle>section</sheetTitle>
-                                        <el>
-                                            <section_1>
-                                                <title>section_1</title>
-                                                <type>array</type>
-                                                <section>1</section>
-                                                <el>
-                                                    <container_1>
-                                                        <type>array</type>
-                                                        <title>container_1</title>
-                                                        <el>
-                                                            <group_db_1>
-                                                                <label>group_db_1</label>
-                                                                <config>
-                                                                    <type>group</type>
-                                                                    <allowed>pages</allowed>
-                                                                    <size>5</size>
-                                                                </config>
-                                                            </group_db_1>
-                                                        </el>
-                                                    </container_1>
-                                                </el>
-                                            </section_1>
-                                        </el>
-                                    </ROOT>
-                                </sSection>
-
                             </sheets>
                         </T3DataStructure>
                     ',

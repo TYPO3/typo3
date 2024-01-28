@@ -1325,7 +1325,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         ];
 
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1481647089);
+        $this->expectExceptionCode(1458745468);
 
         (new TcaFlexProcess())->addData($input);
     }
@@ -1386,7 +1386,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         ];
 
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1481647089);
+        $this->expectExceptionCode(1458745468);
 
         (new TcaFlexProcess())->addData($input);
     }
