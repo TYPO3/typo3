@@ -1000,7 +1000,7 @@ class GeneralUtility
     /**
      * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
      *
-     * @param array<string, string> $arr Array with attribute key/value pairs, eg. "bgcolor" => "red", "border" => "0"
+     * @param array<string, string|int> $arr Array with attribute key/value pairs, eg. "bgcolor" => "red", "border" => 0
      * @param bool $xhtmlSafe If set the resulting attribute list will have a) all attributes in lowercase (and duplicates weeded out, first entry taking precedence) and b) all values htmlspecialchar()'ed. It is recommended to use this switch!
      * @param bool $keepBlankAttributes If TRUE, don't check if values are blank. Default is to omit attributes with blank values.
      * @return string Imploded attributes, eg. 'bgcolor="red" border="0"'
