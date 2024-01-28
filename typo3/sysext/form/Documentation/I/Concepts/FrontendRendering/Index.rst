@@ -754,6 +754,7 @@ With the provided hooks, this ``FormElement`` can now be manipulated.
 
 ..  seealso::
     *   :ref:`Hooks for runtime manipulation <apireference-frontendrendering-runtimemanipulation-hooks>`
+    *   :ref:`PSR-14 events <apireference-frontendrendering-runtimemanipulation-events>`
 
 If you insist on your own implementation, the abstract class ``TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement``
 offers a perfect entry point. In addition, we recommend checking-out ``TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable``.

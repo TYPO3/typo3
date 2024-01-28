@@ -1664,3 +1664,16 @@ Use the hook
    public function beforeRendering(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface $renderable)
    {
    }
+
+
+.. _apireference-frontendrendering-runtimemanipulation-events:
+
+PSR-14 event
+^^^^^^^^^^^^
+
+The following PSR-14 event is available to extend the functionality:
+
+AfterFormDefinitionLoadedEvent
+++++++++++++++++++++++++++++++
+
+Modify loaded form definitions. :ref:`More details <t3coreapi:AfterFormDefinitionLoadedEvent>`
