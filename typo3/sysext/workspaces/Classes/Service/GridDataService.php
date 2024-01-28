@@ -42,6 +42,9 @@ use TYPO3\CMS\Workspaces\Event\SortVersionedDataEvent;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\Dependency\CollectionService;
 
+/**
+ * @internal
+ */
 class GridDataService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

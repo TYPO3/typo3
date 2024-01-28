@@ -25,6 +25,8 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Listener to add classes to page tree items, which contain workspace versions, to highlight them
+ *
+ * @internal
  */
 final class PageTreeItemsHighlighter
 {

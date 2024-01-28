@@ -26,6 +26,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 
+/**
+ * @internal
+ */
 class StagesService implements SingletonInterface
 {
     public const TABLE_STAGE = 'sys_workspace_stage';

@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Workspaces\Dependency;
 
 /**
  * Object to hold reference information of a database field and one accordant element.
+ *
+ * @internal
  */
 class ReferenceEntity
 {

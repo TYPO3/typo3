@@ -22,6 +22,9 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 
+/**
+ * @internal
+ */
 class IntegrityService
 {
     /**

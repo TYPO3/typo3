@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
+/**
+ * @internal
+ */
 class WorkspaceService implements SingletonInterface
 {
     protected array $versionsOnPageCache = [];

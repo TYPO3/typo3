@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Workspaces\Dependency;
 
 /**
  * Object to hold information on a callback to a defined object and method.
+ *
+ * @internal
  */
 class EventCallback
 {

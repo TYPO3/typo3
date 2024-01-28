@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Object to handle and determine dependent references of elements.
+ *
+ * @internal
  */
 class DependencyResolver
 {

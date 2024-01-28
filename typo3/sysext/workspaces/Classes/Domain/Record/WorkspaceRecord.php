@@ -24,6 +24,8 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
  * Combined record class
+ *
+ * @internal
  */
 class WorkspaceRecord extends AbstractRecord
 {

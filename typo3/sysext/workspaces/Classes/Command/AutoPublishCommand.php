@@ -31,7 +31,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
- * Call on the workspace logic to publish workspaces whose publication date is in the past
+ * Call on the workspace logic to publish workspaces whose publication date is in the past.
+ *
+ * @internal
  */
 #[AsCommand('workspace:autopublish', 'Publish a workspace with a publication date.')]
 class AutoPublishCommand extends Command

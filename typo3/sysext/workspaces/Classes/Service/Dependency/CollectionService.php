@@ -29,6 +29,8 @@ use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
  * Service to collect dependent elements.
+ *
+ * @internal
  */
 class CollectionService implements SingletonInterface
 {

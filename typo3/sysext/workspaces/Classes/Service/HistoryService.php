@@ -28,6 +28,9 @@ use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * @internal
+ */
 class HistoryService implements SingletonInterface
 {
     protected array $backendUserNames;

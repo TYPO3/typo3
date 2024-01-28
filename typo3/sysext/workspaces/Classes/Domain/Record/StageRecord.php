@@ -21,6 +21,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
+/**
+ * @internal
+ */
 class StageRecord extends AbstractRecord
 {
     protected WorkspaceRecord $workspace;

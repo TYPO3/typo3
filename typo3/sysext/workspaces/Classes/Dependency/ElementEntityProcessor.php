@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Processor having generic callback methods for element entities
+ *
+ * @internal
  */
 class ElementEntityProcessor
 {

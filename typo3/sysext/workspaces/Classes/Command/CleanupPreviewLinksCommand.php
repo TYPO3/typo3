@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Removes unused records from sys_preview
+ *
+ * @internal
  */
 #[AsCommand('cleanup:previewlinks', 'Find all versioned records and possibly cleans up invalid records in the database.')]
 class CleanupPreviewLinksCommand extends Command

@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Object to create and keep track of element or reference entities.
+ *
+ * @internal
  */
 class DependencyEntityFactory
 {

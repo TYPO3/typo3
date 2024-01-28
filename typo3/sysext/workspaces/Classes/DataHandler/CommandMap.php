@@ -28,6 +28,8 @@ use TYPO3\CMS\Workspaces\Dependency\EventCallback;
 /**
  * Handles the \TYPO3\CMS\Core\DataHandling\DataHandler command map and is
  * only used in combination with \TYPO3\CMS\Core\DataHandling\DataHandler
+ *
+ * @internal
  */
 class CommandMap
 {

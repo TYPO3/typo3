@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Object to hold information on a dependent database element in abstract.
+ *
+ * @internal
  */
 class ElementEntity
 {

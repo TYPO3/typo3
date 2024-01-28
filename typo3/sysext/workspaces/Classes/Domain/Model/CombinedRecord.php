@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Combined record class
+ *
+ * @internal
  */
 class CombinedRecord
 {

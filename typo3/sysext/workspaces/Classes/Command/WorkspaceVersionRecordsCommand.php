@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Fetches all versions in the database, and checks for integrity
+ *
+ * @internal
  */
 #[AsCommand('cleanup:versions', 'Find all versioned records and possibly cleans up invalid records in the database.')]
 class WorkspaceVersionRecordsCommand extends Command

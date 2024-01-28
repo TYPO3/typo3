@@ -22,6 +22,9 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord;
 
+/**
+ * @internal
+ */
 class RecordService implements SingletonInterface
 {
     /**

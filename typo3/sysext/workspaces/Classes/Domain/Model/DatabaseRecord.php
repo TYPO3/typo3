@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Database record class
+ *
+ * @internal
  */
 class DatabaseRecord
 {
