@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -26,43 +28,17 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 class PersistenceManager implements PersistenceManagerInterface, SingletonInterface
 {
-    /**
-     * @var array
-     */
-    protected $newObjects = [];
-
-    /**
-     * @var ObjectStorage
-     */
-    protected $changedObjects;
-
-    /**
-     * @var ObjectStorage
-     */
-    protected $addedObjects;
-
-    /**
-     * @var ObjectStorage
-     */
-    protected $removedObjects;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
-     */
-    protected $queryFactory;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
-     */
-    protected $backend;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
-     */
-    protected $persistenceSession;
+    protected array $newObjects = [];
+    protected ObjectStorage $changedObjects;
+    protected ObjectStorage $addedObjects;
+    protected ObjectStorage $removedObjects;
+    protected QueryFactoryInterface $queryFactory;
+    protected BackendInterface $backend;
+    protected Session $persistenceSession;
 
     /**
      * Create new instance
+     *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __construct(
@@ -85,24 +61,20 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * @param string $className The class name of the repository to be registered
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function registerRepositoryClassName($className) {}
+    public function registerRepositoryClassName(string $className): void {}
 
     /**
      * Returns the number of records matching the query.
-     *
-     * @return int
      */
-    public function getObjectCountByQuery(QueryInterface $query)
+    public function getObjectCountByQuery(QueryInterface $query): int
     {
         return $this->backend->getObjectCountByQuery($query);
     }
 
     /**
      * Returns the object data matching the $query.
-     *
-     * @return array
      */
-    public function getObjectDataByQuery(QueryInterface $query)
+    public function getObjectDataByQuery(QueryInterface $query): array
     {
         return $this->backend->getObjectDataByQuery($query);
     }
@@ -115,10 +87,9 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * persisted in case of AOP-managed entities. Use isNewObject() if you need
      * to distinguish those cases.
      *
-     * @param object $object
-     * @return mixed The identifier for the object if it is known, or NULL
+     * @return string|null The identifier for the object if it is known, or NULL
      */
-    public function getIdentifierByObject($object)
+    public function getIdentifierByObject(object $object): ?string
     {
         return $this->backend->getIdentifierByObject($object);
     }
@@ -127,16 +98,11 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * Returns the object with the (internal) identifier, if it is known to the
      * backend. Otherwise NULL is returned.
      *
-     * @param mixed $identifier
-     * @param string $objectType
      * @param bool $useLazyLoading Set to TRUE if you want to use lazy loading for this object
-     * @return object The object for the identifier if it is known, or NULL
+     * @return object|null The object for the identifier if it is known, or NULL
      */
-    public function getObjectByIdentifier($identifier, $objectType = null, $useLazyLoading = false)
+    public function getObjectByIdentifier(string|int $identifier, ?string $objectType = null, bool $useLazyLoading = false): ?object
     {
-        // @todo: change argument $objectType, must be a string, not nullable
-        $objectType ??= '';
-
         if (isset($this->newObjects[$identifier])) {
             return $this->newObjects[$identifier];
         }
@@ -150,7 +116,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * Commits new objects and changes to objects in the current persistence
      * session into the backend.
      */
-    public function persistAll()
+    public function persistAll(): void
     {
         // hand in only aggregate roots, leaving handling of subobjects to
         // the underlying storage layer
@@ -169,14 +135,13 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     /**
      * Return a query object for the given type.
      *
-     * @param string $type
-     * @return QueryInterface
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     *
      * @template T of object
-     * @phpstan-param class-string<T> $type
-     * @phpstan-return QueryInterface<T>
+     * @param class-string<T> $type
+     * @return QueryInterface<T>
      */
-    public function createQueryForType($type)
+    public function createQueryForType(string $type): QueryInterface
     {
         return $this->queryFactory->create($type);
     }
@@ -186,7 +151,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      *
      * @param object $object The object to add
      */
-    public function add($object)
+    public function add(object $object): void
     {
         $this->addedObjects->attach($object);
         $this->removedObjects->detach($object);
@@ -197,7 +162,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      *
      * @param object $object The object to remove
      */
-    public function remove($object)
+    public function remove(object $object): void
     {
         if ($this->addedObjects->contains($object)) {
             $this->addedObjects->detach($object);
@@ -212,7 +177,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * @param object $object The modified object
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    public function update($object)
+    public function update(object $object): void
     {
         if ($this->isNewObject($object)) {
             throw new UnknownObjectException('The object of type "' . get_class($object) . '" given to update must be persisted already, but is new.', 1249479819);
@@ -224,7 +189,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * Initializes the persistence manager, called by Extbase.
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         $this->backend->setPersistenceManager($this);
     }
@@ -238,7 +203,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function clearState()
+    public function clearState(): void
     {
         $this->newObjects = [];
         $this->addedObjects = new ObjectStorage();
@@ -253,7 +218,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * @param object $object The object to check
      * @return bool TRUE if the object is new, FALSE if the object exists in the persistence session
      */
-    public function isNewObject($object)
+    public function isNewObject(object $object): bool
     {
         return $this->persistenceSession->hasObject($object) === false;
     }
@@ -268,9 +233,10 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * method.
      *
      * @param object $object The new object to register
+     *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function registerNewObject($object)
+    public function registerNewObject(object $object): void
     {
         $identifier = $this->getIdentifierByObject($object);
         $this->newObjects[$identifier] = $object;
@@ -281,6 +247,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      *
      * This method is called in functional tests to reset the storage between tests.
      * The implementation is optional and depends on the underlying persistence backend.
+     *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function tearDown(): void

@@ -75,10 +75,10 @@ final class QueryTest extends UnitTestCase
      */
     public function executeReturnsRawObjectDataIfReturnRawQueryResultIsSet(): void
     {
-        $this->persistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->query)->willReturn('rawQueryResult');
-        $expectedResult = 'rawQueryResult';
+        $expectedResult = [];
+        $this->persistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->query)->willReturn($expectedResult);
         $actualResult = $this->query->execute(true);
-        self::assertEquals($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -24,7 +26,7 @@ interface PersistenceManagerInterface
      * Commits new objects and changes to objects in the current persistence
      * session into the backend
      */
-    public function persistAll();
+    public function persistAll(): void;
 
     /**
      * Clears the in-memory state of the persistence.
@@ -32,7 +34,7 @@ interface PersistenceManagerInterface
      * Managed instances become detached, any fetches will
      * return data directly from the persistence "backend".
      */
-    public function clearState();
+    public function clearState(): void;
 
     /**
      * Checks if the given object has ever been persisted.
@@ -40,7 +42,7 @@ interface PersistenceManagerInterface
      * @param object $object The object to check
      * @return bool TRUE if the object is new, FALSE if the object exists in the repository
      */
-    public function isNewObject($object);
+    public function isNewObject(object $object): bool;
 
     // @todo realign with Flow PersistenceManager again
 
@@ -53,55 +55,49 @@ interface PersistenceManagerInterface
      * to distinguish those cases.
      *
      * @param object $object
-     * @return mixed The identifier for the object if it is known, or NULL
+     * @return string|null The identifier for the object if it is known, or NULL
      */
-    public function getIdentifierByObject($object);
+    public function getIdentifierByObject(object $object): ?string;
 
     /**
      * Returns the object with the (internal) identifier, if it is known to the
      * backend. Otherwise NULL is returned.
      *
-     * @param mixed $identifier
-     * @param string $objectType
      * @param bool $useLazyLoading Set to TRUE if you want to use lazy loading for this object
      * @return object|null The object for the identifier if it is known, or NULL
      */
-    public function getObjectByIdentifier($identifier, $objectType = null, $useLazyLoading = false);
+    public function getObjectByIdentifier(string|int $identifier, ?string $objectType = null, bool $useLazyLoading = false): ?object;
 
     /**
      * Returns the number of records matching the query.
-     *
-     * @return int
      */
-    public function getObjectCountByQuery(QueryInterface $query);
+    public function getObjectCountByQuery(QueryInterface $query): int;
 
     /**
      * Returns the object data matching the $query.
-     *
-     * @return array
      */
-    public function getObjectDataByQuery(QueryInterface $query);
+    public function getObjectDataByQuery(QueryInterface $query): array;
 
     /**
      * Registers a repository
      *
      * @param string $className The class name of the repository to be registered
      */
-    public function registerRepositoryClassName($className);
+    public function registerRepositoryClassName(string $className): void;
 
     /**
      * Adds an object to the persistence.
      *
      * @param object $object The object to add
      */
-    public function add($object);
+    public function add(object $object): void;
 
     /**
      * Removes an object to the persistence.
      *
      * @param object $object The object to remove
      */
-    public function remove($object);
+    public function remove(object $object): void;
 
     /**
      * Update an object in the persistence.
@@ -109,16 +105,16 @@ interface PersistenceManagerInterface
      * @param object $object The modified object
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    public function update($object);
+    public function update(object $object): void;
 
     /**
      * Return a query object for the given type.
      *
-     * @param string $type
-     * @return QueryInterface
+     * @internal only to be used within Extbase, not part of TYPO3 Core API
+     * .
      * @template T of object
-     * @phpstan-param class-string<T> $type
-     * @phpstan-return QueryInterface<T>
+     * @param class-string<T> $type
+     * @return QueryInterface<T>
      */
-    public function createQueryForType($type);
+    public function createQueryForType(string $type): QueryInterface;
 }

@@ -423,8 +423,10 @@ EOT;
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
 
         $mockPersistenceManager->method('getIdentifierByObject')->willReturnCallback(
-            static function (object $object): mixed {
-                return $object->getId();
+            static function (UserDomainClass $object): string {
+                // Note: In reality, getIdentifierByObject only returns strings (or null) as this what the used backend
+                // does. So the cast here makes the test more in line with the real-world types.
+                return (string)$object->getId();
             }
         );
         $container = $this->getContainer();

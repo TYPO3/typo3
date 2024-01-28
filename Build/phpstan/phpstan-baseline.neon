@@ -1271,11 +1271,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/BackendTest.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with object will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/PersistenceManagerTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryFactoryTest.php
