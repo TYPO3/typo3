@@ -92,7 +92,6 @@ class SingleFieldContainer extends AbstractContainer
         // Override fieldConf by fieldTSconfig:
         $parameterArray['fieldConf']['config'] = FormEngineUtility::overrideFieldConf($parameterArray['fieldConf']['config'], $parameterArray['fieldTSConfig']);
         $parameterArray['itemFormElName'] = 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
-        $parameterArray['itemFormElID'] = 'data_' . $table . '_' . $row['uid'] . '_' . $fieldName;
         $newElementBaseName = isset($this->data['elementBaseName']) ? $this->data['elementBaseName'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']' : '';
 
         // The value to show in the form field.

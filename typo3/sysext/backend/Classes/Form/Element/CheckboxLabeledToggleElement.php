@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Generation of TCEform elements of the type "check"
+ * Render elements of TCA type="check" with renderType="checkboxLabeledToggle".
  */
 class CheckboxLabeledToggleElement extends AbstractFormElement
 {
@@ -166,8 +166,7 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
             $additionalInformation['fieldChangeFunc'] ?? [],
             $invert
         );
-        $uniqueId = StringUtility::getUniqueId('_');
-        $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter . $uniqueId;
+        $checkboxId = htmlspecialchars(StringUtility::getUniqueId('formengine-check-labeled-') . '-' . $itemCounter);
         return '
             <div class="form-check form-check-type-labeled-toggle' . ($inline ? ' form-check-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"

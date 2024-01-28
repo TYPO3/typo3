@@ -94,6 +94,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         $groups = [];
         $currentGroup = 0;
         $counter = 0;
+        $elementId = StringUtility::getUniqueId('formengine-select-checkbox-');
         foreach ($selectItems as $item) {
             // Non-selectable element:
             if ($item['value'] === '--div--') {
@@ -131,7 +132,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                 // Build item array
                 $groups[$currentGroup]['items'][] = [
-                    'id' => StringUtility::getUniqueId('select_checkbox_row_'),
+                    'id' => $elementId . '-item-' . $counter,
                     'name' => $parameterArray['itemFormElName'] . '[' . $counter . ']',
                     'value' => $item['value'],
                     'checked' => $checked,
@@ -163,14 +164,16 @@ class SelectCheckBoxElement extends AbstractFormElement
 
         // Building the checkboxes
         foreach ($groups as $groupKey => $group) {
-            $groupId = htmlspecialchars($parameterArray['itemFormElID']) . '-group-' . $groupKey;
-            $groupIdCollapsible = $groupId . '-collapse';
+            $groupId = htmlspecialchars($elementId . '-group-' . $groupKey);
+            $groupCollapsibleId = $groupId . '-collapse';
+            $toggleAllCheckboxId = $groupId . '-toggle-all';
+
             $hasGroupHeader = is_array($group['header'] ?? false);
 
             $html[] = '<div id="' . $groupId . '" class="panel panel-default">';
             if ($hasGroupHeader) {
                 $html[] = '<div class="panel-heading">';
-                $html[] =    '<a data-bs-toggle="collapse" href="#' . $groupIdCollapsible . '" aria-expanded="false" aria-controls="' . $groupIdCollapsible . '">';
+                $html[] =    '<a data-bs-toggle="collapse" href="#' . $groupCollapsibleId . '" aria-expanded="false" aria-controls="' . $groupCollapsibleId . '">';
                 $html[] =        $group['header']['icon'];
                 $html[] =        htmlspecialchars($group['header']['title']);
                 $html[] =    '</a>';
@@ -220,22 +223,21 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                 if ($hasGroupHeader) {
                     $expandAll = ($config['appearance']['expandAll'] ?? false) ? 'show' : '';
-                    $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse ' . $expandAll . '" role="tabpanel">';
+                    $html[] = '<div id="' . $groupCollapsibleId . '" class="panel-collapse collapse ' . $expandAll . '" role="tabpanel">';
                 }
 
                 $html[] =    '<div class="table-fit">';
                 $html[] =        '<table class="table table-transparent table-hover">';
                 if (!$readOnly) {
-                    $checkboxId = StringUtility::getUniqueId($groupId);
                     $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall'));
 
                     // Add table header with actions, in case the element is not readOnly
                     $html[] =            '<thead>';
                     $html[] =                '<tr>';
                     $html[] =                    '<th class="col-checkbox">';
-                    $html[] =                       '<input type="checkbox" id="' . $checkboxId . '" class="t3js-toggle-checkboxes" title="' . $title . '" />';
+                    $html[] =                       '<input type="checkbox" id="' . $toggleAllCheckboxId . '" class="t3js-toggle-checkboxes" title="' . $title . '" />';
                     $html[] =                    '</th>';
-                    $html[] =                    '<th class="col-title"><label for="' . $checkboxId . '">' . $title . '</label></th>';
+                    $html[] =                    '<th class="col-title"><label for="' . $toggleAllCheckboxId . '">' . $title . '</label></th>';
                     $html[] =                    '<th class="text-end">';
                     $html[] =                       '<button type="button" class="btn btn-default btn-sm t3js-revert-selection">';
                     $html[] =                           $this->iconFactory->getIcon('actions-edit-undo', IconSize::SMALL)->render() . ' ';
@@ -249,7 +251,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     // is not readOnly, since otherwise no checkbox changes take place.
                     $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
                         '@typo3/backend/form-engine/element/select-check-box-element.js'
-                    )->instance($checkboxId);
+                    )->instance($toggleAllCheckboxId);
                 }
                 $html[] =            '<tbody>' . implode(LF, $tableRows) . '</tbody>';
                 $html[] =        '</table>';

@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Allows to define the localization state per field.
@@ -29,8 +30,6 @@ class LocalizationStateSelector extends AbstractNode
 {
     /**
      * Render the radio buttons if enabled
-     *
-     * @return array Result array
      */
     public function render(): array
     {
@@ -38,11 +37,10 @@ class LocalizationStateSelector extends AbstractNode
         $result = $this->initializeResultArray();
 
         $fieldName = $this->data['fieldName'];
-        $fieldId = $this->data['parameterArray']['itemFormElID'];
+        $fieldId = StringUtility::getUniqueId('formengine-localization-state-selector-');
         $l10nStateFieldName = 'l10n_state';
         if (
-            !$l10nStateFieldName
-            || !isset($this->data['defaultLanguageRow'])
+            !isset($this->data['defaultLanguageRow'])
             || !isset($this->data['processedTca']['columns'][$fieldName]['config']['behaviour']['allowLanguageSynchronization'])
             || !$this->data['processedTca']['columns'][$fieldName]['config']['behaviour']['allowLanguageSynchronization']
         ) {
@@ -89,7 +87,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] =   '</div>';
         $html[] =   '<div class="form-check">';
         $html[] =       '<input';
-        $html[] =           ' id="' . $fieldId . '_custom"';
+        $html[] =           ' id="' . $fieldId . '-custom"';
         $html[] =           ' type="radio"';
         $html[] =           ' name="' . htmlspecialchars($fieldElementName) . '"';
         $html[] =           ' class="form-check-input t3js-l10n-state-custom"';
@@ -98,7 +96,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] =           ' data-original-language-value=""';
         $html[] =       '>';
         $html[] =       '<label';
-        $html[] =           ' for="' . $fieldId . '_custom"';
+        $html[] =           ' for="' . $fieldId . '-custom"';
         $html[] =           ' class="form-check-label"';
         $html[] =       '>';
         $html[] =           $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.customValue');
@@ -106,7 +104,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] =   '</div>';
         $html[] =   '<div class="form-check">';
         $html[] =       '<input';
-        $html[] =           ' id="' . $fieldId . '_parent"';
+        $html[] =           ' id="' . $fieldId . '-parent"';
         $html[] =           ' type="radio"';
         $html[] =           ' name="' . htmlspecialchars($fieldElementName) . '"';
         $html[] =           ' class="form-check-input"';
@@ -115,7 +113,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] =           ' data-original-language-value="' . htmlspecialchars((string)$fieldValueInParentRow) . '"';
         $html[] =       '>';
         $html[] =       '<label';
-        $html[] =           ' for="' . $fieldId . '_parent"';
+        $html[] =           ' for="' . $fieldId . '-parent"';
         $html[] =           ' class="form-check-label"';
         $html[] =       '>';
         $html[] =           $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.defaultLanguageValue');
@@ -124,7 +122,7 @@ class LocalizationStateSelector extends AbstractNode
         if ($fieldValueInSourceRow !== null) {
             $html[] = '<div class="form-check">';
             $html[] =   '<input';
-            $html[] =       ' id="' . $fieldId . '_source"';
+            $html[] =       ' id="' . $fieldId . '-source"';
             $html[] =       ' type="radio"';
             $html[] =       ' name="' . htmlspecialchars($fieldElementName) . '"';
             $html[] =       ' class="form-check-input"';
@@ -133,7 +131,7 @@ class LocalizationStateSelector extends AbstractNode
             $html[] =       ' data-original-language-value="' . htmlspecialchars((string)$fieldValueInSourceRow) . '"';
             $html[] =   '>';
             $html[] =   '<label';
-            $html[] =       ' for="' . $fieldId . '_source"';
+            $html[] =       ' for="' . $fieldId . '-source"';
             $html[] =       ' class="form-check-label"';
             $html[] =   '>';
             $html[] =       sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.sourceLanguageValue'), htmlspecialchars($sourceLanguageTitle));

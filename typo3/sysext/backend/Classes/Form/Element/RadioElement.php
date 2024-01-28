@@ -16,9 +16,10 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Render elements of type radio
+ * Render elements of type="radio".
  */
 class RadioElement extends AbstractFormElement
 {
@@ -86,7 +87,7 @@ class RadioElement extends AbstractFormElement
         foreach ($this->data['parameterArray']['fieldConf']['config']['items'] as $itemNumber => $itemLabelAndValue) {
             $label = $itemLabelAndValue['label'];
             $value = $itemLabelAndValue['value'];
-            $radioId = htmlspecialchars($this->data['parameterArray']['itemFormElID'] . '_' . $itemNumber);
+            $radioId = htmlspecialchars(StringUtility::getUniqueId('formengine-radio-') . '-' . $itemNumber);
             $radioElementAttrs = array_merge(
                 [
                     'type' => 'radio',

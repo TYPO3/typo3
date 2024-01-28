@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Generation of TCEform elements of the type "check"
+ * Render elements of type="check".
  */
 class CheckboxElement extends AbstractFormElement
 {
@@ -172,8 +172,7 @@ class CheckboxElement extends AbstractFormElement
             $additionalInformation['fieldChangeFunc'] ?? [],
             $invert
         );
-        $uniqueId = StringUtility::getUniqueId('_');
-        $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter . $uniqueId;
+        $checkboxId = htmlspecialchars(StringUtility::getUniqueId('formengine-check-') . '-' . $itemCounter);
 
         $iconIdentifierChecked = !empty($config['items'][$itemCounter]['iconIdentifierChecked']) ? $config['items'][$itemCounter]['iconIdentifierChecked'] : 'actions-check';
         if (!$this->iconRegistry->isRegistered($iconIdentifierChecked)) {

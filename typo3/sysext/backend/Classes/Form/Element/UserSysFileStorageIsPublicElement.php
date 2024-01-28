@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Special type="user" element used in sys_file_storage is_public field
@@ -103,7 +104,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
             1,
             $parameterArray['fieldChangeFunc'] ?? []
         );
-        $checkboxId = $parameterArray['itemFormElID'] . '_1';
+        $checkboxId = htmlspecialchars(StringUtility::getUniqueId('formengine-fal-is-public-'));
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] = $fieldInformationHtml;
@@ -113,16 +114,16 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         $html[] =               '<input type="checkbox"';
         $html[] =                   ' class="form-check-input"';
         $html[] =                   ' value="1"';
-        $html[] =                   ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName'], ENT_QUOTES) . '"';
-        $html[] =                   ' id="' . htmlspecialchars($checkboxId, ENT_QUOTES) . '"';
+        $html[] =                   ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
+        $html[] =                   ' id="' . $checkboxId . '"';
         $html[] =                   $checkboxParameters;
         $html[] =                   $isPublic ? ' checked="checked"' : '';
         $html[] =               '/>';
-        $html[] =               '<label class="form-check-label" for="' . htmlspecialchars($checkboxId, ENT_QUOTES) . '">';
+        $html[] =               '<label class="form-check-label" for="' . $checkboxId . '">';
         $html[] =                   $this->appendValueToLabelInDebugMode('', $isPublicAsString);
         $html[] =               '</label>';
         $html[] =               '<input type="hidden"';
-        $html[] =                   ' name="' . htmlspecialchars($parameterArray['itemFormElName'], ENT_QUOTES) . '"';
+        $html[] =                   ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] =                   ' value="' . $isPublicAsString . '"';
         $html[] =               ' />';
         $html[] =           '</div>';
