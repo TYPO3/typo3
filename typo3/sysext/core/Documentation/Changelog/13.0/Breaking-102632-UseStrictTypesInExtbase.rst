@@ -9,6 +9,7 @@ Breaking: #102632 - Use strict types in extbase
 See :issue:`102632`
 See :issue:`102879`
 See :issue:`102885`
+See :issue:`102969`
 
 Description
 ===========
@@ -29,8 +30,8 @@ In summary, the following classes have received strict types:
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Annotation\Required\Validate`
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder`
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\Category`
-- :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\File`
 - :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\FileReference`
+- :php:`TYPO3\CMS\Extbase\TYPO3\CMS\Extbase\Domain\Model\File`
 
 
 Impact
