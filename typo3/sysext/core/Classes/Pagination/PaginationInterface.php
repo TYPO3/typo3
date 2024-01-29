@@ -54,7 +54,7 @@ interface PaginationInterface
     public function getLastPageNumber(): int;
 
     /**
-     * Must return the human readable index of the first paginated item
+     * Must return the human-readable index of the first paginated item
      *
      * Example: given a set of 10 total items, 5 items per page and the current page being 2,
      * the start record number is 6:
@@ -65,7 +65,7 @@ interface PaginationInterface
     public function getStartRecordNumber(): int;
 
     /**
-     * Must return the human readable index of the last paginated item
+     * Must return the human-readable index of the last paginated item
      *
      * Example: given a set of 10 total items, 5 items per page and the current page being 2,
      * the end record number is 10.
@@ -74,4 +74,11 @@ interface PaginationInterface
      * Page 2: Records 6-10
      */
     public function getEndRecordNumber(): int;
+
+    /**
+     * Must return a list of all page numbers.
+     *
+     * @return int[]
+     */
+    public function getAllPageNumbers(): array;
 }
