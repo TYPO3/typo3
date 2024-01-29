@@ -156,15 +156,11 @@ class DriverResult implements ResultInterface
     protected function mapResourceToString($record)
     {
         if (is_array($record)) {
-            return array_map(
-                static function ($value) {
-                    if (is_resource($value)) {
-                        $value = stream_get_contents($value);
-                    }
-                    return $value;
-                },
-                $record
-            );
+            foreach ($record as $k => $value) {
+                if (is_resource($value)) {
+                    $record[$k] = stream_get_contents($value);
+                }
+            }
         }
 
         return $record;
