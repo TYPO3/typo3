@@ -32,6 +32,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['install'];
+
     protected bool $initializeDatabase = false;
 
     protected array $localConfigurationBackup;

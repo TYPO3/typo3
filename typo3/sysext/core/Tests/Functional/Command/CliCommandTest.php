@@ -19,6 +19,10 @@ namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 
+/**
+ * @todo: This test mixes commands from various extensions (like EM and install),
+ *        and should be split test the command in the according extension only.
+ */
 final class CliCommandTest extends AbstractCommandTestCase
 {
     use SiteBasedTestTrait;
@@ -34,6 +38,7 @@ final class CliCommandTest extends AbstractCommandTestCase
         'scheduler',
         'workspaces',
         'styleguide',
+        'install',
     ];
 
     public function setUp(): void

@@ -34,7 +34,7 @@ final class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
-    protected array $coreExtensionsToLoad = ['redirects'];
+    protected array $coreExtensionsToLoad = ['install', 'redirects'];
 
     protected DatabaseRowsUpdateWizard&MockObject&AccessibleObjectInterface $subject;
 
