@@ -1,15 +1,14 @@
 .. include:: /Includes.rst.txt
 
-.. _feature-12345-3:
+.. _deprecation-12345-4:
 
-========================
-Feature: 12345 - Test 3
-========================
+============================
+Deprecation: #12345 - Test 4
+============================
 
-See :issue:`76349`
+See :issue:`12345`
 
 Description
 ===========
 
 This file should fail, because the index line at the bottom is missing.
-
