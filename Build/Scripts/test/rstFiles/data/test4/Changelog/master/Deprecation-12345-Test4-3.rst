@@ -4,7 +4,7 @@
 Deprecation: #12345 - Test 4
 ============================
 
-See :issue:`83740`
+See :issue:`12345`
 
 Description
 ===========
