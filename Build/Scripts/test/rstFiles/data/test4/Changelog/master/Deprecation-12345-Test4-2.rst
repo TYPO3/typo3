@@ -6,11 +6,11 @@
 Deprecation: #12345 - Test 4
 ============================
 
-See :issue:`83740`
+See :issue:`12345`
 
 Description
 ===========
 
-This file should fail, because one of the Scanned-Tags is missing
+This file should fail, because the Scanned-Tag is invalid
 
-.. index:: Backend, Database, PHP-API
+.. index:: PHP-API, HalfScanned
