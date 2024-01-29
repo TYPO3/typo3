@@ -188,6 +188,13 @@ class NewContentElementController
             }
         }
 
+        // Unset empty categories
+        foreach ($categories as $key => $category) {
+            if ($category['items'] === []) {
+                unset($categories[$key]);
+            }
+        }
+
         $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'positionSelection' => $positionSelection,
@@ -429,7 +436,6 @@ class NewContentElementController
         $keepItems = [];
         // Get TCEFORM from TSconfig of current page
         $TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', ['pid' => $this->id]);
-        $headersUsed = [];
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {
             if (!is_array($cfg['defaultValues'] ?? false)) {
@@ -469,15 +475,6 @@ class NewContentElementController
                 }
                 // Add the parameter:
                 $wizardItems[$key]['defaultValues'][$fieldName] = $this->getLanguageService()->sL($value);
-                $tmp = explode('_', $key);
-                $headersUsed[$tmp[0]] = $tmp[0];
-            }
-        }
-        // remove headers without elements
-        foreach ($wizardItems as $key => $cfg) {
-            $tmp = explode('_', $key);
-            if (($tmp[0] ?? null) && !($tmp[1] ?? null) && !in_array($tmp[0], $headersUsed, true)) {
-                unset($wizardItems[$key]);
             }
         }
         return $wizardItems;

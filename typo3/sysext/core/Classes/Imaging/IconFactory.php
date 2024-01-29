@@ -291,7 +291,7 @@ class IconFactory
     protected function getIconForPlugin(string $pluginName): ?string
     {
         $result = null;
-        $items = $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'];
+        $items = $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] ?? [];
         foreach ($items as $item) {
             if ($item['value'] === $pluginName) {
                 $result = $item['icon'];
