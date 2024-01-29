@@ -62,8 +62,9 @@ class WebServerConfigurationFileService
             return false;
         }
 
+        $count = 0;
         $configurationFileContent = preg_replace(
-            sprintf('/%s/', implode('\s*', array_map(
+            pattern: sprintf('/%s/', implode('\s*', array_map(
                 static fn($s) => preg_quote($s, '/'),
                 [
                     'RewriteCond %{REQUEST_FILENAME} !-d',
@@ -71,8 +72,9 @@ class WebServerConfigurationFileService
                     'RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]',
                 ]
             ))),
-            'RewriteRule ^typo3/(.*)$ %{ENV:CWD}index.php [QSA,L]',
-            $configurationFileContent,
+            replacement: 'RewriteRule ^typo3/(.*)$ %{ENV:CWD}index.php [QSA,L]',
+            subject: $configurationFileContent,
+            count: $count
         );
 
         $configurationFileContent = str_replace(
@@ -87,9 +89,12 @@ class WebServerConfigurationFileService
                 '# If the file does not exist but is below /typo3/, rewrite to the main TYPO3 entry point.',
             ],
             $configurationFileContent,
+            $count
         );
 
-        return (bool)file_put_contents($configurationFilename, $configurationFileContent);
+        // Return FALSE in case no replacement has been done. This might be the
+        // case if already modified versions of the configuration are in place.
+        return $count > 0 && file_put_contents($configurationFilename, $configurationFileContent);
     }
 
     protected function addMicrosoftIisBackendRoutingRewriteRules(): bool
@@ -101,20 +106,23 @@ class WebServerConfigurationFileService
             return false;
         }
 
-        return (bool)file_put_contents(
-            $configurationFilename,
-            str_replace(
-                [
-                    '<rule name="TYPO3 - If the file/directory does not exist but is below /typo3/, redirect to the TYPO3 Backend entry point." stopProcessing="true">',
-                    '<action type="Rewrite" url="typo3/index.php" appendQueryString="true" />',
-                ],
-                [
-                    '<rule name="TYPO3 - If the file/directory does not exist but is below /typo3/, redirect to the main TYPO3 entry point." stopProcessing="true">',
-                    '<action type="Rewrite" url="index.php" appendQueryString="true" />',
-                ],
-                $configurationFileContent
-            )
+        $count = 0;
+        $configurationFileContent = str_replace(
+            [
+                '<rule name="TYPO3 - If the file/directory does not exist but is below /typo3/, redirect to the TYPO3 Backend entry point." stopProcessing="true">',
+                '<action type="Rewrite" url="typo3/index.php" appendQueryString="true" />',
+            ],
+            [
+                '<rule name="TYPO3 - If the file/directory does not exist but is below /typo3/, redirect to the main TYPO3 entry point." stopProcessing="true">',
+                '<action type="Rewrite" url="index.php" appendQueryString="true" />',
+            ],
+            $configurationFileContent,
+            $count
         );
+
+        // Return FALSE in case no replacement has been done. This might be the
+        // case if already modified versions of the configuration are in place.
+        return $count > 0 && file_put_contents($configurationFilename, $configurationFileContent);
     }
 
     /**
