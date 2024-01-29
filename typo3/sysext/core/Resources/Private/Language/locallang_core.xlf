@@ -280,9 +280,6 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.show" resname="labels.show">
 				<source>Show</source>
 			</trans-unit>
-			<trans-unit id="labels.generalTab" resname="labels.generalTab">
-				<source>General</source>
-			</trans-unit>
 			<trans-unit id="labels.refresh" resname="labels.refresh">
 				<source>Reload the tree from server</source>
 			</trans-unit>
