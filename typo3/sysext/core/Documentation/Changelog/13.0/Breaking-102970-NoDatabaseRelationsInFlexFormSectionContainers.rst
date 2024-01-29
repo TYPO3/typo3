@@ -59,6 +59,128 @@ container sections already, and since container sections are a relatively rarely
 used feature in the first place, we don't expect too many extensions to be
 affected by this.
 
+You can easily spot custom usage of flex form sections by searching for a :xml:`<section>`
+tag within your flex form :file:`.xml` files, or within a :php:`TCA` definition
+with :php:`type="flex"`. These will be the instances you need to migrate,
+when those sections contain :php:`type="select"` fields (or others mentioned above).
+
+Affected flex form xml:
+-----------------------
+
+..  code-block:: xml
+    :caption: EXT:my_extension/Configuration/FlexForms/Example.xml
+
+    <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+    <T3DataStructure>
+        <sheets>
+            <sSection>
+                <ROOT>
+                    <sheetTitle>section</sheetTitle>
+                    <type>array</type>
+                    <el>
+                        <section_1>
+                            <title>section_1</title>
+                            <type>array</type>
+                            <!-- this is what to look out for: -->
+                            <section>1</section>
+                            <el>
+                                <container_1>
+                                    <type>array</type>
+                                    <title>container_1</title>
+                                    <el>
+                                        <select_tree_1>
+                                            <label>select_tree_1 pages description</label>
+                                            <description>field description</description>
+                                            <config>
+                                                <type>select</type>
+                                                <renderType>selectTree</renderType>
+                                                <foreign_table>pages</foreign_table>
+                                                <foreign_table_where>ORDER BY pages.sorting</foreign_table_where>
+                                                <size>20</size>
+                                                <treeConfig>
+                                                    <parentField>pid</parentField>
+                                                    <appearance>
+                                                        <expandAll>true</expandAll>
+                                                        <showHeader>true</showHeader>
+                                                    </appearance>
+                                                </treeConfig>
+                                            </config>
+                                        </select_tree_1>
+                                    </el>
+                                </container_1>
+                            </el>
+                        </section_1>
+                    </el>
+                </ROOT>
+            </sSection>
+        </sheets>
+    </T3DataStructure>
+
+
+Affected flex form TCA:
+-----------------------
+
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/TCA/tx_myextension_flex.php
+
+    [
+        'columns' => [
+            'flex_2' => [
+                'label' => 'flex section container',
+                'config' => [
+                    'type' => 'flex',
+                    'ds' => [
+                        'default' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <sSection>
+                                        <ROOT>
+                                            <sheetTitle>section</sheetTitle>
+                                            <type>array</type>
+                                            <el>
+                                                <section_1>
+                                                    <title>section_1</title>
+                                                    <type>array</type>
+                                                    <!-- this is what to look out for: -->
+                                                    <section>1</section>
+                                                    <el>
+                                                        <container_1>
+                                                            <type>array</type>
+                                                            <title>container_1</title>
+                                                            <el>
+                                                                <select_tree_1>
+                                                                    <label>select_tree_1 pages description</label>
+                                                                    <description>field description</description>
+                                                                    <config>
+                                                                        <type>select</type>
+                                                                        <renderType>selectTree</renderType>
+                                                                        <foreign_table>pages</foreign_table>
+                                                                        <foreign_table_where>ORDER BY pages.sorting</foreign_table_where>
+                                                                        <size>20</size>
+                                                                        <treeConfig>
+                                                                            <parentField>pid</parentField>
+                                                                            <appearance>
+                                                                                <expandAll>true</expandAll>
+                                                                                <showHeader>true</showHeader>
+                                                                            </appearance>
+                                                                        </treeConfig>
+                                                                    </config>
+                                                                </select_tree_1>
+                                                            </el>
+                                                        </container_1>
+                                                    </el>
+                                                </section_1>
+                                            </el>
+                                        </ROOT>
+                                    </sSection>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ],
+    ]
 
 Migration
 =========
