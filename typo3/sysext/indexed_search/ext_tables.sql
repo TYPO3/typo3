@@ -3,8 +3,8 @@
 # Table structure for table 'index_phash'
 #
 CREATE TABLE index_phash (
-  phash int(11) DEFAULT '0' NOT NULL,
-  phash_grouping int(11) DEFAULT '0' NOT NULL,
+  phash varchar(32) NOT NULL,
+  phash_grouping varchar(32) NOT NULL,
   static_page_arguments blob,
   data_filename varchar(1024) DEFAULT '' NOT NULL,
   data_page_id int(11) unsigned DEFAULT '0' NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE index_phash (
   item_mtime int(11) DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   item_size int(11) DEFAULT '0' NOT NULL,
-  contentHash int(11) DEFAULT '0' NOT NULL,
+  contentHash varchar(32) NOT NULL,
   crdate int(11) DEFAULT '0' NOT NULL,
   parsetime int(11) DEFAULT '0' NOT NULL,
   sys_language_uid int(11) DEFAULT '0' NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE index_phash (
 # Table structure for table 'index_fulltext'
 #
 CREATE TABLE index_fulltext (
-  phash int(11) DEFAULT '0' NOT NULL,
+  phash varchar(32) NOT NULL,
   fulltextdata mediumtext,
   PRIMARY KEY (phash)
 ) ENGINE=InnoDB;
@@ -44,8 +44,8 @@ CREATE TABLE index_fulltext (
 # Table structure for table 'index_rel'
 #
 CREATE TABLE index_rel (
-  phash int(11) DEFAULT '0' NOT NULL,
-  wid int(11) DEFAULT '0' NOT NULL,
+  phash varchar(32) NOT NULL,
+  wid varchar(32) NOT NULL,
   count tinyint(3) unsigned DEFAULT '0' NOT NULL,
   first int(11) unsigned DEFAULT '0' NOT NULL,
   freq smallint(5) unsigned DEFAULT '0' NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE index_rel (
 # Table structure for table 'index_words'
 #
 CREATE TABLE index_words (
-  wid int(11) DEFAULT '0' NOT NULL,
+  wid varchar(32) NOT NULL,
   baseword varchar(60) DEFAULT '' NOT NULL,
   is_stopword tinyint(3) DEFAULT '0' NOT NULL,
   PRIMARY KEY (wid),
@@ -69,13 +69,13 @@ CREATE TABLE index_words (
 # Table structure for table 'index_section'
 #
 CREATE TABLE index_section (
-  phash int(11) DEFAULT '0' NOT NULL,
-  phash_t3 int(11) DEFAULT '0' NOT NULL,
+  uniqid int(11) NOT NULL auto_increment,
+  phash varchar(32) NOT NULL,
+  phash_t3 varchar(32) NOT NULL,
   rl0 int(11) unsigned DEFAULT '0' NOT NULL,
   rl1 int(11) unsigned DEFAULT '0' NOT NULL,
   rl2 int(11) unsigned DEFAULT '0' NOT NULL,
   page_id int(11) DEFAULT '0' NOT NULL,
-  uniqid int(11) NOT NULL auto_increment,
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,rl0),
   KEY page_id (page_id),
@@ -87,11 +87,11 @@ CREATE TABLE index_section (
 # Table structure for table 'index_grlist'
 #
 CREATE TABLE index_grlist (
-  phash int(11) DEFAULT '0' NOT NULL,
-  phash_x int(11) DEFAULT '0' NOT NULL,
-  hash_gr_list int(11) DEFAULT '0' NOT NULL,
-  gr_list varchar(255) DEFAULT '' NOT NULL,
   uniqid int(11) NOT NULL auto_increment,
+  phash varchar(32) NOT NULL,
+  phash_x varchar(32) NOT NULL,
+  hash_gr_list varchar(32) NOT NULL,
+  gr_list varchar(255) DEFAULT '' NOT NULL,
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,hash_gr_list),
   KEY phash_grouping (phash_x,hash_gr_list)
@@ -101,7 +101,7 @@ CREATE TABLE index_grlist (
 # Table structure for table 'index_debug'
 #
 CREATE TABLE index_debug (
-  phash int(11) DEFAULT '0' NOT NULL,
+  phash varchar(32) NOT NULL,
   debuginfo mediumtext,
   PRIMARY KEY (phash)
 );

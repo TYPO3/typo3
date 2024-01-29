@@ -33,7 +33,6 @@ use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\CMS\IndexedSearch\Type\MediaType;
 use TYPO3\CMS\IndexedSearch\Type\SearchType;
 use TYPO3\CMS\IndexedSearch\Type\SectionType;
-use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 
 /**
@@ -289,7 +288,7 @@ class IndexSearchRepository
             );
     }
 
-    public function getFullTextRowByPhash(int $phash): ?array
+    public function getFullTextRowByPhash(string $phash): ?array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
         return $queryBuilder
@@ -298,7 +297,7 @@ class IndexSearchRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($phash)
                 )
             )
             ->setMaxResults(1)
@@ -674,7 +673,7 @@ class IndexSearchRepository
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('index_words')
             ->expr();
-        $wSel = $expressionBuilder->eq('IW.wid', IndexedSearchUtility::md5inthash($sWord));
+        $wSel = $expressionBuilder->eq('IW.wid', $expressionBuilder->literal(md5($sWord)));
         $this->wSelClauses[] = $wSel;
         return $this->execPHashListQuery($wSel, $expressionBuilder->eq('is_stopword', 0));
     }
@@ -902,8 +901,8 @@ class IndexSearchRepository
             ->where(
                 $queryBuilder->expr()->in(
                     'IP.phash',
-                    $queryBuilder->quoteArrayBasedValueListToIntegerList(
-                        GeneralUtility::intExplode(',', $list, true)
+                    $queryBuilder->quoteArrayBasedValueListToStringList(
+                        GeneralUtility::trimExplode(',', $list, true)
                     )
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($this->mediaTypeWhere()),
@@ -1045,7 +1044,7 @@ class IndexSearchRepository
     {
         // If the record is indexed by an indexing configuration, just show it.
         // At least this is needed for external URLs and files.
-        // For records we might need to extend this - for instance block display if record is access restricted.
+        // For records, we might need to extend this - for instance block display if record is access restricted.
         if ($row['freeIndexUid']) {
             return true;
         }
@@ -1063,7 +1062,7 @@ class IndexSearchRepository
                 'phash',
                 'index_grlist',
                 [
-                    'phash' => (int)$row['phash_t3'],
+                    'phash' => $row['phash_t3'],
                     'gr_list' => $this->frontendUserGroupList,
                 ]
             );
@@ -1077,7 +1076,7 @@ class IndexSearchRepository
                 'phash',
                 'index_grlist',
                 [
-                    'phash' => (int)$row['phash'],
+                    'phash' => $row['phash'],
                     'gr_list' => $this->frontendUserGroupList,
                 ]
             );

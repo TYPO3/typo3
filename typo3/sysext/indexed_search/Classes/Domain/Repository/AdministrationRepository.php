@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
 
-use Doctrine\DBAL\ArrayParameterType;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -48,7 +47,7 @@ class AdministrationRepository
     /**
      * Get group list information
      */
-    public function getGrlistRecord(int $phash): array
+    public function getGrlistRecord(string $phash): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_grlist');
         $result = $queryBuilder
@@ -57,7 +56,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($phash)
                 )
             )
             ->executeQuery();
@@ -73,7 +72,7 @@ class AdministrationRepository
         return $allRows;
     }
 
-    public function getNumberOfFulltextRecords(int $phash): int|false
+    public function getNumberOfFulltextRecords(string $phash): int|false
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
         return $queryBuilder
@@ -82,14 +81,14 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($phash)
                 )
             )
             ->executeQuery()
             ->fetchOne();
     }
 
-    public function getNumberOfWords(int $phash): int|false
+    public function getNumberOfWords(string $phash): int|false
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_rel');
         return $queryBuilder
@@ -98,7 +97,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($phash)
                 )
             )
             ->executeQuery()
@@ -158,11 +157,11 @@ class AdministrationRepository
                     ->where(
                         $queryBuilder->expr()->eq(
                             'phash_grouping',
-                            $queryBuilder->createNamedParameter($row['phash_grouping'], Connection::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash_grouping'])
                         ),
                         $queryBuilder->expr()->neq(
                             'phash',
-                            $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash'])
                         )
                     )
                     ->executeQuery();
@@ -262,7 +261,7 @@ class AdministrationRepository
     /**
      * Get number of section records
      */
-    public function getNumberOfSections(int $pageHash): int
+    public function getNumberOfSections(string $pageHash): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_section');
         return (int)$queryBuilder
@@ -271,7 +270,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash)
                 )
             )
             ->executeQuery()
@@ -329,11 +328,11 @@ class AdministrationRepository
                     ->where(
                         $queryBuilder->expr()->eq(
                             'phash_grouping',
-                            $queryBuilder->createNamedParameter($row['phash_grouping'], Connection::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash_grouping'])
                         ),
                         $queryBuilder->expr()->neq(
                             'phash',
-                            $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash'])
                         )
                     )
                     ->executeQuery();
@@ -373,7 +372,7 @@ class AdministrationRepository
             ->addSelectLiteral($queryBuilder->expr()->count('*', 'c'))
             ->groupBy('word')
             ->orderBy('c', 'desc')
-            ->setMaxResults((int)$max);
+            ->setMaxResults($max);
 
         $count = (int)$countQueryBuilder
             ->count('uid')
@@ -386,10 +385,7 @@ class AdministrationRepository
             $queryBuilder->where(
                 $queryBuilder->expr()->in(
                     'pageid',
-                    $queryBuilder->createNamedParameter(
-                        $this->extGetTreeList((int)$pageUid),
-                        ArrayParameterType::INTEGER
-                    )
+                    $queryBuilder->quoteArrayBasedValueListToIntegerList($this->extGetTreeList($pageUid))
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhere)
             );
@@ -455,7 +451,7 @@ class AdministrationRepository
                     ->where(
                         $queryBuilder->expr()->eq(
                             'index_rel.phash',
-                            $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
+                            $queryBuilder->createNamedParameter($row['phash'])
                         ),
                         $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
                     )
@@ -481,7 +477,7 @@ class AdministrationRepository
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'phash',
-                                $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
+                                $queryBuilder->createNamedParameter($row['phash'])
                             )
                         )
                         ->setMaxResults(1)
@@ -496,7 +492,7 @@ class AdministrationRepository
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'index_rel.phash',
-                                $queryBuilder->createNamedParameter($row['phash'], Connection::PARAM_INT)
+                                $queryBuilder->createNamedParameter($row['phash'])
                             ),
                             $queryBuilder->expr()->eq(
                                 'index_words.wid',
@@ -685,8 +681,7 @@ class AdministrationRepository
         }
 
         foreach ($phashRows as $phash) {
-            $phash = (int)$phash;
-            if ($phash > 0) {
+            if ($phash !== '') {
                 $idList = [];
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('index_section');
@@ -696,7 +691,7 @@ class AdministrationRepository
                     ->where(
                         $queryBuilder->expr()->eq(
                             'phash',
-                            $queryBuilder->createNamedParameter($phash, Connection::PARAM_INT)
+                            $queryBuilder->createNamedParameter($phash)
                         )
                     )
                     ->executeQuery();
@@ -723,7 +718,7 @@ class AdministrationRepository
                 foreach ($tableArr as $table) {
                     GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getConnectionForTable($table)
-                        ->delete($table, ['phash' => (int)$phash]);
+                        ->delete($table, ['phash' => $phash]);
                 }
             }
         }
@@ -742,7 +737,7 @@ class AdministrationRepository
                 ->where(
                     $queryBuilder->expr()->eq(
                         'wid',
-                        $queryBuilder->createNamedParameter($wid, Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter($wid)
                     )
                 )
                 ->executeStatement();
@@ -785,7 +780,7 @@ class AdministrationRepository
             $icon = '';
             if ($itemType === '0') {
                 $icon = 'EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif';
-            } elseif ($this->external_parsers[$itemType]) {
+            } elseif ($this->external_parsers[$itemType] ?? false) {
                 $icon = $this->external_parsers[$itemType]->getIcon($itemType);
             }
             $this->iconFileNameCache[$itemType] = $icon;

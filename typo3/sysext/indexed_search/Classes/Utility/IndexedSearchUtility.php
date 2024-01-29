@@ -28,18 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class IndexedSearchUtility
 {
     /**
-     * md5 integer hash
-     * Using 7 instead of 8 just because that makes the integers lower than 32 bit (28 bit) and so they do not interfere with UNSIGNED integers or PHP-versions which has varying output from the hexdec function.
-     *
-     * @param string $stringToHash String to hash
-     * @return int Integer interpretation of the md5 hash of input string.
-     */
-    public static function md5inthash(string $stringToHash): int
-    {
-        return (int)hexdec(substr(md5($stringToHash), 0, 7));
-    }
-
-    /**
      * Takes a search-string (WITHOUT SLASHES or else it'll be a little spooky , NOW REMEMBER to unslash!!)
      * Sets up search words with operators.
      *

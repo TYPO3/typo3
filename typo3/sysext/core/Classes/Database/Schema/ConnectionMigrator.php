@@ -774,6 +774,15 @@ class ConnectionMigrator
                     // migration without loosing sequence table data.
                     // @see https://github.com/doctrine/dbal/blob/4.0.x/docs/en/how-to/postgresql-identity-migration.rst
                     $postgreSQLMigrationStatements = $this->getPostgreSQLMigrationStatements($this->connection, $changedTable, $changedColumn);
+                    $indexedSearchPrerequisiteStatements = $this->getIndexedSearchTruncateTablePrerequisiteStatements($this->connection, $changedTable, $changedColumn);
+                    if ($indexedSearchPrerequisiteStatements !== []) {
+                        foreach ($indexedSearchPrerequisiteStatements as $statement => $reason) {
+                            $updateSuggestions['change'][md5($statement)] = $statement;
+                            if ($reason !== '') {
+                                $updateSuggestions['change_currentValue'][md5($statement)] = $reason;
+                            }
+                        }
+                    }
                     $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
                         // Combine SERIAL to IDENTITY COLUMN date migration statements to the statement
@@ -2055,5 +2064,43 @@ class ConnectionMigrator
             return (int)$row['attnum'];
         }
         return null;
+    }
+
+    /**
+     * @todo DataMigration - handle this in another way after refactoring the connection migration stuff.
+     *
+     * @param Typo3Connection $connection
+     * @param TableDiff $changedTable
+     * @param ColumnDiff $modifiedColumn
+     * @return array<non-empty-string, string>
+     */
+    private function getIndexedSearchTruncateTablePrerequisiteStatements(Typo3Connection $connection, TableDiff $changedTable, ColumnDiff $modifiedColumn): array
+    {
+        /** @var array<string, string[]> $tableFields */
+        $tableFields = [
+            'index_phash' => ['phash', 'phash_grouping', 'contentHash'],
+            'index_fulltext' => ['phash'],
+            'index_rel' => ['phash', 'wid'],
+            'index_words' => ['wid'],
+            'index_section' => ['phash', 'phash_t3'],
+            'index_grlist' => ['phash', 'phash_x', 'hash_gr_list'],
+            'index_debug' => ['phash'],
+        ];
+        $tableName = $this->trimIdentifierQuotes($changedTable->getOldTable()->getName());
+        $oldType = $modifiedColumn->getOldColumn()->getType();
+        $newType = $modifiedColumn->getNewColumn()->getType();
+        if (($tableFields[$tableName] ?? []) === []
+            || !($oldType instanceof IntegerType)
+            || !($newType instanceof StringType)
+        ) {
+            return [];
+        }
+        $databasePlatform = $connection->getDatabasePlatform();
+        if (in_array($this->trimIdentifierQuotes($modifiedColumn->getOldColumn()->getName()), $tableFields[$tableName], true)) {
+            return [
+                $databasePlatform->getTruncateTableSQL($changedTable->getOldTable()->getQuotedName($databasePlatform)) => 'Truncate table needed due to type change',
+            ];
+        }
+        return [];
     }
 }
