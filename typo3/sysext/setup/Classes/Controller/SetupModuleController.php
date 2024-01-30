@@ -557,7 +557,7 @@ class SetupModuleController
                     $html .= '<button type="button" id="add_button_' . htmlspecialchars($fieldName)
                         . '" class="btn btn-default"'
                         . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser')) . '"'
-                        . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '|||allowed=' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? '') . ';disallowed=|-0-be_users-avatar-avatar'])) . '"'
+                        . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '|||allowed=' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? '') . '~disallowed=|-0-be_users-avatar-avatar'])) . '"'
                         . '>' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
                         . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser'))
                         . '</button>';
