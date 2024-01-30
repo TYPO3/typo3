@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Information;
 
 class Typo3Version
 {
-    protected const VERSION = '13.0.0-dev';
+    protected const VERSION = '13.0.0';
     protected const BRANCH = '13.0';
 
     public function getVersion(): string
