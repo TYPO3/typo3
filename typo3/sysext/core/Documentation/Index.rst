@@ -57,4 +57,3 @@ documented here.
    :hidden:
 
    Sitemap
-   genindex
