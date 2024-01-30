@@ -2452,8 +2452,7 @@ class GeneralUtility
 
         // Absolute path, but set to blank if not inside allowed directories.
         if (PathUtility::isAbsolutePath($fileName)) {
-            if (str_starts_with($fileName, Environment::getProjectPath()) ||
-                str_starts_with($fileName, Environment::getPublicPath())) {
+            if (static::isAllowedAbsPath($fileName)) {
                 return $checkForBackPath($fileName);
             }
             return '';
