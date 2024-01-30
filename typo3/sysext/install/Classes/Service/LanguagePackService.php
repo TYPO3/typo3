@@ -93,11 +93,12 @@ class LanguagePackService
 
     /**
      * List of languages active in this instance
+     * @return list<non-empty-string>
      */
     public function getActiveLanguages(): array
     {
         $availableLanguages = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [];
-        return array_filter($availableLanguages);
+        return array_values(array_filter($availableLanguages));
     }
 
     /**
