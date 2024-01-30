@@ -304,7 +304,7 @@ final class Generator extends AbstractGenerator
                 // See if string after $prefix is only one _ separated segment
                 $suffix = substr($tablename, strlen($prefix));
                 $suffixArray = explode('_', $suffix);
-                if (count($suffixArray) !==  1) {
+                if (count($suffixArray) !== 1) {
                     continue;
                 }
 

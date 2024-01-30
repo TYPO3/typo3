@@ -263,6 +263,10 @@ CREATE TABLE tx_styleguide_inline_usecombination_child (
     input_1 varchar(255) DEFAULT '' NOT NULL
 );
 
+CREATE TABLE tx_styleguide_inline_usecombinationgroup_child (
+    input_1 varchar(255) DEFAULT '' NOT NULL
+);
+
 CREATE TABLE tx_styleguide_inline_usecombinationbox_child (
     input_1 varchar(255) DEFAULT '' NOT NULL
 );

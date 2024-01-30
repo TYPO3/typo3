@@ -122,9 +122,11 @@ final class FieldGeneratorResolver
         FieldGenerator\TypeSelectStaticData::class,
         FieldGenerator\TypeSelect::class,
 
+        // type=inline
         FieldGenerator\TypeInlineFalSelectSingle12Foreign::class,
         FieldGenerator\TypeInlineExpandsingle::class,
         FieldGenerator\TypeInlineUsecombination::class,
+        FieldGenerator\TypeInlineUsecombinationGroup::class,
 
         // type=file
         FieldGenerator\TypeFile::class,
