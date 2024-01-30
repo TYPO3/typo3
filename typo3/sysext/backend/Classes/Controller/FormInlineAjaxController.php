@@ -120,7 +120,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 $formDataCompilerInput = [
                     'request' => $request,
                     'command' => 'new',
-                    'tableName' => $childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'],
+                    'tableName' => $this->getChildChildTableName($parentConfig['foreign_selector'], $childData),
                     'vanillaUid' => $inlineFirstPid,
                     'isInlineChild' => true,
                     'isInlineAjaxOpeningContext' => true,
@@ -492,13 +492,11 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     {
         // foreign_selector on intermediate is probably type=select, so data provider of this table resolved that to the uid already
         $childChildUid = $child['databaseRow'][$parentConfig['foreign_selector']][0];
-        // child-child table name is set in child tca "the selector field" foreign_table
-        $childChildTableName = $child['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'];
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $request,
             'command' => 'edit',
-            'tableName' => $childChildTableName,
+            'tableName' => $this->getChildChildTableName($parentConfig['foreign_selector'] ?? '', $child),
             'vanillaUid' => (int)$childChildUid,
             'isInlineChild' => true,
             'isInlineAjaxOpeningContext' => true,
@@ -660,6 +658,22 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             throw new \RuntimeException('Hash does not validate', 1489751363);
         }
         return json_decode($context['config'], true);
+    }
+
+    /**
+     * The child-child table name is set in the child TCA "the selector field" and is depending on
+     * the TCA type (select or group) either the "foreign_table" or the (first) "allowed" table.
+     */
+    protected function getChildChildTableName(string $foreignSelector, array $childConfiguration): string
+    {
+        $config = $childConfiguration['processedTca']['columns'][$foreignSelector]['config'] ?? [];
+        $type = $config['type'] ?? '';
+
+        return match ($type) {
+            'select' => $config['foreign_table'] ?? '',
+            'group' => GeneralUtility::trimExplode(',', $config['allowed'] ?? '', true)[0] ?? '',
+            default => '',
+        };
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication
