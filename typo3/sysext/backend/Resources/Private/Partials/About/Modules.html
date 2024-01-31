@@ -8,11 +8,15 @@
         </f:if>
         <section class="card-container">
             <f:for each="{mainModule.subModules}" as="subModule">
+                <f:variable name="titleAttribute" value="" />
+                <f:if condition="{subModule.shortDescription}">
+                    <f:variable name="titleAttribute" value="{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}" />
+                </f:if>
                 <a
                     href="#"
                     data-dispatch-action="TYPO3.ModuleMenu.showModule"
                     data-dispatch-args-list="{subModule.identifier}"
-                    title="{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}"
+                    title="{titleAttribute}"
                     class="card card-size-medium"
                 >
                     <div class="card-header">
