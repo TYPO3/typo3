@@ -159,13 +159,13 @@ interface QueryInterface
     public function matching($constraint);
 
     /**
-     * Performs a logical conjunction of the two given constraints. The method
+     * Performs a logical conjunction of multiple given constraints. The method
      * takes an arbitrary number of constraints and concatenates them with a boolean AND.
      */
     public function logicalAnd(ConstraintInterface ...$constraints): AndInterface;
 
     /**
-     * Performs a logical disjunction of the two given constraints. The method
+     * Performs a logical disjunction of multiple given constraints. The method
      * takes an arbitrary number of constraints and concatenates them with a boolean OR.
      */
     public function logicalOr(ConstraintInterface ...$constraints): OrInterface;
