@@ -50,11 +50,6 @@ class Clearable {
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
     closeButton.tabIndex = -1;
-
-    if ('lang' in top.TYPO3) {
-      closeButton.title = top.TYPO3.lang['labels.inputfield.clearButton.title'];
-      closeButton.setAttribute('aria-label', top.TYPO3.lang['labels.inputfield.clearButton.title']);
-    }
     closeButton.innerHTML = closeIcon;
     closeButton.style.visibility = 'hidden';
     closeButton.classList.add('close');

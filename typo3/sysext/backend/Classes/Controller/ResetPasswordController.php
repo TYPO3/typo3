@@ -205,18 +205,6 @@ class ResetPasswordController
             $this->getBackendUserAuthentication()->user['lang'] = $preferredBrowserLanguage;
         }
 
-        $clearButtonTitle = $languageService->sL(
-            'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.inputfield.clearButton.title'
-        );
-
-        $this->pageRenderer->addJsInlineCode(
-            'loginFormJsLang',
-            'window.TYPO3 = window.TYPO3 || {}; window.TYPO3.lang = {"labels.inputfield.clearButton.title": "' . $clearButtonTitle . '"};',
-            false,
-            false,
-            true,
-        );
-
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
         $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
