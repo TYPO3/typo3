@@ -150,12 +150,14 @@ class CheckboxToggleElement extends AbstractFormElement
      * @param int $itemCounter Number of this element in the list of all elements
      * @param int $formElementValue Value of this element
      * @param int $numberOfItems Full number of items
-     * @param array $additionalInformation Information with additional configuration options.
+     * @param array $additionalInformation Information with additional configuration options
      * @param bool $disabled TRUE if form element is disabled
      * @return string Single element HTML
      */
     protected function renderSingleCheckboxElement($label, $itemCounter, $formElementValue, $numberOfItems, $additionalInformation, $disabled): string
     {
+        $languageService = $this->getLanguageService();
+        $parentLabel = $additionalInformation['fieldConf']['label'] ?? '';
         $config = $additionalInformation['fieldConf']['config'];
         $inline = ($config['cols'] ?? '') === 'inline';
         $invert = isset($config['items'][0]['invertStateDisplay']) && $config['items'][0]['invertStateDisplay'] === true;
@@ -173,12 +175,13 @@ class CheckboxToggleElement extends AbstractFormElement
                 <input type="checkbox"
                     class="form-check-input"
                     value="1"
+                    role="switch"
                     data-formengine-input-name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '"
                     ' . $checkboxParameters . '
                     ' . (!$disabled ? '' : ' disabled="disabled"') . '
                     id="' . $checkboxId . '" />
                 <label class="form-check-label" for="' . $checkboxId . '">
-                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : ''), $formElementValue) . '
+                    ' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : ''), $formElementValue) . '<span class="visually-hidden">' . htmlspecialchars($parentLabel) . '</span>' . '
                 </label>
             </div>';
     }
