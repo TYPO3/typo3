@@ -48,14 +48,4 @@ abstract class AbstractBackendController extends ActionController
             throw new \LogicException('Configuration could not be loaded', 1681549038);
         }
     }
-
-    /**
-     * The functionality of this method has been removed because it caused problems with open_basedir restrictions.
-     * See https://forge.typo3.org/issues/98545 for details.
-     * This method will be removed in TYPO3 v13.
-     */
-    protected function resolveResourcePaths(array $resourcePaths): array
-    {
-        return $resourcePaths;
-    }
 }
