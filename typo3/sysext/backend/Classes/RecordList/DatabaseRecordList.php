@@ -534,22 +534,23 @@ class DatabaseRecordList
         if ($totalItems === 0) {
             return '';
         }
-        // set the limits
-        // Use default value and overwrite with page ts config and tca config depending on the current view
-        // Force limit in range 5, 10000
-        // default 100
+        // Setting the limits for the amount of records to be displayed in the list and single table view.
+        // Using the default value and overwriting with page TSconfig and TCA config. The limit is forced
+        // to be in the range of 0 - 10000.
+
+        // default 100 for single table view
         $itemsLimitSingleTable = MathUtility::forceIntegerInRange((int)(
             $GLOBALS['TCA'][$table]['interface']['maxSingleDBListItems'] ??
             $this->modTSconfig['itemsLimitSingleTable'] ??
             100
-        ), 5, 10000);
+        ), 0, 10000);
 
-        // default 20
+        // default 20 for list view
         $itemsLimitPerTable = MathUtility::forceIntegerInRange((int)(
             $GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ??
             $this->modTSconfig['itemsLimitPerTable'] ??
             20
-        ), 5, 10000);
+        ), 0, 10000);
 
         // Set limit depending on the view (single table vs. default)
         $itemsPerPage = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
