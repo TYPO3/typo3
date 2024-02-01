@@ -47,8 +47,8 @@ class DefaultTcaSchema
      * "soft delete" ['ctrl']['delete'] and adds the field if it has not been
      * defined in ext_tables.sql, yet.
      *
-     * @param Table[] $tables
-     * @return Table[] Modified tables
+     * @param array<non-empty-string, Table> $tables
+     * @return array<non-empty-string, Table> Modified tables
      */
     public function enrich(array $tables): array
     {
@@ -56,10 +56,7 @@ class DefaultTcaSchema
         // This prevents a misuse, calling code needs to ensure there is at least an empty
         // table object (no columns) for all TCA tables.
         $tableNamesFromTca = array_keys($GLOBALS['TCA']);
-        $existingTableNames = [];
-        foreach ($tables as $table) {
-            $existingTableNames[] = $table->getName();
-        }
+        $existingTableNames = array_keys($tables);
         foreach ($tableNamesFromTca as $tableName) {
             if (!in_array($tableName, $existingTableNames, true)) {
                 throw new \RuntimeException(
@@ -76,19 +73,16 @@ class DefaultTcaSchema
 
     /**
      * Add single fields like uid, sorting and similar, based on tables TCA 'ctrl' settings.
+     *
+     * @param array<non-empty-string, Table> $tables
+     * @return array<non-empty-string, Table>
      */
-    protected function enrichSingleTableFieldsFromTcaCtrl($tables)
+    protected function enrichSingleTableFieldsFromTcaCtrl(array $tables): array
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
-            // If the table is given in existing $tables list, add all fields to the first
-            // position of that table - in case it is in there multiple times which happens
-            // if extensions add single fields to tables that have been defined in
-            // other ext_tables.sql, too.
-            $tablePosition = $this->getTableFirstPosition($tables, $tableName);
-
             // uid column and primary key if uid is not defined
             if (!$this->isColumnDefinedForTable($tables, $tableName, 'uid')) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote('uid'),
                     Types::INTEGER,
                     [
@@ -97,7 +91,7 @@ class DefaultTcaSchema
                         'autoincrement' => true,
                     ]
                 );
-                $tables[$tablePosition]->setPrimaryKey(['uid']);
+                $tables[$tableName]->setPrimaryKey(['uid']);
             }
 
             // pid column and prepare parent key if pid is not defined
@@ -108,7 +102,7 @@ class DefaultTcaSchema
                     'notnull' => true,
                     'unsigned' => true,
                 ];
-                $tables[$tablePosition]->addColumn($this->quote('pid'), Types::INTEGER, $options);
+                $tables[$tableName]->addColumn($this->quote('pid'), Types::INTEGER, $options);
                 $pidColumnAdded = true;
             }
 
@@ -117,7 +111,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['tstamp'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['tstamp'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['tstamp']),
                     Types::INTEGER,
                     [
@@ -132,7 +126,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['crdate'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['crdate'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['crdate']),
                     Types::INTEGER,
                     [
@@ -147,7 +141,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['delete'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['delete'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['delete']),
                     Types::SMALLINT,
                     [
@@ -162,7 +156,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['enablecolumns']['disabled'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['disabled'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['enablecolumns']['disabled']),
                     Types::SMALLINT,
                     [
@@ -178,7 +172,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['enablecolumns']['starttime'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['starttime'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['enablecolumns']['starttime']),
                     Types::INTEGER,
                     [
@@ -194,7 +188,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['enablecolumns']['endtime'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['endtime'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['enablecolumns']['endtime']),
                     Types::INTEGER,
                     [
@@ -209,7 +203,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['enablecolumns']['fe_group'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['enablecolumns']['fe_group'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['enablecolumns']['fe_group']),
                     Types::STRING,
                     [
@@ -224,7 +218,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['sortby'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['sortby'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['sortby']),
                     Types::INTEGER,
                     [
@@ -244,14 +238,14 @@ class DefaultTcaSchema
                 if (!empty($tableDefinition['ctrl']['enablecolumns']['disabled'])) {
                     $parentIndexFields[] = (string)$tableDefinition['ctrl']['enablecolumns']['disabled'];
                 }
-                $tables[$tablePosition]->addIndex($parentIndexFields, 'parent');
+                $tables[$tableName]->addIndex($parentIndexFields, 'parent');
             }
 
             // description column
             if (!empty($tableDefinition['ctrl']['descriptionColumn'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['descriptionColumn'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['descriptionColumn']),
                     Types::TEXT,
                     [
@@ -265,7 +259,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['editlock'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['editlock'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['editlock']),
                     Types::SMALLINT,
                     [
@@ -280,7 +274,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['languageField'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['languageField'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote((string)$tableDefinition['ctrl']['languageField']),
                     Types::INTEGER,
                     [
@@ -296,7 +290,7 @@ class DefaultTcaSchema
                 && !empty($tableDefinition['ctrl']['transOrigPointerField'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['transOrigPointerField'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote((string)$tableDefinition['ctrl']['transOrigPointerField']),
                     Types::INTEGER,
                     [
@@ -312,7 +306,7 @@ class DefaultTcaSchema
                 && !empty($tableDefinition['ctrl']['translationSource'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['translationSource'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote((string)$tableDefinition['ctrl']['translationSource']),
                     Types::INTEGER,
                     [
@@ -321,7 +315,7 @@ class DefaultTcaSchema
                         'unsigned' => true,
                     ]
                 );
-                $tables[$tablePosition]->addIndex([$tableDefinition['ctrl']['translationSource']], 'translation_source');
+                $tables[$tableName]->addIndex([$tableDefinition['ctrl']['translationSource']], 'translation_source');
             }
 
             // l10n_state column
@@ -329,7 +323,7 @@ class DefaultTcaSchema
                 && !empty($tableDefinition['ctrl']['transOrigPointerField'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, 'l10n_state')
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote('l10n_state'),
                     Types::TEXT,
                     [
@@ -343,7 +337,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['origUid'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['origUid'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['origUid']),
                     Types::INTEGER,
                     [
@@ -358,7 +352,7 @@ class DefaultTcaSchema
             if (!empty($tableDefinition['ctrl']['transOrigDiffSourceField'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['transOrigDiffSourceField'])
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($tableDefinition['ctrl']['transOrigDiffSourceField']),
                     Types::BLOB,
                     [
@@ -374,7 +368,7 @@ class DefaultTcaSchema
                 && (bool)$tableDefinition['ctrl']['versioningWS'] === true
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_oid')
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote('t3ver_oid'),
                     Types::INTEGER,
                     [
@@ -390,7 +384,7 @@ class DefaultTcaSchema
                 && (bool)$tableDefinition['ctrl']['versioningWS'] === true
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_wsid')
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote('t3ver_wsid'),
                     Types::INTEGER,
                     [
@@ -406,7 +400,7 @@ class DefaultTcaSchema
                 && (bool)$tableDefinition['ctrl']['versioningWS'] === true
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_state')
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote('t3ver_state'),
                     Types::SMALLINT,
                     [
@@ -422,7 +416,7 @@ class DefaultTcaSchema
                 && (bool)$tableDefinition['ctrl']['versioningWS'] === true
                 && !$this->isColumnDefinedForTable($tables, $tableName, 't3ver_stage')
             ) {
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote('t3ver_stage'),
                     Types::INTEGER,
                     [
@@ -438,7 +432,7 @@ class DefaultTcaSchema
                 && (bool)$tableDefinition['ctrl']['versioningWS'] === true
                 && !$this->isIndexDefinedForTable($tables, $tableName, 't3ver_oid')
             ) {
-                $tables[$tablePosition]->addIndex(['t3ver_oid', 't3ver_wsid'], 't3ver_oid');
+                $tables[$tableName]->addIndex(['t3ver_oid', 't3ver_wsid'], 't3ver_oid');
             }
         }
 
@@ -447,16 +441,13 @@ class DefaultTcaSchema
 
     /**
      * Add single fields based on tables TCA 'columns'.
+     *
+     * @param array<non-empty-string, Table> $tables
+     * @return array<non-empty-string, Table>
      */
-    protected function enrichSingleTableFieldsFromTcaColumns($tables)
+    protected function enrichSingleTableFieldsFromTcaColumns(array $tables): array
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
-            // If the table is given in existing $tables list, add all fields to the first
-            // position of that table - in case it is supplied multiple times which happens
-            // if extensions add single fields to tables that have been defined in
-            // other ext_tables.sql, too.
-            $tablePosition = $this->getTableFirstPosition($tables, $tableName);
-
             // In the following, columns for TCA fields with a dedicated TCA type are
             // added. In the unlikely case that no columns exist, we can skip the table.
             if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
@@ -472,7 +463,7 @@ class DefaultTcaSchema
                 }
 
                 if (($fieldConfig['config']['relationship'] ?? '') === 'oneToMany') {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::TEXT,
                         [
@@ -480,7 +471,7 @@ class DefaultTcaSchema
                         ]
                     );
                 } else {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::INTEGER,
                         [
@@ -502,7 +493,7 @@ class DefaultTcaSchema
                 }
 
                 if (in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         $fieldConfig['config']['dbType'],
                         [
@@ -525,7 +516,7 @@ class DefaultTcaSchema
                     // This is now changed to utilize BIGINT everywhere, even when smaller
                     // date ranges are requested. To reduce complexity, we specifically
                     // do not evaluate "range.upper/lower" fields and use a unified type here.
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::BIGINT,
                         [
@@ -544,7 +535,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::STRING,
                     [
@@ -561,7 +552,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::JSON,
                     [
@@ -577,7 +568,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::STRING,
                     [
@@ -595,7 +586,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::INTEGER,
                     [
@@ -613,7 +604,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::TEXT,
                     [
@@ -630,7 +621,7 @@ class DefaultTcaSchema
                     continue;
                 }
                 $isNullable = (bool)($fieldConfig['config']['nullable'] ?? false);
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::STRING,
                     [
@@ -648,7 +639,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::SMALLINT,
                     [
@@ -666,7 +657,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::TEXT,
                     [
@@ -682,7 +673,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::INTEGER,
                     [
@@ -701,7 +692,7 @@ class DefaultTcaSchema
                     continue;
                 }
                 if (isset($fieldConfig['config']['MM'])) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::INTEGER,
                         [
@@ -711,7 +702,7 @@ class DefaultTcaSchema
                         ]
                     );
                 } else {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::TEXT,
                         [
@@ -728,7 +719,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::TEXT,
                     [
@@ -744,7 +735,7 @@ class DefaultTcaSchema
                 ) {
                     continue;
                 }
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::TEXT,
                     [
@@ -761,7 +752,7 @@ class DefaultTcaSchema
                     continue;
                 }
                 if ($fieldConfig['config']['nullable'] ?? false) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -770,7 +761,7 @@ class DefaultTcaSchema
                         ]
                     );
                 } else {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -789,7 +780,7 @@ class DefaultTcaSchema
                     continue;
                 }
                 if ($fieldConfig['config']['nullable'] ?? false) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -799,7 +790,7 @@ class DefaultTcaSchema
                         ]
                     );
                 } else {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -823,7 +814,7 @@ class DefaultTcaSchema
 
                 // With itemsProcFunc we can't be sure, which values are persisted. Use type string.
                 if ($hasItemsProcFunc) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -837,7 +828,7 @@ class DefaultTcaSchema
 
                 // If no items are configured, use type string to be safe for values added directly.
                 if ($items === []) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -852,7 +843,7 @@ class DefaultTcaSchema
                 // If only one value is NOT an integer use type string.
                 foreach ($items as $item) {
                     if (!MathUtility::canBeInterpretedAsInteger($item['value'])) {
-                        $tables[$tablePosition]->addColumn(
+                        $tables[$tableName]->addColumn(
                             $this->quote($fieldName),
                             Types::STRING,
                             [
@@ -875,7 +866,7 @@ class DefaultTcaSchema
                 $integerType = ($minValue >= -32768 && $maxValue < 32768)
                     ? Types::SMALLINT
                     : Types::INTEGER;
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     $integerType,
                     [
@@ -896,7 +887,7 @@ class DefaultTcaSchema
                     continue;
                 }
                 $nullable = $fieldConfig['config']['nullable'] ?? false;
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::STRING,
                     [
@@ -916,7 +907,7 @@ class DefaultTcaSchema
                 }
                 if (($fieldConfig['config']['MM'] ?? '') !== '' || ($fieldConfig['config']['foreign_field'] ?? '') !== '') {
                     // Parent "count" field
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::INTEGER,
                         [
@@ -927,7 +918,7 @@ class DefaultTcaSchema
                     );
                 } else {
                     // Inline "csv"
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -941,13 +932,15 @@ class DefaultTcaSchema
                     // Add definition for "foreign_field" (contains parent uid) in the child table if it is not defined
                     // in child TCA or if it is "just" a "passthrough" field, and not manually configured in ext_tables.sql
                     $childTable = $fieldConfig['config']['foreign_table'];
-                    $childTablePosition = $this->getTableFirstPosition($tables, $childTable);
+                    if (!(($tables[$childTable] ?? null) instanceof Table)) {
+                        throw new DefaultTcaSchemaTablePositionException('Table ' . $childTable . ' not found in schema list', 1527854474);
+                    }
                     $childTableForeignFieldName = $fieldConfig['config']['foreign_field'];
                     $childTableForeignFieldConfig = $GLOBALS['TCA'][$childTable]['columns'][$childTableForeignFieldName] ?? [];
                     if (($childTableForeignFieldConfig === [] || ($childTableForeignFieldConfig['config']['type'] ?? '') === 'passthrough')
                         && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignFieldName)
                     ) {
-                        $tables[$childTablePosition]->addColumn(
+                        $tables[$childTable]->addColumn(
                             $this->quote($childTableForeignFieldName),
                             Types::INTEGER,
                             [
@@ -965,7 +958,7 @@ class DefaultTcaSchema
                         && ($childTableForeignTableFieldConfig === [] || ($childTableForeignTableFieldConfig['config']['type'] ?? '') === 'passthrough')
                         && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignTableFieldName)
                     ) {
-                        $tables[$childTablePosition]->addColumn(
+                        $tables[$childTable]->addColumn(
                             $this->quote($childTableForeignTableFieldName),
                             Types::STRING,
                             [
@@ -991,7 +984,7 @@ class DefaultTcaSchema
                 $lowerRange = $fieldConfig['config']['range']['lower'] ?? -1;
                 // Integer type for all database platforms.
                 if ($type === Types::INTEGER) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::INTEGER,
                         [
@@ -1010,7 +1003,7 @@ class DefaultTcaSchema
                 //       possible right now but upcoming preparation towards doctrine/dbal 4 makes it possible to
                 //       move this "hack" to a different place.
                 if ($tableConnectionPlatform instanceof DoctrineSQLitePlatform) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -1022,7 +1015,7 @@ class DefaultTcaSchema
                     continue;
                 }
                 // Decimal for all supported platforms except SQLite
-                $tables[$tablePosition]->addColumn(
+                $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
                     Types::DECIMAL,
                     [
@@ -1046,7 +1039,7 @@ class DefaultTcaSchema
                 }
                 if (($fieldConfig['config']['MM'] ?? '') !== '') {
                     // MM relation, this is a "parent count" field. Have an int.
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::INTEGER,
                         [
@@ -1090,7 +1083,7 @@ class DefaultTcaSchema
                         ) {
                             // If the item list is empty, or if it contains only int values, an int field is enough.
                             // Also, the config must not be a 'fileFolderConfig' field which takes string values.
-                            $tables[$tablePosition]->addColumn(
+                            $tables[$tableName]->addColumn(
                                 $this->quote($fieldName),
                                 Types::INTEGER,
                                 [
@@ -1102,7 +1095,7 @@ class DefaultTcaSchema
                             continue;
                         }
                         // If int is no option, have a string field.
-                        $tables[$tablePosition]->addColumn(
+                        $tables[$tableName]->addColumn(
                             $this->quote($fieldName),
                             Types::STRING,
                             [
@@ -1118,7 +1111,7 @@ class DefaultTcaSchema
                         // all integers, or if there is a foreign_table, we end up with a comma separated list of integers.
                         // Using string / varchar 255 here should be long enough to store plenty of values, and can be
                         // changed by setting 'dbFieldLength'.
-                        $tables[$tablePosition]->addColumn(
+                        $tables[$tableName]->addColumn(
                             $this->quote($fieldName),
                             Types::STRING,
                             [
@@ -1138,7 +1131,7 @@ class DefaultTcaSchema
 
                 if ($dbFieldLength > 0) {
                     // If nothing else matches, but there is a dbFieldLength set, have varchar with that length.
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::STRING,
                         [
@@ -1149,7 +1142,7 @@ class DefaultTcaSchema
                     );
                 } else {
                     // Final fallback creates a (nullable) text field.
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$tableName]->addColumn(
                         $this->quote($fieldName),
                         Types::TEXT,
                         [
@@ -1169,6 +1162,9 @@ class DefaultTcaSchema
      * according mm table schema for them. True MM tables are intermediate tables
      * that have NO TCA itself. Those are indicated by type=select and type=group
      * and type=inline fields with MM property.
+     *
+     * @param array<non-empty-string, Table> $tables
+     * @return array<non-empty-string, Table>
      */
     protected function enrichMmTables($tables): array
     {
@@ -1190,12 +1186,9 @@ class DefaultTcaSchema
                     continue;
                 }
                 $mmTableName = $tcaColumn['config']['MM'];
-                try {
+                if (!array_key_exists($mmTableName, $tables)) {
                     // If the mm table is defined, work with it. Else add at and.
-                    $tablePosition = $this->getTableFirstPosition($tables, $mmTableName);
-                } catch (DefaultTcaSchemaTablePositionException) {
-                    $tablePosition = array_key_last($tables) + 1;
-                    $tables[$tablePosition] = GeneralUtility::makeInstance(
+                    $tables[$mmTableName] = GeneralUtility::makeInstance(
                         Table::class,
                         $mmTableName
                     );
@@ -1206,7 +1199,7 @@ class DefaultTcaSchema
                 // avoid this, we add a uid column and make it primary key instead.
                 $needsUid = (bool)($tcaColumn['config']['multiple'] ?? false);
                 if ($needsUid && !$this->isColumnDefinedForTable($tables, $mmTableName, 'uid')) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$mmTableName]->addColumn(
                         $this->quote('uid'),
                         Types::INTEGER,
                         [
@@ -1215,11 +1208,11 @@ class DefaultTcaSchema
                             'autoincrement' => true,
                         ]
                     );
-                    $tables[$tablePosition]->setPrimaryKey(['uid']);
+                    $tables[$mmTableName]->setPrimaryKey(['uid']);
                 }
 
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'uid_local')) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$mmTableName]->addColumn(
                         $this->quote('uid_local'),
                         Types::INTEGER,
                         [
@@ -1230,11 +1223,11 @@ class DefaultTcaSchema
                     );
                 }
                 if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_local')) {
-                    $tables[$tablePosition]->addIndex(['uid_local'], 'uid_local');
+                    $tables[$mmTableName]->addIndex(['uid_local'], 'uid_local');
                 }
 
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'uid_foreign')) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$mmTableName]->addColumn(
                         $this->quote('uid_foreign'),
                         Types::INTEGER,
                         [
@@ -1245,11 +1238,11 @@ class DefaultTcaSchema
                     );
                 }
                 if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_foreign')) {
-                    $tables[$tablePosition]->addIndex(['uid_foreign'], 'uid_foreign');
+                    $tables[$mmTableName]->addIndex(['uid_foreign'], 'uid_foreign');
                 }
 
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting')) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$mmTableName]->addColumn(
                         $this->quote('sorting'),
                         Types::INTEGER,
                         [
@@ -1260,7 +1253,7 @@ class DefaultTcaSchema
                     );
                 }
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting_foreign')) {
-                    $tables[$tablePosition]->addColumn(
+                    $tables[$mmTableName]->addColumn(
                         $this->quote('sorting_foreign'),
                         Types::INTEGER,
                         [
@@ -1276,7 +1269,7 @@ class DefaultTcaSchema
                     // thus needs two further fields to specify which foreign/table field combination links is used.
                     // Those are stored in two additional fields called "tablenames" and "fieldname".
                     if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'tablenames')) {
-                        $tables[$tablePosition]->addColumn(
+                        $tables[$mmTableName]->addColumn(
                             $this->quote('tablenames'),
                             Types::STRING,
                             [
@@ -1287,7 +1280,7 @@ class DefaultTcaSchema
                         );
                     }
                     if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'fieldname')) {
-                        $tables[$tablePosition]->addColumn(
+                        $tables[$mmTableName]->addColumn(
                             $this->quote('fieldname'),
                             Types::STRING,
                             [
@@ -1302,10 +1295,10 @@ class DefaultTcaSchema
                 // Primary key handling: If there is a uid field, PK has been added above already.
                 // Otherwise, the PK combination is either "uid_local, uid_foreign", or
                 // "uid_local, uid_foreign, tablenames, fieldname" if this is a multi-foreign setup.
-                if (!$needsUid && $tables[$tablePosition]->getPrimaryKey() === null && !empty($tcaColumn['config']['MM_oppositeUsage'])) {
-                    $tables[$tablePosition]->setPrimaryKey(['uid_local', 'uid_foreign', 'tablenames', 'fieldname']);
-                } elseif (!$needsUid && $tables[$tablePosition]->getPrimaryKey() === null) {
-                    $tables[$tablePosition]->setPrimaryKey(['uid_local', 'uid_foreign']);
+                if (!$needsUid && $tables[$mmTableName]->getPrimaryKey() === null && !empty($tcaColumn['config']['MM_oppositeUsage'])) {
+                    $tables[$mmTableName]->setPrimaryKey(['uid_local', 'uid_foreign', 'tablenames', 'fieldname']);
+                } elseif (!$needsUid && $tables[$mmTableName]->getPrimaryKey() === null) {
+                    $tables[$mmTableName]->setPrimaryKey(['uid_local', 'uid_foreign']);
                 }
             }
         }
@@ -1316,66 +1309,22 @@ class DefaultTcaSchema
      * True if a column with a given name is defined within the incoming
      * array of Table's.
      *
-     * @param Table[] $tables
+     * @param array<non-empty-string, Table> $tables
      */
     protected function isColumnDefinedForTable(array $tables, string $tableName, string $fieldName): bool
     {
-        foreach ($tables as $table) {
-            if ($table->getName() !== $tableName) {
-                continue;
-            }
-            $columns = $table->getColumns();
-            foreach ($columns as $column) {
-                if ($column->getName() === $fieldName) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return ($tables[$tableName] ?? null)?->hasColumn($fieldName) ?? false;
     }
 
     /**
      * True if an index with a given name is defined within the incoming
      * array of Table's.
      *
-     * @param Table[] $tables
+     * @param array<non-empty-string, Table> $tables
      */
     protected function isIndexDefinedForTable(array $tables, string $tableName, string $indexName): bool
     {
-        foreach ($tables as $table) {
-            if ($table->getName() !== $tableName) {
-                continue;
-            }
-            $indexes = $table->getIndexes();
-            foreach ($indexes as $index) {
-                if ($index->getName() === $indexName) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * The incoming $tables array can contain Table objects for the same table
-     * multiple times. This can happen if an extension has the main CREATE TABLE
-     * statement in its ext_tables.sql and another extension adds or changes further
-     * fields in an own CREATE TABLE statement.
-     *
-     * @todo It would be better if the incoming $tables structure would be cleaned
-     *       to contain a table only once before this class is entered.
-     *
-     * @param Table[] $tables
-     * @throws DefaultTcaSchemaTablePositionException
-     */
-    protected function getTableFirstPosition(array $tables, string $tableName): int
-    {
-        foreach ($tables as $position => $table) {
-            if ($table->getName() === $tableName) {
-                return (int)$position;
-            }
-        }
-        throw new DefaultTcaSchemaTablePositionException('Table ' . $tableName . ' not found in schema list', 1527854474);
+        return ($tables[$tableName] ?? null)?->hasIndex($indexName) ?? false;
     }
 
     protected function quote(string $identifier): string

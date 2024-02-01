@@ -50,7 +50,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     public function enrichKeepsGivenTablesArrayWithEmptyTca(): void
     {
         $GLOBALS['TCA'] = [];
-        self::assertEquals([$this->defaultTable], $this->subject->enrich([$this->defaultTable]));
+        self::assertEquals(['aTable' => $this->defaultTable], $this->subject->enrich(['aTable' => $this->defaultTable]));
     }
 
     /**
@@ -77,63 +77,15 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $table->addColumn('uid', 'integer');
         $table->addColumn('pid', 'integer');
         $input = [];
-        $input[] = $table;
+        $input['aTable'] = $table;
 
         $table = new Table('aTable');
         $table->addColumn('uid', 'integer');
         $table->addColumn('pid', 'integer');
         $expected = [];
-        $expected[] = $table;
+        $expected['aTable'] = $table;
 
         self::assertEquals($expected, $this->subject->enrich($input));
-    }
-
-    /**
-     * @test
-     */
-    public function enrichDoesNotAddColumnIfTableExistsMultipleTimesAndUidExists(): void
-    {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [];
-
-        $table = new Table('aTable');
-        $table->addColumn('foo', 'integer');
-        $input = [];
-        $input[] = $table;
-        $table = new Table('aTable');
-        $table->addColumn('uid', 'integer');
-        $table->addColumn('pid', 'integer');
-        $input[] = $table;
-
-        $table = new Table('aTable');
-        $table->addColumn('foo', 'integer');
-        $expected = [];
-        $expected[] = $table;
-        $table = new Table('aTable');
-        $table->addColumn('uid', 'integer');
-        $table->addColumn('pid', 'integer');
-        $expected[] = $table;
-
-        self::assertEquals($expected, $this->subject->enrich($input));
-    }
-
-    /**
-     * @test
-     */
-    public function enrichAddsFieldToFirstTableDefinitionOfThatName(): void
-    {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [];
-
-        $table = new Table('aTable');
-        $table->addColumn('foo', 'integer');
-        $input = [];
-        $input[] = $table;
-        $table = new Table('aTable');
-        $table->addColumn('bar', 'integer');
-        $input[] = $table;
-
-        $result = $this->subject->enrich($input);
-
-        self::assertInstanceOf(Column::class, $result[0]->getColumn('uid'));
     }
 
     /**
@@ -142,7 +94,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     public function enrichAddsUidAndPrimaryKey(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedUidColumn = new Column(
             '`uid`',
             Type::getType('integer'),
@@ -153,8 +105,8 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ]
         );
         $expectedPrimaryKey = new Index('primary', ['uid'], true, true);
-        self::assertSame($expectedUidColumn->toArray(), $result[0]->getColumn('uid')->toArray());
-        self::assertEquals($expectedPrimaryKey, $result[0]->getPrimaryKey());
+        self::assertSame($expectedUidColumn->toArray(), $result['aTable']->getColumn('uid')->toArray());
+        self::assertEquals($expectedPrimaryKey, $result['aTable']->getPrimaryKey());
     }
 
     /**
@@ -163,7 +115,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     public function enrichAddsPid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedPidColumn = new Column(
             '`pid`',
             Type::getType('integer'),
@@ -173,7 +125,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedPidColumn->toArray(), $result[0]->getColumn('pid')->toArray());
+        self::assertSame($expectedPidColumn->toArray(), $result['aTable']->getColumn('pid')->toArray());
     }
 
     /**
@@ -184,7 +136,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'tstamp' => 'updatedon',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`updatedon`',
             Type::getType('integer'),
@@ -194,7 +146,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('updatedon')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('updatedon')->toArray());
     }
 
     /**
@@ -205,7 +157,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'crdate' => 'createdon',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`createdon`',
             Type::getType('integer'),
@@ -215,7 +167,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('createdon')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('createdon')->toArray());
     }
 
     /**
@@ -226,7 +178,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'delete' => 'deleted',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`deleted`',
             Type::getType('smallint'),
@@ -236,7 +188,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('deleted')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('deleted')->toArray());
     }
 
     /**
@@ -249,7 +201,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'disabled' => 'disabled',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`disabled`',
             Type::getType('smallint'),
@@ -259,7 +211,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('disabled')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('disabled')->toArray());
     }
 
     /**
@@ -272,7 +224,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'starttime' => 'starttime',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`starttime`',
             Type::getType('integer'),
@@ -282,7 +234,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('starttime')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('starttime')->toArray());
     }
 
     /**
@@ -295,7 +247,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'endtime' => 'endtime',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`endtime`',
             Type::getType('integer'),
@@ -305,7 +257,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('endtime')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('endtime')->toArray());
     }
 
     /**
@@ -318,7 +270,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'fe_group' => 'fe_group',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`fe_group`',
             Type::getType('string'),
@@ -328,7 +280,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('fe_group')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('fe_group')->toArray());
     }
 
     /**
@@ -339,7 +291,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'sortby' => 'sorting',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`sorting`',
             Type::getType('integer'),
@@ -349,7 +301,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('sorting')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('sorting')->toArray());
     }
 
     /**
@@ -358,9 +310,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     public function enrichAddsParentKey(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedIndex = new Index('parent', ['pid']);
-        self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('parent'));
     }
 
     /**
@@ -371,9 +323,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'delete' => 'deleted',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedIndex = new Index('parent', ['pid', 'deleted']);
-        self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('parent'));
     }
 
     /**
@@ -386,9 +338,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'disabled' => 'disabled',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedIndex = new Index('parent', ['pid', 'disabled']);
-        self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('parent'));
     }
 
     /**
@@ -402,9 +354,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'disabled' => 'disabled',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedIndex = new Index('parent', ['pid', 'deleted', 'disabled']);
-        self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('parent'));
     }
 
     /**
@@ -415,7 +367,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'languageField' => 'sys_language_uid',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`sys_language_uid`',
             Type::getType('integer'),
@@ -425,7 +377,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('sys_language_uid')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('sys_language_uid')->toArray());
     }
 
     /**
@@ -437,7 +389,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'languageField' => 'sys_language_uid',
             'transOrigPointerField' => 'l10n_parent',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`l10n_parent`',
             Type::getType('integer'),
@@ -447,7 +399,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('l10n_parent')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('l10n_parent')->toArray());
     }
 
     /**
@@ -458,9 +410,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'transOrigPointerField' => 'l10n_parent',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $this->expectException(SchemaException::class);
-        $result[0]->getColumn('l10n_parent');
+        $result['aTable']->getColumn('l10n_parent');
     }
 
     /**
@@ -471,7 +423,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'descriptionColumn' => 'rowDescription',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`rowDescription`',
             Type::getType('text'),
@@ -480,7 +432,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 65535,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('rowDescription')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('rowDescription')->toArray());
     }
 
     /**
@@ -491,7 +443,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'editlock' => 'editlock',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`editlock`',
             Type::getType('smallint'),
@@ -501,7 +453,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('editlock')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('editlock')->toArray());
     }
 
     /**
@@ -513,7 +465,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'languageField' => 'sys_language_uid',
             'translationSource' => 'l10n_source',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`l10n_source`',
             Type::getType('integer'),
@@ -523,7 +475,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('l10n_source')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('l10n_source')->toArray());
     }
 
     /**
@@ -534,9 +486,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'translationSource' => 'l10n_source',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $this->expectException(SchemaException::class);
-        $result[0]->getColumn('l10n_source');
+        $result['aTable']->getColumn('l10n_source');
     }
 
     /**
@@ -548,7 +500,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'languageField' => 'sys_language_uid',
             'transOrigPointerField' => 'l10n_parent',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`l10n_state`',
             Type::getType('text'),
@@ -557,7 +509,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 65535,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('l10n_state')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('l10n_state')->toArray());
     }
 
     /**
@@ -568,9 +520,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'transOrigPointerField' => 'l10n_parent',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $this->expectException(SchemaException::class);
-        $result[0]->getColumn('l10n_state');
+        $result['aTable']->getColumn('l10n_state');
     }
 
     /**
@@ -581,9 +533,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'languageField' => 'sys_language_uid',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $this->expectException(SchemaException::class);
-        $result[0]->getColumn('l10n_state');
+        $result['aTable']->getColumn('l10n_state');
     }
 
     /**
@@ -594,7 +546,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'origUid' => 't3_origuid',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`t3_origuid`',
             Type::getType('integer'),
@@ -604,7 +556,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3_origuid')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3_origuid')->toArray());
     }
 
     /**
@@ -615,7 +567,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'transOrigDiffSourceField' => 'l18n_diffsource',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`l18n_diffsource`',
             Type::getType('blob'),
@@ -624,7 +576,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('l18n_diffsource')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('l18n_diffsource')->toArray());
     }
 
     /**
@@ -635,7 +587,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`t3ver_oid`',
             Type::getType('integer'),
@@ -645,7 +597,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3ver_oid')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3ver_oid')->toArray());
     }
 
     /**
@@ -656,7 +608,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`t3ver_wsid`',
             Type::getType('integer'),
@@ -666,7 +618,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3ver_wsid')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3ver_wsid')->toArray());
     }
 
     /**
@@ -677,7 +629,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`t3ver_state`',
             Type::getType('smallint'),
@@ -687,7 +639,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3ver_state')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3ver_state')->toArray());
     }
 
     /**
@@ -698,7 +650,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`t3ver_stage`',
             Type::getType('integer'),
@@ -708,7 +660,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('t3ver_stage')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3ver_stage')->toArray());
     }
 
     /**
@@ -729,7 +681,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
         ];
 
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`aBigDateField`',
             Type::getType('bigint'),
@@ -739,7 +691,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('aBigDateField'));
+        self::assertEquals($expectedColumn, $result['aTable']->getColumn('aBigDateField'));
     }
 
     /**
@@ -760,7 +712,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
         ];
 
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`aSmallDateField`',
             Type::getType('bigint'),
@@ -770,7 +722,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('aSmallDateField'));
+        self::assertEquals($expectedColumn, $result['aTable']->getColumn('aSmallDateField'));
     }
 
     /**
@@ -787,7 +739,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
         ];
 
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`aDefaultDateField`',
             Type::getType('bigint'),
@@ -797,7 +749,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('aDefaultDateField'));
+        self::assertEquals($expectedColumn, $result['aTable']->getColumn('aDefaultDateField'));
     }
 
     /**
@@ -818,7 +770,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
         ];
 
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`aBigDateField`',
             Type::getType('bigint'),
@@ -828,7 +780,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('aBigDateField'));
+        self::assertEquals($expectedColumn, $result['aTable']->getColumn('aBigDateField'));
     }
 
     /**
@@ -849,7 +801,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
         ];
 
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`aSmallDateField`',
             Type::getType('bigint'),
@@ -859,7 +811,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertEquals($expectedColumn, $result[0]->getColumn('aSmallDateField'));
+        self::assertEquals($expectedColumn, $result['aTable']->getColumn('aSmallDateField'));
     }
 
     /**
@@ -870,9 +822,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedIndex = new Index('t3ver_oid', ['t3ver_oid', 't3ver_wsid']);
-        self::assertEquals($expectedIndex, $result[0]->getIndex('t3ver_oid'));
+        self::assertEquals($expectedIndex, $result['aTable']->getIndex('t3ver_oid'));
     }
 
     /**
@@ -885,7 +837,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'type' => 'select',
             'MM' => 'tx_myext_atable_afield_mm',
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedMmTable = new Table(
             'tx_myext_atable_afield_mm',
             [
@@ -939,7 +891,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ),
             ]
         );
-        self::assertEquals($expectedMmTable, $result[1]);
+        self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
     }
 
     /**
@@ -953,7 +905,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'MM' => 'tx_myext_atable_afield_mm',
             'multiple' => true,
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedMmTable = new Table(
             'tx_myext_atable_afield_mm',
             [
@@ -1016,7 +968,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ),
             ]
         );
-        self::assertEquals($expectedMmTable, $result[1]);
+        self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
     }
 
     /**
@@ -1034,7 +986,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedMmTable = new Table(
             'tx_myext_atable_afield_mm',
             [
@@ -1104,7 +1056,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ),
             ]
         );
-        self::assertEquals($expectedMmTable, $result[1]);
+        self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
     }
 
     /**
@@ -1119,7 +1071,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'slug',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`slug`',
             Type::getType('string'),
@@ -1129,7 +1081,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 2048,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('slug')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('slug')->toArray());
     }
 
     /**
@@ -1144,7 +1096,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'file',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`file`',
             Type::getType('integer'),
@@ -1154,7 +1106,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('file')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('file')->toArray());
     }
 
     /**
@@ -1169,7 +1121,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'email',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`email`',
             Type::getType('string'),
@@ -1179,7 +1131,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('email')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('email')->toArray());
     }
 
     /**
@@ -1195,7 +1147,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'nullable' => true,
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`email`',
             Type::getType('string'),
@@ -1205,7 +1157,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('email')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('email')->toArray());
     }
 
     /**
@@ -1220,7 +1172,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'check',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`check`',
             Type::getType('smallint'),
@@ -1230,7 +1182,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('check')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('check')->toArray());
     }
 
     /**
@@ -1245,7 +1197,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'folder',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`folder`',
             Type::getType('text'),
@@ -1253,7 +1205,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('folder')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('folder')->toArray());
     }
 
     /**
@@ -1268,7 +1220,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'imageManipulation',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`imageManipulation`',
             Type::getType('text'),
@@ -1276,7 +1228,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('imageManipulation')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('imageManipulation')->toArray());
     }
 
     /**
@@ -1291,7 +1243,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'language',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`language`',
             Type::getType('integer'),
@@ -1301,7 +1253,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('language')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('language')->toArray());
     }
 
     /**
@@ -1316,7 +1268,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'group',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`group`',
             Type::getType('text'),
@@ -1324,7 +1276,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('group')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('group')->toArray());
     }
 
     /**
@@ -1340,7 +1292,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'MM' => 'aTable',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`groupWithMM`',
             Type::getType('integer'),
@@ -1350,7 +1302,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('groupWithMM')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('groupWithMM')->toArray());
     }
 
     /**
@@ -1365,7 +1317,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'flex',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`flex`',
             Type::getType('text'),
@@ -1373,7 +1325,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('flex')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('flex')->toArray());
     }
 
     /**
@@ -1388,7 +1340,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'text',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`text`',
             Type::getType('text'),
@@ -1396,7 +1348,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('text')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('text')->toArray());
     }
 
     /**
@@ -1411,7 +1363,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'password',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`password`',
             Type::getType('string'),
@@ -1420,7 +1372,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('password')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('password')->toArray());
     }
 
     /**
@@ -1436,7 +1388,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'nullable' => true,
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`password`',
             Type::getType('string'),
@@ -1445,7 +1397,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('password')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('password')->toArray());
     }
 
     /**
@@ -1460,7 +1412,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'color',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`color`',
             Type::getType('string'),
@@ -1470,7 +1422,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('color')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('color')->toArray());
     }
 
     /**
@@ -1486,7 +1438,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'nullable' => true,
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`color`',
             Type::getType('string'),
@@ -1496,7 +1448,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('color')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('color')->toArray());
     }
 
     /**
@@ -1521,7 +1473,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`radio`',
             Type::getType('string'),
@@ -1531,7 +1483,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
     /**
@@ -1572,7 +1524,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn1 = new Column(
             '`radio1`',
             Type::getType('string'),
@@ -1591,8 +1543,8 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn1->toArray(), $result[0]->getColumn('radio1')->toArray());
-        self::assertSame($expectedColumn2->toArray(), $result[0]->getColumn('radio2')->toArray());
+        self::assertSame($expectedColumn1->toArray(), $result['aTable']->getColumn('radio1')->toArray());
+        self::assertSame($expectedColumn2->toArray(), $result['aTable']->getColumn('radio2')->toArray());
     }
 
     /**
@@ -1608,7 +1560,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'items' => [],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`radio`',
             Type::getType('string'),
@@ -1618,7 +1570,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
     /**
@@ -1644,7 +1596,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`radio`',
             Type::getType('string'),
@@ -1654,7 +1606,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
     /**
@@ -1683,7 +1635,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`radio`',
             Type::getType('smallint'),
@@ -1692,7 +1644,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
     /**
@@ -1721,7 +1673,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`radio`',
             Type::getType('integer'),
@@ -1730,7 +1682,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('radio')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
     /**
@@ -1745,7 +1697,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'link',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`link`',
             Type::getType('string'),
@@ -1755,7 +1707,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('link')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('link')->toArray());
     }
     /**
      * @test
@@ -1770,7 +1722,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'nullable' => true,
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`link`',
             Type::getType('string'),
@@ -1780,7 +1732,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('link')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('link')->toArray());
     }
 
     /**
@@ -1797,7 +1749,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'MM' => 'cTable',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable, new Table('bTable'), new Table('cTable')]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable, 'bTable' => new Table('bTable'), 'cTable' => new Table('cTable')]);
         $expectedColumn = new Column(
             '`inline_MM`',
             Type::getType('integer'),
@@ -1807,7 +1759,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline_MM')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('inline_MM')->toArray());
     }
 
     /**
@@ -1824,7 +1776,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'foreign_field' => 'bField',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable, new Table('bTable')]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable, 'bTable' => new Table('bTable')]);
         $expectedColumn = new Column(
             '`inline_ff`',
             Type::getType('integer'),
@@ -1834,7 +1786,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline_ff')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('inline_ff')->toArray());
     }
 
     /**
@@ -1852,7 +1804,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'foreign_table_field' => 'cField',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable, new Table('bTable')]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable, 'bTable' => new Table('bTable')]);
         $expectedColumn = new Column(
             '`inline_ff`',
             Type::getType('integer'),
@@ -1862,7 +1814,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline_ff')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('inline_ff')->toArray());
 
         $expectedChildColumnForForeignField = new Column(
             'bField',
@@ -1873,7 +1825,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedChildColumnForForeignField->toArray(), $result[1]->getColumn('bField')->toArray());
+        self::assertSame($expectedChildColumnForForeignField->toArray(), $result['bTable']->getColumn('bField')->toArray());
 
         $expectedChildColumnForForeignTableField = new Column(
             'cField',
@@ -1884,7 +1836,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertSame($expectedChildColumnForForeignTableField->toArray(), $result[1]->getColumn('cField')->toArray());
+        self::assertSame($expectedChildColumnForForeignTableField->toArray(), $result['bTable']->getColumn('cField')->toArray());
     }
 
     /**
@@ -1900,7 +1852,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'foreign_table' => 'bTable',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`inline`',
             Type::getType('string'),
@@ -1910,7 +1862,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('inline')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('inline')->toArray());
     }
 
     /**
@@ -1926,7 +1878,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'format' => 'decimal',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`number`',
             Type::getType('decimal'),
@@ -1937,7 +1889,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'scale' => 2,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
     /**
@@ -1953,7 +1905,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'format' => 'decimal',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`number`',
             Type::getType('string'),
@@ -1963,7 +1915,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
     /**
@@ -1979,7 +1931,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'format' => 'integer',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`number`',
             Type::getType('integer'),
@@ -1988,7 +1940,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
     /**
@@ -2003,7 +1955,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'type' => 'number',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`number`',
             Type::getType('integer'),
@@ -2012,7 +1964,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
     /**
@@ -2028,7 +1980,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'nullable' => true,
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`number`',
             Type::getType('integer'),
@@ -2038,7 +1990,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
     /**
@@ -2056,7 +2008,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`number`',
             Type::getType('integer'),
@@ -2066,7 +2018,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
     /**
@@ -2084,7 +2036,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`number`',
             Type::getType('integer'),
@@ -2094,7 +2046,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('number')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
     /**
@@ -2116,7 +2068,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('text'),
@@ -2124,7 +2076,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2140,7 +2092,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'itemsProcFunc' => 'Foo->bar',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('text'),
@@ -2148,7 +2100,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2164,7 +2116,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'renderType' => 'selectSingle',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('string'),
@@ -2174,7 +2126,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2190,7 +2142,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'renderType' => 'selectMultipleSideBySide',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('string'),
@@ -2200,7 +2152,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2217,7 +2169,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'dbFieldLength' => 15,
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('string'),
@@ -2227,7 +2179,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 15,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2244,7 +2196,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'MM' => 'aTable',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('integer'),
@@ -2254,7 +2206,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2271,7 +2223,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'foreign_table' => 'aTable',
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('integer'),
@@ -2281,7 +2233,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2304,7 +2256,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('integer'),
@@ -2314,7 +2266,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2337,7 +2289,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('integer'),
@@ -2347,7 +2299,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2370,7 +2322,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('string'),
@@ -2380,7 +2332,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     /**
@@ -2403,7 +2355,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $this->subject->enrich([$this->defaultTable]);
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`select`',
             Type::getType('string'),
@@ -2413,7 +2365,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        self::assertSame($expectedColumn->toArray(), $result[0]->getColumn('select')->toArray());
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
     private function mockDefaultConnectionPlatformInConnectionPool(string $databasePlatformClass = MariaDBPlatform::class): void

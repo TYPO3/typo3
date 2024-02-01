@@ -248,7 +248,7 @@ class SchemaMigrator
 
         // Add default TCA fields
         $tables = $this->mergeTableDefinitions($tables);
-        $tables = $this->defaultTcaSchema->enrich(array_values($tables));
+        $tables = $this->defaultTcaSchema->enrich($tables);
         // Ensure the default TCA fields are ordered
         foreach ($tables as $k => $table) {
             $prioritizedColumnNames = $this->getPrioritizedFieldNames($table->getName());
