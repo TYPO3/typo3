@@ -72,7 +72,7 @@ handleDbmsOptions() {
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10"
-            if ! [[ ${DBMS_VERSION} =~ ^(10|11|12|13|14|15)$ ]]; then
+            if ! [[ ${DBMS_VERSION} =~ ^(10|11|12|13|14|15|16)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
                 echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
@@ -221,8 +221,8 @@ Options:
 
     -b <docker|podman>
         Container environment:
-            - docker (default)
-            - podman
+            - podman (default)
+            - docker
 
     -a <mysqli|pdo_mysql>
         Only with -s functional|functionalDeprecated
@@ -259,11 +259,12 @@ Options:
             - 8.0   maintained until 2026-04 (default)
         With "-d postgres":
             - 10    unmaintained since 2022-11-10 (default)
-            - 11    maintained until 2023-11-09
+            - 11    unmaintained since 2023-11-09
             - 12    maintained until 2024-11-14
             - 13    maintained until 2025-11-13
             - 14    maintained until 2026-11-12
             - 15    maintained until 2027-11-11
+            - 16    maintained until 2028-11-09
 
     -c <chunk/numberOfChunks>
         Only with -s functional|acceptance
@@ -377,7 +378,7 @@ CGLCHECK_DRY_RUN=""
 DATABASE_DRIVER=""
 CHUNKS=0
 THISCHUNK=0
-CONTAINER_BIN="docker"
+CONTAINER_BIN=""
 COMPOSER_ROOT_VERSION="13.0.x-dev"
 PHPSTAN_CONFIG_FILE="phpstan.local.neon"
 CONTAINER_INTERACTIVE="-it --init"
@@ -482,8 +483,16 @@ handleDbmsOptions
 if [ "${CI}" == "true" ]; then
     PHPSTAN_CONFIG_FILE="phpstan.ci.neon"
     CONTAINER_INTERACTIVE=""
-    CONTAINER_BIN="podman"
     CI_PARAMS="--pull=never"
+fi
+
+# determine default container binary to use: 1. podman 2. docker
+if [[ -z "${CONTAINER_BIN}" ]]; then
+    if type "podman" >/dev/null 2>&1; then
+        CONTAINER_BIN="podman"
+    elif type "docker" >/dev/null 2>&1; then
+        CONTAINER_BIN="docker"
+    fi
 fi
 
 if [ $(uname) != "Darwin" ] && [ ${CONTAINER_BIN} = "docker" ]; then
