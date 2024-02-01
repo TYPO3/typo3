@@ -697,7 +697,7 @@ class RequestHandler implements RequestHandlerInterface
                 if (is_array($languageFile)) {
                     continue;
                 }
-                $languageFileConfig = $typoScriptPageArray['inlineLanguageLabelFiles.'][$key . '.'];
+                $languageFileConfig = $typoScriptPageArray['inlineLanguageLabelFiles.'][$key . '.'] ?? [];
                 if (isset($languageFileConfig['if.']) && !$controller->cObj->checkIf($languageFileConfig['if.'])) {
                     continue;
                 }
