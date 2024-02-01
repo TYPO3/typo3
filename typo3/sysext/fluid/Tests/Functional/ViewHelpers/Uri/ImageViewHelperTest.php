@@ -19,6 +19,11 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Uri;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariant;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -36,8 +41,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
-        $this->setUpBackendUser(1);
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/ViewHelpers/ImageViewHelper/fal_image.csv');
     }
 
     public static function invalidArgumentsDataProvider(): array
@@ -150,36 +154,212 @@ final class ImageViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    public static function renderReturnsExpectedMarkupDataProvider(): array
+    public static function basicScalingCroppingDataProvider(): \Generator
     {
-        return [
-            'crop false' => [
-                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="false" />',
-                '@^typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg$@',
-            ],
-            'crop null' => [
-                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="null" />',
-                '@^typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg$@',
-            ],
-            'crop as array' => [
-                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="{\'x\': 200, \'y\': 200, \'width\': 200, \'height\': 200}" />',
-                '@^typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg$@',
-            ],
-            'jpg file extension' => [
-                '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest.jpg" width="300" height="500" crop="null" fileExtension="jpg" />',
-                '@^typo3temp/assets/_processed_/b/3/csm_ImageViewHelperTest_.*\.jpg$@',
-            ],
+        yield 'original size' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" />',
+            '@^(fileadmin/ImageViewHelperTest\.jpg)$@',
+            400,
+            300,
+        ];
+        yield 'half width' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="200" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            200,
+            150,
+        ];
+        yield 'stretched' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="200" height="200" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            200,
+            200,
+        ];
+        // Throws error "/usr/bin/gm convert: geometry does not contain image (unable to crop image)."
+        // It's not strictly necessary to test this as the next case makes sure that the values are passed through correctly
+        /*
+        yield 'cropped' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="100c" height="100c" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            100,
+            100,
+        ];
+        */
+        yield 'masked width' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="300m" height="300m" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            300,
+            225,
+        ];
+        yield 'masked height' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="400m" height="150m" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            200,
+            150,
+        ];
+        // would be 200x150, but image will be stretched (why!?) up to have a width of 250
+        yield 'min width' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" height="150" minWidth="250" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            250,
+            150,
+        ];
+        // would be 200x150, but image will be scaled down to have a width of 100
+        yield 'max width' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" height="150" maxWidth="100" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            100,
+            75,
+        ];
+        // would be 200x150, but image will be stretched (why!?) up to have a height of 200
+        yield 'min height' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="200" minHeight="200" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            200,
+            200,
+        ];
+        // would be 200x150, but image will be scaled down to have a height of 75
+        yield 'max height' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="200" maxHeight="75" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            100,
+            75,
+        ];
+        yield 'file record' => [
+            '<f:uri.image image="{fileReference.originalFile}" />',
+            '@^(fileadmin/user_upload/ImageViewHelperFalTest\.jpg)$@',
+            400,
+            300,
+        ];
+        yield 'file id' => [
+            '<f:uri.image src="1" />',
+            '@^(fileadmin/user_upload/ImageViewHelperFalTest\.jpg)$@',
+            400,
+            300,
+        ];
+        yield 'file reference record' => [
+            '<f:uri.image image="{fileReference}" cropVariant="square" />',
+            '@^(fileadmin/_processed_/c/f/csm_ImageViewHelperFalTest_.*\.jpg)$@',
+            300,
+            300,
+        ];
+        yield 'file reference id' => [
+            '<f:uri.image src="1" treatIdAsReference="1" cropVariant="square" />',
+            '@^(fileadmin/_processed_/c/f/csm_ImageViewHelperFalTest_.*\.jpg)$@',
+            300,
+            300,
         ];
     }
 
     /**
      * @test
-     * @dataProvider renderReturnsExpectedMarkupDataProvider
+     * @dataProvider basicScalingCroppingDataProvider
      */
-    public function renderReturnsExpectedMarkup(string $template, string $expected): void
+    public function basicScalingCropping(string $template, string $expected, int $expectedWidth, int $expectedHeight): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getVariableProvider()->add('fileReference', $this->get(ResourceFactory::class)->getFileReferenceObject(1));
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertMatchesRegularExpression($expected, (new TemplateView($context))->render());
+        $result = (new TemplateView($context))->render();
+        self::assertMatchesRegularExpression($expected, $result);
+
+        $matches = [];
+        preg_match($expected, $result, $matches);
+        [$width, $height] = getimagesize($this->instancePath . '/' . $matches[1]);
+        self::assertEquals($expectedWidth, $width, 'width of generated image does not match expected width');
+        self::assertEquals($expectedHeight, $height, 'height of generated image does not match expected height');
+    }
+
+    public static function cropVariantDataProvider(): \Generator
+    {
+        yield 'crop false' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" crop="false" />',
+            '@^(fileadmin/ImageViewHelperTest\.jpg)$@',
+            400,
+            300,
+        ];
+        yield 'crop null' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" crop="null" />',
+            '@^(fileadmin/ImageViewHelperTest\.jpg)$@',
+            400,
+            300,
+        ];
+        yield 'crop as array' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" crop="{default: {cropArea: {x: 0.2, y: 0.2, width: 0.5, height: 0.5}}}" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            200,
+            150,
+        ];
+        yield 'default crop variant' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" crop="{crop}" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            200,
+            225,
+        ];
+        yield 'square crop variant' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" crop="{crop}" cropVariant="square" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            300,
+            300,
+        ];
+        yield 'wide crop variant' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" crop="{crop}" cropVariant="wide" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            400,
+            200,
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider cropVariantDataProvider
+     */
+    public function cropVariant(string $template, string $expected, int $expectedWidth, int $expectedHeight): void
+    {
+        // Based on 400x300 dimensions
+        $cropVariantCollection = new CropVariantCollection([
+            new CropVariant('default', 'Default', new Area(0.25, 0.25, 0.5, 0.75)),
+            new CropVariant('square', 'Square', new Area(0.125, 0, 0.75, 1)),
+            new CropVariant('wide', 'Wide', new Area(0, 1 / 6, 1, 2 / 3)),
+        ]);
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getVariableProvider()->add('crop', (string)$cropVariantCollection);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $result = (new TemplateView($context))->render();
+        self::assertMatchesRegularExpression($expected, $result);
+
+        $matches = [];
+        preg_match($expected, $result, $matches);
+        [$width, $height] = getimagesize($this->instancePath . '/' . $matches[1]);
+        self::assertEquals($expectedWidth, $width, 'width of generated image does not match expected width');
+        self::assertEquals($expectedHeight, $height, 'height of generated image does not match expected height');
+    }
+
+    /**
+     * @test
+     */
+    public function fileExtensionArgument(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" fileExtension="png" />');
+        self::assertMatchesRegularExpression(
+            '@^fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function absoluteArgument(): void
+    {
+        GeneralUtility::setIndpEnv('TYPO3_REQUEST_DIR', 'https://typo3-testing.local/');
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" absolute="1" />');
+        self::assertEquals(
+            'https://typo3-testing.local/fileadmin/ImageViewHelperTest.jpg',
+            (new TemplateView($context))->render(),
+        );
     }
 }
