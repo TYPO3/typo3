@@ -247,7 +247,8 @@ class SchemaMigrator
         }
 
         // Add default TCA fields
-        $tables = $this->defaultTcaSchema->enrich($tables);
+        $tables = $this->mergeTableDefinitions($tables);
+        $tables = $this->defaultTcaSchema->enrich(array_values($tables));
         // Ensure the default TCA fields are ordered
         foreach ($tables as $k => $table) {
             $prioritizedColumnNames = $this->getPrioritizedFieldNames($table->getName());
@@ -353,5 +354,50 @@ class SchemaMigrator
         }
 
         return $prioritizedFieldNames;
+    }
+
+    /**
+     * To give extensions the ability to extend or modify the database schema for core or other extension tables, a
+     * collection of DDL statement parts are parsed into partial table classes. This method merges the table definition
+     * parts to end up with a single table representation to ease further handling.
+     *
+     * @param Table[] $tables
+     * @return array<non-empty-string, Table>
+     */
+    private function mergeTableDefinitions(array $tables): array
+    {
+        $return = [];
+        foreach ($tables as $table) {
+            $tableName = $this->trimIdentifierQuotes($table->getName());
+            if (!array_key_exists($tableName, $return)) {
+                $return[$tableName] = $table;
+                continue;
+            }
+
+            // Merge multiple table definitions. Later definitions overrule identical
+            // columns, indexes and foreign_keys. Order of definitions is based on
+            // extension load order.
+            $currentTableDefinition = $return[$tableName];
+            $return[$tableName] = new Table(
+                $tableName,
+                array_merge($currentTableDefinition->getColumns(), $table->getColumns()),
+                array_merge($currentTableDefinition->getIndexes(), $table->getIndexes()),
+                [],
+                array_merge($currentTableDefinition->getForeignKeys(), $table->getForeignKeys()),
+                array_merge($currentTableDefinition->getOptions(), $table->getOptions())
+            );
+        }
+
+        return $return;
+    }
+
+    /**
+     * Trim all possible identifier quotes from identifier. This method has been cloned from Doctrine DBAL.
+     *
+     * @see \Doctrine\DBAL\Schema\AbstractAsset::trimQuotes()
+     */
+    private function trimIdentifierQuotes(string $identifier): string
+    {
+        return str_replace(['`', '"', '[', ']'], '', $identifier);
     }
 }

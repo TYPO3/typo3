@@ -297,33 +297,14 @@ class ConnectionMigrator
                 continue;
             }
 
-            if (!array_key_exists($tableName, $tablesForConnection)) {
-                $tablesForConnection[$tableName] = $table;
-                continue;
-            }
-
-            // Merge multiple table definitions. Later definitions overrule identical
-            // columns, indexes and foreign_keys. Order of definitions is based on
-            // extension load order.
-            $currentTableDefinition = $tablesForConnection[$tableName];
-            $tablesForConnection[$tableName] = new Table(
-                $tableName,
-                array_merge($currentTableDefinition->getColumns(), $table->getColumns()),
-                array_merge($currentTableDefinition->getIndexes(), $table->getIndexes()),
-                [],
-                array_merge($currentTableDefinition->getForeignKeys(), $table->getForeignKeys()),
-                array_merge($currentTableDefinition->getOptions(), $table->getOptions())
-            );
+            $tablesForConnection[$tableName] = $table;
         }
-
         $tablesForConnection = $this->transformTablesForDatabasePlatform($tablesForConnection, $this->connection);
-
         $schemaConfig = new SchemaConfig();
         $schemaConfig->setName($this->connection->getDatabase());
         if (isset($this->connection->getParams()['defaultTableOptions'])) {
             $schemaConfig->setDefaultTableOptions($this->connection->getParams()['defaultTableOptions']);
         }
-
         return new Schema($tablesForConnection, [], $schemaConfig);
     }
 
