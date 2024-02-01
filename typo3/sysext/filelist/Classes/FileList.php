@@ -609,7 +609,9 @@ class FileList
      */
     protected function renderIcon(ResourceView $resourceView): string
     {
-        return BackendUtility::wrapClickMenuOnIcon($resourceView->getIconSmall()->render(), 'sys_file', $resourceView->getIdentifier());
+        return $this->mode === Mode::BROWSE
+            ? $resourceView->getIconSmall()->render()
+            : BackendUtility::wrapClickMenuOnIcon($resourceView->getIconSmall()->render(), 'sys_file', $resourceView->getIdentifier());
     }
 
     /**
