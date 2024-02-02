@@ -7,3 +7,6 @@ services:
   ExtbaseTeam\BlogExample\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/{Model,Validator}'
+
+  ExtbaseTeam\BlogExample\Domain\Repository\RegistryEntryRepository:
+    public: true

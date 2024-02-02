@@ -111,6 +111,9 @@
 			<trans-unit id="tx_blogexample_domain_model_comment.content" resname="tx_blogexample_domain_model_comment.content">
 				<source>Content</source>
 			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_registryentry.name" resname="tx_blogexample_domain_model_registryentry.name">
+				<source>Registry Entry Key</source>
+			</trans-unit>
 			<trans-unit id="tx_blogexample_domain_model_tag" resname="tx_blogexample_domain_model_tag">
 				<source>Tag</source>
 			</trans-unit>

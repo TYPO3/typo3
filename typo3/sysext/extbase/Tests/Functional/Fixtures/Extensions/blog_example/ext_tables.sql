@@ -55,6 +55,13 @@ CREATE TABLE tx_blogexample_domain_model_person (
 );
 
 #
+# Table structure for table 'tx_blogexample_domain_model_registryentry'
+#
+CREATE TABLE tx_blogexample_domain_model_registryentry (
+  name varchar(255) DEFAULT '' NOT NULL
+);
+
+#
 # Table structure for table 'tx_blogexample_domain_model_tag'
 #
 CREATE TABLE tx_blogexample_domain_model_tag (
