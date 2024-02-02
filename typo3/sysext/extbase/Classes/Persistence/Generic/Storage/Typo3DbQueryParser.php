@@ -674,22 +674,23 @@ class Typo3DbQueryParser
      */
     protected function getVisibilityConstraintStatement(QuerySettingsInterface $querySettings, $tableName, $tableAlias)
     {
-        $statement = '';
-        if (is_array($GLOBALS['TCA'][$tableName]['ctrl'] ?? null)) {
-            $ignoreEnableFields = $querySettings->getIgnoreEnableFields();
-            $enableFieldsToBeIgnored = $querySettings->getEnableFieldsToBeIgnored();
-            $includeDeleted = $querySettings->getIncludeDeleted();
-            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-            ) {
-                $statement .= $this->getFrontendConstraintStatement($tableName, $tableAlias, $ignoreEnableFields, $enableFieldsToBeIgnored, $includeDeleted);
-            } else {
-                // applicationType backend
-                $statement .= $this->getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted);
-                if (!empty($statement)) {
-                    $statement = $this->replaceTableNameWithAlias($statement, $tableName, $tableAlias);
-                    $statement = strtolower(substr($statement, 1, 3)) === 'and' ? substr($statement, 5) : $statement;
-                }
+        if (!is_array($GLOBALS['TCA'][$tableName]['ctrl'] ?? null)) {
+            return '';
+        }
+
+        $ignoreEnableFields = $querySettings->getIgnoreEnableFields();
+        $enableFieldsToBeIgnored = $querySettings->getEnableFieldsToBeIgnored();
+        $includeDeleted = $querySettings->getIncludeDeleted();
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
+            $statement = $this->getFrontendConstraintStatement($tableName, $tableAlias, $ignoreEnableFields, $enableFieldsToBeIgnored, $includeDeleted);
+        } else {
+            // applicationType backend
+            $statement = $this->getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted);
+            if (!empty($statement)) {
+                $statement = $this->replaceTableNameWithAlias($statement, $tableName, $tableAlias);
+                $statement = strtolower(substr($statement, 1, 3)) === 'and' ? substr($statement, 5) : $statement;
             }
         }
         return $statement;
@@ -856,7 +857,7 @@ class Typo3DbQueryParser
      */
     protected function getPageIdStatement($tableName, $tableAlias, array $storagePageIds)
     {
-        if (!is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
+        if (!is_array($GLOBALS['TCA'][$tableName]['ctrl'] ?? null)) {
             return '';
         }
 
