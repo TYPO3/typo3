@@ -36,6 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
+use TYPO3Tests\BlogExample\Domain\Repository\RegistryEntryRepository;
 
 final class Typo3DbQueryParserTest extends FunctionalTestCase
 {
@@ -798,5 +799,26 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         /** @var CompositeExpression $compositeExpression */
         $compositeExpression = $queryBuilder->getQueryPart('where');
         self::assertMatchesRegularExpression($expectedSql, (string)$compositeExpression);
+    }
+
+    /**
+     * @test
+     */
+    public function tcaWithoutCtrlCreatesAValidSQLStatement(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $registryEntryRepository = $this->get(RegistryEntryRepository::class);
+        $querySettings = new Typo3QuerySettings(new Context(), $this->get(ConfigurationManagerInterface::class));
+
+        $query = $registryEntryRepository->createQuery();
+        $query->setQuerySettings($querySettings);
+
+        $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
+        $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
+
+        $compositeExpression = $queryBuilder->getQueryPart('where');
+        self::assertStringNotContainsString('hidden', (string)$compositeExpression);
+        self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
 }
