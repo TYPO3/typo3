@@ -3,4 +3,4 @@ import{directive as r,PartType as e}from"lit-html/directive.js";import{AsyncRepl
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const c=r(class extends s{constructor(r){if(super(r),r.type!==e.CHILD)throw Error("asyncAppend can only be used in child expressions")}update(r,e){return this._$CJ=r,super.update(r,e)}commitValue(r,e){0===e&&t(this._$CJ);const s=o(this._$CJ);i(s,r)}});export{c as asyncAppend};
+ */const c=r(class extends s{constructor(r){if(super(r),r.type!==e.CHILD)throw Error("asyncAppend can only be used in child expressions")}update(r,e){return this._$Ctt=r,super.update(r,e)}commitValue(r,e){0===e&&t(this._$Ctt);const s=o(this._$Ctt);i(s,r)}});export{c as asyncAppend};
