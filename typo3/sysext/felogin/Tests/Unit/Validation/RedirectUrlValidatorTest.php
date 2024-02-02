@@ -19,6 +19,8 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Validation;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -30,6 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\FrontendLogin\Event\ModifyRedirectUrlValidationResultEvent;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -40,6 +43,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
 
     protected RedirectUrlValidator&AccessibleObjectInterface $accessibleFixture;
     protected RequestInterface $extbaseRequest;
+    protected EventDispatcherInterface&MockObject $eventDispatcher;
     protected string $testHostName;
     protected string $testSitePath;
 
@@ -54,9 +58,10 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         $mockedSiteFinder = $this->getAccessibleMock(SiteFinder::class, ['getAllSites'], [], '', false, false);
         $mockedSiteFinder->method('getAllSites')->willReturn([$site1, $site2]);
 
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->testHostName = 'hostname.tld';
         $this->testSitePath = '/';
-        $this->accessibleFixture = $this->getAccessibleMock(RedirectUrlValidator::class, null, [$mockedSiteFinder]);
+        $this->accessibleFixture = $this->getAccessibleMock(RedirectUrlValidator::class, null, [$mockedSiteFinder, $this->eventDispatcher]);
         $this->accessibleFixture->setLogger(new NullLogger());
         $this->setUpFakeSitePathAndHost();
     }
@@ -114,6 +119,10 @@ final class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
+
+        $event = new ModifyRedirectUrlValidationResultEvent($url, false, $this->extbaseRequest);
+        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+
         self::assertFalse($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
 
@@ -150,6 +159,10 @@ final class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
+
+        $event = new ModifyRedirectUrlValidationResultEvent($url, true, $this->extbaseRequest);
+        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+
         self::assertTrue($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
 
@@ -175,6 +188,10 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         GeneralUtility::flushInternalRuntimeCaches();
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
+
+        $event = new ModifyRedirectUrlValidationResultEvent($url, false, $this->extbaseRequest);
+        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+
         self::assertFalse($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
 
@@ -209,7 +226,35 @@ final class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
+
+        $event = new ModifyRedirectUrlValidationResultEvent($url, true, $this->extbaseRequest);
+        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+
         $this->testSitePath = '/subdir/';
+        $this->setUpFakeSitePathAndHost();
+        self::assertTrue($this->accessibleFixture->isValid($this->extbaseRequest, $url));
+    }
+
+    #[Test]
+    public function customRedirectUrlIsConsideredValidThroughPsr14Event(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getPublicPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+
+        $url = 'https://external-redirect.url';
+        $event = new ModifyRedirectUrlValidationResultEvent($url, false, $this->extbaseRequest);
+        $event->setValidationResult(true);
+        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+
         $this->setUpFakeSitePathAndHost();
         self::assertTrue($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }

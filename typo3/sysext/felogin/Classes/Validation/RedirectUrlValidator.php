@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Validation;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\FrontendLogin\Event\ModifyRedirectUrlValidationResultEvent;
 
 /**
  * Used to check if a referrer or a redirect URL is valid to be used as within Frontend Logins
@@ -33,7 +35,10 @@ class RedirectUrlValidator implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(protected SiteFinder $siteFinder) {}
+    public function __construct(
+        protected SiteFinder $siteFinder,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
     /**
      * Checks if a given URL is valid / properly sanitized and/or the domain is known to TYPO3.
@@ -43,13 +48,24 @@ class RedirectUrlValidator implements LoggerAwareInterface
         if ($value === '') {
             return false;
         }
+
         // Validate the URL
+        $result = false;
         if ($this->isRelativeUrl($value) || $this->isInCurrentDomain($request, $value) || $this->isInLocalDomain($value)) {
-            return true;
+            $result = true;
         }
+
+        // Allow to change the validation result via a PSR-14 event
+        $event = new ModifyRedirectUrlValidationResultEvent($value, $result, $request);
+        $event = $this->eventDispatcher->dispatch($event);
+        $result = $event->getValidationResult();
+
         // URL is not allowed
-        $this->logger->debug('Url "{url}" was not accepted.', ['url' => $value]);
-        return false;
+        if (!$result) {
+            $this->logger->debug('Url "{url}" was not accepted.', ['url' => $value]);
+        }
+
+        return $result;
     }
 
     /**
