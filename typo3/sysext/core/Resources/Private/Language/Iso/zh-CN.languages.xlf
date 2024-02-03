@@ -76,7 +76,7 @@
       </trans-unit>
       <trans-unit id="ang" resname="ang" approved="yes">
         <source>English, Old (ca. 450-1100)</source>
-        <target>古英语</target>
+        <target>古英语 (约 450 - 1100)</target>
       </trans-unit>
       <trans-unit id="anp" resname="anp" approved="yes">
         <source>Angika</source>
@@ -448,7 +448,7 @@
       </trans-unit>
       <trans-unit id="dum" resname="dum" approved="yes">
         <source>Dutch, Middle (ca. 1050-1350)</source>
-        <target>中古荷兰语</target>
+        <target>中古荷兰语 (约 1050 - 1350)</target>
       </trans-unit>
       <trans-unit id="dv" resname="dv" approved="yes">
         <source>Divehi; Dhivehi; Maldivian</source>
@@ -492,7 +492,7 @@
       </trans-unit>
       <trans-unit id="enm" resname="enm" approved="yes">
         <source>English, Middle (1100-1500)</source>
-        <target>中古英语</target>
+        <target>中古英语 (1100 - 1500)</target>
       </trans-unit>
       <trans-unit id="eo" resname="eo" approved="yes">
         <source>Esperanto</source>
@@ -560,11 +560,11 @@
       </trans-unit>
       <trans-unit id="frm" resname="frm" approved="yes">
         <source>French, Middle (ca. 1400-1600)</source>
-        <target>中古法语</target>
+        <target>中古法语 (约 1400 - 1600)</target>
       </trans-unit>
       <trans-unit id="fro" resname="fro" approved="yes">
         <source>French, Old (842-ca. 1400)</source>
-        <target>古法语</target>
+        <target>古法语 (842 - 约 1400)</target>
       </trans-unit>
       <trans-unit id="frr" resname="frr" approved="yes">
         <source>Northern Frisian</source>
@@ -620,7 +620,7 @@
       </trans-unit>
       <trans-unit id="gmh" resname="gmh" approved="yes">
         <source>German, Middle High (ca. 1050-1500)</source>
-        <target>中古高地德语</target>
+        <target>中古高地德语 (约 1050 - 1500)</target>
       </trans-unit>
       <trans-unit id="gn" resname="gn" approved="yes">
         <source>Guarani</source>
@@ -628,7 +628,7 @@
       </trans-unit>
       <trans-unit id="goh" resname="goh" approved="yes">
         <source>German, Old High (ca. 750-1050)</source>
-        <target>古高地德语</target>
+        <target>古高地德语 (约 750 - 1050)</target>
       </trans-unit>
       <trans-unit id="gon" resname="gon" approved="yes">
         <source>Gondi</source>
@@ -648,7 +648,7 @@
       </trans-unit>
       <trans-unit id="grc" resname="grc" approved="yes">
         <source>Greek, Ancient (to 1453)</source>
-        <target>古典希腊语</target>
+        <target>古希腊语 (- 1453)</target>
       </trans-unit>
       <trans-unit id="gsw" resname="gsw" approved="yes">
         <source>Swiss German; Alemannic; Alsatian</source>
@@ -1092,7 +1092,7 @@
       </trans-unit>
       <trans-unit id="mga" resname="mga" approved="yes">
         <source>Irish, Middle (900-1200)</source>
-        <target>中古爱尔兰语</target>
+        <target>中古爱尔兰语 (900 - 1200)</target>
       </trans-unit>
       <trans-unit id="mh" resname="mh" approved="yes">
         <source>Marshallese</source>
@@ -1264,7 +1264,7 @@
       </trans-unit>
       <trans-unit id="non" resname="non" approved="yes">
         <source>Norse, Old</source>
-        <target>古诺尔斯语</target>
+        <target>古诺斯语</target>
       </trans-unit>
       <trans-unit id="nqo" resname="nqo" approved="yes">
         <source>N'Ko</source>
@@ -1372,7 +1372,7 @@
       </trans-unit>
       <trans-unit id="peo" resname="peo" approved="yes">
         <source>Persian, Old (ca. 600-400 B.C.)</source>
-        <target>古波斯语</target>
+        <target>古波斯语 (约前 600 - 400)</target>
       </trans-unit>
       <trans-unit id="phi" resname="phi" approved="yes">
         <source>Philippine languages</source>
@@ -1400,7 +1400,7 @@
       </trans-unit>
       <trans-unit id="pro" resname="pro" approved="yes">
         <source>Provençal, Old (to 1500)</source>
-        <target>古普罗旺斯语</target>
+        <target>古普罗旺斯语 (- 1500)</target>
       </trans-unit>
       <trans-unit id="ps" resname="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1528,7 +1528,7 @@
       </trans-unit>
       <trans-unit id="sga" resname="sga" approved="yes">
         <source>Irish, Old (to 900)</source>
-        <target>古爱尔兰语</target>
+        <target>古爱尔兰语 (- 900)</target>
       </trans-unit>
       <trans-unit id="sgn" resname="sgn" approved="yes">
         <source>Sign Languages</source>
