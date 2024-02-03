@@ -220,11 +220,11 @@
       </trans-unit>
       <trans-unit id="BW.name" resname="BW.name" approved="yes">
         <source>Botswana</source>
-        <target>博兹瓦那</target>
+        <target>博茨瓦纳</target>
       </trans-unit>
       <trans-unit id="BW.official_name" resname="BW.official_name" approved="yes">
         <source>Republic of Botswana</source>
-        <target>博兹瓦那共和国</target>
+        <target>博茨瓦纳共和国</target>
       </trans-unit>
       <trans-unit id="BY.name" resname="BY.name" approved="yes">
         <source>Belarus</source>
@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="CC.name" resname="CC.name" approved="yes">
         <source>Cocos (Keeling) Islands</source>
-        <target>科科斯群岛</target>
+        <target>科科斯 (基林) 群岛</target>
       </trans-unit>
       <trans-unit id="CD.name" resname="CD.name" approved="yes">
         <source>Congo, The Democratic Republic of the</source>
@@ -252,7 +252,7 @@
       </trans-unit>
       <trans-unit id="CF.name" resname="CF.name" approved="yes">
         <source>Central African Republic</source>
-        <target>中非</target>
+        <target>中非共和国</target>
       </trans-unit>
       <trans-unit id="CG.name" resname="CG.name" approved="yes">
         <source>Congo</source>
@@ -396,7 +396,7 @@
       </trans-unit>
       <trans-unit id="DM.official_name" resname="DM.official_name" approved="yes">
         <source>Commonwealth of Dominica</source>
-        <target>米尼克共和国</target>
+        <target>多米尼克国</target>
       </trans-unit>
       <trans-unit id="DO.name" resname="DO.name" approved="yes">
         <source>Dominican Republic</source>
@@ -408,7 +408,7 @@
       </trans-unit>
       <trans-unit id="DZ.official_name" resname="DZ.official_name" approved="yes">
         <source>People's Democratic Republic of Algeria</source>
-        <target>阿尔及利亚人民民主共和国</target>
+        <target>阿尔及利亚民主人民共和国</target>
       </trans-unit>
       <trans-unit id="EC.name" resname="EC.name" approved="yes">
         <source>Ecuador</source>
@@ -480,7 +480,7 @@
       </trans-unit>
       <trans-unit id="FK.name" resname="FK.name" approved="yes">
         <source>Falkland Islands (Malvinas)</source>
-        <target>福克兰群岛(马尔维纳斯)</target>
+        <target>福克兰群岛 (马尔维纳斯)</target>
       </trans-unit>
       <trans-unit id="FM.name" resname="FM.name" approved="yes">
         <source>Micronesia, Federated States of</source>
@@ -588,7 +588,7 @@
       </trans-unit>
       <trans-unit id="GS.name" resname="GS.name" approved="yes">
         <source>South Georgia and the South Sandwich Islands</source>
-        <target>南乔治亚岛和南桑德韦奇岛</target>
+        <target>南乔治亚和南桑德韦奇群岛</target>
       </trans-unit>
       <trans-unit id="GT.name" resname="GT.name" approved="yes">
         <source>Guatemala</source>
@@ -788,7 +788,7 @@
       </trans-unit>
       <trans-unit id="KM.official_name" resname="KM.official_name" approved="yes">
         <source>Union of the Comoros</source>
-        <target>科摩罗联邦</target>
+        <target>科摩罗联盟</target>
       </trans-unit>
       <trans-unit id="KN.name" resname="KN.name" approved="yes">
         <source>Saint Kitts and Nevis</source>
@@ -840,7 +840,7 @@
       </trans-unit>
       <trans-unit id="LC.name" resname="LC.name" approved="yes">
         <source>Saint Lucia</source>
-        <target>圣路西亚</target>
+        <target>圣卢西亚</target>
       </trans-unit>
       <trans-unit id="LI.name" resname="LI.name" approved="yes">
         <source>Liechtenstein</source>
@@ -1016,7 +1016,7 @@
       </trans-unit>
       <trans-unit id="MS.name" resname="MS.name" approved="yes">
         <source>Montserrat</source>
-        <target>蒙塞拉特岛</target>
+        <target>蒙特塞拉特</target>
       </trans-unit>
       <trans-unit id="MT.name" resname="MT.name" approved="yes">
         <source>Malta</source>
@@ -1220,7 +1220,7 @@
       </trans-unit>
       <trans-unit id="PN.name" resname="PN.name" approved="yes">
         <source>Pitcairn</source>
-        <target>皮特克恩</target>
+        <target>皮特凯恩</target>
       </trans-unit>
       <trans-unit id="PR.name" resname="PR.name" approved="yes">
         <source>Puerto Rico</source>
@@ -1340,7 +1340,7 @@
       </trans-unit>
       <trans-unit id="SH.name" resname="SH.name" approved="yes">
         <source>Saint Helena, Ascension and Tristan da Cunha</source>
-        <target>圣赫勒拿-阿森松-特里斯坦达库尼亚</target>
+        <target>圣赫勒拿-阿森松-特里斯坦-达库尼亚</target>
       </trans-unit>
       <trans-unit id="SI.name" resname="SI.name" approved="yes">
         <source>Slovenia</source>
@@ -1352,7 +1352,7 @@
       </trans-unit>
       <trans-unit id="SJ.name" resname="SJ.name" approved="yes">
         <source>Svalbard and Jan Mayen</source>
-        <target>斯瓦尔巴特和扬马延岛</target>
+        <target>斯瓦尔巴和扬马延</target>
       </trans-unit>
       <trans-unit id="SK.name" resname="SK.name" approved="yes">
         <source>Slovakia</source>
@@ -1372,7 +1372,7 @@
       </trans-unit>
       <trans-unit id="SM.name" resname="SM.name" approved="yes">
         <source>San Marino</source>
-        <target>圣马力诺市</target>
+        <target>圣马力诺</target>
       </trans-unit>
       <trans-unit id="SM.official_name" resname="SM.official_name" approved="yes">
         <source>Republic of San Marino</source>
@@ -1596,7 +1596,7 @@
       </trans-unit>
       <trans-unit id="VA.name" resname="VA.name" approved="yes">
         <source>Holy See (Vatican City State)</source>
-        <target>梵地冈</target>
+        <target>梵蒂冈</target>
       </trans-unit>
       <trans-unit id="VC.name" resname="VC.name" approved="yes">
         <source>Saint Vincent and the Grenadines</source>
@@ -1624,7 +1624,7 @@
       </trans-unit>
       <trans-unit id="VI.official_name" resname="VI.official_name" approved="yes">
         <source>Virgin Islands of the United States</source>
-        <target>美属维京群岛</target>
+        <target>美属维尔京群岛</target>
       </trans-unit>
       <trans-unit id="VN.name" resname="VN.name" approved="yes">
         <source>Viet Nam</source>
