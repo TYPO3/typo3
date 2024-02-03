@@ -57,7 +57,7 @@ handleDbmsOptions() {
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="8.0"
-            if ! [[ ${DBMS_VERSION} =~ ^(8.0)$ ]]; then
+            if ! [[ ${DBMS_VERSION} =~ ^(8.0|8.1|8.2|8.3)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
                 echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
@@ -256,7 +256,10 @@ Options:
             - 11.0   development series
             - 11.1   short-term development series
         With "-d mysql":
-            - 8.0   maintained until 2026-04 (default)
+            - 8.0   maintained until 2026-04 (default) LTS
+            - 8.1   unmaintained since 2023-10
+            - 8.2   unmaintained since 2024-01
+            - 8.3   maintained until 2024-04
         With "-d postgres":
             - 10    unmaintained since 2022-11-10 (default)
             - 11    unmaintained since 2023-11-09
