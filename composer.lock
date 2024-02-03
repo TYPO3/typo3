@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b92a62dae5b3b40814f07e176071f69d",
+    "content-hash": "1fcef4421f4c94fab3ca13e901fa0687",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -247,16 +247,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "4.0.0-RC2",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "d2aed19fdc7e945455fd864dd7df6245fce3222f"
+                "reference": "53df8c432978b716a805143eb701436d54ec705e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/d2aed19fdc7e945455fd864dd7df6245fce3222f",
-                "reference": "d2aed19fdc7e945455fd864dd7df6245fce3222f",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/53df8c432978b716a805143eb701436d54ec705e",
+                "reference": "53df8c432978b716a805143eb701436d54ec705e",
                 "shasum": ""
             },
             "require": {
@@ -269,7 +269,7 @@
                 "doctrine/coding-standard": "12.0.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2023.2",
-                "phpstan/phpstan": "1.10.56",
+                "phpstan/phpstan": "1.10.57",
                 "phpstan/phpstan-phpunit": "1.3.15",
                 "phpstan/phpstan-strict-rules": "^1.5",
                 "phpunit/phpunit": "10.5.9",
@@ -335,7 +335,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/4.0.0-RC2"
+                "source": "https://github.com/doctrine/dbal/tree/4.0.0"
             },
             "funding": [
                 {
@@ -351,20 +351,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-25T22:31:17+00:00"
+            "time": "2024-02-03T19:11:19+00:00"
         },
         {
             "name": "doctrine/deprecations",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "4f2d4f2836e7ec4e7a8625e75c6aa916004db931"
+                "reference": "dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/4f2d4f2836e7ec4e7a8625e75c6aa916004db931",
-                "reference": "4f2d4f2836e7ec4e7a8625e75c6aa916004db931",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab",
+                "reference": "dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab",
                 "shasum": ""
             },
             "require": {
@@ -396,9 +396,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-                "source": "https://github.com/doctrine/deprecations/tree/1.1.2"
+                "source": "https://github.com/doctrine/deprecations/tree/1.1.3"
             },
-            "time": "2023-09-27T20:04:15+00:00"
+            "time": "2024-01-30T19:34:25+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -8810,7 +8810,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doctrine/dbal": 5,
         "typo3/testing-framework": 20
     },
     "prefer-stable": false,
