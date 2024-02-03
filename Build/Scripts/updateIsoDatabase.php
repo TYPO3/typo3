@@ -39,7 +39,7 @@ require __DIR__ . '/../../vendor/autoload.php';
  */
 class XliffDumper extends \Symfony\Component\Translation\Dumper\XliffFileDumper
 {
-    public function dump(MessageCatalogue $messages, array $options = [])
+    public function dump(MessageCatalogue $messages, array $options = []): void
     {
         if ($messages->getLocale() === 'en') {
             $this->setRelativePathTemplate('%domain%.%extension%');
