@@ -5,7 +5,7 @@
   "readme": "../README.md",
   "homepage": "https://typo3.org",
   "author": "TYPO3 CMS Core Team",
-  "version": "11.0.0-dev",
+  "private": true,
   "license": "GPL-2.0+",
   "engines": {
     "node": ">=18.19.0 <19.0.0",
