@@ -32,7 +32,7 @@ final readonly class InitializeCodeEditorInEditFileForm
 {
     public function __construct(private ModeRegistry $modeRegistry) {}
 
-    #[AsEventListener('typo3-code editor/initialize-code-editor-in-edit-file-form')]
+    #[AsEventListener('typo3-codeeditor/initialize-code-editor-in-edit-file-form')]
     public function __invoke(ModifyEditFileFormDataEvent $event): void
     {
         // Compile and register code editor configuration
