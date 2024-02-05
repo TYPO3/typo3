@@ -335,7 +335,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $table = 'sys_category';
             $field = 'selected_categories';
         }
-        if (trim($record[$field]) === '') {
+        if (trim($record[$field] ?? '') === '') {
             return '';
         }
         $content = '';
