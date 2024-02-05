@@ -203,6 +203,7 @@ Options:
             - cleanCache: clean up cache related files and folders
             - cleanRenderedDocumentation: clean up rendered documentation files and folders (Documentation-GENERATED-temp)
             - cleanTests: clean up test related files and folders
+            - composer: "composer" command dispatcher, to execute various composer commands
             - composerInstall: "composer install"
             - composerInstallMax: "composer update", with no platform.php config.
             - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
@@ -356,6 +357,13 @@ Examples:
 
     # Run installer tests of a new instance on sqlite
     ./Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite
+
+    # Run composer require to require a dependency
+    ./Build/Scripts/runTests.sh -s composer -- require --dev typo3/testing-framework:dev-main
+
+    # Some composer command examples
+    ./Build/Scripts/runTests.sh -s composer -- dumpautoload
+    ./Build/Scripts/runTests.sh -s composer -- info | grep "symfony"
 EOF
 }
 
@@ -814,6 +822,11 @@ case ${TEST_SUITE} in
         ;;
     cleanTests)
         cleanTestFiles
+        ;;
+    composer)
+        COMMAND=(composer "$@")
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name composer-${SUFFIX} -e COMPOSER_CACHE_DIR=.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} ${IMAGE_PHP} "${COMMAND[@]}"
+        SUITE_EXIT_CODE=$?
         ;;
     composerInstall)
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name composer-install-${SUFFIX} -e COMPOSER_CACHE_DIR=.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} ${IMAGE_PHP} composer install --no-progress --no-interaction
