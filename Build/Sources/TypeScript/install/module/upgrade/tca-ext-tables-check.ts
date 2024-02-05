@@ -38,7 +38,9 @@ type TcaCheckResponse = ModuleLoadedResponseWithButtons & {
 class TcaExtTablesCheck extends AbstractInteractableModule {
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    this.check();
+    this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js').then((): void => {
+      this.check();
+    });
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();

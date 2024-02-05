@@ -67,7 +67,9 @@ type SuggestionsExecutedResponse = {
 class DatabaseAnalyzer extends AbstractInteractableModule {
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    this.getData();
+    this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js').then((): void => {
+      this.getData();
+    });
 
     // Select / deselect all checkboxes
     new RegularEvent('click', (event: Event, element: HTMLInputElement): void => {

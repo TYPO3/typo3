@@ -17,7 +17,6 @@ import '../../renderable/clearable';
 import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import Router from '../../router';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';
@@ -43,16 +42,10 @@ class UpgradeDocs extends AbstractInteractableModule {
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    const isInIframe = (window.location !== window.parent.location);
-    if (isInIframe) {
-      topLevelModuleImport('select-pure').then((): void => {
-        this.getContent();
-      });
-    } else {
-      import('select-pure').then((): void => {
-        this.getContent();
-      });
-    }
+
+    this.loadModuleFrameAgnostic('select-pure').then((): void => {
+      this.getContent();
+    });
 
     // Mark a file as read
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {

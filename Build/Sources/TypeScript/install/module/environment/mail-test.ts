@@ -45,7 +45,9 @@ class MailTest extends AbstractInteractableModule {
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    this.getData();
+    this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js').then((): void => {
+      this.getData();
+    });
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();

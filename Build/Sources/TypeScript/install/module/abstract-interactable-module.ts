@@ -70,15 +70,21 @@ export abstract class AbstractInteractableModule {
     button.disabled = !interactable;
   }
 
+  protected async loadModuleFrameAgnostic(module: string): Promise<any> {
+    const isInIframe = window.location !== window.parent.location;
+    if (isInIframe) {
+      await topLevelModuleImport(module);
+    } else {
+      await import(module);
+    }
+  }
+
   protected renderProgressBar(
     target?: HTMLElement,
     properties?: Partial<WritablePart<ProgressBar>>,
     mode?: 'replace' | 'prepend' | 'append'
   ): ProgressBar {
-    const isInIframe = window.location !== window.parent.location;
-    if (isInIframe) {
-      topLevelModuleImport('@typo3/install/renderable/progress-bar.js');
-    }
+    this.loadModuleFrameAgnostic('@typo3/install/renderable/progress-bar.js');
 
     target = target || this.currentModal;
 

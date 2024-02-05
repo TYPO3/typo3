@@ -14,7 +14,6 @@
 import 'bootstrap';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
-import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -49,16 +48,10 @@ type SystemMaintainersWrittenResponse = {
 class SystemMaintainer extends AbstractInteractableModule {
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    const isInIframe = window.location !== window.parent.location;
-    if (isInIframe) {
-      topLevelModuleImport('select-pure').then((): void => {
-        this.getList();
-      });
-    } else {
-      import('select-pure').then((): void => {
-        this.getList();
-      });
-    }
+
+    this.loadModuleFrameAgnostic('select-pure').then((): void => {
+      this.getList();
+    });
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();

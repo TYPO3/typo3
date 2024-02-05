@@ -45,8 +45,10 @@ class EnvironmentCheck extends AbstractInteractableModule {
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
-    // Get status on initialize to have the badge and content ready
-    this.runTests();
+    this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js').then((): void => {
+      // Get status on initialize to have the badge and content ready
+      this.runTests();
+    });
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();

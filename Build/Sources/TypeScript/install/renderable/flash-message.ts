@@ -25,7 +25,9 @@ export class FlashMessage extends LitElement {
   @property({ type: String }) content: string;
 
   public static create(severity: number, subject: string, content: string = ''): FlashMessage {
-    const message = document.createElement('typo3-install-flashmessage');
+    const isInIframe = window.location !== window.parent.location;
+    const doc = isInIframe ? window.parent.document : document;
+    const message = doc.createElement('typo3-install-flashmessage');
     message.severity = severity;
     message.subject = subject;
 

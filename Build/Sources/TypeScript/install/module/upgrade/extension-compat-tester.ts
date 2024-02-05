@@ -41,7 +41,9 @@ interface BrokenExtension {
 class ExtensionCompatTester extends AbstractInteractableModule {
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    this.getLoadedExtensionList();
+    this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js').then((): void => {
+      this.getLoadedExtensionList();
+    });
 
     new RegularEvent('click', (): void => {
       this.findInModal(Identifiers.uninstallTrigger)?.classList?.add('hidden');

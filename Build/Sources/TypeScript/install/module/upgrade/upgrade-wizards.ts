@@ -151,7 +151,11 @@ class UpgradeWizards extends AbstractInteractableModule {
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
-    this.getData().then((): void => {
+    Promise.all([
+      this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js'),
+      this.loadModuleFrameAgnostic('@typo3/install/renderable/flash-message.js')
+    ]).then(async (): Promise<void> => {
+      await this.getData();
       this.doneUpgrades();
     });
 

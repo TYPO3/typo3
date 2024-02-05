@@ -25,7 +25,9 @@ export class InfoBox extends LitElement {
   @property({ type: String }) content: string;
 
   public static create(severity: number, subject: string, content: string = ''): InfoBox {
-    const infobox = document.createElement('typo3-install-infobox');
+    const isInIframe = window.location !== window.parent.location;
+    const doc = isInIframe ? window.parent.document : document;
+    const infobox = doc.createElement('typo3-install-infobox');
     infobox.severity = severity;
     infobox.subject = subject;
 

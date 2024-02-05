@@ -21,7 +21,6 @@ import '../../renderable/language-packs';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
-import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import type { ModalElement } from '@typo3/backend/modal';
 import type { ProgressBar } from '../../renderable/progress-bar';
 
@@ -72,12 +71,14 @@ class LanguagePacks extends AbstractInteractableModule {
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    const isInIframe = window.location !== window.parent.location;
-    if (isInIframe) {
-      topLevelModuleImport('@typo3/install/renderable/language-packs.js');
-    }
 
-    this.getData();
+    Promise.all([
+      this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js'),
+      this.loadModuleFrameAgnostic('@typo3/install/renderable/flash-message.js'),
+      this.loadModuleFrameAgnostic('@typo3/install/renderable/language-packs.js')
+    ]).then((): void => {
+      this.getData();
+    });
   }
 
   private getData(): void {

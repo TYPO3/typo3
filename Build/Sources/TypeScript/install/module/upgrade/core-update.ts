@@ -87,7 +87,9 @@ class CoreUpdate extends AbstractInteractableModule {
    */
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    this.getData().then((): void => {
+
+    this.loadModuleFrameAgnostic('@typo3/install/renderable/flash-message.js').then(async (): Promise<void> => {
+      await this.getData();
       this.buttonTemplate = this.findInModal(Identifiers.updateButton)?.cloneNode(true) as HTMLElement;
     });
 
