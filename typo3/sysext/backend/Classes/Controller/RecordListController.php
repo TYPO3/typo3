@@ -363,9 +363,9 @@ class RecordListController
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
-        if ($table && (!isset($this->modTSconfig['noExportRecordsLinks'])
-                || (isset($this->modTSconfig['noExportRecordsLinks'])
-                    && !$this->modTSconfig['noExportRecordsLinks']))
+        if ($table
+            && !($this->modTSconfig['noExportRecordsLinks'] ?? false)
+            && $this->getBackendUserAuthentication()->isExportEnabled()
         ) {
             // Export
             if (ExtensionManagementUtility::isLoaded('impexp')) {
