@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
@@ -185,6 +186,9 @@ class SiteMatcher implements SingletonInterface
         if ($pageId === null) {
             return null;
         }
+        if (!MathUtility::canBeInterpretedAsInteger($pageId)) {
+            return null;
+        }
         return (int)$pageId <= 0 ? null : (int)$pageId;
     }
 
@@ -195,6 +199,9 @@ class SiteMatcher implements SingletonInterface
     {
         $languageId = $request->getQueryParams()['L'] ?? $request->getParsedBody()['L'] ?? null;
         if ($languageId === null) {
+            return null;
+        }
+        if (!MathUtility::canBeInterpretedAsInteger($languageId)) {
             return null;
         }
         return (int)$languageId < 0 ? null : (int)$languageId;

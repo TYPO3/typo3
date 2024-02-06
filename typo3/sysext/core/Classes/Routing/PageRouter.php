@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Routing\Enhancer\RoutingEnhancerInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 
 /**
@@ -104,9 +105,12 @@ class PageRouter implements RouterInterface
         $candidateProvider = $this->getSlugCandidateProvider($this->context);
 
         // Legacy URIs (?id=12345) takes precedence, no matter if a route is given
-        $requestId = (int)($request->getQueryParams()['id'] ?? 0);
-        if ($requestId > 0) {
-            if (!empty($pageId = $candidateProvider->getRealPageIdForPageIdAsPossibleCandidate($requestId))) {
+        $requestId = ($request->getQueryParams()['id'] ?? null);
+        if ($requestId !== null) {
+            if (MathUtility::canBeInterpretedAsInteger($requestId)
+                && (int)$requestId > 0
+                && !empty($pageId = $candidateProvider->getRealPageIdForPageIdAsPossibleCandidate((int)$requestId))
+            ) {
                 return new PageArguments(
                     (int)$pageId,
                     (string)($request->getQueryParams()['type'] ?? '0'),
