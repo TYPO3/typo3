@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
 final class UpgradeCest extends AbstractCest
 {
-    private static string $alertContainerSelector = '#alert-container';
-
     public function _before(ApplicationTester $I): void
     {
         parent::_before($I);

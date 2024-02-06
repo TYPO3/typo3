@@ -176,10 +176,14 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
+            this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
+            this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), false);
           }
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
+          this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
+          this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), false);
         }
       );
   }
@@ -205,8 +209,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
           token: executeToken,
           hashes: selectedHashes,
         },
-      })
-      .then(
+      }).then(
         async (response: AjaxResponse): Promise<void> => {
           const data: SuggestionsExecutedResponse = await response.resolve();
           if (Array.isArray(data.status)) {
@@ -219,7 +222,10 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
-      );
+      ).finally((): void => {
+        this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
+        this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), false);
+      });
   }
 }
 

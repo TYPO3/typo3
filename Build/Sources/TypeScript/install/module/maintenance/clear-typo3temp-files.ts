@@ -99,7 +99,9 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
-      );
+      ).finally((): void => {
+        this.setModalButtonsState(true);
+      });
   }
 
   private delete(folder: string, storageUid: number|undefined): void {

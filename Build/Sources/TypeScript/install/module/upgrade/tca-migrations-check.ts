@@ -82,12 +82,13 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
               FlashMessage.create(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"')
             );
           }
-          this.setModalButtonsState(true);
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
-      );
+      ).finally((): void => {
+        this.setModalButtonsState(true);
+      });
   }
 
 }

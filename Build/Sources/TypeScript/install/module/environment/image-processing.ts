@@ -132,11 +132,7 @@ class ImageProcessing extends AbstractInteractableModule {
     });
 
     Promise.all(promises).then((): void => {
-      const triggerButton: HTMLElement = this.findInModal(Identifiers.executeTrigger);
-      if (triggerButton !== null) {
-        triggerButton.classList.remove('disabled');
-        triggerButton.removeAttribute('disabled');
-      }
+      this.setModalButtonsState(true);
     });
   }
 }

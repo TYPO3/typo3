@@ -45,7 +45,11 @@ class ExtensionCompatTester extends AbstractInteractableModule {
 
     new RegularEvent('click', (): void => {
       this.findInModal(Identifiers.uninstallTrigger)?.classList?.add('hidden');
-      this.findInModal(Identifiers.outputContainer).innerHTML = '';
+
+      const outputContainer = this.findInModal(Identifiers.outputContainer);
+      if (outputContainer) {
+        outputContainer.innerHTML = '';
+      }
       this.getLoadedExtensionList();
     }).delegateTo(currentModal, Identifiers.checkTrigger);
 
@@ -89,19 +93,19 @@ class ExtensionCompatTester extends AbstractInteractableModule {
             });
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
+            this.unlockModal();
           }
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
+          this.unlockModal();
         }
       );
   }
 
   private unlockModal(): void {
-    this.findInModal(Identifiers.outputContainer).querySelector('typo3-install-progress-bar').remove();
-    const checkTrigger = this.findInModal(Identifiers.checkTrigger) as HTMLInputElement;
-    checkTrigger.classList.remove('disabled');
-    checkTrigger.disabled = false;
+    this.findInModal(Identifiers.outputContainer)?.querySelector('typo3-install-progress-bar')?.remove();
+    this.setModalButtonsState(true);
   }
 
   private renderFailureMessages(scope: string, brokenExtensions: Array<BrokenExtension>, outputContainer: HTMLElement): void {

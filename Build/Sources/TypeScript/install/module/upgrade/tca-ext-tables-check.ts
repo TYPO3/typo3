@@ -82,7 +82,9 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
-      );
+      ).finally((): void => {
+        this.setModalButtonsState(true);
+      });
   }
 }
 

@@ -64,7 +64,6 @@ class FolderStructure extends AbstractInteractableModule {
   private getStatus(): void {
     const modalContent = this.getModalBody();
 
-    this.renderProgressBar(modalContent.querySelector(Identifiers.outputContainer));
     (new AjaxRequest(Router.getUrl('folderStructureGetStatus')))
       .get({ cache: 'no-cache' })
       .then(
@@ -135,7 +134,9 @@ class FolderStructure extends AbstractInteractableModule {
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
-      );
+      ).finally((): void => {
+        this.setModalButtonsState(true);
+      });
   }
 }
 
