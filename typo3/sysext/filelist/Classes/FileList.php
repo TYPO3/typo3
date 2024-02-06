@@ -291,6 +291,7 @@ class FileList
         }
 
         if ($searchDemand !== null) {
+            $this->searchDemand = $searchDemand;
             if ($searchDemand->getSearchTerm() && $searchDemand->getSearchTerm() !== '') {
                 $folders = [];
                 // Add special "Path" field for the search result
@@ -1429,6 +1430,9 @@ class FileList
         parse_str($uri->getQuery(), $queryParameters);
         unset($queryParameters['contentOnly']);
         $queryParameters = array_merge($queryParameters, ['currentPage' => $targetPage]);
+        if ($this->searchDemand) {
+            $queryParameters['searchTerm'] = $this->searchDemand->getSearchTerm() ?? '';
+        }
         $uri = $uri->withQuery(HttpUtility::buildQueryString($queryParameters, '&'));
 
         return new PaginationLink(
@@ -1556,6 +1560,9 @@ class FileList
     protected function sortResources(array $resources, string $sortField): array
     {
         $collator = new \Collator((string)($this->getLanguageService()->getLocale() ?? 'en'));
+        if ($sortField === 'size') {
+            $collator->setAttribute(\Collator::NUMERIC_COLLATION, \Collator::ON);
+        }
         uksort($resources, function (int $index1, int $index2) use ($sortField, $resources, $collator) {
             $resource1 = $resources[$index1];
             $resource2 = $resources[$index2];
