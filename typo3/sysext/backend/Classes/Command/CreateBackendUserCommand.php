@@ -26,13 +26,15 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Create a new backend user
@@ -43,7 +45,6 @@ class CreateBackendUserCommand extends Command
         private readonly ConnectionPool $connectionPool,
         private readonly ConfigurationManager $configurationManager,
         private readonly LanguageServiceFactory $languageServiceFactory,
-        private readonly PasswordHashFactory $passwordHashFactory,
     ) {
         parent::__construct();
     }
@@ -336,24 +337,33 @@ EOT
      */
     private function createUser(string $username, string $password, string $email = '', bool $admin = false, bool $maintainer = false, array $groups = []): void
     {
-        $adminUserFields = [
-            'username' => $username,
-            'password' => $this->passwordHashFactory->getDefaultHashInstance('BE')->getHashedPassword($password),
-            'email' => GeneralUtility::validEmail($email) ? $email : '',
-            'admin' => $admin ? 1 : 0,
-            'usergroup' => empty($groups) ? null : implode(',', $groups),
-            'tstamp' => $GLOBALS['EXEC_TIME'],
-            'crdate' => $GLOBALS['EXEC_TIME'],
+        // Initialize backend user authentication to ensure the new backend user can be created with proper permissions
+        Bootstrap::initializeBackendAuthentication();
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $backendUserId = StringUtility::getUniqueId('NEW');
+        $data = [
+            'be_users' => [
+                $backendUserId => [
+                    'pid' => 0,
+                    'username' => $username,
+                    'password' => $password,
+                    'email' => $email,
+                    'admin' => $admin ? 1 : 0,
+                    'usergroup' => $groups,
+                    'disable' => 0,
+                ],
+            ],
         ];
 
-        $databaseConnection = $this->connectionPool->getConnectionForTable('be_users');
-        $databaseConnection->insert('be_users', $adminUserFields);
-        $adminUserUid = (int)$databaseConnection->lastInsertId();
+        $dataHandler->start($data, []);
+        $dataHandler->process_datamap();
 
-        if ($maintainer) {
+        $backendUserId = $dataHandler->substNEWwithIDs[$backendUserId] ?? null;
+        if ($maintainer && $backendUserId) {
             $maintainerIds = $this->configurationManager->getConfigurationValueByPath('SYS/systemMaintainers') ?? [];
             sort($maintainerIds);
-            $maintainerIds[] = $adminUserUid;
+            $maintainerIds[] = $backendUserId;
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs([
                 'SYS/systemMaintainers' => array_unique($maintainerIds),
             ]);
