@@ -196,7 +196,7 @@ class ExtensionRepository extends Repository
             ->where(
                 $queryBuilder->expr()->orX(...array_values($searchConstraints)),
                 $queryBuilder->expr()->eq('current_version', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
-                $queryBuilder->expr()->gte('review_state', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+                $queryBuilder->expr()->in('review_state', $queryBuilder->createNamedParameter([0, -2], Connection::PARAM_INT_ARRAY))
             )
             ->orderBy('position', 'DESC')
             ->executeQuery()
