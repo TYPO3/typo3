@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class Random
 {
-    private const DEFAULT_PASSWORD_LEGNTH = 16;
+    private const DEFAULT_PASSWORD_LENGTH = 16;
     private const LOWERCASE_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz';
     private const UPPERCASE_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     private const SPECIAL_CHARACTERS = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~';
@@ -62,7 +62,7 @@ class Random
      */
     public function generateRandomPassword(array $passwordRules): string
     {
-        $passwordLength = (int)($passwordRules['length'] ?? self::DEFAULT_PASSWORD_LEGNTH);
+        $passwordLength = (int)($passwordRules['length'] ?? self::DEFAULT_PASSWORD_LENGTH);
         if ($passwordLength < 8) {
             throw new InvalidPasswordRulesException(
                 'Password rules are invalid. Length must be at least 8.',
