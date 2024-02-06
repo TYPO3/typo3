@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -2766,5 +2769,52 @@ final class SlugSiteRequestTest extends AbstractTestCase
                 $responseStructure->getScopePath('page/title')
             );
         }
+    }
+
+    public static function getUrisWithInvalidLegacyQueryParameters(): \Generator
+    {
+        $uri = new Uri('https://website.local/welcome/');
+        yield '#0 id with float value having a zero decimal' => [
+            'uri' => $uri->withQuery(HttpUtility::buildQueryString(['id' => '1110.0'])),
+        ];
+        yield '#1 id string value with tailing numbers' => [
+            'uri' => $uri->withQuery(HttpUtility::buildQueryString(['id' => 'step1110'])),
+        ];
+        yield '#2 id string value with leading numbers' => [
+            'uri' => $uri->withQuery(HttpUtility::buildQueryString(['id' => '1110step'])),
+        ];
+        yield '#3 id string value without numbers' => [
+            'uri' => $uri->withQuery(HttpUtility::buildQueryString(['id' => 'foobar'])),
+        ];
+        yield '#4 id string value with a exponent' => [
+            'uri' => $uri->withQuery(HttpUtility::buildQueryString(['id' => '11e10'])),
+        ];
+        yield '#5 id with a zero as value' => [
+            'uri' => $uri->withQuery(HttpUtility::buildQueryString(['id' => 0])),
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getUrisWithInvalidLegacyQueryParameters
+     */
+    public function requestWithInvalidLegacyQueryParametersDisplayPageNotFoundPage(UriInterface $uri): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [],
+            $this->buildErrorHandlingConfiguration('PHP', [404])
+        );
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest((string)$uri),
+            new InternalRequestContext()
+        );
+        $json = json_decode((string)$response->getBody(), true);
+        self::assertSame(404, $response->getStatusCode());
+        self::assertThat(
+            $json['message'] ?? null,
+            self::stringContains('The requested page does not exist')
+        );
     }
 }
