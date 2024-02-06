@@ -894,11 +894,22 @@ class DatabaseRecordList
 
     protected function createActionButtonDownload(string $table, int $totalItems): ?ButtonInterface
     {
-        // Do not render the download button for page translations or in case it is disabled
-        if (!$this->displayRecordDownload
-            || ($this->modTSconfig['noExportRecordsLinks'] ?? false)
-            || $this->showOnlyTranslatedRecords
-        ) {
+        // Do not render the download button for page translations or in case it is generally disabled
+        if (!$this->displayRecordDownload || $this->showOnlyTranslatedRecords) {
+            return null;
+        }
+
+        $shouldRenderDownloadButton = true;
+        // See if it is disabled in general
+        if (isset($this->modTSconfig['displayRecordDownload'])) {
+            $shouldRenderDownloadButton = (bool)$this->modTSconfig['displayRecordDownload'];
+        }
+        // Table override was explicitly set
+        if (isset($this->tableTSconfigOverTCA[$table . '.']['displayRecordDownload'])) {
+            $shouldRenderDownloadButton = (bool)$this->tableTSconfigOverTCA[$table . '.']['displayRecordDownload'];
+        }
+        // Do not render button if disabled
+        if ($shouldRenderDownloadButton === false) {
             return null;
         }
 
