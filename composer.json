@@ -60,7 +60,7 @@
 		"guzzlehttp/guzzle": "^7.7.0",
 		"guzzlehttp/promises": "^1.5.2 || ^2.0",
 		"guzzlehttp/psr7": "^2.5.0",
-		"lolli42/finediff": "^1.0.2",
+		"lolli42/finediff": "^1.1.0",
 		"masterminds/html5": "^2.7.6",
 		"nikic/php-parser": "^4.15.4",
 		"phpdocumentor/reflection-docblock": "^5.2",
