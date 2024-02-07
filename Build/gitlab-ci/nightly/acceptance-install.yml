@@ -6,7 +6,7 @@ acceptance install mariadb 10.10 php 8.3 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 13.0-composer-max
     paths:
       - .cache
   artifacts:
@@ -24,7 +24,7 @@ acceptance install mariadb 10.4 php 8.2 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 13.0-composer-min
     paths:
       - .cache
   artifacts:
@@ -43,7 +43,7 @@ acceptance install mysql 8.0 php 8.3 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 13.0-composer-max
     paths:
       - .cache
   artifacts:
@@ -61,7 +61,7 @@ acceptance install mysql 8.0 php 8.2 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 13.0-composer-min
     paths:
       - .cache
   artifacts:
@@ -80,7 +80,7 @@ acceptance install postgres 15 php 8.3 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 13.0-composer-max
     paths:
       - .cache
   artifacts:
@@ -98,7 +98,7 @@ acceptance install postgres 10 php 8.2 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 13.0-composer-min
     paths:
       - .cache
   artifacts:
@@ -117,7 +117,7 @@ acceptance install sqlite php 8.3 max:
   only:
     - schedules
   cache:
-    key: main-composer-max
+    key: 13.0-composer-max
     paths:
       - .cache
   artifacts:
@@ -135,7 +135,7 @@ acceptance install sqlite php 8.2 min:
   only:
     - schedules
   cache:
-    key: main-composer-min
+    key: 13.0-composer-min
     paths:
       - .cache
   artifacts:

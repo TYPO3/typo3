@@ -5,7 +5,7 @@ annotations php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s checkAnnotations -p 8.2
@@ -17,7 +17,7 @@ cgl pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s cglGit -n -p 8.2
@@ -30,9 +30,9 @@ grunt clean pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   cache:
-    key: main-js
+    key: 13.0-js
     paths:
       - .cache
   script:
@@ -45,9 +45,9 @@ integration various pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   cache:
-    key: main-composer-phpmixed
+    key: 13.0-composer-phpmixed
     paths:
       - .cache
   script:
@@ -73,7 +73,7 @@ lint php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.2
 
@@ -84,7 +84,7 @@ lint php 8.3 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.3
 
@@ -95,9 +95,9 @@ lint scss ts html pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   cache:
-    key: main-js
+    key: 13.0-js
     paths:
       - .cache
   script:
@@ -112,7 +112,7 @@ phpstan php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s phpstan -p 8.2

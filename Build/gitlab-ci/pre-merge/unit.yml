@@ -5,9 +5,9 @@ unit javascript pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   cache:
-    key: main-composer-js
+    key: 13.0-composer-js
     paths:
       - .cache
   script:
@@ -21,7 +21,7 @@ unit php 8.2 random pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitRandom -p 8.2
@@ -33,7 +33,7 @@ unit php 8.2 deprecated pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
@@ -44,7 +44,7 @@ unit php 8.3 deprecated pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
@@ -56,7 +56,7 @@ unit php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unit -p 8.2
@@ -67,7 +67,7 @@ unit php 8.3 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
     - Build/Scripts/runTests.sh -s unit -p 8.3
