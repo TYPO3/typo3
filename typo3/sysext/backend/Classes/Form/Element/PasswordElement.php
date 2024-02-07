@@ -124,7 +124,7 @@ class PasswordElement extends AbstractFormElement
             $attributes['placeholder'] = trim($config['placeholder']);
         }
 
-        $attributes['autocomplete'] = ($config['autocomplete'] ?? false) ? 'new-' . $fieldName : 'off';
+        $attributes['autocomplete'] = ($config['autocomplete'] ?? false) ? 'current-password' : 'new-password';
 
         $fieldControlResult = $this->renderFieldControl();
         $fieldControlHtml = $fieldControlResult['html'];
