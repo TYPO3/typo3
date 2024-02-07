@@ -70,6 +70,7 @@ export default [
               !source.startsWith('/') &&
               !source.startsWith('Sources/JavaScript/rte_ckeditor/contrib') &&
               source !== 'vanilla-colorful/hex-color-picker.js' &&
+              source !== 'vanilla-colorful/lib/entrypoints/hex' &&
               source !== 'color-convert' &&
               source !== 'color-name' &&
               source !== 'color-parse'
