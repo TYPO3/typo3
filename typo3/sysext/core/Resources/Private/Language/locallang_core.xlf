@@ -896,6 +896,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.move_into_colPos" resname="mess.move_into_colPos">
 				<source>Move "%1$s" into column "%3$s" on page "%2$s"?</source>
 			</trans-unit>
+			<trans-unit id="mess.move_before" resname="mess.move_before">
+				<source>Move "%s" to before "%s"?</source>
+			</trans-unit>
 			<trans-unit id="mess.move_after" resname="mess.move_after">
 				<source>Move "%s" to after "%s"?</source>
 			</trans-unit>

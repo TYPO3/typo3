@@ -13,7 +13,7 @@ return [
         'access' => 'admin',
         'path' => '/module/system/permissions',
         'iconIdentifier' => 'module-permission',
-        'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
+        'navigationComponent' => '@typo3/backend/tree/page-tree-element',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf',
         'aliases' => ['system_BeuserTxPermission'],
         'routes' => [

@@ -30,7 +30,6 @@ final class InfoModuleCest
     {
         $I->useExistingSession('admin');
         $I->click('[data-modulemenu-identifier="web_info"]');
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
     }

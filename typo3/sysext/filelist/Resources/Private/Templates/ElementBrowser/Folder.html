@@ -23,7 +23,11 @@
     </f:if>
     <f:flashMessages queueIdentifier="core.template.flashMessages"/>
 
-    <div data-filelist-element="true" data-filelist-type="folder" data-filelist-identifier="{selectedFolder.combinedIdentifier}" data-filelist-state-identifier="{selectedFolder.identifier}">
+    <div
+        data-filelist-element="true"
+        data-filelist-type="folder"
+        data-filelist-identifier="{selectedFolder.combinedIdentifier}"
+    >
         <button title="{selectedFolder.storage.name}" class="btn btn-default" data-filelist-action="primary">
             <core:iconForResource resource="{selectedFolder}" />
             <f:variable name="folderLabel" value="{f:if(condition: '{selectedFolder.name} !== \'\'', then: '{selectedFolder.name}', else: '{selectedFolder.storage.name}')}" />

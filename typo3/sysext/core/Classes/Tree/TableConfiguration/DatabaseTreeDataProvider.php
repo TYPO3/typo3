@@ -207,7 +207,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $row = [];
         if ($basicNode->getId() == 0) {
             $node->setSelected(false);
-            $node->setExpanded(true);
             $node->setLabel($this->getLanguageService()?->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
         } else {
             if ($basicNode->getAdditionalData() === []) {
@@ -218,7 +217,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             }
             $node->setLabel(BackendUtility::getRecordTitle($this->tableName, $row) ?: $basicNode->getId());
             $node->setSelected(GeneralUtility::inList($this->getSelectedList(), $basicNode->getId()));
-            $node->setExpanded($this->isExpanded($basicNode));
         }
         $node->setId($basicNode->getId());
         $node->setSelectable(!GeneralUtility::inList($this->getNonSelectableLevelList(), (string)$level) && !in_array($basicNode->getId(), $this->getItemUnselectableList()));
@@ -245,7 +243,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     public function initializeTreeData(): void
     {
-        parent::initializeTreeData();
         $this->nodeSortValues = array_flip($this->itemWhiteList);
         $this->columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->lookupField]['config'] ?? [];
         if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] !== $this->getTableName()) {

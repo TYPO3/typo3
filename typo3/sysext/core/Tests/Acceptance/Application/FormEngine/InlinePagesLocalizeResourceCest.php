@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Facebook\WebDriver\WebDriverBy;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -29,7 +27,6 @@ final class InlinePagesLocalizeResourceCest
         $I->useExistingSession('admin');
 
         $I->click('List');
-        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo', 'staticdata']);
         $I->switchToContentFrame();
         $I->waitForText('staticdata', 20);
@@ -46,12 +43,7 @@ final class InlinePagesLocalizeResourceCest
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
         // Find page 'styleguide' in page tree of modal and click it
-        $context = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
-            $context = $webdriver->findElement(WebDriverBy::cssSelector('div.element-browser-main-sidebar'));
-            return $context->findElement(WebDriverBy::xpath('//*[text()=\'styleguide\']/..'));
-        });
-        // Add an image, closes modal again
-        $context->findElement(WebDriverBy::cssSelector('text.node-name'))->click();
+        $I->click('//div[contains(@class, "element-browser-main-sidebar")]//*[text()="styleguide"]/..');
         $I->waitForElementVisible('[data-filelist-name="telephone_box.jpg"] [data-filelist-action="primary"]');
         $I->click('[data-filelist-name="telephone_box.jpg"] [data-filelist-action="primary"]');
         // Save, go back to list

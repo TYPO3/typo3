@@ -18,15 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
-use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
 
-final class FileTree extends AbstractPageTree
+final class FileTree extends AbstractTree
 {
     // Selectors
-    public static $pageTreeFrameSelector = '#typo3-filestoragetree';
-    public static $pageTreeSelector = '#navigation-tree-container';
-    public static $treeItemSelector = 'g.nodes > .node';
-    public static $treeItemAnchorSelector = 'text.node-name';
+    public static $treeSelector = '#typo3-filestoragetree';
 
     /**
      * Inject our core AcceptanceTester actor into PageTree

@@ -63,9 +63,6 @@
 			<trans-unit id="makeconfig_tablesOnThisPage" resname="makeconfig_tablesOnThisPage">
 				<source>Tables on this page</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_expandedTree" resname="makeconfig_expandedTree">
-				<source>Expanded tree</source>
-			</trans-unit>
 			<trans-unit id="makeconfig_levels" resname="makeconfig_levels">
 				<source>Levels</source>
 			</trans-unit>

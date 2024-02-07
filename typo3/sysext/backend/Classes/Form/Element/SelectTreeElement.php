@@ -172,7 +172,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =                       ' data-defaultvalues="' . GeneralUtility::jsonEncodeForHtmlAttribute($this->data['defaultValues']) . '"';
         $html[] =                   '/>';
         $html[] =               '</div>';
-        $html[] =               '<div id="' . $treeWrapperId . '" class="svg-tree-element" style="height: ' . $heightInPx . 'px;"></div>';
+        $html[] =               '<div id="' . $treeWrapperId . '" class="tree-element" style="height: ' . $heightInPx . 'px;"></div>';
         $html[] =           '</div>';
         if (!$readOnly && !empty($fieldWizardHtml)) {
             $html[] =       '<div class="form-wizards-items-bottom">';

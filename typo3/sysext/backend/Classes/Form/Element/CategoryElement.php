@@ -151,7 +151,7 @@ class CategoryElement extends AbstractFormElement
                             <div class="typo3-tceforms-tree">
                                 <input ' . GeneralUtility::implodeAttributes(array_map(strval(...), $recordElementAttributes), true, true) . '/>
                             </div>
-                            <div id="' . htmlspecialchars($treeWrapperId) . '" class="svg-tree-element" style="height: ' . $heightInPx . 'px;"></div>
+                            <div id="' . htmlspecialchars($treeWrapperId) . '" class="tree-element" style="height: ' . $heightInPx . 'px;"></div>
                         </div>
                         ' . $fieldWizardHtml . '
                     </div>

@@ -15,20 +15,13 @@ import '../renderable/progress-bar';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import type { ProgressBar } from '../renderable/progress-bar';
 import type { ModalElement } from '@typo3/backend/modal';
+import type { WritablePart } from '@typo3/core/utility/types';
 
 enum Identifiers {
   modalBody = '.t3js-modal-body',
   modalContent = '.t3js-module-content',
   modalFooter = '.t3js-modal-footer'
 }
-
-type IfEquals<X, Y, A, B> =
-  (<T>() => T extends X ? 1 : 2) extends
-  (<T>() => T extends Y ? 1 : 2) ? A : B;
-type WritableKeysOf<T> = {
-  [P in keyof T]: IfEquals<{ [Q in P]: T[P] }, { -readonly [Q in P]: T[P] }, P, never>
-}[keyof T];
-type WritablePart<T> = Pick<T, WritableKeysOf<T>>;
 
 export type ModuleLoadedResponse = {
   success: boolean,

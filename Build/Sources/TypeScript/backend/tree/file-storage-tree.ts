@@ -11,21 +11,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { SvgTree } from '../svg-tree';
-import { TreeNode } from '../tree/tree-node';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { Tree } from '@typo3/backend/tree/tree';
+import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
 /**
  * A tree for folders / storages
  */
-export class FileStorageTree extends SvgTree {
+export class FileStorageTree extends Tree
+{
   public constructor() {
     super();
     this.settings.defaultProperties = {
       hasChildren: false,
       nameSourceField: 'title',
-      itemType: 'sys_file',
+      type: 'sys_file',
       prefix: '',
       suffix: '',
       locked: false,
@@ -34,53 +33,10 @@ export class FileStorageTree extends SvgTree {
       selectable: true,
       expanded: false,
       checked: false,
-      backgroundColor: '',
-      class: '',
-      readableRootline: ''
     };
   }
 
-  public showChildren(node: TreeNode): void {
-    this.loadChildrenOfNode(node);
-    super.showChildren(node);
-  }
-
-  protected getNodeTitle(node: TreeNode): string {
+  protected getNodeTitle(node: TreeNodeInterface): string {
     return decodeURIComponent(node.name);
-  }
-
-  /**
-   * Loads child nodes via Ajax (used when expanding a collapsed node)
-   */
-  private loadChildrenOfNode(parentNode: TreeNode): void {
-    if (parentNode.loaded) {
-      this.prepareDataForVisibleNodes();
-      this.updateVisibleNodes();
-      return;
-    }
-    this.nodesAddPlaceholder();
-
-    (new AjaxRequest(this.settings.dataUrl + '&parent=' + parentNode.identifier + '&currentDepth=' + parentNode.depth))
-      .get({ cache: 'no-cache' })
-      .then((response: AjaxResponse) => response.resolve())
-      .then((json: any) => {
-        const nodes = Array.isArray(json) ? json : [];
-        const index = this.nodes.indexOf(parentNode) + 1;
-        //adding fetched node after parent
-        nodes.forEach((node: TreeNode, offset: number) => {
-          this.nodes.splice(index + offset, 0, node);
-        });
-        parentNode.loaded = true;
-        this.setParametersNode();
-        this.prepareDataForVisibleNodes();
-        this.updateVisibleNodes();
-        this.nodesRemovePlaceholder();
-        this.focusNode(parentNode);
-      })
-      .catch((error: any) => {
-        this.errorNotification(error, false);
-        this.nodesRemovePlaceholder();
-        throw error;
-      });
   }
 }

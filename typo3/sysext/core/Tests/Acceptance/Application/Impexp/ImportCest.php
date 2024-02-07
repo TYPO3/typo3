@@ -29,7 +29,6 @@ final class ImportCest extends AbstractCest
 {
     private array $testFilesToDelete = [];
 
-    private string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
     private string $inModuleHeader = '.module-docheader';
     private string $inModuleTabs = '#ImportExportController .nav-tabs';
     private string $inModuleTabsBody = '#ImportExportController .tab-content';
@@ -49,9 +48,7 @@ final class ImportCest extends AbstractCest
     {
         $I->useExistingSession('admin');
         $I->click('List');
-        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
     }
 
     public function _after(ApplicationTester $I): void
@@ -68,7 +65,7 @@ final class ImportCest extends AbstractCest
     public function importDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I): void
     {
         $pageInPageTreeTitle = 'elements t3editor';
-        $pageInPageTreeIcon = '//*[text()=\'' . $pageInPageTreeTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $pageInPageTreeIcon = '//*[text()=\'' . $pageInPageTreeTitle . '\']/../../*[contains(@class, \'node-icon\')]';
 
         $I->click($pageInPageTreeIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
@@ -83,7 +80,7 @@ final class ImportCest extends AbstractCest
     public function uploadFileConsidersOverwritingFlag(ApplicationTester $I): void
     {
         $page1Title = 'styleguide TCA demo';
-        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../../*[contains(@class, \'node-icon\')]';
         $fixtureFilePath = 'Acceptance/Application/Impexp/Fixtures/404_page_and_records.xml';
 
         $I->click($page1Icon);
@@ -122,7 +119,7 @@ final class ImportCest extends AbstractCest
     {
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
-        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../../*[contains(@class, \'node-icon\')]';
         $fixtureFilePath = 'Acceptance/Application/Impexp/Fixtures/sys_category_table_with_bootstrap_package.xml';
 
         $I->switchToContentFrame();
@@ -165,7 +162,7 @@ final class ImportCest extends AbstractCest
     public function importPageAndRecords(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
         $page1Title = 'styleguide TCA demo';
-        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../../*[contains(@class, \'node-icon\')]';
         $fixtureFilePath = 'Acceptance/Application/Impexp/Fixtures/404_page_and_records.xml';
 
         $I->click($page1Icon);
@@ -201,7 +198,7 @@ final class ImportCest extends AbstractCest
     {
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
-        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../../*[contains(@class, \'node-icon\')]';
         $fixtureFilePath = 'Acceptance/Application/Impexp/Fixtures/sys_category_table.xml';
 
         $I->switchToContentFrame();
@@ -244,7 +241,7 @@ final class ImportCest extends AbstractCest
     {
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
-        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $page1Icon = '//*[text()=\'' . $page1Title . '\']/../../*[contains(@class, \'node-icon\')]';
         $fixtureFilePath = 'Acceptance/Application/Impexp/Fixtures/sys_category_record.xml';
 
         $I->switchToContentFrame();

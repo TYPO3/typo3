@@ -50,7 +50,6 @@ final class WorkspaceModuleCest
     {
         $I->click('Page');
         $pageTree->openPath([self::$currentPageTitle]);
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
 
         $I->comment('Rename page');
         $I->switchToContentFrame();

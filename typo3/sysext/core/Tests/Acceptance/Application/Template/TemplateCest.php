@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Template;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 final class TemplateCest
 {
@@ -28,7 +29,6 @@ final class TemplateCest
         $I->switchToMainFrame();
         $I->see('TypoScript');
         $I->click('TypoScript');
-        $I->waitForElement('svg .nodes .node');
         $I->switchToContentFrame();
     }
 
@@ -38,7 +38,7 @@ final class TemplateCest
         // Select the root page
         $I->switchToMainFrame();
         // click on PID=0
-        $I->clickWithLeftButton('#identifier-0_0 text.node-name');
+        $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-label');
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
@@ -134,12 +134,11 @@ final class TemplateCest
         $I->see('value = HELLO WORLD!');
     }
 
-    public function checkClosestTemplateButton(ApplicationTester $I): void
+    public function checkClosestTemplateButton(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantTo('click on the button to go to the closest page with a TypoScript record');
         $I->switchToMainFrame();
-        // Open the pagetree
-        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " node-toggle ")])[4]');
+        $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
@@ -169,12 +168,11 @@ final class TemplateCest
         $I->click('Edit the whole TypoScript record');
     }
 
-    public function createExtensionTemplate(ApplicationTester $I): void
+    public function createExtensionTemplate(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantTo('see the button to create an additional TypoScript record');
         $I->switchToMainFrame();
-        //Open the pagetree
-        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " node-toggle ")])[4]');
+        $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');

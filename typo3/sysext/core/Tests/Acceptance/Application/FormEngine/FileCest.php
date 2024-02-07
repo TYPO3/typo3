@@ -37,7 +37,6 @@ final class FileCest
         $I->useExistingSession('admin');
 
         $I->click('List');
-        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo', 'file']);
         $I->switchToContentFrame();
 

@@ -35,7 +35,6 @@ final class Inline1nCest
         $I->useExistingSession('admin');
 
         $I->click('List');
-        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
         $I->switchToContentFrame();
 

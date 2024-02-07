@@ -21,10 +21,11 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
-use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
 
-final class PageTree extends AbstractPageTree
+final class PageTree extends AbstractTree
 {
+    public static $treeSelector = '#typo3-pagetree-treeContainer';
+
     private Mouse $mouse;
 
     /**
@@ -66,6 +67,6 @@ final class PageTree extends AbstractPageTree
      */
     public function getPageXPathByPageName(string $pageName): string
     {
-        return '//*[text()=\'' . $pageName . '\']';
+        return '//*[@class="node-name" and text()=\'' . $pageName . '\']/..';
     }
 }

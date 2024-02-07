@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
@@ -59,14 +58,6 @@ class ResourceView
     public function getIdentifier(): string
     {
         return $this->resource->getStorage()->getUid() . ':' . $this->resource->getIdentifier();
-    }
-
-    /**
-     * Calculates a state identifier used for drag&drop into the file tree
-     */
-    public function getStateIdentifier(): string
-    {
-        return $this->resource->getStorage()->getUid() . '_' . GeneralUtility::md5int($this->resource->getIdentifier());
     }
 
     public function getMetaDataUid(): ?int
@@ -143,6 +134,11 @@ class ResourceView
         return $preview
             ->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, ['width' => '32c', 'height' => '32c'])
             ->getPublicUrl() ?? null;
+    }
+
+    public function getIconIdentifier(): string
+    {
+        return $this->icon->getIdentifier();
     }
 
     public function getIconSmall(): Icon

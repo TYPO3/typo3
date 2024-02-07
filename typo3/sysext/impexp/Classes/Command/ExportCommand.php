@@ -71,13 +71,11 @@ class ExportCommand extends Command
                 sprintf(
                     'The depth of the exported page tree. ' .
                     '"%d": "Records on this page", ' .
-                    '"%d": "Expanded tree", ' .
                     '"0": "This page", ' .
                     '"1": "1 level down", ' .
                     '.. ' .
                     '"%d": "Infinite levels".',
                     Export::LEVELS_RECORDS_ON_THIS_PAGE,
-                    Export::LEVELS_EXPANDED_TREE,
                     Export::LEVELS_INFINITE
                 ),
                 $this->export->getLevels()

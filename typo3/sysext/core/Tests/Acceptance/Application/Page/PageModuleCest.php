@@ -36,9 +36,8 @@ final class PageModuleCest
         // Select the root page
         $I->switchToMainFrame();
         $I->click('Page');
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
         // click on PID=0
-        $I->clickWithLeftButton('#identifier-0_0 text.node-name');
+        $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-label');
         $I->switchToContentFrame();
         $I->canSee('Please select a page in the page tree to edit page content.');
     }
@@ -50,7 +49,6 @@ final class PageModuleCest
 
         $I->switchToMainFrame();
         $I->click('Page');
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
         $pageTree->openPath([$oldPageTitle]);
         $I->switchToContentFrame();
 

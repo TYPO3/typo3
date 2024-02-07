@@ -35,7 +35,6 @@ final class FormFrameworkCest
     {
         $I->useExistingSession('admin');
         $I->click('Page');
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');

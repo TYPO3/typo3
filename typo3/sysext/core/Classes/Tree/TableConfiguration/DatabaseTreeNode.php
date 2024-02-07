@@ -35,37 +35,12 @@ class DatabaseTreeNode extends TreeRepresentationNode
     /**
      * @var bool
      */
-    protected $expanded = true;
-
-    /**
-     * @var bool
-     */
     protected $hasChildren = false;
 
     /**
      * @var mixed
      */
     private $sortValue;
-
-    /**
-     * Sets the expand state
-     *
-     * @param bool $expanded
-     */
-    public function setExpanded($expanded)
-    {
-        $this->expanded = $expanded;
-    }
-
-    /**
-     * Gets the expand state
-     *
-     * @return bool
-     */
-    public function getExpanded()
-    {
-        return $this->expanded;
-    }
 
     /**
      * Sets the selectable property

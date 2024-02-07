@@ -32,9 +32,8 @@ final class IndexedSearchModuleCest
     public function checkExpectedTextOnIndexedSearchPages(ApplicationTester $I): void
     {
         $I->click('[data-modulemenu-identifier="web_IndexedSearchIsearch"]');
-        $I->waitForElement('svg .nodes .node');
         // click on PID=0
-        $I->clickWithLeftButton('#identifier-0_0 text.node-name');
+        $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-label');
         $I->switchToContentFrame();
         $I->seeElement('.t3-js-jumpMenuBox');
         $I->selectOption('.t3-js-jumpMenuBox', 'General statistics');

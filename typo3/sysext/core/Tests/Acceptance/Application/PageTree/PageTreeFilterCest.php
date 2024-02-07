@@ -27,16 +27,14 @@ final class PageTreeFilterCest
     private string $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
     private string $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar .dropdown-toggle';
     private string $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar typo3-backend-icon[identifier=actions-refresh]';
-    private string $inPageTree = '#typo3-pagetree-tree .nodes';
+    private string $inPageTree = '#typo3-pagetree-tree .nodes-list';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
 
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
     }
 
     public function filterTreeForPage(ApplicationTester $I): void
@@ -114,7 +112,7 @@ final class PageTreeFilterCest
 
     private function waitForPageTreeLoad(ApplicationTester $I): void
     {
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 10);
-        $I->waitForElementNotVisible('#typo3-pagetree .svg-tree-loader', 10);
+        $I->waitForElement('#typo3-pagetree-tree .nodes-list [role="treeitem"]', 10);
+        $I->waitForElementNotVisible('#typo3-pagetree .nodes-loader', 10);
     }
 }

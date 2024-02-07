@@ -27,6 +27,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import { Collapse } from 'bootstrap';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import type { ModalElement } from '@typo3/backend/modal';
+import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
 enum Identifiers {
   formListener = '.t3js-extensionConfiguration-form',
@@ -51,11 +52,11 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       const searchInput = currentModal.querySelector<HTMLInputElement>(Identifiers.searchInput);
       if (event.ctrlKey || event.metaKey) {
         // Focus search field on ctrl-f
-        if (event.code === 'KeyF') {
+        if (event.key === 'f' || event.key === 'F') {
           event.preventDefault();
           searchInput.focus();
         }
-      } else if (event.code === 'Escape') {
+      } else if (event.key === KeyTypesEnum.ESCAPE) {
         // Clear search on ESC key
         event.preventDefault();
         searchInput.value = '';

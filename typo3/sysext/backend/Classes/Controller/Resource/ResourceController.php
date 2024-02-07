@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
@@ -120,7 +119,6 @@ final class ResourceController
         return [
             'type' => $resource instanceof File ? 'file' : 'folder',
             'identifier' => $resource instanceof File || $resource instanceof Folder ? $resource->getCombinedIdentifier() : null,
-            'stateIdentifier' => $resource->getStorage()->getUid() . '_' . GeneralUtility::md5int($resource->getIdentifier()),
             'name' => $resource->getName(),
             'uid' => $resource instanceof File ? $resource->getUid() : null,
             'metaUid' => $resource instanceof File ? $resource->getMetaData()->offsetGet('uid') : null,

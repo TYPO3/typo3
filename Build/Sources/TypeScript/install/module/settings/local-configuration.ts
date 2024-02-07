@@ -23,6 +23,7 @@ import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
+import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
 enum Identifiers {
   item = '.t3js-localConfiguration-item',
@@ -67,11 +68,11 @@ class LocalConfiguration extends AbstractInteractableModule {
       const searchInput = currentModal.querySelector<HTMLInputElement>(Identifiers.searchTrigger);
       if (event.ctrlKey || event.metaKey) {
         // Focus search field on ctrl-f
-        if (event.code === 'KeyF') {
+        if (event.key === 'f' || event.key === 'F') {
           event.preventDefault();
           searchInput.focus();
         }
-      } else if (event.code === 'Escape') {
+      } else if (event.key === KeyTypesEnum.ESCAPE) {
         // Clear search on ESC key
         event.preventDefault();
         searchInput.value = '';

@@ -15,11 +15,12 @@ import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
 import { until } from 'lit/directives/until';
 import { lll } from '@typo3/core/lit-helper';
-import { PageTree } from '../page-tree/page-tree';
+import { PageTree } from '@typo3/backend/tree/page-tree';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { TreeNode } from './tree-node';
-import { TreeNodeSelection, Toolbar } from '../svg-tree';
+import '@typo3/backend/tree/tree-toolbar';
+import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
+import { TreeNodeInterface } from './tree-node';
 import ElementBrowser from '@typo3/backend/element-browser';
 import LinkBrowser from '@typo3/backend/link-browser';
 import '@typo3/backend/element/icon-element';
@@ -30,56 +31,49 @@ interface Configuration {
 }
 
 /**
- * Extension of the SVG Tree, allowing to show additional actions on the right hand of the tree to directly link
+ * Extension of the Tree, allowing to show additional actions on the right hand of the tree to directly link
  * select a page
  */
 @customElement('typo3-backend-component-page-browser-tree')
 export class PageBrowserTree extends PageTree {
 
-  /**
-   * Check if the page is linkable, if not, let's grey it out.
-   */
-  protected appendTextElement(nodes: TreeNodeSelection): TreeNodeSelection {
-    return super.appendTextElement(nodes).attr('opacity', (node: TreeNode) => {
-      if (!this.settings.actions.includes('link')) {
-        return 1;
-      }
-      if (this.isLinkable(node)) {
-        return 1;
-      }
-      return 0.5;
-    });
+  protected getNodeClasses(node: TreeNodeInterface): string[] {
+    const classList = super.getNodeClasses(node);
+
+    if (!this.settings.actions.includes('link')) {
+      return classList;
+    }
+
+    if (!this.isLinkable(node)) {
+      classList.push('node-disabled');
+    }
+
+    return classList;
   }
 
-  protected updateNodeActions(nodesActions: TreeNodeSelection): TreeNodeSelection {
-    const nodes = super.updateNodeActions(nodesActions);
+  protected createNodeContentAction(node: TreeNodeInterface): TemplateResult {
     if (this.settings.actions.includes('link')) {
-      // Check if a node can be linked
-      const linkAction = this.nodesActionsContainer.selectAll('.node-action')
-        .append('g')
-        .attr('visibility', (node: TreeNode) => {
-          return this.isLinkable(node) ? 'visible' : 'hidden';
-        })
-        .on('click', (evt: MouseEvent, node: TreeNode) => {
-          this.linkItem(node);
-        });
-      this.createIconAreaForAction(linkAction, 'actions-link');
+      return this.isLinkable(node)
+        ? html`
+          <span class="node-action" @click="${() => this.linkItem(node)}">
+            <typo3-backend-icon identifier="actions-link" size="small"></typo3-backend-icon>
+          </span>
+        `
+        : super.createNodeContentAction(node);
     } else if (this.settings.actions.includes('select')) {
-      // Check if a node can be selected
-      const linkAction = nodes
-        .append('g')
-        .on('click', (evt: MouseEvent, node: TreeNode) => {
-          this.selectItem(node);
-        });
-      this.createIconAreaForAction(linkAction, 'actions-link');
+      return html`
+        <span class="node-action" @click="${() => this.selectItem(node)}">
+          <typo3-backend-icon identifier="actions-link" size="small"></typo3-backend-icon>
+        </span>
+      `;
     }
-    return nodes;
+    return super.createNodeContentAction(node);
   }
 
   /**
    * Page Link Handler specific
    */
-  private linkItem(node: TreeNode): void {
+  private linkItem(node: TreeNodeInterface): void {
     LinkBrowser.finalizeFunction('t3://page?uid=' + node.identifier);
   }
 
@@ -89,17 +83,17 @@ export class PageBrowserTree extends PageTree {
    * - SysFolder
    * - Recycler
    */
-  private isLinkable(node: TreeNode): boolean {
+  private isLinkable(node: TreeNodeInterface): boolean {
     const nonLinkableDoktypes = ['199', '254', '255'];
-    return nonLinkableDoktypes.includes(String(node.type)) === false;
+    return nonLinkableDoktypes.includes(String(node.recordType)) === false;
   }
 
   /**
    * Element Browser specific
    */
-  private selectItem(node: TreeNode): void {
+  private selectItem(node: TreeNodeInterface): void {
     ElementBrowser.insertElement(
-      node.itemType,
+      node.recordType,
       node.identifier,
       node.name,
       node.identifier,
@@ -114,7 +108,7 @@ export class PageBrowserTree extends PageTree {
 @customElement('typo3-backend-component-page-browser')
 export class PageBrowser extends LitElement {
   @property({ type: String }) mountPointPath: string = null;
-  @query('.svg-tree-wrapper') tree: PageBrowserTree;
+  @query('.tree-wrapper') tree: PageBrowserTree;
 
   private activePageId: number = 0;
   // selectPage
@@ -123,12 +117,10 @@ export class PageBrowser extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback();
-    document.addEventListener('typo3:navigation:resized', this.triggerRender);
     document.addEventListener('typo3:pagetree:mountPoint', this.setMountPoint);
   }
 
   public disconnectedCallback(): void {
-    document.removeEventListener('typo3:navigation:resized', this.triggerRender);
     document.removeEventListener('typo3:pagetree:mountPoint', this.setMountPoint);
     super.disconnectedCallback();
   }
@@ -142,10 +134,6 @@ export class PageBrowser extends LitElement {
   protected createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
-
-  protected triggerRender = (): void => {
-    this.tree.dispatchEvent(new Event('svg-tree:visible'));
-  };
 
   protected getConfiguration(): Promise<Configuration> {
     if (this.configuration !== null) {
@@ -170,8 +158,8 @@ export class PageBrowser extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <div class="svg-tree">
-        ${until(this.renderTree(), this.renderLoader())}
+      <div class="tree">
+      ${until(this.renderTree(), '')}
       </div>
     `;
   }
@@ -180,40 +168,27 @@ export class PageBrowser extends LitElement {
     return this.getConfiguration()
       .then((configuration: Configuration): TemplateResult => {
         const initialized = () => {
-          this.tree.dispatchEvent(new Event('svg-tree:visible'));
-          this.tree.addEventListener('typo3:svg-tree:expand-toggle', this.toggleExpandState);
-          this.tree.addEventListener('typo3:svg-tree:node-selected', this.loadRecordsOfPage);
-          this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.selectActivePageInTree);
+          this.tree.addEventListener('typo3:tree:node-selected', this.loadRecordsOfPage);
+          this.tree.addEventListener('typo3:tree:nodes-prepared', this.selectActivePageInTree);
           // set up toolbar now with updated properties
-          const toolbar = this.querySelector('typo3-backend-tree-toolbar') as Toolbar;
+          const toolbar = this.querySelector('typo3-backend-tree-toolbar') as TreeToolbar;
           toolbar.tree = this.tree;
         };
 
         return html`
-          <div>
-            <typo3-backend-tree-toolbar .tree="${this.tree}" class="svg-toolbar"></typo3-backend-tree-toolbar>
-            <div class="navigation-tree-container">
-              ${this.renderMountPoint()}
-              <typo3-backend-component-page-browser-tree id="typo3-pagetree-tree" class="svg-tree-wrapper" .setup=${configuration} @svg-tree:initialized=${initialized}></typo3-backend-component-page-browser-tree>
-            </div>
+          <typo3-backend-tree-toolbar .tree="${this.tree}"></typo3-backend-tree-toolbar>
+          <div class="navigation-tree-container">
+            ${this.renderMountPoint()}
+            <typo3-backend-component-page-browser-tree id="typo3-pagetree-tree" class="tree-wrapper" .setup=${configuration} @tree:initialized=${initialized}></typo3-backend-component-page-browser-tree>
           </div>
-          ${this.renderLoader()}
         `;
       });
   }
 
-  protected renderLoader(): TemplateResult {
-    return html`
-      <div class="svg-tree-loader">
-        <typo3-backend-icon identifier="spinner-circle" size="large"></typo3-backend-icon>
-      </div>
-    `;
-  }
-
   private readonly selectActivePageInTree = (evt: CustomEvent): void => {
     // Activate the current node
-    const nodes = evt.detail.nodes as Array<TreeNode>;
-    evt.detail.nodes = nodes.map((node: TreeNode) => {
+    const nodes = evt.detail.nodes as Array<TreeNodeInterface>;
+    evt.detail.nodes = nodes.map((node: TreeNodeInterface) => {
       if (parseInt(node.identifier, 10) === this.activePageId) {
         node.checked = true;
       }
@@ -221,17 +196,11 @@ export class PageBrowser extends LitElement {
     });
   };
 
-  private readonly toggleExpandState = (evt: CustomEvent): void => {
-    const node = evt.detail.node as TreeNode;
-    if (node) {
-      Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
-    }
-  };
   /**
    * If a page is clicked, the content area needs to be updated
    */
   private readonly loadRecordsOfPage = (evt: CustomEvent): void => {
-    const node = evt.detail.node as TreeNode;
+    const node = evt.detail.node as TreeNodeInterface;
     if (!node.checked) {
       return;
     }
@@ -252,7 +221,7 @@ export class PageBrowser extends LitElement {
   private unsetTemporaryMountPoint() {
     this.mountPointPath = null;
     Persistent.unset('pageTree_temporaryMountPoint').then(() => {
-      this.tree.refreshTree();
+      this.tree.loadData();
     });
   }
 
@@ -279,15 +248,16 @@ export class PageBrowser extends LitElement {
       .then((response) => response.resolve())
       .then((response) => {
         if (response && response.hasErrors) {
-          this.tree.errorNotification(response.message, true);
-          this.tree.updateVisibleNodes();
+          this.tree.errorNotification(response.message);
+          this.tree.loadData();
         } else {
           this.mountPointPath = response.mountPointPath;
           this.tree.refreshOrFilterTree();
         }
       })
       .catch((error) => {
-        this.tree.errorNotification(error, true);
+        this.tree.errorNotification(error);
+        this.tree.loadData();
       });
   }
 }

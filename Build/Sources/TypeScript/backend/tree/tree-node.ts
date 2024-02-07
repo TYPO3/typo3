@@ -11,66 +11,70 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as d3selection from 'd3-selection';
-import { DraggablePositionEnum } from './drag-drop';
+export enum TreeNodeCommandEnum {
+  COPY = 'copy',
+  EDIT = 'edit',
+  MOVE = 'move',
+  DELETE = 'delete',
+  NEW = 'new'
+}
+
+export enum TreeNodePositionEnum {
+  INSIDE = 'inside',
+  BEFORE = 'before',
+  AFTER = 'after'
+}
 
 /**
- * Represents a single node in the SVG tree that is rendered.
+ * Represents a single node in the tree that is rendered.
  */
-export interface TreeNode extends d3selection.EnterElement {
-  firstChild: Node | boolean | null;
-  lastChild: Node | boolean | null;
-  // e.g. "pages" or "sys_file", depending on the implementation
-  itemType: string | null;
-  x: number;
-  y: number;
-  // page-tree specific (doktype)
-  type: string;
-  depth: number;
-  parents: Array<number>;
-  loaded: boolean;
-  expanded: boolean;
-  hasChildren: boolean;
-  hidden: boolean;
-  isOver: boolean;
-  tip: string;
-  selectable: boolean;
-  checked: boolean;
-  focused: boolean;
-  locked: boolean;
-  readableRootline: string;
-  command: string;
-  identifier: string;
-  name: string;
-  class: string;
-  prefix: string;
-  suffix: string;
-  // page-tree specific
-  mountPoint: string;
-  // page-tree specific
-  stopPageTree: boolean;
-  stateIdentifier: string;
-  parentsStateIdentifier: Array<string>;
-  backgroundColor: string;
-  overlayIcon: string;
-  icon: any;
-  node: boolean | TreeNode;
-  siblingsCount: number;
-  siblingsPosition: number;
+export interface TreeNodeInterface {
 
-  owns?: string[];
-  indeterminate?: boolean;
+  // TYPO3\CMS\Backend\Dto\Tree\TreeItem
+  type: string,
+  identifier: string,
+  parentIdentifier: string,
+  recordType: string,
+  name: string,
+  note: string,
+  prefix: string,
+  suffix: string,
+  tooltip: string,
+  depth: number,
+  hasChildren: boolean,
+  loaded: boolean,
+  expanded: boolean,
+  editable: boolean,
+  deletable: boolean,
+  icon: string,
+  overlayIcon: string,
 
-  // folder-tree specific
-  pathIdentifier: string;
-  storage: number;
+  // Calculated Internal
+  __treeIdentifier: string,
+  __treeParents: Array<string>,
+  __treeDragAction: string,
+  __parents: Array<string>,
+  __processed: boolean,
+  __loading: boolean,
+  __hidden: boolean,
+  __indeterminate: boolean,
+  __x: number,
+  __y: number,
 
-  allowDelete?: boolean;
-  allowEdit?: boolean;
-  // page-tree specific: which DB field should be updated when editing the DB field
-  nameSourceField?: string;
-  // page-tree specific: which DB field should be updated when editing the DB field
-  newName?: string;
-  target?: TreeNode;
-  position?: DraggablePositionEnum;
+  // TYPO3\CMS\Backend\Dto\Tree\PageTreeItem
+  nameSourceField?: string,
+  workspaceId?: number,
+  locked?: boolean,
+  stopPageTree?: boolean,
+  mountPoint?: number,
+  doktype?: number;
+
+  // TYPO3\CMS\Backend\Dto\Tree\FileTreeItem
+  pathIdentifier?: string,
+  storage?: number,
+  resourceType?: string,
+
+  // TYPO3\CMS\Backend\Dto\Tree\SelectTreeItem
+  checked?: boolean,
+  selectable?: boolean,
 }

@@ -1,0 +1,478 @@
+:root {
+    --tree-color: var(--typo3-component-color);
+    --tree-bg: var(--typo3-component-bg);
+    // node
+    --tree-node-color: var(--tree-color);
+    --tree-node-bg: var(--tree-bg);
+    --tree-node-border-color: transparent;
+    --tree-node-focus-color: var(--typo3-component-focus-color);
+    --tree-node-focus-bg: var(--typo3-component-focus-bg);
+    --tree-node-focus-border-color: var(--typo3-component-focus-border-color);
+    --tree-node-hover-color: var(--typo3-component-hover-color);
+    --tree-node-hover-bg: var(--typo3-component-hover-bg);
+    --tree-node-hover-border-color: var(--typo3-component-hover-border-color);
+    --tree-node-selected-color: var(--typo3-component-active-color);
+    --tree-node-selected-bg: var(--typo3-component-active-bg);
+    --tree-node-selected-border-color: var(--typo3-component-active-border-color);
+    // special
+    --tree-node-version-bg: #{rgba(#f7c898, .5)};
+    --tree-info-bg: #{tint-color($info, 60%)};
+    --tree-info-color: #{color-contrast(tint-color($info, 60%))};
+    // drag
+    --tree-drop-position-bg: var(--typo3-component-primary-color);
+    --tree-drag-dropzone-delete-color: #fff;
+    --tree-drag-dropzone-delete-bg: #{$danger};
+    --tree-drag-dropindicator-color: #{tint-color($primary, 20%)};
+}
+
+.tree {
+    position: relative;
+}
+
+//
+// Nodes
+//
+.nodes-container {
+    color: var(--tree-color);
+    background: var(--tree-bg);
+    color-scheme: var(--typo3-component-color-scheme);
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.nodes-loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    inset-inline-start: 0;
+    color: var(--tree-color);
+    background: var(--tree-bg);
+    z-index: 3000;
+
+    &-inner {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.nodes-root {
+    background-color: inherit;
+    display: block;
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.nodes-list {
+    transform: translate3d(0, 0, 0);
+    contain: strict;
+}
+
+//
+// Node
+//
+.node {
+    cursor: pointer;
+    position: absolute;
+    inset-inline-start: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: var(--tree-node-bg);
+    padding: 0 12px;
+    user-select: none;
+    color: var(--tree-node-color);
+    outline-offset: -1px;
+    outline-color: var(--tree-node-border-color) !important;
+
+    &:hover,
+    &-hover {
+        --tree-node-color: var(--tree-node-hover-color);
+        --tree-node-bg: var(--tree-node-hover-bg);
+        --tree-node-border-color: var(--tree-node-hover-border-color);
+        outline: 1px solid;
+        z-index: 1;
+    }
+
+    &:focus,
+    &-focus {
+        --tree-node-color: var(--tree-node-focus-color);
+        --tree-node-bg: var(--tree-node-focus-bg);
+        --tree-node-border-color: var(--tree-node-focus-border-color);
+        outline: 1px solid;
+        z-index: 1;
+    }
+
+    &:active,
+    &-active,
+    &-selected {
+        --tree-node-color: var(--tree-node-selected-color) !important;
+        --tree-node-bg: var(--tree-node-selected-bg) !important;
+        --tree-node-border-color: var(--tree-node-selected-border-color) !important;
+        outline: 1px solid;
+    }
+
+    &:disabled,
+    &-disabled {
+        .node-content {
+            opacity: .5;
+        }
+    }
+
+    &-dragging {
+        .node-toggle,
+        .node-icon,
+        .node-stop,
+        .node-content {
+            opacity: .5;
+        }
+    }
+
+    &-dragging-before,
+    &-dragging-after {
+        .node-content {
+            &:after {
+                content: '';
+                pointer-events: none;
+                position: absolute;
+                width: 100%;
+                left: 0;
+                height: 2px;
+                background-color: var(--tree-drop-position-bg);
+            }
+        }
+    }
+
+    &-dragging-before {
+        .node-content {
+            &:after {
+                top: 0;
+            }
+        }
+    }
+
+    &-dragging-after {
+        .node-content {
+            &:after {
+                bottom: 0;
+            }
+        }
+    }
+}
+
+.node-treelines {
+    display: flex;
+    flex-shrink: 0;
+    height: 100%;
+    user-select: none;
+}
+
+.node-treeline {
+    position: relative;
+    flex-shrink: 0;
+    width: 20px;
+    height: 100%;
+    color: inherit;
+    opacity: .15;
+
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        background-color: currentColor;
+    }
+
+    &--line {
+        &:before {
+            top: 0;
+            inset-inline-start: 50%;
+            width: 1px;
+            height: 100%;
+        }
+
+        &:after {
+            display: none;
+        }
+    }
+
+    &--last {
+        &:before {
+            top: 0;
+            inset-inline-start: 50%;
+            width: 1px;
+            height: 50%;
+        }
+
+        &:after {
+            top: calc(50% - .5px);
+            inset-inline-start: 50%;
+            height: 1px;
+            width: 50%;
+        }
+    }
+
+    &--connect {
+        &:before {
+            top: 0;
+            inset-inline-start: 50%;
+            width: 1px;
+            height: 100%;
+        }
+
+        &:after {
+            top: calc(50% - .5px);
+            inset-inline-start: 50%;
+            height: 1px;
+            width: 50%;
+        }
+    }
+}
+
+.node-toggle,
+.node-loading,
+.node-stop,
+.node-icon,
+.node-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 100%;
+    width: 20px;
+}
+
+.node-toggle,
+.node-loading,
+.node-stop {
+    .node-treelines + & {
+        margin-inline-start: -20px;
+
+        typo3-backend-icon {
+            position: relative;
+            background-color: var(--tree-node-bg);
+        }
+    }
+}
+
+.node-content {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.node-label {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    overflow: hidden;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-inline-start: .25rem;
+}
+
+.node-name,
+.node-note {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    min-width: 0;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.node-note {
+    line-height: 1;
+    font-size: 10px;
+    opacity: .75;
+}
+
+.node-edit {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    padding: 0;
+    padding-inline-start: calc(.25rem - 1px);
+    border: 1px solid var(--tree-node-border-color);
+    color: var(--typo3-component-color);
+    background: var(--typo3-component-bg);
+    outline: none;
+}
+
+.node-highlight-text {
+    color: var(--typo3-component-match-highlight-color);
+    background-color: var(--typo3-component-match-highlight-bg);
+}
+
+.node-action {
+    display: none;
+    cursor: pointer;
+
+    .node:hover & {
+        display: flex;
+    }
+}
+
+.node-dropzone-delete {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    inset-inline-end: 0;
+    inset-block-start: 0;
+    height: 100%;
+    padding: 0 .5rem;
+    color: var(--tree-drag-dropzone-delete-color);
+    background-color: var(--tree-drag-dropzone-delete-bg);
+    gap: .25rem;
+    z-index: 1;
+
+    * {
+        pointer-events: none;
+    }
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--tree-drag-dropzone-delete-bg), #fff 50%);
+    }
+}
+
+//
+// Dragging Tooltip
+//
+.dragging-tooltip {
+    pointer-events: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: var(--typo3-component-padding-y) var(--typo3-component-padding-x);
+    margin: 0;
+    color: var(--typo3-component-color);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    border-radius: var(--typo3-component-border-radius);
+    background-color: var(--typo3-component-bg);
+    box-shadow: var(--typo3-component-box-shadow-strong);
+    z-index: 999999;
+    max-width: 250px;
+}
+
+.dragging-tooltip-content {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    gap: .25rem;
+    overflow: hidden;
+}
+
+.dragging-tooltip-content-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.dragging-tooltip-content-description {
+    opacity: .75;
+}
+
+//
+// Info bar displayed above the tree if a page is mounted
+//
+.node-mount-point {
+    display: flex;
+    border: 0;
+    background-color: var(--tree-info-bg);
+    border-bottom: 1px solid rgba(0, 0, 0, .25);
+    color: var(--tree-info-color);
+    padding: .75em 1.167em;
+    gap: .5em;
+    align-items: center;
+
+    &__icon {
+        flex: 0 auto;
+
+        &.mountpoint-close {
+            cursor: pointer;
+        }
+    }
+
+    &__text {
+        flex: 1 0 0;
+        padding: 0 .5em;
+        overflow: hidden;
+    }
+}
+
+//
+// Select Tree
+//
+typo3-backend-form-selecttree {
+    display: flex;
+    flex-direction: column;
+}
+
+typo3-backend-form-selecttree-toolbar {
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, .25);
+}
+
+//
+// NEEDS WORK
+//
+.tree-element {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, .25);
+
+    & > .tree-wrapper {
+        flex: 1 0 0;
+    }
+}
+
+.scaffold-content .tree-toolbar {
+    min-height: var(--module-docheader-height);
+}
+
+.tree-toolbar {
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--module-docheader-border);
+    background-color: var(--module-docheader-bg);
+
+    &__menu {
+        padding-inline-end: 32px;
+        display: flex;
+        min-height: var(--module-docheader-bar-height);
+
+        .tree-toolbar__search {
+            flex: 1 0 auto;
+            margin: 0 .5rem 0 .25rem;
+        }
+    }
+
+    &__menuitem {
+        display: inline-block;
+        padding: .25rem;
+        border: none;
+        background: 0 0;
+        font-size: 11px;
+    }
+
+    &__drag-node {
+        cursor: move;
+    }
+
+    &__submenu {
+        margin-top: var(--module-docheader-spacing-y);
+    }
+}

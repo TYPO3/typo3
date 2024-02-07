@@ -25,6 +25,7 @@ import Md5 from '@typo3/backend/hashing/md5';
 import '@typo3/backend/element/icon-element';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DomHelper from '@typo3/backend/utility/dom-helper';
+import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
 /**
  * Possible actions for conflicts w/ existing files
@@ -220,7 +221,7 @@ export default class DragUploader {
 
     // Allow the user to hide the dropzone with the "Escape" key
     document.addEventListener('keydown', (event: KeyboardEvent): void => {
-      if (event.code === 'Escape' && !this.dropzone.hasAttribute('hidden')) {
+      if (event.key === KeyTypesEnum.ENTER && !this.dropzone.hasAttribute('hidden')) {
         this.hideDropzone(event);
       }
     });
@@ -285,6 +286,11 @@ export default class DragUploader {
    */
   public dragFileIntoDocument = (event: DragEvent): boolean => {
     if (this.dragStartedInDocument) {
+      return false;
+    }
+
+    if (!event.dataTransfer.types.includes('Files')) {
+      // Not a file upload (item drag)
       return false;
     }
 

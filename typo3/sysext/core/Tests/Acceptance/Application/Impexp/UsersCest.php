@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 final class UsersCest extends AbstractCest
 {
-    private string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
+    private string $inPageTree = '#typo3-pagetree-treeContainer .nodes-list';
     private string $inModuleHeader = '.module-docheader';
     private string $inModuleTabs = '#ImportExportController .nav-tabs';
     private string $inModuleTabsBody = '#ImportExportController .tab-content';
@@ -40,13 +40,12 @@ final class UsersCest extends AbstractCest
     {
         $I->useExistingSession('admin');
         $I->click('List');
-        $I->waitForElement('svg .nodes .node');
     }
 
     public function doNotShowImportAndExportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree): void
     {
         $selectedPageTitle = 'Root';
-        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
 
         $this->setPageAccess($I, $pageTree, [$selectedPageTitle], 1);
         $this->setModAccess($I, 1, ['web_list' => true]);
@@ -65,7 +64,7 @@ final class UsersCest extends AbstractCest
     public function showImportExportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I): void
     {
         $selectedPageTitle = 'Root';
-        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
 
         $this->setUserTsConfig($I, 2, 'options.impexp.enableImportForNonAdminUser = 1\noptions.impexp.enableExportForNonAdminUser = 1');
         $I->useExistingSession('editor');
@@ -85,7 +84,7 @@ final class UsersCest extends AbstractCest
     public function hideImportCheckboxForceAllUidsForNonAdmin(ApplicationTester $I): void
     {
         $selectedPageTitle = 'Root';
-        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
         $importPageSectionTitle = 'Select file to import';
 
         $I->click($selectedPageIcon);
@@ -110,7 +109,7 @@ final class UsersCest extends AbstractCest
     public function hideUploadTabAndImportPathIfNoImportFolderAvailable(ApplicationTester $I, PageTree $pageTree): void
     {
         $selectedPageTitle = 'Root';
-        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
         $importPageSectionTitle = 'Select file to import';
 
         $I->click($selectedPageIcon);
@@ -138,10 +137,10 @@ final class UsersCest extends AbstractCest
     public function checkVisualElements(ApplicationTester $I, PageTree $pageTree): void
     {
         $selectedPageTitle = 'Root';
-        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
         $importPageSectionTitle = 'Select file to import';
 
-        $I->click($this->inPageTree . ' #identifier-0_0 .node-icon-container');
+        $I->click($this->inPageTree . ' [role="treeitem"][data-id="0"] .node-icon');
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForText($importPageSectionTitle);
@@ -176,7 +175,6 @@ final class UsersCest extends AbstractCest
     {
         $I->switchToMainFrame();
         $I->click('Access');
-        $I->waitForElement($this->inPageTree . ' .node', 5);
         $pageTree->openPath($pagePath);
         $I->switchToContentFrame();
         $I->wait(1);

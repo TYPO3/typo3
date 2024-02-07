@@ -62,8 +62,8 @@ final class FalMetadataCest
         $I->click('Add image');
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
-        $I->waitForElement('.svg-tree-wrapper .nodes .node');
-        $I->click('.node[title="styleguide"]');
+        $I->waitForElement('.tree-wrapper .nodes-list [role="treeitem"]', 5);
+        $I->click('.tree-wrapper .nodes-list [role="treeitem"][title="styleguide"]');
         $I->waitForText('fileadmin: /styleguide/');
         $I->click('bus_lane.jpg');
         $I->switchToWindow('typo3-backend');
@@ -86,7 +86,7 @@ final class FalMetadataCest
         $I->switchToMainFrame();
         $I->click('Filelist');
         $I->waitForText('fileadmin');
-        $fileTree->openPath(['styleguide']);
+        $fileTree->openPath(['fileadmin', 'styleguide']);
 
         $I->switchToContentFrame();
         $I->see('styleguide', 'h1');
@@ -153,8 +153,8 @@ final class FalMetadataCest
         $I->click('Add image');
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
-        $I->waitForElement('.svg-tree-wrapper .nodes .node', 5);
-        $I->click('.node[title="styleguide"]');
+        $I->waitForElement('.tree-wrapper .nodes-list [role="treeitem"]', 5);
+        $I->click('.tree-wrapper .nodes-list [role="treeitem"][title="styleguide"]');
         $I->waitForText('fileadmin: /styleguide/', 5);
         $I->click('bus_lane.jpg');
         $I->switchToWindow('typo3-backend');
@@ -236,7 +236,6 @@ final class FalMetadataCest
     {
         $I->switchToMainFrame();
         $I->click('Page');
-        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
         $I->waitForText('styleguide TCA demo');

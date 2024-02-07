@@ -14,7 +14,6 @@
 export interface ResourceInterface {
   type: string;
   identifier: string;
-  stateIdentifier: string;
   name: string;
   thumbnail: string | null;
   uid: number | null;
@@ -25,7 +24,6 @@ export class Resource implements ResourceInterface {
   public constructor(
     public readonly type: string,
     public readonly identifier: string,
-    public readonly stateIdentifier: string,
     public readonly name: string,
     public readonly thumbnail: string | null = null,
     public readonly uid: number | null = null,

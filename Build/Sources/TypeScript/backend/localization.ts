@@ -282,7 +282,7 @@ class Localization {
                   const $checkedChildren = $parent.find('.t3js-localization-toggle-record:checked');
 
                   $columnCheckbox.prop('checked', $checkedChildren.length > 0);
-                  $columnCheckbox.prop('indeterminate', $checkedChildren.length > 0 && $checkedChildren.length < $allChildren.length);
+                  $columnCheckbox.prop('__indeterminate', $checkedChildren.length > 0 && $checkedChildren.length < $allChildren.length);
 
                   if (this.records.length > 0) {
                     Wizard.unlockNextStep();

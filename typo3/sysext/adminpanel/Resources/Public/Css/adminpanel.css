@@ -63,8 +63,8 @@ body.typo3-adminPanel-noscroll{overflow:hidden}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel #typo3-pagetree #typo3-inner-docbody{padding:10px 0}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel span.dragIcon{display:inline-block;height:16px}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel #dragIcon{position:absolute;visibility:hidden;z-index:20;opacity:.5;white-space:nowrap}
-#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .navigation-tree-container,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .svg-tree,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .svg-tree>div{flex:1 0 0;display:flex;flex-direction:column}
-#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .svg-tree-wrapper{flex:1 0 0}
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .navigation-tree-container,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .tree,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .tree>div{flex:1 0 0;display:flex;flex-direction:column}
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .tree-wrapper{flex:1 0 0}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .navigation-tree-container{background-color:#f5f5f5}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon{margin-top:-8px;margin-bottom:-8px}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-backdrop{z-index:99991;content:"";position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.5)}

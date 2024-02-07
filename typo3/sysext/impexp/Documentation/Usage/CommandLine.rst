@@ -38,7 +38,7 @@ with these options available:
    Options:
       --type[=TYPE]                        The file type (xml, t3d, t3d_compressed). [default: "xml"]
       --pid[=PID]                          The root page of the exported page tree. [default: -1]
-      --levels[=LEVELS]                    The depth of the exported page tree. "-2": "Records on this page", "-1": "Expanded tree", "0": "This page", "1": "1 level down", .. "999": "Infinite levels". [default: 0]
+      --levels[=LEVELS]                    The depth of the exported page tree. "-2": "Records on this page", "0": "This page", "1": "1 level down", .. "999": "Infinite levels". [default: 0]
       --table[=TABLE]                      Include all records of this table. Examples: "_ALL", "tt_content", "sys_file_reference", etc. (multiple values allowed)
       --record[=RECORD]                    Include this specific record. Pattern is "{table}:{record}". Examples: "tt_content:12", etc. (multiple values allowed)
       --list[=LIST]                        Include the records of this table and this page. Pattern is "{table}:{pid}". Examples: "be_users:0", etc. (multiple values allowed)

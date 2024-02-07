@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Backend\Controller\FileStorage;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Dto\Tree\FileTreeItem;
+use TYPO3\CMS\Backend\Dto\Tree\TreeItem;
 use TYPO3\CMS\Backend\Tree\FileStorageTreeProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -55,14 +57,14 @@ class TreeController
     {
         $parentIdentifier = $request->getQueryParams()['parent'] ?? null;
         if ($parentIdentifier) {
-            $currentDepth = (int)($request->getQueryParams()['currentDepth'] ?? 1);
+            $currentDepth = (int)($request->getQueryParams()['depth'] ?? 1);
             $parentIdentifier = rawurldecode($parentIdentifier);
             $folder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($parentIdentifier);
             $items = $this->treeProvider->getSubfoldersRecursively($folder, $currentDepth + 1);
         } else {
             $items = $this->treeProvider->getRootNodes($this->getBackendUser());
         }
-        $items = array_map(function (array $item): array {
+        $items = array_map(function (array $item): FileTreeItem {
             return $this->prepareItemForOutput($item);
         }, $items);
         return new JsonResponse($items);
@@ -111,8 +113,6 @@ class TreeController
             $storageData = array_merge($storageData, [
                 'depth' => 0,
                 'expanded' => true,
-                'siblingsCount' => 1,
-                'siblingsPosition' => 1,
             ]);
             $itemsInRootLine[$storage->getUid() . ':/'] = $storageData;
 
@@ -125,49 +125,50 @@ class TreeController
         }
 
         ksort($items);
-        // Make sure siblingsCount and siblingsPosition works
         $finalItems = [];
         $items = array_values($items);
         foreach ($items as $item) {
-            $stateIdentifier = $item['stateIdentifier'];
-            $parentIdentifier = $item['parentIdentifier'];
-            $siblings = array_filter($items, static function (array $itemInArray) use ($parentIdentifier): bool {
-                if ($itemInArray['parentIdentifier'] === $parentIdentifier) {
-                    return true;
-                }
-                return false;
-            });
-            $positionFound = false;
-            $siblingsBeforeInSameDepth = array_filter($siblings, static function (array $itemInArray) use ($stateIdentifier, &$positionFound): bool {
-                if ($itemInArray['stateIdentifier'] === $stateIdentifier) {
-                    $positionFound = true;
-                    return false;
-                }
-                return !$positionFound;
-            });
-            $item['siblingsCount'] = count($siblings);
-            $item['siblingsPosition'] = count($siblingsBeforeInSameDepth) + 1;
             $finalItems[] = $this->prepareItemForOutput($item);
         }
-        // now lets do the siblingsCount
         return new JsonResponse($finalItems);
     }
 
     /**
      * Adds information for the JSON result to be rendered.
      */
-    protected function prepareItemForOutput(array $item): array
+    protected function prepareItemForOutput(array $item): FileTreeItem
     {
         $folder = $item['resource'];
-        $isStorage = $item['itemType'] !== 'sys_file';
+        $isStorage = $item['recordType'] !== 'sys_file';
         if ($isStorage && !$folder->getStorage()->isOnline()) {
             $item['name'] .= ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
         }
         $icon = $this->iconFactory->getIconForResource($folder, IconSize::SMALL, null, $isStorage ? ['mount-root' => true] : []);
         $item['icon'] = $icon->getIdentifier();
         $item['overlayIcon'] = $icon->getOverlayIcon() ? $icon->getOverlayIcon()->getIdentifier() : '';
-        unset($item['resource']);
-        return $item;
+
+        $treeItem = new FileTreeItem(
+            item: new TreeItem(
+                identifier: $item['identifier'],
+                parentIdentifier: (string)($item['parentIdentifier'] ?? ''),
+                recordType: (string)($item['recordType'] ?? ''),
+                name: (string)($item['name'] ?? ''),
+                prefix: (string)($item['prefix'] ?? ''),
+                suffix: (string)($item['suffix'] ?? ''),
+                tooltip: (string)($item['tooltip'] ?? ''),
+                depth: (int)($item['depth'] ?? 0),
+                hasChildren: (bool)($item['hasChildren'] ?? false),
+                expanded: (bool)($item['expanded'] ?? false),
+                loaded: (bool)($item['loaded'] ?? false),
+                icon: $item['icon'],
+                overlayIcon: $item['overlayIcon'],
+            ),
+            pathIdentifier: (string)($item['pathIdentifier'] ?? ''),
+            storage: (int)($item['storage'] ?? 0),
+            resourceType: $isStorage ? 'storage' : 'folder',
+        );
+
+        return $treeItem;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

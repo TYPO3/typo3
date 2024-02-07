@@ -7,7 +7,7 @@ return [
     'web' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
         'iconIdentifier' => 'modulegroup-web',
-        'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
+        'navigationComponent' => '@typo3/backend/tree/page-tree-element',
     ],
     'file' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',

@@ -21,6 +21,7 @@ import { lll } from '@typo3/core/lit-helper';
 import Notification from '@typo3/backend/notification';
 import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
 class Item {
   public visible: boolean = true;
@@ -416,7 +417,7 @@ export class NewContentElementWizard extends LitElement {
           class="form-control"
           .value="${this.searchTerm}"
           @input="${(event: InputEvent): void => { this.filter((<HTMLInputElement>event.target).value); }}"
-          @keydown="${(event: KeyboardEvent): void => { if (event.code === 'Escape') { event.stopImmediatePropagation(); this.filter(''); } }}"
+          @keydown="${(event: KeyboardEvent): void => { if (event.key === KeyTypesEnum.ESCAPE) { event.stopImmediatePropagation(); this.filter(''); } }}"
           placeholder="${lll('newContentElement.filter.placeholder')}"
         />
       </form>

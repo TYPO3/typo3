@@ -15,7 +15,7 @@ import type { SelectTree } from './select-tree';
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators';
 import { lll } from '@typo3/core/lit-helper';
-import { TreeNode } from '../../tree/tree-node';
+import { TreeNodeInterface } from '../../tree/tree-node';
 
 @customElement('typo3-backend-form-selecttree-toolbar')
 export class SelectTreeToolbar extends LitElement {
@@ -69,13 +69,11 @@ export class SelectTreeToolbar extends LitElement {
   private collapseAll(evt: MouseEvent): void {
     evt.preventDefault();
     // Only collapse nodes that aren't on the root level
-    this.tree.nodes.forEach((node: TreeNode) => {
-      if (node.parents.length) {
+    this.tree.nodes.forEach((node: TreeNodeInterface) => {
+      if (node.__parents.length) {
         this.tree.hideChildren(node);
       }
     });
-    this.tree.prepareDataForVisibleNodes();
-    this.tree.updateVisibleNodes();
   }
 
 
@@ -101,17 +99,15 @@ export class SelectTreeToolbar extends LitElement {
         if (node.checked) {
           this.tree.showParents(node);
           node.expanded = true;
-          node.hidden = false;
+          node.__hidden = false;
         } else {
-          node.hidden = true;
           node.expanded = false;
+          node.__hidden = true;
         }
       });
     } else {
-      this.tree.nodes.forEach((node: any) => node.hidden = false);
+      this.tree.nodes.forEach((node: any) => node.__hidden = false);
     }
-    this.tree.prepareDataForVisibleNodes();
-    this.tree.updateVisibleNodes();
   }
 }
 

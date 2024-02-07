@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 final class PageCreationWithDragAndDropCest
 {
-    private static string $treeNode = '#typo3-pagetree-tree .nodes .node';
-    private static string $dragNode = '#typo3-pagetree-toolbar .svg-toolbar__drag-node';
+    private static string $treeNode = '#typo3-pagetree-tree .nodes-list [role="treeitem"]';
+    private static string $dragNode = '#typo3-pagetree-toolbar .tree-toolbar__drag-node';
     private static string $nodeEditInput = '.node-edit';
 
     private PageTree $pageTree;
@@ -44,8 +44,6 @@ final class PageCreationWithDragAndDropCest
         $I->waitForElement(static::$treeNode);
         $I->waitForElement(static::$dragNode);
         $this->pageTree->openPath(['styleguide TCA demo']);
-        // Wait until DOM actually rendered everything
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
     }
 
     /**

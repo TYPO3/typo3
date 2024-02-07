@@ -75,6 +75,15 @@ final class Mouse
      */
     public function dragTo(string $source, string $target, bool $release = true): void
     {
+        // webdriver does not support native HTML draggable
+        // (all utility methods do only emulate DOM mouse events instead
+        // of *real* browser mouse movements, that is why no drag* events
+        // will ever be generated. This issue is only properly fixable by
+        // ditching webdriver API and use devtools API => playwright.
+        // https://github.com/w3c/webdriver/issues/1488
+        // https://bugs.chromium.org/p/chromedriver/issues/detail?id=841
+        $this->tester->markTestSkipped('selenium/chromedriver does not support native HTML draggable. (We need playwright.)');
+
         (new WebDriverCompositeAction())
             ->addAction(
                 new WebDriverClickAndHoldAction($this->getMouse(), $this->findElement($source))

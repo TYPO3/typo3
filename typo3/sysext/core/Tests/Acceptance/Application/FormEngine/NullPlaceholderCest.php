@@ -68,7 +68,6 @@ final class NullPlaceholderCest
     {
         $I->switchToMainFrame();
         $I->click('List');
-        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo', 'file']);
         $I->switchToContentFrame();
         $I->waitForText('file');

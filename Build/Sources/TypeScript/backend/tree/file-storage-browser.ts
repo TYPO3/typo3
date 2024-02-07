@@ -15,56 +15,51 @@ import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, query } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { TreeNode } from './tree-node';
-import { Toolbar, TreeNodeSelection } from '../svg-tree';
+import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
+import '@typo3/backend/tree/tree-toolbar';
+import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import ElementBrowser from '@typo3/backend/element-browser';
 import LinkBrowser from '@typo3/backend/link-browser';
 import '@typo3/backend/element/icon-element';
-import Persistent from '@typo3/backend/storage/persistent';
 import { FileStorageTree } from './file-storage-tree';
 
 /**
- * Extension of the SVG Tree, allowing to show additional actions on the right hand of the tree to directly link
+ * Extension of the Tree, allowing to show additional actions on the right hand of the tree to directly link
  * select a folder
  */
 @customElement('typo3-backend-component-filestorage-browser-tree')
 export class FileStorageBrowserTree extends FileStorageTree {
 
-  protected updateNodeActions(nodesActions: TreeNodeSelection): TreeNodeSelection {
-    const nodes = super.updateNodeActions(nodesActions);
+  protected createNodeContentAction(node: TreeNodeInterface): TemplateResult {
     if (this.settings.actions.includes('link')) {
-      // Check if a node can be linked
-      const linkAction = nodes
-        .append('g')
-        .on('click', (evt: MouseEvent, node: TreeNode) => {
-          this.linkItem(node);
-        });
-      this.createIconAreaForAction(linkAction, 'actions-link');
+      return html`
+        <span class="node-action" @click="${() => this.linkItem(node)}">
+          <typo3-backend-icon identifier="actions-link" size="small"></typo3-backend-icon>
+        </span>
+      `;
     } else if (this.settings.actions.includes('select')) {
-      // Check if a node can be selected
-      const linkAction = nodes
-        .append('g')
-        .on('click', (evt: MouseEvent, node: TreeNode) => {
-          this.selectItem(node);
-        });
-      this.createIconAreaForAction(linkAction, 'actions-link');
+      return html`
+        <span class="node-action" @click="${() => this.selectItem(node)}">
+          <typo3-backend-icon identifier="actions-link" size="small"></typo3-backend-icon>
+        </span>
+      `;
     }
-    return nodes;
+    return super.createNodeContentAction(node);
   }
 
   /**
    * Link to a folder - Link Handler specific
    */
-  private linkItem(node: TreeNode): void {
+  private linkItem(node: TreeNodeInterface): void {
     LinkBrowser.finalizeFunction('t3://folder?storage=' + node.storage + '&identifier=' + node.pathIdentifier);
   }
 
   /**
    * Element Browser specific
    */
-  private selectItem(node: TreeNode): void {
+  private selectItem(node: TreeNodeInterface): void {
     ElementBrowser.insertElement(
-      node.itemType,
+      node.recordType,
       node.identifier,
       node.name,
       node.identifier,
@@ -75,20 +70,10 @@ export class FileStorageBrowserTree extends FileStorageTree {
 
 @customElement('typo3-backend-component-filestorage-browser')
 export class FileStorageBrowser extends LitElement {
-  @query('.svg-tree-wrapper') tree: FileStorageBrowserTree;
+  @query('.tree-wrapper') tree: FileStorageBrowserTree;
 
   private activeFolder: string = '';
   private actions: Array<string> = [];
-
-  public connectedCallback(): void {
-    super.connectedCallback();
-    document.addEventListener('typo3:navigation:resized', this.triggerRender);
-  }
-
-  public disconnectedCallback(): void {
-    document.removeEventListener('typo3:navigation:resized', this.triggerRender);
-    super.disconnectedCallback();
-  }
 
   protected firstUpdated() {
     this.activeFolder = this.getAttribute('active-folder') || '';
@@ -98,10 +83,6 @@ export class FileStorageBrowser extends LitElement {
   protected createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
-
-  protected triggerRender = (): void => {
-    this.tree.dispatchEvent(new Event('svg-tree:visible'));
-  };
 
   protected render(): TemplateResult {
     if (this.hasAttribute('tree-actions') && this.getAttribute('tree-actions').length) {
@@ -115,25 +96,18 @@ export class FileStorageBrowser extends LitElement {
     };
 
     const initialized = () => {
-      this.tree.dispatchEvent(new Event('svg-tree:visible'));
-      this.tree.addEventListener('typo3:svg-tree:expand-toggle', this.toggleExpandState);
-      this.tree.addEventListener('typo3:svg-tree:node-selected', this.loadFolderDetails);
-      this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.selectActiveNode);
+      this.tree.addEventListener('typo3:tree:node-selected', this.loadFolderDetails);
+      this.tree.addEventListener('typo3:tree:nodes-prepared', this.selectActiveNode);
       // set up toolbar now with updated properties
-      const toolbar = this.querySelector('typo3-backend-tree-toolbar') as Toolbar;
+      const toolbar = this.querySelector('typo3-backend-tree-toolbar') as TreeToolbar;
       toolbar.tree = this.tree;
     };
 
     return html`
-      <div class="svg-tree">
-        <div>
-          <typo3-backend-tree-toolbar .tree="${this.tree}" class="svg-toolbar"></typo3-backend-tree-toolbar>
-          <div class="navigation-tree-container">
-            <typo3-backend-component-filestorage-browser-tree class="svg-tree-wrapper" .setup=${treeSetup} @svg-tree:initialized=${initialized}></typo3-backend-component-page-browser-tree>
-          </div>
-        </div>
-        <div class="svg-tree-loader">
-          <typo3-backend-icon identifier="spinner-circle" size="large"></typo3-backend-icon>
+      <div class="tree">
+        <typo3-backend-tree-toolbar .tree="${this.tree}"></typo3-backend-tree-toolbar>
+        <div class="navigation-tree-container">
+          <typo3-backend-component-filestorage-browser-tree class="tree-wrapper" .setup=${treeSetup} @tree:initialized=${initialized}></typo3-backend-component-page-browser-tree>
         </div>
       </div>
     `;
@@ -141,8 +115,8 @@ export class FileStorageBrowser extends LitElement {
 
   private readonly selectActiveNode = (evt: CustomEvent): void => {
     // Activate the current node
-    const nodes = evt.detail.nodes as Array<TreeNode>;
-    evt.detail.nodes = nodes.map((node: TreeNode) => {
+    const nodes = evt.detail.nodes as Array<TreeNodeInterface>;
+    evt.detail.nodes = nodes.map((node: TreeNodeInterface) => {
       if (decodeURIComponent(node.identifier) === this.activeFolder) {
         node.checked = true;
       }
@@ -150,18 +124,12 @@ export class FileStorageBrowser extends LitElement {
     });
   };
 
-  private readonly toggleExpandState = (evt: CustomEvent): void => {
-    const node = evt.detail.node as TreeNode;
-    if (node) {
-      Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
-    }
-  };
 
   /**
    * If a page is clicked, the content area needs to be updated
    */
   private readonly loadFolderDetails = (evt: CustomEvent): void => {
-    const node = evt.detail.node as TreeNode;
+    const node = evt.detail.node as TreeNodeInterface;
     if (!node.checked) {
       return;
     }

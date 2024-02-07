@@ -52,7 +52,6 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
         $input = [
             // root
             0 => [
-                'stateIdentifier' => '0_0',
                 'identifier' => '0',
                 '_page' => [
                     'uid' => 0,
@@ -64,7 +63,6 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
             ],
             // Page contains version records
             1 => [
-                'stateIdentifier' => '0_1',
                 'identifier' => '1',
                 '_page' => [
                     'uid' => 1,
@@ -76,7 +74,6 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
             ],
             // Standard page without versions
             2 => [
-                'stateIdentifier' => '0_2',
                 'identifier' => '2',
                 '_page' => [
                     'uid' => 2,
@@ -88,12 +85,10 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
             ],
             // Page missing the page record array
             3 => [
-                'stateIdentifier' => '0_3',
                 'identifier' => '3',
             ],
             // Versioned page
             4 => [
-                'stateIdentifier' => '0_102',
                 'identifier' => '102',
                 '_page' => [
                     'uid' => 102,
@@ -105,7 +100,6 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
             ],
             // Versioned page in different workspace
             5 => [
-                'stateIdentifier' => '0_202',
                 'identifier' => '202',
                 '_page' => [
                     'uid' => 202,
@@ -117,7 +111,6 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
             ],
             // new placeholder
             6 => [
-                'stateIdentifier' => '0_103',
                 'identifier' => '103',
                 '_page' => [
                     'uid' => 103,

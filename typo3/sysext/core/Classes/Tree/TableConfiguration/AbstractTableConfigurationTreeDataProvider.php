@@ -151,32 +151,9 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
     }
 
     /**
-     * Sets the list for expanded nodes
-     *
-     * @param string $expandedList
+     * Init the tree data
      */
-    public function setExpandedList($expandedList)
-    {
-        $this->expandedList = $expandedList;
-    }
-
-    /**
-     * Gets the list for expanded nodes
-     *
-     * @return string
-     */
-    public function getExpandedList()
-    {
-        return $this->expandedList;
-    }
-
-    /**
-     * Read the list for expanded nodes from user settings
-     */
-    public function initializeTreeData()
-    {
-        $this->expandedList = $GLOBALS['BE_USER']->uc['tcaTrees'][$this->treeId] ?? '';
-    }
+    public function initializeTreeData() {}
 
     /**
      * Sets the list for selected nodes

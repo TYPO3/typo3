@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\PageTree;
 
+use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -33,10 +34,8 @@ final class SelectPagetreeWithKeyboardCest
     {
         $I->useExistingSession('admin');
         $I->click('List');
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['Root']);
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
-        $I->waitForElement('#identifier-0_1[tabindex="0"]', 5);
+        $I->waitForElement('#typo3-pagetree-treeContainer [role="treeitem"][data-id="1"]', 5);
     }
 
     /**
@@ -44,13 +43,13 @@ final class SelectPagetreeWithKeyboardCest
      */
     public function focusPageWithDownKeyAndOpenItWithEnter(ApplicationTester $I): void
     {
-        $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
+        $I->seeElement('#typo3-pagetree-tree [role="treeitem"].node-selected');
+        $I->pressKey('#typo3-pagetree-tree [role="treeitem"].node-selected', WebDriverKeys::DOWN);
         $I->assertEquals(
             'Dummy 1-2',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::ENTER);
+        $this->sendKey($I, WebDriverKeys::ENTER);
         $I->switchToContentFrame();
         $I->see('Dummy 1-2');
     }
@@ -60,17 +59,17 @@ final class SelectPagetreeWithKeyboardCest
      */
     public function focusPageWithDownAndUpKey(ApplicationTester $I): void
     {
-        $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
+        $I->seeElement('#typo3-pagetree-tree [role="treeitem"].node-selected');
+        $I->pressKey('#typo3-pagetree-tree [role="treeitem"].node-selected', WebDriverKeys::DOWN);
+        $this->sendKey($I, WebDriverKeys::DOWN);
         $I->assertEquals(
             'Dummy 1-3',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::UP);
+        $this->sendKey($I, WebDriverKeys::UP);
         $I->assertEquals(
             'Dummy 1-2',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
     }
 
@@ -79,40 +78,40 @@ final class SelectPagetreeWithKeyboardCest
      */
     public function expandSubtreeWithRightArrow(ApplicationTester $I): void
     {
-        $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
+        $I->seeElement('#typo3-pagetree-tree [role="treeitem"].node-selected');
         $I->amGoingTo('use keyboard to navigate through the tree');
-        for ($times = 0; $times < 3; $times++) {
-            $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
-        }
+        $I->pressKey('#typo3-pagetree-tree [role="treeitem"].node-selected', WebDriverKeys::DOWN);
+        $this->sendKey($I, WebDriverKeys::DOWN);
+        $this->sendKey($I, WebDriverKeys::DOWN);
         $I->amGoingTo('check if the parent key is selected and child is not visible');
         $I->assertEquals(
             'Dummy 1-4',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
         $I->amGoingTo('check if parent is still selected and child is visible');
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::RIGHT);
+        $this->sendKey($I, WebDriverKeys::RIGHT);
         $I->assertEquals(
             'Dummy 1-4',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
         $I->see('Dummy 1-4-5');
         $I->amGoingTo('check if first child node is selected');
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::RIGHT);
+        $this->sendKey($I, WebDriverKeys::RIGHT);
         $I->assertEquals(
             'Dummy 1-4-5',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::RIGHT);
+        $this->sendKey($I, WebDriverKeys::RIGHT);
         $I->amGoingTo('check if first child node is still selected');
         $I->assertEquals(
             'Dummy 1-4-5',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
         $I->amGoingTo('check if second child node is selected');
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
+        $this->sendKey($I, WebDriverKeys::DOWN);
         $I->assertEquals(
             'Dummy 6',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
     }
 
@@ -121,25 +120,25 @@ final class SelectPagetreeWithKeyboardCest
      */
     public function collapseSubtreeWithLeftArrow(ApplicationTester $I): void
     {
-        $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
+        $I->seeElement('#typo3-pagetree-tree [role="treeitem"].node-selected');
         $I->assertEquals(
             'Root',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $I->grabTextFrom('#typo3-pagetree-tree [role="treeitem"].node-selected')
         );
         $I->see('Dummy 1-2');
         $I->amGoingTo('collapse the current tree using left key');
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::LEFT);
+        $I->pressKey('#typo3-pagetree-tree [role="treeitem"].node-selected', WebDriverKeys::LEFT);
         $I->assertEquals(
             'Root',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
         $I->cantSee('Dummy 1-2');
         $I->amGoingTo('go to parent of the current collapsed node using left key');
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::LEFT);
+        $this->sendKey($I, WebDriverKeys::LEFT);
         $I->amGoingTo('check if parent (root) is selected and child is visible');
         $I->assertEquals(
             'New TYPO3 site',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
         $I->canSee('Root');
         $I->canSee('styleguide TCA demo');
@@ -150,19 +149,39 @@ final class SelectPagetreeWithKeyboardCest
      */
     public function focusFirstPageTreeItemWithHomeKey(ApplicationTester $I): void
     {
-        $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
-        for ($times = 0; $times < 15; $times++) {
-            $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
+        $I->seeElement('#typo3-pagetree-tree [role="treeitem"].node-selected');
+        $I->pressKey('#typo3-pagetree-tree [role="treeitem"].node-selected', WebDriverKeys::DOWN);
+        for ($times = 0; $times < 14; $times++) {
+            $this->sendKey($I, WebDriverKeys::DOWN);
         }
         $I->assertEquals(
             'Dummy 1-21',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
 
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::HOME);
+        $this->sendKey($I, WebDriverKeys::HOME);
         $I->assertEquals(
             'New TYPO3 site',
-            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+            $this->grabFocussedText($I)
         );
+    }
+
+    private function getFocusedNode(ApplicationTester $I): ?WebDriverBy
+    {
+        $treeId = $I->executeJS('return document.querySelector(\'#typo3-pagetree-tree [role="treeitem"]:focus\')?.getAttribute("data-tree-id")');
+        if ($treeId !== null) {
+            return WebDriverBy::xpath('//*[@id="typo3-pagetree-tree"]//*[@role="treeitem" and @data-tree-id="' . $treeId . '"]');
+        }
+        return null;
+    }
+
+    private function sendKey(ApplicationTester $I, string $key): void
+    {
+        $I->pressKey($this->getFocusedNode($I), $key);
+    }
+
+    private function grabFocussedText(ApplicationTester $I): string
+    {
+        return $I->grabTextFrom($this->getFocusedNode($I));
     }
 }

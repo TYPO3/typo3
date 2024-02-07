@@ -35,10 +35,8 @@ final class ElementsEmptyElementsCest extends AbstractElementsBasicCest
     {
         $I->useExistingSession('admin');
         $I->click('List');
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
         // Wait until DOM actually rendered everything
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $I->switchToContentFrame();
 
         // Open record and wait until form is ready

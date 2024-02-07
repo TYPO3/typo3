@@ -27,7 +27,6 @@ final class ViewModuleCest
         $I->useExistingSession('admin');
         $I->switchToMainFrame();
         $I->click('View');
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
     }

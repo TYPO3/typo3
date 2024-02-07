@@ -16,7 +16,7 @@ import type { SelectTreeToolbar } from './select-tree-toolbar';
 import './select-tree';
 import './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
-import { TreeNode } from '@typo3/backend/tree/tree-node';
+import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 import FormEngine from '@typo3/backend/form-engine';
 import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
 
@@ -32,12 +32,12 @@ export class SelectTreeElement {
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
     const treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
     this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
-    this.tree.classList.add('svg-tree-wrapper');
-    this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.loadDataAfter);
-    this.tree.addEventListener('typo3:svg-tree:node-selected', this.selectNode);
+    this.tree.classList.add('tree-wrapper');
+    this.tree.addEventListener('typo3:tree:nodes-prepared', this.loadDataAfter);
+    this.tree.addEventListener('typo3:tree:node-selected', this.selectNode);
 
     if (onFieldChangeItems instanceof Array) {
-      this.tree.addEventListener('typo3:svg-tree:node-selected', () => { FormEngine.processOnFieldChange(onFieldChangeItems); } );
+      this.tree.addEventListener('typo3:tree:node-selected', () => { FormEngine.processOnFieldChange(onFieldChangeItems); } );
     }
 
     const settings = {
@@ -50,7 +50,7 @@ export class SelectTreeElement {
       expandUpToLevel: this.recordField.dataset.treeExpandUpToLevel,
       unselectableElements: [] as Array<any>
     };
-    this.tree.addEventListener('svg-tree:initialized', () => {
+    this.tree.addEventListener('tree:initialized', () => {
       if (this.recordField.dataset.treeShowToolbar) {
         const toolbarElement = document.createElement('typo3-backend-form-selecttree-toolbar') as SelectTreeToolbar;
         toolbarElement.tree = this.tree;
@@ -59,23 +59,6 @@ export class SelectTreeElement {
     });
     this.tree.setup = settings;
     treeWrapper.append(this.tree);
-    this.listenForVisibleTree();
-  }
-
-  /**
-   * If the Select item is in an invisible tab, it needs to be rendered once the tab
-   * becomes visible.
-   */
-  private listenForVisibleTree(): void {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          this.tree.dispatchEvent(new Event('svg-tree:visible'));
-          observer.unobserve(entry.target);
-        }
-      });
-    });
-    observer.observe(this.tree);
   }
 
   private generateRequestUrl(): string {
@@ -99,22 +82,22 @@ export class SelectTreeElement {
   }
 
   private readonly selectNode = (evt: CustomEvent) => {
-    const node = evt.detail.node as TreeNode;
+    const node = evt.detail.node as TreeNodeInterface;
     this.updateAncestorsIndeterminateState(node);
-    // check all nodes again, to ensure correct display of indeterminate state
+    // check all nodes again, to ensure correct display of __indeterminate state
     this.calculateIndeterminate(this.tree.nodes);
     this.saveCheckboxes();
     this.tree.setup.input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   };
 
   /**
-   * Resets the node.indeterminate for the whole tree.
+   * Resets the node.__indeterminate for the whole tree.
    * It's done once after loading data.
-   * Later indeterminate state is updated just for the subset of nodes
+   * Later __indeterminate state is updated just for the subset of nodes
    */
   private readonly loadDataAfter = (evt: CustomEvent) => {
-    this.tree.nodes = evt.detail.nodes.map((node: TreeNode) => {
-      node.indeterminate = false;
+    this.tree.nodes = evt.detail.nodes.map((node: TreeNodeInterface) => {
+      node.__indeterminate = false;
       return node;
     });
     this.calculateIndeterminate(this.tree.nodes);
@@ -127,32 +110,33 @@ export class SelectTreeElement {
     if (typeof this.recordField === 'undefined') {
       return;
     }
-    this.recordField.value = this.tree.getSelectedNodes().map((node: TreeNode): string => node.identifier).join(',');
+    this.recordField.value = this.tree.getSelectedNodes().map((node: TreeNodeInterface): string => node.identifier).join(',');
   };
 
   /**
-   * Updates the indeterminate state for ancestors of the current node
+   * Updates the __indeterminate state for ancestors of the current node
    */
-  private updateAncestorsIndeterminateState(node: TreeNode): void {
+  private updateAncestorsIndeterminateState(node: TreeNodeInterface): void {
     // foreach ancestor except node itself
-    let indeterminate = false;
-    node.parents.forEach((index: number) => {
-      const treeNode = this.tree.nodes[index];
-      treeNode.indeterminate = (node.checked || node.indeterminate || indeterminate);
+    let __indeterminate = false;
+    node.__treeParents.forEach((treeParentIdentifier: string) => {
+      const TreeNodeInterface = this.tree.getNodeByTreeIdentifier(treeParentIdentifier);
+      TreeNodeInterface.__indeterminate = (node.checked || node.__indeterminate || __indeterminate);
       // check state for the next level
-      indeterminate = (treeNode.checked || treeNode.indeterminate || node.checked || node.indeterminate);
+      __indeterminate = (TreeNodeInterface.checked || TreeNodeInterface.__indeterminate || node.checked || node.__indeterminate);
     });
   }
 
   /**
-   * Sets indeterminate state for a subtree.
-   * It relays on the tree to have indeterminate state reset beforehand.
+   * Sets __indeterminate state for a subtree.
+   * It relays on the tree to have __indeterminate state reset beforehand.
    */
-  private calculateIndeterminate(nodes: TreeNode[]): void {
-    nodes.forEach((node: TreeNode) => {
-      if ((node.checked || node.indeterminate) && node.parents && node.parents.length > 0) {
-        node.parents.forEach((parentNodeIndex: number) => {
-          nodes[parentNodeIndex].indeterminate = true;
+  private calculateIndeterminate(nodes: TreeNodeInterface[]): void {
+    nodes.forEach((node: TreeNodeInterface) => {
+      if ((node.checked || node.__indeterminate) && node.__treeParents && node.__treeParents.length > 0) {
+        node.__treeParents.forEach((treeParentIdentifier: string) => {
+          const TreeNodeInterface = this.tree.getNodeByTreeIdentifier(treeParentIdentifier);
+          TreeNodeInterface.__indeterminate = true;
         });
       }
     });

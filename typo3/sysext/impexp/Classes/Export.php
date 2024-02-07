@@ -51,7 +51,6 @@ use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 class Export extends ImportExport
 {
     public const LEVELS_RECORDS_ON_THIS_PAGE = -2;
-    public const LEVELS_EXPANDED_TREE = -1;
     public const LEVELS_INFINITE = 999;
 
     public const FILETYPE_XML = 'xml';
@@ -149,17 +148,7 @@ class Export extends ImportExport
         // Configure which page tree to export
         if ($this->pid !== -1) {
             $pageTree = null;
-            if ($this->levels === self::LEVELS_EXPANDED_TREE) {
-                $pageTreeView = GeneralUtility::makeInstance(ExportPageTreeView::class);
-                $initClause = $this->getExcludePagesClause();
-                if ($this->excludeDisabledRecords) {
-                    $initClause .= BackendUtility::BEenableFields('pages');
-                }
-                $pageTreeView->init($initClause);
-                $pageTreeView->buildTreeByExpandedState($this->pid);
-                $this->treeHTML = $pageTreeView->printTree();
-                $pageTree = $pageTreeView->buffer_idH;
-            } elseif ($this->levels === self::LEVELS_RECORDS_ON_THIS_PAGE) {
+            if ($this->levels === self::LEVELS_RECORDS_ON_THIS_PAGE) {
                 $this->addRecordsForPid($this->pid, $this->tables);
             } else {
                 $pageTreeView = GeneralUtility::makeInstance(ExportPageTreeView::class);

@@ -26,11 +26,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/Page/TreeController.php
-
-		-
 			message: "#^Offset 'noExportRecordsLinks' on array in isset\\(\\) always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/RecordListController.php

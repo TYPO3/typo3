@@ -28,7 +28,6 @@ final class ExportCest extends AbstractCest
 {
     private string $contextMenuExport = '[data-callback-action=exportT3d]';
     private string $contextMenuMore = 'li.context-menu-item-submenu';
-    private string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
     private string $inModuleHeader = '.module-docheader';
     private string $inModuleTabs = '#ImportExportController .nav-tabs';
     private string $inModuleTabsBody = '#ImportExportController .tab-content';
@@ -39,16 +38,14 @@ final class ExportCest extends AbstractCest
     {
         $I->useExistingSession('admin');
         $I->click('List');
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
     }
 
     public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
     {
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $selectedPageTitle = 'elements t3editor';
-        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
 
         $I->click($selectedPageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -70,10 +67,7 @@ final class ExportCest extends AbstractCest
         $listModuleHeader = '.module-docheader';
         $listModuleBtnExport = 'a[title="Export"]';
 
-        $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
-
-        $pageTree->openPath([$tablePageTitle]);
+        $pageTree->openPath(['styleguide TCA demo', $tablePageTitle]);
         $I->switchToContentFrame();
         // List module single table mode
         $I->waitForText($tableTitle);
@@ -99,10 +93,7 @@ final class ExportCest extends AbstractCest
         $recordTable = '#recordlist-tx_styleguide_elements_t3editor';
         $recordIcon = 'tr:first-child a[data-contextmenu-trigger]';
 
-        $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
-
-        $pageTree->openPath([$recordPageTitle]);
+        $pageTree->openPath(['styleguide TCA demo', $recordPageTitle]);
         $I->switchToContentFrame();
         // List module single table mode
         $I->waitForText($recordPageTitle);
@@ -123,7 +114,7 @@ final class ExportCest extends AbstractCest
     {
         $pageTitle = 'staticdata';
         $exportPageTitle = 'Export pagetree configuration';
-        $pageIcon = '//*[text()=\'' . $pageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $pageIcon = '//*[text()=\'' . $pageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
         $tabExport = 'a[href="#export-filepreset"]';
         $contentExport = '#export-filepreset';
         $presetTitle = 'My First Preset';
@@ -133,7 +124,6 @@ final class ExportCest extends AbstractCest
         $selectPreset = 'select[name="preset[select]"]';
 
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $I->click($pageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -177,13 +167,12 @@ final class ExportCest extends AbstractCest
     {
         $pageTitle = 'staticdata';
         $exportPageTitle = 'Export pagetree configuration';
-        $pageIcon = '//*[text()=\'' . $pageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $pageIcon = '//*[text()=\'' . $pageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
         $tabExport = 'a[href="#export-filepreset"]';
         $contentExport = '#export-filepreset';
         $buttonSaveToFile = 'tx_impexp[save_export]';
 
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $I->click($pageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -206,7 +195,7 @@ final class ExportCest extends AbstractCest
 
     public function exportTable(ApplicationTester $I): void
     {
-        $rootPage = '#identifier-0_0 .node-name';
+        $rootPage = '#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-label';
         $rootPageTitle = 'New TYPO3 site';
         $beUsergroupTableTitle = 'Backend usergroup';
         $listModuleHeader = '.module-docheader';
@@ -242,7 +231,7 @@ final class ExportCest extends AbstractCest
 
     public function exportRecord(ApplicationTester $I): void
     {
-        $rootPage = '#identifier-0_0 .node-name';
+        $rootPage = '#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-label';
         $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTable = '#recordlist-be_groups';
         $sysLanguageIcon = 'tr:first-child a[data-contextmenu-trigger]';

@@ -25,6 +25,7 @@ import { ModuleStateStorage } from './storage/module-state-storage';
 import { selector } from '@typo3/core/literals';
 import DocumentService from '@typo3/core/document-service';
 import { Collapse } from 'bootstrap';
+import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
 enum ModuleMenuSelector {
   menu = '[data-modulemenu]',
@@ -113,7 +114,7 @@ class ModuleMenu {
     }
     // get id
     let section = '';
-    if (moduleData.navigationComponentId === '@typo3/backend/page-tree/page-tree-element') {
+    if (moduleData.navigationComponentId === '@typo3/backend/tree/page-tree-element') {
       section = 'web';
     } else {
       section = moduleData.name.split('_')[0];
@@ -325,19 +326,19 @@ class ModuleMenu {
     const menuItem = ModuleMenu.getModuleMenuItemFromElement(target);
     let item = null;
 
-    switch (event.code) {
-      case 'ArrowUp':
+    switch (event.key) {
+      case KeyTypesEnum.UP:
         item = ModuleMenu.getPreviousItem(menuItem.element);
         break;
-      case 'ArrowDown':
+      case KeyTypesEnum.DOWN:
         item = ModuleMenu.getNextItem(menuItem.element);
         break;
-      case 'ArrowLeft':
+      case KeyTypesEnum.LEFT:
         if (menuItem.level > 1) {
           item = ModuleMenu.getParentItem(menuItem.element);
         }
         break;
-      case 'ArrowRight':
+      case KeyTypesEnum.RIGHT:
         if (menuItem.collapsible) {
           if (!menuItem.expanded) {
             ModuleMenu.toggleModuleGroup(menuItem.element);
@@ -345,23 +346,23 @@ class ModuleMenu {
           item = ModuleMenu.getFirstChildItem(menuItem.element);
         }
         break;
-      case 'Home':
+      case KeyTypesEnum.HOME:
         if (event.ctrlKey && menuItem.level > 1) {
           item = document.querySelector(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item) as HTMLElement;
           break;
         }
         item = ModuleMenu.getFirstItem(menuItem.element);
         break;
-      case 'End':
+      case KeyTypesEnum.END:
         if (event.ctrlKey && menuItem.level > 1) {
           item = ModuleMenu.getLastItem(document.querySelector(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item));
         } else {
           item = ModuleMenu.getLastItem(menuItem.element);
         }
         break;
-      case 'Space':
-      case 'Enter':
-        if (event.code === 'Space' || menuItem.collapsible) {
+      case KeyTypesEnum.SPACE:
+      case KeyTypesEnum.ENTER:
+        if (event.key === KeyTypesEnum.SPACE || menuItem.collapsible) {
           // we do not want the click handler to run, need to prevent default immediately
           event.preventDefault();
         }
@@ -372,8 +373,7 @@ class ModuleMenu {
           }
         }
         break;
-      case 'Esc':
-      case 'Escape':
+      case KeyTypesEnum.ESCAPE:
         if (menuItem.level > 1) {
           item = ModuleMenu.getParentItem(menuItem.element);
           ModuleMenu.toggleModuleGroup(item);

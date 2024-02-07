@@ -277,7 +277,6 @@ class ExportController
         if (MathUtility::canBeInterpretedAsInteger($inputData['pagetree']['id'] ?? '')) {
             $options = [
                 Export::LEVELS_RECORDS_ON_THIS_PAGE => $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tablesOnThisPage'),
-                Export::LEVELS_EXPANDED_TREE => $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_expandedTree'),
                 0 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
                 1 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
                 2 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),

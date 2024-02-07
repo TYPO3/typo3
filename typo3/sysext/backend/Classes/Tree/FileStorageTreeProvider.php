@@ -68,14 +68,13 @@ class FileStorageTreeProvider
 
         return [
             'resource' => $folder,
-            'stateIdentifier' => $this->getStateIdentifier($folder),
             'identifier' => rawurlencode($folder->getCombinedIdentifier()),
             'name' => $name,
             'storage' => $storage->getUid(),
             'pathIdentifier' => rawurlencode($folder->getIdentifier()),
             'hasChildren' => $hasSubfolders,
             'parentIdentifier' => $parentFolder instanceof Folder && !$isStorage ? rawurlencode($parentFolder->getCombinedIdentifier()) : null,
-            'itemType' => $tableName,
+            'recordType' => $tableName,
         ];
     }
 
@@ -109,8 +108,6 @@ class FileStorageTreeProvider
             $itm['depth'] = 0;
             $itm['expanded'] = $expanded;
             $itm['loaded'] = $expanded;
-            $itm['siblingsCount'] = count($rootLevelFolders) - 1;
-            $itm['siblingsPosition'] = $i;
             $items[] = $itm;
 
             // If the mount is expanded, go down:
@@ -206,7 +203,6 @@ class FileStorageTreeProvider
             uksort($subFolders, strnatcasecmp(...));
         }
 
-        $subFolderCounter = 0;
         foreach ($subFolders as $subFolderName => $subFolder) {
             $subFolderName = (string)$subFolderName; // Enforce string cast in case $subFolderName contains numeric chars only
             $expanded = $this->isExpanded($subFolder);
@@ -222,8 +218,6 @@ class FileStorageTreeProvider
                     'depth' => $currentDepth,
                     'expanded' => $expanded,
                     'loaded' => $expanded,
-                    'siblingsCount' => count($subFolders) - 1,
-                    'siblingsPosition' => ++$subFolderCounter,
                 ]
             );
 
@@ -264,24 +258,14 @@ class FileStorageTreeProvider
     }
 
     /**
-     * The state identifier is the folder stored in the user settings, and also used to uniquely identify
-     * a folder throughout the folder tree structure.
-     */
-    protected function getStateIdentifier(Folder $folder): string
-    {
-        return $folder->getStorage()->getUid() . '_' . GeneralUtility::md5int($folder->getIdentifier());
-    }
-
-    /**
      * Checks if a folder was previously opened by the user.
      */
     protected function isExpanded(Folder $folder, bool $fallback = false): bool
     {
-        $stateIdentifier = $this->getStateIdentifier($folder);
         if (!is_array($this->expandedState)) {
             $this->expandedState = GeneralUtility::makeInstance(BackendUserConfiguration::class)->get($this->userSettingsIdentifier);
             $this->expandedState = ($this->expandedState['stateHash'] ?? []) ?: [];
         }
-        return (bool)($this->expandedState[$stateIdentifier] ?? $fallback);
+        return (bool)($this->expandedState[$folder->getIdentifier()] ?? $fallback);
     }
 }

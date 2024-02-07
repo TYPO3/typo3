@@ -12,14 +12,16 @@
  */
 
 export enum KeyTypesEnum {
-  TAB = 9,
-  ENTER = 13,
-  ESCAPE = 27,
-  SPACE = 32,
-  END = 35,
-  HOME,
-  LEFT,
-  UP,
-  RIGHT,
-  DOWN
+  TAB = 'Tab',
+  ENTER = 'Enter',
+  ESCAPE = 'Escape',
+  SPACE = ' ',
+  END = 'End',
+  HOME = 'Home',
+  LEFT = 'ArrowLeft',
+  UP = 'ArrowUp',
+  RIGHT = 'ArrowRight',
+  DOWN = 'ArrowDown',
+  PAGE_UP = 'PageUp',
+  PAGE_DOWN = 'PageDown',
 }

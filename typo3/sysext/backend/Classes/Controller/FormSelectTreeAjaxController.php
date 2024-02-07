@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Dto\Tree\SelectTreeItem;
+use TYPO3\CMS\Backend\Dto\Tree\TreeItem;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -190,6 +192,31 @@ class FormSelectTreeAjaxController
         } else {
             $treeData = $formData['processedTca']['columns'][$fieldName]['config']['items'];
         }
-        return new JsonResponse($treeData ?? []);
+
+        $data = [];
+        foreach ($treeData ?? [] as $item) {
+            $treeItem = new SelectTreeItem(
+                item: new TreeItem(
+                    identifier: (string)$item['identifier'],
+                    parentIdentifier: (string)($item['parentIdentifier'] ?? ''),
+                    recordType: (string)($item['recordType'] ?? ''),
+                    name: (string)($item['name'] ?? ''),
+                    prefix: (string)($item['prefix'] ?? ''),
+                    suffix: (string)($item['suffix'] ?? ''),
+                    tooltip: (string)($item['tooltip'] ?? ''),
+                    depth: (int)($item['depth'] ?? 0),
+                    hasChildren: (bool)($item['hasChildren'] ?? false),
+                    expanded: (bool)($item['expanded'] ?? false),
+                    loaded: true,
+                    icon: (string)($item['icon'] ?? ''),
+                    overlayIcon: (string)($item['overlayIcon'] ?? ''),
+                ),
+                checked: (bool)($item['checked'] ?? false),
+                selectable: (bool)($item['selectable'] ?? false),
+            );
+            $data[] = $treeItem;
+        }
+
+        return new JsonResponse($data);
     }
 }

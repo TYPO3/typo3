@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\View;
 
-use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Backend\Tree\View\AbstractTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -43,12 +42,6 @@ class ExportPageTreeView extends AbstractTreeView
      * @var int
      */
     public $bank = 0;
-
-    /**
-     * Holds (session stored) information about which items in the tree are unfolded and which are not.
-     * @var array
-     */
-    public $stored = [];
 
     public function __construct()
     {
@@ -103,25 +96,6 @@ class ExportPageTreeView extends AbstractTreeView
     }
 
     /**
-     * Construction of the tree structure according to the state of folding of the page tree module.
-     *
-     * @param int $pid Page ID
-     */
-    public function buildTreeByExpandedState(int $pid): void
-    {
-        $this->syncPageTreeState();
-
-        $this->expandAll = false;
-        if ($pid > 0) {
-            $checkSub = (bool)($this->stored[$this->bank][$pid] ?? false);
-        } else {
-            $checkSub = true;
-        }
-
-        $this->buildTree($pid, Export::LEVELS_INFINITE, $checkSub);
-    }
-
-    /**
      * Creation of a tree structure with predefined depth to prepare the export.
      *
      * @param int $pid Page ID
@@ -167,27 +141,6 @@ class ExportPageTreeView extends AbstractTreeView
         // Check if root page has subtree
         if (empty($this->buffer_idH)) {
             $this->tree[0]['hasSub'] = false;
-        }
-    }
-
-    /**
-     * Sync folding state of EXT:impexp page tree with the official page tree module
-     */
-    protected function syncPageTreeState(): void
-    {
-        $backendUserConfiguration = GeneralUtility::makeInstance(BackendUserConfiguration::class);
-        $pageTreeState = $backendUserConfiguration->get('BackendComponents.States.Pagetree');
-        if (is_object($pageTreeState) && is_object($pageTreeState->stateHash)) {
-            $pageTreeState = (array)$pageTreeState->stateHash;
-        } else {
-            $stateHash = $pageTreeState['stateHash'] ?? [];
-            $pageTreeState = is_array($stateHash) ? $stateHash : [];
-        }
-
-        $this->stored = [];
-        foreach ($pageTreeState as $identifier => $isExpanded) {
-            [$bank, $pageId] = explode('_', $identifier);
-            $this->stored[$bank][$pageId] = $isExpanded;
         }
     }
 
@@ -240,8 +193,7 @@ class ExportPageTreeView extends AbstractTreeView
     }
 
     /**
-     * Returns TRUE/FALSE if the next level for $id should be expanded - based on
-     * data in $this->stored[][] and ->expandAll flag.
+     * Returns TRUE/FALSE if the next level for $id should be expanded - based on the ->expandAll flag.
      * Extending parent function
      *
      * @param int $id Record id/key
@@ -251,7 +203,7 @@ class ExportPageTreeView extends AbstractTreeView
      */
     public function expandNext($id)
     {
-        return $this->expandAll || !empty($this->stored[$this->bank][$id]);
+        return $this->expandAll;
     }
 
     /**

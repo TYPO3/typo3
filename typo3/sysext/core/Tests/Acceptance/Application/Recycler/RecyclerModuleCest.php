@@ -27,8 +27,8 @@ final class RecyclerModuleCest
     private ModalDialog $modalDialog;
 
     private static string $rootPageTitle = 'styleguide TCA demo';
-    private static string $treeNode = '#typo3-pagetree-tree .nodes .node';
-    private static string $dragNode = '#typo3-pagetree-toolbar .svg-toolbar__drag-node';
+    private static string $treeNode = '#typo3-pagetree-tree .nodes-list [role="treeitem"]';
+    private static string $dragNode = '#typo3-pagetree-toolbar .tree-toolbar__drag-node';
     private static string $nodeEditInput = '.node-edit';
     private static string $sysNoteSubject = 'Dummy Recycler Content';
     private static string $pageTitle = 'Dummy 1-styleguide TCA demo-new';
@@ -47,8 +47,16 @@ final class RecyclerModuleCest
         // Wait until DOM actually rendered everything
         $I->waitForElement(self::$treeNode, 5);
 
-        $this->pageTree->dragAndDropNewPage(self::$rootPageTitle, self::$dragNode, self::$nodeEditInput);
+        $I->switchToContentFrame();
+        $I->waitForElement('[title="Create new record"]');
+        $I->click('a[title="Create new record"]');
+        $I->click('//a[text()[normalize-space(.) = "Page (inside)"]]');
+        $I->fillField('//input[contains(@data-formengine-input-name, "data[pages]") and contains(@data-formengine-input-name, "[title]")]', self::$pageTitle);
+        $I->click('button[name="_savedok"]');
+
+        $I->switchToIframe();
         $newPage = $this->pageTree->getPageXPathByPageName(self::$pageTitle);
+        $I->waitForElement($newPage, 2);
         $I->click($newPage);
         $I->switchToContentFrame();
         $I->waitForElement('[title="Create new record"]');
