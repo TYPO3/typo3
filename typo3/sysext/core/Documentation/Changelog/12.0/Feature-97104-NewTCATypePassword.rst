@@ -21,9 +21,9 @@ TCA type :php:`password` has been added. It replaces the :php:`eval=password`
 and :php:`eval=saltedPassword` option of TCA type :php:`input`.
 
 TCA password fields will be rendered as input :php:`type=password` fields.
-By default, the :php:`autocomplete=off` attribute will be added to the
+By default, the :php:`autocomplete=new-password` attribute will be added to the
 resulting input field. If :php:`autocomplete=true` is configured in TCA, a
-:php:`autocomplete=new-fieldname` attribute will be added to the element.
+:php:`autocomplete=current-password` attribute will be added to the element.
 
 The TCA type :php:`password` features the following column configuration:
 
