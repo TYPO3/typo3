@@ -14,7 +14,35 @@ extensions:
 modules:
   enabled:
     - Filesystem
+    - Asserts
+    - WebDriver
     - TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Config
+  config:
+    WebDriver:
+      url: '%typo3TestingAcceptanceBaseUrl%'
+      browser: chrome
+      port: 9515
+      path: /
+      window_size: 1280x1024
+      capabilities:
+        goog:chromeOptions:
+          args: ["window-size=1280,1024"]
+env:
+  ci:
+    modules:
+      config:
+        WebDriver:
+          host: chrome
+          port: 4444
+          path: /wd/hub
+          wait: 2
+  headless:
+    modules:
+      config:
+        WebDriver:
+          capabilities:
+            goog:chromeOptions:
+              args: ["headless", "no-sandbox", "disable-gpu", "window-size=1280,1024"]
 params:
   - parameters.yml
   - env

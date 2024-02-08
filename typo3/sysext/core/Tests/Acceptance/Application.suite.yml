@@ -6,41 +6,20 @@ step_decorators:
 
 modules:
   enabled:
-    - WebDriver:
-        url: '%typo3TestingAcceptanceBaseUrl%'
-        browser: chrome
-        wait: 2
-        host: chrome
-        window_size: 1280x1024
-        capabilities:
-          goog:chromeOptions:
-            args: ["--no-sandbox", "--window-size=1280,1024", "--disable-gpu", "--unsafely-treat-insecure-origin-as-secure=http://web"]
     - \TYPO3\TestingFramework\Core\Acceptance\Helper\Acceptance
-    - \TYPO3\TestingFramework\Core\Acceptance\Helper\Login:
-        sessions:
-            # These sessions must exist in the database fixture to get a logged in state.
-            editor: ff83dfd81e20b34c27d3e97771a4525a
-            admin: 886526ce72b86870739cc41991144ec1
-    - Asserts
+    - \TYPO3\CMS\Core\Tests\Acceptance\Helper\PasswordLogin
     - Codeception\Module\Cli
+  config:
+    \TYPO3\CMS\Core\Tests\Acceptance\Helper\PasswordLogin:
+      passwords:
+        admin: '%typo3TestingAcceptanceAdminPassword%'
+        editor: '%typo3TestingAcceptanceEditorPassword%'
 
 env:
-  headless:
-    modules:
+  ci:
+    extensions:
       enabled:
-        - WebDriver:
-            url: '%typo3TestingAcceptanceBaseUrl%'
-            browser: chrome
-            wait: 2
-            host: chrome
-            window_size: 1280x1024
-            capabilities:
-              goog:chromeOptions:
-                args: ["--headless", "--no-sandbox", "--window-size=1280,1024", "--disable-gpu"]
-
-extensions:
-  enabled:
-    - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\ApplicationEnvironment
+        - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\ApplicationEnvironment
 
 groups:
   AcceptanceTests-Job-*: AcceptanceTests-Job-*
