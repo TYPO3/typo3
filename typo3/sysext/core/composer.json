@@ -92,9 +92,9 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"typo3/cms-lang": "*",
-		"typo3/cms-saltedpasswords": "*",
-		"typo3/cms-sv": "*"
+		"typo3/cms-lang": "self.version",
+		"typo3/cms-saltedpasswords": "self.version",
+		"typo3/cms-sv": "self.version"
 	},
 	"provide": {
 		"psr/http-factory-implementation": "1.0",
