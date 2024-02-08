@@ -25,7 +25,7 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"typo3/cms-info-pagetsconfig": "*"
+		"typo3/cms-info-pagetsconfig": "self.version"
 	},
 	"extra": {
 		"branch-alias": {

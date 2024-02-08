@@ -25,7 +25,7 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"typo3/cms-version": "*"
+		"typo3/cms-version": "self.version"
 	},
 	"extra": {
 		"branch-alias": {
