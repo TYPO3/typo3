@@ -226,8 +226,8 @@ final class AuthenticationServiceTest extends UnitTestCase
             $anyUserAuthentication
         );
         $dbUser = [
-            // an argon2i hash of 'myPassword'
-            'password' => '$argon2i$v=19$m=65536,t=16,p=1$eGpyelFZbkpRdXN3QVhsUA$rd4abz2fcuksGu3b3fipglQZtHbIy+M3XoIS+sNVSl4',
+            // an argon2id hash of 'myPassword'
+            'password' => '$argon2id$v=19$m=65536,t=16,p=1$cjBVcVJJUkxQWnFsdExsZw$Ss2WRXeeGTFerTg8EdTNE4IDcIwX6hGTvKmH6XvvFX8',
         ];
         self::assertSame(200, $subject->authUser($dbUser));
     }

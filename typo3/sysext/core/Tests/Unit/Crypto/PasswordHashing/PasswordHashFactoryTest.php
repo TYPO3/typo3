@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 
-use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
@@ -171,7 +171,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     public function getDefaultHashReturnsInstanceOfConfiguredDefaultFeMethod(): void
     {
         $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('FE');
-        self::assertInstanceOf(Argon2iPasswordHash::class, $hashInstance);
+        self::assertInstanceOf(Argon2idPasswordHash::class, $hashInstance);
     }
 
     /**
@@ -180,7 +180,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     public function getDefaultHashReturnsInstanceOfConfiguredDefaultBeMethod(): void
     {
         $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('BE');
-        self::assertInstanceOf(Argon2iPasswordHash::class, $hashInstance);
+        self::assertInstanceOf(Argon2idPasswordHash::class, $hashInstance);
     }
 
     /**
@@ -201,7 +201,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotRegistered(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing']['className'] = \stdClass::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ Argon2iPasswordHash::class ];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ Argon2idPasswordHash::class ];
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533820194);
         (new PasswordHashFactory())->getDefaultHashInstance('BE');
@@ -212,9 +212,9 @@ final class PasswordHashFactoryTest extends UnitTestCase
      */
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotAvailable(): void
     {
-        $argon2iPasswordHashMock = $this->createMock(Argon2iPasswordHash::class);
-        $argon2iPasswordHashMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
-        GeneralUtility::addInstance(Argon2iPasswordHash::class, $argon2iPasswordHashMock);
+        $argon2idPasswordHashMock = $this->createMock(Argon2idPasswordHash::class);
+        $argon2idPasswordHashMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idPasswordHashMock);
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533822084);
         (new PasswordHashFactory())->getDefaultHashInstance('BE');
@@ -223,7 +223,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultHoshHandsConfiguredOptionsToHashClass(): void
+    public function getDefaultHashHandsConfiguredOptionsToHashClass(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ TestPasswordHash::class ];
         $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing'] = [

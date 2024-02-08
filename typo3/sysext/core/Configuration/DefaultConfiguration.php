@@ -1343,7 +1343,7 @@ return [
             ],
         ],
         'passwordHashing' => [
-            'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
+            'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash::class,
             'options' => [],
         ],
         'passwordPolicy' => 'default',
@@ -1463,7 +1463,7 @@ return [
             'unknown' => \TYPO3\CMS\Frontend\Typolink\LegacyLinkBuilder::class,
         ],
         'passwordHashing' => [
-            'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
+            'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash::class,
             'options' => [],
         ],
         'passwordPolicy' => 'default',
