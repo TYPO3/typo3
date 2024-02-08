@@ -29,13 +29,13 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"typo3/cms-about": "*",
-		"typo3/cms-context-help": "*",
-		"typo3/cms-cshmanual": "*",
-		"typo3/cms-func-wizards": "*",
-		"typo3/cms-recordlist": "*",
-		"typo3/cms-wizard-crpages": "*",
-		"typo3/cms-wizard-sortpages": "*"
+		"typo3/cms-about": "self.version",
+		"typo3/cms-context-help": "self.version",
+		"typo3/cms-cshmanual": "self.version",
+		"typo3/cms-func-wizards": "self.version",
+		"typo3/cms-recordlist": "self.version",
+		"typo3/cms-wizard-crpages": "self.version",
+		"typo3/cms-wizard-sortpages": "self.version"
 	},
 	"extra": {
 		"branch-alias": {
