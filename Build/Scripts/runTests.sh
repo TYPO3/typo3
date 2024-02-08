@@ -566,9 +566,9 @@ fi
 # Suite execution
 case ${TEST_SUITE} in
     acceptance)
-        CODECEPION_ENV=""
+        CODECEPION_ENV="--env ci"
         if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-            CODECEPION_ENV="--env headless"
+            CODECEPION_ENV="--env ci,headless"
         fi
         if [ "${CHUNKS}" -gt 0 ]; then
             ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
@@ -656,9 +656,9 @@ case ${TEST_SUITE} in
         fi
         case ${DBMS} in
             mariadb)
-                CODECEPION_ENV="--env mysql"
+                CODECEPION_ENV="--env ci,mysql"
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                    CODECEPION_ENV="--env mysql,headless"
+                    CODECEPION_ENV="--env ci,mysql,headless"
                 fi
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
                 waitFor mariadb-ac-install-${SUFFIX} 3306
@@ -668,9 +668,9 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             mysql)
-                CODECEPION_ENV="--env mysql"
+                CODECEPION_ENV="--env ci,mysql"
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                    CODECEPION_ENV="--env mysql,headless"
+                    CODECEPION_ENV="--env ci,mysql,headless"
                 fi
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
                 waitFor mysql-ac-install-${SUFFIX} 3306
@@ -680,9 +680,9 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                CODECEPION_ENV="--env postgresql"
+                CODECEPION_ENV="--env ci,postgresql"
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                    CODECEPION_ENV="--env postgresql,headless"
+                    CODECEPION_ENV="--env ci,postgresql,headless"
                 fi
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-ac-install-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
                 waitFor postgres-ac-install-${SUFFIX} 5432
@@ -694,9 +694,9 @@ case ${TEST_SUITE} in
             sqlite)
                 rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
                 mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
-                CODECEPION_ENV="--env sqlite"
+                CODECEPION_ENV="--env ci,sqlite"
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                    CODECEPION_ENV="--env sqlite,headless"
+                    CODECEPION_ENV="--env ci,sqlite,headless"
                 fi
                 CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${CODECEPION_ENV} --html reports.html"

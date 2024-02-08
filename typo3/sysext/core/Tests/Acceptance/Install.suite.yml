@@ -1,32 +1,6 @@
 actor: InstallTester
 
-modules:
-  enabled:
-    - WebDriver:
-        url: '%typo3TestingAcceptanceBaseUrl%'
-        browser: chrome
-        wait: 2
-        host: chrome
-        window_size: 1280x1024
-        capabilities:
-          goog:chromeOptions:
-            args: [ "--no-sandbox", "--disable-gpu" ]
-    - Asserts
-
 env:
-  headless:
-    modules:
-      enabled:
-        - WebDriver:
-            url: '%typo3TestingAcceptanceBaseUrl%'
-            browser: chrome
-            wait: 2
-            host: chrome
-            window_size: 1280x1024
-            capabilities:
-              goog:chromeOptions:
-                args: [ "--headless", "--no-sandbox", "--disable-gpu" ]
-
   mysql:
     extensions:
       enabled:
