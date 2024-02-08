@@ -14,7 +14,35 @@ extensions:
 modules:
   enabled:
     - Filesystem
+    - Asserts
+    - WebDriver
     - TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\Config
+  config:
+    WebDriver:
+      url: '%typo3TestingAcceptanceBaseUrl%'
+      browser: chrome
+      port: 9515
+      path: /
+      # @todo: adapt tests to not break with a defined window size (as in v12/v13)
+      #window_size: 1280x1024
+
+env:
+  ci:
+    modules:
+      config:
+        WebDriver:
+          host: chrome
+          port: 4444
+          path: /wd/hub
+          wait: 2
+  headless:
+    # @todo: frontend tests are broken in headless mode, fix and re-enable
+    #modules:
+    #  config:
+    #    WebDriver:
+    #      capabilities:
+    #        goog:chromeOptions:
+    #          args: ["headless", "no-sandbox", "disable-gpu"]
 params:
   - parameters.yml
   - env

@@ -1,16 +1,6 @@
 actor: InstallTester
-modules:
-  enabled:
-    - WebDriver:
-        url: '%typo3TestingAcceptanceBaseUrl%/typo3temp/var/tests/acceptance'
-        browser: chrome
-        wait: 2
-        host: chrome
-    - Asserts
 
 env:
-  headless:
-
   mysql:
     extensions:
       enabled:
