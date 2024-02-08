@@ -7,9 +7,10 @@ modules:
         browser: chrome
         wait: 2
         host: chrome
+        window_size: 1280x1024
         capabilities:
-          chromeOptions:
-            args: [ "--no-sandbox", "window-size=1280,1024", "--disable-gpu" ]
+          goog:chromeOptions:
+            args: [ "--no-sandbox", "--window-size=1280,1024", "--disable-gpu" ]
     - Asserts
 
 env:
@@ -21,9 +22,10 @@ env:
             browser: chrome
             wait: 2
             host: chrome
+            window_size: 1280x1024
             capabilities:
-              chromeOptions:
-                args: [ "--headless", "--no-sandbox", "window-size=1280,1024", "--disable-gpu" ]
+              goog:chromeOptions:
+                args: [ "--headless", "--no-sandbox", "--window-size=1280,1024", "--disable-gpu" ]
 
   mysql:
     extensions:
