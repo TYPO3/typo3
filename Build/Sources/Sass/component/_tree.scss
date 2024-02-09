@@ -276,8 +276,6 @@
     flex-wrap: wrap;
     align-items: center;
     overflow: hidden;
-    padding-top: 3px;
-    padding-bottom: 3px;
     padding-inline-start: .25rem;
 }
 
@@ -288,14 +286,13 @@
     text-overflow: ellipsis;
     width: 100%;
     min-width: 0;
-    line-height: 1;
     pointer-events: none;
 }
 
 .node-note {
-    line-height: 1;
+    margin-top: -.65em;
     font-size: 10px;
-    opacity: .75;
+    opacity: .65;
 }
 
 .node-edit {

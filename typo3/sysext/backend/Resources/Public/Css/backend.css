@@ -3368,9 +3368,9 @@ to{opacity:1;transform:translate3d(0,0,0)}
 .node-treelines+.node-loading,.node-treelines+.node-stop,.node-treelines+.node-toggle{margin-inline-start:-20px}
 .node-treelines+.node-loading typo3-backend-icon,.node-treelines+.node-stop typo3-backend-icon,.node-treelines+.node-toggle typo3-backend-icon{position:relative;background-color:var(--tree-node-bg)}
 .node-content{position:relative;display:flex;height:100%;flex-grow:1;overflow:hidden}
-.node-label{display:flex;flex-grow:1;flex-wrap:wrap;align-items:center;overflow:hidden;padding-top:3px;padding-bottom:3px;padding-inline-start:.25rem}
-.node-name,.node-note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;min-width:0;line-height:1;pointer-events:none}
-.node-note{line-height:1;font-size:10px;opacity:.75}
+.node-label{display:flex;flex-grow:1;flex-wrap:wrap;align-items:center;overflow:hidden;padding-inline-start:.25rem}
+.node-name,.node-note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;min-width:0;pointer-events:none}
+.node-note{margin-top:-.65em;font-size:10px;opacity:.65}
 .node-edit{display:flex;flex-grow:1;width:100%;padding:0;padding-inline-start:calc(.25rem - 1px);border:1px solid var(--tree-node-border-color);color:var(--typo3-component-color);background:var(--typo3-component-bg);outline:0}
 .node-highlight-text{color:var(--typo3-component-match-highlight-color);background-color:var(--typo3-component-match-highlight-bg)}
 .node-action{display:none;cursor:pointer}
