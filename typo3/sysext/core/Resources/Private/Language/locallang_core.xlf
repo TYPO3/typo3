@@ -1017,7 +1017,7 @@ Do you want to refresh it now?</source>
 				<source>File not deleted</source>
 			</trans-unit>
 			<trans-unit id="message.description.fileNotDeletedHasReferences" resname="message.description.fileNotDeletedHasReferences">
-				<source>The file cannot be deleted since it is still used at the following places</source>
+				<source>The file "%s" cannot be deleted since it is still used at the following places</source>
 			</trans-unit>
 			<trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" resname="message.header.folderNotDeletedHasFilesWithReferences">
 				<source>Folder not deleted</source>
