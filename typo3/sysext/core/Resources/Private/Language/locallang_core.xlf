@@ -1266,18 +1266,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="sortable.dragmove" resname="sortable.dragmove">
 				<source>Drag to move</source>
 			</trans-unit>
-			<trans-unit id="tree.defaultPageTitle" resname="tree.defaultPageTitle">
-				<source>[Default Title]</source>
-			</trans-unit>
-			<trans-unit id="tree.activeFilterMode" resname="tree.activeFilterMode">
-				<source>Active Filtering Mode</source>
-			</trans-unit>
-			<trans-unit id="tree.buttonNewNode" resname="tree.buttonNewNode">
-				<source>Create new pages</source>
-			</trans-unit>
-			<trans-unit id="tree.buttonFilter" resname="tree.buttonFilter">
-				<source>Filter tree</source>
-			</trans-unit>
 			<trans-unit id="tree.searchTermInfo" resname="tree.searchTermInfo">
 				<source>Enter search term</source>
 			</trans-unit>
