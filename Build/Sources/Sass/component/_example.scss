@@ -1,0 +1,41 @@
+//
+// Example
+// Code and example rendering
+//
+.example {
+    color-scheme: var(--typo3-component-color-scheme);
+    color: var(--typo3-component-color);
+    background-color: var(--typo3-component-bg);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    border-radius: var(--typo3-component-border-radius);
+    padding: var(--typo3-spacing);
+    margin-bottom: var(--typo3-spacing);
+
+    & + *:not(.example) {
+        margin-top: var(--typo3-component-spacing);
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+
+    &:before {
+        content: 'EXAMPLE';
+        display: block;
+        font-weight: bold;
+        font-size: .9em;
+        margin-bottom: var(--typo3-spacing);
+    }
+
+    &--code {
+        &:before {
+            content: 'EXAMPLE CODE';
+        }
+    }
+
+    pre code {
+        overflow: auto;
+        width: 100%;
+        display: block;
+    }
+}

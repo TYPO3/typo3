@@ -69,7 +69,7 @@ final class CodeViewHelper extends AbstractViewHelper
             $markup[] = '</div>';
         }
         if (!$this->arguments['exampleonly']) {
-            $markup[] = '<div class="example code">';
+            $markup[] = '<div class="example example--code">';
             $markup[] = '<pre>';
             $markup[] = '<code class="language-' . htmlspecialchars($this->arguments['language']) . '">';
             $markup[] = htmlspecialchars($content);

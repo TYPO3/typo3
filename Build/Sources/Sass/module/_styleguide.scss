@@ -8,40 +8,6 @@
     margin-left: 300px;
 }
 
-// Code and example rendering
-#tx-styleguide-content .example {
-    // @todo: enforce light mode until everything is compatible with dark mode
-    @include lightmode;
-    background-color: var(--typo3-component-bg);
-    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
-    padding: var(--typo3-spacing);
-    margin-bottom: var(--typo3-spacing);
-
-    & + *:not(.example) {
-        margin-top: var(--typo3-component-spacing);
-    }
-
-    &:before {
-        content: 'EXAMPLE';
-        display: block;
-        font-weight: normal;
-        font-size: .9em;
-        margin-bottom: var(--typo3-spacing);
-    }
-
-    &.code {
-        &:before {
-            content: 'EXAMPLE CODE';
-        }
-    }
-
-    pre code {
-        overflow: auto;
-        width: 100%;
-        display: block;
-    }
-}
-
 // Icon module
 #tx-styleguide-content .icon-container {
     border: 1px solid transparent;
