@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
+use TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
@@ -432,10 +433,14 @@ class LinkValidatorController
                 continue;
             }
             $isChecked = !empty($this->checkOpt[$prefix][$type]);
+            $linkType = $this->linktypeRegistry->getLinktype($type);
+            $linktypeLabel = ($linkType instanceof LabelledLinktypeInterface)
+                ? ($linkType->getReadableName() ?: $linkType->getIdentifier())
+                : $type;
             $options['optionsByType'][$type] = [
                 'id' => $prefix . '_SET_' . $type,
                 'name' => $prefix . '_SET[' . $type . ']',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:hooks.' . $type) ?: $type,
+                'label' => $linktypeLabel,
                 'checked' => $isChecked,
                 'count' => (!empty($brokenLinksInformation[$type]) ? $brokenLinksInformation[$type] : '0'),
             ];

@@ -31,6 +31,12 @@ class directly, using the method :php:`getIdentifier()`.
 When extending :ref:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype <linkvalidatorapi-AbstractLinktype>`
 it is sufficient to set the :php:`$identifier` class property.
 
+For custom naming of a linktype, the additional interface
+:ref:`\TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface <linkvalidatorapi-LabelledLinktypeInterface>`.
+can be implemented, which is also part of the default `AbstractLinktype` implementation.
+The method `getReadableName()` is used to return the custom localized name of
+a linktype.
+
 Example
 =======
 

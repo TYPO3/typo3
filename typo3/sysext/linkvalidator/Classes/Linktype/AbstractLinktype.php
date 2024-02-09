@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 /**
  * This class provides Check Base plugin implementation
  */
-abstract class AbstractLinktype implements LinktypeInterface
+abstract class AbstractLinktype implements LinktypeInterface, LabelledLinktypeInterface
 {
     /**
      * Contains parameters needed for the rendering of the error message
@@ -30,7 +30,6 @@ abstract class AbstractLinktype implements LinktypeInterface
      * @var array
      */
     protected array $errorParams = [];
-
     protected string $identifier = '';
 
     public function getIdentifier(): string
@@ -97,5 +96,15 @@ abstract class AbstractLinktype implements LinktypeInterface
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Get localized label for this linktype to be displayed in Backend user interface.
+     * Custom Linktypes should override this and provide language labels for their type.
+     */
+    public function getReadableName(): string
+    {
+        $type = $this->getIdentifier();
+        return $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:hooks.' . $type) ?: $type;
     }
 }

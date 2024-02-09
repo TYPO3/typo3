@@ -30,4 +30,10 @@ return [
         'targetFileName' => 'CodeSnippets/Api/LinktypeInterface.rst.txt',
         'withCode' => false,
     ],
+    [
+        'action' => 'createPhpClassDocs',
+        'class' => \TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface::class,
+        'targetFileName' => 'CodeSnippets/Api/LabelledLinktypeInterface.rst.txt',
+        'withCode' => false,
+    ],
 ];

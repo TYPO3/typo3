@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Linkvalidator\Tests\Unit\Linktype;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
+use TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -69,7 +70,7 @@ final class LinktypeRegistryTest extends UnitTestCase
 
     protected function getLinkType(string $identifier = ''): LinktypeInterface
     {
-        return new class ($identifier) implements LinktypeInterface {
+        return new class ($identifier) implements LinktypeInterface, LabelledLinktypeInterface {
             private string $identifier;
             public function __construct(string $identifier)
             {
@@ -97,6 +98,11 @@ final class LinktypeRegistryTest extends UnitTestCase
                 return '';
             }
             public function getErrorMessage(array $errorParams): string
+            {
+                return '';
+            }
+
+            public function getReadableName(): string
             {
                 return '';
             }
