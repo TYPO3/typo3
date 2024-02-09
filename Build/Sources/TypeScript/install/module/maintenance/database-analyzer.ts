@@ -163,10 +163,14 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
+            this.setModalButtonState(analyzeTrigger, true);
+            this.setModalButtonState(executeTrigger, false);
           }
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
+          this.setModalButtonState(analyzeTrigger, true);
+          this.setModalButtonState(executeTrigger, false);
         }
       );
   }
@@ -205,7 +209,10 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
-      );
+      ).finally((): void => {
+        this.setModalButtonState(this.getModalFooter().find(this.selectorAnalyzeTrigger), true);
+        this.setModalButtonState(this.getModalFooter().find(this.selectorExecuteTrigger), false);
+      });
   }
 }
 

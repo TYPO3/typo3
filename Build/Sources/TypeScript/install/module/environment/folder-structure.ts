@@ -64,9 +64,6 @@ class FolderStructure extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const $errorBadge = $(this.selectorGridderBadge);
     $errorBadge.text('').hide();
-    modalContent.find(this.selectorOutputContainer).empty().append(
-      ProgressBar.render(Severity.loading, 'Loading...', ''),
-    );
     (new AjaxRequest(Router.getUrl('folderStructureGetStatus')))
       .get({ cache: 'no-cache' })
       .then(
@@ -113,7 +110,9 @@ class FolderStructure extends AbstractInteractableModule {
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
-      );
+      ).finally((): void => {
+        this.setModalButtonsState(true);
+      });
   }
 
   private fix(): void {

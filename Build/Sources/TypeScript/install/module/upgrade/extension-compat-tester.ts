@@ -94,17 +94,19 @@ class ExtensionCompatTester extends AbstractInteractableModule {
             });
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
+            this.unlockModal();
           }
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
+          this.unlockModal();
         }
       );
   }
 
   private unlockModal(): void {
     this.findInModal(this.selectorOutputContainer).find('.alert-loading').remove();
-    this.findInModal(this.selectorCheckTrigger).removeClass('disabled').prop('disabled', false);
+    this.setModalButtonsState(true);
   }
 
   private renderFailureMessages(scope: string, brokenExtensions: Array<BrokenExtension>, $outputContainer: JQuery): void {
