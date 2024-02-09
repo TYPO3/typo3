@@ -162,19 +162,19 @@ cleanRenderedDocumentationFiles() {
 getPhpImageVersion() {
     case ${1} in
         7.4)
-            echo -n "2.6"
+            echo -n "2.7"
             ;;
         8.0)
-            echo -n "2.6"
+            echo -n "2.7"
             ;;
         8.1)
-            echo -n "2.10"
+            echo -n "2.11"
             ;;
         8.2)
-            echo -n "1.9"
+            echo -n "1.10"
             ;;
         8.3)
-            echo -n "1.10"
+            echo -n "1.11"
             ;;
     esac
 }
