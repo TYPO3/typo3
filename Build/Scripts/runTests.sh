@@ -153,10 +153,10 @@ cleanRenderedDocumentationFiles() {
 getPhpImageVersion() {
     case ${1} in
         8.2)
-            echo -n "1.9"
+            echo -n "1.10"
             ;;
         8.3)
-            echo -n "1.10"
+            echo -n "1.11"
             ;;
     esac
 }
