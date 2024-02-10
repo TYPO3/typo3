@@ -9,7 +9,6 @@ return [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages',
         'type' => 'doktype',
         'versioningWS' => true,
-        'origUid' => 't3_origuid',
         'delete' => 'deleted',
         'crdate' => 'crdate',
         'hideAtCopy' => true,

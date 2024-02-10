@@ -1,6 +1,6 @@
 "sys_template"
-,"uid","pid","sorting","deleted","hidden","starttime","endtime","t3_origuid","root","clear","include_static_file","constants","config","basedOn","includeStaticAfterBasedOn","static_file_mode"
-,1,1,256,0,0,0,0,0,1,3,"","","
+,"uid","pid","sorting","deleted","hidden","starttime","endtime","root","clear","include_static_file","constants","config","basedOn","includeStaticAfterBasedOn","static_file_mode"
+,1,1,256,0,0,0,0,1,3,"","","
 page = PAGE
 page.10 = TEXT
 page.10.value = testing-typoScriptFrontendInitialization

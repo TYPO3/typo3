@@ -9,7 +9,6 @@ return [
         'crdate' => 'crdate',
         'versioningWS' => true,
         'groupName' => 'system',
-        'origUid' => 't3_origuid',
         'sortby' => 'sorting',
         'delete' => 'deleted',
         'enablecolumns' => [

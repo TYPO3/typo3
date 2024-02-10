@@ -90,13 +90,11 @@
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l10n_diffsource">{&quot;title&quot;:&quot;&quot;,&quot;parent&quot;:&quot;&quot;,&quot;items&quot;:&quot;&quot;,&quot;sys_language_uid&quot;:&quot;&quot;,&quot;hidden&quot;:&quot;&quot;,&quot;starttime&quot;:&quot;&quot;,&quot;endtime&quot;:&quot;&quot;,&quot;description&quot;:&quot;&quot;}</field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="title">Movies</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">0</field>
@@ -118,13 +116,11 @@
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l10n_diffsource"></field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="title">Books</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">0</field>
@@ -146,13 +142,11 @@
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l10n_diffsource"></field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="title">Audiobooks</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">0</field>
@@ -174,13 +168,11 @@
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l10n_diffsource">a:1:{s:5:&quot;items&quot;;N;}</field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="title">News</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">0</field>
@@ -202,13 +194,11 @@
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l10n_diffsource">{&quot;items&quot;:&quot;&quot;}</field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="title">Examples</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">3</field>

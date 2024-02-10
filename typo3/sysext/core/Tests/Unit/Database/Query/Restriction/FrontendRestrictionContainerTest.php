@@ -169,7 +169,6 @@ final class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                     'sortby' => 'sorting',
                     'type' => 'doktype',
                     'versioningWS' => true,
-                    'origUid' => 't3_origuid',
                     'delete' => 'deleted',
                     'enablecolumns' => [
                         'disabled' => 'hidden',

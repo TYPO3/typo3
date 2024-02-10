@@ -10,7 +10,6 @@ return [
         'sortby' => 'sorting',
         'iconfile' => 'EXT:test_flex_section_container/Resources/Public/Icons/Extension.svg',
         'versioningWS' => true,
-        'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'translationSource' => 'l10n_source',

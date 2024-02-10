@@ -81,13 +81,11 @@
                 <field index="l10n_parent" type="integer">0</field>
                 <field index="l10n_source" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l10n_diffsource"></field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="perms_userid" type="integer">1</field>
                 <field index="perms_groupid" type="integer">1</field>
                 <field index="perms_user" type="integer">31</field>
@@ -166,13 +164,11 @@
                 <field index="l18n_parent" type="integer">0</field>
                 <field index="l10n_source" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l18n_diffsource">a:1:{s:8:&quot;bodytext&quot;;N;}</field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="CType">text</field>
                 <field index="header">What to do</field>
                 <field index="header_position"></field>
@@ -270,13 +266,11 @@
                 <field index="l18n_parent" type="integer">0</field>
                 <field index="l10n_source" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l18n_diffsource">a:21:{s:5:&quot;CType&quot;;N;s:6:&quot;colPos&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;header&quot;;N;s:13:&quot;header_layout&quot;;N;s:15:&quot;header_position&quot;;N;s:4:&quot;date&quot;;N;s:11:&quot;header_link&quot;;N;s:8:&quot;bodytext&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:6:&quot;layout&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:6:&quot;hidden&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;s:10:&quot;categories&quot;;N;}</field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="CType">text</field>
                 <field index="header">Page not found</field>
                 <field index="header_position"></field>
@@ -374,13 +368,11 @@
                 <field index="l18n_parent" type="integer">0</field>
                 <field index="l10n_source" type="integer">0</field>
                 <field index="l10n_state" type="NULL"></field>
-                <field index="t3_origuid" type="integer">0</field>
                 <field index="l18n_diffsource">a:1:{s:5:&quot;pages&quot;;N;}</field>
                 <field index="t3ver_oid" type="integer">0</field>
                 <field index="t3ver_wsid" type="integer">0</field>
                 <field index="t3ver_state" type="integer">0</field>
                 <field index="t3ver_stage" type="integer">0</field>
-                <field index="t3ver_move_id" type="integer">0</field>
                 <field index="CType">menu_sitemap</field>
                 <field index="header">Sitemap</field>
                 <field index="header_position"></field>

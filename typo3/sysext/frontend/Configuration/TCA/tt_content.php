@@ -13,7 +13,6 @@ return [
         'delete' => 'deleted',
         'versioningWS' => true,
         'groupName' => 'content',
-        'origUid' => 't3_origuid',
         'type' => 'CType',
         'hideAtCopy' => true,
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',

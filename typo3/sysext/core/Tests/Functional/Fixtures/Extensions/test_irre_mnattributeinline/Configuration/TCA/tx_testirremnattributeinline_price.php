@@ -19,7 +19,6 @@ return [
         ],
         'iconfile' => 'EXT:test_irre_mnattributeinline/Resources/Public/Icons/icon_price.gif',
         'versioningWS' => true,
-        'origUid' => 't3_origuid',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],

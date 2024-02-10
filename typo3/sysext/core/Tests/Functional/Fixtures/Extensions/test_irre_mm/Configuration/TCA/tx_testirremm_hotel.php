@@ -19,7 +19,6 @@ return [
         ],
         'iconfile' => 'EXT:test_irre_mm/Resources/Public/Icons/icon_hotel.gif',
         'versioningWS' => true,
-        'origUid' => 't3_origuid',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],

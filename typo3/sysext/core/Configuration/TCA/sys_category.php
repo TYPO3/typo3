@@ -13,7 +13,6 @@ return [
         'versioningWS' => true,
         'rootLevel' => -1,
         'groupName' => 'content',
-        'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',

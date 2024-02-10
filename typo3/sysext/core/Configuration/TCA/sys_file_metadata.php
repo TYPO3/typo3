@@ -13,7 +13,6 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'versioningWS' => true,
-        'origUid' => 't3_origuid',
         'default_sortby' => 'crdate DESC',
         'typeicon_classes' => [
             'default' => 'mimetypes-other-other',
