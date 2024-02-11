@@ -34,6 +34,9 @@ it is sufficient to set the :php:`$identifier` class property.
 Example
 =======
 
+Add new linktype
+----------------
+
 You can find the following example in the extension
 `t3docs/examples <https://github.com/TYPO3-Documentation/t3docs-examples>`__.
 
@@ -65,6 +68,71 @@ Or if autoconfiguration is not desired for some reason:
        T3docs\Examples\LinkValidator\LinkType\ExampleLinkType:
           tags:
              -  name: linkvalidator.linktype
+
+.. _linktype-implementation-override-external:
+
+Override the ExternalLinktype class
+-----------------------------------
+
+A new custom class should replace
+:php:`\TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype`. The class inherits
+existing functionality from :php:`ExternalLinktype`, but will be registered with
+the identifier "custom_external":
+
+..  code-block:: php
+    :caption: EXT:my_extension/Classes/Linktype/ExternalLinktype.php
+
+    namespace MyVendor\NyExtension\Linktype\ExternalLinktype;
+
+    use TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype as LinkvalidatorExternalLinkType;
+
+    // This class inherits from ExternalLinktype,
+    // so it is only necessary to override some methods.
+    class ExternalLinktype extends LinkvalidatorExternalLinkType
+    {
+        // This class must use a different identifier because "external" is already used.
+        protected string $identifier = 'custom_external';
+
+        public function checkLink(
+            string $origUrl,
+            array $softRefEntry,
+            LinkAnalyzer $reference
+        ): bool {
+            // do additional stuff here or after parent::checkLink
+            // ...
+            return parent::checkLink($origUrl, $softRefEntry, $reference);
+        }
+
+        public function fetchType(array $value, string $type, string $key): string
+        {
+            preg_match_all(
+                '/((?:http|https))(?::\\/\\/)(?:[^\\s<>]+)/i',
+                (string)$value['tokenValue'],
+                $urls,
+                PREG_PATTERN_ORDER
+            );
+            if (!empty($urls[0][0])) {
+                $type = $this->getIdentifier();
+            }
+            return $type;
+        }
+    }
+
+Use the new linktype:
+
+..  code-block:: typoscript
+    :caption: EXT:my_extension/Configuration/page.tsconfig
+
+    mod.linkvalidator.linktypes = db,file,custom_external
+
+Since the identifier changes, the configuration should be copied to
+:typoscript:`mod.linkvalidator.linktypesConfig.custom_external`, so that it will be
+passed to the linktype, for example:
+
+..  code-block:: typoscript
+    :caption: EXT:my_extension/Configuration/page.tsconfig
+
+    mod.linkvalidator.linktypesConfig.custom_external < mod.linkvalidator.linktypesConfig.external
 
 Migration from TYPO3 11 LTS and below
 =====================================

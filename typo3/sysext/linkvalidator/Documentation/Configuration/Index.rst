@@ -135,7 +135,7 @@ linktypes
          db,file
 
 
-
+.. _linktypes-config:
 .. _linktypes-config-external:
 
 linktypesConfig.external.httpAgentName
