@@ -293,15 +293,22 @@ abstract class ActionController implements ControllerInterface
                 continue;
             }
             /** @var ConjunctionValidator $validator */
-            $validator = $this->validatorResolver->createValidator(ConjunctionValidator::class, []);
+            $validator = $this->validatorResolver->createValidator(ConjunctionValidator::class);
             foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
                 /** @var ValidatorInterface $validatorInstance */
-                $validatorInstance = $this->validatorResolver->createValidator($validatorDefinition['className'], $validatorDefinition['options']);
+                $validatorInstance = $this->validatorResolver->createValidator(
+                    $validatorDefinition['className'],
+                    $validatorDefinition['options'],
+                    $this->request
+                );
                 $validator->addValidator(
                     $validatorInstance
                 );
             }
-            $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
+            $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction(
+                $argument->getDataType(),
+                $this->request
+            );
             if ($baseValidatorConjunction->count() > 0) {
                 $validator->addValidator($baseValidatorConjunction);
             }
@@ -319,7 +326,10 @@ abstract class ActionController implements ControllerInterface
     {
         /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
-            $validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
+            $validator = $this->validatorResolver->getBaseValidatorConjunction(
+                $argument->getDataType(),
+                $this->request
+            );
             if ($validator !== null) {
                 $argument->setValidator($validator);
             }

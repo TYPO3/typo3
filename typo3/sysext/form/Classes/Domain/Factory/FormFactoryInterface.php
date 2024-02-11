@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Factory;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
 /**
@@ -43,7 +44,12 @@ interface FormFactoryInterface
      *
      * @param array $configuration factory-specific configuration array
      * @param string $prototypeName The name of the "PrototypeName" to use; it is factory-specific to implement this.
+     * @param ServerRequestInterface $request The PSR-7 request object
      * @return FormDefinition a newly built form definition
      */
-    public function build(array $configuration, string $prototypeName = null): FormDefinition;
+    public function build(
+        array $configuration,
+        string $prototypeName = null,
+        ServerRequestInterface $request = null
+    ): FormDefinition;
 }

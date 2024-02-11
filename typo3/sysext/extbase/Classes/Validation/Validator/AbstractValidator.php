@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Validation\Error;
@@ -52,11 +53,20 @@ abstract class AbstractValidator implements ValidatorInterface
 
     protected array $options = [];
     protected Result $result;
+    protected ?ServerRequestInterface $request = null;
 
     public function setOptions(array $options): void
     {
         $this->initializeDefaultOptions($options);
         $this->initializeTranslationOptions($options);
+    }
+
+    /**
+     * @todo: Add to ValidatorInterface in TYPO3 v14
+     */
+    public function setRequest(?ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -114,6 +124,14 @@ abstract class AbstractValidator implements ValidatorInterface
     public function getOptions(): array
     {
         return $this->options;
+    }
+
+    /**
+     * @todo: Add to ValidatorInterface in TYPO3 v14
+     */
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return $this->request;
     }
 
     /**

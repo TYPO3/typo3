@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Factory;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -45,8 +46,11 @@ class ArrayFormFactory extends AbstractFormFactory
      * @throws RenderingException
      * @internal
      */
-    public function build(array $configuration, string $prototypeName = null): FormDefinition
-    {
+    public function build(
+        array $configuration,
+        string $prototypeName = null,
+        ServerRequestInterface $request = null
+    ): FormDefinition {
         if (empty($prototypeName)) {
             $prototypeName = $configuration['prototypeName'] ?? 'standard';
         }
@@ -68,7 +72,7 @@ class ArrayFormFactory extends AbstractFormFactory
         );
         if (isset($configuration['renderables'])) {
             foreach ($configuration['renderables'] as $pageConfiguration) {
-                $this->addNestedRenderable($pageConfiguration, $form);
+                $this->addNestedRenderable($pageConfiguration, $form, $request);
             }
         }
 
@@ -91,8 +95,11 @@ class ArrayFormFactory extends AbstractFormFactory
      * @throws IdentifierNotValidException
      * @throws UnknownCompositRenderableException
      */
-    protected function addNestedRenderable(array $nestedRenderableConfiguration, CompositeRenderableInterface $parentRenderable)
-    {
+    protected function addNestedRenderable(
+        array $nestedRenderableConfiguration,
+        CompositeRenderableInterface $parentRenderable,
+        ServerRequestInterface $request
+    ) {
         if (!isset($nestedRenderableConfiguration['identifier'])) {
             throw new IdentifierNotValidException('Identifier not set.', 1329289436);
         }
@@ -100,6 +107,9 @@ class ArrayFormFactory extends AbstractFormFactory
             $renderable = $parentRenderable->createPage($nestedRenderableConfiguration['identifier'], $nestedRenderableConfiguration['type']);
         } elseif ($parentRenderable instanceof AbstractSection) {
             $renderable = $parentRenderable->createElement($nestedRenderableConfiguration['identifier'], $nestedRenderableConfiguration['type']);
+            if (method_exists($renderable, 'setRequest')) {
+                $renderable->setRequest($request);
+            }
         } else {
             throw new UnknownCompositRenderableException('Unknown composit renderable "' . get_class($parentRenderable) . '"', 1479593622);
         }
@@ -118,7 +128,7 @@ class ArrayFormFactory extends AbstractFormFactory
 
         if ($renderable instanceof CompositeRenderableInterface) {
             foreach ($childRenderables as $elementConfiguration) {
-                $this->addNestedRenderable($elementConfiguration, $renderable);
+                $this->addNestedRenderable($elementConfiguration, $renderable, $request);
             }
         }
 

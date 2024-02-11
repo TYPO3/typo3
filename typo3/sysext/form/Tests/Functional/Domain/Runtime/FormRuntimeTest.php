@@ -108,7 +108,7 @@ final class FormRuntimeTest extends FunctionalTestCase
                     ],
                 ],
             ],
-        ]);
+        ], null, new ServerRequest());
     }
 
     private function loadDefaultYamlConfigurations(): void

@@ -356,7 +356,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $honeypotNameFromSession = $this->getHoneypotNameFromSession($this->lastDisplayedPage);
             if ($honeypotNameFromSession) {
                 $honeypotElement = $this->lastDisplayedPage->createElement($honeypotNameFromSession, $renderingOptions['honeypot']['formElementToUse']);
-                $validator = $this->validatorResolver->createValidator(EmptyValidator::class);
+                $validator = $this->validatorResolver->createValidator(EmptyValidator::class, [], $this->request);
                 $honeypotElement->addValidator($validator);
             }
         }
@@ -400,7 +400,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
             $referenceElement = $this->currentPage->getElements()[$randomElementNumber];
             $honeypotElement = $this->currentPage->createElement($honeypotName, $renderingOptions['honeypot']['formElementToUse']);
-            $validator = $this->validatorResolver->createValidator(EmptyValidator::class);
+            $validator = $this->validatorResolver->createValidator(EmptyValidator::class, [], $this->request);
 
             $honeypotElement->addValidator($validator);
             if (random_int(0, 1) === 1) {

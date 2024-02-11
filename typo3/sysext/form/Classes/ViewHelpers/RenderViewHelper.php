@@ -86,14 +86,14 @@ final class RenderViewHelper extends AbstractViewHelper
             $prototypeName = $overrideConfiguration['prototypeName'] ?? 'standard';
         }
 
-        // Even though getContainer() is internal, we can't get container injected here due to static scope
-        /** @var FormFactoryInterface $factory */
-        $factory = GeneralUtility::getContainer()->get($factoryClass);
-
-        $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
         /** @var RenderingContext $renderingContext */
         /** @var RequestInterface $request */
         $request = $renderingContext->getRequest();
+
+        // Even though getContainer() is internal, we can't get container injected here due to static scope
+        /** @var FormFactoryInterface $factory */
+        $factory = GeneralUtility::getContainer()->get($factoryClass);
+        $formDefinition = $factory->build($overrideConfiguration, $prototypeName, $request);
         $form = $formDefinition->bind($request);
 
         return $form->render();

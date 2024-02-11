@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Validation;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
@@ -46,14 +48,26 @@ class ValidatorResolver implements SingletonInterface
      *
      * @param string $validatorType Either one of the built-in data types or fully qualified validator class name
      * @param array $validatorOptions Options to be passed to the validator
+     * @param ServerRequestInterface $request PSR-7 request object
      */
-    public function createValidator(string $validatorType, array $validatorOptions = []): ?ValidatorInterface
-    {
+    public function createValidator(
+        string $validatorType,
+        array $validatorOptions = [],
+        ?ServerRequestInterface $request = null
+    ): ?ValidatorInterface {
         try {
             $validatorObjectName = ValidatorClassNameResolver::resolve($validatorType);
             /** @var ValidatorInterface $validator */
             $validator = GeneralUtility::makeInstance($validatorObjectName);
             $validator->setOptions($validatorOptions);
+
+            /**
+             * @todo Remove condition in TYPO3 v14 when ValidatorInterface is changed
+             */
+            if ($validator instanceof AbstractValidator) {
+                $validator->setRequest($request);
+            }
+
             return $validator;
         } catch (NoSuchValidatorException $e) {
             GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->debug($e->getMessage());
@@ -67,14 +81,16 @@ class ValidatorResolver implements SingletonInterface
      *
      * @param string $targetClassName The data type to search a validator for. Usually the fully qualified object name
      */
-    public function getBaseValidatorConjunction(string $targetClassName): ConjunctionValidator
-    {
+    public function getBaseValidatorConjunction(
+        string $targetClassName,
+        ?ServerRequestInterface $request = null
+    ): ConjunctionValidator {
         if (!isset($this->baseValidatorConjunctions[$targetClassName])) {
             $conjunctionValidator = GeneralUtility::makeInstance(ConjunctionValidator::class);
             $this->baseValidatorConjunctions[$targetClassName] = $conjunctionValidator;
             // The simpleType check reduces lookups to the class loader
             if (!TypeHandlingUtility::isSimpleType($targetClassName) && class_exists($targetClassName)) {
-                $this->buildBaseValidatorConjunction($conjunctionValidator, $targetClassName);
+                $this->buildBaseValidatorConjunction($conjunctionValidator, $targetClassName, $request);
             }
         }
         return $this->baseValidatorConjunctions[$targetClassName];
@@ -100,8 +116,11 @@ class ValidatorResolver implements SingletonInterface
      * @throws NoSuchValidatorException
      * @throws \InvalidArgumentException
      */
-    protected function buildBaseValidatorConjunction(ConjunctionValidator $conjunctionValidator, string $targetClassName): void
-    {
+    protected function buildBaseValidatorConjunction(
+        ConjunctionValidator $conjunctionValidator,
+        string $targetClassName,
+        ?ServerRequestInterface $request
+    ): void {
         $classSchema = $this->reflectionService->getClassSchema($targetClassName);
 
         // Model based validator
@@ -132,7 +151,8 @@ class ValidatorResolver implements SingletonInterface
                         CollectionValidator::class,
                         [
                             'elementType' => $primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType(),
-                        ]
+                        ],
+                        $request
                     );
                     $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
                 } elseif (class_exists($propertyTargetClassName)
@@ -154,7 +174,7 @@ class ValidatorResolver implements SingletonInterface
                     // relations in models. Still, the question remains why it excludes core types and singletons.
                     // It makes sense on a theoretical level, but I don't see a technical issue allowing these as
                     // well.
-                    $validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName);
+                    $validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $request);
                     if ($validatorForProperty->count() > 0) {
                         $objectValidator->addPropertyValidator($property->getName(), $validatorForProperty);
                     }
@@ -167,7 +187,11 @@ class ValidatorResolver implements SingletonInterface
                 //        \TYPO3\CMS\Extbase\Validation\ValidatorResolver::createValidator once again. However, to
                 //        keep things simple for now, we still use the method createValidator here. In the future,
                 //        createValidator must only accept FQCN's.
-                $newValidator = $this->createValidator($validatorDefinition['className'], $validatorDefinition['options']);
+                $newValidator = $this->createValidator(
+                    $validatorDefinition['className'],
+                    $validatorDefinition['options'],
+                    $request
+                );
                 if ($newValidator === null) {
                     throw new NoSuchValidatorException(
                         'Invalid validate annotation in ' . $targetClassName . '::' . $property->getName() . ': ' .

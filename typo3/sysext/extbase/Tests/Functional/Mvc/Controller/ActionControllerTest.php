@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -145,6 +146,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertInstanceOf(\SplObjectStorage::class, $validators);
         $validators->rewind();
         self::assertInstanceOf(CustomValidator::class, $validators->current());
+        self::assertInstanceOf(ServerRequestInterface::class, $validators->current()->getRequest());
     }
 
     #[Test]
@@ -170,6 +172,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertCount(1, $validators);
         $validators->rewind();
         self::assertInstanceOf(NotEmptyValidator::class, $validators->current());
+        self::assertInstanceOf(ServerRequestInterface::class, $validators->current()->getRequest());
     }
 
     #[Test]

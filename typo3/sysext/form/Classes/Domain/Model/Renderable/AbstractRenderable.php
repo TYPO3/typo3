@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Model\Renderable;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -124,6 +125,18 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
         $this->identifier = $identifier;
     }
 
+    protected ?ServerRequestInterface $request = null;
+
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return $this->request;
+    }
+
+    public function setRequest(?ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
     /**
      * Set multiple properties of this object at once.
      * Every property which has a corresponding set* method can be set using
@@ -197,7 +210,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
                 $this->validatorResolver = $container->get(ValidatorResolver::class);
             }
             /** @var ValidatorInterface $validator */
-            $validator = $this->validatorResolver->createValidator($implementationClassName, $defaultOptions);
+            $validator = $this->validatorResolver->createValidator($implementationClassName, $defaultOptions, $this->request);
             $this->addValidator($validator);
             return $validator;
         }
