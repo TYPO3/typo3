@@ -15,9 +15,7 @@ import Notification from '@typo3/backend/notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Selectors {
-  settingsContainerSelector = '.t3js-linkvalidator-settings',
   actionButtonSelector = '.t3js-linkvalidator-action-button',
-  linktypesTableSelector = '#check-options-table',
   toggleAllLinktypesSelector = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type-toggle-all',
   linktypesSelector = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type'
 }
@@ -31,18 +29,9 @@ enum Identifier {
  */
 class Linkvalidator {
   constructor() {
-    this.enableTriggerCheckBox();
+    this.toggleTriggerCheckBox();
+    this.toggleActionButton();
     this.initializeEvents();
-    document.querySelectorAll(Selectors.settingsContainerSelector).forEach((container: HTMLElement): void => {
-      Linkvalidator.toggleActionButtons(container);
-    });
-  }
-
-  private static toggleActionButtons(settingsContainer: HTMLElement): void {
-    settingsContainer.querySelector(Selectors.actionButtonSelector)?.toggleAttribute(
-      'disabled',
-      !settingsContainer.querySelectorAll('input[type="checkbox"]:checked').length
-    );
   }
 
   private static allCheckBoxesAreChecked(checkBoxes: NodeListOf<HTMLInputElement>): boolean {
@@ -50,10 +39,17 @@ class Linkvalidator {
     return checkBoxes.length === checkboxArray.filter((checkBox: HTMLInputElement) => checkBox.checked).length;
   }
 
+  private toggleActionButton(): void {
+    document.querySelector(Selectors.actionButtonSelector)?.toggleAttribute(
+      'disabled',
+      !document.querySelectorAll('input[type="checkbox"]:checked').length
+    );
+  }
+
   /**
    * Enables the "Toggle all" checkbox on document load if all child checkboxes are checked
    */
-  private enableTriggerCheckBox(): void {
+  private toggleTriggerCheckBox(): void {
     const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.linktypesSelector);
     (document.getElementById(Identifier.toggleAllLinktypesId) as HTMLInputElement).checked = Linkvalidator.allCheckBoxesAreChecked(checkBoxes);
   }
@@ -68,11 +64,13 @@ class Linkvalidator {
         checkBox.checked = checkIt;
       });
       currentTarget.checked = checkIt;
+      this.toggleActionButton();
     }).delegateTo(document, Selectors.toggleAllLinktypesSelector);
 
     // toggle (checkbox): on change
     new RegularEvent('change', (): void => {
-      this.enableTriggerCheckBox();
+      this.toggleTriggerCheckBox();
+      this.toggleActionButton();
     }).delegateTo(document, Selectors.linktypesSelector);
 
     new RegularEvent('click', (e: PointerEvent, actionButton: HTMLInputElement): void => {
