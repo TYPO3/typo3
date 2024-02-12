@@ -9450,7 +9450,7 @@ class DataHandler implements LoggerAwareInterface
             }
             $this->errorLog[] = '[' . SystemLogType::DB . '.' . $action . '.' . $details_nr . ']: ' . $detailMessage;
         }
-        return $this->BE_USER->writelog(SystemLogType::DB, $action, $error, $details_nr, $details, $data, $table, $recuid, $recpid, $event_pid, $NEWid);
+        return $this->BE_USER->writelog(SystemLogType::DB, $action, $error, $details_nr, $details, $data, $table, abs((int)$recuid), $recpid, $event_pid, $NEWid);
     }
 
     /**
