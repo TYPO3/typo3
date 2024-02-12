@@ -455,7 +455,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
             ) {
                 return;
             }
-            $categoryKey = $customCategoryArray[1];
+            $categoryKey = strtolower($customCategoryArray[1]);
             $categoryLabel = $customCategoryArray[2];
             if (!isset($this->categories[$categoryKey])) {
                 $this->categories[$categoryKey] = [
@@ -474,7 +474,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
             ) {
                 return;
             }
-            $subCategoryKey = $customSubCategoryArray[1];
+            $subCategoryKey = strtolower($customSubCategoryArray[1]);
             $subCategoryLabel = $customSubCategoryArray[2];
             if (!isset($this->subCategories[$subCategoryKey])) {
                 $this->subCategories[$subCategoryKey] = [

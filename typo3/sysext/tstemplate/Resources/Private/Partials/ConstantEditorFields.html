@@ -7,172 +7,174 @@
 <form action="{f:be.uri(route: 'web_typoscript_constanteditor', parameters: '{id: pageUid}')}" method="post" id="TypoScriptConstantEditorController">
     <f:for each="{displayConstants}" as="mainCategory" key="mainCategoryKey">
         <h2>{mainCategory.label}</h2>
-        <f:for each="{mainCategory.items}" as="constantItem">
-            <fieldset class="form-section">
-                <div class="form-group">
-                    <label class="form-label t3js-formengine-label">
-                        <span>{constantItem.label}</span>
-                        <code>[{constantItem.name}]</code>
-                    </label>
-                    <f:if condition="{constantItem.description}"><p>{constantItem.description}</p></f:if>
-                    <f:if condition="{constantItem.typeHint}"><span class="text-body-secondary">{constantItem.typeHint}</span></f:if>
-                    <input
-                        type="hidden"
-                        name="check[{constantItem.name}]"
-                        id="check-{constantItem.idName}"
-                        value="checked"
-                        checked
-                        {f:if(condition: '!{constantItem.isInCurrentTemplate}', then: 'disabled')}
-                    >
-                    <div class="input-group userTS" id="userTS-{constantItem.idName}" style="{f:if(condition: constantItem.isInCurrentTemplate, else: 'display:none;')}">
-                        <button
-                            type="button"
-                            class="btn btn-default t3js-toggle"
-                            data-bs-toggle="undo"
-                            rel="{constantItem.idName}"
-                            title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')}">
-                            <core:icon identifier="actions-edit-undo" />
-                        </button>
-                        <f:switch expression="{constantItem.type}">
-                            <f:case value="int+">
-                                <input
-                                    class="form-control"
-                                    id="{constantItem.idName}"
-                                    type="number"
-                                    name="data[{constantItem.name}]"
-                                    value="{constantItem.value}"
-                                    {f:if(condition: '{constantItem.typeIntPlusMin} || {constantItem.typeIntPlusMin == 0}', then: 'min="{constantItem.typeIntPlusMin}"')}
-                                    {f:if(condition: constantItem.typeIntPlusMax, then: 'max="{constantItem.typeIntPlusMax}"')}
-                                >
-                            </f:case>
-                            <f:case value="int">
-                                <input
-                                    class="form-control"
-                                    id="{constantItem.idName}"
-                                    type="number"
-                                    name="data[{constantItem.name}]"
-                                    value="{constantItem.value}"
-                                    {f:if(condition: '{constantItem.typeIntMin} || {constantItem.typeIntMin == 0}', then: 'min="{constantItem.typeIntMin}"')}
-                                    {f:if(condition: '{constantItem.typeIntMax} || {constantItem.typeIntMax == 0}', then: 'max="{constantItem.typeIntMax}"')}
-                                >
-                            </f:case>
-                            <f:case value="string">
-                                <input
-                                    class="form-control"
-                                    id="{constantItem.idName}"
-                                    type="text"
-                                    name="data[{constantItem.name}]"
-                                    value="{constantItem.value}"
-                                />
-                            </f:case>
-                            <f:case value="color">
-                                <input
-                                    class="form-control t3js-color-input"
-                                    type="text"
-                                    id="{constantItem.idName}"
-                                    rel="{constantItem.idName}"
-                                    name="data[{constantItem.name}]"
-                                    value="{constantItem.value}"
-                                />
-                            </f:case>
-                            <f:case value="wrap">
-                                <input
-                                    class="form-control form-control-adapt"
-                                    type="text"
-                                    id="{constantItem.idName}"
-                                    name="data[{constantItem.name}][left]"
-                                    value="{constantItem.wrapStart}"
-                                />
-                                <span class="input-group-addon input-group-icon">|</span>
-                                <input
-                                    class="form-control form-control-adapt"
-                                    type="text"
-                                    name="data[{constantItem.name}][right]"
-                                    value="{constantItem.wrapEnd}"
-                                />
-                            </f:case>
-                            <f:case value="offset">
-                                <f:for each="{constantItem.labelValueArray}" as="labelAndValue" iteration="iterator">
-                                    <span class="input-group-addon input-group-icon">{labelAndValue.label}</span>
+        <f:for each="{mainCategory.items}" as="constantItems">
+            <f:for each="{constantItems}" as="constantItem">
+                <fieldset class="form-section">
+                    <div class="form-group">
+                        <label class="form-label t3js-formengine-label">
+                            <span>{constantItem.label}</span>
+                            <code>[{constantItem.name}]</code>
+                        </label>
+                        <f:if condition="{constantItem.description}"><p>{constantItem.description}</p></f:if>
+                        <f:if condition="{constantItem.typeHint}"><span class="text-body-secondary">{constantItem.typeHint}</span></f:if>
+                        <input
+                            type="hidden"
+                            name="check[{constantItem.name}]"
+                            id="check-{constantItem.idName}"
+                            value="checked"
+                            checked
+                            {f:if(condition: '!{constantItem.isInCurrentTemplate}', then: 'disabled')}
+                        >
+                        <div class="input-group userTS" id="userTS-{constantItem.idName}" style="{f:if(condition: constantItem.isInCurrentTemplate, else: 'display:none;')}">
+                            <button
+                                type="button"
+                                class="btn btn-default t3js-toggle"
+                                data-bs-toggle="undo"
+                                rel="{constantItem.idName}"
+                                title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')}">
+                                <core:icon identifier="actions-edit-undo" />
+                            </button>
+                            <f:switch expression="{constantItem.type}">
+                                <f:case value="int+">
                                     <input
+                                        class="form-control"
+                                        id="{constantItem.idName}"
+                                        type="number"
+                                        name="data[{constantItem.name}]"
+                                        value="{constantItem.value}"
+                                        {f:if(condition: '{constantItem.typeIntPlusMin} || {constantItem.typeIntPlusMin == 0}', then: 'min="{constantItem.typeIntPlusMin}"')}
+                                        {f:if(condition: constantItem.typeIntPlusMax, then: 'max="{constantItem.typeIntPlusMax}"')}
+                                    >
+                                </f:case>
+                                <f:case value="int">
+                                    <input
+                                        class="form-control"
+                                        id="{constantItem.idName}"
+                                        type="number"
+                                        name="data[{constantItem.name}]"
+                                        value="{constantItem.value}"
+                                        {f:if(condition: '{constantItem.typeIntMin} || {constantItem.typeIntMin == 0}', then: 'min="{constantItem.typeIntMin}"')}
+                                        {f:if(condition: '{constantItem.typeIntMax} || {constantItem.typeIntMax == 0}', then: 'max="{constantItem.typeIntMax}"')}
+                                    >
+                                </f:case>
+                                <f:case value="string">
+                                    <input
+                                        class="form-control"
+                                        id="{constantItem.idName}"
                                         type="text"
-                                        class="form-control form-control-adapt"
-                                        name="data[{constantItem.name}][{iterator.index}]"
-                                        value="{labelAndValue.value}"
+                                        name="data[{constantItem.name}]"
+                                        value="{constantItem.value}"
                                     />
-                                </f:for>
-                            </f:case>
-                            <f:case value="options">
-                                <select
-                                    class="form-select"
-                                    id="{constantItem.idName}"
-                                    name="data[{constantItem.name}]"
-                                >
-                                    <f:for each="{constantItem.labelValueArray}" as="labelAndValue">
-                                        <option value="{labelAndValue.value}" {f:if(condition: labelAndValue.selected, then: 'selected')}>
-                                        {labelAndValue.label}
-                                        </option>
+                                </f:case>
+                                <f:case value="color">
+                                    <input
+                                        class="form-control t3js-color-input"
+                                        type="text"
+                                        id="{constantItem.idName}"
+                                        rel="{constantItem.idName}"
+                                        name="data[{constantItem.name}]"
+                                        value="{constantItem.value}"
+                                    />
+                                </f:case>
+                                <f:case value="wrap">
+                                    <input
+                                        class="form-control form-control-adapt"
+                                        type="text"
+                                        id="{constantItem.idName}"
+                                        name="data[{constantItem.name}][left]"
+                                        value="{constantItem.wrapStart}"
+                                    />
+                                    <span class="input-group-addon input-group-icon">|</span>
+                                    <input
+                                        class="form-control form-control-adapt"
+                                        type="text"
+                                        name="data[{constantItem.name}][right]"
+                                        value="{constantItem.wrapEnd}"
+                                    />
+                                </f:case>
+                                <f:case value="offset">
+                                    <f:for each="{constantItem.labelValueArray}" as="labelAndValue" iteration="iterator">
+                                        <span class="input-group-addon input-group-icon">{labelAndValue.label}</span>
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-adapt"
+                                            name="data[{constantItem.name}][{iterator.index}]"
+                                            value="{labelAndValue.value}"
+                                        />
                                     </f:for>
-                                </select>
-                            </f:case>
-                            <f:case value="boolean">
-                                <input
-                                    type="hidden"
-                                    name="data[{constantItem.name}]"
-                                    value="0"
-                                />
-                                <div class="input-group-text">
-                                    <div class="form-check form-check-type-toggle">
-                                        <input
-                                            type="checkbox"
-                                            name="data[{constantItem.name}]"
-                                            id="{constantItem.idName}"
-                                            class="form-check-input"
-                                            value="{constantItem.trueValue}"
-                                            {f:if(condition: '{constantItem.value} == {constantItem.trueValue}', then: 'checked')}
-                                        />
+                                </f:case>
+                                <f:case value="options">
+                                    <select
+                                        class="form-select"
+                                        id="{constantItem.idName}"
+                                        name="data[{constantItem.name}]"
+                                    >
+                                        <f:for each="{constantItem.labelValueArray}" as="labelAndValue">
+                                            <option value="{labelAndValue.value}" {f:if(condition: labelAndValue.selected, then: 'selected')}>
+                                            {labelAndValue.label}
+                                            </option>
+                                        </f:for>
+                                    </select>
+                                </f:case>
+                                <f:case value="boolean">
+                                    <input
+                                        type="hidden"
+                                        name="data[{constantItem.name}]"
+                                        value="0"
+                                    />
+                                    <div class="input-group-text">
+                                        <div class="form-check form-check-type-toggle">
+                                            <input
+                                                type="checkbox"
+                                                name="data[{constantItem.name}]"
+                                                id="{constantItem.idName}"
+                                                class="form-check-input"
+                                                value="{constantItem.trueValue}"
+                                                {f:if(condition: '{constantItem.value} == {constantItem.trueValue}', then: 'checked')}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            </f:case>
-                            <f:case value="comment">
-                                <input
-                                    type="hidden"
-                                    name="data[{constantItem.name}]"
-                                    value="0"
-                                />
-                                <div class="input-group-text">
-                                    <div class="form-check form-check-type-toggle">
-                                        <input
-                                            type="checkbox"
-                                            name="data[{constantItem.name}]"
-                                            id="{constantItem.idName}"
-                                            class="form-check-input mt-0"
-                                            value="1"
-                                            {f:if(condition: '!{constantItem.value}', then: 'checked')}
-                                        />
+                                </f:case>
+                                <f:case value="comment">
+                                    <input
+                                        type="hidden"
+                                        name="data[{constantItem.name}]"
+                                        value="0"
+                                    />
+                                    <div class="input-group-text">
+                                        <div class="form-check form-check-type-toggle">
+                                            <input
+                                                type="checkbox"
+                                                name="data[{constantItem.name}]"
+                                                id="{constantItem.idName}"
+                                                class="form-check-input mt-0"
+                                                value="1"
+                                                {f:if(condition: '!{constantItem.value}', then: 'checked')}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            </f:case>
-                            <f:case value="user">
-                                <input
-                                    type="hidden"
-                                    name="data[{constantItem.name}]"
-                                    value="0"
-                                />
-                                {constantItem.html -> f:format.raw()}
-                            </f:case>
-                        </f:switch>
+                                </f:case>
+                                <f:case value="user">
+                                    <input
+                                        type="hidden"
+                                        name="data[{constantItem.name}]"
+                                        value="0"
+                                    />
+                                    {constantItem.html -> f:format.raw()}
+                                </f:case>
+                            </f:switch>
+                        </div>
+                        <div class="input-group defaultTS" id="defaultTS-{constantItem.idName}" style="{f:if(condition: constantItem.isInCurrentTemplate, then: 'display:none;')}">
+                            <button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit" rel="{constantItem.idName}">
+                                <span title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')}">
+                                    <core:icon identifier="actions-open" />
+                                </span>
+                            </button>
+                            <input class="form-control" type="number" placeholder="{constantItem.default_value}" disabled readonly>
+                        </div>
                     </div>
-                    <div class="input-group defaultTS" id="defaultTS-{constantItem.idName}" style="{f:if(condition: constantItem.isInCurrentTemplate, then: 'display:none;')}">
-                        <button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit" rel="{constantItem.idName}">
-                            <span title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')}">
-                                <core:icon identifier="actions-open" />
-                            </span>
-                        </button>
-                        <input class="form-control" type="number" placeholder="{constantItem.default_value}" disabled readonly>
-                    </div>
-                </div>
-            </fieldset>
+                </fieldset>
+            </f:for>
         </f:for>
     </f:for>
 </form>

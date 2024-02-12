@@ -172,7 +172,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
         foreach ($constants as $constant) {
             if ($constant['cat'] === $selectedCategory) {
                 $displayConstants[$constant['subcat_sorting_first']]['label'] = $constant['subcat_label'];
-                $displayConstants[$constant['subcat_sorting_first']]['items'][$constant['subcat_sorting_second']] = $constant;
+                $displayConstants[$constant['subcat_sorting_first']]['items'][$constant['subcat_sorting_second']][] = $constant;
             }
         }
         ksort($displayConstants);
