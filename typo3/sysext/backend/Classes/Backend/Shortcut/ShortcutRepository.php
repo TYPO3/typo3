@@ -509,7 +509,7 @@ class ShortcutRepository
                 $combinedIdentifier = (string)($arguments['id'] ?? '');
                 if ($combinedIdentifier !== '') {
                     $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByCombinedIdentifier($combinedIdentifier);
-                    if ($storage === null || $storage->getUid() === 0) {
+                    if ($storage === null || $storage->isFallbackStorage()) {
                         // Continue, if invalid storage or disallowed fallback storage
                         continue;
                     }

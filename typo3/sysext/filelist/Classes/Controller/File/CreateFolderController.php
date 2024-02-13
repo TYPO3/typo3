@@ -145,7 +145,7 @@ class CreateFolderController
             $message = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1294586845);
         }
-        if ($this->folderObject->getStorage()->getUid() === 0) {
+        if ($this->folderObject->getStorage()->isFallbackStorage()) {
             throw new InsufficientFolderAccessPermissionsException(
                 'You are not allowed to access folders outside your storages',
                 1375889838

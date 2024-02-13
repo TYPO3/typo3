@@ -180,6 +180,8 @@ class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTest
     {
         $fileObject = $this->prophesize(File::class);
         $fileObject->getUid()->willReturn(42)->shouldBeCalledTimes(1);
+        $fileObject->getName()->willReturn('download.jpg');
+        $fileObject->getIdentifier()->willReturn('fileadmin/download.jpg');
 
         $resourceFactory = $this->prophesize(ResourceFactory::class);
         $resourceFactory->getFileObject('42')->willReturn($fileObject->reveal());

@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
@@ -86,11 +87,19 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 
         $id = (int)$this->linkParts['url']['pageuid'];
-        $pageTitle = BackendUtility::getRecordWSOL('pages', $id, 'title')['title'] ?? '';
 
+        $idInfo = 'ID: ' . $id . (!empty($this->linkParts['url']['fragment']) ? ', #' . $this->linkParts['url']['fragment'] : '');
+
+        $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $pageRecord = BackendUtility::readPageAccess($id, $permsClause);
+        if ($pageRecord === false) {
+            return $lang->getLL('page') . ' ' . $idInfo;
+        }
+
+        $pageTitle = $pageRecord['title'] ?? '';
         return $lang->getLL('page')
             . ($pageTitle ? ' \'' . GeneralUtility::fixed_lgd_cs($pageTitle, $titleLen) . '\'' : '')
-            . ' (ID: ' . $id . (!empty($this->linkParts['url']['fragment']) ? ', #' . $this->linkParts['url']['fragment'] : '') . ')';
+            . ' (' . $idInfo . ')';
     }
 
     /**

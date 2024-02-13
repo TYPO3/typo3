@@ -353,6 +353,8 @@ class SoftReferenceIndexTest extends UnitTestCase
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
         $fileObject = $this->prophesize(File::class);
+        $fileObject->getName()->willReturn('download.jpg');
+        $fileObject->getIdentifier()->willReturn('fileadmin/download.jpg');
         $fileObject->getUid()->willReturn(42)->shouldBeCalledTimes(count($softrefConfiguration));
 
         $resourceFactory = $this->prophesize(ResourceFactory::class);

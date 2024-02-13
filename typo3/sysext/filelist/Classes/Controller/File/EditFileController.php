@@ -146,7 +146,7 @@ class EditFileController
             $message = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1294586841);
         }
-        if ($this->fileObject->getStorage()->getUid() === 0) {
+        if ($this->fileObject->getStorage()->isFallbackStorage()) {
             throw new InsufficientFileAccessPermissionsException(
                 'You are not allowed to access files outside your storages',
                 1375889832
