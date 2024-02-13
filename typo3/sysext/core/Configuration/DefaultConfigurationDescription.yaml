@@ -76,9 +76,6 @@ SYS:
         sitename:
             type: text
             description: 'Name of the base-site.'
-        encryptionKey:
-            type: text
-            description: 'This is a "salt" used for various kinds of encryption, CRC checksums and validations. You can enter any rubbish string here but try to keep it secret. You should notice that a change to this value might invalidate temporary information, URLs etc. At least, clear all cache if you change this so any such information can be rebuilt with the new key.'
         cookieDomain:
             type: text
             description: 'Restricts the domain name for FE and BE session cookies. When setting the value to ".domain.com" (replace domain.com with your domain!), login sessions will be shared across subdomains. Alternatively, if you have more than one domain with sub-domains, you can set the value to a regular expression to match against the domain of the HTTP request. The result of the match is used as the domain for the cookie. eg. <code>/\.(example1|example2)\.com$/</code> or <code>/\.(example1\.com)|(example2\.net)$/</code>. Separate domains for FE and BE can be set using <a href="#FE-cookieDomain">$TYPO3_CONF_VARS[''FE''][''cookieDomain'']</a> and <a href="#BE-cookieDomain">$TYPO3_CONF_VARS[''BE''][''cookieDomain'']</a> respectively.'

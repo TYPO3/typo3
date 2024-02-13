@@ -37,11 +37,18 @@ final class UriBuilderTest extends UnitTestCase
     {
         parent::setUp();
         $this->mockExtensionService = $this->createMock(ExtensionService::class);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
         $this->subject = $this->getAccessibleMock(UriBuilder::class, ['build']);
         $this->subject->setRequest($this->createMock(Request::class));
         $this->subject->injectConfigurationManager($this->createMock(ConfigurationManagerInterface::class));
         $this->subject->injectExtensionService($this->mockExtensionService);
         $this->subject->_set('contentObject', $this->createMock(ContentObjectRenderer::class));
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+        parent::tearDown();
     }
 
     /**

@@ -667,7 +667,9 @@ test.TYPO3Forever.TypoScript = 1
      */
     public function importFiles(string $typoScript, string $expected): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
         self::assertEquals($expected, $resolvedIncludeLines);
     }
 
