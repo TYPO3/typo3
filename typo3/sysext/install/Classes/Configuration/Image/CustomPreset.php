@@ -34,4 +34,8 @@ class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
         'GFX/processor_effects' => false,
         'GFX/processor_colorspace' => '',
     ];
+
+    protected $readonlyConfigurationValues = [
+        'GFX/processor_path' => true,
+    ];
 }

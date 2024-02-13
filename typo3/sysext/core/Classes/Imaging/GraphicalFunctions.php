@@ -398,7 +398,7 @@ class GraphicalFunctions
         }
         // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
         if (!str_contains($command, '-colorspace')) {
-            $command .= ' -colorspace ' . $this->colorspace;
+            $command .= ' -colorspace ' . CommandUtility::escapeShellArgument($this->colorspace);
         }
         if ($this->alternativeOutputKey) {
             $theOutputName = md5($command . $processingInstructions->cropArea . PathUtility::basename($sourceFile) . $this->alternativeOutputKey . '[' . $frame . ']');
@@ -651,14 +651,20 @@ class GraphicalFunctions
      */
     protected function modifyImageMagickStripProfileParameters(string $parameters, array $options): string
     {
-        if (isset($options['stripProfile'])) {
-            if ($options['stripProfile'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] !== '') {
-                $parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] . ' ' . $parameters;
-            } else {
-                $parameters .= '###SkipStripProfile###';
-            }
+        if (!isset($options['stripProfile'])) {
+            return $parameters;
         }
-        return $parameters;
+
+        $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'] ?? [];
+        // Use legacy processor_stripColorProfileCommand setting if defined, otherwise
+        // use the preferred configuration option processor_stripColorProfileParameters
+        $stripColorProfileCommand = $gfxConf['processor_stripColorProfileCommand'] ??
+            implode(' ', array_map(CommandUtility::escapeShellArgument(...), $gfxConf['processor_stripColorProfileParameters'] ?? []));
+        if ($options['stripProfile'] && $stripColorProfileCommand !== '') {
+            return $stripColorProfileCommand . ' ' . $parameters;
+        }
+
+        return $parameters . '###SkipStripProfile###';
     }
 
     /***********************************

@@ -16,19 +16,21 @@
         </label>
     </div>
     <p>Custom mail settings:</p>
-    <f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
+
+    <f:for each="{preset.configurationDescriptors}" as="configuration" key="configurationKey">
         <div class="row mb-3">
             <label class="col-sm-6 col-form-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
             <div class="col-sm-6">
+                <f:render partial="Settings/ReadonlyInfo" arguments="{configuration: configuration}" />
                 <input
                     id="{feature.name}{preset.name}{configurationKey}"
                     type="{f:if(condition: '{configurationKey} == "MAIL/transport_smtp_password"', then: 'password', else: 'text')}"
                     autocomplete="{f:if(condition: '{configurationKey} == "MAIL/transport_smtp_password"', then: 'new-password', else: 'off')}"
                     name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
-                    value="{configurationValue}"
+                    value="{configuration.value}"
                     class="form-control t3js-custom-preset"
                     data-radio="t3-install-tool-configuration-mail-custom"
-                    {f:if(condition: '!{isWritable}', then: 'disabled')}
+                    {f:if(condition: '!{isWritable} || {configuration.readonly}', then: 'disabled')}
                     />
             </div>
         </div>
