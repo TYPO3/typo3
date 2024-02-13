@@ -56,7 +56,7 @@ final class LinkController
             if (!$resource instanceof File && !$resource instanceof Folder) {
                 throw new \InvalidArgumentException('Resource must be a file or a folder', 1679039649);
             }
-            if ($resource->getStorage()->getUid() === 0) {
+            if ($resource->getStorage()->isFallbackStorage()) {
                 throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1679039650);
             }
             if ($resource instanceof File) {

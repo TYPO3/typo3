@@ -220,7 +220,7 @@ class LegacyLinkNotationConverter
             }
             $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($fileIdentifier);
             // Links to a file/folder in the main TYPO3 directory should not be considered as file links, but an external link
-            if ($fileOrFolderObject instanceof ResourceInterface && $fileOrFolderObject->getStorage()->getUid() === 0) {
+            if ($fileOrFolderObject instanceof ResourceInterface && $fileOrFolderObject->getStorage()->isFallbackStorage()) {
                 return [
                     'type' => LinkService::TYPE_URL,
                     'url' => $mixedIdentifier,

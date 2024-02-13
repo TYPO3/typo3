@@ -54,7 +54,7 @@ final class ResourceController
             if (!$origin instanceof File && !$origin instanceof Folder) {
                 throw new \InvalidArgumentException('Resource must be a file or a folder', 1676979120);
             }
-            if ($origin->getStorage()->getUid() === 0) {
+            if ($origin->getStorage()->isFallbackStorage()) {
                 throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1676299579);
             }
             if (!$origin->checkActionPermission('rename')) {

@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -339,10 +340,12 @@ class LinkElement extends AbstractFormElement
             }
         }
 
+        $backendUser = $this->getBackendUser();
         // Resolve the actual link
         switch ($linkData['type']) {
             case LinkService::TYPE_PAGE:
-                $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'] ?? null, '1=1');
+                $pagePermissionClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
+                $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'] ?? null, $pagePermissionClause);
                 // Is this a real page
                 if ($pageRecord['uid'] ?? 0) {
                     $fragmentTitle = '';
@@ -376,7 +379,7 @@ class LinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_FILE:
                 $file = $linkData['file'] ?? null;
-                if ($file instanceof File) {
+                if ($file instanceof File && $file->checkActionPermission('read') && !$file->getStorage()->isFallbackStorage()) {
                     $data = [
                         'text' => $file->getPublicUrl(),
                         'icon' => $this->iconFactory->getIconForFileExtension($file->getExtension(), IconSize::SMALL)->render(),
@@ -385,7 +388,7 @@ class LinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_FOLDER:
                 $folder = $linkData['folder'] ?? null;
-                if ($folder instanceof Folder) {
+                if ($folder instanceof Folder && $folder->checkActionPermission('read') && !$folder->getStorage()->isFallbackStorage()) {
                     $data = [
                         'text' => $folder->getPublicUrl(),
                         'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', IconSize::SMALL)->render(),
@@ -395,7 +398,9 @@ class LinkElement extends AbstractFormElement
             case LinkService::TYPE_RECORD:
                 $table = $this->data['pageTsConfig']['TCEMAIN.']['linkHandler.'][$linkData['identifier'] . '.']['configuration.']['table'] ?? '';
                 $record = BackendUtility::getRecord($table, $linkData['uid']);
-                if ($record) {
+                $pagePermissionClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
+                $hasPageAccess = BackendUtility::readPageAccess($record['pid'] ?? null, $pagePermissionClause) !== false;
+                if ($record && $hasPageAccess && $backendUser->check('tables_select', $table)) {
                     $recordTitle = BackendUtility::getRecordTitle($table, $record);
                     $tableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
                     $data = [

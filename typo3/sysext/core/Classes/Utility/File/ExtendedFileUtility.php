@@ -572,7 +572,7 @@ class ExtendedFileUtility extends BasicFileUtility
         if ($object === null) {
             throw new InvalidFileException('The item ' . $identifier . ' was not a file or directory', 1320122453);
         }
-        if ($object->getStorage()->getUid() === 0) {
+        if ($object->getStorage()->isFallbackStorage()) {
             throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1375889830);
         }
         return $object;
