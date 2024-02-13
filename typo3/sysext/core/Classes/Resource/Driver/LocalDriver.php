@@ -157,6 +157,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         }
         $absoluteBasePath = $this->canonicalizeAndCheckFilePath($absoluteBasePath);
         $absoluteBasePath = rtrim($absoluteBasePath, '/') . '/';
+        if (!$this->isAllowedAbsolutePath($absoluteBasePath)) {
+            throw new InvalidConfigurationException(
+                'Base path "' . $absoluteBasePath . '" is not within the allowed project root path or allowed lockRootPath.',
+                1704807715
+            );
+        }
         if (!is_dir($absoluteBasePath)) {
             throw new InvalidConfigurationException(
                 'Base path "' . $absoluteBasePath . '" does not exist or is no directory.',
@@ -1359,5 +1365,14 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         }
 
         return '';
+    }
+
+    /**
+     * Wrapper for `GeneralUtility::isAllowedAbsPath`, which implicitly invokes
+     * `GeneralUtility::validPathStr` (like in `parent::isPathValid`).
+     */
+    protected function isAllowedAbsolutePath(string $path): bool
+    {
+        return GeneralUtility::isAllowedAbsPath($path);
     }
 }

@@ -560,4 +560,41 @@ final class PathUtilityTest extends UnitTestCase
     {
         self::assertSame($result, PathUtility::hasProtocolAndScheme($url));
     }
+
+    public static function allowedAdditionalPathsAreEvaluatedDataProvider(): \Generator
+    {
+        // empty settings
+        yield [null, '/var/shared', false];
+        yield ['', '/var/shared', false];
+        yield [' ', '/var/shared', false];
+        yield [[], '/var/shared', false];
+        yield [[''], '/var/shared', false];
+        yield [[' '], '/var/shared', false];
+        // string settings
+        yield ['/var', '/var/shared', true];
+        yield ['/var/shared/', '/var/shared', true];
+        yield ['/var/shared', '/var/shared/', true];
+        yield ['/var/shared/', '/var/shared/', true];
+        yield ['/var/shared/', '/var/shared/file.png', true];
+        yield ['/var/shared/', '/var/shared-secret', false];
+        yield ['/var/shared/', '/var', false];
+        // array settings
+        yield [['/var'], '/var/shared', true];
+        yield [['/var/shared/'], '/var/shared', true];
+        yield [['/var/shared'], '/var/shared/', true];
+        yield [['/var/shared/'], '/var/shared/', true];
+        yield [['/var/shared/'], '/var/shared/file.png', true];
+        yield [['/var/shared/'], '/var/shared-secret', false];
+        yield [['/var/shared/'], '/var', false];
+    }
+
+    /**
+     * @test
+     * @dataProvider allowedAdditionalPathsAreEvaluatedDataProvider
+     */
+    public function allowedAdditionalPathsAreEvaluated(mixed $lockRootPath, string $path, bool $expectation): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] = $lockRootPath;
+        self::assertSame($expectation, PathUtility::isAllowedAdditionalPath($path));
+    }
 }
