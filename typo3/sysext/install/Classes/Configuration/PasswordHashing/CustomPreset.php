@@ -32,22 +32,35 @@ class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
      * Get configuration values is used in fluid to show configuration options.
      * They are fetched from LocalConfiguration / DefaultConfiguration.
      *
+     * They are not merged with postValues for security reasons, as
+     * all options are readonly.
+     *
      * @return array Current custom configuration values
      */
-    public function getConfigurationValues(): array
+    public function getConfigurationDescriptors(): array
     {
         $configurationValues = [];
-        $configurationValues['BE/passwordHashing/className'] =
-            $this->configurationManager->getConfigurationValueByPath('BE/passwordHashing/className');
+        $configurationValues['BE/passwordHashing/className'] = [
+            'value' => $this->configurationManager->getConfigurationValueByPath('BE/passwordHashing/className'),
+            'readonly' => true,
+        ];
         $options = (array)$this->configurationManager->getConfigurationValueByPath('BE/passwordHashing/options');
         foreach ($options as $optionName => $optionValue) {
-            $configurationValues['BE/passwordHashing/options/' . $optionName] = $optionValue;
+            $configurationValues['BE/passwordHashing/options/' . $optionName] = [
+                'value' => $optionValue,
+                'readonly' => true,
+            ];
         }
-        $configurationValues['FE/passwordHashing/className'] =
-            $this->configurationManager->getConfigurationValueByPath('FE/passwordHashing/className');
+        $configurationValues['FE/passwordHashing/className'] = [
+            'value' => $this->configurationManager->getConfigurationValueByPath('FE/passwordHashing/className'),
+            'readonly' => true,
+        ];
         $options = (array)$this->configurationManager->getConfigurationValueByPath('FE/passwordHashing/options');
         foreach ($options as $optionName => $optionValue) {
-            $configurationValues['FE/passwordHashing/options/' . $optionName] = $optionValue;
+            $configurationValues['FE/passwordHashing/options/' . $optionName] = [
+                'value' => $optionValue,
+                'readonly' => true,
+            ];
         }
         return $configurationValues;
     }

@@ -32,6 +32,7 @@
                             </f:if>
                         </div>
                         <div class="localconf-item-body">
+                            <f:render partial="Settings/ReadonlyInfo" arguments="{configuration: item}" />
                             <f:if condition="{item.differentValueInCurrentConfiguration}">
                                 <div class="t3js-infobox callout callout-warning">
                                     <div class="callout-body">
@@ -44,7 +45,9 @@
                                 <f:then>
                                     <div class="form-group">
                                         <div class="form-description">{item.description -> f:sanitize.html()}</div>
-                                        <select data-path="{sectionName}/{item.key}" class="t3-install-form-input-text form-select t3js-localConfiguration-pathValue" {f:if(condition: '!{isWritable}', then: 'disabled')}>
+                                        <select data-path="{sectionName}/{item.key}" class="t3-install-form-input-text form-select t3js-localConfiguration-pathValue"
+                                            {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                            >
                                             <f:for each="{item.allowedValues}" key="optionKey" as="optionLabel">
                                                 <option value="{optionKey}" {f:if(condition: '{item.value} == {optionKey}', then: 'selected="selected"')}>{optionLabel} ({optionKey})</option>
                                             </f:for>
@@ -62,7 +65,7 @@
                                                 id="{sectionName}_{item.key}"
                                                 data-path="{sectionName}/{item.key}"
                                                 {f:if(condition: item.checked, then:'checked="checked"')}
-                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
+                                                {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
                                             />
                                             <label class="form-check-label" for="{sectionName}_{item.key}">
                                                 {item.description -> f:sanitize.html()}
@@ -81,7 +84,7 @@
                                                 data-path="{sectionName}/{item.key}"
                                                 class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
                                                 autocomplete="off"
-                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
+                                                {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
                                             />
                                         </div>
                                     </f:if>
@@ -97,7 +100,7 @@
                                                 data-path="{sectionName}/{item.key}"
                                                 class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
                                                 autocomplete="new-password"
-                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
+                                                {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
                                             />
                                         </div>
                                     </f:if>
@@ -114,7 +117,7 @@
                                                 class="t3-
                                                 install-form-input-text form-control t3js-localConfiguration-pathValue"
                                                 autocomplete="off"
-                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
+                                                {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
                                             />
                                         </div>
                                     </f:if>
@@ -129,7 +132,7 @@
                                                 cols="60"
                                                 data-path="{sectionName}/{item.key}"
                                                 class="form-control t3js-localConfiguration-pathValue"
-                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
+                                                {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
                                             >{item.value}</textarea>
                                         </div>
                                     </f:if>
