@@ -121,6 +121,8 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         parent::setUp();
 
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
+
         $site = $this->createSiteWithLanguage([
             'base' => '/',
             'languageId' => 2,
@@ -170,6 +172,12 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->subject->setRequest($request->reveal());
         $this->subject->setContentObjectClassMap($this->contentObjectMap);
         $this->subject->start([], 'tt_content');
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+        parent::tearDown();
     }
 
     /**

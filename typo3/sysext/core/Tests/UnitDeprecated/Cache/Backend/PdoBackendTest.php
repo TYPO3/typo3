@@ -36,6 +36,18 @@ class PdoBackendTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+        parent::tearDown();
+    }
+
     /**
      * @test
      */

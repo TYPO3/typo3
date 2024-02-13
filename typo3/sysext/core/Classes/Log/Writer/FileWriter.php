@@ -68,7 +68,10 @@ class FileWriter extends AbstractWriter
     {
         // the parent constructor reads $options and sets them
         parent::__construct($options);
-        if (empty($options['logFile'])) {
+        if (empty($options['logFile']) &&
+            // omit logging if TYPO3 has not been configured (avoid creating a guessable filename)
+            ($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] ?? '') !== ''
+        ) {
             $this->setLogFile($this->getDefaultLogFileName());
         }
     }
@@ -78,6 +81,9 @@ class FileWriter extends AbstractWriter
      */
     public function __destruct()
     {
+        if ($this->logFile === '') {
+            return;
+        }
         self::$logFileHandlesCount[$this->logFile]--;
         if (self::$logFileHandlesCount[$this->logFile] <= 0) {
             $this->closeLogFile();
@@ -132,6 +138,10 @@ class FileWriter extends AbstractWriter
      */
     public function writeLog(LogRecord $record)
     {
+        if ($this->logFile === '') {
+            return $this;
+        }
+
         $data = '';
         $context = $record->getData();
         $message = $record->getMessage();
