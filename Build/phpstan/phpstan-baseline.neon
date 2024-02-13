@@ -206,11 +206,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with \\*NEVER\\* and array will always evaluate to false\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/EvaluateDisplayConditionsTest.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/beuser/Classes/Controller/BackendUserController.php
