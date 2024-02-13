@@ -231,11 +231,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/FooResolver.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with \\*NEVER\\* and array will always evaluate to false\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/EvaluateDisplayConditionsTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Belog\\\\Domain\\\\Model\\\\LogEntry\\:\\:\\$newId \\(string\\) does not accept default value of type int\\.$#"
 			count: 1
 			path: ../../typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
