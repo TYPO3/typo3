@@ -882,6 +882,10 @@ class DataHandler implements LoggerAwareInterface
                 foreach ($hookObjectsArr as $hookObj) {
                     if (method_exists($hookObj, 'processDatamap_preProcessFieldArray')) {
                         $hookObj->processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, $this);
+                        // in case hook invalidated `$incomingFieldArray`, skip the record completely
+                        if (!is_array($incomingFieldArray)) {
+                            continue 2;
+                        }
                     }
                 }
                 // ******************************
