@@ -84,7 +84,7 @@ class PasswordElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" value="' . ($itemValue ? '*********' : '') . '" type="text" disabled>';
+            $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" value="' . htmlspecialchars($this->getObfuscatedSecretValue($itemValue)) . '" type="text" disabled>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -139,7 +139,7 @@ class PasswordElement extends AbstractFormElement
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-element">';
         $mainFieldHtml[] =          '<input type="password" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
+        $mainFieldHtml[] =          '<input type="hidden" disabled data-enable-on-modification="true" name="' . $itemName . '" value="' . htmlspecialchars($this->getObfuscatedSecretValue($itemValue)) . '" />';
         $mainFieldHtml[] =      '</div>';
         if (!empty($fieldControlHtml)) {
             $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
@@ -265,5 +265,20 @@ class PasswordElement extends AbstractFormElement
         $passwordPolicyElement[] = '</div>';
 
         return implode(LF, $passwordPolicyElement);
+    }
+
+    /**
+     * Obfuscated a (hashed) password secret with a static string.
+     *
+     * @todo
+     * + server-side password obfuscation value is `*********` (9 chars)
+     * + client-side password obfuscation value is `********` (8 chars)
+     */
+    protected function getObfuscatedSecretValue(?string $value): string
+    {
+        if ($value === null || $value === '') {
+            return '';
+        }
+        return '*********';
     }
 }

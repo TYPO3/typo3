@@ -220,6 +220,9 @@ export default (function() {
 
       // Only update fields if value actually changed
       if (field.value !== newValue) {
+        if (field.disabled && field.dataset.enableOnModification) {
+          field.disabled = false;
+        }
         field.value = newValue;
         // After updating the value of the main field, dispatch a "change" event to inform e.g. the "RequestUpdate"
         // component, which always listens to the main field instead of the "human readable field", about it.
@@ -549,6 +552,9 @@ export default (function() {
           modified = true;
         }
         if (modified) {
+          if (field.disabled && field.dataset.enableOnModification) {
+            field.disabled = false;
+          }
           field.value = newValue;
         }
       }
