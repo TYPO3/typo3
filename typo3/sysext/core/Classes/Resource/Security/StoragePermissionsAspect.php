@@ -47,13 +47,10 @@ final class StoragePermissionsAspect
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
             && !$this->getBackendUser()->isAdmin()
+            && !$storage->isFallbackStorage()
         ) {
             $storage->setEvaluatePermissions(true);
-            if ($storage->getUid() > 0) {
-                $storage->setUserPermissions($this->getFilePermissionsForStorage($storage));
-            } else {
-                $storage->setEvaluatePermissions(false);
-            }
+            $storage->setUserPermissions($this->getFilePermissionsForStorage($storage));
             $this->addFileMountsToStorage($storage);
         }
     }

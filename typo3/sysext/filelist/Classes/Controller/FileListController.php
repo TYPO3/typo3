@@ -126,7 +126,7 @@ class FileListController implements LoggerAwareInterface
                     }
                     $this->folderObject = $storage->getFolder($identifier);
                     // Disallow access to fallback storage 0
-                    if ($storage->getUid() === 0) {
+                    if ($storage->isFallbackStorage()) {
                         throw new InsufficientFolderAccessPermissionsException(
                             'You are not allowed to access files outside your storages',
                             1434539815

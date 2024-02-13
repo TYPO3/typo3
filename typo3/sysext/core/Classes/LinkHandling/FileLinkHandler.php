@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\LinkHandling;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,6 +72,13 @@ class FileLinkHandler implements LinkHandlingInterface
     {
         try {
             $file = $this->resolveFile($data);
+            $fileNameValidator = GeneralUtility::makeInstance(FileNameValidator::class);
+            if (
+                !$fileNameValidator->isValid(basename($file->getIdentifier())) ||
+                !$fileNameValidator->isValid($file->getName())
+            ) {
+                $file = null;
+            }
         } catch (FileDoesNotExistException $e) {
             $file = null;
         }

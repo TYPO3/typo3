@@ -60,7 +60,7 @@ class FileUploadController
         $folder = $this->resourceFactory->retrieveFileOrFolderObject($targetFolderCombinedIdentifier);
 
         if (!$folder instanceof FolderInterface
-            || $folder->getStorage()->getUid() === 0
+            || $folder->getStorage()->isFallbackStorage()
         ) {
             throw new InsufficientFolderAccessPermissionsException('You are not allowed to access folders outside your storages, or the folder couldn\'t be resolved', 1375889834);
         }
