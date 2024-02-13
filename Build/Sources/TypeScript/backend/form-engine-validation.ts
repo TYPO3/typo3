@@ -234,7 +234,9 @@ export default (function() {
       for (let i = 0; i < evalList.length; i++) {
         formattedValue = FormEngineValidation.formatValue(evalList[i], formattedValue, config);
       }
-
+      if ($mainField.prop('disabled') && $mainField.data('enableOnModification')) {
+        $mainField.prop('disabled', false);
+      }
       $mainField.val(newValue);
       // After updating the value of the main field, dispatch a "change" event to inform e.g. the "RequestUpdate"
       // component, which always listens to the main field instead of the "human readable field", about it.
@@ -568,6 +570,9 @@ export default (function() {
           modified = true;
         }
         if (modified) {
+          if ($field.prop('disabled') && $field.data('enableOnModification')) {
+            $field.prop('disabled', false);
+          }
           $field.val(newValue);
         }
       }
