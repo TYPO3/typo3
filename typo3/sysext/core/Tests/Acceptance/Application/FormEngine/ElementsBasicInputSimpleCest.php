@@ -141,7 +141,8 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'inputValue' => 'Kasper',
                 'expectedValue' => '********',
                 'expectedInternalValue' => 'Kasper',
-                'expectedValueAfterSave' => 'Kasper',
+                // even if `password_2` is not hashed, it never should expose the value
+                'expectedValueAfterSave' => '*********',
                 'comment' => '',
             ],
             [

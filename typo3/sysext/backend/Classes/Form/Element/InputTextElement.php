@@ -95,7 +95,7 @@ class InputTextElement extends AbstractFormElement
         if ($config['readOnly'] ?? false) {
             // Early return for read only fields
             if (in_array('password', $evalList, true)) {
-                $itemValue = $itemValue ? '*********' : '';
+                $itemValue = $this->getObfuscatedSecretValue($itemValue);
             }
 
             $disabledFieldAttributes = [
@@ -240,6 +240,7 @@ class InputTextElement extends AbstractFormElement
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
         $inputType = 'text';
+        $hiddenElementProps = ' value="' . htmlspecialchars((string)$itemValue) . '"';
 
         if (in_array('email', $evalList, true)) {
             $inputType = 'email';
@@ -255,6 +256,7 @@ class InputTextElement extends AbstractFormElement
         }
         if (in_array('password', $evalList, true)) {
             $attributes['spellcheck'] = 'false';
+            $hiddenElementProps = ' value="' . htmlspecialchars($this->getObfuscatedSecretValue($itemValue)) . '" disabled data-enable-on-modification="true"';
         }
 
         $mainFieldHtml = [];
@@ -262,7 +264,7 @@ class InputTextElement extends AbstractFormElement
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-element">';
         $mainFieldHtml[] =          '<input type="' . $inputType . '" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
+        $mainFieldHtml[] =          '<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" ' . $hiddenElementProps . ' />';
         $mainFieldHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($valueSliderHtml) || !empty($fieldControlHtml)) {
             $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
@@ -340,6 +342,21 @@ class InputTextElement extends AbstractFormElement
 
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;
+    }
+
+    /**
+     * Obfuscated a (hashed) password secret with a static string.
+     *
+     * @todo
+     * + server-side password obfuscation value is `*********` (9 chars)
+     * + client-side password obfuscation value is `********` (8 chars)
+     */
+    protected function getObfuscatedSecretValue(?string $value): string
+    {
+        if ($value === null || $value === '') {
+            return '';
+        }
+        return '*********';
     }
 
     /**
