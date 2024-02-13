@@ -298,4 +298,62 @@ class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceNDeleteFileReference.csv');
         // No FE test: Create and delete scenarios have FE coverage, this test is only about DB state.
     }
+
+    /**
+     * @test
+     */
+    public function creatingFileIsDenied(): void
+    {
+        $this->expectedErrorLogEntries = 1;
+        $this->actionService->createNewRecord('sys_file', 0, [
+            'storage' => 1,
+            'name' => 'any.file',
+            'extension' => 'file',
+            'identifer' => '/any.file',
+            'mime_type' => 'text/plain',
+            'sha1' => 'this-is-not-a-hash-value',
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/sysFileUnchanged.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function modifyingFileIsDenied(): void
+    {
+        $this->expectedErrorLogEntries = 1;
+        $this->actionService->modifyRecord('sys_file', 21, [
+            'storage' => 1,
+            'name' => 'any.file',
+            'extension' => 'file',
+            'identifer' => '/any.file',
+            'mime_type' => 'text/plain',
+            'sha1' => 'this-is-not-a-hash-value',
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/sysFileUnchanged.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function usingLegacyStorageFileInFileReferenceIsDenied(): void
+    {
+        $this->expectedErrorLogEntries = 1;
+        $this->actionService->modifyRecord('sys_file_reference', 127, [
+            'uid_local' => 9,
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/sysFileUnchanged.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function usingLegacyStorageFileInFileMetadataIsDenied(): void
+    {
+        $this->expectedErrorLogEntries = 1;
+        $this->actionService->modifyRecord('sys_file_metadata', 21, [
+            'file' => 9,
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/sysFileUnchanged.csv');
+    }
 }
