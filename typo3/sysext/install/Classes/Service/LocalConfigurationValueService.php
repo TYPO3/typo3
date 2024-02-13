@@ -19,8 +19,10 @@ namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -96,6 +98,7 @@ class LocalConfigurationValueService
                 $itemData['path'] = '[' . implode('][', $newPath) . ']';
                 $itemData['fieldType'] = $descriptionInfo['type'];
                 $itemData['description'] = $descriptionInfo['description'] ?? '';
+                $itemData['readonly'] = $descriptionInfo['readonly'] ?? false;
                 $itemData['allowedValues'] = $descriptionInfo['allowedValues'] ?? [];
                 $itemData['differentValueInCurrentConfiguration'] = (!isset($descriptionInfo['compareValuesWithCurrentConfiguration']) ||
                     $descriptionInfo['compareValuesWithCurrentConfiguration']) &&
@@ -158,11 +161,28 @@ class LocalConfigurationValueService
         $commentArray = $this->getDefaultConfigArrayComments();
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         foreach ($valueList as $path => $value) {
-            $oldValue = $configurationManager->getConfigurationValueByPath($path);
+            try {
+                $oldValue = $configurationManager->getConfigurationValueByPath($path);
+            } catch (MissingArrayPathException $e) {
+                $messageQueue->enqueue(new FlashMessage(
+                    'Update rejected, the category of this setting does not exist',
+                    $path,
+                    AbstractMessage::ERROR
+                ));
+                continue;
+            }
             $pathParts = explode('/', $path);
             $descriptionData = $commentArray[$pathParts[0]];
 
             while ($part = next($pathParts)) {
+                if (!isset($descriptionData['items'][$part])) {
+                    $messageQueue->enqueue(new FlashMessage(
+                        'Update rejected, this setting is not writable',
+                        $path,
+                        AbstractMessage::ERROR
+                    ));
+                    continue 2;
+                }
                 $descriptionData = $descriptionData['items'][$part];
             }
 
@@ -188,6 +208,16 @@ class LocalConfigurationValueService
                 $value = GeneralUtility::trimExplode(',', $value, true);
             } else {
                 $valueHasChanged = (string)$oldValue !== (string)$value;
+            }
+
+            $readonly = $descriptionData['readonly'] ?? false;
+            if ($readonly && $valueHasChanged) {
+                $messageQueue->enqueue(new FlashMessage(
+                    'Update rejected, this setting is readonly',
+                    $path,
+                    AbstractMessage::ERROR
+                ));
+                continue;
             }
 
             // Save if value changed

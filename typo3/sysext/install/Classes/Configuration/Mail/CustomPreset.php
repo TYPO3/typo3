@@ -35,4 +35,8 @@ class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
         'MAIL/transport_smtp_username' => '',
         'MAIL/transport_smtp_password' => '',
     ];
+
+    protected $readonlyConfigurationValues = [
+        'MAIL/transport_sendmail_command' => true,
+    ];
 }

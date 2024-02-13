@@ -16,7 +16,7 @@
     <p>Custom password hash settings. This interface does not allow modification of the values, they are just shown.
         Configuring custom hash settings is for advanced users who know exactly what they are doing. Refer to the
         core documentation for details.</p>
-    <f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
+    <f:for each="{preset.configurationDescriptors}" as="configuration" key="configurationKey">
         <div class="row mb-3">
             <label class="col-sm-6 col-form-label" for="{feature.name}{preset.name}{configurationKey}">{configurationKey}</label>
             <div class="col-sm-6">
@@ -24,11 +24,12 @@
                     id="{feature.name}{preset.name}{configurationKey}"
                     type="text"
                     name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
-                    value="{configurationValue}"
-                    disabled="disabled"
+                    value="{configuration.value}"
                     class="form-control t3js-custom-preset"
                     data-radio="t3-install-tool-configuration-passwordHashing-custom"
+                    {f:if(condition: configuration.readonly, then: 'disabled')}
                     />
+                <f:render partial="Settings/Presets/ReadonlyInfo" arguments="{configuration: configuration}" />
             </div>
         </div>
     </f:for>

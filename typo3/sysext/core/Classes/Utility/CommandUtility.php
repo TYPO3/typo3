@@ -118,14 +118,18 @@ class CommandUtility
         }
         // strip profile information for thumbnails and reduce their size
         if ($parameters && $command !== 'identify') {
+            // Use legacy processor_stripColorProfileCommand setting if defined, otherwise
+            // use the preferred configuration option processor_stripColorProfileParameters
+            $stripColorProfileCommand = $gfxConf['processor_stripColorProfileCommand'] ??
+                implode(' ', array_map([CommandUtility::class, 'escapeShellArgument'], $gfxConf['processor_stripColorProfileParameters'] ?? []));
             // Determine whether the strip profile action has be disabled by TypoScript:
             if ($gfxConf['processor_stripColorProfileByDefault']
-                && $gfxConf['processor_stripColorProfileCommand'] !== ''
-                && !str_contains($parameters, $gfxConf['processor_stripColorProfileCommand'])
+                && $stripColorProfileCommand !== ''
                 && $parameters !== '-version'
+                && !str_contains($parameters, $stripColorProfileCommand)
                 && !str_contains($parameters, '###SkipStripProfile###')
             ) {
-                $parameters = $gfxConf['processor_stripColorProfileCommand'] . ' ' . $parameters;
+                $parameters = $stripColorProfileCommand . ' ' . $parameters;
             } else {
                 $parameters = str_replace('###SkipStripProfile###', '', $parameters);
             }
@@ -136,7 +140,7 @@ class CommandUtility
         }
         // set interlace parameter for convert command
         if ($command !== 'identify' && $gfxConf['processor_interlace']) {
-            $parameters = '-interlace ' . $gfxConf['processor_interlace'] . ' ' . $parameters;
+            $parameters = '-interlace ' . CommandUtility::escapeShellArgument($gfxConf['processor_interlace']) . ' ' . $parameters;
         }
         $cmdLine = $path . ' ' . $parameters;
         // It is needed to change the parameters order when a mask image has been specified

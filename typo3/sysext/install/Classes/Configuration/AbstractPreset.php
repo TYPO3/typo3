@@ -46,6 +46,11 @@ abstract class AbstractPreset implements PresetInterface
     protected $configurationValues = [];
 
     /**
+     * @var array Configuration values that are visible but not editable via presets GUI
+     */
+    protected $readonlyConfigurationValues = [];
+
+    /**
      * @var array List of $POST values
      */
     protected $postValues = [];

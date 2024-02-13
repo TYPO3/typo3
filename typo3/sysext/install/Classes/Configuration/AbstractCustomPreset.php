@@ -70,17 +70,29 @@ abstract class AbstractCustomPreset extends AbstractPreset
     }
 
     /**
-     * Get configuration values is used in fluid to show configuration options.
-     * They are fetched from LocalConfiguration / DefaultConfiguration and
-     * merged with given $postValues.
+     * Get configuration values is used to persist data and is merged with given $postValues.
      *
      * @return array Configuration values needed to activate prefix
      */
     public function getConfigurationValues()
     {
+        return array_map(static fn($configuration) => $configuration['value'], $this->getConfigurationDescriptors());
+    }
+
+    /**
+     * Build configuration descriptors to be used in fluid to show configuration options.
+     * They are fetched from LocalConfiguration / DefaultConfiguration and
+     * merged with given $postValues.
+     *
+     * @return array Configuration values needed to activate prefix
+     */
+    public function getConfigurationDescriptors()
+    {
         $configurationValues = [];
         foreach ($this->configurationValues as $configurationKey => $configurationValue) {
-            if (isset($this->postValues['enable'])
+            $readonly = isset($this->readonlyConfigurationValues[$configurationKey]);
+            if (!$readonly
+                && isset($this->postValues['enable'])
                 && $this->postValues['enable'] === $this->name
                 && isset($this->postValues[$this->name][$configurationKey])
             ) {
@@ -88,7 +100,10 @@ abstract class AbstractCustomPreset extends AbstractPreset
             } else {
                 $currentValue = $this->configurationManager->getConfigurationValueByPath($configurationKey);
             }
-            $configurationValues[$configurationKey] = $currentValue;
+            $configurationValues[$configurationKey] = [
+                'value' => $currentValue,
+                'readonly' => $readonly,
+            ];
         }
         return $configurationValues;
     }

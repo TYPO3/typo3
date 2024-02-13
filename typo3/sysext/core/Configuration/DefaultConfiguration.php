@@ -38,7 +38,7 @@ return [
         'processor_allowFrameSelection' => true,
         'processor_allowTemporaryMasksAsPng' => false,
         'processor_stripColorProfileByDefault' => true,
-        'processor_stripColorProfileCommand' => '+profile \'*\'',
+        'processor_stripColorProfileParameters' => ['+profile', '*'],
         'processor_colorspace' => 'RGB',
         'processor_interlace' => 'None',
         'jpg_quality' => 85,

@@ -25,9 +25,11 @@ GFX:
             description: 'Enables the use of Image- or GraphicsMagick.'
         processor_path:
             type: text
+            readonly: true
             description: 'Path to the IM tools ''convert'', ''combine'', ''identify''.'
         processor_path_lzw:
             type: text
+            readonly: true
             description: 'Path to the IM tool ''convert'' with LZW enabled! See ''gif_compress''. If your version 4.2.9 of ImageMagick is compiled with LZW you may leave this field blank AND disable the flag ''gif_compress''! Tip: You can call LZW ''convert'' with a prefix like ''myver_convert'' by setting this path with it, eg. <code>/usr/bin/myver_</code> instead of just <code>/usr/bin/</code>.'
         processor:
             type: dropdown
@@ -49,10 +51,10 @@ GFX:
             description: 'This should be set if your processor supports using PNGs as masks as this is usually faster.'
         processor_stripColorProfileByDefault:
             type: bool
-            description: 'If set, the processor_stripColorProfileCommand is used with all processor image operations by default. See tsRef for setting this parameter explicitly for IMAGE generation.'
-        processor_stripColorProfileCommand:
-            type: text
-            description: 'String: Specify the command to strip the profile information, which can reduce thumbnail size up to 60KB. Command can differ in IM/GM, IM also know the -strip command. See <a href="http://www.imagemagick.org/Usage/thumbnails/#profiles" target="_blank" rel="noreferrer">imagemagick.org</a> for details'
+            description: 'If set, the processor_stripColorProfileParameters is used with all processor image operations by default. See tsRef for setting this parameter explicitly for IMAGE generation.'
+        processor_stripColorProfileParameters:
+            type: array
+            description: 'Comma separated list of parameters: Specify the parameters to strip the profile information, which can reduce thumbnail size up to 60KB. Command can differ in IM/GM, IM also know the -strip command. See <a href="http://www.imagemagick.org/Usage/thumbnails/#profiles" target="_blank" rel="noreferrer">imagemagick.org</a> for details'
         processor_colorspace:
             type: text
             description: 'String: Specify the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV'
@@ -380,6 +382,7 @@ BE:
             description: 'If set, make a loose comparison ('''' equals 0) when validating record values after saving in DataHandler.'
         fileDenyPattern:
             type: text
+            readonly: true
             description: 'A perl-compatible and JavaScript-compatible regular expression (without delimiters "/"!) that - if it matches a filename - will deny the file upload/rename or whatever. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in PHP constant FILE_DENY_PATTERN_DEFAULT'
         interfaces:
             type: text
@@ -625,6 +628,7 @@ MAIL:
         transport_sendmail_command:
             type: text
             description: '<em>only with transport=sendmail</em>: The command to call to send a mail locally.'
+            readonly: true
         transport_mbox_file:
             type: text
             description: '<em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.'
