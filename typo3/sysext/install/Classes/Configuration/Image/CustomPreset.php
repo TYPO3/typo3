@@ -35,4 +35,8 @@ class CustomPreset extends AbstractCustomPreset implements CustomPresetInterface
         'GFX/processor_allowTemporaryMasksAsPng' => true,
         'GFX/processor_colorspace' => '',
     ];
+
+    protected $readonlyConfigurationValues = [
+        'GFX/processor_path' => true,
+    ];
 }

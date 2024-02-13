@@ -3821,7 +3821,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
 
                 // Possibility to cancel/force profile extraction
-                // see $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand']
+                // see $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileParameters']
                 if (isset($fileArray['stripProfile'])) {
                     $processingConfiguration['stripProfile'] = $fileArray['stripProfile'];
                 }

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -286,18 +287,21 @@ class LocalCropScaleMaskHelper
      */
     protected function modifyImageMagickStripProfileParameters(string $parameters, array $configuration)
     {
-        // Strips profile information of image to save some space:
-        if (isset($configuration['stripProfile'])) {
-            if (
-                $configuration['stripProfile']
-                && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] !== ''
-            ) {
-                $parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] . $parameters;
-            } else {
-                $parameters .= '###SkipStripProfile###';
-            }
+        if (!isset($configuration['stripProfile'])) {
+            return $parameters;
         }
-        return $parameters;
+
+        $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'] ?? [];
+        // Use legacy processor_stripColorProfileCommand setting if defined, otherwise
+        // use the preferred configuration option processor_stripColorProfileParameters
+        $stripColorProfileCommand = $gfxConf['processor_stripColorProfileCommand'] ??
+            implode(' ', array_map(CommandUtility::escapeShellArgument(...), $gfxConf['processor_stripColorProfileParameters'] ?? []));
+
+        // Strips profile information of image to save some space:
+        if ($configuration['stripProfile'] && $stripColorProfileCommand !== '') {
+            return $stripColorProfileCommand . $parameters;
+        }
+        return $parameters . '###SkipStripProfile###';
     }
 
     protected function isTemporaryFile(string $filePath): bool

@@ -27,6 +27,7 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Log\LogManagerInterface;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -149,6 +150,10 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 $mboxFile = (string)($mailSettings['transport_mbox_file'] ?? '');
                 if ($mboxFile === '') {
                     throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox".', 1294586645);
+                }
+                $fileNameValidator = GeneralUtility::makeInstance(FileNameValidator::class);
+                if (!$fileNameValidator->isValid($mboxFile)) {
+                    throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'transport_mbox_file\'] failed against deny-pattern', 1705312431);
                 }
                 // Create our transport
                 $transport = GeneralUtility::makeInstance(
