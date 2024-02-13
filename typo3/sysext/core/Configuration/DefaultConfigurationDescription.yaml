@@ -246,8 +246,8 @@ BE:
             type: text
             description: 'Path to the primary directory of files for editors. This is relative to the public web dir, DefaultStorage will be created with that configuration, do not access manually but via <code>\TYPO3\CMS\Core\Resource\ResourceFactory::getDefaultStorage().</code>'
         lockRootPath:
-            type: text
-            description: 'This path is used to evaluate if paths outside of public web path should be allowed. Ending slash required!'
+            type: array
+            description: 'List of absolute root path prefixes to be allowed for file operations (including FAL storages). The project root path is allowed in any case and does not need to be defined here. Ending slashes are enforced!'
         userHomePath:
             type: text
             description: 'Combined folder identifier of the directory where TYPO3 backend-users have their home-dirs. A combined folder identifier looks like this: [storageUid]:[folderIdentifier]. Eg. <code>2:users/</code>. A home for backend user 2 would be: <code>2:users/2/</code>. Ending slash required!'

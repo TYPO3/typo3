@@ -73,10 +73,10 @@
 				<source>You have no access to the folder "%s".</source>
 			</trans-unit>
 			<trans-unit id="localStorageOfflineTitle" resname="localStorageOfflineTitle">
-				<source>Base folder for local storage missing</source>
+				<source>Base folder for local storage missing or not allowed</source>
 			</trans-unit>
 			<trans-unit id="localStorageOfflineMessage" resname="localStorageOfflineMessage">
-				<source>Base folder for local storage does not exists. Verify that the base folder for "%s" exists.</source>
+				<source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
 			</trans-unit>
 			<trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle">
 				<source>Folder not found.</source>

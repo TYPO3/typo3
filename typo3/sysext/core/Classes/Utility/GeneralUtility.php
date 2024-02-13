@@ -2659,12 +2659,11 @@ class GeneralUtility
         if (substr($path, 0, 6) === 'vfs://') {
             return true;
         }
-        $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] ?? '';
         return PathUtility::isAbsolutePath($path) && static::validPathStr($path)
             && (
                 str_starts_with($path, Environment::getProjectPath())
                 || str_starts_with($path, Environment::getPublicPath())
-                || ($lockRootPath && str_starts_with($path, $lockRootPath))
+                || PathUtility::isAllowedAdditionalPath($path)
             );
     }
 
