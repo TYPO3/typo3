@@ -98,6 +98,13 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 
     public function formatCurrentUrl(): string
     {
+        $resource = $this->linkParts['url'][$this->type->value];
+        if (!$resource->checkActionPermission('read')) {
+            return '';
+        }
+        if ($resource->getStorage()->isFallbackStorage()) {
+            return '';
+        }
         return $this->linkParts['url'][$this->type->value]->getName();
     }
 
@@ -181,6 +188,12 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
             } catch (FolderDoesNotExistException $e) {
             }
         }
+        if ($this->selectedFolder?->checkActionPermission('read') === false) {
+            $this->selectedFolder = null;
+        }
+        if ($this->selectedFolder?->getStorage()?->isFallbackStorage()) {
+            $this->selectedFolder = null;
+        }
         if (!$this->selectedFolder) {
             $this->selectedFolder = $this->resourceFactory->getDefaultStorage()?->getRootLevelFolder() ?? null;
         }
@@ -202,6 +215,13 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 
     public function isUpdateSupported(): bool
     {
+        $resource = $this->linkParts['url'][$this->type->value];
+        if (!$resource->checkActionPermission('read')) {
+            return false;
+        }
+        if ($resource->getStorage()->isFallbackStorage()) {
+            return false;
+        }
         return true;
     }
 
@@ -215,15 +235,22 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
      */
     public function getBodyTagAttributes(): array
     {
-        if (isset($this->linkParts['url'][$this->type->value]) && $this->linkParts['url'][$this->type->value] instanceof ($this->type->getResourceType())) {
-            return [
-                'data-linkbrowser-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString([
-                    'type' => $this->type->getLinkServiceType(),
-                    $this->type->value => $this->linkParts['url'][$this->type->value],
-                ]),
-            ];
+        $resource = $this->linkParts['url'][$this->type->value] ?? null;
+        if (!$resource instanceof ($this->type->getResourceType())) {
+            return [];
         }
-        return [];
+        if (!$resource->checkActionPermission('read')) {
+            return [];
+        }
+        if ($resource->getStorage()->isFallbackStorage()) {
+            return [];
+        }
+        return [
+            'data-linkbrowser-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString([
+                'type' => $this->type->getLinkServiceType(),
+                $this->type->value => $resource,
+            ]),
+        ];
     }
 
     protected function createUri(ServerRequestInterface $request, array $parameters = []): string

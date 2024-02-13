@@ -103,7 +103,7 @@ class ReplaceFileController
             $message = $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1436895930);
         }
-        if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
+        if ($this->fileOrFolderObject->getStorage()->isFallbackStorage()) {
             throw new InsufficientFileAccessPermissionsException(
                 'You are not allowed to access files outside your storages',
                 1436895931

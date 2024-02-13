@@ -247,6 +247,9 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         $storageObject->method('getUid')->willReturn(1);
         $fileObject = $this->createMock(File::class);
         $fileObject->expects(self::once())->method('getUid')->willReturn(42);
+        $fileObject->expects(self::any())->method('getName')->willReturn('download.jpg');
+        $fileObject->expects(self::any())->method('getIdentifier')->willReturn('fileadmin/download.jpg');
+
         $fileObject->expects(self::any())->method('getStorage')->willReturn($storageObject);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);

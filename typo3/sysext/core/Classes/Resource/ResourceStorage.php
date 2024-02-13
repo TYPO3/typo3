@@ -354,6 +354,17 @@ class ResourceStorage implements ResourceStorageInterface
         return true;
     }
 
+    /**
+     * Returns true if this storage is a virtual storage that provides
+     * access to all files in the project root.
+     *
+     * @internal
+     */
+    public function isFallbackStorage(): bool
+    {
+        return $this->getUid() === 0;
+    }
+
     /*********************************
      * Capabilities
      ********************************/
@@ -718,7 +729,7 @@ class ResourceStorage implements ResourceStorageInterface
             return false;
         }
         // Check 3: No action allowed on files for denied file extensions
-        if (!$this->checkFileExtensionPermission($file->getName())) {
+        if (!$this->checkValidFileExtension($file)) {
             return false;
         }
         $isReadCheck = false;
@@ -831,6 +842,17 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
+     * Check file extension of an existing file against the
+     * current file deny pattern.
+     */
+    protected function checkValidFileExtension(FileInterface $file): bool
+    {
+        $fileNameValidator = GeneralUtility::makeInstance(FileNameValidator::class);
+        return $fileNameValidator->isValid($file->getName()) &&
+            $fileNameValidator->isValid(basename($file->getIdentifier()));
+    }
+
+    /**
      * Assures read permission for given folder.
      *
      * @param Folder $folder If a folder is given, mountpoints are checked. If not only user folder read permissions are checked.
@@ -896,7 +918,7 @@ class ResourceStorage implements ResourceStorageInterface
                 1375955429
             );
         }
-        if (!$this->checkFileExtensionPermission($file->getName())) {
+        if (!$this->checkValidFileExtension($file)) {
             throw new IllegalFileExtensionException(
                 'You are not allowed to use that file extension. File: "' . $file->getName() . '"',
                 1375955430
@@ -917,7 +939,7 @@ class ResourceStorage implements ResourceStorageInterface
         if (!$this->checkFileActionPermission('write', $file)) {
             throw new InsufficientFileWritePermissionsException('Writing to file "' . $file->getIdentifier() . '" is not allowed.', 1330121088);
         }
-        if (!$this->checkFileExtensionPermission($file->getName())) {
+        if (!$this->checkValidFileExtension($file)) {
             throw new IllegalFileExtensionException('You are not allowed to edit a file with extension "' . $file->getExtension() . '"', 1366711933);
         }
     }
@@ -950,7 +972,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected function assureFileDeletePermissions(FileInterface $file)
     {
         // Check for disallowed file extensions
-        if (!$this->checkFileExtensionPermission($file->getName())) {
+        if (!$this->checkValidFileExtension($file)) {
             throw new IllegalFileExtensionException('You are not allowed to delete a file with extension "' . $file->getExtension() . '"', 1377778916);
         }
         // Check further permissions if file is not a processed file
@@ -1071,7 +1093,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected function assureFileRenamePermissions(FileInterface $file, $targetFileName)
     {
         // Check if file extension is allowed
-        if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkFileExtensionPermission($file->getName())) {
+        if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkValidFileExtension($file)) {
             throw new IllegalFileExtensionException('You are not allowed to rename a file with this extension. File given: "' . $file->getName() . '"', 1371466663);
         }
         // Check if user is allowed to rename
@@ -1114,7 +1136,7 @@ class ResourceStorage implements ResourceStorageInterface
             throw new InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319550435);
         }
         // Check for a valid file extension
-        if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkFileExtensionPermission($file->getName())) {
+        if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkValidFileExtension($file)) {
             throw new IllegalFileExtensionException('You are not allowed to copy a file of that type.', 1319553317);
         }
     }
@@ -1733,6 +1755,7 @@ class ResourceStorage implements ResourceStorageInterface
         string $alternativeFilename = null,
         string $overrideMimeType = null
     ): ResponseInterface {
+        $this->assureFileReadPermission($file);
         if (!$this->driver instanceof StreamableDriverInterface) {
             return $this->getPseudoStream($file, $asDownload, $alternativeFilename, $overrideMimeType);
         }

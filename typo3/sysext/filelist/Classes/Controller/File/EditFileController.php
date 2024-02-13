@@ -119,7 +119,7 @@ class EditFileController
         if (!$file instanceof FileInterface) {
             throw new InvalidFileException('Referenced target "' . $combinedIdentifier . '" could not be resolved to a valid file', 1294586841);
         }
-        if ($file->getStorage()->getUid() === 0) {
+        if ($file->getStorage()->isFallbackStorage()) {
             throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1375889832);
         }
 

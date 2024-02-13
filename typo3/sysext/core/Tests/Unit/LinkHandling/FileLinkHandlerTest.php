@@ -98,7 +98,7 @@ final class FileLinkHandlerTest extends UnitTestCase
             ->getMock();
 
         // fake methods to return proper objects
-        $fileObject = new File(['identifier' => $expected['file'], 'name' => 'foobar.txt'], $storage);
+        $fileObject = new File(['identifier' => 'fileadmin/deep/down.jpg', 'name' => 'down.jpg'], $storage);
         $factory->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
         $factory->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])->willReturn($fileObject);
         $expected['file'] = $fileObject;
