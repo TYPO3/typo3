@@ -50,6 +50,9 @@ final class ElementsBasicPasswordCest extends AbstractElementsBasicCest
      */
     private function passwordInputFieldsDataProvider(): array
     {
+        // @todo
+        // + server-side password obfuscation value is `*********` (9 chars)
+        // + client-side password obfuscation value is `********` (8 chars)
         return [
             // @todo add other password field variants
             [
@@ -57,7 +60,8 @@ final class ElementsBasicPasswordCest extends AbstractElementsBasicCest
                 'inputValue' => 'Kasper',
                 'expectedValue' => '********',
                 'expectedInternalValue' => 'Kasper',
-                'expectedValueAfterSave' => 'Kasper',
+                // even if `password_2` is not hashed, it never should expose the value
+                'expectedValueAfterSave' => '*********',
                 'comment' => '',
             ],
         ];
