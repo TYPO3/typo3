@@ -89,7 +89,6 @@ return [
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
-        'encryptionKey' => '',
         'cookieDomain' => '',
         'trustedHostsPattern' => 'SERVER_NAME',
         'devIPmask' => '127.0.0.1,::1',
