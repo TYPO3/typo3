@@ -277,7 +277,7 @@ class FormEditorController extends AbstractBackendController
      */
     protected function getInsertRenderablesPanelConfiguration(array $formElementsDefinition): array
     {
-        /** @var array<string, array<string, string>> $formElementsByGroup */
+        /** @var array<string, list<array<string, array{key: string, cssKey: string, label: string, sorting: int, iconIdentifier: string}>>> $formElementsByGroup */
         $formElementsByGroup = [];
 
         foreach ($formElementsDefinition as $formElementName => $formElementConfiguration) {
@@ -311,7 +311,6 @@ class FormEditorController extends AbstractBackendController
             usort($formElementsByGroup[$groupName], static function ($a, $b) {
                 return $a['sorting'] - $b['sorting'];
             });
-            unset($formElementsByGroup[$groupName]['sorting']);
 
             $groupConfiguration = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
                 $groupConfiguration,
