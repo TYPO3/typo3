@@ -464,4 +464,33 @@ class PathUtility
     {
         return strpos($path, '//') === 0 || strpos($path, '://') > 0;
     }
+
+    /**
+     * Evaluates a given path against the optional settings in `$GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']`.
+     * Albeit the name `BE/lockRootPath` is misleading, this setting was and is used in general and is not limited
+     * to the backend-scope. The setting actually allows defining additional paths, besides the project root path.
+     *
+     * @param string $path Absolute path to a file or directory
+     */
+    public static function isAllowedAdditionalPath(string $path): bool
+    {
+        // ensure the submitted path ends with a string, even for a file
+        $path = self::sanitizeTrailingSeparator($path);
+        $allowedPaths = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] ?? [];
+        if (is_string($allowedPaths)) {
+            // The setting was a string before and is now an array
+            // For compatibility reasons, we cast a string to an array here for now
+            $allowedPaths = [$allowedPaths];
+        }
+        if (!is_array($allowedPaths)) {
+            throw new \RuntimeException('$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'lockRootPath\'] is expected to be an array.', 1707408379);
+        }
+        foreach ($allowedPaths as $allowedPath) {
+            $allowedPath = trim($allowedPath);
+            if ($allowedPath !== '' && str_starts_with($path, self::sanitizeTrailingSeparator($allowedPath))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

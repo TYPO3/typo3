@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -151,7 +152,7 @@ class FileListController implements LoggerAwareInterface
             if ($this->folderObject && !$this->folderObject->getStorage()->isWithinFileMountBoundaries($this->folderObject)) {
                 throw new \RuntimeException('Folder not accessible.', 1430409089);
             }
-        } catch (InsufficientFolderAccessPermissionsException $permissionException) {
+        } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException $permissionException) {
             $this->folderObject = null;
             if ($storage !== null && $storage->getDriverType() === 'Local' && !$storage->isOnline()) {
                 // If the base folder for a local storage does not exists, the storage is marked as offline and the
