@@ -146,7 +146,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             );
         }
         $result['databaseRow'][$fieldName] = implode(',', $connectedUidsOfLocalizedOverlay);
-        $connectedUidsOfLocalizedOverlay = $this->getWorkspacedUids($connectedUidsOfLocalizedOverlay, $childTableName);
+        $connectedUidsOfLocalizedOverlay = $this->getSubstitutedWorkspacedUids($connectedUidsOfLocalizedOverlay, $childTableName);
         if ($result['inlineCompileExistingChildren']) {
             $tableNameWithDefaultRecords = $result['tableName'];
             $connectedUidsOfDefaultLanguageRecord = $this->resolveConnectedRecordUids(
@@ -155,9 +155,9 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 $result['defaultLanguageRow']['uid'],
                 $result['defaultLanguageRow'][$fieldName]
             );
-            $connectedUidsOfDefaultLanguageRecord = $this->getWorkspacedUids($connectedUidsOfDefaultLanguageRecord, $childTableName);
+            $connectedUidsOfDefaultLanguageRecord = $this->getSubstitutedWorkspacedUids($connectedUidsOfDefaultLanguageRecord, $childTableName);
 
-            $showPossible = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showPossibleLocalizationRecords'];
+            $showPossibleLocalizationRecords = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showPossibleLocalizationRecords'] ?? false;
 
             // Find which records are localized, which records are not localized and which are
             // localized but miss default language record
@@ -177,18 +177,29 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     );
                     continue;
                 }
-                if (isset($localizedRecord[$fieldNameWithDefaultLanguageUid])) {
-                    $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
-                    if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
-                        // This localized child has a default language record. Remove this record from list of default language records
-                        $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
-                    }
-                }
                 // Compile localized record
                 $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
                 $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
+                // If that relation is configured to "showPossibleLocalizationRecords", this localized record
+                // needs to be removed from the list of records that are pending to be localized.
+                if ($showPossibleLocalizationRecords) {
+                    $uidOfDefaultLanguageRecord = (int)$localizedRecord[$fieldNameWithDefaultLanguageUid];
+                    if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord, true)) {
+                        // This localized child has a default language record. Remove this record from list of default language records
+                        $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
+                    }
+                    $uidOfDefaultLanguageRecordWorkspaceVersionArray = $this->getSubstitutedWorkspacedUids([$uidOfDefaultLanguageRecord], $childTableName);
+                    if (!empty($uidOfDefaultLanguageRecordWorkspaceVersionArray)
+                        && in_array($uidOfDefaultLanguageRecordWorkspaceVersionArray[0], $connectedUidsOfDefaultLanguageRecord, true)
+                    ) {
+                        // In some situations 'l10n_parent' of a localized workspace record points to the live version
+                        // of the default language record, and not to the workspace version, even though it exists.
+                        // Filter those as well, since the interface would otherwise show the item as "can be localized/synchronized".
+                        $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecordWorkspaceVersionArray[0]]);
+                    }
+                }
             }
-            if ($showPossible) {
+            if ($showPossibleLocalizationRecords) {
                 foreach ($connectedUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
                     // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
                     // exist in default language, but are not localized yet. Compile and mark those
@@ -238,7 +249,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         );
         $result['databaseRow'][$fieldName] = implode(',', $connectedUidsOfDefaultLanguageRecord);
 
-        $connectedUidsOfDefaultLanguageRecord = $this->getWorkspacedUids($connectedUidsOfDefaultLanguageRecord, $childTableName);
+        $connectedUidsOfDefaultLanguageRecord = $this->getSubstitutedWorkspacedUids($connectedUidsOfDefaultLanguageRecord, $childTableName);
 
         if ($result['inlineCompileExistingChildren']) {
             foreach ($connectedUidsOfDefaultLanguageRecord as $uid) {
@@ -415,15 +426,14 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
      *
      * @param array $connectedUids List of connected uids
      * @param string $childTableName Name of child table
-     * @return array List of uids in workspace
+     * @return int[] List of substituted uids
      */
-    protected function getWorkspacedUids(array $connectedUids, $childTableName)
+    protected function getSubstitutedWorkspacedUids(array $connectedUids, string $childTableName): array
     {
         $backendUser = $this->getBackendUser();
         $newConnectedUids = [];
         foreach ($connectedUids as $uid) {
             // Fetch workspace version of a record (if any):
-            // @todo: Needs handling
             if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($childTableName)) {
                 $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $childTableName, $uid, 'uid,t3ver_state');
                 if (!empty($workspaceVersion)) {
@@ -434,7 +444,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     $uid = $workspaceVersion['uid'];
                 }
             }
-            $newConnectedUids[] = $uid;
+            $newConnectedUids[] = (int)$uid;
         }
         return $newConnectedUids;
     }

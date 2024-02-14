@@ -109,6 +109,55 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeLiveModifyWsDefaultLang(): void
+    {
+        parent::localizeLiveModifyWsDefaultLang();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLiveModifyWsDefaultLang.csv');
+    }
+
+    #[Test]
+    public function localizeLiveModifyWsLocalization(): void
+    {
+        parent::localizeLiveModifyWsLocalization();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLiveModifyWsLocalization.csv');
+    }
+
+    #[Test]
+    public function localizeLiveModifyWsLocalizationAddLive(): void
+    {
+        parent::localizeLiveModifyWsLocalizationAddLive();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLiveModifyWsLocalizationAddLive.csv');
+    }
+
+    #[Test]
+    public function localizeLiveModifyWsLocalizationAddLiveWsSync(): void
+    {
+        parent::localizeLiveModifyWsLocalizationAddLiveWsSync();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLiveModifyWsLocalizationAddLiveWsSync.csv');
+    }
+
+    #[Test]
+    public function modifyContentLocalize(): void
+    {
+        parent::modifyContentLocalize();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentLocalize.csv');
+    }
+
+    #[Test]
+    public function modifyContentLocalizeAddDefaultLangRelation(): void
+    {
+        parent::modifyContentLocalizeAddDefaultLangRelation();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentLocalizeAddDefaultLangRelation.csv');
+    }
+
+    #[Test]
+    public function modifyContentLocalizeAddDefaultLangRelationSynchronize(): void
+    {
+        parent::modifyContentLocalizeAddDefaultLangRelationSynchronize();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentLocalizeAddDefaultLangRelationSynchronize.csv');
+    }
+
+    #[Test]
     public function changeContentSorting(): void
     {
         parent::changeContentSorting();
