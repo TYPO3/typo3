@@ -151,7 +151,7 @@ class Bootstrap
         static::loadBaseTca(true, $coreCache);
         static::checkEncryptionKey();
         $bootState->complete = true;
-        $eventDispatcher->dispatch(new BootCompletedEvent($disableCaching));
+        $eventDispatcher->dispatch(new BootCompletedEvent(true));
 
         return $container;
     }
