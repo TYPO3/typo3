@@ -172,7 +172,7 @@ prototypes:
             condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
             properties:
               containerClassAttribute: 'form-element form-element-multiselect mb-3'
-              elementClassAttribute: 'form-control xlarge'
+              elementClassAttribute: 'form-select xlarge'
               elementErrorClassAttribute: ~
               labelClassAttribute: form-label
     formEditor:
