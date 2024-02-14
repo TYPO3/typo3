@@ -228,7 +228,8 @@ export class FileStorageTreeNavigationComponent extends LitElement {
       'tree',
       '',
       '',
-      this.tree.getElementFromNode(node)
+      this.tree.getElementFromNode(node),
+      evt.detail.originalEvent as PointerEvent
     );
   };
 

@@ -109,7 +109,7 @@ export default class Filelist {
     new RegularEvent(FileListActionEvent.primaryContextmenu, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
-      ContextMenu.show('sys_file', resource.identifier, '', '', '', detail.trigger);
+      ContextMenu.show('sys_file', resource.identifier, '', '', '', detail.trigger, detail.event as PointerEvent);
     }).bindTo(document);
 
     new RegularEvent(FileListActionEvent.show, (event: CustomEvent): void => {

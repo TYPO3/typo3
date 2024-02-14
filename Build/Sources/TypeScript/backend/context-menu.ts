@@ -17,7 +17,6 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ContextMenuActions from './context-menu-actions';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
-import ThrottleEvent from '@typo3/core/event/throttle-event';
 import { selector } from '@typo3/core/literals';
 
 interface MousePosition {
@@ -60,9 +59,6 @@ class ContextMenu {
     document.addEventListener('contextmenu', (event: PointerEvent) => {
       this.handleTriggerEvent(event);
     });
-
-    // register mouse movement inside the document
-    new ThrottleEvent('mousemove', this.storeMousePositionEvent.bind(this), 50).bindTo(document);
   }
 
   /**
@@ -115,8 +111,17 @@ class ContextMenu {
    * @param {string} unusedParam1
    * @param {string} unusedParam2
    * @param {HTMLElement} eventSource Source Element
+   * @param {Event} originalEvent
    */
-  public show(table: string, uid: number|string, context: string, unusedParam1: string, unusedParam2: string, eventSource: HTMLElement = null): void {
+  public show(
+    table: string,
+    uid: number|string,
+    context: string,
+    unusedParam1: string,
+    unusedParam2: string,
+    eventSource: HTMLElement = null,
+    originalEvent: PointerEvent = null
+  ): void {
     this.hideAll();
 
     this.record = { table: table, uid: uid };
@@ -138,7 +143,12 @@ class ContextMenu {
       parameters.set('context', context);
     }
 
-    this.fetch(parameters.toString());
+    let position: MousePosition = null;
+    if (originalEvent !== null) {
+      this.storeMousePosition(originalEvent);
+      position = this.mousePos;
+    }
+    this.fetch(parameters.toString(), position);
   }
 
   /**
@@ -162,7 +172,7 @@ class ContextMenu {
       document.querySelectorAll('.context-menu').forEach((contextMenu: Element): void => {
         // Explicitly update cursor position if element is entered to avoid timing issues
         new RegularEvent('mouseenter', (event: MouseEvent): void => {
-          this.storeMousePositionEvent(event);
+          this.storeMousePosition(event);
         }).bindTo(contextMenu);
 
         new DebounceEvent('mouseleave', (event: MouseEvent) => {
@@ -226,7 +236,8 @@ class ContextMenu {
         element.dataset.contextmenuContext ?? '',
         '',
         '',
-        element
+        element,
+        event
       );
     }
   }
@@ -258,12 +269,12 @@ class ContextMenu {
    *
    * @param {string} parameters Parameters sent to the server
    */
-  private fetch(parameters: string): void {
+  private fetch(parameters: string, position: MousePosition): void {
     const url = TYPO3.settings.ajaxUrls.contextmenu;
     (new AjaxRequest(url)).withQueryArguments(parameters).get().then(async (response: AjaxResponse): Promise<void> => {
       const data: MenuItems = await response.resolve();
       if (typeof response !== 'undefined' && Object.keys(response).length > 0) {
-        this.populateData(data, 0);
+        this.populateData(data, 0, position);
       }
     });
   }
@@ -274,8 +285,9 @@ class ContextMenu {
    *
    * @param {MenuItems} items The data that will be put in the menu
    * @param {number} level The depth of the context menu
+   * @param {MousPosition}
    */
-  private populateData(items: MenuItems, level: number): void {
+  private populateData(items: MenuItems, level: number, position: MousePosition): void {
     this.initializeContextMenuContainer();
 
     const contentMenuCurrent = document.querySelector('#contentMenu' + level) as HTMLElement;
@@ -291,9 +303,11 @@ class ContextMenu {
       contentMenuCurrent.innerHTML = '';
       contentMenuCurrent.appendChild(menuGroup);
       contentMenuCurrent.style.display = null;
-      const position = this.getPosition(contentMenuCurrent);
-      contentMenuCurrent.style.top = position.top;
-      contentMenuCurrent.style.insetInlineStart = position.start;
+      position ??= this.getPosition(contentMenuCurrent);
+      const coordinates = this.toPixel(position);
+
+      contentMenuCurrent.style.top = coordinates.top;
+      contentMenuCurrent.style.insetInlineStart = coordinates.start;
       (contentMenuCurrent.querySelector('.context-menu-item[tabindex="-1"]') as HTMLElement).focus();
       this.initializeEvents(contentMenuCurrent, level);
     }
@@ -301,7 +315,7 @@ class ContextMenu {
 
   private initializeEvents(contentMenu: HTMLElement, level: number) {
     contentMenu.querySelectorAll('li.context-menu-item').forEach((element: HTMLElement) => {
-      // clock
+      // click
       element.addEventListener('click', (event: PointerEvent): void => {
         event.preventDefault();
         const target = event.currentTarget as HTMLElement;
@@ -454,7 +468,7 @@ class ContextMenu {
     contentMenu.appendChild(item.nextElementSibling.querySelector('.context-menu-group').cloneNode(true));
     contentMenu.style.display = null;
 
-    const position = this.getPosition(contentMenu);
+    const position = this.toPixel(this.getPosition(contentMenu));
     contentMenu.style.top = position.top;
     contentMenu.style.insetInlineStart = position.start;
     (contentMenu.querySelector('.context-menu-item[tabindex="-1"]') as HTMLElement).focus();
@@ -462,7 +476,11 @@ class ContextMenu {
     this.initializeEvents(contentMenu, level);
   }
 
-  private getPosition(element: HTMLElement): { start: string; top: string; } {
+  private toPixel(position: MousePosition): { start: string; top: string; } {
+    return { start: Math.round(position.X) + 'px', top: Math.round(position.Y) + 'px' };
+  }
+
+  private getPosition(element: HTMLElement): MousePosition {
 
     const space = 10;
     const offset = 5;
@@ -512,7 +530,7 @@ class ContextMenu {
       start += offset;
     }
 
-    return { start: Math.round(start) + 'px', top: Math.round(top) + 'px' };
+    return { X: start, Y: top };
   }
 
   /**
@@ -568,13 +586,9 @@ class ContextMenu {
     return elements;
   }
 
-  /**
-   * event handler function that saves the actual position of the
-   * mouse in the context menu object
-   */
-  private readonly storeMousePositionEvent = (event: MouseEvent): void => {
+  private storeMousePosition(event: MouseEvent): void {
     this.mousePos = { X: event.pageX, Y: event.pageY };
-  };
+  }
 
   private hide(element: HTMLElement|null): void {
     if (element === null) {
