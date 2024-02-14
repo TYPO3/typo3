@@ -100,6 +100,62 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeLiveModifyWsDefaultLang(): void
+    {
+        parent::localizeLiveModifyWsDefaultLang();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLiveModifyWsDefaultLang.csv');
+    }
+
+    #[Test]
+    public function localizeLiveModifyWsLocalization(): void
+    {
+        parent::localizeLiveModifyWsLocalization();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedLiveContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLiveModifyWsLocalization.csv');
+    }
+
+    #[Test]
+    public function localizeLiveModifyWsLocalizationAddLive(): void
+    {
+        parent::localizeLiveModifyWsLocalizationAddLive();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedLiveContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLiveModifyWsLocalizationAddLive.csv');
+    }
+
+    #[Test]
+    public function localizeLiveModifyWsLocalizationAddLiveWsSync(): void
+    {
+        parent::localizeLiveModifyWsLocalizationAddLiveWsSync();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedLiveContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLiveModifyWsLocalizationAddLiveWsSync.csv');
+    }
+
+    #[Test]
+    public function modifyContentLocalize(): void
+    {
+        parent::modifyContentLocalize();
+        //$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentLocalize.csv');
+    }
+
+    #[Test]
+    public function modifyContentLocalizeAddDefaultLangRelation(): void
+    {
+        parent::modifyContentLocalizeAddDefaultLangRelation();
+        //$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentLocalizeAddDefaultLangRelation.csv');
+    }
+
+    #[Test]
+    public function modifyContentLocalizeAddDefaultLangRelationSynchronize(): void
+    {
+        parent::modifyContentLocalizeAddDefaultLangRelationSynchronize();
+        //$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentLocalizeAddDefaultLangRelationSynchronize.csv');
+    }
+
+    #[Test]
     public function changeContentSorting(): void
     {
         parent::changeContentSorting();

@@ -205,9 +205,9 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
                 )
             );
 
-            // Find which records are localized, which records are not localized and which are
-            // localized but miss default language record
+            // Find which records are localized, which records are not localized and which are localized but miss default language record
             $fieldNameWithDefaultLanguageUid = (string)($GLOBALS['TCA'][self::FILE_REFERENCE_TABLE]['ctrl']['transOrigPointerField'] ?? '');
+            $showPossibleLocalizationRecords = $fieldConfig['appearance']['showPossibleLocalizationRecords'] ?? false;
             foreach ($fileReferenceUidsOfLocalizedOverlay as $localizedUid) {
                 try {
                     $localizedRecord = $this->getRecordFromDatabase(self::FILE_REFERENCE_TABLE, $localizedUid);
@@ -223,16 +223,29 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
                     );
                     continue;
                 }
-                $uidOfDefaultLanguageRecord = (int)$localizedRecord[$fieldNameWithDefaultLanguageUid];
-                if (in_array($uidOfDefaultLanguageRecord, $fileReferenceUidsOfDefaultLanguageRecord, true)) {
-                    // This localized child has a default language record. Remove this record from list of default language records
-                    $fileReferenceUidsOfDefaultLanguageRecord = array_diff($fileReferenceUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
-                }
                 // Compile localized record
                 $compiledFileReference = $this->compileFileReference($result, $fieldName, $localizedUid);
                 $result['processedTca']['columns'][$fieldName]['children'][] = $compiledFileReference;
+                // If that relation is configured to "showPossibleLocalizationRecords", this localized record
+                // needs to be removed from the list of records that are pending to be localized.
+                if ($showPossibleLocalizationRecords) {
+                    $uidOfDefaultLanguageRecord = (int)$localizedRecord[$fieldNameWithDefaultLanguageUid];
+                    if (in_array($uidOfDefaultLanguageRecord, $fileReferenceUidsOfDefaultLanguageRecord, true)) {
+                        // This localized child has a default language record. Remove this record from list of default language records
+                        $fileReferenceUidsOfDefaultLanguageRecord = array_diff($fileReferenceUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
+                    }
+                    $uidOfDefaultLanguageRecordWorkspaceVersionArray = $this->getSubstitutedWorkspacedUids([$uidOfDefaultLanguageRecord]);
+                    if (!empty($uidOfDefaultLanguageRecordWorkspaceVersionArray)
+                        && in_array($uidOfDefaultLanguageRecordWorkspaceVersionArray[0], $fileReferenceUidsOfDefaultLanguageRecord, true)
+                    ) {
+                        // In some situations 'l10n_parent' of a localized workspace record points to the live version
+                        // of the default language record, and not to the workspace version, even though it exists.
+                        // Filter those as well, since the interface would otherwise show the item as "can be localized/synchronized".
+                        $fileReferenceUidsOfDefaultLanguageRecord = array_diff($fileReferenceUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecordWorkspaceVersionArray[0]]);
+                    }
+                }
             }
-            if ($fieldConfig['appearance']['showPossibleLocalizationRecords'] ?? false) {
+            if ($showPossibleLocalizationRecords) {
                 foreach ($fileReferenceUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
                     // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
                     // exist in default language, but are not localized yet. Compile and mark those
@@ -301,7 +314,6 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
         if ($workspace === 0 || !BackendUtility::isTableWorkspaceEnabled(self::FILE_REFERENCE_TABLE)) {
             return $connectedUids;
         }
-
         $substitutedUids = [];
         foreach ($connectedUids as $uid) {
             $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord(

@@ -5146,6 +5146,12 @@ class DataHandler implements LoggerAwareInterface
         if (!empty($updateFields)) {
             $this->updateDB($table, $id, $updateFields);
         }
+        if (isset($parentRecord['_ORIG_uid']) && (int)$parentRecord['_ORIG_uid'] !== (int)$id) {
+            // If there is a ws overlay of the record, then the relation has been attached to *this*
+            // record, even though the uids point to live. We still need to update refindex of the overlay
+            // to reflect this relation.
+            $this->updateRefIndex($table, (int)$parentRecord['_ORIG_uid']);
+        }
     }
 
     /**
