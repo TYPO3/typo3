@@ -560,11 +560,6 @@ class DatabaseRecordList
             $itemsPerPage = $this->showLimit;
         }
 
-        // Set limit from search
-        if ($this->searchString) {
-            $itemsPerPage = $totalItems;
-        }
-
         // Init
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $l10nEnabled = BackendUtility::isTableLocalizable($table);
