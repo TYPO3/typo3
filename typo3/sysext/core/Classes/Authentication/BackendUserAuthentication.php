@@ -1677,7 +1677,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * @param int $pid PageUid
      * @param string $table Table name
      * @param string $field Field name
-     * @return \TYPO3\CMS\Core\Resource\Folder|bool The default upload folder for this user
+     * @return \TYPO3\CMS\Core\Resource\Folder|false The default upload folder for this user
      */
     public function getDefaultUploadFolder($pid = null, $table = null, $field = null)
     {

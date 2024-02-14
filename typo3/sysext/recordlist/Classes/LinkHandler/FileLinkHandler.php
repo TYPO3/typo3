@@ -123,8 +123,8 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
         // Create upload/create folder forms, if a path is given
         $selectedFolder = $this->getSelectedFolder($this->expandFolder);
-        if ($selectedFolder->getStorage()->isFallbackStorage()) {
-            $selectedFolder = null;
+        if ($selectedFolder && $selectedFolder->getStorage()->isFallbackStorage()) {
+            $selectedFolder = false;
         }
 
         // Build the file upload and folder creation form
@@ -281,7 +281,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      * Returns the currently selected folder, or th default upload folder
      *
      * @param string $folderIdentifier
-     * @return mixed the folder object or false if nothing was found
+     * @return Folder|false the folder object or false if nothing was found
      */
     protected function getSelectedFolder($folderIdentifier = '')
     {
