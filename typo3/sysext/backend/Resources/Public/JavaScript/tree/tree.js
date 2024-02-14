@@ -56,7 +56,7 @@ var __decorate=function(e,t,i,o){var n,s=arguments.length,r=s<3?t:null===o?o=Obj
             @dblclick="${t=>{this.handleNodeDoubleClick(t,e)}}"
             @focusin="${()=>{this.focusedNode=e}}"
             @focusout="${()=>{this.focusedNode===e&&(this.focusedNode=null)}}"
-            @contextmenu="${t=>{t.preventDefault(),t.stopPropagation(),this.dispatchEvent(new CustomEvent("typo3:tree:node-context",{detail:{node:e}}))}}"
+            @contextmenu="${t=>{t.preventDefault(),t.stopPropagation(),this.dispatchEvent(new CustomEvent("typo3:tree:node-context",{detail:{node:e,originalEvent:t}}))}}"
           >
             ${this.createNodeLabel(e)}
             ${this.createNodeGuides(e)}
@@ -99,7 +99,7 @@ var __decorate=function(e,t,i,o){var n,s=arguments.length,r=s<3?t:null===o?o=Obj
       </span>
     `}createNodeContentIcon(e){return this.settings.showIcons?html`
         <span class="node-icon"
-          @click="${t=>{t.preventDefault(),t.stopImmediatePropagation(),this.dispatchEvent(new CustomEvent("typo3:tree:node-context",{detail:{node:e}}))}}"
+          @click="${t=>{t.preventDefault(),t.stopImmediatePropagation(),this.dispatchEvent(new CustomEvent("typo3:tree:node-context",{detail:{node:e,originalEvent:t}}))}}"
           @dblclick="${e=>{e.preventDefault(),e.stopImmediatePropagation()}}"
         >
           <typo3-backend-icon

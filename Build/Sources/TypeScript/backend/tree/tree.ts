@@ -615,7 +615,7 @@ export class Tree extends LitElement {
             @dblclick="${(event: PointerEvent) => { this.handleNodeDoubleClick(event, node); }}"
             @focusin="${() => { this.focusedNode = node; }}"
             @focusout="${() => { if (this.focusedNode === node) { this.focusedNode = null; } }}"
-            @contextmenu="${(event: MouseEvent) => { event.preventDefault(); event.stopPropagation(); this.dispatchEvent(new CustomEvent('typo3:tree:node-context', { detail: { node: node } })); }}"
+            @contextmenu="${(event: MouseEvent) => { event.preventDefault(); event.stopPropagation(); this.dispatchEvent(new CustomEvent('typo3:tree:node-context', { detail: { node, originalEvent: event } })); }}"
           >
             ${this.createNodeLabel(node)}
             ${this.createNodeGuides(node)}
@@ -1005,7 +1005,7 @@ export class Tree extends LitElement {
     return this.settings.showIcons
       ? html`
         <span class="node-icon"
-          @click="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); this.dispatchEvent(new CustomEvent('typo3:tree:node-context', { detail: { node: node } })) }}"
+          @click="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); this.dispatchEvent(new CustomEvent('typo3:tree:node-context', { detail: { node: node, originalEvent: event } })) }}"
           @dblclick="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); }}"
         >
           <typo3-backend-icon
