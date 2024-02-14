@@ -105,7 +105,7 @@ prototypes:
             condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
             properties:
               containerClassAttribute: 'form-element form-element-select mb-3'
-              elementClassAttribute: form-control
+              elementClassAttribute: form-select
               elementErrorClassAttribute: ~
               labelClassAttribute: form-label
     formEditor:
