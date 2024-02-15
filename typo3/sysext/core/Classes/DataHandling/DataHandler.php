@@ -1638,12 +1638,7 @@ class DataHandler implements LoggerAwareInterface
         if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
             $valueArray = [];
         } elseif (isset($tcaFieldConf['eval']) && $tcaFieldConf['eval'] !== '') {
-            $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
-            $evalCodesArray = $this->runtimeCache->get($cacheId);
-            if (!is_array($evalCodesArray)) {
-                $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
-                $this->runtimeCache->set($cacheId, $evalCodesArray);
-            }
+            $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
             $valueArray = $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in'] ?? '');
         } else {
             $valueArray = ['value' => $value];
@@ -1698,15 +1693,8 @@ class DataHandler implements LoggerAwareInterface
             $res = ['value' => $value];
         } else {
             // Process evaluation settings:
-            $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
-            $evalCodesArray = $this->runtimeCache->get($cacheId);
-            if (!is_array($evalCodesArray)) {
-                $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
-                $this->runtimeCache->set($cacheId, $evalCodesArray);
-            }
-
+            $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
             $res = $this->checkValue_input_Eval((string)$value, $evalCodesArray, $tcaFieldConf['is_in'] ?? '', $table, $id);
-
             // Process UNIQUE settings:
             // Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning
             if ($field && !empty($res['value'])) {
@@ -9810,6 +9798,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function isNestedElementCallRegistered($table, $id, $identifier)
     {
+        // @todo: Stop abusing runtime cache as singleton DTO, needs explicit modeling.
         $nestedElementCalls = (array)$this->runtimeCache->get($this->cachePrefixNestedElementCalls);
         return isset($nestedElementCalls[$identifier][$table][$id]);
     }
@@ -9850,6 +9839,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function isElementToBeDeleted($table, $id)
     {
+        // @todo: Stop abusing runtime cache as singleton DTO, needs explicit modeling.
         $elementsToBeDeleted = (array)$this->runtimeCache->get('core-datahandler-elementsToBeDeleted');
         return isset($elementsToBeDeleted[$table][$id]);
     }
@@ -10019,17 +10009,6 @@ class DataHandler implements LoggerAwareInterface
                 )
             );
         }
-    }
-
-    /**
-     * Return the cache entry identifier for field evals
-     *
-     * @param string $additionalIdentifier
-     * @return string
-     */
-    protected function getFieldEvalCacheIdentifier($additionalIdentifier)
-    {
-        return 'core-datahandler-eval-' . md5($additionalIdentifier);
     }
 
     /**
