@@ -107,6 +107,11 @@
             gap: var(--module-docheader-spacing);
             flex-wrap: wrap;
         }
+
+        .dropdown-menu {
+            max-height: calc(100vh - #{$toolbar-height} - var(--module-docheader-height));
+            overflow-y: auto;
+        }
     }
 }
 
