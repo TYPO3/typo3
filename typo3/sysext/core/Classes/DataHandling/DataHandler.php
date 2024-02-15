@@ -955,7 +955,20 @@ class DataHandler implements LoggerAwareInterface
                     // Nope... $id is a number
                     $id = (int)$id;
                     $fieldArray = [];
-                    $recordAccess = $this->checkRecordUpdateAccess($table, $id, $incomingFieldArray, $hookObjectsArr);
+
+                    $recordAccess = null;
+                    if (is_array($hookObjectsArr)) {
+                        foreach ($hookObjectsArr as $hookObj) {
+                            if (method_exists($hookObj, 'checkRecordUpdateAccess')) {
+                                $recordAccess = $hookObj->checkRecordUpdateAccess($table, $id, $incomingFieldArray, $recordAccess, $this);
+                            }
+                        }
+                    }
+                    if ($recordAccess !== null) {
+                        $recordAccess = (bool)$recordAccess;
+                    } else {
+                        $recordAccess = $this->checkRecordUpdateAccess($table, $id);
+                    }
                     if (!$recordAccess) {
                         if ($this->enableLogging) {
                             $propArr = $this->getRecordProperties($table, $id);
@@ -963,6 +976,7 @@ class DataHandler implements LoggerAwareInterface
                         }
                         continue;
                     }
+
                     // Next check of the record permissions (internals)
                     $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $id);
                     if (!$recordAccess) {
@@ -7116,35 +7130,26 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Record table
      * @param int $id Record UID
-     * @param array|bool $data Record data
-     * @param array $hookObjectsArr Hook objects
      * @return bool Returns TRUE if the user may update the record given by $table and $id
      * @internal should only be used from within DataHandler
      */
-    public function checkRecordUpdateAccess($table, $id, $data = false, $hookObjectsArr = null)
+    public function checkRecordUpdateAccess($table, $id)
     {
-        $res = null;
-        if (is_array($hookObjectsArr)) {
-            foreach ($hookObjectsArr as $hookObj) {
-                if (method_exists($hookObj, 'checkRecordUpdateAccess')) {
-                    $res = $hookObj->checkRecordUpdateAccess($table, $id, $data, $res, $this);
-                }
-            }
-            if (isset($res)) {
-                return (bool)$res;
-            }
-        }
         $res = false;
-
         if ($GLOBALS['TCA'][$table] && (int)$id > 0) {
             $cacheId = 'checkRecordUpdateAccess_' . $table . '_' . $id;
-
             // If information is cached, return it
             $cachedValue = $this->runtimeCache->get($cacheId);
             if (!empty($cachedValue)) {
+                // @todo: This cache is at least broken with false results.
+                //        Caching 'false' as result below makes !empty() here never kick in, so
+                //        caching negative result does not work and always triggers code execution.
+                //        Also, CF tends to mix up false as cache-value with 'there is no cache entry',
+                //        depending on used cache backend, which also may be the reason int 1 is used
+                //        instead of bool true, so '@return bool' annotation is clearly invalid.
+                //        Note there is another cache in doesRecordExist_pageLookUp() code path, too.
                 return $cachedValue;
             }
-
             if ($table === 'pages' || ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap))) {
                 // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
                 $perms = Permission::PAGE_EDIT;

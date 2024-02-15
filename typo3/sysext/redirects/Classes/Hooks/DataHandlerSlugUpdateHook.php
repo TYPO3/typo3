@@ -53,7 +53,7 @@ class DataHandlerSlugUpdateHook
             || empty($incomingFieldArray['slug'])
             || $this->isNestedHookInvocation($dataHandler)
             || !MathUtility::canBeInterpretedAsInteger($id)
-            || !$dataHandler->checkRecordUpdateAccess($table, $id, $incomingFieldArray)
+            || !$dataHandler->checkRecordUpdateAccess($table, $id)
         ) {
             return;
         }
