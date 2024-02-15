@@ -497,13 +497,6 @@ class DataHandler implements LoggerAwareInterface
     public $remapStackRecords = [];
 
     /**
-     * Array used for checking whether new children need to be remapped
-     *
-     * @var array
-     */
-    protected $remapStackChildIds = [];
-
-    /**
      * Array used for executing addition actions after remapping happened (set processRemapStack())
      *
      * @var array
@@ -1601,7 +1594,6 @@ class DataHandler implements LoggerAwareInterface
 
         $valueArray = [$value];
         $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
-        $this->addNewValuesToRemapStackChildIds($valueArray);
         $this->remapStack[] = [
             'args' => [$valueArray, $tcaFieldConf, $id, $table, $field],
             'pos' => ['valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 3],
@@ -2121,7 +2113,6 @@ class DataHandler implements LoggerAwareInterface
         $unsetResult = false;
         if (str_contains($value, 'NEW')) {
             $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
-            $this->addNewValuesToRemapStackChildIds($valueArray);
             $this->remapStack[] = [
                 'func' => 'checkValue_category_processDBdata',
                 'args' => [$valueArray, $tcaFieldConf, $id, $status, $table, $field],
@@ -2465,7 +2456,6 @@ class DataHandler implements LoggerAwareInterface
             // check, if there is a NEW... id in the value, that should be substituted later
             if (str_contains($value, 'NEW')) {
                 $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
-                $this->addNewValuesToRemapStackChildIds($valueArray);
                 $this->remapStack[] = [
                     'func' => 'checkValue_group_select_processDBdata',
                     'args' => [$valueArray, $tcaFieldConf, $id, $status, $tcaFieldConf['type'], $table, $field],
@@ -2733,7 +2723,6 @@ class DataHandler implements LoggerAwareInterface
         // We need to decide whether we use the stack or can save the relation directly.
         if (!empty($value) && (str_contains($value, 'NEW') || !MathUtility::canBeInterpretedAsInteger($id))) {
             $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
-            $this->addNewValuesToRemapStackChildIds($valueArray);
             $this->remapStack[] = [
                 'func' => 'checkValue_inline_processDBdata',
                 'args' => [$valueArray, $tcaFieldConf, $id, $status, $table, $field, $additionalData],
@@ -2763,7 +2752,6 @@ class DataHandler implements LoggerAwareInterface
         $valueArray = array_unique(GeneralUtility::trimExplode(',', $value));
         if ($value !== '' && (str_contains($value, 'NEW') || !MathUtility::canBeInterpretedAsInteger($id))) {
             $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
-            $this->addNewValuesToRemapStackChildIds($valueArray);
             $this->remapStack[] = [
                 'func' => 'checkValue_file_processDBdata',
                 'args' => [$valueArray, $tcaFieldConf, $id, $table],
@@ -9458,20 +9446,6 @@ class DataHandler implements LoggerAwareInterface
             $id = $autoVersionId;
         }
         return $id;
-    }
-
-    /**
-     * Adds new values to the remapStackChildIds array.
-     *
-     * @param array $idValues uid values
-     */
-    protected function addNewValuesToRemapStackChildIds(array $idValues)
-    {
-        foreach ($idValues as $idValue) {
-            if (str_starts_with($idValue, 'NEW')) {
-                $this->remapStackChildIds[$idValue] = true;
-            }
-        }
     }
 
     /**
