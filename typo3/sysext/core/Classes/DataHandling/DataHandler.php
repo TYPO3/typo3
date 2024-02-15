@@ -214,16 +214,6 @@ class DataHandler implements LoggerAwareInterface
     public $overrideValues = [];
 
     /**
-     * If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated.
-     * You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1.
-     * Then an empty checkbox will disable the field.
-     *
-     * @var array
-     * @internal should only be used from within TYPO3 Core
-     */
-    public $data_disableFields = [];
-
-    /**
      * Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option
      * since it will force the inserted record to have a certain UID. The value just have to be TRUE, but if you set
      * it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete).
@@ -1278,7 +1268,7 @@ class DataHandler implements LoggerAwareInterface
         // - If the field is nothing of the above and the field is configured in TCA, the fieldvalues are evaluated by ->checkValue
         // If everything is OK, the field is entered into $fieldArray[]
         foreach ($incomingFieldArray as $field => $fieldValue) {
-            if (isset($this->excludedTablesAndFields[$table . '-' . $field]) || (bool)($this->data_disableFields[$table][$id][$field] ?? false)) {
+            if (isset($this->excludedTablesAndFields[$table . '-' . $field])) {
                 continue;
             }
 
