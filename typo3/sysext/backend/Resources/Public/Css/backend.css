@@ -3046,6 +3046,7 @@ a.dropdown-toggle{text-decoration:none}
 .module-docheader .module-docheader-bar label{margin-top:0;margin-bottom:0}
 .module-docheader .module-docheader-bar .form-group{margin:0}
 .module-docheader .module-docheader-bar-container{display:flex;gap:var(--module-docheader-spacing);flex-wrap:wrap}
+.module-docheader .module-docheader-bar .dropdown-menu{max-height:calc(100vh - 45px - var(--module-docheader-height));overflow-y:auto}
 .module-body{padding:var(--module-body-padding)}
 .module-body>.container{padding-left:0;padding-right:0}
 .module-body .container-small{max-width:768px;margin:0 auto}
