@@ -33,7 +33,7 @@ final class FileUpdatedMessage implements WebhookMessageInterface
     public function __construct(
         private readonly int $storageUid,
         private readonly string $identifier,
-        private readonly string $publicUrl,
+        private readonly ?string $publicUrl,
         private readonly array $relevantProperties,
         private readonly array $updatedFields
     ) {}
