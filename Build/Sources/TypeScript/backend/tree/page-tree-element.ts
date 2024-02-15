@@ -149,7 +149,6 @@ export class EditablePageTree extends PageTree {
         target: target,
         doktype: node.doktype
       };
-      console.log(options);
       await this.sendChangeCommand(options);
     } else {
       const options: NodeEditOptions = {
