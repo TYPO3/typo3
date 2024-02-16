@@ -2,6 +2,7 @@
 
 <p>
     Check the basic mail functionality by entering your email address here and clicking the button.
+    You should then receive a test email from "{mailTestSenderAddress}".
 </p>
 
 <p>
@@ -17,11 +18,12 @@
         <code>$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_smtp_*']</code> is valid. Wrong data here results in faulty
         requests to the mail server. You can find the resulting messages in the mail server log.
     </li>
-    <li>
-        <code>$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport']['defaultMailFromAddress']</code> must be a valid email
-        address.
-    </li>
 </ul>
+
+<p>
+    Not receiving the test email could also be a consequence of it being intercepted by a spam filter or due to the
+    sending domain's email security settings, such as SPF record, which may prevent successful delivery.
+</p>
 
 <div class="t3js-module-content" data-mail-test-token="{mailTestToken}">
     <div class="t3js-mailTest-output"></div>
