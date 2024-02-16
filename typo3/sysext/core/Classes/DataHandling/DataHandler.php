@@ -184,17 +184,6 @@ class DataHandler implements LoggerAwareInterface
     public array $defaultValues = [];
 
     /**
-     * [table][fields]=value: You can set this array on the form $overrideValues[$table][$field] = $value to
-     * override the incoming data. You must set this externally. You must make sure the fields in this array are also
-     * found in the table, because it's not checked. All columns can be set by this array!
-     *
-     * @var array
-     * @internal should only be used from within TYPO3 Core
-     * @todo: Only read, never set. TER search reveals no usage either. Remove together with method?!
-     */
-    public array $overrideValues = [];
-
-    /**
      * Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option
      * since it will force the inserted record to have a certain UID. The value just have to be TRUE, but if you set
      * it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete).
@@ -998,10 +987,6 @@ class DataHandler implements LoggerAwareInterface
                 }
                 // Processing of all fields in incomingFieldArray and setting them in $fieldArray
                 $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
-                // NOTICE! All manipulation beyond this point bypasses both "excludeFields" AND possible "MM" relations to field!
-                // Forcing some values unto field array:
-                // NOTICE: This overriding is potentially dangerous; permissions per field is not checked!!!
-                $fieldArray = $this->overrideFieldArray($table, $fieldArray);
                 // Setting system fields
                 if ($status === 'new') {
                     if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
@@ -8141,22 +8126,6 @@ class DataHandler implements LoggerAwareInterface
         }
 
         return null;
-    }
-
-    /**
-     * Returns the $data array from $table overridden in the fields defined in ->overrideValues.
-     *
-     * @param string $table Table name
-     * @param array $data Data array with fields from table. These will be overlaid with values in $this->overrideValues[$table]
-     * @return array Data array, processed.
-     * @internal should only be used from within DataHandler
-     */
-    public function overrideFieldArray($table, $data)
-    {
-        if (isset($this->overrideValues[$table]) && is_array($this->overrideValues[$table])) {
-            $data = array_merge($data, $this->overrideValues[$table]);
-        }
-        return $data;
     }
 
     /**
