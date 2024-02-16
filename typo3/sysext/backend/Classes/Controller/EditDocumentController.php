@@ -507,7 +507,7 @@ class EditDocumentController
         }
 
         // Set default values fetched previously from GET / POST vars
-        if (is_array($this->defVals) && $this->defVals !== [] && is_array($tce->defaultValues)) {
+        if (is_array($this->defVals) && $this->defVals !== []) {
             $tce->defaultValues = array_merge_recursive($this->defVals, $tce->defaultValues);
         }
 
