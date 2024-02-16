@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action\Site as SiteAction;
@@ -69,6 +70,7 @@ class SiteConfigurationController
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly PageRenderer $pageRenderer,
         private readonly SiteConfiguration $siteConfiguration,
     ) {}
 
@@ -179,6 +181,7 @@ class SiteConfigurationController
             'formEngineFooter' => $formResultCompiler->printNeededJSFunctions(),
         ]);
 
+        $this->pageRenderer->getJavaScriptRenderer()->includeTaggedImports('backend.form');
         $this->configureEditViewDocHeader($view);
         $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab'),
