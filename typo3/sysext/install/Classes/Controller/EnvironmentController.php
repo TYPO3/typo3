@@ -238,7 +238,6 @@ class EnvironmentController extends AbstractController
             'mailTestToken' => $formProtection->generateToken('installTool', 'mailTest'),
             'mailTestSenderAddress' => $this->getSenderEmailAddress(),
             'isSendPossible' => $isSendPossible,
-            'queueIdentifier' => 'install',
         ]);
 
         return new JsonResponse([
