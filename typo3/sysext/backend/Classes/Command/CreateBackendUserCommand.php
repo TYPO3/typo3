@@ -307,7 +307,12 @@ EOT
      */
     private function getFallbackValueEnvOrOption(InputInterface $input, string $option, string $envVar): string|bool
     {
-        return $input->hasParameterOption('--' . $option) ? $input->getOption($option) : getenv($envVar);
+        $optionShortcut = $this->getDefinition()->getOption($option)->getShortcut();
+        $parameterOptions = ['--' . $option];
+        if ($optionShortcut !== null) {
+            $parameterOptions[] = '-' . $optionShortcut;
+        }
+        return $input->hasParameterOption($parameterOptions) ? $input->getOption($option) : getenv($envVar);
     }
 
     private function getBackendUserPasswordValidationErrors(string $password): array
