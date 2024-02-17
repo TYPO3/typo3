@@ -172,6 +172,7 @@ services:
     arguments:
       $messageBus: '@messenger.bus.default'
       $receiverLocator: !tagged_locator { tag: 'messenger.receiver', index_by: 'identifier' }
+      $rateLimiterLocator: !tagged_locator { tag: 'messenger.rate_limiter', index_by: 'identifier' }
 
   TYPO3\CMS\Core\Messenger\EventListener\StopWorkerOnTimeLimitListener:
     arguments:

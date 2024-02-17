@@ -46,6 +46,7 @@ class ConsumeMessagesCommand extends Command
         private readonly MessageBusInterface $messageBus,
         private readonly ServiceLocator $receiverLocator,
         private readonly StopWorkerOnTimeLimitListener $stopWorkerOnTimeLimitListener,
+        private readonly ServiceLocator $rateLimiterLocator,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly array $receiverNames = [],
         private readonly array $busIds = [],
@@ -130,6 +131,9 @@ EOF
             }
 
             $receivers[$receiverName] = $this->receiverLocator->get($receiverName);
+            if ($this->rateLimiterLocator->has($receiverName)) {
+                $rateLimiters[$receiverName] = $this->rateLimiterLocator->get($receiverName);
+            }
         }
 
         $io = new SymfonyStyle($input, $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output);
