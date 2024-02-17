@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Impexp;
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -52,14 +53,16 @@ class UsersCest extends AbstractCest
     /**
      * @throws \Exception
      */
-    public function doNotShowImportAndExportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree): void
+    public function doNotShowImportAndExportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
 
         $this->setPageAccess($I, $pageTree, [$selectedPageTitle], 1);
         $this->setModAccess($I, 1, ['web_list' => true]);
-        $this->setUserTsConfig($I, 2, '');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $userId = $isComposerMode ? 3 : 2;
+        $this->setUserTsConfig($I, $scenario, $userId, '');
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
@@ -74,12 +77,14 @@ class UsersCest extends AbstractCest
     /**
      * @throws \Exception
      */
-    public function showImportExportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I): void
+    public function showImportExportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I, Scenario $scenario): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
 
-        $this->setUserTsConfig($I, 2, "options.impexp.enableImportForNonAdminUser = 1\noptions.impexp.enableExportForNonAdminUser = 1");
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $userId = $isComposerMode ? 3 : 2;
+        $this->setUserTsConfig($I, $scenario, $userId, "options.impexp.enableImportForNonAdminUser = 1\noptions.impexp.enableExportForNonAdminUser = 1");
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
@@ -119,7 +124,7 @@ class UsersCest extends AbstractCest
     /**
      * @throws \Exception
      */
-    public function hideUploadTabAndImportPathIfNoImportFolderAvailable(ApplicationTester $I, PageTree $pageTree): void
+    public function hideUploadTabAndImportPathIfNoImportFolderAvailable(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -144,13 +149,15 @@ class UsersCest extends AbstractCest
 
         $this->setPageAccess($I, $pageTree, ['Root'], 0);
         $this->setModAccess($I, 1, ['web_list' => false]);
-        $this->setUserTsConfig($I, 2, '');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $userId = $isComposerMode ? 3 : 2;
+        $this->setUserTsConfig($I, $scenario, $userId, '');
     }
 
     /**
      * @throws \Exception
      */
-    public function checkVisualElements(ApplicationTester $I, PageTree $pageTree): void
+    public function checkVisualElements(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -172,7 +179,9 @@ class UsersCest extends AbstractCest
 
         $this->setPageAccess($I, $pageTree, ['Root'], 1);
         $this->setModAccess($I, 1, ['web_list' => true]);
-        $this->setUserTsConfig($I, 2, 'options.impexp.enableImportForNonAdminUser = 1');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $userId = $isComposerMode ? 3 : 2;
+        $this->setUserTsConfig($I, $scenario, $userId, 'options.impexp.enableImportForNonAdminUser = 1');
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
@@ -184,6 +193,8 @@ class UsersCest extends AbstractCest
 
         $this->setPageAccess($I, $pageTree, ['Root'], 0);
         $this->setModAccess($I, 1, ['web_list' => false]);
-        $this->setUserTsConfig($I, 2, '');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $userId = $isComposerMode ? 3 : 2;
+        $this->setUserTsConfig($I, $scenario, $userId, '');
     }
 }

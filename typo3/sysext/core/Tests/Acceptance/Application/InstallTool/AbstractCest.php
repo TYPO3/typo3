@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
@@ -25,8 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AbstractCest
 {
-    public const ENABLE_INSTALL_TOOL_FILEPATH = 'typo3conf/ENABLE_INSTALL_TOOL';
-    public const ADDITIONAL_CONFIGURATION_FILEPATH = 'typo3conf/AdditionalConfiguration.php';
+    public const ENABLE_INSTALL_TOOL_FILE = 'ENABLE_INSTALL_TOOL';
+    public const ADDITIONAL_CONFIGURATION_FILE = 'AdditionalConfiguration.php';
     public const INSTALL_TOOL_PASSWORD = 'temporary password';
 
     public function _before(ApplicationTester $I): void
@@ -41,17 +40,27 @@ class AbstractCest
         $I->waitForText('The Install Tool is locked', 20);
 
         $I->amGoingTo('clean up created files');
-        unlink(Environment::getProjectPath() . '/' . self::ADDITIONAL_CONFIGURATION_FILEPATH);
+        if (getenv('TYPO3_ACCEPTANCE_INSTALLTOOL_PW_PRESET') !== '1') {
+            unlink(getenv('TYPO3_ACCEPTANCE_PATH_CONFIG') . '/' . self::ADDITIONAL_CONFIGURATION_FILE);
+        }
 
-        $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ENABLE_INSTALL_TOOL_FILEPATH);
-        $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ADDITIONAL_CONFIGURATION_FILEPATH);
+        $I->dontSeeFileFound($this->getEnableInstallToolFilePath());
+        if (getenv('TYPO3_ACCEPTANCE_INSTALLTOOL_PW_PRESET') !== '1') {
+            $I->dontSeeFileFound(getenv('TYPO3_ACCEPTANCE_PATH_CONFIG') . '/' . self::ADDITIONAL_CONFIGURATION_FILE);
+        }
+    }
+
+    protected function getEnableInstallToolFilePath(): string
+    {
+        return getenv('TYPO3_ACCEPTANCE_PATH_CONFIG') . '/' . self::ENABLE_INSTALL_TOOL_FILE;
     }
 
     protected function logIntoInstallTool(ApplicationTester $I): void
     {
         $password = $this->setInstallToolPassword($I);
 
-        $I->writeToFile(AbstractCest::ENABLE_INSTALL_TOOL_FILEPATH, '');
+        printf("write to file: %s\n", $this->getEnableInstallToolFilePath());
+        $I->writeToFile($this->getEnableInstallToolFilePath(), '');
         $I->reloadPage();
         $I->waitForElementVisible('#t3-install-form-password');
         $I->fillField('#t3-install-form-password', $password);
@@ -64,11 +73,14 @@ class AbstractCest
      */
     private function setInstallToolPassword(ApplicationTester $I): string
     {
-        $hashMethod = GeneralUtility::makeInstance(Argon2iPasswordHash::class);
         $password = self::INSTALL_TOOL_PASSWORD;
+        if (getenv('TYPO3_ACCEPTANCE_INSTALLTOOL_PW_PRESET') === '1') {
+            return $password;
+        }
+        $hashMethod = GeneralUtility::makeInstance(Argon2iPasswordHash::class);
         $hashedPassword = $hashMethod->getHashedPassword($password);
         $I->writeToFile(
-            self::ADDITIONAL_CONFIGURATION_FILEPATH,
+            getenv('TYPO3_ACCEPTANCE_PATH_CONFIG') . '/' . self::ADDITIONAL_CONFIGURATION_FILE,
             '<?php' . PHP_EOL . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'installToolPassword\'] = \'' . $hashedPassword . '\';'
         );
         return $password;

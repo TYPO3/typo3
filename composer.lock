@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2670bff3895b668f59189949cba04ec8",
+    "content-hash": "8632f21d1c484bf51d2bc99ac8296eac",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9093,16 +9093,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "11.5.4",
+            "version": "11.5.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "832b5258c6ba724db92014a9e54f05628804e34c"
+                "url": "https://github.com/TYPO3-CMS/styleguide.git",
+                "reference": "cb1c1305043dfd64effe692c6caceae416e82930"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/832b5258c6ba724db92014a9e54f05628804e34c",
-                "reference": "832b5258c6ba724db92014a9e54f05628804e34c",
+                "url": "https://api.github.com/repos/TYPO3-CMS/styleguide/zipball/cb1c1305043dfd64effe692c6caceae416e82930",
+                "reference": "cb1c1305043dfd64effe692c6caceae416e82930",
                 "shasum": ""
             },
             "require-dev": {
@@ -9110,7 +9110,7 @@
                 "codeception/module-asserts": "^1.2",
                 "codeception/module-cli": "^1.1",
                 "codeception/module-webdriver": "^1.1",
-                "phpstan/phpstan": "^1.4.3",
+                "phpstan/phpstan": "^1.8.2",
                 "typo3/cms-core": "11.*.*@dev",
                 "typo3/cms-frontend": "11.*.*@dev",
                 "typo3/cms-install": "11.*.*@dev",
@@ -9156,9 +9156,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/11.5.4"
+                "source": "https://github.com/TYPO3-CMS/styleguide/tree/11.5.5"
             },
-            "time": "2022-02-23T12:46:24+00:00"
+            "time": "2024-03-13T07:50:05+00:00"
         },
         {
             "name": "typo3/testing-framework",

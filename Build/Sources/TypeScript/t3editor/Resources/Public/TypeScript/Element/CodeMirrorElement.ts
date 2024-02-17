@@ -89,6 +89,22 @@ export class CodeMirrorElement extends LitElement {
     observer.observe(this);
   }
 
+  /**
+   * @internal
+   */
+  public setContent(newContent: string): void {
+    const cm = (this.querySelector('.CodeMirror') as any)?.CodeMirror as typeof CodeMirror;
+    cm?.setValue(newContent);
+  }
+
+  /**
+   * @internal
+   */
+  public getContent(): string {
+    const cm = (this.querySelector('.CodeMirror') as any)?.CodeMirror as typeof CodeMirror;
+    return cm?.getValue() ?? '';
+  }
+
   private createPanelNode(position: string, label: string): HTMLElement {
     const node = document.createElement('div');
     node.setAttribute('class', 'CodeMirror-panel CodeMirror-panel-' + position);

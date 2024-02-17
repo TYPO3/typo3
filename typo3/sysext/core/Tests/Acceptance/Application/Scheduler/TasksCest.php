@@ -140,6 +140,7 @@ class TasksCest
         $I->waitForElementVisible('div.tx_scheduler_mod1');
         $I->see('Information');
         $I->canSeeNumberOfElements('.tx_scheduler_mod1 table tbody tr', [1, 10000]);
+        $I->selectOption('select[name=SchedulerJumpMenu]', 'Scheduled tasks');
     }
 
     public function canCreateNewTaskGroupFromEditForm(ApplicationTester $I): void

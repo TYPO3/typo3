@@ -11,10 +11,14 @@ modules:
         editor: '%typo3TestingAcceptanceEditorPassword%'
 
 env:
-  ci:
+  classic:
     extensions:
       enabled:
         - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\BackendCoreEnvironment
+  composer:
+    extensions:
+      enabled:
+        - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\ApplicationComposerEnvironment
 
 groups:
   AcceptanceTests-Job-*: AcceptanceTests-Job-*

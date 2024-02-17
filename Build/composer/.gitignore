@@ -3,6 +3,8 @@
 /composer.lock
 /config
 /local
+/packages/*
+!/packages/.gitkeep
 /public/*
 !/public/typo3conf
 /public/typo3conf/*

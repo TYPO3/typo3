@@ -1,0 +1,17 @@
+acceptance application composer mariadb php 8.2 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - "11.5"
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance-composer/var/log
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 13
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceComposer -p 8.2 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

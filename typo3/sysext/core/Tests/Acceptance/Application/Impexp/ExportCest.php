@@ -62,7 +62,6 @@ class ExportCest extends AbstractCest
     public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
     {
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $selectedPageTitle = 'elements t3editor';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -89,10 +88,7 @@ class ExportCest extends AbstractCest
         $listModuleBtnExport = 'a[title="Export"]';
         $buttonUpdate = '.btn[value=Update]';
 
-        $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
-
-        $pageTree->openPath([$tablePageTitle]);
+        $pageTree->openPath(['styleguide TCA demo', $tablePageTitle]);
         $I->switchToContentFrame();
         // List module single table mode
         $I->waitForText($tableTitle);
@@ -119,10 +115,7 @@ class ExportCest extends AbstractCest
         $recordIcon = 'tr:first-child a.t3js-contextmenutrigger';
         $buttonUpdate = '.btn[value=Update]';
 
-        $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
-
-        $pageTree->openPath([$recordPageTitle]);
+        $pageTree->openPath(['styleguide TCA demo', $recordPageTitle]);
         $I->switchToContentFrame();
         // List module single table mode
         $I->waitForText($recordPageTitle);
@@ -153,7 +146,6 @@ class ExportCest extends AbstractCest
         $selectPreset = 'select[name="preset[select]"]';
 
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $I->click($pageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -205,7 +197,6 @@ class ExportCest extends AbstractCest
         $buttonSaveToFile = 'tx_impexp[save_export]';
 
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $I->click($pageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);

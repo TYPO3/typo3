@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Template;
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
  * Template tests
@@ -36,7 +38,7 @@ class TemplateCest
         $I->waitForText('Template tools');
     }
 
-    public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(ApplicationTester $I): void
+    public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantTo('show templates overview on root page (uid = 0)');
         // Select the root page
@@ -51,9 +53,13 @@ class TemplateCest
 
         $I->wantTo('show templates overview on website root page (uid = 1 and pid = 0)');
         $I->switchToMainFrame();
+        $pageTree->closeSecondLevelPaths();
         // click on website root page
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
+        $I->wait(1);
+        $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
+        $I->wait(1);
         $I->waitForText('No template');
         $I->wait(2);
         $I->see('There was no template on this page!');
@@ -69,11 +75,11 @@ class TemplateCest
         );
     }
 
-    public function addANewSiteTemplate(ApplicationTester $I): void
+    public function addANewSiteTemplate(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $I->wantTo('create a new site template');
         $I->switchToMainFrame();
-        $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
+        $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
         $I->waitForText('Create new website');
         $I->wait(2);
@@ -101,10 +107,18 @@ class TemplateCest
         $I->waitForElementNotVisible('#t3js-ui-block');
 
         $I->wantTo('change the setup, save the template and close the form');
-        // grab and fill setup textarea
-        $config = $I->grabTextFrom('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]');
-        $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
-        $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
+
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        if ($isComposerMode) {
+            $codeMirrorSelector = 'typo3-t3editor-codemirror[name$="[config]"]';
+            $I->waitForElementVisible($codeMirrorSelector);
+            $I->executeJS("const codeMirror = document.querySelector('" . $codeMirrorSelector . "'); const config = codeMirror.getContent().replace('HELLO WORLD!', 'Hello Acceptance Test!'); codeMirror.setContent(config)");
+        } else {
+            // grab and fill setup textarea
+            $config = $I->grabTextFrom('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]');
+            $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
+            $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
+        }
 
         $I->click('//*/button[@name="_savedok"][1]');
         $I->waitForElement('a.t3js-editform-close');
@@ -117,6 +131,9 @@ class TemplateCest
         $I->wantTo('change the template within the TypoScript Object Browser');
         $I->wait(1);
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
+        $I->wait(1);
+        $I->selectOption('select[name="SET[ts_browser_type]"]', 'Constants');
+        $I->wait(1);
         $I->waitForText('CONSTANTS ROOT');
         $I->selectOption('//select[@name="SET[ts_browser_type]"]', 'Setup');
         $I->waitForText('SETUP ROOT');
@@ -138,14 +155,15 @@ class TemplateCest
         $I->see('[value] = HELLO WORLD!');
     }
 
-    public function checkClosestTemplateButton(ApplicationTester $I): void
+    public function checkClosestTemplateButton(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantTo('click on the button to go to the closest page with a template');
         $I->switchToMainFrame();
-        // Open the pagetree
-        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " toggle ")])[4]');
-        $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
+        $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->switchToContentFrame();
+        $I->wait(1);
+        $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
+        $I->wait(1);
         $I->waitForText('No template');
         $I->wait(2);
         $I->see('There was no template on this page!');
@@ -162,17 +180,23 @@ class TemplateCest
         $I->see('Setup');
         $I->see('Edit the whole template record');
         $I->click('Edit the whole template record');
+        // Avoid race condition:
+        // SEVERE - http://web/typo3/sysext/backend/Resources/Public/JavaScript/code-editor/autocomplete/ts-ref.js?bust=[…]
+        // 12:613 Uncaught TypeError: Cannot convert undefined or null to object
+        $I->waitForElementNotVisible('#nprogress', 120);
     }
 
-    public function createExtensionTemplate(ApplicationTester $I): void
+    public function createExtensionTemplate(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantTo('see the button to create a extension template');
         $I->switchToMainFrame();
-        //Open the pagetree
-        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " toggle ")])[4]');
-        $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
+        $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->switchToContentFrame();
+        $I->wait(1);
+        $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->wait(2);
+        $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->wait(1);
         $I->waitForText('No template');
         $I->see('There was no template on this page!');
         $I->see('You need to create a template record below in order to edit your configuration.');
@@ -208,6 +232,8 @@ class TemplateCest
         $I->switchToContentFrame();
         $I->wait(2);
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
+        $I->wait(2);
+        $I->selectOption('//select[@name="SET[ts_browser_type]"]', 'Constants');
         $I->waitForText('CONSTANTS ROOT');
         $I->amGoingTo('type "styles" into the search field and submit.');
         $I->fillField('#search_field', 'styles');
@@ -229,7 +255,7 @@ class TemplateCest
         $I->amGoingTo('Switch to object browser.');
         $I->wait(2);
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
-        $I->waitForText('CONSTANTS ROOT');
+        $I->wait(2);
         $I->selectOption('select[name="SET[ts_browser_type]"]', 'Setup');
         $I->waitForText('SETUP ROOT');
         $I->click('tt_content');

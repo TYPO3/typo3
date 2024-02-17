@@ -35,6 +35,17 @@ class FileClipboardCest extends AbstractFileCest
     {
         parent::_before($I, $tree);
         $I->click('#checkClipBoard');
+        $I->waitForElement($this->copyModeMove);
+        $I->waitForElementVisible($this->copyModeMove);
+        $I->waitForElementVisible($this->copyModeCopy);
+    }
+
+    /**
+     * @param ApplicationTester $I
+     */
+    public function _after(ApplicationTester $I): void
+    {
+        $I->click('#checkClipBoard');
     }
 
     /**
@@ -42,15 +53,18 @@ class FileClipboardCest extends AbstractFileCest
      */
     public function seeSwitchModes(ApplicationTester $I): void
     {
-        $I->waitForElementVisible($this->copyModeMove);
         $I->seeCheckboxIsChecked($this->copyModeMove);
-        $I->waitForElementVisible($this->copyModeCopy);
         $I->dontSeeCheckboxIsChecked($this->copyModeCopy);
         $I->click('//*/label[@for="clipboard-copymode-copy"]');
         $I->waitForElementVisible($this->copyModeMove);
         $I->dontSeeCheckboxIsChecked($this->copyModeMove);
         $I->waitForElementVisible($this->copyModeCopy);
         $I->seeCheckboxIsChecked($this->copyModeCopy);
+        $I->click('//*/label[@for="clipboard-copymode-move"]');
+        $I->waitForElementVisible($this->copyModeMove);
+        $I->seeCheckboxIsChecked($this->copyModeMove);
+        $I->waitForElementVisible($this->copyModeCopy);
+        $I->dontSeeCheckboxIsChecked($this->copyModeCopy);
     }
 
     /**
@@ -58,6 +72,7 @@ class FileClipboardCest extends AbstractFileCest
      */
     public function seeAddRemoveSingleRecord(ApplicationTester $I): void
     {
+        $I->seeCheckboxIsChecked($this->copyModeMove);
         $fileName = 'bus_lane.jpg';
         $I->switchToMainFrame();
         $I->click('//*[text()="styleguide"]');

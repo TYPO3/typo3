@@ -1,0 +1,20 @@
+{
+	"name": "typo3tests/dataset-import",
+	"type": "typo3-cms-extension",
+	"description": "Support extension providing dataset:import command",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "11.5.*@dev",
+		"typo3/testing-framework": "^6.16.9"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "dataset_import"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\DatasetImport\\": "Classes/"
+		}
+	}
+}

@@ -32,6 +32,10 @@ class ContentElementsCest
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
+        $I->wait(1);
+        $I->waitForElementVisible('select[name=actionMenu]');
+        $I->selectOption('select[name=actionMenu]', 'Columns');
+        $I->wait(1);
         $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');
         $I->wait(1);
         $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
@@ -50,9 +54,13 @@ class ContentElementsCest
         // Close FE tab again and switch to BE to avoid side effects
         $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
             $handles = $webdriver->getWindowHandles();
-            $webdriver->close();
-            $firstWindow = current($handles);
-            $webdriver->switchTo()->window($firstWindow);
+            // Avoid closing the main backend tab (holds the webdriver session) if the test failed to open the frontend tab
+            // (All subsequent tests would fail with "[Facebook\WebDriver\Exception\InvalidSessionIdException] invalid session id"
+            if (count($handles) > 1) {
+                $webdriver->close();
+                $firstWindow = current($handles);
+                $webdriver->switchTo()->window($firstWindow);
+            }
         });
     }
 

@@ -66,6 +66,7 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
+     * @env classic
      * @throws \Exception
      */
     public function dumpAutoloadWorks(ApplicationTester $I): void

@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\DatasetImport\:
+    resource: '../Classes/*'
+
+  TYPO3Tests\DatasetImport\Command\DatasetImportCommand:
+    tags:
+      - name: 'console.command'
+        command: 'dataset:import'
+        description: 'Import Dataset'

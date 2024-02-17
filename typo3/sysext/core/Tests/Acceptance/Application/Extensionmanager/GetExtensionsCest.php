@@ -44,6 +44,7 @@ class GetExtensionsCest
     }
 
     /**
+     * @env classic
      * @param ApplicationTester $I
      */
     public function checkRetrievedExtensionsFromTerAreDisplayed(ApplicationTester $I): void
@@ -53,6 +54,7 @@ class GetExtensionsCest
     }
 
     /**
+     * @env classic
      * @param ApplicationTester $I
      */
     public function checkPaginationIsNotDisplayedForTwoRecords(ApplicationTester $I): void
@@ -62,6 +64,7 @@ class GetExtensionsCest
     }
 
     /**
+     * @env classic
      * @param ApplicationTester $I
      */
     public function checkSearchFilterListFindsExtensionKey(ApplicationTester $I): void
@@ -87,6 +90,7 @@ class GetExtensionsCest
     }
 
     /**
+     * @env classic
      * @param ApplicationTester $I
      */
     public function checkSearchFilterListFindsPartOfExtensionKey(ApplicationTester $I): void

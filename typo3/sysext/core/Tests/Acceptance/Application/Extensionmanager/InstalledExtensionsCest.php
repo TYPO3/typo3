@@ -61,6 +61,7 @@ class InstalledExtensionsCest
     }
 
     /**
+     * @env classic
      * @param ApplicationTester $I
      */
     public function checkIfUploadFormAppears(ApplicationTester $I): void
@@ -71,6 +72,7 @@ class InstalledExtensionsCest
     }
 
     /**
+     * @env classic
      * @param ApplicationTester $I
      */
     public function checkUninstallingAndInstallingAnExtension(ApplicationTester $I): void

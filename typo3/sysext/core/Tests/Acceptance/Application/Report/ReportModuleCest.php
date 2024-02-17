@@ -30,6 +30,10 @@ class ReportModuleCest
 
         $I->click('Reports');
         $I->switchToContentFrame();
+        $I->wait(1);
+        $I->waitForElementVisible('.t3-js-jumpMenuBox');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Overview');
+        $I->wait(1);
         $I->canSee('Overview', 'h2');
     }
 

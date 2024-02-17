@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Cli;
 
 use Codeception\Example;
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 /**
@@ -25,16 +26,21 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class CommandCest
 {
-    protected string $typo3Cli = '../../../../bin/typo3 ';
-
     /**
      * @dataProvider commandTestDataProvider
      * @param ApplicationTester $I
      * @param Example $testData
+     * @param Scenario $scenario
      */
-    public function runCommand(ApplicationTester $I, Example $testData): void
+    public function runCommand(ApplicationTester $I, Example $testData, Scenario $scenario): void
     {
-        $I->runShellCommand($this->typo3Cli . $testData['command'], false);
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $binDir = $isComposerMode ? 'vendor/bin' : '../../../../bin';
+        if ($isComposerMode && $testData['skipComposer'] ?? false) {
+            $scenario->skip('This test is skipped in composer mode');
+            return;
+        }
+        $I->runShellCommand(sprintf('%s/typo3 %s', $binDir, $testData['command']), false);
         $I->seeResultCodeIs($testData['code']);
     }
 
@@ -48,31 +54,31 @@ class CommandCest
     protected function commandTestDataProvider(): array
     {
         return [
-            ['command' => 'cache:flush', 'code' => 0],
-            ['command' => 'cache:warmup', 'code' => 0],
-            ['command' => 'cleanup:flexforms', 'code' => 0],
-            ['command' => 'cleanup:deletedrecords', 'code' => 0],
-            ['command' => 'cleanup:multiplereferencedfiles --dry-run --update-refindex', 'code' => 0],
-            ['command' => 'cleanup:lostfiles --dry-run --update-refindex', 'code' => 0],
-            ['command' => 'cleanup:missingfiles --dry-run --update-refindex', 'code' => 0],
-            ['command' => 'cleanup:missingrelations --dry-run --update-refindex', 'code' => 0],
-            ['command' => 'cleanup:orphanrecords', 'code' => 0],
-            ['command' => 'cleanup:previewlinks', 'code' => 0],
-            ['command' => 'cleanup:versions', 'code' => 0],
-            ['command' => 'extension:list', 'code' => 0],
-            ['command' => 'extension:setup', 'code' => 0],
-            ['command' => 'extension:deactivate workspaces', 'code' => 0],
-            ['command' => 'extension:activate workspaces', 'code' => 0],
-            ['command' => 'language:update', 'code' => 0],
-            ['command' => 'mailer:spool:send', 'code' => 1],
-            ['command' => 'redirects:checkintegrity', 'code' => 0],
-            ['command' => 'redirects:cleanup', 'code' => 0],
-            ['command' => 'referenceindex:update --check', 'code' => 0],
-            ['command' => 'scheduler:run', 'code' => 0],
-            ['command' => 'site:list', 'code' => 0],
-            ['command' => 'site:show styleguide-demo-51', 'code' => 0],
-            ['command' => 'syslog:list', 'code' => 0],
-            ['command' => 'upgrade:list', 'code' => 0],
+            ['command' => 'cache:flush', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cache:warmup', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:flexforms', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:deletedrecords', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:multiplereferencedfiles --dry-run --update-refindex', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:lostfiles --dry-run --update-refindex', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:missingfiles --dry-run --update-refindex', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:missingrelations --dry-run --update-refindex', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:orphanrecords', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:previewlinks', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'cleanup:versions', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'extension:list', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'extension:setup', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'extension:deactivate workspaces', 'code' => 0, 'skipComposer' => true],
+            ['command' => 'extension:activate workspaces', 'code' => 0, 'skipComposer' => true],
+            ['command' => 'language:update', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'mailer:spool:send', 'code' => 1, 'skipComposer' => false],
+            ['command' => 'redirects:checkintegrity', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'redirects:cleanup', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'referenceindex:update --check', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'scheduler:run', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'site:list', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'site:show styleguide-demo-51', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'syslog:list', 'code' => 0, 'skipComposer' => false],
+            ['command' => 'upgrade:list', 'code' => 0, 'skipComposer' => false],
         ];
     }
 }

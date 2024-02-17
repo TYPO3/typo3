@@ -94,6 +94,11 @@ class Inline1nCest
 
         $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > a');
         $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(4) > td:nth-child(3) > a');
+
+        $I->executeJS('$(\'a[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-expand\').click();');
+        $I->wait(1);
+        $I->executeJS('$(\'a[data-table="pages"] .icon-actions-view-list-expand\').click();');
+        $I->wait(1);
     }
 
     /**
@@ -116,6 +121,11 @@ class Inline1nCest
         $I->wantTo('Check new sorting');
         $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > a');
         $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > a');
+
+        $I->executeJS('$(\'a[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-expand\').click();');
+        $I->wait(1);
+        $I->executeJS('$(\'a[data-table="pages"] .icon-actions-view-list-expand\').click();');
+        $I->wait(1);
     }
 
     public function changeInline1nInlineInput(ApplicationTester $I): void

@@ -169,8 +169,10 @@ class SelectPagetreeWithKeyboardCest
     /**
      * Check if the Home key is working
      */
-    public function focusFirstPageTreeItemWithHomeKey(ApplicationTester $I): void
+    public function focusFirstPageTreeItemWithHomeKey(ApplicationTester $I, PageTree $pageTree): void
     {
+        $pageTree->openPath(['Root']);
+        $I->wait(2);
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         for ($times = 0; $times < 15; $times++) {
             $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);

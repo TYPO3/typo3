@@ -137,6 +137,11 @@ class BackendCoreEnvironment extends BackendEnvironment
         // Otherwise the page can not be found, also do not set root page to
         // 'hidden' so menus (e.g. menu_sitemap_pages) are displayed correctly
         $styleguideGeneratorFrontend->create('/typo3temp/var/tests/acceptance/', 0);
+
+        // @todo: ugly workaround for InstallTool/AbstractCest.php
+        $instancePath = getenv('TYPO3_PATH_ROOT', true);
+        putenv('TYPO3_ACCEPTANCE_PATH_WEB=' . $instancePath);
+        putenv('TYPO3_ACCEPTANCE_PATH_CONFIG=' . $instancePath . '/typo3conf');
     }
 
     // @todo Eventually move this up to TF::BackendEnvironment, but then as protected.

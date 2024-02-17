@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 class LoginCest extends AbstractCest
@@ -26,17 +25,17 @@ class LoginCest extends AbstractCest
     {
         $I->amGoingTo('assert the install tool is locked in the first place');
         $I->waitForText('The Install Tool is locked', 10, '.callout-warning');
-        $I->assertFileDoesNotExist(self::ENABLE_INSTALL_TOOL_FILEPATH);
+        $I->assertFileDoesNotExist($this->getEnableInstallToolFilePath());
 
         $I->amGoingTo('lock the tool without logging in');
-        $I->writeToFile(self::ENABLE_INSTALL_TOOL_FILEPATH, '');
-        $I->seeFileFound(Environment::getProjectPath() . '/' . self::ENABLE_INSTALL_TOOL_FILEPATH);
+        $I->writeToFile($this->getEnableInstallToolFilePath(), '');
+        $I->seeFileFound($this->getEnableInstallToolFilePath());
         $I->reloadPage();
         $I->waitForElementVisible('#t3-install-form-password');
         $I->see('Login to TYPO3 Install Tool');
         $I->click('Lock Install Tool again');
         $I->see('The Install Tool is locked');
-        $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ENABLE_INSTALL_TOOL_FILEPATH);
+        $I->dontSeeFileFound($this->getEnableInstallToolFilePath());
 
         $I->amGoingTo('log into Install Tool');
         $this->logIntoInstallTool($I);
