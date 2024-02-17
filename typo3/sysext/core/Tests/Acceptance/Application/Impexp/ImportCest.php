@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Impexp;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -146,7 +145,7 @@ final class ImportCest extends AbstractCest
         $I->canSeeElement($this->inModuleTabs . ' ' . $this->tabMessages);
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
         preg_match('/[^"]+"([^"]+)"[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-        $loadFilePath = Environment::getProjectPath() . '/fileadmin' . $flashMessageParts[2] . $flashMessageParts[1];
+        $loadFilePath = getenv('TYPO3_ACCEPTANCE_PATH_WEB') . '/fileadmin' . $flashMessageParts[2] . $flashMessageParts[1];
         $I->assertFileExists($loadFilePath);
         $this->testFilesToDelete[] = $loadFilePath;
 
@@ -183,7 +182,7 @@ final class ImportCest extends AbstractCest
         $I->cantSeeElement($this->inModuleTabs . ' ' . $this->tabMessages);
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
         preg_match('/[^"]+"([^"]+)"[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-        $loadFilePath = Environment::getProjectPath() . '/fileadmin' . $flashMessageParts[2] . $flashMessageParts[1];
+        $loadFilePath = getenv('TYPO3_ACCEPTANCE_PATH_WEB') . '/fileadmin' . $flashMessageParts[2] . $flashMessageParts[1];
         $I->assertFileExists($loadFilePath);
         $this->testFilesToDelete[] = $loadFilePath;
 
@@ -224,7 +223,7 @@ final class ImportCest extends AbstractCest
         $I->cantSeeElement($this->inModuleTabs . ' ' . $this->tabMessages);
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
         preg_match('/[^"]+"([^"]+)"[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-        $loadFilePath = Environment::getProjectPath() . '/fileadmin' . $flashMessageParts[2] . $flashMessageParts[1];
+        $loadFilePath = getenv('TYPO3_ACCEPTANCE_PATH_WEB') . '/fileadmin' . $flashMessageParts[2] . $flashMessageParts[1];
         $I->assertFileExists($loadFilePath);
         $this->testFilesToDelete[] = $loadFilePath;
 
@@ -267,7 +266,7 @@ final class ImportCest extends AbstractCest
         $I->cantSeeElement($this->inModuleTabs . ' ' . $this->tabMessages);
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
         preg_match('/[^"]+"([^"]+)"[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-        $loadFilePath = Environment::getProjectPath() . '/fileadmin' . $flashMessageParts[2] . $flashMessageParts[1];
+        $loadFilePath = getenv('TYPO3_ACCEPTANCE_PATH_WEB') . '/fileadmin' . $flashMessageParts[2] . $flashMessageParts[1];
         $I->assertFileExists($loadFilePath);
         $this->testFilesToDelete[] = $loadFilePath;
 

@@ -118,7 +118,7 @@
 		"phpunit/phpunit": "^10.5.5",
 		"sokil/php-isocodes-db-i18n": "^4.0.20",
 		"symfony/translation": "^6.4 || ^7.0",
-		"typo3/cms-styleguide": "^12.0.3",
+		"typo3/cms-styleguide": "^12.0.5",
 		"typo3/testing-framework": "^8.0.9",
 		"webmozart/assert": "^1.11.0"
 	},

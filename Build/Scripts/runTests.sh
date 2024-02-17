@@ -177,6 +177,7 @@ Options:
     -s <...>
         Specifies the test suite to run
             - acceptance: main application acceptance tests
+            - acceptanceComposer: main application acceptance tests
             - acceptanceInstall: installation acceptance tests, only with -d mariadb|postgres|sqlite
             - buildCss: execute scss to css builder
             - buildJavascript: execute typescript to javascript builder
@@ -239,7 +240,7 @@ Options:
                 - pdo_mysql
 
     -d <sqlite|mariadb|mysql|postgres>
-        Only with -s functional|functionalDeprecated|acceptance|acceptanceInstall
+        Only with -s functional|functionalDeprecated|acceptance|acceptanceComposer|acceptanceInstall
         Specifies on which DBMS tests are performed
             - sqlite: (default): use sqlite
             - mariadb: use mariadb
@@ -298,12 +299,12 @@ Options:
             Build/Scripts/runTests.sh -s unit -- --filter filterByValueRecursiveCorrectlyFiltersArray
 
     -g
-        Only with -s acceptance|acceptanceInstall
+        Only with -s acceptance|acceptanceComposer|acceptanceInstall
         Activate selenium grid as local port to watch browser clicking around. Can be surfed using
         http://localhost:7900/. A browser tab is opened automatically if xdg-open is installed.
 
     -x
-        Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance|acceptanceInstall
+        Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance|acceptanceComposer|acceptanceInstall
         Send information to host instance for test or system under test break points. This is especially
         useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
@@ -571,9 +572,9 @@ fi
 # Suite execution
 case ${TEST_SUITE} in
     acceptance)
-        CODECEPION_ENV="--env ci"
+        CODECEPION_ENV="--env ci,classic"
         if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-            CODECEPION_ENV="--env ci,headless"
+            CODECEPION_ENV="--env ci,classic,headless"
         fi
         if [ "${CHUNKS}" -gt 0 ]; then
             ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
@@ -634,6 +635,75 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
         esac
+        ;;
+    acceptanceComposer)
+        rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-composer" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
+
+        PREPAREPARAMS=""
+        TESTPARAMS=""
+        case ${DBMS} in
+            mariadb)
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=acp -e MYSQL_DATABASE=ac_test --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                waitFor mariadb-ac-${SUFFIX} 3306
+                PREPAREPARAMS="-e TYPO3_DB_DRIVER=mysqli -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=root -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=mariadb-ac-${SUFFIX} -e TYPO3_DB_PORT=3306"
+                TESTPARAMS="-e typo3DatabaseName=ac_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mariadb-ac-${SUFFIX}"
+                ;;
+            mysql)
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=acp -e MYSQL_DATABASE=ac_test --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                waitFor mysql-ac-${SUFFIX} 3306
+                PREPAREPARAMS="-e TYPO3_DB_DRIVER=mysqli -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=root -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=mysql-ac-${SUFFIX} -e TYPO3_DB_PORT=3306"
+                TESTPARAMS="-e typo3DatabaseName=ac_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mysql-ac-${SUFFIX}"
+                ;;
+            postgres)
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-ac-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_DB=ac_test -e POSTGRES_PASSWORD=acp -e POSTGRES_USER=ac_test --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                waitFor postgres-ac-${SUFFIX} 5432
+                PREPAREPARAMS="-e TYPO3_DB_DRIVER=postgres -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=ac_test -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=postgres-ac-${SUFFIX} -e TYPO3_DB_PORT=5432"
+                TESTPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=ac_test -e typo3DatabaseUsername=ac_test -e typo3DatabasePassword=acp -e typo3DatabaseHost=postgres-ac-${SUFFIX}"
+                ;;
+            sqlite)
+                PREPAREPARAMS="-e TYPO3_DB_DRIVER=sqlite"
+                TESTPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
+                ;;
+        esac
+
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name acceptance-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/acceptance-composer"
+        SUITE_EXIT_CODE=$?
+        if [[ ${SUITE_EXIT_CODE} -eq 0 ]]; then
+            CODECEPION_ENV="--env ci,composer"
+            if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
+                CODECEPION_ENV="--env ci,composer,headless"
+            fi
+            if [ "${CHUNKS}" -gt 0 ]; then
+                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
+                COMMAND=(bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${CODECEPION_ENV} "$@" --html reports.html)
+            else
+                COMMAND=(bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${CODECEPION_ENV} "$@" --html reports.html)
+            fi
+            SELENIUM_GRID=""
+            if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
+                SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
+            fi
+            APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance-composer/public -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+            if [ ${CONTAINER_BIN} = "docker" ]; then
+                ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+                ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+            else
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+            fi
+            waitFor chrome 4444
+            waitFor chrome 7900
+            waitFor web 80
+            if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
+                xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
+            elif [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "open" >/dev/null; then
+                open http://localhost:7900/?autoconnect=1 >/dev/null
+            fi
+
+            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-${DBMS}-composer ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${TESTPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
+            SUITE_EXIT_CODE=$?
+        fi
         ;;
     acceptanceInstall)
         SELENIUM_GRID=""
@@ -1014,7 +1084,7 @@ echo "##########################################################################
 echo "Result of ${TEST_SUITE}" >&2
 echo "Container runtime: ${CONTAINER_BIN}" >&2
 echo "PHP: ${PHP_VERSION}" >&2
-if [[ ${TEST_SUITE} =~ ^(functional|functionalDeprecated|acceptance|acceptanceInstall)$ ]]; then
+if [[ ${TEST_SUITE} =~ ^(functional|functionalDeprecated|acceptance|acceptanceComposer|acceptanceInstall)$ ]]; then
     case "${DBMS}" in
         mariadb|mysql|postgres)
             echo "DBMS: ${DBMS}  version ${DBMS_VERSION}  driver ${DATABASE_DRIVER}" >&2

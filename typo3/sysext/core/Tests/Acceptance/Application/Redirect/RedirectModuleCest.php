@@ -71,7 +71,7 @@ final class RedirectModuleCest
         $I->canSee('Redirect Management', 'h1');
 
         $I->amGoingTo('test edit on edit button');
-        $I->click('table.table-striped > tbody > tr > td:nth-child(7) > div > a:nth-child(2)');
+        $I->click('table.table-striped > tbody > tr > td.col-control > div > a:nth-child(2)');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Edit Redirect "' . $sourceHost . ', ' . $sourcePath . '" on root level');
         $I->click('div.module-docheader .btn.t3js-editform-close');

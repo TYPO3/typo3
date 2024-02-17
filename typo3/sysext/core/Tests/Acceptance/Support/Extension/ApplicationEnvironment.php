@@ -157,6 +157,10 @@ final class ApplicationEnvironment extends BackendEnvironment
                 );
             }
         }
+        // @todo: ugly workaround for InstallTool/AbstractCest.php
+        putenv('TYPO3_ACCEPTANCE_PATH_WEB=' . $instancePath);
+        putenv('TYPO3_ACCEPTANCE_PATH_VAR=' . $instancePath . '/typo3temp/var');
+        putenv('TYPO3_ACCEPTANCE_PATH_CONFIG=' . $instancePath . '/typo3conf');
     }
 
     // @todo Eventually move this up to TF::BackendEnvironment, but then as protected.

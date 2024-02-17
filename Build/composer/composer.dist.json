@@ -48,7 +48,8 @@
 					"typo3/cms-sys-note": "12.4.x-dev",
 					"typo3/cms-t3editor": "12.4.x-dev",
 					"typo3/cms-tstemplate": "12.4.x-dev",
-					"typo3/cms-viewpage": "12.4.x-dev"
+					"typo3/cms-viewpage": "12.4.x-dev",
+					"typo3/cms-workspaces": "12.4.x-dev"
 				}
 			}
 		},
@@ -90,6 +91,7 @@
 		"typo3/cms-sys-note": "@dev",
 		"typo3/cms-t3editor": "@dev",
 		"typo3/cms-tstemplate": "@dev",
-		"typo3/cms-viewpage": "@dev"
+		"typo3/cms-viewpage": "@dev",
+		"typo3/cms-workspaces": "@dev"
 	}
 }

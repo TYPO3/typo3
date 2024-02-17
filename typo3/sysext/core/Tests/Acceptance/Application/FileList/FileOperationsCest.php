@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FileList;
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FileTree;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
@@ -33,9 +34,12 @@ final class FileOperationsCest
         $I->switchToContentFrame();
     }
 
-    public function fileCrud(ApplicationTester $I, ModalDialog $modalDialog): void
+    public function fileCrud(ApplicationTester $I, ModalDialog $modalDialog, Scenario $scenario): void
     {
         $fileTextareaSelector = 'textarea[name="data[editfile][0][data]"]';
+        $codeMirrorSelector = 'typo3-t3editor-codemirror[name="data[editfile][0][data]"]';
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+
         $fileName = 'typo3-test.txt';
         $flashMessageSelector = '.typo3-messages';
 
@@ -48,13 +52,23 @@ final class FileOperationsCest
         $I->wait(0.2);
         $I->click('Create file');
         $I->see('File created:', $flashMessageSelector);
-        $I->fillField($fileTextareaSelector, 'Some Text');
+        if ($isComposerMode) {
+            $I->waitForElementVisible($codeMirrorSelector);
+            $I->executeJS("document.querySelector('" . $codeMirrorSelector . "').setContent('Some Text')");
+        } else {
+            $I->fillField($fileTextareaSelector, 'Some Text');
+        }
 
         // Save file
         $I->amGoingTo('save the file');
         $I->click('.module-docheader button[name="_save"]');
-        $textareaValue = $I->grabValueFrom($fileTextareaSelector);
-        $I->assertEquals('Some Text', $textareaValue);
+        if ($isComposerMode) {
+            $I->waitForElementVisible($codeMirrorSelector);
+            $I->executeJS("console.assert(document.querySelector('" . $codeMirrorSelector . "').getContent() === 'Some Text')");
+        } else {
+            $textareaValue = $I->grabValueFrom($fileTextareaSelector);
+            $I->assertEquals('Some Text', $textareaValue);
+        }
         $I->see('File saved to', $flashMessageSelector);
 
         // Save file
@@ -65,7 +79,7 @@ final class FileOperationsCest
         // Delete file
         $I->amGoingTo('delete the file');
         $I->clickWithRightButton('[data-filelist-identifier="1:/' . $fileName . '"] [data-filelist-action="primary"]');
-        $I->click('[data-title="Delete"]');
+        $I->click('.context-menu [data-title="Delete"]');
         $modalDialog->canSeeDialog();
         $modalDialog->clickButtonInDialog('Yes, delete this file');
         $I->waitForElementNotVisible('[data-filelist-identifier="1:/' . $fileName . '"]');

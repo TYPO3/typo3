@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
@@ -34,6 +35,83 @@ final class PageTree extends AbstractPageTree
     {
         $this->tester = $I;
         $this->mouse = $mouse;
+    }
+
+    /**
+     * Waits until tree nodes are rendered
+     */
+    public function waitForNodes(): void
+    {
+        $this->tester->waitForElement(static::$pageTreeSelector . ' ' . static::$treeItemSelector, 5);
+    }
+
+    /**
+     * Open the given hierarchical path in the pagetree and click the last page.
+     *
+     * Example to open "styleguide -> elements basic" page:
+     * [
+     *    'styleguide TCA demo',
+     *    'elements basic',
+     * ]
+     *
+     * @param string[] $path
+     */
+    public function openPath(array $path)
+    {
+        $context = $this->getPageTreeElement();
+
+        $this->waitForNodes();
+
+        // Collapse all opened paths (might be opened due to localstorage)
+        do {
+            $toggled = false;
+            try {
+                // collapse last opened node element, that is not the root (=first node)
+                $context->findElement(\Facebook\WebDriver\WebDriverBy::xpath('(.//*[position()>1 and @role="treeitem" and */@class="node-toggle node-toggle--expanded chevron expanded"])[last()]/*[starts-with(@class, "node-toggle")]'))->click();
+                $toggled = true;
+            } catch (\Facebook\WebDriver\Exception\NoSuchElementException $e) {
+                // element not found so it may be already opened...
+            } catch (\Facebook\WebDriver\Exception\ElementNotVisibleException $e) {
+                // element not found so it may be already opened...
+            } catch (\Facebook\WebDriver\Exception\ElementNotInteractableException $e) {
+                // another possible exception if the chevron isn't there ... depends on facebook driver version
+            }
+        } while ($toggled);
+
+        parent::openPath($path);
+    }
+
+    /**
+     * Search for an element with the given link text in the provided context.
+     *
+     * @param string $nodeText
+     * @param RemoteWebElement $context
+     * @return RemoteWebElement
+     */
+    protected function ensureTreeNodeIsOpen(string $nodeText, RemoteWebElement $context)
+    {
+        $I = $this->tester;
+        $I->see($nodeText, self::$treeItemSelector);
+
+        /** @var RemoteWebElement $context */
+        $context = $I->executeInSelenium(function () use (
+            $nodeText,
+            $context
+        ) {
+            return $context->findElement(\Facebook\WebDriver\WebDriverBy::xpath('//*[text()=\'' . $nodeText . '\']/..'));
+        });
+
+        try {
+            $context->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('.chevron.collapsed[visibility="visible"]'))->click();
+        } catch (\Facebook\WebDriver\Exception\NoSuchElementException $e) {
+            // element not found so it may be already opened...
+        } catch (\Facebook\WebDriver\Exception\ElementNotVisibleException $e) {
+            // element not found so it may be already opened...
+        } catch (\Facebook\WebDriver\Exception\ElementNotInteractableException $e) {
+            // another possible exception if the chevron isn't there ... depends on facebook driver version
+        }
+
+        return $context;
     }
 
     /**

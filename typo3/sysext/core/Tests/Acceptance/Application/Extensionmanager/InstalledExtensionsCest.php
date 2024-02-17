@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Extensionmanager;
 
+use Codeception\Attribute\Env;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 /**
@@ -61,6 +62,7 @@ final class InstalledExtensionsCest
         $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
     }
 
+    #[Env('classic')]
     public function checkIfUploadFormAppears(ApplicationTester $I): void
     {
         $I->cantSeeElement('.module-body .extension-upload-form');
@@ -68,6 +70,7 @@ final class InstalledExtensionsCest
         $I->seeElement('.module-body .extension-upload-form');
     }
 
+    #[Env('classic')]
     public function checkUninstallingAndInstallingAnExtension(ApplicationTester $I): void
     {
         $I->wantTo('Check if uninstalling and installing an extension with backend module removes and adds the module from the module menu.');

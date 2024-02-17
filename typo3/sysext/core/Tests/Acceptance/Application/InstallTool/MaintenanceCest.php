@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
+use Codeception\Attribute\Env;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 final class MaintenanceCest extends AbstractCest
@@ -56,6 +57,7 @@ final class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
+    #[Env('classic')]
     public function dumpAutoloadWorks(ApplicationTester $I): void
     {
         $I->click('Dump autoload');

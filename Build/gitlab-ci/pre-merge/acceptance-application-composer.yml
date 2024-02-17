@@ -1,0 +1,17 @@
+acceptance application composer postgres 15 php 8.1 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - "12.4"
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance-composer/var/log
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 13
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s acceptanceComposer -p 8.1 -d postgres -i 15 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

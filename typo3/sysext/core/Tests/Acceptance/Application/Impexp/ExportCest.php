@@ -28,7 +28,6 @@ final class ExportCest extends AbstractCest
 {
     private string $contextMenuExport = '[data-callback-action=exportT3d]';
     private string $contextMenuMore = 'li.context-menu-item-submenu';
-    private string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
     private string $inModuleHeader = '.module-docheader';
     private string $inModuleTabs = '#ImportExportController .nav-tabs';
     private string $inModuleTabsBody = '#ImportExportController .tab-content';
@@ -45,7 +44,6 @@ final class ExportCest extends AbstractCest
     public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
     {
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $selectedPageTitle = 'elements t3editor';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -70,10 +68,7 @@ final class ExportCest extends AbstractCest
         $listModuleHeader = '.module-docheader';
         $listModuleBtnExport = 'a[title="Export"]';
 
-        $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
-
-        $pageTree->openPath([$tablePageTitle]);
+        $pageTree->openPath(['styleguide TCA demo', $tablePageTitle]);
         $I->switchToContentFrame();
         // List module single table mode
         $I->waitForText($tableTitle);
@@ -99,10 +94,7 @@ final class ExportCest extends AbstractCest
         $recordTable = '#recordlist-tx_styleguide_elements_t3editor';
         $recordIcon = 'tr:first-child button[data-contextmenu-trigger]';
 
-        $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
-
-        $pageTree->openPath([$recordPageTitle]);
+        $pageTree->openPath(['styleguide TCA demo', $recordPageTitle]);
         $I->switchToContentFrame();
         // List module single table mode
         $I->waitForText($recordPageTitle);
@@ -133,7 +125,6 @@ final class ExportCest extends AbstractCest
         $selectPreset = 'select[name="preset[select]"]';
 
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $I->click($pageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -183,7 +174,6 @@ final class ExportCest extends AbstractCest
         $buttonSaveToFile = 'tx_impexp[save_export]';
 
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $I->click($pageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);

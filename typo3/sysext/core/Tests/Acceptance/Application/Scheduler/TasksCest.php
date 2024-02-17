@@ -126,6 +126,7 @@ final class TasksCest
         $I->waitForElementVisible('[data-module-name="scheduler_availabletasks"]');
         $I->see('Available scheduler commands & tasks');
         $I->canSeeNumberOfElements('[data-module-name="scheduler_availabletasks"] table tbody tr', [1, 10000]);
+        $I->selectOption('select[name=moduleMenu]', 'Scheduled tasks');
     }
 
     public function canCreateNewTaskGroupFromEditForm(ApplicationTester $I, ModalDialog $modalDialog): void

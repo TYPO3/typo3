@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Template;
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 final class TemplateCest
 {
@@ -57,12 +59,11 @@ final class TemplateCest
         $I->see('You need to create a TypoScript record in order to edit your configuration.');
     }
 
-    public function addANewSiteTemplate(ApplicationTester $I): void
+    public function addANewSiteTemplate(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
-        $I->waitForText('TypoScript records');
         $I->wantTo('create a new root TypoScript record');
         $I->switchToMainFrame();
-        $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
+        $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->waitForElementNotVisible('#nprogress', 120);
@@ -94,10 +95,19 @@ final class TemplateCest
         $I->waitForElementNotVisible('#t3js-ui-block');
 
         $I->wantTo('change the setup, save the TypoScript record and close the form');
-        // grab and fill setup textarea
-        $config = $I->grabTextFrom('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]');
-        $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
-        $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
+
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        if ($isComposerMode) {
+            $codeMirrorSelector = 'typo3-t3editor-codemirror[name$="[config]"]';
+            $I->waitForElementVisible($codeMirrorSelector);
+            $I->executeJS("const codeMirror = document.querySelector('" . $codeMirrorSelector . "'); const config = codeMirror.getContent().replace('HELLO WORLD!', 'Hello Acceptance Test!'); codeMirror.setContent(config)");
+        } else {
+            // grab and fill setup textarea
+            $config = $I->grabTextFrom('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]');
+            $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
+            $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
+        }
+
         $I->switchToMainFrame();
         $I->waitForElementNotVisible('typo3-notification-message', 20);
         $I->switchToContentFrame();
@@ -134,13 +144,11 @@ final class TemplateCest
         $I->see('value = HELLO WORLD!');
     }
 
-    public function checkClosestTemplateButton(ApplicationTester $I): void
+    public function checkClosestTemplateButton(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantTo('click on the button to go to the closest page with a TypoScript record');
         $I->switchToMainFrame();
-        // Open the pagetree
-        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " node-toggle ")])[4]');
-        $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
+        $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->waitForElementNotVisible('#nprogress', 120);
@@ -167,15 +175,17 @@ final class TemplateCest
         $I->waitForText('Edit the whole TypoScript record');
         $I->see('Edit the whole TypoScript record');
         $I->click('Edit the whole TypoScript record');
+        // Avoid race condition:
+        // SEVERE - http://web/typo3/sysext/backend/Resources/Public/JavaScript/code-editor/autocomplete/ts-ref.js?bust=[…]
+        // 12:613 Uncaught TypeError: Cannot convert undefined or null to object
+        $I->waitForElementNotVisible('#nprogress', 120);
     }
 
-    public function createExtensionTemplate(ApplicationTester $I): void
+    public function createExtensionTemplate(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantTo('see the button to create an additional TypoScript record');
         $I->switchToMainFrame();
-        //Open the pagetree
-        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " node-toggle ")])[4]');
-        $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
+        $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->waitForElementNotVisible('#nprogress', 120);

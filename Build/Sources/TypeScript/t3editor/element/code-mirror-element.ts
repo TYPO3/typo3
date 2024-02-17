@@ -161,6 +161,28 @@ export class CodeMirrorElement extends LitElement {
     observer.observe(this);
   }
 
+  /**
+   * @internal
+   */
+  public setContent(newContent: string): void {
+    if (this.editorView !== null) {
+      this.editorView.dispatch({
+        changes: {
+          from: 0,
+          to: this.editorView.state.doc.length,
+          insert: newContent
+        }
+      });
+    }
+  }
+
+  /**
+   * @internal
+   */
+  public getContent(): string {
+    return this.editorView.state.doc.toString();
+  }
+
   private onKeydown(event: KeyboardEvent): void {
     if (event.ctrlKey && event.altKey && event.key === 'f') {
       event.preventDefault();

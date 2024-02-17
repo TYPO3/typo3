@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Impexp;
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -43,14 +44,14 @@ final class UsersCest extends AbstractCest
         $I->waitForElement('svg .nodes .node');
     }
 
-    public function doNotShowImportAndExportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree): void
+    public function doNotShowImportAndExportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
 
         $this->setPageAccess($I, $pageTree, [$selectedPageTitle], 1);
         $this->setModAccess($I, 1, ['web_list' => true]);
-        $this->setUserTsConfig($I, 2, '');
+        $this->setUserTsConfig($I, $scenario, 2, '');
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
@@ -62,12 +63,12 @@ final class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
     }
 
-    public function showImportExportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I): void
+    public function showImportExportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I, Scenario $scenario): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
 
-        $this->setUserTsConfig($I, 2, "options.impexp.enableImportForNonAdminUser = 1\noptions.impexp.enableExportForNonAdminUser = 1");
+        $this->setUserTsConfig($I, $scenario, 2, "options.impexp.enableImportForNonAdminUser = 1\noptions.impexp.enableExportForNonAdminUser = 1");
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
@@ -101,7 +102,7 @@ final class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
     }
 
-    public function hideUploadTabAndImportPathIfNoImportFolderAvailable(ApplicationTester $I, PageTree $pageTree): void
+    public function hideUploadTabAndImportPathIfNoImportFolderAvailable(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -126,10 +127,10 @@ final class UsersCest extends AbstractCest
 
         $this->setPageAccess($I, $pageTree, ['Root'], 0);
         $this->setModAccess($I, 1, ['web_list' => false]);
-        $this->setUserTsConfig($I, 2, '');
+        $this->setUserTsConfig($I, $scenario, 2, '');
     }
 
-    public function checkVisualElements(ApplicationTester $I, PageTree $pageTree): void
+    public function checkVisualElements(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -151,7 +152,7 @@ final class UsersCest extends AbstractCest
 
         $this->setPageAccess($I, $pageTree, ['Root'], 1);
         $this->setModAccess($I, 1, ['web_list' => true]);
-        $this->setUserTsConfig($I, 2, 'options.impexp.enableImportForNonAdminUser = 1');
+        $this->setUserTsConfig($I, $scenario, 2, 'options.impexp.enableImportForNonAdminUser = 1');
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
@@ -163,7 +164,7 @@ final class UsersCest extends AbstractCest
 
         $this->setPageAccess($I, $pageTree, ['Root'], 0);
         $this->setModAccess($I, 1, ['web_list' => false]);
-        $this->setUserTsConfig($I, 2, '');
+        $this->setUserTsConfig($I, $scenario, 2, '');
     }
 
     private function setPageAccess(ApplicationTester $I, PageTree $pageTree, array $pagePath, int $userGroupId, int $recursionLevel = 1): void
@@ -211,7 +212,7 @@ final class UsersCest extends AbstractCest
         $I->waitForText('Backend user groups');
     }
 
-    private function setUserTsConfig(ApplicationTester $I, int $userId, string $userTsConfig): void
+    private function setUserTsConfig(ApplicationTester $I, Scenario $scenario, int $userId, string $userTsConfig): void
     {
         try {
             $I->seeElement($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
@@ -227,7 +228,14 @@ final class UsersCest extends AbstractCest
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');
         $I->waitForElement('#EditDocumentController');
         $I->click('//form[@id="EditDocumentController"]//ul/li[5]/a');
-        $I->fillField('//div[@class="tab-content"]/div[5]/fieldset[1]//textarea', $userTsConfig);
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        if ($isComposerMode) {
+            $codeMirrorSelector = 'typo3-t3editor-codemirror[name="data[be_users][' . $userId . '][TSconfig]"]';
+            $I->waitForElementVisible($codeMirrorSelector);
+            $I->executeJS("document.querySelector('" . $codeMirrorSelector . "').setContent('" . implode('\n', explode("\n", $userTsConfig)) . "')");
+        } else {
+            $I->fillField('//div[@class="tab-content"]/div[5]/fieldset[1]//textarea', $userTsConfig);
+        }
         $I->click($this->inModuleHeader . ' .btn[title="Save"]');
         $I->wait(0.5);
         $I->click($this->inModuleHeader . ' .btn[title="Close"]');

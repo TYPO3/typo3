@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
@@ -151,7 +152,7 @@ final class SettingsCest extends AbstractCest
         $this->closeModalAndHideFlashMessage($I);
     }
 
-    public function seeFeatureToggles(ApplicationTester $I, ModalDialog $modalDialog): void
+    public function seeFeatureToggles(ApplicationTester $I, ModalDialog $modalDialog, Scenario $scenario): void
     {
         $button = 'Configure Features';
         $modalButton = 'Save';
@@ -169,7 +170,12 @@ final class SettingsCest extends AbstractCest
         // Switch back hit count feature toggle
         $I->click($button);
         $modalDialog->canSeeDialog();
-        $I->cantSeeCheckboxIsChecked($featureToggle);
+        if (str_contains($scenario->current('env'), 'classic')) {
+            // ['features']['redirects.hitCount'] is enabled by default in classic mode (set by TF BackendEnvironment setup)
+            $I->cantSeeCheckboxIsChecked($featureToggle);
+        } else {
+            $I->canSeeCheckboxIsChecked($featureToggle);
+        }
         $I->amGoingTo('reset hit count feature toggle and save it');
         $I->click($featureToggle);
         $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);

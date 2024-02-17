@@ -214,6 +214,7 @@ class T3editorElement extends AbstractFormElement
             }
         }
         $codeMirrorConfig = [
+            'name' => $name,
             'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
             'addons' => GeneralUtility::jsonEncodeForHtmlAttribute($addons, false),
             'keymaps' => GeneralUtility::jsonEncodeForHtmlAttribute($keymaps, false),
