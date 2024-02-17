@@ -1891,23 +1891,21 @@ class PageRepository implements LoggerAwareInterface
      * Generates a list of Page IDs from $startPageId. List does not include $startPageId itself.
      * Only works on default language level.
      *
-     * The only pages WHICH PREVENTS DESCENDING in a branch are
-     * - deleted pages,
-     * - pages in a recycler (doktype = 255) or of the Backend User Section (doktype = 6) type
-     * - pages that have the extendToSubpages set, WHERE starttime, endtime, hidden or fe_group
-     *   would hide the pages.
+     * Pages that prevent looking for further subpages:
+     * - deleted pages
+     * - pages of the Backend User Section (doktype = 6) and recycler (doktype = 255) type
+     * - pages that have the extendToSubpages set, where starttime, endtime, hidden or fe_group
+     *   would hide the pages
      *
-     * Apart from that, pages with enable-fields excluding them, will also be
-     * removed.
+     * Apart from that, pages with enable-fields excluding them, will also be removed.
      *
-     * Mount Pages are also descended but notice that these ID numbers are not
-     * useful for links unless the correct MPvar is set.
+     * Mount Pages are descended, but note these ID numbers are not useful for links unless the correct MPvar is set.
      *
      * @param int $startPageId The id of the start page from which point in the page tree to descend.
-     * @param int $depth The number of levels to descend. If you want to descend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no descend...)
-     * @param int $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
-     * @param array $excludePageIds avoid collecting these pages and their possible subpages
-     * @param bool $bypassEnableFieldsCheck if true, then enableFields and other checks are not evaluated
+     * @param int $depth Maximum recursion depth. Use 100 or so to descend "infinitely". Stops when 0 is reached.
+     * @param int $begin An optional integer the level in the tree to start collecting. Zero means 'start right away', 1 = 'next level and out'
+     * @param array $excludePageIds Avoid collecting these pages and their possible subpages
+     * @param bool $bypassEnableFieldsCheck If true, then enableFields and other checks are not evaluated
      * @return int[] Returns the list of Page IDs
      */
     public function getDescendantPageIdsRecursive(int $startPageId, int $depth, int $begin = 0, array $excludePageIds = [], bool $bypassEnableFieldsCheck = false): array
@@ -1915,43 +1913,8 @@ class PageRepository implements LoggerAwareInterface
         if (!$startPageId) {
             return [];
         }
-
-        // Check the cache
-        $parameters = [
-            $startPageId,
-            $depth,
-            $begin,
-            $excludePageIds,
-            $bypassEnableFieldsCheck,
-            $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]),
-        ];
-        $cacheIdentifier = md5(serialize($parameters));
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('cache_treelist');
-        $cacheEntry = $queryBuilder->select('treelist')
-            ->from('cache_treelist')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'md5hash',
-                    $queryBuilder->createNamedParameter($cacheIdentifier)
-                ),
-                $queryBuilder->expr()->gt(
-                    'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
-                )
-            )
-            ->setMaxResults(1)
-            ->executeQuery()
-            ->fetchOne();
-
-        // Cache hit
-        if (!empty($cacheEntry)) {
-            return GeneralUtility::intExplode(',', $cacheEntry);
-        }
-
-        // Check if the page actually exists
         if (!$this->getRawRecord('pages', $startPageId, 'uid')) {
-            // Return blank if the start page was NOT found at all!
+            // Start page does not exist
             return [];
         }
         // Find mount point if any
@@ -1959,31 +1922,14 @@ class PageRepository implements LoggerAwareInterface
         $includePageId = false;
         if (is_array($mount_info)) {
             $startPageId = (int)$mount_info['mount_pid'];
-            // In Overlay mode, use the mounted page uid as added ID!
+            // In overlay mode, use the mounted page uid
             if ($mount_info['overlay']) {
                 $includePageId = true;
             }
         }
-
         $descendantPageIds = $this->getSubpagesRecursive($startPageId, $depth, $begin, $excludePageIds, $bypassEnableFieldsCheck);
         if ($includePageId) {
             $descendantPageIds = array_merge([$startPageId], $descendantPageIds);
-        }
-        // Only add to cache if not logged into TYPO3 Backend
-        if (!$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
-            $cacheEntry = [
-                'md5hash' => $cacheIdentifier,
-                'pid' => $startPageId,
-                'treelist' => implode(',', $descendantPageIds),
-                'tstamp' => $GLOBALS['EXEC_TIME'],
-            ];
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist');
-            try {
-                $connection->transactional(static function ($connection) use ($cacheEntry) {
-                    $connection->insert('cache_treelist', $cacheEntry);
-                });
-            } catch (\Throwable $e) {
-            }
         }
         return $descendantPageIds;
     }
