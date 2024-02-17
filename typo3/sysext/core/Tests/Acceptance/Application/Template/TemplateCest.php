@@ -166,6 +166,10 @@ final class TemplateCest
         $I->waitForText('Edit the whole TypoScript record');
         $I->see('Edit the whole TypoScript record');
         $I->click('Edit the whole TypoScript record');
+        // Avoid race condition:
+        // SEVERE - http://web/typo3/sysext/backend/Resources/Public/JavaScript/code-editor/autocomplete/ts-ref.js?bust=[…]
+        // 12:613 Uncaught TypeError: Cannot convert undefined or null to object
+        $I->waitForElementNotVisible('#nprogress', 120);
     }
 
     public function createExtensionTemplate(ApplicationTester $I, PageTree $pageTree): void

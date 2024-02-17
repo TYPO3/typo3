@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Extensionmanager;
 
+use Codeception\Attribute\Env;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
@@ -47,18 +48,21 @@ final class GetExtensionsCest
         $I->seeNumberOfElements('#terTable tbody tr', 2);
     }
 
+    #[Env('classic')]
     public function checkRetrievedExtensionsFromTerAreDisplayed(ApplicationTester $I): void
     {
         $I->see('superext');
         $I->see('neededext');
     }
 
+    #[Env('classic')]
     public function checkPaginationIsNotDisplayedForTwoRecords(ApplicationTester $I): void
     {
         $I->dontSeeElement('.pagination-wrap');
         $I->dontSee('Extensions 1 - 2');
     }
 
+    #[Env('classic')]
     public function checkSearchFilterListFindsExtensionKey(ApplicationTester $I): void
     {
         $I->fillField('input[name="search"]', 'superext');
@@ -81,6 +85,7 @@ final class GetExtensionsCest
         $I->see('Needed Extension');
     }
 
+    #[Env('classic')]
     public function checkSearchFilterListFindsPartOfExtensionKey(ApplicationTester $I): void
     {
         $I->fillField('input[name="search"]', 'ext');

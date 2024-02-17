@@ -108,7 +108,10 @@ final class FalMetadataCest
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Page Content "tt_content with image" on page "styleguide TCA demo"');
         $I->click('Images');
-        $I->click('.form-irre-header');
+        if (count($I->grabMultiple('.panel-collapsed .form-irre-header')) > 0) {
+            $I->click('.panel-collapsed .form-irre-header');
+        }
+        $I->waitForElement('.t3js-form-field-eval-null-placeholder-checkbox');
 
         $I->see('(Default: "Test title")', '.t3js-form-field-eval-null-placeholder-checkbox');
         $I->see('(Default: "Test alternative")', '.t3js-form-field-eval-null-placeholder-checkbox');
@@ -203,7 +206,10 @@ final class FalMetadataCest
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Page Content "tt_content with image" on page "styleguide TCA demo"');
         $I->click('Images');
-        $I->click('.form-irre-header');
+        if (count($I->grabMultiple('.panel-collapsed .form-irre-header')) > 0) {
+            $I->click('.panel-collapsed .form-irre-header');
+        }
+        $I->waitForElement('.t3js-form-field-eval-null-placeholder-checkbox');
 
         $I->see('(Default: "Test title")', '.t3js-form-field-eval-null-placeholder-checkbox');
         $I->see('(Default: "Test alternative")', '.t3js-form-field-eval-null-placeholder-checkbox');

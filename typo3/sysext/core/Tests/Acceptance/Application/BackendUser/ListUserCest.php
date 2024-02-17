@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\BackendUser;
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 /**
@@ -34,23 +35,38 @@ final class ListUserCest
         $I->switchToContentFrame();
     }
 
-    public function showsHeadingAndListsBackendUsers(ApplicationTester $I): void
+    public function showsHeadingAndListsBackendUsers(ApplicationTester $I, Scenario $scenario): void
     {
         $I->see('Backend users');
 
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
+        $I->click('button[value="reset-filters"]');
+        $I->waitForElementVisible('#typo3-backend-user-list');
 
-        // We expect exact four Backend Users created from the Fixtures
-        $this->checkCountOfUsers($I, 4);
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        // We expect exactly four Backend Users to have been created by the fixtures
+        $expectedUsers = 4;
+        if ($isComposerMode) {
+            // User _cli_ will additionally be available in composer mode, created
+            // by execution of `vendor/bin/typo3` CLI in setup script.
+            $expectedUsers++;
+        }
+        $this->checkCountOfUsers($I, $expectedUsers);
     }
 
-    public function filterUsersByUsername(ApplicationTester $I): void
+    public function filterUsersByUsername(ApplicationTester $I, Scenario $scenario): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
-        // We expect exact four Backend Users created from the Fixtures
-        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', 4);
+        $I->click('button[value="reset-filters"]');
+        $I->waitForElementVisible('#typo3-backend-user-list');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $expectedUsers = 4;
+        if ($isComposerMode) {
+            $expectedUsers++;
+        }
+        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $expectedUsers);
 
         $I->wantTo('Filter the list of user by valid username admin');
         $I->fillField('#tx_Beuser_username', 'admin');
@@ -71,12 +87,18 @@ final class ListUserCest
         $this->checkCountOfUsers($I, 0);
     }
 
-    public function filterUsersByAdmin(ApplicationTester $I): void
+    public function filterUsersByAdmin(ApplicationTester $I, Scenario $scenario): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
-        // We expect exact four Backend Users created from the Fixtures
-        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', 4);
+        $I->click('button[value="reset-filters"]');
+        $I->waitForElementVisible('#typo3-backend-user-list');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $expectedUsers = 4;
+        if ($isComposerMode) {
+            $expectedUsers++;
+        }
+        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $expectedUsers);
 
         $I->wantToTest('Filter BackendUser and see only admins');
         $I->selectOption('#tx_Beuser_usertype', 'Admin only');
@@ -84,8 +106,8 @@ final class ListUserCest
         $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
-        // We expect exact two fitting Backend Users created from the Fixtures
-        $this->checkCountOfUsers($I, 2);
+        // We expect exact two (composer-mode: three) fitting Backend Users created from the Fixtures
+        $this->checkCountOfUsers($I, 2 + ($isComposerMode ? 1 : 0));
 
         $I->wantToTest('Filter BackendUser and see normal users');
         $I->selectOption('#tx_Beuser_usertype', 'Normal users only');
@@ -97,12 +119,18 @@ final class ListUserCest
         $this->checkCountOfUsers($I, 2);
     }
 
-    public function filterUsersByStatus(ApplicationTester $I): void
+    public function filterUsersByStatus(ApplicationTester $I, Scenario $scenario): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
-        // We expect exact four Backend Users created from the Fixtures
-        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', 4);
+        $I->click('button[value="reset-filters"]');
+        $I->waitForElementVisible('#typo3-backend-user-list');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $expectedUsers = 4;
+        if ($isComposerMode) {
+            $expectedUsers++;
+        }
+        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $expectedUsers);
 
         $I->wantToTest('Filter BackendUser and see only active users');
         $I->selectOption('#tx_Beuser_status', 'Active only');
@@ -110,8 +138,8 @@ final class ListUserCest
         $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
-        // We expect exact two fitting Backend Users created from the Fixtures
-        $this->checkCountOfUsers($I, 2);
+        // We expect exact two (composer-mode three) fitting Backend Users created from the Fixtures
+        $this->checkCountOfUsers($I, 2 + ($isComposerMode ? 1 : 0));
 
         $I->wantToTest('Filter BackendUser and see only inactive users');
         $I->selectOption('#tx_Beuser_status', 'Inactive only');
@@ -123,12 +151,18 @@ final class ListUserCest
         $this->checkCountOfUsers($I, 2);
     }
 
-    public function filterUsersByLogin(ApplicationTester $I): void
+    public function filterUsersByLogin(ApplicationTester $I, Scenario $scenario): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
-        // We expect exact four Backend Users created from the Fixtures
-        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', 4);
+        $I->click('button[value="reset-filters"]');
+        $I->waitForElementVisible('#typo3-backend-user-list');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $expectedUsers = 4;
+        if ($isComposerMode) {
+            $expectedUsers++;
+        }
+        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $expectedUsers);
 
         $I->wantToTest('Filter BackendUser and see only users logged in before');
         $I->selectOption('#tx_Beuser_logins', 'Logged in before');
@@ -145,16 +179,22 @@ final class ListUserCest
         $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
 
-        // We expect exact two fitting Backend Users created from the Fixtures
-        $this->checkCountOfUsers($I, 2);
+        // We expect exact two (composer-mode three) fitting Backend Users created from the Fixtures
+        $this->checkCountOfUsers($I, 2 + ($isComposerMode ? 1 : 0));
     }
 
-    public function filterUsersByUserGroup(ApplicationTester $I): void
+    public function filterUsersByUserGroup(ApplicationTester $I, Scenario $scenario): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
-        // We expect exact four Backend Users created from the Fixtures
-        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', 4);
+        $I->click('button[value="reset-filters"]');
+        $I->waitForElementVisible('#typo3-backend-user-list');
+        $isComposerMode = str_contains($scenario->current('env'), 'composer');
+        $expectedUsers = 4;
+        if ($isComposerMode) {
+            $expectedUsers++;
+        }
+        $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $expectedUsers);
 
         // We expect exact one Backend Users created from the Fixtures has the usergroup named 'editor-group'
         $I->wantToTest('Filter BackendUser and see only users with given usergroup');
@@ -170,18 +210,22 @@ final class ListUserCest
     public function canEditUsersFromIndexListView(ApplicationTester $I): void
     {
         $I->canSee('Backend users', 'h1');
-        $username = $I->grabTextFrom('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-title > a:nth-child(1) > b');
+        $I->waitForElementVisible('#typo3-backend-user-list');
+        $I->click('button[value="reset-filters"]');
+        $I->waitForElementVisible('#typo3-backend-user-list');
+        $username = 'admin';
+        $adminRow = '//*[@id="typo3-backend-user-list"]//tr[contains(td[2]/a[1]/b[1], "' . $username . '")]';
 
         $I->amGoingTo('test the edit button');
-        $I->click('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-control > div:nth-child(1) > a');
+        $I->click($adminRow . '//div[@role="group"]/a[@title="Edit"]');
         $this->openAndCloseTheEditForm($I, $username);
 
         $I->amGoingTo('test the edit link on username');
-        $I->click('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-title > a:nth-child(1)');
+        $I->click($adminRow . '//td[@class="col-title"]/a[1]');
         $this->openAndCloseTheEditForm($I, $username);
 
         $I->amGoingTo('test the edit link on real name');
-        $I->click('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-title > a:nth-child(4)');
+        $I->click($adminRow . '//td[@class="col-title"]/a[2]');
         $this->openAndCloseTheEditForm($I, $username);
     }
 
