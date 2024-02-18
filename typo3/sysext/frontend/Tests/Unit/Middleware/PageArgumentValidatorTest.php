@@ -46,6 +46,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
                 return new Response();
             }
         };
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
     /**

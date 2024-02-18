@@ -51,6 +51,7 @@ final class ImportMapTest extends UnitTestCase
         );
         $this->backupPackageManager = \Closure::bind(fn(): PackageManager => ExtensionManagementUtility::$packageManager, null, ExtensionManagementUtility::class)();
         ExtensionManagementUtility::setPackageManager($this->mockPackageManager());
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
     protected function tearDown(): void

@@ -23,6 +23,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class InstallToolFormProtectionTest extends UnitTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
+    }
+
     /**
      * @test
      */

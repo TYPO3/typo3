@@ -25,6 +25,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FormInlineAjaxControllerTest extends UnitTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
+    }
+
     /**
      * @test
      */

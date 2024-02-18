@@ -26,10 +26,11 @@ final class HashServiceTest extends UnitTestCase
 {
     protected HashService $subject;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->subject = new HashService();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
     /**
