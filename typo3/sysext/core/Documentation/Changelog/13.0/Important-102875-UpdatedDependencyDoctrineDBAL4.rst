@@ -20,11 +20,11 @@ signature changes and removed methods are not mitigated and passed as breaking
 changes.
 
 Custom extensions using low-level Doctrine DBAL API and functionality
-directly need to adapt, see upgrade guides for Doctrine DBAL 4 on how
+directly need to adapt, consult the upgrade guides for Doctrine DBAL on how
 to migrate.
 
-See `Doctrine DBAL 4.x Upgrade Guide <https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md>`_
-and `Doctrine DBAL 4.x Upgrade Guide <https://github.com/doctrine/dbal/blob/3.8.x/UPGRADE.md>`_
+See `Doctrine DBAL 4.0 Upgrade Guide <https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md>`__
+and `Doctrine DBAL 3.8 Upgrade Guide <https://github.com/doctrine/dbal/blob/3.8.x/UPGRADE.md>`__
 for further information about Doctrine DBAL API changes and how to mitigate them.
 
 .. index:: Database, PHP-API, ext:core
