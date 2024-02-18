@@ -41,6 +41,7 @@ final class BackendFormProtectionTest extends UnitTestCase
                 throw new \Exception('Closure called', 1442592030);
             }
         );
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
     /**
