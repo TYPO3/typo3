@@ -128,14 +128,14 @@ class PasswordReset implements LoggerAwareInterface
         }
         $queryBuilder = $this->getPreparedQueryBuilder();
         $users = $queryBuilder
-            ->select('uid', 'email', 'username', 'realName', 'lang')
+            ->select('*')
             ->from('be_users')
             ->andWhere(
                 $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($emailAddress))
             )
             ->executeQuery()
             ->fetchAllAssociative();
-        if (!is_array($users) || count($users) === 0) {
+        if ($users === []) {
             // No user found, do nothing, also no log to sys_log in order avoid log flooding
             $this->logger->warning('Password reset requested for email but no valid users');
         } elseif (count($users) > 1) {
@@ -143,7 +143,8 @@ class PasswordReset implements LoggerAwareInterface
             $this->sendAmbiguousEmail($request, $context, $emailAddress);
         } else {
             $user = reset($users);
-            $this->sendResetEmail($request, $context, (array)$user, $emailAddress);
+            unset($user['password']);
+            $this->sendResetEmail($request, $context, $user);
         }
     }
 
@@ -178,7 +179,7 @@ class PasswordReset implements LoggerAwareInterface
     /**
      * Send out an email to a user that does have an email address added to his account, containing a reset link.
      */
-    protected function sendResetEmail(ServerRequestInterface $request, Context $context, array $user, string $emailAddress): void
+    protected function sendResetEmail(ServerRequestInterface $request, Context $context, array $user): void
     {
         $resetLink = $this->generateResetLinkForUser($context, (int)$user['uid'], (string)$user['email']);
         $emailObject = GeneralUtility::makeInstance(FluidEmail::class);
@@ -190,12 +191,13 @@ class PasswordReset implements LoggerAwareInterface
             ->assign('language', $user['lang'] ?: 'default')
             ->assign('resetLink', $resetLink)
             ->assign('username', $user['username'])
+            ->assign('userData', $user)
             ->setTemplate('PasswordReset/ResetRequested');
 
         $this->mailer->send($emailObject);
 
         $this->logger->info('Sent password reset email to email address {email} for user {username}', [
-            'email' => $emailAddress,
+            'email' => $user['email'],
             'username' => $user['username'],
         ]);
         $this->log(
