@@ -11,9 +11,9 @@ See :issue:`102628`
 Description
 ===========
 
-TYPO3 v13 introduces the new frontend-related PSR-7 request attribute :php`frontend.cache.instruction`
+TYPO3 v13 introduces the new frontend-related PSR-7 request attribute :php:`frontend.cache.instruction`
 implemented by class :php:`\TYPO3\CMS\Frontend\Cache\CacheInstruction`. This replaces the
-previous :php:`TyposcriptFrontendController->no_cache` property and boolean php:`noCache` request
+previous :php:`TyposcriptFrontendController->no_cache` property and boolean :php:`noCache` request
 attribute.
 
 Impact
