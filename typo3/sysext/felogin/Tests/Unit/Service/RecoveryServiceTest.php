@@ -54,6 +54,7 @@ class RecoveryServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
         $this->userRepository = $this->prophesize(FrontendUserRepository::class);
         $this->recoveryConfiguration = $this->prophesize(RecoveryConfiguration::class);
         $this->templatePathsProphecy = $this->prophesize(TemplatePaths::class);

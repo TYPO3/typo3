@@ -63,6 +63,12 @@ class BackendUserAuthenticationTest extends UnitTestCase
         'recursivedeleteFolder' => false,
     ];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
+    }
+
     /**
      * Tear down
      */

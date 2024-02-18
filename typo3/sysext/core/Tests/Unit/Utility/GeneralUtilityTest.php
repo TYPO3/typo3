@@ -1931,6 +1931,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function hmacReturnsHashOfProperLength(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
         $hmac = GeneralUtility::hmac('message');
         self::assertTrue(!empty($hmac) && is_string($hmac));
         self::assertEquals(strlen($hmac), 40);
@@ -1941,6 +1942,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function hmacReturnsEqualHashesForEqualInput(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
         $msg0 = 'message';
         $msg1 = 'message';
         self::assertEquals(GeneralUtility::hmac($msg0), GeneralUtility::hmac($msg1));
@@ -1951,6 +1953,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function hmacReturnsNoEqualHashesForNonEqualInput(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
         $msg0 = 'message0';
         $msg1 = 'message1';
         self::assertNotEquals(GeneralUtility::hmac($msg0), GeneralUtility::hmac($msg1));

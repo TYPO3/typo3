@@ -33,6 +33,7 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
      */
     public function addHmacDataAddsHmacHashes(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
         $formDefinitionConversionService = $this->getAccessibleMock(
             FormDefinitionConversionService::class,
             [

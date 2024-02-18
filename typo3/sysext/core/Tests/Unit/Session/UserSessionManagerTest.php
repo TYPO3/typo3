@@ -32,6 +32,12 @@ class UserSessionManagerTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
+    }
+
     public function willExpireDataProvider(): array
     {
         return [

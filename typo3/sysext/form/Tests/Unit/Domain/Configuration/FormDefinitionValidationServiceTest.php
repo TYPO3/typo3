@@ -358,7 +358,8 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
      */
     public function validateAllPropertyValuesFromCreatableFormElementDataProvider(): array
     {
-        $encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+        // Be aware that the $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] assignment in setUp is done
+        // after the dataProvider intitialization. Therefore, the encryption key must also be defined here.
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         $sessionToken = '54321';
@@ -385,8 +386,9 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
             ],
         ];
 
-        // be aware that backup globals does not impact globals used in data providers as these are called before the setUp/tearDown is done
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $encryptionKeyBackup;
+        // Unset global encryption key, so following tests do not use it. Data providers are not covered by phpunit backupGlobals.
+        // @todo: Refactor this out of the data provider.
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 
         return [
             [
@@ -496,7 +498,8 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
      */
     public function validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider(): array
     {
-        $encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+        // Be aware that the $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] assignment in setUp is done
+        // after the dataProvider intitialization. Therefore, the encryption key must also be defined here.
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         $sessionToken = '54321';
@@ -523,8 +526,9 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
             ],
         ];
 
-        // be aware that backup globals does not impact globals used in data providers as these are called before the setUp/tearDown is done
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $encryptionKeyBackup;
+        // Unset global encryption key, so following tests do not use it. Data providers are not covered by phpunit backupGlobals.
+        // @todo: Refactor this out of the data provider.
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 
         return [
             [

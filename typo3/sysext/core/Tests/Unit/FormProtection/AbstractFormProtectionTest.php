@@ -31,11 +31,9 @@ class AbstractFormProtectionTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = new FormProtectionTesting();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
-    /////////////////////////////////////////
-    // Tests concerning the basic functions
-    /////////////////////////////////////////
     /**
      * @test
      */
@@ -85,9 +83,6 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject->clean();
     }
 
-    ///////////////////////////////////
-    // Tests concerning generateToken
-    ///////////////////////////////////
     /**
      * @test
      */
@@ -138,9 +133,6 @@ class AbstractFormProtectionTest extends UnitTestCase
         self::assertEquals($this->subject->generateToken('foo', 'edit', 'bar'), $this->subject->generateToken('foo', 'edit', 'bar'));
     }
 
-    ///////////////////////////////////
-    // Tests concerning validateToken
-    ///////////////////////////////////
     /**
      * @test
      */

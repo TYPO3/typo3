@@ -53,6 +53,12 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
+    }
+
     /**
      * User properties should not be set for anonymous sessions
      *

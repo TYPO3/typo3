@@ -30,6 +30,12 @@ class FormInlineAjaxControllerTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
+    }
+
     /**
      * @test
      */
