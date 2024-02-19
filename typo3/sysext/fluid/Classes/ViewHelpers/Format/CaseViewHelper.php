@@ -41,7 +41,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *   Transforms the input string to its first letter lower-cased, i.e. uncapitalization
  *
  * ``capitalWords``
- *   Not supported yet: Transforms the input string to each containing word being capitalized
+ *   Transforms the input string to each containing word being capitalized
  *
  * Note that the behavior will be the same as in the appropriate PHP function `mb_convert_case`_;
  * especially regarding locale and multibyte behavior.
