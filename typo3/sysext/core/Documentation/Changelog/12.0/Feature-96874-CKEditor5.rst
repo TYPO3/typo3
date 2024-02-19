@@ -42,10 +42,11 @@ CSS Styling
 
 CKEditor 5 does not load its editor in a specific iframe anymore. Especially
 for adding custom styling and fonts, all CSS declarations now need to be prefixed
-with ".ck-content". This can be achieved via SCSS, which TYPO3 natively
-handles for custom CSS styles.
-However, <body> tag CSS declarations won't work, as the `<body>` tag does not
-apply to the editor HTML rendering anymore.
+with ".ck-content". This scoping is applied by TYPO3 automatically to all custom
+CSS styles.
+
+Please be aware that referenced CSS stylesheets need to be downloadable via
+:js:`fetch()` in order for the JavaScript based prefixing to work.
 
 Configuration Options
 ---------------------
