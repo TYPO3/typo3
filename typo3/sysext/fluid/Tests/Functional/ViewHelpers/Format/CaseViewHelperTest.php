@@ -57,6 +57,10 @@ final class CaseViewHelperTest extends FunctionalTestCase
                 '<f:format.case value="FOO Bar" mode="uncapital" />',
                 'fOO Bar',
             ],
+            'mode capital words' => [
+                '<f:format.case value="foo bar baz" mode="capitalWords" />',
+                'Foo Bar Baz',
+            ],
             'special chars 1' => [
                 '<f:format.case value="smørrebrød" mode="upper" />',
                 'SMØRREBRØD',
