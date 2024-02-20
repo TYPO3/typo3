@@ -194,7 +194,10 @@ readonly class TransportFactory
         $transportSpoolType = (string)($mailSettings['transport_spool_type'] ?? '');
         switch ($transportSpoolType) {
             case self::SPOOL_FILE:
-                $path = GeneralUtility::getFileAbsFileName($mailSettings['transport_spool_filepath'] ?? '');
+                $path = $mailSettings['transport_spool_filepath'] ?? '';
+                if (!GeneralUtility::isAllowedAbsPath($path)) {
+                    $path = GeneralUtility::getFileAbsFileName($path);
+                }
                 if (empty($path)) {
                     throw new \RuntimeException('The Spool Type filepath must be configured for TYPO3 in order to be used. Be sure that it\'s not accessible via the web.', 1518558797);
                 }
