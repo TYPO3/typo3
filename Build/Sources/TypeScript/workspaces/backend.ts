@@ -337,7 +337,7 @@ class Backend extends Workspaces {
         Wizard.setForceSelection(false);
         Wizard.addSlide(
           'publish-confirm',
-          'Publish',
+          TYPO3.lang['window.publish.title'],
           TYPO3.lang['window.publish.message'],
           SeverityEnum.info,
         );
@@ -1059,7 +1059,7 @@ class Backend extends Workspaces {
   private readonly addIntegrityCheckWarningToWizard = (): void => {
     Wizard.addSlide(
       'integrity-warning',
-      'Warning',
+      TYPO3.lang['window.integrity_warning.title'],
       TYPO3.lang['integrity.hasIssuesDescription'] + '<br>' + TYPO3.lang['integrity.hasIssuesQuestion'],
       SeverityEnum.warning,
     );
