@@ -79,11 +79,7 @@ export class CKEditor5Element extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback();
-    if (Array.isArray(this.options.contentsCss)) {
-      for (const url of this.options.contentsCss) {
-        this.prefixAndLoadContentsCss(url, this.getAttribute('id'));
-      }
-    }
+    this.prefixAndLoadContentsCss();
   }
 
   public disconnectedCallback() {
@@ -243,13 +239,28 @@ export class CKEditor5Element extends LitElement {
       .filter(plugin => !overriddenPlugins.includes(plugin as PluginConstructor<Editor>));
   }
 
-  private async prefixAndLoadContentsCss(url: string, fieldId: string): Promise<void> {
+  private async prefixAndLoadContentsCss(): Promise<void> {
+    if (!Array.isArray(this.options.contentsCss)) {
+      return;
+    }
+    const styleSheetStates = await Promise.allSettled(
+      this.options.contentsCss.map(url => this.prefixContentsCss(url, this.getAttribute('id')))
+    );
+    const styleSheets = styleSheetStates
+      .map(state => state.status === 'fulfilled' ? state.value : null)
+      .filter(v => v !== null);
+    styleSheets.forEach(styleSheet => this.styleSheets.set(styleSheet, true));
+    document.adoptedStyleSheets = [...document.adoptedStyleSheets, ...styleSheets];
+  }
+
+  private async prefixContentsCss(url: string, fieldId: string): Promise<CSSStyleSheet> {
     let content: string;
     try {
       const response = await new AjaxRequest(url).get();
       content = await response.resolve();
-    } catch {
-      return;
+    } catch (e) {
+      console.error(`Failed to fetch CSS content for CKEditor5 prefixing: "${url}"`, e);
+      throw new Error();
     }
     // Prefix custom stylesheets with id of the container element and a required `.ck-content` selector
     // see https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/content-styles.html
@@ -260,8 +271,7 @@ export class CKEditor5Element extends LitElement {
     await styleSheet.replace(
       prefixedCss
     );
-    this.styleSheets.set(styleSheet, true);
-    document.adoptedStyleSheets = [...document.adoptedStyleSheets, styleSheet];
+    return styleSheet;
   }
 
   private applyEditableElementStyles(editor: Editor, width: string|number|undefined, height: string|number|undefined): void {
