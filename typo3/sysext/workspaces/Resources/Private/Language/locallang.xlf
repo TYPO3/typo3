@@ -351,6 +351,9 @@
 			<trans-unit id="integrity.isDefaultLanguageRecord" resname="integrity.isDefaultLanguageRecord">
 				<source><![CDATA[Default language record for record "%s"]]></source>
 			</trans-unit>
+			<trans-unit id="window.integrity_warning.title" resname="window.integrity_warning.title">
+				<source>Integrity Warning</source>
+			</trans-unit>
 			<trans-unit id="integrity.hasIssuesDescription" resname="integrity.hasIssuesDescription">
 				<source>The integrity check discovered several issues, see status icons in front of each record for further details.</source>
 			</trans-unit>
