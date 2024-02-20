@@ -366,6 +366,18 @@
 			<trans-unit id="localize.wizard.button.process" resname="localize.wizard.button.process">
 				<source>Start processing</source>
 			</trans-unit>
+			<trans-unit id="localize.wizard.step.selectMode" resname="localize.wizard.step.selectMode">
+				<source>Localization mode</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.step.chooseLanguage" resname="localize.wizard.step.chooseLanguage">
+				<source>Source Language</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.step.chooseLanguage" resname="localize.wizard.step.chooseLanguage">
+				<source>Source Language</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.step.selectRecords" resname="localize.wizard.step.selectRecords">
+				<source>Records</source>
+			</trans-unit>
 			<trans-unit id="localize.view.chooseLanguage" resname="localize.view.chooseLanguage">
 				<source>Choose the language from which you want to localize the content</source>
 			</trans-unit>
@@ -390,10 +402,12 @@
 					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
 				</source>
 			</trans-unit>
-			<trans-unit id="localize.educate.noTranslate" resname="localize.educate.noTranslate" xml:space="preserve">
-				<source>Using the translation wizard is not possible, because either translation is disabled or the translated page is in "mixed mode". Being in "mixed mode" means that both translated records that have a source language and "free mode" records without a parent, are present.&lt;br&gt;
-					We highlighted the problematic records for you in this case.
-				</source>
+			<trans-unit id="window.localization.mixed_mode.title" resname="window.localization.mixed_mode.title">
+				<source>Localization not possible</source>
+			</trans-unit>
+			<trans-unit id="window.localization.mixed_mode.message" resname="window.localization.mixed_mode.message">
+				<source>Using the translation wizard is not possible, because either translation is disabled or the translated page is in "mixed mode". Being in "mixed mode" means that both translated records that have a source language and "free mode" records without a parent, are present.
+					We highlighted the problematic records for you in this case.</source>
 			</trans-unit>
 			<trans-unit id="error.invalidBackendLayout" resname="error.invalidBackendLayout">
 				<source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>

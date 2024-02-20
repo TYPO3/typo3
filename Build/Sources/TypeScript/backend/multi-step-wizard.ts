@@ -20,12 +20,12 @@ import Icons from './icons';
 
 type SlideCallback = ($slide: JQuery, settings: MultiStepWizardSettings, identifier: string) => void;
 
-interface MultiStepWizardSettings {
+export interface MultiStepWizardSettings {
   [key: string]: any;
 }
 
 interface MultiStepWizardSetup {
-  slides: Array<any>;
+  slides: Slide[];
   settings: MultiStepWizardSettings;
   forceSelection: boolean;
   $carousel: JQuery;
@@ -108,23 +108,22 @@ class MultiStepWizard {
    * @param {Function} callback
    * @returns {Promise<string>}
    */
-  public addFinalProcessingSlide(callback?: SlideCallback): Promise<void> {
+  public async addFinalProcessingSlide(callback?: SlideCallback): Promise<void> {
     if (!callback) {
       callback = (): void => {
         this.dismiss();
       };
     }
 
-    return Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then((markup: string) => {
-      const $processingSlide = $('<div />', { class: 'text-center' }).append(markup);
-      this.addSlide(
-        'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],
-        $processingSlide[0].outerHTML,
-        Severity.info,
-        null,
-        callback,
-      );
-    });
+    const spinnerIcon = await Icons.getIcon('spinner-circle', Icons.sizes.large, null, null);
+    const $processingSlide = $('<div />', { class: 'text-center' }).append(spinnerIcon);
+    this.addSlide(
+      'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],
+      $processingSlide[0].outerHTML,
+      Severity.info,
+      null,
+      callback,
+    );
   }
 
   /**
@@ -166,6 +165,12 @@ class MultiStepWizard {
     });
 
     this.getComponent().on('wizard-visible', (): void => {
+      if (this.setup.forceSelection) {
+        // @todo: This is a hack as modal buttons cannot be initially disabled.
+        this.lockPrevStep();
+        this.lockNextStep();
+      }
+
       this.runSlideCallback(firstSlide, this.setup.$carousel.find('.carousel-item').first());
     }).on('wizard-dismissed', (): void => {
       this.setup = $.extend(true, {}, this.originalSetup);
@@ -282,11 +287,11 @@ class MultiStepWizard {
       const currentIndex = this.setup.$carousel.data('currentIndex');
       const slide = this.setup.slides[currentIndex];
 
-      this.runSlideCallback(slide, $(evt.relatedTarget));
-
       if (this.setup.forceSelection) {
         this.lockNextStep();
       }
+
+      this.runSlideCallback(slide, $(evt.relatedTarget));
     });
 
     // Custom event, closes the wizard
@@ -331,8 +336,14 @@ class MultiStepWizard {
     const nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
     const currentIndex = this.setup.$carousel.data('currentIndex');
     const nextIndex = currentIndex + 1;
+    const $slideContent = $modal.find('.carousel-item:eq(' + nextIndex + ')');
 
+    // Flush content when sliding
+    $slideContent.empty().append(this.setup.slides[nextIndex].content);
     $modalTitle.text(this.setup.slides[nextIndex].title);
+
+    // Always unlock previous step
+    this.unlockPrevStep();
 
     this.setup.$carousel.data('currentSlide', nextSlideNumber);
     this.setup.$carousel.data('currentIndex', nextIndex);
@@ -368,11 +379,21 @@ class MultiStepWizard {
     const nextSlideNumber = this.setup.$carousel.data('currentSlide') - 1;
     const currentIndex = this.setup.$carousel.data('currentIndex');
     const nextIndex = currentIndex - 1;
+    const $slideContent = $modal.find('.carousel-item:eq(' + nextIndex + ')');
+
+    // Flush content when sliding
+    $slideContent.empty().append(this.setup.slides[nextIndex].content);
+    $modalTitle.text(this.setup.slides[nextIndex].title);
+
+    // Always unlock previous step if there is any
+    if (nextIndex > 0) {
+      this.unlockPrevStep();
+    } else {
+      this.lockPrevStep();
+    }
 
     this.setup.$carousel.data('currentSlide', nextSlideNumber);
     this.setup.$carousel.data('currentIndex', nextIndex);
-
-    $modalTitle.text(this.setup.slides[nextIndex].title);
 
     $modalFooter.find('.progress-bar.last-step')
       .width(this.setup.$carousel.data('initialStep') + '%')
