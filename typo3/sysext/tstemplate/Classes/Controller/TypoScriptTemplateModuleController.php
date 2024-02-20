@@ -266,6 +266,9 @@ class TypoScriptTemplateModuleController
                 }
                 $additionalFieldsForRootline = ['sorting', 'shortcut'];
                 $rootline = BackendUtility::BEgetRootLine($record['pid'], '', true, $additionalFieldsForRootline);
+                if (empty($rootline)) {
+                    continue;
+                }
                 $this->setInPageArray($pArray, $rootline, $record);
             }
 
