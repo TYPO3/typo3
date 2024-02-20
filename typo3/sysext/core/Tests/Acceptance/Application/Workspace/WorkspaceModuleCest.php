@@ -84,7 +84,7 @@ final class WorkspaceModuleCest
         $I->selectOption('select[name=mass-action]', 'Publish');
 
         $modalDialog->canSeeDialog();
-        $modalDialog->clickButtonInDialog('Next');
+        $modalDialog->clickButtonInDialog('Publish');
 
         $I->dontSee(self::$newPageTitle, '#workspace-panel');
     }

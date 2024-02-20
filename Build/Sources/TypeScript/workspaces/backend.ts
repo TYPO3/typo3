@@ -14,6 +14,7 @@
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
+import { html } from 'lit';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/input/clearable';
@@ -23,13 +24,12 @@ import Workspaces from './workspaces';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import Persistent from '@typo3/backend/storage/persistent';
 import Utility from '@typo3/backend/utility';
-import Wizard from '@typo3/backend/wizard';
-import SecurityUtility from '@typo3/core/security-utility';
 import windowManager from '@typo3/backend/window-manager';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import { selector } from '@typo3/core/literals';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
+import DeferredAction from '@typo3/backend/action-button/deferred-action';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -305,32 +305,12 @@ class Backend extends Workspaces {
         },
       ).then(async (response: AjaxResponse): Promise<void> => {
         if ((await response.resolve())[0].result.result === 'warning') {
-          this.addIntegrityCheckWarningToWizard();
-        }
-
-        Wizard.setForceSelection(false);
-        Wizard.addSlide(
-          'publish-confirm',
-          TYPO3.lang['window.publish.title'],
-          TYPO3.lang['window.publish.message'],
-          SeverityEnum.info,
-        );
-        Wizard.addFinalProcessingSlide((): void => {
-          // We passed this slide, publish the record now
-          this.sendRemoteRequest(
-            this.generateRemoteActionsPayload('publishSingleRecord', [
-              row.dataset.table,
-              row.dataset.t3ver_oid,
-              row.dataset.uid,
-            ]),
-          ).then((): void => {
-            Wizard.dismiss();
-            this.getWorkspaceInfos();
-            Backend.refreshPageTree();
+          this.openIntegrityWarningModal().addEventListener('confirm.button.ok', (): void => {
+            this.renderPublishModal(row)
           });
-        }).then((): void => {
-          Wizard.show();
-        });
+        } else {
+          this.renderPublishModal(row);
+        }
       });
     }).on('click', '[data-action="prevstage"]', (e: JQueryEventObject): void => {
       this.sendToStage($(e.currentTarget).closest('tr'), 'prev');
@@ -862,8 +842,7 @@ class Backend extends Workspaces {
     }
 
     if (!integrityCheckRequired) {
-      Wizard.setForceSelection(false);
-      this.renderSelectionActionWizard(selectedAction, affectedRecords);
+      this.renderSelectionActionModal(selectedAction, affectedRecords);
     } else {
       this.checkIntegrity(
         {
@@ -871,60 +850,92 @@ class Backend extends Workspaces {
           type: 'selection',
         },
       ).then(async (response: AjaxResponse): Promise<void> => {
-        Wizard.setForceSelection(false);
         if ((await response.resolve())[0].result.result === 'warning') {
-          this.addIntegrityCheckWarningToWizard();
+          this.openIntegrityWarningModal().addEventListener('confirm.button.ok', (): void => {
+            this.renderSelectionActionModal(selectedAction, affectedRecords);
+          });
+        } else {
+          this.renderSelectionActionModal(selectedAction, affectedRecords);
         }
-        this.renderSelectionActionWizard(selectedAction, affectedRecords);
       });
     }
   };
 
-  /**
-   * Adds a slide to the wizard concerning an integrity check warning.
-   */
-  private readonly addIntegrityCheckWarningToWizard = (): void => {
-    Wizard.addSlide(
-      'integrity-warning',
+  private readonly openIntegrityWarningModal = (): ModalElement => {
+    const modal = Modal.confirm(
       TYPO3.lang['window.integrity_warning.title'],
-      TYPO3.lang['integrity.hasIssuesDescription'] + '<br>' + TYPO3.lang['integrity.hasIssuesQuestion'],
-      SeverityEnum.warning,
+      html`<p>${TYPO3.lang['integrity.hasIssuesDescription']}<br>${TYPO3.lang['integrity.hasIssuesQuestion']}</p>`,
+      SeverityEnum.warning
     );
+    modal.addEventListener('button.clicked', (): void => modal.hideModal());
+
+    return modal;
   };
 
-  /**
-   * Renders the wizard for selection actions
-   *
-   * @param {String} selectedAction
-   * @param {Array<object>} affectedRecords
-   */
-  private renderSelectionActionWizard(selectedAction: string, affectedRecords: Array<object>): void {
-    Wizard.addSlide(
-      'mass-action-confirmation',
-      TYPO3.lang['window.selectionAction.title'],
-      '<p>'
-      + new SecurityUtility().encodeHtml(TYPO3.lang['tooltip.' + selectedAction + 'Selected'])
-      + '</p>',
-      SeverityEnum.warning,
-    );
-    Wizard.addFinalProcessingSlide((): void => {
-      this.sendRemoteRequest(
-        this.generateRemoteActionsPayload('executeSelectionAction', {
-          action: selectedAction,
-          selection: affectedRecords,
-        }),
-      ).then((): void => {
-        this.markedRecordsForMassAction = [];
-        this.getWorkspaceInfos();
-        Wizard.dismiss();
-        Backend.refreshPageTree();
-      });
-    }).then((): void => {
-      Wizard.show();
+  private renderPublishModal(row: HTMLTableRowElement): void {
+    const modal = Modal.advanced({
+      title: TYPO3.lang['window.publish.title'],
+      content: TYPO3.lang['window.publish.message'],
+      severity: SeverityEnum.info,
+      staticBackdrop: true,
+      buttons: [
+        {
+          text: TYPO3.lang.cancel,
+          btnClass: 'btn-default',
+          trigger: function(): void {
+            modal.hideModal();
+          },
+        }, {
+          text: TYPO3.lang.label_doaction_publish,
+          btnClass: 'btn-info',
+          action: new DeferredAction(async (): Promise<void> => {
+            await this.sendRemoteRequest(
+              this.generateRemoteActionsPayload('publishSingleRecord', [
+                row.dataset.table,
+                row.dataset.t3ver_oid,
+                row.dataset.uid,
+              ]),
+            );
+            this.getWorkspaceInfos();
+            Backend.refreshPageTree();
+          }),
+        },
+      ]
+    });
+  }
 
-      Wizard.getComponent().on('wizard-dismissed', (): void => {
-        this.elements.$chooseSelectionAction.val('');
-      });
+  private renderSelectionActionModal(selectedAction: string, affectedRecords: Array<object>): void {
+    const modal = Modal.advanced({
+      title: TYPO3.lang['window.selectionAction.title'],
+      content: html`<p>${TYPO3.lang['tooltip.' + selectedAction + 'Selected']}</p>`,
+      severity: SeverityEnum.warning,
+      staticBackdrop: true,
+      buttons: [
+        {
+          text: TYPO3.lang.cancel,
+          btnClass: 'btn-default',
+          trigger: function(): void {
+            modal.hideModal();
+          },
+        }, {
+          text: TYPO3.lang['label_doaction_' + selectedAction],
+          btnClass: 'btn-warning',
+          action: new DeferredAction(async (): Promise<void> => {
+            await this.sendRemoteRequest(
+              this.generateRemoteActionsPayload('executeSelectionAction', {
+                action: selectedAction,
+                selection: affectedRecords,
+              }),
+            );
+            this.markedRecordsForMassAction = [];
+            this.getWorkspaceInfos();
+            Backend.refreshPageTree();
+          }),
+        },
+      ]
+    });
+    modal.addEventListener('typo3-modal-hidden', (): void => {
+      this.elements.$chooseSelectionAction.val('');
     });
   }
 
@@ -941,8 +952,7 @@ class Backend extends Workspaces {
     }
 
     if (!integrityCheckRequired) {
-      Wizard.setForceSelection(false);
-      this.renderMassActionWizard(selectedAction);
+      this.renderMassActionModal(selectedAction);
     } else {
       this.checkIntegrity(
         {
@@ -950,45 +960,33 @@ class Backend extends Workspaces {
           type: selectedAction,
         },
       ).then(async (response: AjaxResponse): Promise<void> => {
-        Wizard.setForceSelection(false);
         if ((await response.resolve())[0].result.result === 'warning') {
-          this.addIntegrityCheckWarningToWizard();
+          this.openIntegrityWarningModal().addEventListener('confirm.button.ok', (): void => {
+            this.renderMassActionModal(selectedAction);
+          });
+        } else {
+          this.renderMassActionModal(selectedAction);
         }
-        this.renderMassActionWizard(selectedAction);
       });
     }
   };
 
-  /**
-   * Renders the wizard for mass actions
-   *
-   * @param {String} selectedAction
-   */
-  private renderMassActionWizard(selectedAction: string): void {
+  private renderMassActionModal(selectedAction: string): void {
     let massAction: string;
+    let continueButtonLabel: string;
 
     switch (selectedAction) {
       case 'publish':
         massAction = 'publishWorkspace';
+        continueButtonLabel = TYPO3.lang.label_doaction_publish;
         break;
       case 'discard':
         massAction = 'flushWorkspace';
+        continueButtonLabel = TYPO3.lang.label_doaction_discard;
         break;
       default:
         throw 'Invalid mass action ' + selectedAction + ' called.';
     }
-
-    const securityUtility = new SecurityUtility();
-    Wizard.setForceSelection(false);
-    Wizard.addSlide(
-      'mass-action-confirmation',
-      TYPO3.lang['window.massAction.title'],
-      '<p>'
-      + securityUtility.encodeHtml(TYPO3.lang['tooltip.' + selectedAction + 'All']) + '<br><br>'
-      + securityUtility.encodeHtml(TYPO3.lang['tooltip.affectWholeWorkspace'])
-      + '</p>',
-      SeverityEnum.warning,
-    );
 
     const sendRequestsUntilAllProcessed = async (response: AjaxResponse): Promise<void> => {
       const result = (await response.resolve())[0].result;
@@ -999,25 +997,44 @@ class Backend extends Workspaces {
         ).then(sendRequestsUntilAllProcessed);
       } else {
         this.getWorkspaceInfos();
-        Wizard.dismiss();
+        Modal.dismiss();
       }
     };
 
-    Wizard.addFinalProcessingSlide((): void => {
-      this.sendRemoteRequest(
-        this.generateRemoteMassActionsPayload(massAction, {
-          init: true,
-          total: 0,
-          processed: 0,
-          language: this.settings.language
-        }),
-      ).then(sendRequestsUntilAllProcessed);
-    }).then((): void => {
-      Wizard.show();
-
-      Wizard.getComponent().on('wizard-dismissed', (): void => {
-        this.elements.$chooseMassAction.val('');
-      });
+    const modal = Modal.advanced({
+      title: TYPO3.lang['window.massAction.title'],
+      content: html`
+        <p>${TYPO3.lang['tooltip.' + selectedAction + 'All']}</p>
+        <p>${TYPO3.lang['tooltip.affectWholeWorkspace']}</p>
+      `,
+      severity: SeverityEnum.warning,
+      staticBackdrop: true,
+      buttons: [
+        {
+          text: TYPO3.lang.cancel,
+          btnClass: 'btn-default',
+          trigger: function(): void {
+            modal.hideModal();
+          },
+        }, {
+          text: continueButtonLabel,
+          btnClass: 'btn-warning',
+          action: new DeferredAction(async (): Promise<void> => {
+            const response = await this.sendRemoteRequest(
+              this.generateRemoteMassActionsPayload(massAction, {
+                init: true,
+                total: 0,
+                processed: 0,
+                language: this.settings.language
+              }),
+            );
+            await sendRequestsUntilAllProcessed(response);
+          }),
+        },
+      ]
+    });
+    modal.addEventListener('typo3-modal-hidden', (): void => {
+      this.elements.$chooseMassAction.val('');
     });
   }
 
