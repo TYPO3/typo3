@@ -125,7 +125,7 @@ class InputSlugElement extends AbstractFormElement
             $html[] =         '<div class="form-wizards-wrap">';
             $html[] =             '<div class="form-wizards-element">';
             $html[] =                 '<div class="input-group">';
-            $html[] =                     ($baseUrl ? '<span class="input-group-addon">' . htmlspecialchars($baseUrl) . '</span>' : '');
+            $html[] =                     ($baseUrl ? '<span class="input-group-text">' . htmlspecialchars($baseUrl) . '</span>' : '');
             $html[] =                     '<input ' . GeneralUtility::implodeAttributes($disabledFieldAttributes, true) . ' disabled>';
             $html[] =                 '</div>';
             $html[] =             '</div>';
@@ -157,7 +157,7 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =      '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =          '<div class="form-wizards-element">';
         $mainFieldHtml[] =              '<div class="input-group">';
-        $mainFieldHtml[] =                  ($baseUrl ? '<span class="input-group-addon">' . htmlspecialchars($baseUrl) . '</span>' : '');
+        $mainFieldHtml[] =                  ($baseUrl ? '<span class="input-group-text">' . htmlspecialchars($baseUrl) . '</span>' : '');
         // We deal with 3 fields here: a readonly field for current / default values, an input
         // field to manipulate the value, and the final hidden field used to send the value
         $mainFieldHtml[] =                  '<input';

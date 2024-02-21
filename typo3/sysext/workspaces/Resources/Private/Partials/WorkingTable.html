@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <label for="languages" class="form-label"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:workingTable.languages" /></label>
                     <div class="input-group">
-                        <span class="input-group-addon input-group-icon">
+                        <span class="input-group-text input-group-icon">
                             <f:for each="{availableLanguages}" as="language"><f:if condition="{language.active}"><core:icon identifier="{language.flagIcon}" /></f:if></f:for>
                         </span>
                         <select name="languages" id="languages" class="form-select">

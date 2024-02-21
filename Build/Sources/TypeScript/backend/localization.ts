@@ -226,7 +226,7 @@ class Localization {
                     $row.append(
                       $('<div />', { 'class': 'col-sm-6' }).append(
                         $('<div />', { 'class': 'input-group' }).append(
-                          $('<span />', { 'class': 'input-group-addon' }).append(
+                          $('<span />', { 'class': 'input-group-text' }).append(
                             $('<input />', {
                               type: 'checkbox',
                               'class': 't3js-localization-toggle-record',

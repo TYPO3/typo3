@@ -256,7 +256,7 @@ class GroupElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-items-top">';
             $html[] =       '<div class="autocomplete t3-form-suggest-container">';
             $html[] =           '<div class="input-group">';
-            $html[] =               '<span class="input-group-addon">';
+            $html[] =               '<span class="input-group-text">';
             $html[] =                   $this->iconFactory->getIcon('actions-search', IconSize::SMALL)->render();
             $html[] =               '</span>';
             $html[] =               '<input type="search" class="t3-form-suggest form-control"';

@@ -43,7 +43,7 @@ export class SelectTreeToolbar extends LitElement {
     return html`
       <div class="tree-toolbar btn-toolbar">
         <div class="input-group">
-          <span class="input-group-addon input-group-icon filter">
+          <span class="input-group-text input-group-icon filter">
             <typo3-backend-icon identifier="actions-filter" size="small"></typo3-backend-icon>
           </span>
           <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">

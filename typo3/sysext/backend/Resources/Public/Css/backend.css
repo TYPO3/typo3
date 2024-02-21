@@ -590,9 +590,9 @@ textarea.form-control-lg{min-height:calc(1.5em + 1rem + calc(var(--bs-border-wid
 .input-group>.form-control:focus,.input-group>.form-floating:focus-within,.input-group>.form-select:focus{z-index:5}
 .input-group .btn{position:relative;z-index:2}
 .input-group .btn:focus{z-index:5}
-.input-group-addon,.input-group-text{display:flex;align-items:center;padding:.375rem .75rem;font-size:.75rem;font-weight:400;line-height:1.5;color:#333;text-align:center;white-space:nowrap;background-color:var(--bs-tertiary-bg);border:var(--bs-border-width) solid #bbb;border-radius:var(--bs-border-radius)}
-.input-group-lg>.btn,.input-group-lg>.form-control,.input-group-lg>.form-select,.input-group-lg>.input-group-addon,.input-group-lg>.input-group-text{padding:.5rem 1rem;font-size:.9375rem;border-radius:var(--bs-border-radius-lg)}
-.input-group-sm>.btn,.input-group-sm>.form-control,.input-group-sm>.form-select,.input-group-sm>.input-group-addon,.input-group-sm>.input-group-text{padding:.25rem .5rem;font-size:.65625rem;border-radius:var(--bs-border-radius-sm)}
+.input-group-text{display:flex;align-items:center;padding:.375rem .75rem;font-size:.75rem;font-weight:400;line-height:1.5;color:#333;text-align:center;white-space:nowrap;background-color:var(--bs-tertiary-bg);border:var(--bs-border-width) solid #bbb;border-radius:var(--bs-border-radius)}
+.input-group-lg>.btn,.input-group-lg>.form-control,.input-group-lg>.form-select,.input-group-lg>.input-group-text{padding:.5rem 1rem;font-size:.9375rem;border-radius:var(--bs-border-radius-lg)}
+.input-group-sm>.btn,.input-group-sm>.form-control,.input-group-sm>.form-select,.input-group-sm>.input-group-text{padding:.25rem .5rem;font-size:.65625rem;border-radius:var(--bs-border-radius-sm)}
 .input-group-lg>.form-select,.input-group-sm>.form-select{padding-right:3rem}
 .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control,.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select,.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating){border-start-end-radius:0;border-end-end-radius:0}
 .input-group.has-validation>.dropdown-toggle:nth-last-child(n+4),.input-group.has-validation>.form-floating:nth-last-child(n+3)>.form-control,.input-group.has-validation>.form-floating:nth-last-child(n+3)>.form-select,.input-group.has-validation>:nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating){border-start-end-radius:0;border-end-end-radius:0}
@@ -4179,11 +4179,11 @@ div.diff-g,div.diff-r{padding:3px}
 ::-ms-clear{display:none}
 .has-change .form-control{border-color:#6daae0;box-shadow:inset 0 1px 1px rgba(0,0,0,.075)}
 .has-change .form-control:focus{border-color:#4392d7;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #c1dbf2}
-.has-change .input-group-addon{color:#6daae0;background-color:#e9f2fa;border-color:#6daae0}
+.has-change .input-group-text{color:#6daae0;background-color:#e9f2fa;border-color:#6daae0}
 .has-change .thumbnail-status{border:1px solid #6daae0}
 .input-group-icon{vertical-align:middle}
 .input-group-icon img{max-height:18px}
-.input-group-addon{min-width:2.5rem}
+.input-group-text{min-width:2.5rem}
 label .icon img{pointer-events:none}
 .form-control{min-width:120px}
 .form-control::-moz-placeholder{color:var(--typo3-input-color-placeholder)}

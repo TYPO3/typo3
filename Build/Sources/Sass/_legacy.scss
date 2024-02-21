@@ -62,14 +62,14 @@
         }
     }
     // Set validation states also for addons
-    .input-group-addon {
+    .input-group-text {
         color: $text-color;
         background-color: $background-color;
         border-color: $border-color;
     }
 }
 
-//// Variables
+// Variables
 $line-height-computed: floor(($font-size-base * $line-height-base)) !default; // ~20px
 $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !default;
 
@@ -87,11 +87,6 @@ $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !
     border-top: .25rem dashed $gray-700;
     border-right: .25rem solid transparent;
     border-left: .25rem solid transparent;
-}
-
-// todo replace '.input-group-addon' with '.input-group-text'
-.input-group-addon {
-    @extend .input-group-text !optional;
 }
 
 // nav fallback

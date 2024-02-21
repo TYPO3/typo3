@@ -84,7 +84,7 @@
                                         name="data[{constantItem.name}][left]"
                                         value="{constantItem.wrapStart}"
                                     />
-                                    <span class="input-group-addon input-group-icon">|</span>
+                                    <span class="input-group-text input-group-icon">|</span>
                                     <input
                                         class="form-control form-control-adapt"
                                         type="text"
@@ -94,7 +94,7 @@
                                 </f:case>
                                 <f:case value="offset">
                                     <f:for each="{constantItem.labelValueArray}" as="labelAndValue" iteration="iterator">
-                                        <span class="input-group-addon input-group-icon">{labelAndValue.label}</span>
+                                        <span class="input-group-text input-group-icon">{labelAndValue.label}</span>
                                         <input
                                             type="text"
                                             class="form-control form-control-adapt"

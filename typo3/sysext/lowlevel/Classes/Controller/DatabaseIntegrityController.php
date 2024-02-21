@@ -1962,7 +1962,7 @@ class DatabaseIntegrityController
         $lineHTML[] = '<div class="form-group">';
         $lineHTML[] = '  <div class="input-group">';
         $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', (string)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
-        $lineHTML[] = '    <span class="input-group-addon">';
+        $lineHTML[] = '    <span class="input-group-text">';
         $lineHTML[] = '      <div class="form-check form-check-type-toggle">';
         $lineHTML[] = '        <input type="checkbox" class="form-check-input t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
         $lineHTML[] = '      </div>';
