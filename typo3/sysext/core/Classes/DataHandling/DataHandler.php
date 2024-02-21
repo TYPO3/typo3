@@ -7109,24 +7109,12 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Page id
      * @param int $perms Permission integer
      * @param array $columns Columns to select
-     * @return bool|array
      * @internal
      * @see doesRecordExist()
      */
-    protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid'])
+    protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid']): array|false
     {
         $permission = new Permission($perms);
-        $cacheId = md5('doesRecordExist_pageLookUp_' . $id . '_' . $perms . '_' . implode(
-            '_',
-            $columns
-        ) . '_' . (string)$this->admin);
-
-        // If result is cached, return it
-        $cachedResult = $this->runtimeCache->get($cacheId);
-        if (!empty($cachedResult)) {
-            return $cachedResult;
-        }
-
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
         $queryBuilder
@@ -7147,11 +7135,7 @@ class DataHandler implements LoggerAwareInterface
                 $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ));
         }
-
-        $row = $queryBuilder->executeQuery()->fetchAssociative();
-        $this->runtimeCache->set($cacheId, $row);
-
-        return $row;
+        return $queryBuilder->executeQuery()->fetchAssociative();
     }
 
     /**
