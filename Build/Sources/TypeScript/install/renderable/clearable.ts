@@ -32,20 +32,17 @@ class Clearable {
     // icon should be updated.
     //
     // https://github.com/typo3/typo3.icons
-    const closeIcon =
-      `<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-close" data-identifier="actions-close">
+    const closeIcon = `
+      <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-close" data-identifier="actions-close">
         <span class="icon-markup">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                <path
-                    d="M11.9 5.5L9.4 8l2.5 2.5c.2.2.2.5 0
-                    .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7
-                    0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5
-                    0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7
-                    0l.7.7c.2.2.2.5 0 .7z"
-                    class="icon-color"/>
-              </svg>
-            </span>
-          </span>`;
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+            <g fill="currentColor">
+              <path d="M11.9 5.5 9.4 8l2.5 2.5c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7z"/>
+            </g>
+          </svg>
+        </span>
+      </span>
+    `;
 
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
