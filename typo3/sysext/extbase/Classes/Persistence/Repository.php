@@ -324,7 +324,7 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Returns the class name of this class.
      *
-     * @return class-string<RepositoryInterface> Class name of the repository.
+     * @return class-string<static> Class name of the repository.
      */
     protected function getRepositoryClassName()
     {
