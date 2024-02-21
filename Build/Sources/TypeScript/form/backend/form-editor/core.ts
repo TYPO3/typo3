@@ -803,13 +803,7 @@ export class Model<D extends object, T extends ModelData<D>> {
       // in case the previous guess was wrong, the initialized array
       // is converted to an object when a non-numeric path segment is found
       } else if (false === $.isNumeric(nextPartOfPath) && 'array' === $.type(obj[firstPartOfPath])) {
-        obj[firstPartOfPath] = (obj[firstPartOfPath] as Array<unknown>).reduce(
-          (converted: Record<number, unknown>, item: unknown, itemIndex: number): Record<number, unknown> => {
-            converted[itemIndex] = item;
-            return converted;
-          },
-          {} as Record<number, unknown>
-        );
+        obj[firstPartOfPath] = { ...(obj[firstPartOfPath] as Array<unknown>) };
       }
       obj = obj[firstPartOfPath] as Record<string, unknown>;
     }
