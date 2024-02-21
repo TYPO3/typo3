@@ -9037,7 +9037,6 @@ class DataHandler implements LoggerAwareInterface
                     || ($this->admin && (bool)($userTsConfig['options.']['clearCache.']['all'] ?? true))
                 ) {
                     $this->cacheManager->flushCaches();
-                    $this->connectionPool->getConnectionForTable('cache_treelist')->truncate('cache_treelist');
 
                     // Delete Opcode Cache
                     GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();

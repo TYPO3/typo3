@@ -17,9 +17,7 @@ namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Basic service to clear caches within the install tool.
@@ -27,10 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ClearCacheService
 {
-    private const legacyDatabaseCacheTables = [
-        'cache_treelist',
-    ];
-
     public function __construct(
         private readonly LateBootService $lateBootService,
         private readonly FrontendInterface $dependencyInjectionCache
@@ -41,7 +35,7 @@ class ClearCacheService
      * Goal is to reliably get rid of cache entries, even if some broken
      * extension is loaded that would kill the backend 'clear cache' action.
      *
-     * Therefore this method "knows" implementation details of the cache
+     * Therefore, this method "knows" implementation details of the cache
      * framework and uses them to clear all file based cache (typo3temp/Cache)
      * and database caches (tables prefixed with cf_) manually.
      *
@@ -51,15 +45,6 @@ class ClearCacheService
      */
     public function clearAll(): void
     {
-        // Low level flush of legacy database cache tables
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        foreach (self::legacyDatabaseCacheTables as $tableName) {
-            $connection = $connectionPool->getConnectionForTable($tableName);
-            if ($connection->createSchemaManager()->tablesExist([$tableName])) {
-                $connection->truncate($tableName);
-            }
-        }
-
         // Flush all caches defined in TYPO3_CONF_VARS, but not the ones defined by extensions in ext_localconf.php
         $baseCaches = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
         $this->flushCaches($baseCaches);

@@ -27,9 +27,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Event\CacheFlushEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\BootService;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CacheFlushCommand extends Command
 {
@@ -59,7 +57,6 @@ class CacheFlushCommand extends Command
     {
         $group = $input->getOption('group') ?? 'all';
 
-        $this->flushLegacyDatabaseCacheTables($group);
         $this->flushDependencyInjectionCaches($group);
         if ($group === 'di') {
             return Command::SUCCESS;
@@ -104,23 +101,5 @@ class CacheFlushCommand extends Command
         }
 
         $container->get('cache.core')->flush();
-    }
-
-    protected function flushLegacyDatabaseCacheTables($group): void
-    {
-        if ($group !== 'all') {
-            return;
-        }
-
-        $legacyDatabaseCacheTables = [
-            'cache_treelist',
-        ];
-
-        // Low level flush of legacy database cache tables
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        foreach ($legacyDatabaseCacheTables as $tableName) {
-            $connection = $connectionPool->getConnectionForTable($tableName);
-            $connection->truncate($tableName);
-        }
     }
 }

@@ -18,10 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
 
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -544,12 +542,7 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function getPageIdsRecursiveTest(): void
     {
-        // do not use cache_treelist
-        $user = new BackendUserAuthentication();
-        $user->user = ['uid' => PHP_INT_MAX];
-        $context = new Context();
-        $context->setAspect('backend.user', new UserAspect($user));
-        $subject = new PageRepository($context);
+        $subject = new PageRepository();
         // empty array does not do anything
         $result = $subject->getPageIdsRecursive([], 1);
         self::assertEquals([], $result);
@@ -572,12 +565,7 @@ final class PageRepositoryTest extends FunctionalTestCase
      */
     public function getDescendantPageIdsRecursiveTest(): void
     {
-        // do not use cache_treelist
-        $user = new BackendUserAuthentication();
-        $user->user = ['uid' => PHP_INT_MAX];
-        $context = new Context();
-        $context->setAspect('backend.user', new UserAspect($user));
-        $subject = new PageRepository($context);
+        $subject = new PageRepository();
         // Negative numbers or "0" do not return anything
         $result = $subject->getDescendantPageIdsRecursive(-1, 1);
         self::assertEquals([], $result);
