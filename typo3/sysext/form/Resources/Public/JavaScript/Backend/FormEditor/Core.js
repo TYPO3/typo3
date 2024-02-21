@@ -845,13 +845,7 @@ define(['jquery'], function($) {
             // in case the previous guess was wrong, the initialized array
             // is converted to an object when a non-numeric path segment is found
             } else if (false === $.isNumeric(nextPartOfPath) && 'array' === $.type(obj[firstPartOfPath])) {
-              obj[firstPartOfPath] = obj[firstPartOfPath].reduce(
-                function(converted, item, itemIndex) {
-                  converted[itemIndex] = item;
-                  return converted;
-                },
-                {}
-              );
+              obj[firstPartOfPath] = { ...obj[firstPartOfPath] };
             }
             obj = obj[firstPartOfPath];
           }
