@@ -23,14 +23,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MathUtilityTest extends UnitTestCase
 {
-    //////////////////////////////////
-    // Tests concerning forceIntegerInRange
-    //////////////////////////////////
-    /**
-     * Data provider for forceIntegerInRangeForcesIntegerIntoBoundaries
-     *
-     * @return array expected values, arithmetic expression
-     */
     public static function forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider(): array
     {
         return [
@@ -59,9 +51,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertEquals(42, MathUtility::forceIntegerInRange('', 0, 2000000000, 42));
     }
 
-    //////////////////////////////////
-    // Tests concerning convertToPositiveInteger
-    //////////////////////////////////
     /**
      * @test
      */
@@ -78,14 +67,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertEquals(123, MathUtility::convertToPositiveInteger(123));
     }
 
-    ///////////////////////////////
-    // Tests concerning canBeInterpretedAsInteger
-    ///////////////////////////////
-    /**
-     * Data provider for canBeInterpretedAsIntegerReturnsTrue
-     *
-     * @return array Data sets
-     */
     public static function functionCanBeInterpretedAsIntegerValidDataProvider(): array
     {
         return [
@@ -96,6 +77,7 @@ final class MathUtilityTest extends UnitTestCase
             'negative int as string' => ['-32425'],
             'zero' => [0],
             'zero as string' => ['0'],
+            'true' => [true],
         ];
     }
 
@@ -108,11 +90,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertTrue(MathUtility::canBeInterpretedAsInteger($int));
     }
 
-    /**
-     * Data provider for canBeInterpretedAsIntegerReturnsFalse
-     *
-     * @return array Data sets
-     */
     public static function functionCanBeInterpretedAsIntegerInvalidDataProvider(): array
     {
         $objectWithNumericalStringRepresentation = new MathUtilityTestClassWithStringRepresentationFixture();
@@ -138,6 +115,7 @@ final class MathUtilityTest extends UnitTestCase
             'float as string trailing zero would evaluate to int 10' => ['10.0'],
             'float as string trailing zeros	 would evaluate to int 10' => ['10.00'],
             'null' => [null],
+            'false' => [false],
             'empty array' => [[]],
             'int in array' => [[32425]],
             'int as string in array' => [['32425']],
@@ -157,9 +135,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertFalse(MathUtility::canBeInterpretedAsInteger($int));
     }
 
-    ///////////////////////////////
-    // Tests concerning canBeInterpretedAsFloat
-    ///////////////////////////////
     public static function functionCanBeInterpretedAsFloatValidDataProvider(): array
     {
         // testcases for Integer apply for float as well
@@ -188,11 +163,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertTrue(MathUtility::canBeInterpretedAsFloat($val));
     }
 
-    /**
-     * Data provider for canBeInterpretedAsFloatReturnsFalse
-     *
-     * @return array Data sets
-     */
     public static function functionCanBeInterpretedAsFloatInvalidDataProvider(): array
     {
         $objectWithNumericalStringRepresentation = new MathUtilityTestClassWithStringRepresentationFixture();
@@ -233,14 +203,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertFalse(MathUtility::canBeInterpretedAsFloat($int));
     }
 
-    //////////////////////////////////
-    // Tests concerning calculateWithPriorityToAdditionAndSubtraction
-    //////////////////////////////////
-    /**
-     * Data provider for calculateWithPriorityToAdditionAndSubtraction
-     *
-     * @return array expected values, arithmetic expression
-     */
     public static function calculateWithPriorityToAdditionAndSubtractionDataProvider(): array
     {
         return [
@@ -269,14 +231,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertEquals($expected, MathUtility::calculateWithPriorityToAdditionAndSubtraction($expression));
     }
 
-    //////////////////////////////////
-    // Tests concerning calcParenthesis
-    //////////////////////////////////
-    /**
-     * Data provider for calcParenthesis
-     *
-     * @return array expected values, arithmetic expression
-     */
     public static function calculateWithParenthesesDataProvider(): array
     {
         return [
@@ -297,9 +251,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertEquals($expected, MathUtility::calculateWithParentheses($expression));
     }
 
-    //////////////////////////////////
-    // Tests concerning isIntegerInRange
-    //////////////////////////////////
     /**
      * @test
      */
@@ -332,9 +283,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertFalse(MathUtility::isIntegerInRange(10, 1, 2));
     }
 
-    /**
-     * Data provider or isIntegerInRangeRejectsOtherDataTypes
-     */
     public static function isIntegerInRangeRejectsOtherDataTypesDataProvider(): array
     {
         return [
