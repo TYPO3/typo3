@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -38,9 +40,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionWithMissingLabel(): void
     {
         $input = [
@@ -55,9 +55,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         (new TcaRecordTitle())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForLabelUserFunction(): void
     {
         $input = [
@@ -81,9 +79,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForFormattedLabelUserFunction(): void
     {
         $input = [
@@ -113,9 +109,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForInlineChildWithForeignLabel(): void
     {
         $input = [
@@ -149,9 +143,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataOverridesRecordTitleWithFormattedLabelUserFuncForInlineChildWithForeignLabel(): void
     {
         $input = [
@@ -186,9 +178,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForInlineChildWithSymmetricLabel(): void
     {
         $input = [
@@ -219,9 +209,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForUid(): void
     {
         $input = [
@@ -350,10 +338,8 @@ final class TcaRecordTitleTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addDataReturnsRecordTitleForDatetimeTypeDataProvider
-     */
+    #[DataProvider('addDataReturnsRecordTitleForDatetimeTypeDataProvider')]
+    #[Test]
     public function addDataReturnsRecordTitleForDatetimeType(array $fieldConfig, string $fieldValue, string $expectedTitle): void
     {
         $input = [
@@ -386,9 +372,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleWithAlternativeLabel(): void
     {
         $input = [
@@ -424,9 +408,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleWithMultipleAlternativeLabels(): void
     {
         $input = [
@@ -468,9 +450,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleWithForcedAlternativeLabel(): void
     {
         $input = [
@@ -507,9 +487,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleWithMultipleForcedAlternativeLabels(): void
     {
         $input = [
@@ -552,9 +530,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleIgnoresEmptyAlternativeLabels(): void
     {
         $input = [
@@ -597,9 +573,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForRadioType(): void
     {
         $input = [
@@ -633,9 +607,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForInlineType(): void
     {
         $input = [
@@ -744,10 +716,8 @@ final class TcaRecordTitleTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addDataReturnsRecordTitleForGroupTypeDataProvider
-     */
+    #[DataProvider('addDataReturnsRecordTitleForGroupTypeDataProvider')]
+    #[Test]
     public function addDataReturnsRecordTitleForGroupType(array $fieldConfig, array $fieldValue, string $expectedTitle): void
     {
         $input = [
@@ -783,9 +753,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForGroupTypeDb(): void
     {
         $input = [
@@ -826,9 +794,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForSingleCheckboxType(): void
     {
         $input = [
@@ -860,9 +826,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForArrayCheckboxType(): void
     {
         $input = [
@@ -899,9 +863,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsEmptyRecordTitleForFlexType(): void
     {
         $input = [
@@ -957,9 +919,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsRecordTitleForSelectType(): void
     {
         $input = [
@@ -995,9 +955,7 @@ final class TcaRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsStrippedAndTrimmedValueForTextType(): void
     {
         $input = [

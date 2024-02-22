@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
@@ -26,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StorageRepositoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getDriverObjectAcceptsDriverClassName(): void
     {
         $mockedDriver = $this->createMock(DriverInterface::class);
@@ -94,10 +94,8 @@ final class StorageRepositoryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider storageDetectionDataProvider
-     */
+    #[DataProvider('storageDetectionDataProvider')]
+    #[Test]
     public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, string $path, int $expectedStorageId): void
     {
         $subject = new StorageRepository(

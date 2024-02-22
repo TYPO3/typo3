@@ -21,6 +21,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -53,9 +54,7 @@ final class ConnectionMigratorTest extends UnitTestCase
         $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, ['Default', $connectionMock, []]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tableNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
         $originalSchemaDiff = new SchemaDiff(
@@ -77,9 +76,7 @@ final class ConnectionMigratorTest extends UnitTestCase
         self::assertEquals($this->maxIdentifierLength, strlen($firstAlteredTableNewName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
         $table = $this->getTable();

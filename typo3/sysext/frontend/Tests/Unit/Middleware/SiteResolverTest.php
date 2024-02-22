@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -89,9 +91,8 @@ final class SiteResolverTest extends UnitTestCase
      * Then the site handling gets triggered, and the URL is taken to resolve a site.
      *
      * This case tests against a site with no domain or scheme, and successfully finds it.
-     *
-     * @test
      */
+    #[Test]
     public function detectASingleSiteWhenProperRequestIsGiven(): void
     {
         $incomingUrl = 'https://a-random-domain.com/mysite/';
@@ -132,9 +133,8 @@ final class SiteResolverTest extends UnitTestCase
      * The result should be that site 2 is resolved by the router when calling
      *
      * www.random-result.com/mysubsite/you-know-why/
-     *
-     * @test
      */
+    #[Test]
     public function detectSubsiteInsideNestedUrlStructure(): void
     {
         $incomingUrl = 'https://www.random-result.com/mysubsite/you-know-why/';
@@ -214,10 +214,9 @@ final class SiteResolverTest extends UnitTestCase
      *
      * and site 3 when calling
      * www.random-result.com/mysubsite/micro-site/oh-yes-you-do/
-     *
-     * @test
-     * @dataProvider detectSubSubsiteInsideNestedUrlStructureDataProvider
      */
+    #[DataProvider('detectSubSubsiteInsideNestedUrlStructureDataProvider')]
+    #[Test]
     public function detectSubSubsiteInsideNestedUrlStructure($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedBase): void
     {
         $siteFinder = $this->createSiteFinder(
@@ -321,10 +320,9 @@ final class SiteResolverTest extends UnitTestCase
      *     Language: 2: /
      * Site 3: /mysubsite/micro-site/
      *     Language: 13: /ru/
-     *
-     * @test
-     * @dataProvider detectProperLanguageByIncomingUrlDataProvider
      */
+    #[DataProvider('detectProperLanguageByIncomingUrlDataProvider')]
+    #[Test]
     public function detectProperLanguageByIncomingUrl($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedLanguageId, $expectedBase): void
     {
         $siteFinder = $this->createSiteFinder(

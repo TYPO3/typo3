@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\EventListener;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
@@ -40,9 +42,7 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyIdentifiersReturnsIdentifierForNotMatchingScenario(): void
     {
         $givenIdentifier = ['aKey' => 'aValue'];
@@ -60,9 +60,7 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
         self::assertSame($givenIdentifier, $event->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyIdentifiersAddDefaultValuesForNewRecord(): void
     {
         $event = new AfterFlexFormDataStructureIdentifierInitializedEvent(
@@ -81,9 +79,7 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyIdentifiersAddsGivenPersistenceIdentifier(): void
     {
         $row = [
@@ -124,9 +120,7 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
         self::assertEquals($expected, $event->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyIdentifiersAddsOverrideFinisherValue(): void
     {
         $row = [
@@ -163,9 +157,7 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
         self::assertEquals($expected, $event->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyDataStructureReturnsDataStructureUnchanged(): void
     {
         $dataStructure = ['foo' => 'bar'];
@@ -181,10 +173,8 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
         self::assertEquals($expected, $event->getDataStructure());
     }
 
-    /**
-     * @test
-     * @dataProvider modifyDataStructureDataProvider
-     */
+    #[DataProvider('modifyDataStructureDataProvider')]
+    #[Test]
     public function modifyDataStructureAddsExistingFormItems(array $formDefinition, array $expectedItem): void
     {
         $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);

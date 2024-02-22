@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -94,10 +96,9 @@ final class RequestHandlerTest extends UnitTestCase
 
     /**
      * Does not test stdWrap functionality.
-     *
-     * @test
-     * @dataProvider generateHtmlTagIncludesAllPossibilitiesDataProvider
      */
+    #[DataProvider('generateHtmlTagIncludesAllPossibilitiesDataProvider')]
+    #[Test]
     public function generateHtmlTagIncludesAllPossibilities(array $htmlTagAttributes, array $configuration, string $expectedResult): void
     {
         $subject = $this->getAccessibleMock(RequestHandler::class, null, [], '', false);
@@ -107,9 +108,7 @@ final class RequestHandlerTest extends UnitTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateMetaTagExpectExceptionOnBogusTags(): void
     {
         $stdWrapResult = '10';
@@ -276,10 +275,8 @@ final class RequestHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider generateMetaTagHtmlGeneratesCorrectTagsDataProvider
-     */
+    #[DataProvider('generateMetaTagHtmlGeneratesCorrectTagsDataProvider')]
+    #[Test]
     public function generateMetaTagHtmlGeneratesCorrectTags(array $typoScript, string $stdWrapResult, array $expectedTags): void
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
@@ -324,9 +321,7 @@ final class RequestHandlerTest extends UnitTestCase
         $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateMetaTagHtmlGenerateNoTagWithEmptyContent(): void
     {
         $stdWrapResult = '';
@@ -430,10 +425,8 @@ final class RequestHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider generateMultipleMetaTagsDataProvider
-     */
+    #[DataProvider('generateMultipleMetaTagsDataProvider')]
+    #[Test]
     public function generateMultipleMetaTags(array $typoScript, string $stdWrapResult, array $expectedTags): void
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
@@ -494,9 +487,8 @@ final class RequestHandlerTest extends UnitTestCase
 
     /**
      * Test if the method is called, and the globals are still the same after calling the method
-     *
-     * @test
      */
+    #[Test]
     public function resetGlobalsToCurrentRequestDoesNotModifyAnything(): void
     {
         $getVars = ['outside' => '1'];
@@ -516,9 +508,8 @@ final class RequestHandlerTest extends UnitTestCase
 
     /**
      * Test if the method is called, and the globals are still the same after calling the method
-     *
-     * @test
      */
+    #[Test]
     public function resetGlobalsToCurrentRequestWithModifiedRequestOverridesGlobals(): void
     {
         $getVars = ['typical' => '1'];

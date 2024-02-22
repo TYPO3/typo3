@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Container;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\Container\SingleFieldContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PaletteAndSingleContainerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderUsesPaletteLabelFromFieldArray(): void
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
@@ -93,9 +92,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         self::assertStringContainsString($labelReference, $containerResult['html']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderUsesPaletteValuesFromPaletteArray(): void
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
@@ -164,9 +161,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         self::assertStringContainsString($descriptionReference, $containerResult['html']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPrefersFieldArrayPaletteValuesOverPaletteValues(): void
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);

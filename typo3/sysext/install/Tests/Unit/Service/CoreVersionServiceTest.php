@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,9 +38,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         GeneralUtility::addInstance(RequestFactory::class, $requestFactoryMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isVersionActivelyCommunityMaintainedReturnsFalseIfMaintainedUntilIsNotSet(): void
     {
         $this->setUpApiResponse(
@@ -58,9 +58,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isVersionActivelyCommunityMaintainedReturnsTrueIfMaintainedUntilIsAfterToday(): void
     {
         $this->setUpApiResponse(
@@ -81,9 +79,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isVersionActivelyCommunityMaintainedReturnsFalseIfMaintainedUntilWasBeforeToday(): void
     {
         $this->setUpApiResponse(
@@ -104,9 +100,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isVersionActivelyEltsMaintainedReturnsFalseIfEltsUntilIsNotSet(): void
     {
         $this->setUpApiResponse(
@@ -126,9 +120,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isVersionActivelyEltsMaintainedReturnsTrueIfEltsUntilIsAfterToday(): void
     {
         $this->setUpApiResponse(
@@ -149,9 +141,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isVersionActivelyEltsMaintainedReturnsFalseIfEltsUntilWasBeforeToday(): void
     {
         $this->setUpApiResponse(
@@ -174,8 +164,8 @@ final class CoreVersionServiceTest extends UnitTestCase
 
     /**
      * The maintenance date ranges are built relatively to avoid the need to adjust them once the dates passed
-     * @test
      */
+    #[Test]
     public function getSupportedMajorReleasesReturnsListOfVersions(): void
     {
         $this->setUpApiResponse(
@@ -235,9 +225,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertSame($expectation, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPatchReleaseSuitableForUpdateReturnsTrueIfNewerVersionExists(): void
     {
         $this->setUpApiResponse(
@@ -262,9 +250,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPatchReleaseSuitableForUpdateReturnsFalseIfNoNewerVersionExists(): void
     {
         $this->setUpApiResponse(
@@ -289,9 +275,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isUpdateSecurityRelevantReturnsTrueIfNewerSecurityUpdateExists(): void
     {
         $coreRelease = new CoreRelease('8.7.5', new \DateTimeImmutable('2017-09-05T10:54:18+00:00'), 'security', 'e79466bffc81f270f5c262d01a125e82b2e1989a');
@@ -335,9 +319,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isUpdateSecurityRelevantReturnsFalseIfNewerSecurityUpdateExistsButCannotGetUpgraded(): void
     {
         $coreRelease = new CoreRelease('8.7.6', new \DateTimeImmutable('2017-09-05T10:54:18+00:00'), 'security', 'e79466bffc81f270f5c262d01a125e82b2e1989a');
@@ -381,9 +363,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isUpdateSecurityRelevantReturnsFalseIfNoNewerSecurityUpdatesExist(): void
     {
         $coreRelease = new CoreRelease('8.7.6', new \DateTimeImmutable('2017-09-05T10:54:18+00:00'), 'security', 'e79466bffc81f270f5c262d01a125e82b2e1989a');
@@ -419,10 +399,8 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     * @dataProvider isCurrentInstalledVersionEltsReturnsExpectedResultDataProvider
-     */
+    #[DataProvider('isCurrentInstalledVersionEltsReturnsExpectedResultDataProvider')]
+    #[Test]
     public function isCurrentInstalledVersionEltsReturnsExpectedResult(string $major, string $version, bool $expectation): void
     {
         $this->setUpApiResponse(
@@ -473,10 +451,8 @@ final class CoreVersionServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersionDataProvider
-     * @test
-     */
+    #[DataProvider('getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersionDataProvider')]
+    #[Test]
     public function getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersion(string $major, array $response): void
     {
         $this->setUpApiResponse(
@@ -526,9 +502,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getYoungestCommunityPatchReleaseReturnsLatestNonEltsRelease(): void
     {
         $this->setUpApiResponse(
@@ -581,9 +555,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertSame('8.7.30', $result->getVersion());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion(): void
     {
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
@@ -591,9 +563,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         self::assertTrue($instance->isInstalledVersionAReleasedVersion());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion(): void
     {
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);

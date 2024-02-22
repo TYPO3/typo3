@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Locking\FileLockStrategy;
@@ -61,18 +62,14 @@ final class LockFactoryTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addLockingStrategyAddsTheClassNameToTheInternalArray(): void
     {
         $this->mockFactory->addLockingStrategy(DummyLock::class);
         self::assertArrayHasKey(DummyLock::class, $this->mockFactory->_get('lockingStrategy'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addLockingStrategyThrowsExceptionIfInterfaceIsNotImplemented(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -81,9 +78,7 @@ final class LockFactoryTest extends UnitTestCase
         $this->mockFactory->addLockingStrategy(\stdClass::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLockerReturnsExpectedClass(): void
     {
         $this->mockFactory->_set('lockingStrategy', [FileLockStrategy::class => true, DummyLock::class => true]);
@@ -94,9 +89,7 @@ final class LockFactoryTest extends UnitTestCase
         self::assertInstanceOf(FileLockStrategy::class, $locker);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLockerReturnsClassWithHighestPriority(): void
     {
         $this->mockFactory->_set('lockingStrategy', [SemaphoreLockStrategy::class => true, DummyLock::class => true]);
@@ -104,9 +97,7 @@ final class LockFactoryTest extends UnitTestCase
         self::assertInstanceOf(DummyLock::class, $locker);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPriorityGetLockerReturnsClassWithHighestPriority(): void
     {
         $lowestValue = min([
@@ -123,9 +114,7 @@ final class LockFactoryTest extends UnitTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLockerThrowsExceptionIfNoMatchFound(): void
     {
         $this->expectException(LockCreateException::class);

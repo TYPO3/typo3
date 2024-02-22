@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Type\File;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
@@ -29,9 +31,7 @@ final class ImageInfoTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classImageInfoCanBeInstantiated(): void
     {
         $className = ImageInfo::class;
@@ -39,9 +39,7 @@ final class ImageInfoTest extends UnitTestCase
         self::assertInstanceOf($className, $classInstance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotBreakOnFileWithInvalidEnding(): void
     {
         $testFile = __DIR__ . '/../Fixture/html_file_with_pdf_ending.pdf';
@@ -93,10 +91,8 @@ final class ImageInfoTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider doesNotBreakOnImageInfoWithInvalidSvgDataProvider
-     */
+    #[DataProvider('doesNotBreakOnImageInfoWithInvalidSvgDataProvider')]
+    #[Test]
     public function doesNotBreakOnImageInfoWithInvalidSvg(string $svg, int $width, int $height): void
     {
         $testDirectory = Environment::getVarPath() . '/ImageTest';
@@ -136,10 +132,8 @@ final class ImageInfoTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canDetectImageSizesDataProvider
-     */
+    #[DataProvider('canDetectImageSizesDataProvider')]
+    #[Test]
     public function canDetectImageSizes(string $file, int $width, int $height): void
     {
         $imageInfo = new ImageInfo(__DIR__ . '/../Fixture/' . $file);

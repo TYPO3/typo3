@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\LoginProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -31,9 +32,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndSortLoginProvidersDetectsMissingProviderConfiguration(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -41,9 +40,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         new LoginProviderResolver();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndSortLoginProvidersDetectsNonArrayProviderConfiguration(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -52,9 +49,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         new LoginProviderResolver();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndSortLoginProvidersDetectsIfNoProviderIsRegistered(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -63,9 +58,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         new LoginProviderResolver();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndSortLoginProvidersDetectsMissingConfigurationForProvider(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -76,9 +69,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         new LoginProviderResolver();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndSortLoginProvidersDetectsWrongProvider(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -91,9 +82,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         new LoginProviderResolver();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndSortLoginProvidersDetectsMissingLabel(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -108,9 +97,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         new LoginProviderResolver();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndSortLoginProvidersDetectsMissingIconClass(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -125,9 +112,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         new LoginProviderResolver();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndSortLoginProvidersDetectsMissingSorting(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -142,9 +127,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         new LoginProviderResolver();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loginProviderResolverRespectsConstructorArgument(): void
     {
         $loginProviders = [
@@ -165,9 +148,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasLoginProviderTest(): void
     {
         $subject = (new LoginProviderResolver($this->getDefaultLoginProviders()));
@@ -177,9 +158,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         self::assertTrue($subject->hasLoginProvider('987654321'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLoginProviderConfigurationByIdentifierTest(): void
     {
         $subject = (new LoginProviderResolver($this->getDefaultLoginProviders()));
@@ -191,9 +170,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLoginProvidersTest(): void
     {
         $resolvedLoginProviders = (new LoginProviderResolver($this->getDefaultLoginProviders()))->getLoginProviders();
@@ -203,18 +180,14 @@ final class LoginProviderResolverTest extends UnitTestCase
         self::assertEquals('bar', array_shift($resolvedLoginProviders)['label']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPrimaryLoginProviderIdentifierTest(): void
     {
         $subject = (new LoginProviderResolver($this->getDefaultLoginProviders()));
         self::assertEquals('987654321', $subject->getPrimaryLoginProviderIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveLoginProviderIdentifierFromRequestTest(): void
     {
         $subject = (new LoginProviderResolver($this->getDefaultLoginProviders()));

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Processor;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -806,10 +808,8 @@ final class SelectItemProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dividersAddedForEachGroupAndSortedDataProvider
-     */
+    #[DataProvider('dividersAddedForEachGroupAndSortedDataProvider')]
+    #[Test]
     public function dividersAreAddedForEachGroupWithLanguageServiceFactoryFallback(array $items, array $groups, array $sortOrders, array $expected): void
     {
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
@@ -823,10 +823,8 @@ final class SelectItemProcessorTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     * @dataProvider dividersAddedForEachGroupAndSortedDataProvider
-     */
+    #[DataProvider('dividersAddedForEachGroupAndSortedDataProvider')]
+    #[Test]
     public function dividersAreAddedForEachGroupWithGlobalLang(array $items, array $groups, array $sortOrders, array $expected): void
     {
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();

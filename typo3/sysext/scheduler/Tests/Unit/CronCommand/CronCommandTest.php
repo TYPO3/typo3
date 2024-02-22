@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Scheduler\CronCommand\CronCommand;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -51,18 +53,14 @@ final class CronCommandTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsNormalizedCronCommandSections(): void
     {
         $instance = new CronCommand('2-3 * * * *');
         self::assertSame(['2,3', '*', '*', '*', '*'], $instance->getCronCommandSections());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionForInvalidCronCommand(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -70,9 +68,7 @@ final class CronCommandTest extends UnitTestCase
         new CronCommand('61 * * * *');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTimestampToNowPlusOneMinuteRoundedDownToSixtySeconds(): void
     {
         $instance = new CronCommand('* * * * *');
@@ -81,18 +77,14 @@ final class CronCommandTest extends UnitTestCase
         self::assertSame($expectedTime, $instance->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTimestampToGivenTimestampPlusSixtySeconds(): void
     {
         $instance = new CronCommand('* * * * *', self::TIMESTAMP);
         self::assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTimestampToGiveTimestampRoundedDownToSixtySeconds(): void
     {
         $instance = new CronCommand('* * * * *', self::TIMESTAMP + 1);
@@ -232,12 +224,12 @@ final class CronCommandTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider expectedTimestampDataProvider
      * @param string $cronCommand Cron command
      * @param int $startTimestamp Timestamp for start of calculation
      * @param int $expectedTimestamp Expected result (next time of execution)
      */
+    #[DataProvider('expectedTimestampDataProvider')]
+    #[Test]
     public function calculateNextValueDeterminesCorrectNextTimestamp(string $cronCommand, int $startTimestamp, int $expectedTimestamp): void
     {
         $instance = new CronCommand($cronCommand, $startTimestamp);
@@ -246,12 +238,12 @@ final class CronCommandTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider expectedCalculatedTimestampDataProvider
      * @param string $cronCommand Cron command
      * @param int $startTimestamp Timestamp for start of calculation
      * @param string $expectedTimestamp Expected result (next time of execution), to be fed to strtotime
      */
+    #[DataProvider('expectedCalculatedTimestampDataProvider')]
+    #[Test]
     public function calculateNextValueDeterminesCorrectNextCalculatedTimestamp(string $cronCommand, int $startTimestamp, string $expectedTimestamp): void
     {
         $instance = new CronCommand($cronCommand, $startTimestamp);
@@ -260,13 +252,13 @@ final class CronCommandTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider expectedTimestampDataProvider
      * @param string $cronCommand Cron command
      * @param int $startTimestamp [unused] Timestamp for start of calculation
      * @param int $firstTimestamp Timestamp of the next execution
      * @param int $secondTimestamp Timestamp of the further execution
      */
+    #[DataProvider('expectedTimestampDataProvider')]
+    #[Test]
     public function calculateNextValueDeterminesCorrectNextTimestampOnConsecutiveCall(string $cronCommand, int $startTimestamp, int $firstTimestamp, int $secondTimestamp): void
     {
         $instance = new CronCommand($cronCommand, $firstTimestamp);
@@ -275,13 +267,13 @@ final class CronCommandTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider expectedCalculatedTimestampDataProvider
      * @param string $cronCommand Cron command
      * @param int $startTimestamp [unused] Timestamp for start of calculation
      * @param string $firstTimestamp Timestamp of the next execution, to be fed to strtotime
      * @param string $secondTimestamp Timestamp of the further execution, to be fed to strtotime
      */
+    #[DataProvider('expectedCalculatedTimestampDataProvider')]
+    #[Test]
     public function calculateNextValueDeterminesCorrectNextCalculatedTimestampOnConsecutiveCall(string $cronCommand, int $startTimestamp, string $firstTimestamp, string $secondTimestamp): void
     {
         $instance = new CronCommand($cronCommand, strtotime($firstTimestamp));
@@ -289,9 +281,7 @@ final class CronCommandTest extends UnitTestCase
         self::assertSame(strtotime($secondTimestamp), $instance->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function calculateNextValueDeterminesCorrectNextTimestampOnChangeToSummertime(): void
     {
         $backupTimezone = date_default_timezone_get();
@@ -302,9 +292,7 @@ final class CronCommandTest extends UnitTestCase
         self::assertSame(1269741600, $instance->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function calculateNextValueThrowsExceptionWithImpossibleCronCommand(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -313,18 +301,14 @@ final class CronCommandTest extends UnitTestCase
         $instance->calculateNextValue();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTimestampReturnsInteger(): void
     {
         $instance = new CronCommand('* * * * *');
         self::assertIsInt($instance->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCronCommandSectionsReturnsArray(): void
     {
         $instance = new CronCommand('* * * * *');

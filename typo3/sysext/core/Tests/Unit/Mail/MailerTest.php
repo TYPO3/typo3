@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Mailer\Transport\NullTransport;
@@ -61,9 +63,7 @@ final class MailerTest extends UnitTestCase
         };
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function injectedSettingsAreNotReplacedByGlobalSettings(): void
     {
         $settings = ['transport' => 'mbox', 'transport_mbox_file' => '/path/to/file'];
@@ -77,9 +77,7 @@ final class MailerTest extends UnitTestCase
         $this->subject->__construct();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function globalSettingsAreUsedIfNoSettingsAreInjected(): void
     {
         $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs']);
@@ -101,10 +99,8 @@ final class MailerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider wrongConfigurationProvider
-     */
+    #[DataProvider('wrongConfigurationProvider')]
+    #[Test]
     public function wrongConfigurationThrowsException(array $settings): void
     {
         $this->expectException(Exception::class);
@@ -116,9 +112,7 @@ final class MailerTest extends UnitTestCase
         $this->subject->__construct();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function providingCorrectClassnameDoesNotThrowException(): void
     {
         $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
@@ -127,9 +121,7 @@ final class MailerTest extends UnitTestCase
         $this->subject->__construct();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noPortSettingSetsPortTo25(): void
     {
         $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
@@ -140,9 +132,7 @@ final class MailerTest extends UnitTestCase
         self::assertEquals(25, $port);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyPortSettingSetsPortTo25(): void
     {
         $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
@@ -153,9 +143,7 @@ final class MailerTest extends UnitTestCase
         self::assertEquals(25, $port);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function givenPortSettingIsRespected(): void
     {
         $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
@@ -180,10 +168,8 @@ final class MailerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getRealTransportReturnsNoSpoolTransportProvider
-     */
+    #[DataProvider('getRealTransportReturnsNoSpoolTransportProvider')]
+    #[Test]
     public function getRealTransportReturnsNoSpoolTransport($settings): void
     {
         $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -102,9 +103,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         $this->frontendConfigurationManager->_set('eventDispatcher', $this->createMock(EventDispatcher::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConfigurationResetsConfigurationCache(): void
     {
         $this->frontendConfigurationManager->_set('configurationCache', ['foo' => 'bar']);
@@ -112,9 +111,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals([], $this->frontendConfigurationManager->_get('configurationCache'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConfigurationSetsExtensionAndPluginName(): void
     {
         $configuration = [
@@ -126,9 +123,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals('SomePluginName', $this->frontendConfigurationManager->_get('pluginName'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConfigurationConvertsTypoScriptArrayToPlainArray(): void
     {
         $configuration = [
@@ -146,9 +141,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->frontendConfigurationManager->_get('configuration'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationReturnsCachedResultOfCurrentPlugin(): void
     {
         $this->frontendConfigurationManager->_set('extensionName', 'CurrentExtensionName');
@@ -162,9 +155,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationReturnsCachedResultForGivenExtension(): void
     {
         $this->frontendConfigurationManager->_set('configurationCache', [
@@ -176,9 +167,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationRecursivelyMergesCurrentPluginConfigurationWithFrameworkConfiguration(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -226,9 +215,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationRecursivelyMergesPluginConfigurationOfSpecifiedPluginWithFrameworkConfiguration(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -274,9 +261,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationDoesNotOverrideConfigurationWithContextSpecificFrameworkConfigurationIfDifferentPluginIsSpecified(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -297,9 +282,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         $frontendConfigurationManager->getConfiguration('SomeExtensionName', 'SomePluginName');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOverridesConfigurationWithContextSpecificFrameworkConfigurationIfNoPluginWasSpecified(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -329,9 +312,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($contextSpecificFrameworkConfiguration, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOverridesConfigurationWithContextSpecificFrameworkConfigurationIfSpecifiedPluginIsTheCurrentPlugin(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -369,9 +350,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($contextSpecificFrameworkConfiguration, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationStoresResultInConfigurationCache(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -401,9 +380,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationRetrievesStoragePidIncludingGivenStoragePidWithRecursiveSetForSingleStoragePid(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -431,9 +408,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         $frontendConfigurationManager->getConfiguration('SomeOtherExtensionName', 'SomeOtherCurrentPluginName');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationRetrievesStoragePidIncludingGivenStoragePidWithRecursiveSetForMultipleStoragePid(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -461,9 +436,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         $frontendConfigurationManager->getConfiguration('SomeOtherExtensionName', 'SomeOtherCurrentPluginName');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypoScriptSetupReturnsSetupFromRequest(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -472,9 +445,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals(['foo' => 'bar'], $this->frontendConfigurationManager->_call('getTypoScriptSetup'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -489,9 +460,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPluginConfigurationReturnsExtensionConfiguration(): void
     {
         $testSettings = [
@@ -522,9 +491,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPluginConfigurationReturnsPluginConfiguration(): void
     {
         $testSettings = [
@@ -559,9 +526,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPluginConfigurationRecursivelyMergesExtensionAndPluginConfiguration(): void
     {
         $testExtensionSettings = [
@@ -632,9 +597,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerConfigurationReturnsEmptyArrayByDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = null;
@@ -647,9 +610,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerConfigurationReturnsConfigurationStoredInExtconf(): void
     {
         $controllerConfiguration = [
@@ -679,9 +640,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContextSpecificFrameworkConfigurationCorrectlyCallsOverrideMethods(): void
     {
         $frameworkConfiguration = [
@@ -711,9 +670,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mergeConfigurationIntoFrameworkConfigurationWorksAsExpected(): void
     {
         $configuration = [
@@ -734,9 +691,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideStoragePidIfStartingPointIsSetOverridesCorrectly(): void
     {
         $contentObject = new ContentObjectRenderer();
@@ -757,9 +712,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideStoragePidIfStartingPointIsSetCorrectlyHandlesEmptyValuesFromPageRepository(): void
     {
         $contentObject = new ContentObjectRenderer();
@@ -781,9 +734,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideConfigurationFromFlexFormChecksForDataIsString(): void
     {
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
@@ -808,9 +759,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideConfigurationFromFlexFormChecksForDataIsStringAndEmpty(): void
     {
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
@@ -831,9 +780,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideConfigurationFromFlexFormChecksForDataIsArray(): void
     {
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
@@ -854,9 +801,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideConfigurationFromFlexFormChecksForDataIsArrayAndEmpty(): void
     {
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
@@ -877,9 +822,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideConfigurationFromPluginOverridesCorrectly(): void
     {
         $frontendConfigurationManager = $this->getAccessibleMock(

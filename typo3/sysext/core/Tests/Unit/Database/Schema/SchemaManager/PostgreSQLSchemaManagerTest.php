@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\SchemaManager;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform;
@@ -30,10 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PostgreSQLSchemaManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     * @dataProvider platformDataProvider
-     */
+    #[DataProvider('platformDataProvider')]
+    #[Test]
     public function isInactiveForStandardColumnTypes(string $platform): void
     {
         /** @var DoctrinePostgreSQLPlatform&MockObject $platformMock */
@@ -46,10 +46,8 @@ final class PostgreSQLSchemaManagerTest extends UnitTestCase
         self::assertNull($column);
     }
 
-    /**
-     * @test
-     * @dataProvider platformDataProvider
-     */
+    #[DataProvider('platformDataProvider')]
+    #[Test]
     public function buildsColumnForEnumDataType(string $platform): void
     {
         /** @var DoctrinePostgreSQLPlatform&MockObject $platformMock */
@@ -74,10 +72,8 @@ final class PostgreSQLSchemaManagerTest extends UnitTestCase
         self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('unquotedValues'));
     }
 
-    /**
-     * @test
-     * @dataProvider platformDataProvider
-     */
+    #[DataProvider('platformDataProvider')]
+    #[Test]
     public function buildsColumnForSetDataType(string $platform): void
     {
         /** @var DoctrinePostgreSQLPlatform&MockObject $platformMock */

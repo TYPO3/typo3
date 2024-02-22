@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterPageTreeItemsPreparedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $request = new ServerRequest(new Uri('https://example.com'));

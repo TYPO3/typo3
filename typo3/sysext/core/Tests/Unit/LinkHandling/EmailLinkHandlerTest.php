@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\EmailLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -59,15 +61,13 @@ final class EmailLinkHandlerTest extends UnitTestCase
     }
 
     /**
-     * @test
-     *
      * @param string $input
      * @param array $expected
      * @param string $finalString
-     *
-     * @dataProvider resolveParametersForNonFilesDataProvider
      * @todo Defining the method parameter types results in test bench errors
      */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function resolveReturnsSplitParameters($input, $expected, $finalString): void
     {
         $subject = new EmailLinkHandler();
@@ -75,15 +75,13 @@ final class EmailLinkHandlerTest extends UnitTestCase
     }
 
     /**
-     * @test
-     *
      * @param string $input
      * @param array $parameters
      * @param string $expected
-     *
-     * @dataProvider resolveParametersForNonFilesDataProvider
      * @todo Defining the method parameter types results in test bench errors
      */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
     {
         $subject = new EmailLinkHandler();

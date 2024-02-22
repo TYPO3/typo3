@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Unit\Controller\Remote;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -94,9 +96,9 @@ final class RemoteServerTest extends UnitTestCase
 
     /**
      * @param array|null $expected
-     * @dataProvider prepareFileReferenceDifferencesAreCorrectDataProvider
-     * @test
      */
+    #[DataProvider('prepareFileReferenceDifferencesAreCorrectDataProvider')]
+    #[Test]
     public function prepareFileReferenceDifferencesAreCorrect(string $fileFileReferenceList, string $versionFileReferenceList, bool $useThumbnails, array $expected = null): void
     {
         $liveFileReferences = $this->getFileReferenceMocks($fileFileReferenceList);

@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Tca;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaMigrationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function missingTypeThrowsException(): void
     {
         $input = [
@@ -53,9 +53,7 @@ final class TcaMigrationTest extends UnitTestCase
         $subject->migrate($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateReturnsGivenArrayUnchangedIfNoMigrationNeeded(): void
     {
         $input = $expected = [
@@ -83,9 +81,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateAddsMissingColumnsConfig(): void
     {
         $input = [
@@ -138,9 +134,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ctrlSelIconFieldPathIsRemoved(): void
     {
         $input = [
@@ -176,9 +170,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ctrlSetToDefaultOnCopyIsRemoved(): void
     {
         $input = [
@@ -410,19 +402,15 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ctrlIntegrityColumnsAreAvailableDataProvider
-     */
+    #[DataProvider('ctrlIntegrityColumnsAreAvailableDataProvider')]
+    #[Test]
     public function ctrlIntegrityColumnsAreAvailable(array $tca, array $expectation): void
     {
         $subject = new TcaMigration();
         self::assertSame($expectation, $subject->migrate($tca));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeEnableMultiSelectFilterTextfieldConfigurationIsRemoved(): void
     {
         $input = [
@@ -473,9 +461,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeExcludeFieldForTransOrigPointerFieldIsRemoved(): void
     {
         $input = [
@@ -555,9 +541,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeShowRecordFieldListFieldIsRemoved(): void
     {
         $input = [
@@ -588,9 +572,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ctrlShadowColumnsForMovePlaceholdersIsRemoved(): void
     {
         $input = [
@@ -623,9 +605,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ctrlShadowColumnsForMoveAndPlaceholdersIsRemoved(): void
     {
         $input = [
@@ -659,9 +639,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function languageFieldsAreMigratedToTcaTypeLanguage(): void
     {
         $input = [
@@ -820,9 +798,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function showRemovedLocalizationRecordsRemoved(): void
     {
         $input = [
@@ -903,9 +879,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileFolderConfigurationIsMigrated(): void
     {
         $input = [
@@ -1054,9 +1028,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function levelLinksPositionIsMigrated(): void
     {
         $input = [
@@ -1167,9 +1139,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rootUidIsMigratedToStartingPositions(): void
     {
         $input = [
@@ -1321,10 +1291,8 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider internalTypeFolderMigratedToTypeDataProvider
-     * @test
-     */
+    #[DataProvider('internalTypeFolderMigratedToTypeDataProvider')]
+    #[Test]
     public function internalTypeFolderMigratedToType(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -1441,10 +1409,8 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider requiredFlagIsMigratedDataProvider
-     * @test
-     */
+    #[DataProvider('requiredFlagIsMigratedDataProvider')]
+    #[Test]
     public function requiredFlagIsMigrated(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -1562,11 +1528,11 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider evalNullMigratedToNullableOptionDataProvider
-     * @test
      * @param array<string, mixed> $input
      * @param array<string, mixed> $expected
      */
+    #[DataProvider('evalNullMigratedToNullableOptionDataProvider')]
+    #[Test]
     public function evalNullMigratedToNullableOption(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -1666,10 +1632,8 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider evalEmailMigratedToTypeDataProvider
-     * @test
-     */
+    #[DataProvider('evalEmailMigratedToTypeDataProvider')]
+    #[Test]
     public function evalEmailMigratedToType(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -1736,10 +1700,8 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider typeNoneColsMigratedToSizeDataProvider
-     * @test
-     */
+    #[DataProvider('typeNoneColsMigratedToSizeDataProvider')]
+    #[Test]
     public function typeNoneColsMigratedToSize(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
@@ -1976,10 +1938,8 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderTypeInputLinkMigratedToTypeLinkDataProvider
-     * @test
-     */
+    #[DataProvider('renderTypeInputLinkMigratedToTypeLinkDataProvider')]
+    #[Test]
     public function renderTypeInputLinkMigratedToTypeLink(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -2097,10 +2057,8 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider evalPasswordSaltedPasswordMigratedToTypePasswordDataProvider
-     * @test
-     */
+    #[DataProvider('evalPasswordSaltedPasswordMigratedToTypePasswordDataProvider')]
+    #[Test]
     public function evalPasswordSaltedPasswordMigratedToTypePassword(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -2383,19 +2341,15 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderTypeInputDateTimeMigratedToTypeDatetimeDataProvider
-     * @test
-     */
+    #[DataProvider('renderTypeInputDateTimeMigratedToTypeDatetimeDataProvider')]
+    #[Test]
     public function renderTypeInputDateTimeMigratedToTypeDatetime(array $input, array $expected): void
     {
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authModeEnforceIsRemoved(): void
     {
         $input = [
@@ -2444,9 +2398,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authModeValuesAreEnforced(): void
     {
         $input = [
@@ -2793,10 +2745,8 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider selectIndividualAllowDenyMigratedToNewPositionDataProvider
-     * @test
-     */
+    #[DataProvider('selectIndividualAllowDenyMigratedToNewPositionDataProvider')]
+    #[Test]
     public function selectIndividualAllowDenyMigratedToNewPosition(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -2876,10 +2826,8 @@ final class TcaMigrationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderTypeColorpickerToTypeColorDataProvider
-     * @test
-     */
+    #[DataProvider('renderTypeColorpickerToTypeColorDataProvider')]
+    #[Test]
     public function renderTypeColorpickerToTypeColor(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -3047,11 +2995,11 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider typeTextWithEvalIntOrDouble2MigratedToTypeNumberDataProvider
-     * @test
      * @param array<string, mixed> $input
      * @param array<string, mixed> $expected
      */
+    #[DataProvider('typeTextWithEvalIntOrDouble2MigratedToTypeNumberDataProvider')]
+    #[Test]
     public function typeTextWithEvalIntOrDouble2MigratedToTypeNumber(array $input, array $expected): void
     {
         $subject = new TcaMigration();
@@ -3098,20 +3046,18 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider propertyAlwaysDescriptionIsRemovedDataProvider
-     * @test
      * @param array<string, mixed> $input
      * @param array<string, mixed> $expected
      */
+    #[DataProvider('propertyAlwaysDescriptionIsRemovedDataProvider')]
+    #[Test]
     public function propertyAlwaysDescriptionIsRemoved(array $input, array $expected): void
     {
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ctrlCruserIdIsRemoved(): void
     {
         $input = [
@@ -3384,12 +3330,12 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider falHandlingInTypeInlineIsMigratedToTypeFileDataProvider
-     * @test
      * @param array<string, mixed> $input
      * @param array<string, mixed> $expected
      * @param string $expectedMessagePart
      */
+    #[DataProvider('falHandlingInTypeInlineIsMigratedToTypeFileDataProvider')]
+    #[Test]
     public function falHandlingInTypeInlineIsMigratedToTypeFile(array $input, array $expected, $expectedMessagePart = ''): void
     {
         $subject = new TcaMigration();
@@ -3406,9 +3352,7 @@ final class TcaMigrationTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function falRelatedElementBrowserOptionsAreRemovedFromTypeGroup(): void
     {
         $input = [
@@ -3441,9 +3385,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function falRelatedOptionsAreRemovedFromTypeInline(): void
     {
         $input = [
@@ -3479,9 +3421,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passContentIsRemovedFromTypeNone(): void
     {
         $input = [
@@ -3522,9 +3462,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itemsAreMigratedToAssociatedArray(): void
     {
         $input = [
@@ -3639,9 +3577,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrationRemovesMmInsertFields(): void
     {
         $input = [
@@ -3672,9 +3608,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrationRemovesMmHasUidFieldIfFalse(): void
     {
         $input = [
@@ -3703,9 +3637,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrationRemovesMmHasUidFieldIfTrue(): void
     {
         $input = [
@@ -3734,9 +3666,7 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrationChangesRenderTypeFromT3Editor(): void
     {
         $input = [

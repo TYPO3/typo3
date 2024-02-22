@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -48,9 +49,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsExistingDataStructure(): void
     {
         $input = [
@@ -95,9 +94,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsParsedDataStructureArray(): void
     {
         $input = [
@@ -164,9 +161,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsParsedDataStructureArrayWithSheets(): void
     {
         $input = [
@@ -239,9 +234,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataInitializesDatabaseRowValueIfNoDataStringIsGiven(): void
     {
         $input = [
@@ -283,9 +276,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsParsedDataStructureArrayRecursive(): void
     {
         $input = [
@@ -425,9 +416,8 @@ final class TcaFlexPrepareTest extends UnitTestCase
      * Test of the data provider when called for a section with already
      * resolved flex form, e.g. in an ajax request (tcaSelectTreeAjaxFieldData),
      * which got "reduced to the relevant element only".
-     *
-     * @test
      */
+    #[Test]
     public function addDataMigratesResolvedFlexformTca(): void
     {
         $columnConfig = [

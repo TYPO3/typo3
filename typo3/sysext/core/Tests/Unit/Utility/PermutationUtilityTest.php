@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\StringValue;
 use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -101,10 +103,9 @@ final class PermutationUtilityTest extends UnitTestCase
 
     /**
      * @param array|int $expectation
-     *
-     * @test
-     * @dataProvider meltStringItemsDataProvider
      */
+    #[DataProvider('meltStringItemsDataProvider')]
+    #[Test]
     public function meltStringItemsIsExecuted(array $payload, $expectation): void
     {
         if (is_int($expectation)) {
@@ -184,10 +185,9 @@ final class PermutationUtilityTest extends UnitTestCase
 
     /**
      * @param array|int $expectation
-     *
-     * @test
-     * @dataProvider meltArrayItemsDataProvider
      */
+    #[DataProvider('meltArrayItemsDataProvider')]
+    #[Test]
     public function meltArrayItemsIsExecuted(array $payload, $expectation): void
     {
         if (is_int($expectation)) {

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Exception;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ProductionExceptionHandlerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function relayPropagateResponseException(): void
     {
         $exception = new PropagateResponseException(new HtmlResponse(''), 1607328584);
@@ -41,9 +40,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $subject->handle($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function relayImmediateResponseException(): void
     {
         $exception = new ImmediateResponseException(new HtmlResponse(''), 1533939251);
@@ -53,9 +50,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $subject->handle($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleReturnsMessageWithResolvedErrorCode(): void
     {
         $currentTimestamp = 1629993829;
@@ -74,9 +69,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleReturnsCustomErrorMessageWithResolvedErrorCode(): void
     {
         $currentTimestamp = 1629993829;
@@ -98,9 +91,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleReturnsCustomErrorMessageWithResolvedErrorCodeForLegacyPlaceholder(): void
     {
         $currentTimestamp = 1629993829;

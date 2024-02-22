@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing\Aspect;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\AspectInterface;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedMappableAspectInterface;
@@ -35,9 +37,7 @@ final class AspectFactoryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAspectsThrowsExceptionOnMissingType(): void
     {
         $aspectFactory = new AspectFactory();
@@ -50,9 +50,7 @@ final class AspectFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAspectsThrowsExceptionOnUnregisteredType(): void
     {
         $aspectFactory = new AspectFactory();
@@ -127,10 +125,9 @@ final class AspectFactoryTest extends UnitTestCase
 
     /**
      * @param string[] $expectation
-     *
-     * @test
-     * @dataProvider aspectsDataProvider
      */
+    #[DataProvider('aspectsDataProvider')]
+    #[Test]
     public function aspectsAreCreatedAndSorted(array $settings, array $expectation): void
     {
         $aspectFactory = new AspectFactory();

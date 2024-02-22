@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Type;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MapTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function mapIsArrayAccessible(): void
     {
         $aKey = new \stdClass();
@@ -42,9 +41,7 @@ final class MapTest extends UnitTestCase
         self::assertSame($bValue, $map[$bKey]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapKeyCanBeUnset(): void
     {
         $aKey = new \stdClass();
@@ -62,9 +59,7 @@ final class MapTest extends UnitTestCase
         self::assertFalse(isset($map[$bKey]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapCanBeIterated(): void
     {
         $aKey = new \stdClass();
@@ -88,9 +83,7 @@ final class MapTest extends UnitTestCase
         self::assertSame($expectation, $entries);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapIsCreatedFromEntries(): void
     {
         $aKey = new \stdClass();

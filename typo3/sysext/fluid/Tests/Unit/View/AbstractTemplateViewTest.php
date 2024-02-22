@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\AbstractTemplateView;
@@ -50,9 +51,7 @@ final class AbstractTemplateViewTest extends UnitTestCase
         $this->view->setRenderingContext($this->renderingContext);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewIsPlacedInViewHelperVariableContainer(): void
     {
         $this->viewHelperVariableContainer->expects(self::once())->method('setView')->with($this->view);

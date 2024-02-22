@@ -70,10 +70,6 @@ final class ErrorHandlerTest extends UnitTestCase
     #[WithoutErrorHandler]
     #[Test]
     #[DataProvider('errorTests')]
-    /**
-     * @test
-     * @dataProvider errorTests
-     */
     public function errorHandlerLogsCorrectly(
         int $levelsToHandle,
         int $levelsToThrow,

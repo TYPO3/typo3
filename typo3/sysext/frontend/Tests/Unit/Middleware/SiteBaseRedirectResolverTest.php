@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -135,10 +137,8 @@ final class SiteBaseRedirectResolverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider doRedirectOnMissingOrSuperfluousRequestUrlDataProvider
-     * @test
-     */
+    #[DataProvider('doRedirectOnMissingOrSuperfluousRequestUrlDataProvider')]
+    #[Test]
     public function doRedirectOnMissingOrSuperfluousRequestUrl(
         string $incomingUrl,
         string $expectedRedirectUrl,
@@ -166,10 +166,8 @@ final class SiteBaseRedirectResolverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkIf404IsSiteLanguageIsDisabledInFrontendDataProvider
-     */
+    #[DataProvider('checkIf404IsSiteLanguageIsDisabledInFrontendDataProvider')]
+    #[Test]
     public function checkIf404IsSiteLanguageIsDisabledInFrontend(
         string $url,
         int $expectedStatusCode,
@@ -248,10 +246,8 @@ final class SiteBaseRedirectResolverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider doNotRedirectOnBaseWithoutQueryDataProvider
-     * @test
-     */
+    #[DataProvider('doNotRedirectOnBaseWithoutQueryDataProvider')]
+    #[Test]
     public function doNotRedirectOnBaseWithoutQuery(
         string $incomingUrl,
         Site $site,
@@ -269,9 +265,7 @@ final class SiteBaseRedirectResolverTest extends UnitTestCase
         self::assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function useDefaultLanguageIfNoLanguageIsGiven(): void
     {
         $incomingUrl = 'https://twenty.one/';
@@ -306,9 +300,7 @@ final class SiteBaseRedirectResolverTest extends UnitTestCase
         self::assertEquals('https://twenty.one/en/', $response->getHeader('Location')[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function useFirstAvailableLanguageIfDefaultLanguageIsNotEnabledAndLanguageIsGiven(): void
     {
         $incomingUrl = 'https://twenty.one/';

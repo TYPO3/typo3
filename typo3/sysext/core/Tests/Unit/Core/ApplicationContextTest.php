@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -42,10 +44,8 @@ final class ApplicationContextTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider allowedContexts
-     */
+    #[DataProvider('allowedContexts')]
+    #[Test]
     public function contextStringCanBeSetInConstructorAndReadByCallingToString($allowedContext): void
     {
         $context = new ApplicationContext($allowedContext);
@@ -65,10 +65,8 @@ final class ApplicationContextTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider forbiddenContexts
-     */
+    #[DataProvider('forbiddenContexts')]
+    #[Test]
     public function constructorThrowsExceptionIfMainContextIsForbidden($forbiddenContext): void
     {
         $this->expectException(Exception::class);
@@ -130,10 +128,8 @@ final class ApplicationContextTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isMethods
-     */
+    #[DataProvider('isMethods')]
+    #[Test]
     public function contextMethodsReturnTheCorrectValues($contextName, $isDevelopment, $isProduction, $isTesting, $parentContext): void
     {
         $context = new ApplicationContext($contextName);
@@ -143,9 +139,7 @@ final class ApplicationContextTest extends UnitTestCase
         self::assertSame((string)$parentContext, (string)$context->getParent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parentContextIsConnectedRecursively(): void
     {
         $context = new ApplicationContext('Production/Foo/Bar');

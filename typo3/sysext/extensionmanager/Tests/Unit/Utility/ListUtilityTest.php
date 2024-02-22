@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -107,10 +109,8 @@ final class ListUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAvailableAndInstalledExtensionsDataProvider
-     */
+    #[DataProvider('getAvailableAndInstalledExtensionsDataProvider')]
+    #[Test]
     public function getAvailableAndInstalledExtensionsTest(array $availableExtensions, array $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->subject->getAvailableAndInstalledExtensions($availableExtensions));
@@ -137,10 +137,8 @@ final class ListUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider enrichExtensionsWithEmConfInformationDataProvider
-     */
+    #[DataProvider('enrichExtensionsWithEmConfInformationDataProvider')]
+    #[Test]
     public function enrichExtensionsWithEmConfInformation(array $extensions, array $emConf, array $expectedResult): void
     {
         $this->subject->injectExtensionRepository($this->getAccessibleMock(ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));

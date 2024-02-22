@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Processing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Processing\ImagePreviewTask;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class LocalPreviewHelperTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function processProvidesDefaultSizeIfNotConfigured(): void
     {
         $file = $this->createMock(File::class);
@@ -56,9 +55,7 @@ final class LocalPreviewHelperTest extends UnitTestCase
         $localPreviewHelper->process($task);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDoesNotScaleUpImages(): void
     {
         $file = $this->createMock(File::class);
@@ -79,9 +76,7 @@ final class LocalPreviewHelperTest extends UnitTestCase
         self::assertNull($localPreviewHelper->process($task));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processGeneratesPreviewEvenIfSourceFileHasNoSize(): void
     {
         $file = $this->createMock(File::class);

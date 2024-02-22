@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MiddlewareStackResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveReturnsMiddlewareStack(): void
     {
         $middlewares = new \ArrayObject(array_replace_recursive(
@@ -53,9 +52,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
         self::assertEquals($expected, $subject->resolve('testStack'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveReturnsEmptyMiddlewareStackForZeroPackages(): void
     {
         $middlewares = new \ArrayObject();
@@ -75,9 +72,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
         self::assertEquals($expected, $subject->resolve('testStack'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveAllowsDisablingAMiddleware(): void
     {
         $middlewares = new \ArrayObject(array_replace_recursive(
@@ -103,9 +98,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
         self::assertEquals($expected, $subject->resolve('testStack'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveAllowsReplacingAMiddleware(): void
     {
         $middlewares = new \ArrayObject(array_replace_recursive(

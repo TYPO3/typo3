@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
 use Doctrine\Instantiator\InstantiatorInterface;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -71,9 +72,7 @@ final class DataMapperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOrderingsForColumnMapReturnsNullIfNeitherForeignSortByNorForeignDefaultSortByAreSet(): void
     {
         // Arrange
@@ -91,9 +90,7 @@ final class DataMapperTest extends UnitTestCase
         self::assertNull($orderings);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOrderingsForColumnMapReturnsNullIfForeignDefaultSortByIsEmpty(): void
     {
         // Arrange
@@ -112,9 +109,7 @@ final class DataMapperTest extends UnitTestCase
         self::assertNull($orderings);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOrderingsForColumnMapFallBackToAscendingOrdering(): void
     {
         // Arrange
@@ -136,9 +131,7 @@ final class DataMapperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOneToManyRelationDetectsForeignSortBy(): void
     {
         // Arrange
@@ -160,9 +153,7 @@ final class DataMapperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOneToManyRelationDetectsForeignSortByWithForeignDefaultSortBy(): void
     {
         // Arrange
@@ -185,9 +176,7 @@ final class DataMapperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOneToManyRelationDetectsForeignDefaultSortByWithoutDirection(): void
     {
         // Arrange
@@ -209,9 +198,7 @@ final class DataMapperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOneToManyRelationDetectsForeignDefaultSortByWithDirection(): void
     {
         // Arrange
@@ -233,9 +220,7 @@ final class DataMapperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOneToManyRelationDetectsMultipleForeignDefaultSortByWithAndWithoutDirection(): void
     {
         // Arrange

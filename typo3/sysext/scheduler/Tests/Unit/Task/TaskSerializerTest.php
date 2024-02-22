@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
@@ -45,10 +47,8 @@ final class TaskSerializerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dataIsDeserializedDataProvider
-     */
+    #[DataProvider('dataIsDeserializedDataProvider')]
+    #[Test]
     public function dataIsDeserialized(string $data, $expectation): void
     {
         $taskSerializer = new TaskSerializer();
@@ -85,10 +85,8 @@ final class TaskSerializerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider deserializationThrowsExceptionDataProvider
-     */
+    #[DataProvider('deserializationThrowsExceptionDataProvider')]
+    #[Test]
     public function deserializationThrowsException(string $data, int $exceptionCode): void
     {
         $this->expectException(InvalidTaskException::class);
@@ -114,10 +112,8 @@ final class TaskSerializerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider classNameIsResolvedDataProvider
-     */
+    #[DataProvider('classNameIsResolvedDataProvider')]
+    #[Test]
     public function classNameIsResolved(?object $task, ?string $expectation): void
     {
         $taskSerializer = new TaskSerializer();
@@ -142,10 +138,8 @@ final class TaskSerializerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider classNameIsExtractedDataProvider
-     */
+    #[DataProvider('classNameIsExtractedDataProvider')]
+    #[Test]
     public function classNameIsExtracted(string $serializedTask, ?string $expectation): void
     {
         $taskSerializer = new TaskSerializer();

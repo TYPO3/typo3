@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaColumnsProcessShowitemTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfTypesHasNoShowitem(): void
     {
         $input = [
@@ -46,9 +45,7 @@ final class TcaColumnsProcessShowitemTest extends UnitTestCase
         (new TcaColumnsProcessShowitem())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersColumnsFieldReferencedInShowitems(): void
     {
         $input = [
@@ -83,9 +80,7 @@ final class TcaColumnsProcessShowitemTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsColumnsFieldReferencedInPalette(): void
     {
         $input = [
@@ -125,9 +120,7 @@ final class TcaColumnsProcessShowitemTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSkipsColumnsNotReferencedInShowitemOrPalette(): void
     {
         $input = [
@@ -171,9 +164,7 @@ final class TcaColumnsProcessShowitemTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSkipsColumnsForCollapsedInlineChild(): void
     {
         $input = [
@@ -208,9 +199,7 @@ final class TcaColumnsProcessShowitemTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSkipsColumnsForCollapsedAllInlineChild(): void
     {
         $input = [
@@ -252,9 +241,7 @@ final class TcaColumnsProcessShowitemTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessShowitem())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsColumnsForExpandedInlineChild(): void
     {
         $input = [

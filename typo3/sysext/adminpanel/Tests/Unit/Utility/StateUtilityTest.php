@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -24,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StateUtilityTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isEnabledReturnsFalseIfNoBackendUserExists(): void
     {
         $GLOBALS['BE_USER'] = false;
@@ -34,9 +34,7 @@ final class StateUtilityTest extends UnitTestCase
         self::assertFalse($isEnabled);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isEnabledReturnsFalseIfNoBackendUserInFrontendContextIsLoggedIn(): void
     {
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
@@ -68,10 +66,8 @@ final class StateUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tsConfigEnabledDataProvider
-     */
+    #[DataProvider('tsConfigEnabledDataProvider')]
+    #[Test]
     public function isEnabledReturnsTrueIfAtLeastOneModuleIsEnabled(array $tsConfig): void
     {
         $beUserMock = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
@@ -104,10 +100,8 @@ final class StateUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tsConfigDisabledDataProvider
-     */
+    #[DataProvider('tsConfigDisabledDataProvider')]
+    #[Test]
     public function isEnabledReturnsFalseIfNoModulesEnabled(array $tsConfig): void
     {
         $beUserMock = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
@@ -143,10 +137,8 @@ final class StateUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tsConfigHideDataProvider
-     */
+    #[DataProvider('tsConfigHideDataProvider')]
+    #[Test]
     public function isHiddenForUserReturnsCorrectValue(array $tsConfig, bool $expected): void
     {
         $beUserMock = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->disableOriginalConstructor()->getMock();
@@ -156,9 +148,7 @@ final class StateUtilityTest extends UnitTestCase
         self::assertSame($expected, $isEnabled);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isHiddenForUserReturnsFalseIfUserIsNotAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;
@@ -192,10 +182,8 @@ final class StateUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ucDisplayOpenDataProvider
-     */
+    #[DataProvider('ucDisplayOpenDataProvider')]
+    #[Test]
     public function isOpenForUserReturnsCorrectValue(array $uc, bool $expected): void
     {
         $beUser = new FrontendBackendUserAuthentication();
@@ -205,9 +193,7 @@ final class StateUtilityTest extends UnitTestCase
         self::assertSame($expected, $isOpen);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isOpenForUserReturnsFalseIfUserIsNotAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;

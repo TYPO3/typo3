@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Routing\Route;
 use TYPO3\CMS\Core\Routing\RouteSorter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -238,10 +240,9 @@ final class RouteSorterTest extends UnitTestCase
      * @param Route[] $givenRoutes
      * @param array<string, string> $givenParameters
      * @param string[] $expectation
-     *
-     * @test
-     * @dataProvider routesAreSortedForGenerationDataProvider
      */
+    #[DataProvider('routesAreSortedForGenerationDataProvider')]
+    #[Test]
     public function routesAreSortedForGeneration(array $givenRoutes, array $givenParameters, array $expectation): void
     {
         $sorter = (new RouteSorter())

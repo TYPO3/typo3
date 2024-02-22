@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -33,9 +34,7 @@ final class TcaInlineTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $this->beUserMock;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataWithoutModifyRightsButWithInlineTypeWillNotParseChildren(): void
     {
         $input = [
@@ -66,9 +65,7 @@ final class TcaInlineTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInline())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataWithUserRightsButWithoutInlineTypeWillNotParseChildren(): void
     {
         $input = [
@@ -98,9 +95,7 @@ final class TcaInlineTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInline())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataWithInlineTypeAndModifyRightsWillAddChildren(): void
     {
         $input = [

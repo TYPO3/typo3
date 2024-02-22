@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -147,10 +149,8 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findRefReturnsParsedElementsDataProvider
-     */
+    #[DataProvider('findRefReturnsParsedElementsDataProvider')]
+    #[Test]
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement): void
     {
         $subject = $this->getParserByKey('typolink_tag');
@@ -192,10 +192,8 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findRefReturnsParsedElementsWithFileDataProvider
-     */
+    #[DataProvider('findRefReturnsParsedElementsWithFileDataProvider')]
+    #[Test]
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
         $fileObject = $this->createMock(File::class);
@@ -247,10 +245,8 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findRefReturnsNullWithFolderDataProvider
-     */
+    #[DataProvider('findRefReturnsNullWithFolderDataProvider')]
+    #[Test]
     public function findRefReturnsNullWithFolder(array $softrefConfiguration): void
     {
         $folderObject = $this->createMock(Folder::class);

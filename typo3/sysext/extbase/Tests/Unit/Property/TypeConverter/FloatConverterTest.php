@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter;
@@ -24,33 +25,25 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FloatConverterTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromShouldCastTheStringToFloat(): void
     {
         self::assertSame(1.5, (new FloatConverter())->convertFrom('1.5', 'float'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsNullIfEmptyStringSpecified(): void
     {
         self::assertNull((new FloatConverter())->convertFrom('', 'float'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromShouldAcceptIntegers(): void
     {
         self::assertSame((float)123, (new FloatConverter())->convertFrom(123, 'float'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromShouldRespectConfiguration(): void
     {
         $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
@@ -70,17 +63,13 @@ final class FloatConverterTest extends UnitTestCase
         self::assertSame(1024.42, (new FloatConverter())->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric(): void
     {
         self::assertInstanceOf(Error::class, (new FloatConverter())->convertFrom('not numeric', 'float'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray(): void
     {
         self::assertEquals([], (new FloatConverter())->getSourceChildPropertiesToBeConverted('myString'));

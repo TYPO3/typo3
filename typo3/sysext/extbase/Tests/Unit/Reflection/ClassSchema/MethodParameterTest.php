@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchema;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterException;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
@@ -35,9 +36,7 @@ final class MethodParameterTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsMandatoryParams(): void
     {
         self::assertFalse(
@@ -48,9 +47,7 @@ final class MethodParameterTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsDefaultValueParams(): void
     {
         self::assertSame(
@@ -62,9 +59,7 @@ final class MethodParameterTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsParamTypeFromTypeHint(): void
     {
         self::assertSame(
@@ -76,9 +71,7 @@ final class MethodParameterTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsIgnoreValidationAnnotation(): void
     {
         $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationDoctrineAnnotation::class))
@@ -89,9 +82,7 @@ final class MethodParameterTest extends UnitTestCase
         $this->expectException(NoSuchMethodParameterException::class);
         $classSchemaMethod->getParameter('baz')->ignoreValidation();
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsIgnoreValidationAttribute(): void
     {
         $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationDoctrineAttribute::class))
@@ -103,9 +94,7 @@ final class MethodParameterTest extends UnitTestCase
         $classSchemaMethod->getParameter('baz')->ignoreValidation();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsValidateAnnotationsOfControllerActions(): void
     {
         $classSchema = new ClassSchema(DummyController::class);
@@ -149,9 +138,7 @@ final class MethodParameterTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsValidateAttributesOfControllerActions(): void
     {
         $classSchema = new ClassSchema(DummyController::class);

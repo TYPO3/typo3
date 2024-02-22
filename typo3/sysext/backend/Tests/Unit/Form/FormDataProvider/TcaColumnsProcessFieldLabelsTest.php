@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsLabelAsIsIfNoOverrideIsGiven(): void
     {
         $input = [
@@ -53,9 +52,7 @@ final class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsLabelFromShowitem(): void
     {
         $input = [
@@ -85,9 +82,7 @@ final class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsLabelFromPalettesShowitem(): void
     {
         $input = [
@@ -123,9 +118,7 @@ final class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsLabelFromPageTsConfig(): void
     {
         $input = [
@@ -159,9 +152,7 @@ final class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessFieldLabels())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsLabelFromPageTsConfigForSpecificLanguage(): void
     {
         $input = [

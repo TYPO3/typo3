@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Imaging;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -45,11 +47,8 @@ final class GifBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider singleIntegerDataProvider
-     */
+    #[DataProvider('singleIntegerDataProvider')]
+    #[Test]
     public function calcOffsetWithSingleIntegerReturnsTheGivenIntegerAsString(string $number): void
     {
         $result = $this->subject->calcOffset($number);
@@ -57,9 +56,7 @@ final class GifBuilderTest extends UnitTestCase
         self::assertSame($number, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function calcOffsetWithMultipleIntegersReturnsTheGivenIntegerCommaSeparated(): void
     {
         $numbers = '1,2,3';
@@ -68,9 +65,7 @@ final class GifBuilderTest extends UnitTestCase
         self::assertSame($numbers, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function calcOffsetTrimsWhitespaceAroundProvidedNumbers(): void
     {
         $result = $this->subject->calcOffset(' 1, 2, 3 ');
@@ -89,11 +84,8 @@ final class GifBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider roundingDataProvider
-     */
+    #[DataProvider('roundingDataProvider')]
+    #[Test]
     public function calcOffsetRoundsNumbersToNearestInteger(string $input, string $expectedResult): void
     {
         $result = $this->subject->calcOffset($input);
@@ -118,11 +110,8 @@ final class GifBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider calculationDataProvider
-     */
+    #[DataProvider('calculationDataProvider')]
+    #[Test]
     public function calcOffsetDoesTheProvidedCalculation(string $input, string $expectedResult): void
     {
         $result = $this->subject->calcOffset($input);

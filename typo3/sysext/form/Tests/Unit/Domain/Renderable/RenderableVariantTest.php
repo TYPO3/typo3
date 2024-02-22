@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Renderable;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableVariant;
@@ -26,9 +27,7 @@ final class RenderableVariantTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function formVariantOverridesArrayValues(): void
     {
         $formElementIdentifier = 'form-element-identifier';
@@ -74,9 +73,7 @@ final class RenderableVariantTest extends UnitTestCase
         self::assertEquals($expected, $mockFormElement->_get('properties'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderableIsPassedToConditionEvaluation(): void
     {
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);

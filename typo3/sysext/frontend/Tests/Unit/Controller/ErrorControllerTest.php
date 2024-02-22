@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -28,9 +29,7 @@ final class ErrorControllerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageNotFoundHandlingReturns404ResponseIfNotConfigured(): void
     {
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
@@ -44,9 +43,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertStringContainsString('This test page was not found!', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unavailableHandlingReturns503ResponseIfNotConfigured(): void
     {
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
@@ -60,9 +57,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertStringContainsString('This page is temporarily unavailable.', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unavailableHandlingDoesNotTriggerDueToDevIpMask(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
@@ -76,9 +71,7 @@ final class ErrorControllerTest extends UnitTestCase
         $subject->unavailableAction($request, 'All your system are belong to us!');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function internalErrorHandlingReturns500ResponseIfNotConfigured(): void
     {
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
@@ -92,9 +85,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertStringContainsString('All your system are belong to us!', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function internalErrorHandlingDoesNotTriggerDueToDevIpMask(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
@@ -108,9 +99,7 @@ final class ErrorControllerTest extends UnitTestCase
         $subject->internalErrorAction($request, 'All your system are belong to us!');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction(): void
     {
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
@@ -125,9 +114,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction(): void
     {
         $request = new ServerRequest();
@@ -140,9 +127,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForUnavailableAction(): void
     {
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
@@ -157,9 +142,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForUnavailableAction(): void
     {
         $request = new ServerRequest();
@@ -172,9 +155,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction(): void
     {
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
@@ -189,9 +170,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction(): void
     {
         $request = new ServerRequest();
@@ -204,9 +183,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction(): void
     {
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
@@ -221,9 +198,7 @@ final class ErrorControllerTest extends UnitTestCase
         self::assertStringContainsString('Error handler is not configured.', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction(): void
     {
         $request = new ServerRequest();

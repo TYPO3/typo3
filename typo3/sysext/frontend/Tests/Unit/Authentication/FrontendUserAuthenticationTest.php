@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -32,9 +33,8 @@ final class FrontendUserAuthenticationTest extends UnitTestCase
     /**
      * Setting and immediately removing session data should be handled correctly.
      * No write operations should be made
-     *
-     * @test
      */
+    #[Test]
     public function canSetAndUnsetSessionKey(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
@@ -72,9 +72,8 @@ final class FrontendUserAuthenticationTest extends UnitTestCase
 
     /**
      * A user that is not signed in should be able to have associated session data
-     *
-     * @test
      */
+    #[Test]
     public function canSetSessionDataForAnonymousUser(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');

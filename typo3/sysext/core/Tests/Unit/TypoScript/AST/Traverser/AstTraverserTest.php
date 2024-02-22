@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST\Traverser;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AstTraverserTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function traverseThrowsExceptionWithVisitorNotImplementingInterface(): void
     {
         $this->expectException(\RuntimeException::class);

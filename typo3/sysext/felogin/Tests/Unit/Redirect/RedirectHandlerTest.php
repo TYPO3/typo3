@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Redirect;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -63,10 +65,8 @@ final class RedirectHandlerTest extends UnitTestCase
         yield 'empty string on redirect mode logout' => ['', 'logout'];
     }
 
-    /**
-     * @test
-     * @dataProvider loginTypeLogoutDataProvider
-     */
+    #[DataProvider('loginTypeLogoutDataProvider')]
+    #[Test]
     public function processShouldReturnStringForLoginTypeLogout(string $expect, string $redirectMode): void
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -95,10 +95,8 @@ final class RedirectHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getLogoutRedirectUrlDataProvider
-     */
+    #[DataProvider('getLogoutRedirectUrlDataProvider')]
+    #[Test]
     public function getLogoutRedirectUrlShouldReturnAlternativeRedirectUrl(
         string $expected,
         array $redirectModes,
@@ -122,9 +120,7 @@ final class RedirectHandlerTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->getLogoutFormRedirectUrl($request, $configuration, 13, false));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLogoutRedirectUrlShouldReturnAlternativeRedirectUrlForLoggedInUserAndRedirectPageLogoutSet(): void
     {
         $this->subject = new RedirectHandler(
@@ -181,10 +177,8 @@ final class RedirectHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getLoginFormRedirectUrlDataProvider
-     */
+    #[DataProvider('getLoginFormRedirectUrlDataProvider')]
+    #[Test]
     public function getLoginFormRedirectUrlReturnsExpectedValue(
         string $redirectUrl,
         string $redirectMode,
@@ -208,9 +202,7 @@ final class RedirectHandlerTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->getLoginFormRedirectUrl($request, $configuration, $redirectDisabled));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReferrerForLoginFormReturnsEmptyStringIfRedirectModeReferrerDisabled(): void
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -219,9 +211,7 @@ final class RedirectHandlerTest extends UnitTestCase
         self::assertEquals('', $this->subject->getReferrerForLoginForm($request, $settings));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReferrerForLoginFormReturnsReferrerGetParameter(): void
     {
         $expectedReferrer = 'https://example.com/page-referrer';
@@ -233,9 +223,7 @@ final class RedirectHandlerTest extends UnitTestCase
         self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReferrerForLoginFormReturnsReferrerPostParameter(): void
     {
         $expectedReferrer = 'https://example.com/page-referrer';
@@ -247,9 +235,7 @@ final class RedirectHandlerTest extends UnitTestCase
         self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReferrerForLoginFormReturnsHttpReferrerParameter(): void
     {
         $expectedReferrer = 'https://example.com/page-referrer';
@@ -261,9 +247,7 @@ final class RedirectHandlerTest extends UnitTestCase
         self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReferrerForLoginFormReturnsOriginalRequestUrlIfCalledBySubRequest(): void
     {
         $expectedReferrer = 'https://example.com/original-page';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\FolderStructure\RootNode;
 use TYPO3\CMS\Install\FolderStructure\StructureFacade;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StructureFacadeTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsStatusOfStructureAndReturnsItsResult(): void
     {
         $facade = $this->getAccessibleMock(StructureFacade::class, null, [], '', false);
@@ -37,9 +36,7 @@ final class StructureFacadeTest extends UnitTestCase
         self::assertInstanceOf(FlashMessageQueue::class, $status);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixCallsFixOfStructureAndReturnsItsResult(): void
     {
         $facade = $this->getAccessibleMock(StructureFacade::class, null, [], '', false);

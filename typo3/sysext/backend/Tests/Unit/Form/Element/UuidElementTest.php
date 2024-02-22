@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\UuidElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -34,9 +35,7 @@ final class UuidElementTest extends UnitTestCase
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionOnEmptyElementValue(): void
     {
         $data = [
@@ -63,9 +62,7 @@ final class UuidElementTest extends UnitTestCase
         $subject->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionOnInvalidUuid(): void
     {
         $data = [
@@ -92,9 +89,7 @@ final class UuidElementTest extends UnitTestCase
         $subject->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsInputElementWithUuidAndCopyToClipboardButton(): void
     {
         $uuid = 'b3190536-1431-453e-afbb-25b8c5022513';
@@ -129,9 +124,7 @@ final class UuidElementTest extends UnitTestCase
         self::assertMatchesRegularExpression('/<input.*value="' . $uuid . '".*id="formengine-uuid-/s', $result['html']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsInputElementWithUuidAndWithoutCopyToClipboardButton(): void
     {
         $uuid = 'b3190536-1431-453e-afbb-25b8c5022513';

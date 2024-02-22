@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\File;
@@ -43,9 +45,7 @@ final class ImageScriptServiceTest extends UnitTestCase
         $_SERVER['HTTP_HOST'] = 'foo.bar';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileIsUnwrappedFromReferenceForProcessing(): void
     {
         $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
@@ -68,10 +68,8 @@ final class ImageScriptServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider prefixIsCorrectlyAppliedToGetImageUriDataProvider
-     */
+    #[DataProvider('prefixIsCorrectlyAppliedToGetImageUriDataProvider')]
+    #[Test]
     public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -94,10 +92,8 @@ final class ImageScriptServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider
-     */
+    #[DataProvider('prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider')]
+    #[Test]
     public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())

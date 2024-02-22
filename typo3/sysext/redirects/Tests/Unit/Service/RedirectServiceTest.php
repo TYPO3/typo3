@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
@@ -83,9 +85,7 @@ final class RedirectServiceTest extends UnitTestCase
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsNullIfNoRedirectsExist(): void
     {
         $this->redirectCacheServiceMock->method('getRedirects')->willReturnMap([
@@ -98,10 +98,8 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     * @dataProvider matchRedirectReturnsRedirectOnFlatMatchDataProvider
-     */
+    #[DataProvider('matchRedirectReturnsRedirectOnFlatMatchDataProvider')]
+    #[Test]
     public function matchRedirectReturnsRedirectOnFlatMatch(string $path = ''): void
     {
         $row = [
@@ -159,9 +157,7 @@ final class RedirectServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsRedirectOnRespectQueryParametersMatch(): void
     {
         $row = [
@@ -196,9 +192,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertSame($row, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsRedirectOnRespectQueryParametersMatchWithSlash(): void
     {
         $row = [
@@ -233,9 +227,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertSame($row, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsRedirectOnFullRespectQueryParametersMatch(): void
     {
         $row = [
@@ -270,9 +262,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertSame($row, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsNullOnPartialRespectQueryParametersMatch(): void
     {
         $row = [
@@ -307,9 +297,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsMatchingRedirectWithMatchingQueryParametersOverMatchingPath(): void
     {
         $row1 = [
@@ -360,9 +348,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertSame($row2, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsRedirectSpecificToDomainOnFlatMatchIfSpecificAndNonSpecificExist(): void
     {
         $row1 = [
@@ -412,9 +398,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertSame($row1, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsRedirectOnRegexMatch(): void
     {
         $row = [
@@ -449,9 +433,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertSame($row, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRedirectReturnsOnlyActiveRedirects(): void
     {
         $row1 = [
@@ -495,9 +477,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertSame($row2, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetUrlReturnsNullIfUrlCouldNotBeResolved(): void
     {
         $this->linkServiceMock->method('resolve')->with(self::anything())->willThrowException(new InvalidPathException('', 1516531195));
@@ -508,9 +488,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetUrlReturnsUrlForTypeUrl(): void
     {
         $redirectTargetMatch = [
@@ -534,9 +512,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetUrlReturnsUrlForTypeFile(): void
     {
         $fileMock = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
@@ -562,9 +538,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetUrlReturnsUrlForTypeFolder(): void
     {
         $folderMock = $this->getMockBuilder(Folder::class)->disableOriginalConstructor()->getMock();
@@ -591,9 +565,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetUrlRespectsForceHttps(): void
     {
         $redirectTargetMatch = [
@@ -617,9 +589,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetUrlAddsExistingQueryParams(): void
     {
         $redirectTargetMatch = [
@@ -644,9 +614,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetUrlRespectsAdditionalParametersFromTypolink(): void
     {
         $redirectService = $this->getAccessibleMock(
@@ -705,9 +673,7 @@ final class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetUrlReplaceRegExpCaptureGroup(): void
     {
         $redirectTargetMatch = [
@@ -776,10 +742,8 @@ final class RedirectServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getTargetUrlWithQueryReplaceRegExpCaptureGroupDataProvider
-     */
+    #[DataProvider('getTargetUrlWithQueryReplaceRegExpCaptureGroupDataProvider')]
+    #[Test]
     public function getTargetUrlWithQueryReplaceRegExpCaptureGroup(
         string $redirectSourcePath,
         string $redirectTarget,
@@ -858,10 +822,8 @@ final class RedirectServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroupDataProvider
-     */
+    #[DataProvider('getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroupDataProvider')]
+    #[Test]
     public function getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroup(
         string $redirectSourcePath,
         string $redirectTarget,

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -31,9 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractServiceProviderTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewares(): void
     {
         $containerMock = $this->createMock(ContainerInterface::class);
@@ -55,9 +54,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
         self::assertEquals($expected, $middlewares);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewaresWithPseudoServiceProvider(): void
     {
         $containerMock = $this->createMock(ContainerInterface::class);
@@ -84,9 +81,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
         self::assertEquals($expected, $middlewares);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewaresWithOverrides(): void
     {
         $containerMock = $this->createMock(ContainerInterface::class);
@@ -114,9 +109,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
         self::assertEquals($expected, $middlewares);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewaresWithReplacements(): void
     {
         $containerMock = $this->createMock(ContainerInterface::class);
@@ -143,9 +136,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
         self::assertEquals($expected, $middlewares);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newReturnsClassInstance(): void
     {
         $newClosure = $this->getClosureForNew();
@@ -153,9 +144,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
         self::assertInstanceOf(\stdClass::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newInjectsLogger(): void
     {
         $containerMock = $this->createMock(ContainerInterface::class);

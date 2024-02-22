@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,9 +39,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         $this->prepareFlexFormService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customFieldNameDoesNotExistsWillReturnUnchangedProcessedData(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'non_existing_field'];
@@ -66,9 +65,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         self::assertSame($expected, $processedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customFieldNameDoesNotContainFlexFormDataWillReturnUnchangedProcessedData(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'custom_field'];
@@ -94,9 +91,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         self::assertSame($expected, $processedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customOutputVariableForProcessorWillReturnParsedFlexFormToDataCustomVariable(): void
     {
         $processorConfiguration = ['as' => 'myCustomVar'];
@@ -122,9 +117,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         self::assertIsArray($expected['myCustomVar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultOutputVariableForProcessorWillBeUsed(): void
     {
         $processorConfiguration = [];
@@ -151,9 +144,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         self::assertIsArray($expected['flexFormData']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultConfigurationWithCustomFieldNameWillReturnParsedFlexFormToDefaultOutputVariable(): void
     {
         $processorConfiguration = ['as' => 'myOutputVariable', 'fieldName' => 'my_flexform'];
@@ -179,9 +170,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         self::assertIsArray($expected['myOutputVariable']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subDataProcessorIsResolved(): void
     {
         $this->prepareFlexFormServiceWithSubDataProcessorData();
@@ -232,9 +221,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         self::assertSame(array_merge($processedData, ['flexFormData' => $renderedDataFromProcessors]), $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function falReferenceIsResolved(): void
     {
         $this->prepareFlexFormServiceWithFalReferences();

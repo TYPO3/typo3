@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -113,10 +116,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cmpIPv4DataProviderMatching
-     */
+    #[DataProvider('cmpIPv4DataProviderMatching')]
+    #[Test]
     public function cmpIPv4ReturnsTrueForMatchingAddress(string $ip, string $list): void
     {
         self::assertTrue(GeneralUtility::cmpIPv4($ip, $list));
@@ -139,10 +140,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cmpIPv4DataProviderNotMatching
-     */
+    #[DataProvider('cmpIPv4DataProviderNotMatching')]
+    #[Test]
     public function cmpIPv4ReturnsFalseForNotMatchingAddress(string $ip, string $list): void
     {
         self::assertFalse(GeneralUtility::cmpIPv4($ip, $list));
@@ -172,10 +171,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cmpIPv6DataProviderMatching
-     */
+    #[DataProvider('cmpIPv6DataProviderMatching')]
+    #[Test]
     public function cmpIPv6ReturnsTrueForMatchingAddress(string $ip, string $list): void
     {
         self::assertTrue(GeneralUtility::cmpIPv6($ip, $list));
@@ -200,10 +197,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cmpIPv6DataProviderNotMatching
-     */
+    #[DataProvider('cmpIPv6DataProviderNotMatching')]
+    #[Test]
     public function cmpIPv6ReturnsFalseForNotMatchingAddress(string $ip, string $list): void
     {
         self::assertFalse(GeneralUtility::cmpIPv6($ip, $list));
@@ -229,10 +224,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider normalizeCompressIPv6DataProviderCorrect
-     */
+    #[DataProvider('normalizeCompressIPv6DataProviderCorrect')]
+    #[Test]
     public function normalizeIPv6CorrectlyNormalizesAddresses(string $compressed, string $normalized): void
     {
         self::assertEquals($normalized, GeneralUtility::normalizeIPv6($compressed));
@@ -256,10 +249,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validIpDataProvider
-     */
+    #[DataProvider('validIpDataProvider')]
+    #[Test]
     public function validIpReturnsTrueForValidIp(string $ip): void
     {
         self::assertTrue(GeneralUtility::validIP($ip));
@@ -282,10 +273,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidIpDataProvider
-     */
+    #[DataProvider('invalidIpDataProvider')]
+    #[Test]
     public function validIpReturnsFalseForInvalidIp(string $ip): void
     {
         self::assertFalse(GeneralUtility::validIP($ip));
@@ -315,10 +304,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cmpFqdnValidDataProvider
-     */
+    #[DataProvider('cmpFqdnValidDataProvider')]
+    #[Test]
     public function cmpFqdnReturnsTrue(string $baseHost, string $list): void
     {
         self::assertTrue(GeneralUtility::cmpFQDN($baseHost, $list));
@@ -337,10 +324,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cmpFqdnInvalidDataProvider
-     */
+    #[DataProvider('cmpFqdnInvalidDataProvider')]
+    #[Test]
     public function cmpFqdnReturnsFalse(string $baseHost, string $list): void
     {
         self::assertFalse(GeneralUtility::cmpFQDN($baseHost, $list));
@@ -349,10 +334,8 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning inList
     ///////////////////////////////
-    /**
-     * @test
-     * @dataProvider inListForItemContainedReturnsTrueDataProvider
-     */
+    #[DataProvider('inListForItemContainedReturnsTrueDataProvider')]
+    #[Test]
     public function inListForItemContainedReturnsTrue(string $haystack): void
     {
         self::assertTrue(GeneralUtility::inList($haystack, 'findme'));
@@ -371,10 +354,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider inListForItemNotContainedReturnsFalseDataProvider
-     */
+    #[DataProvider('inListForItemNotContainedReturnsFalseDataProvider')]
+    #[Test]
     public function inListForItemNotContainedReturnsFalse(string $haystack): void
     {
         self::assertFalse(GeneralUtility::inList($haystack, 'findme'));
@@ -395,10 +376,8 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning expandList
     ///////////////////////////////
-    /**
-     * @test
-     * @dataProvider expandListExpandsIntegerRangesDataProvider
-     */
+    #[DataProvider('expandListExpandsIntegerRangesDataProvider')]
+    #[Test]
     public function expandListExpandsIntegerRanges(string $list, string $expectation): void
     {
         self::assertSame($expectation, GeneralUtility::expandList($list));
@@ -422,9 +401,7 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expandListExpandsForTwoThousandElementsExpandsOnlyToThousandElementsMaximum(): void
     {
         $list = GeneralUtility::expandList('1-2000');
@@ -434,10 +411,8 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning formatSize
     ///////////////////////////////
-    /**
-     * @test
-     * @dataProvider formatSizeDataProvider
-     */
+    #[DataProvider('formatSizeDataProvider')]
+    #[Test]
     public function formatSizeTranslatesBytesToHigherOrderRepresentation($size, $labels, $base, $expected): void
     {
         self::assertEquals($expected, GeneralUtility::formatSize($size, $labels, $base));
@@ -511,10 +486,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider splitCalcDataProvider
-     */
+    #[DataProvider('splitCalcDataProvider')]
+    #[Test]
     public function splitCalcCorrectlySplitsExpression(array $expected, string $expression): void
     {
         self::assertSame($expected, GeneralUtility::splitCalc($expression, '+-*/'));
@@ -558,10 +531,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validEmailValidDataProvider
-     */
+    #[DataProvider('validEmailValidDataProvider')]
+    #[Test]
     public function validEmailReturnsTrueForValidMailAddress(string $address): void
     {
         self::assertTrue(GeneralUtility::validEmail($address));
@@ -613,10 +584,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validEmailInvalidDataProvider
-     */
+    #[DataProvider('validEmailInvalidDataProvider')]
+    #[Test]
     public function validEmailReturnsFalseForInvalidMailAddress(string $address): void
     {
         self::assertFalse(GeneralUtility::validEmail($address));
@@ -652,10 +621,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider intExplodeDataProvider
-     */
+    #[DataProvider('intExplodeDataProvider')]
+    #[Test]
     public function intExplodeReturnsExplodedArray(string $input, bool $removeEmpty, array $expected): void
     {
         self::assertSame($expected, GeneralUtility::intExplode(',', $input, $removeEmpty));
@@ -678,18 +645,14 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider implodeArrayForUrlDataProvider
-     */
+    #[DataProvider('implodeArrayForUrlDataProvider')]
+    #[Test]
     public function implodeArrayForUrlBuildsValidParameterString($name, $input, $expected): void
     {
         self::assertSame($expected, GeneralUtility::implodeArrayForUrl($name, $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function implodeArrayForUrlCanSkipEmptyParameters(): void
     {
         $input = ['one' => '√', ''];
@@ -697,9 +660,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function implodeArrayForUrlCanUrlEncodeKeyNames(): void
     {
         $input = ['one' => '√', ''];
@@ -720,10 +681,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider explodeUrl2ArrayTransformsParameterStringToFlatArrayDataProvider
-     */
+    #[DataProvider('explodeUrl2ArrayTransformsParameterStringToFlatArrayDataProvider')]
+    #[Test]
     public function explodeUrl2ArrayTransformsParameterStringToFlatArray(string $input, array $expected): void
     {
         self::assertEquals($expected, GeneralUtility::explodeUrl2Array($input));
@@ -795,19 +754,15 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider revExplodeDataProvider
-     */
+    #[DataProvider('revExplodeDataProvider')]
+    #[Test]
     public function revExplodeCorrectlyExplodesStringForGivenPartsCount($delimiter, $testString, $count, $expectedArray): void
     {
         $actualArray = GeneralUtility::revExplode($delimiter, $testString, $count);
         self::assertEquals($expectedArray, $actualArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function revExplodeRespectsLimitThreeWhenExploding(): void
     {
         $testString = 'even:more:of:my:words:here';
@@ -819,10 +774,8 @@ final class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////
     // Tests concerning trimExplode
     //////////////////////////////////
-    /**
-     * @test
-     * @dataProvider trimExplodeReturnsCorrectResultDataProvider
-     */
+    #[DataProvider('trimExplodeReturnsCorrectResultDataProvider')]
+    #[Test]
     public function trimExplodeReturnsCorrectResult(string $delimiter, string $testString, bool $removeEmpty, int $limit, array $expectedResult): void
     {
         self::assertSame($expectedResult, GeneralUtility::trimExplode($delimiter, $testString, $removeEmpty, $limit));
@@ -1061,10 +1014,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getBytesFromSizeMeasurementDataProvider
-     */
+    #[DataProvider('getBytesFromSizeMeasurementDataProvider')]
+    #[Test]
     public function getBytesFromSizeMeasurementCalculatesCorrectByteValue($expected, $byteString): void
     {
         self::assertEquals($expected, GeneralUtility::getBytesFromSizeMeasurement($byteString));
@@ -1073,17 +1024,13 @@ final class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////
     // Tests concerning getIndpEnv
     //////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function getIndpEnvTypo3SitePathReturnNonEmptyString(): void
     {
         self::assertTrue(strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')) >= 1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIndpEnvTypo3SitePathReturnsStringEndingWithSlash(): void
     {
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
@@ -1104,20 +1051,16 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider hostnameAndPortDataProvider
-     */
+    #[DataProvider('hostnameAndPortDataProvider')]
+    #[Test]
     public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAddresses($httpHost, $expectedIp): void
     {
         $_SERVER['HTTP_HOST'] = $httpHost;
         self::assertEquals($expectedIp, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
     }
 
-    /**
-     * @test
-     * @dataProvider hostnameAndPortDataProvider
-     */
+    #[DataProvider('hostnameAndPortDataProvider')]
+    #[Test]
     public function getIndpEnvTypo3PortParsesHostnamesAndIpAddresses($httpHost, $dummy, $expectedPort): void
     {
         $_SERVER['HTTP_HOST'] = $httpHost;
@@ -1140,10 +1083,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider underscoredToUpperCamelCaseDataProvider
-     */
+    #[DataProvider('underscoredToUpperCamelCaseDataProvider')]
+    #[Test]
     public function underscoredToUpperCamelCase($expected, $inputString): void
     {
         self::assertEquals($expected, GeneralUtility::underscoredToUpperCamelCase($inputString));
@@ -1165,10 +1106,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider underscoredToLowerCamelCaseDataProvider
-     */
+    #[DataProvider('underscoredToLowerCamelCaseDataProvider')]
+    #[Test]
     public function underscoredToLowerCamelCase($expected, $inputString): void
     {
         self::assertEquals($expected, GeneralUtility::underscoredToLowerCamelCase($inputString));
@@ -1192,10 +1131,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider camelCaseToLowerCaseUnderscoredDataProvider
-     */
+    #[DataProvider('camelCaseToLowerCaseUnderscoredDataProvider')]
+    #[Test]
     public function camelCaseToLowerCaseUnderscored($expected, $inputString): void
     {
         self::assertEquals($expected, GeneralUtility::camelCaseToLowerCaseUnderscored($inputString));
@@ -1234,10 +1171,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validUrlValidResourceDataProvider
-     */
+    #[DataProvider('validUrlValidResourceDataProvider')]
+    #[Test]
     public function validURLReturnsTrueForValidResource(string $url): void
     {
         self::assertTrue(GeneralUtility::isValidUrl($url));
@@ -1269,10 +1204,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isValidUrlInvalidResourceDataProvider
-     */
+    #[DataProvider('isValidUrlInvalidResourceDataProvider')]
+    #[Test]
     public function validURLReturnsFalseForInvalidResource(string $url): void
     {
         self::assertFalse(GeneralUtility::isValidUrl($url));
@@ -1281,10 +1214,7 @@ final class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////
     // Tests concerning isOnCurrentHost
     //////////////////////////////////
-
-    /**
-     * @test
-     */
+    #[Test]
     public function isOnCurrentHostReturnsTrueWithCurrentHost(): void
     {
         $testUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
@@ -1308,11 +1238,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider checkisOnCurrentHostInvalidHostsDataProvider
-     */
+    #[DataProvider('checkisOnCurrentHostInvalidHostsDataProvider')]
+    #[Test]
     public function isOnCurrentHostWithNotCurrentHostReturnsFalse(string $hostCandidate): void
     {
         self::assertFalse(GeneralUtility::isOnCurrentHost($hostCandidate));
@@ -1339,10 +1266,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeLocalUrlValidPathsDataProvider
-     */
+    #[DataProvider('sanitizeLocalUrlValidPathsDataProvider')]
+    #[Test]
     public function sanitizeLocalUrlAcceptsNotEncodedValidPaths(string $path): void
     {
         Environment::initialize(
@@ -1362,10 +1287,8 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals($path, GeneralUtility::sanitizeLocalUrl($path));
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeLocalUrlValidPathsDataProvider
-     */
+    #[DataProvider('sanitizeLocalUrlValidPathsDataProvider')]
+    #[Test]
     public function sanitizeLocalUrlAcceptsEncodedValidPaths(string $path): void
     {
         Environment::initialize(
@@ -1416,10 +1339,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeLocalUrlValidUrlsDataProvider
-     */
+    #[DataProvider('sanitizeLocalUrlValidUrlsDataProvider')]
+    #[Test]
     public function sanitizeLocalUrlAcceptsNotEncodedValidUrls(string $url, string $host, string $subDirectory): void
     {
         Environment::initialize(
@@ -1438,10 +1359,8 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals($url, GeneralUtility::sanitizeLocalUrl($url));
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeLocalUrlValidUrlsDataProvider
-     */
+    #[DataProvider('sanitizeLocalUrlValidUrlsDataProvider')]
+    #[Test]
     public function sanitizeLocalUrlAcceptsEncodedValidUrls(string $url, string $host, string $subDirectory): void
     {
         Environment::initialize(
@@ -1479,10 +1398,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeLocalUrlInvalidDataProvider
-     */
+    #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
+    #[Test]
     public function sanitizeLocalUrlDeniesPlainInvalidUrlsInBackendContext(string $url): void
     {
         Environment::initialize(
@@ -1501,10 +1418,8 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeLocalUrlInvalidDataProvider
-     */
+    #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
+    #[Test]
     public function sanitizeLocalUrlDeniesPlainInvalidUrlsInFrontendContext(string $url): void
     {
         Environment::initialize(
@@ -1523,10 +1438,8 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeLocalUrlInvalidDataProvider
-     */
+    #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
+    #[Test]
     public function sanitizeLocalUrlDeniesEncodedInvalidUrls(string $url): void
     {
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
@@ -1535,10 +1448,7 @@ final class GeneralUtilityTest extends UnitTestCase
     ////////////////////////////////////////
     // Tests concerning unlink_tempfile
     ////////////////////////////////////////
-
-    /**
-     * @test
-     */
+    #[Test]
     public function unlink_tempfileRemovesValidFileInTypo3temp(): void
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
@@ -1549,9 +1459,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFalse($fileExists);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unlink_tempfileRemovesHiddenFile(): void
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
@@ -1562,9 +1470,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFalse($fileExists);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unlink_tempfileReturnsTrueIfFileWasRemoved(): void
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
@@ -1574,18 +1480,14 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertTrue($returnValue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unlink_tempfileReturnsNullIfFileDoesNotExist(): void
     {
         $returnValue = GeneralUtility::unlink_tempfile(Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('i_do_not_exist'));
         self::assertNull($returnValue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unlink_tempfileReturnsNullIfFileIsNowWithinTypo3temp(): void
     {
         $returnValue = GeneralUtility::unlink_tempfile('/tmp/typo3-unit-test-unlink_tempfile');
@@ -1595,10 +1497,7 @@ final class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////////
     // Tests concerning tempnam
     //////////////////////////////////////
-
-    /**
-     * @test
-     */
+    #[Test]
     public function tempnamReturnsPathStartingWithGivenPrefix(): void
     {
         $filePath = GeneralUtility::tempnam('foo');
@@ -1607,9 +1506,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertStringStartsWith('foo', $fileName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tempnamReturnsPathWithoutBackslashes(): void
     {
         $filePath = GeneralUtility::tempnam('foo');
@@ -1617,9 +1514,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertStringNotContainsString('\\', $filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tempnamReturnsAbsolutePathInVarPath(): void
     {
         $filePath = GeneralUtility::tempnam('foo');
@@ -1630,9 +1525,7 @@ final class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////////
     // Tests concerning removeDotsFromTS
     //////////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDotsFromTypoScriptSucceedsWithDottedArray(): void
     {
         $typoScript = [
@@ -1688,18 +1581,14 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider implodeAttributesDataProvider
-     */
+    #[DataProvider('implodeAttributesDataProvider')]
+    #[Test]
     public function implodeAttributesEscapesProperly(array $input, bool $xhtmlSafe, bool $keepEmptyValues, string $expected): void
     {
         self::assertSame($expected, GeneralUtility::implodeAttributes($input, $xhtmlSafe, $keepEmptyValues));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDotsFromTypoScriptOverridesSubArray(): void
     {
         $typoScript = [
@@ -1724,9 +1613,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDotsFromTypoScriptOverridesWithScalar(): void
     {
         $typoScript = [
@@ -1752,18 +1639,14 @@ final class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////////
     // Tests concerning get_dirs
     //////////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function getDirsReturnsArrayOfDirectoriesFromGivenDirectory(): void
     {
         $directories = GeneralUtility::get_dirs(Environment::getLegacyConfigPath() . '/');
         self::assertIsArray($directories);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDirsReturnsStringErrorOnPathFailure(): void
     {
         $path = 'foo';
@@ -1775,9 +1658,7 @@ final class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////
     // Tests concerning hmac
     //////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function hmacReturnsHashOfProperLength(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
@@ -1786,9 +1667,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals(strlen($hmac), 40);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hmacReturnsEqualHashesForEqualInput(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
@@ -1797,9 +1676,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals(GeneralUtility::hmac($msg0), GeneralUtility::hmac($msg1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hmacReturnsNoEqualHashesForNonEqualInput(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
@@ -1860,10 +1737,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider quoteJsValueDataProvider
-     */
+    #[DataProvider('quoteJsValueDataProvider')]
+    #[Test]
     public function quoteJsValueTest(string $input, string $expected): void
     {
         self::assertSame('\'' . $expected . '\'', GeneralUtility::quoteJSvalue($input));
@@ -1892,10 +1767,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider jsonEncodeForHtmlAttributeTestDataProvider
-     */
+    #[DataProvider('jsonEncodeForHtmlAttributeTestDataProvider')]
+    #[Test]
     public function jsonEncodeForHtmlAttributeTest($value, bool $useHtmlEntities, string $expectation): void
     {
         self::assertSame($expectation, GeneralUtility::jsonEncodeForHtmlAttribute($value, $useHtmlEntities));
@@ -1916,10 +1789,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider jsonEncodeForJavaScriptTestDataProvider
-     */
+    #[DataProvider('jsonEncodeForJavaScriptTestDataProvider')]
+    #[Test]
     public function jsonEncodeForJavaScriptTest($value, string $expectation): void
     {
         self::assertSame($expectation, GeneralUtility::jsonEncodeForJavaScript($value));
@@ -1933,18 +1804,14 @@ final class GeneralUtilityTest extends UnitTestCase
         yield 'HTML markup' => ['url(</style>)', 'url(&lt;/style&gt;)'];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeCssVariableValueDataProvider
-     */
+    #[DataProvider('sanitizeCssVariableValueDataProvider')]
+    #[Test]
     public function sanitizeCssVariableValue(string $value, string $expectation): void
     {
         self::assertSame($expectation, GeneralUtility::sanitizeCssVariableValue($value));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsSetsPermissionsToFile(): void
     {
         if (Environment::isWindows()) {
@@ -1962,9 +1829,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0660', substr(decoct(fileperms($filename)), 2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsSetsPermissionsToHiddenFile(): void
     {
         if (Environment::isWindows()) {
@@ -1982,9 +1847,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0660', substr(decoct(fileperms($filename)), 2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsSetsPermissionsToDirectory(): void
     {
         if (Environment::isWindows()) {
@@ -2002,9 +1865,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0770', substr(decoct(fileperms($directory)), 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsSetsPermissionsToDirectoryWithTrailingSlash(): void
     {
         if (Environment::isWindows()) {
@@ -2023,9 +1884,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0770', substr(decoct(fileperms($directory)), 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsSetsPermissionsToHiddenDirectory(): void
     {
         if (Environment::isWindows()) {
@@ -2044,9 +1903,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0770', substr(decoct(fileperms($directory)), 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsCorrectlySetsPermissionsRecursive(): void
     {
         if (Environment::isWindows()) {
@@ -2095,9 +1952,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0660', $resultBarFile2Permissions);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsDoesNotSetPermissionsToNotAllowedPath(): void
     {
         if (Environment::isWindows()) {
@@ -2111,9 +1966,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFalse($fixPermissionsResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsSetsPermissionsWithRelativeFileReference(): void
     {
         if (Environment::isWindows()) {
@@ -2131,9 +1984,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0660', substr(decoct(fileperms(Environment::getPublicPath() . '/' . $filename)), 2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsSetsDefaultPermissionsToFile(): void
     {
         if (Environment::isWindows()) {
@@ -2149,9 +2000,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0644', substr(decoct(fileperms($filename)), 2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionsSetsDefaultPermissionsToDirectory(): void
     {
         if (Environment::isWindows()) {
@@ -2170,9 +2019,7 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning mkdir
     ///////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirCreatesDirectory(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -2182,9 +2029,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertDirectoryExists($directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirCreatesHiddenDirectory(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('.test_');
@@ -2194,9 +2039,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertDirectoryExists($directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirCreatesDirectoryWithTrailingSlash(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_') . '/';
@@ -2206,9 +2049,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertDirectoryExists($directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirSetsPermissionsOfCreatedDirectory(): void
     {
         if (Environment::isWindows()) {
@@ -2227,7 +2068,6 @@ final class GeneralUtilityTest extends UnitTestCase
     /////////////////////////////////////////////
     // Tests concerning writeFileToTypo3tempDir()
     /////////////////////////////////////////////
-
     /**
      * when adding entries here, make sure to register any files or directories that might get created as third array item
      * they will be cleaned up after test run.
@@ -2273,12 +2113,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidFilePathForTypo3tempDirDataProvider
-     *
-     * * @param non-empty-string $pathToCleanUp
-     */
+    #[DataProvider('invalidFilePathForTypo3tempDirDataProvider')]
+    #[Test]
     public function writeFileToTypo3tempDirFailsWithInvalidPath(string $invalidFilePath, string $expectedResult, string $pathToCleanUp): void
     {
         if ($pathToCleanUp !== '') {
@@ -2319,11 +2155,11 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider validFilePathForTypo3tempDirDataProvider
      * @param non-empty-string $filePath
      * @param non-empty-string $pathToCleanUp
      */
+    #[DataProvider('validFilePathForTypo3tempDirDataProvider')]
+    #[Test]
     public function writeFileToTypo3tempDirWorksWithValidPath(string $filePath, string $pathToCleanUp): void
     {
         if ($pathToCleanUp !== '') {
@@ -2342,9 +2178,7 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning mkdir_deep
     ///////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirDeepCreatesDirectory(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -2352,9 +2186,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertDirectoryExists($directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirDeepCreatesSubdirectoriesRecursive(): void
     {
         $directory = $this->getTestDirectory() . '/typo3temp/var/tests/' . StringUtility::getUniqueId('test_');
@@ -2374,10 +2206,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider
-     */
+    #[DataProvider('mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider')]
+    #[Test]
     public function mkdirDeepCreatesDirectoryWithDoubleSlashes($directoryToCreate): void
     {
         $testRoot = Environment::getVarPath() . '/public/';
@@ -2387,9 +2217,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertDirectoryExists($directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirDeepFixesPermissionsOfCreatedDirectory(): void
     {
         if (Environment::isWindows()) {
@@ -2405,9 +2233,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirDeepFixesPermissionsOnNewParentDirectory(): void
     {
         if (Environment::isWindows()) {
@@ -2424,9 +2250,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories(): void
     {
         if (Environment::isWindows()) {
@@ -2442,9 +2266,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals(742, (int)substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mkdirDeepThrowsExceptionIfDirectoryCreationFails(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -2456,10 +2278,7 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning rmdir
     ///////////////////////////////
-
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirRemovesFile(): void
     {
         $testRoot = Environment::getVarPath() . '/tests/';
@@ -2471,9 +2290,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFileDoesNotExist($file);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirReturnTrueIfFileWasRemoved(): void
     {
         $file = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('file_');
@@ -2481,18 +2298,14 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertTrue(GeneralUtility::rmdir($file));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirReturnFalseIfNoFileWasRemoved(): void
     {
         $file = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('file_');
         self::assertFalse(GeneralUtility::rmdir($file));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirRemovesDirectory(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('directory_');
@@ -2501,9 +2314,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFileDoesNotExist($directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirRemovesDirectoryWithTrailingSlash(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('directory_') . '/';
@@ -2512,9 +2323,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFileDoesNotExist($directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirDoesNotRemoveDirectoryWithFilesAndReturnsFalseIfRecursiveDeletionIsOff(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('directory_') . '/';
@@ -2527,9 +2336,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFalse($return);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirRemovesDirectoriesRecursiveAndReturnsTrue(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('directory_') . '/';
@@ -2541,9 +2348,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertTrue($return);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirRemovesLinkToDirectory(): void
     {
         $existingDirectory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('notExists_') . '/';
@@ -2554,9 +2359,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFalse(is_link($symlinkName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirRemovesDeadLinkToDirectory(): void
     {
         $notExistingDirectory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('notExists_') . '/';
@@ -2569,9 +2372,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFalse(is_link($symlinkName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmdirRemovesDeadLinkToFile(): void
     {
         $testDirectory = $this->getTestDirectory() . '/';
@@ -2587,7 +2388,6 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////////
     // Tests concerning getFilesInDir
     ///////////////////////////////////
-
     /**
      * Helper method to create test directory.
      *
@@ -2616,9 +2416,7 @@ final class GeneralUtilityTest extends UnitTestCase
         return $path;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirFindsRegularFile(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2626,9 +2424,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertContains('testA.txt', $files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirFindsHiddenFile(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2636,9 +2432,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertContains('.secret.txt', $files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirOnlyFindWithMatchingExtension(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2668,10 +2462,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider fileExtensionDataProvider
-     * @test
-     */
+    #[DataProvider('fileExtensionDataProvider')]
+    #[Test]
     public function getFilesInDirByExtensionFindsFiles($fileExtensions): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2682,9 +2474,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertContains('test.css', $files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirByExtensionDoesNotFindFilesWithOtherExtensions(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2694,9 +2484,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertNotContains('test.css', $files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirExcludesFilesMatchingPattern(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2705,9 +2493,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertNotContains('excludeMe.txt', $files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirCanPrependPath(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2717,9 +2503,7 @@ final class GeneralUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirDoesSortAlphabeticallyByDefault(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2729,9 +2513,7 @@ final class GeneralUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirReturnsArrayWithMd5OfElementAndPathAsArrayKey(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2741,9 +2523,7 @@ final class GeneralUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInDirDoesNotFindDirectories(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2756,9 +2536,8 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * Dotfiles; current directory: '.' and parent directory: '..' must not be
      * present.
-     *
-     * @test
      */
+    #[Test]
     public function getFilesInDirDoesNotFindDotfiles(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -2770,9 +2549,7 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning split_fileref
     ///////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function splitFileRefReturnsFileTypeNotForFolders(): void
     {
         $directoryName = StringUtility::getUniqueId('test_') . '.com';
@@ -2792,9 +2569,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertArrayNotHasKey('realFileext', $fileInfo);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function splitFileRefReturnsFileTypeForFilesWithoutPathSite(): void
     {
         $testFile = 'fileadmin/media/someFile.png';
@@ -2827,11 +2602,11 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider dirnameDataProvider
      * @param string $input the input for dirname
      * @param string $expectedValue the expected return value expected from dirname
      */
+    #[DataProvider('dirnameDataProvider')]
+    #[Test]
     public function dirnameWithDataProvider(string $input, string $expectedValue): void
     {
         self::assertEquals($expectedValue, GeneralUtility::dirname($input));
@@ -2878,11 +2653,11 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider resolveBackPathDataProvider
      * @param string $input the input for resolveBackPath
      * @param string $expectedValue Expected return value from resolveBackPath
      */
+    #[DataProvider('resolveBackPathDataProvider')]
+    #[Test]
     public function resolveBackPathWithDataProvider(string $input, string $expectedValue): void
     {
         self::assertEquals($expectedValue, GeneralUtility::resolveBackPath($input));
@@ -2891,9 +2666,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /////////////////////////////////////////////////////////////////////////////////////
     // Tests concerning makeInstance, setSingletonInstance, addInstance, purgeInstances
     /////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceWithEmptyClassNameThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2903,9 +2676,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::makeInstance('');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceWithBeginningSlashInClassNameThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2914,17 +2685,13 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::makeInstance('\\TYPO3\\CMS\\Backend\\Controller\\BackendController');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceReturnsClassInstance(): void
     {
         self::assertInstanceOf(\stdClass::class, GeneralUtility::makeInstance(\stdClass::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstancePassesParametersToConstructor(): void
     {
         $instance = GeneralUtility::makeInstance(TwoParametersConstructorFixture::class, 'one parameter', 'another parameter');
@@ -2932,9 +2699,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('another parameter', $instance->constructorParameter2, 'The second constructor parameter has not been set.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceInstanciatesConfiguredImplementation(): void
     {
         GeneralUtility::flushInternalRuntimeCaches();
@@ -2942,9 +2707,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertInstanceOf(ReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceResolvesConfiguredImplementationsRecursively(): void
     {
         GeneralUtility::flushInternalRuntimeCaches();
@@ -2953,27 +2716,21 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertInstanceOf(OtherReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceCalledTwoTimesForNonSingletonClassReturnsDifferentInstances(): void
     {
         $className = \stdClass::class;
         self::assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceCalledTwoTimesForSingletonClassReturnsSameInstance(): void
     {
         $className = get_class($this->createMock(SingletonInterface::class));
         self::assertSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceCalledTwoTimesForSingletonClassWithPurgeInstancesInbetweenReturnsDifferentInstances(): void
     {
         $className = get_class($this->createMock(SingletonInterface::class));
@@ -2982,18 +2739,14 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertNotSame($instance, GeneralUtility::makeInstance($className));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceInjectsLogger(): void
     {
         $instance = GeneralUtility::makeInstance(GeneralUtilityMakeInstanceInjectLoggerFixture::class);
         self::assertInstanceOf(LoggerInterface::class, $instance->getLogger());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSingletonInstanceForEmptyClassNameThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3004,9 +2757,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::setSingletonInstance('', $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSingletonInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3019,9 +2770,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSingletonInstanceMakesMakeInstanceReturnThatInstance(): void
     {
         $instance = $this->createMock(SingletonInterface::class);
@@ -3030,9 +2779,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($instance, GeneralUtility::makeInstance($singletonClassName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSingletonInstanceCalledTwoTimesMakesMakeInstanceReturnLastSetInstance(): void
     {
         $instance1 = $this->createMock(SingletonInterface::class);
@@ -3043,9 +2790,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($instance2, GeneralUtility::makeInstance($singletonClassName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSingletonInstancesContainsPreviouslySetSingletonInstance(): void
     {
         $instance = $this->createMock(SingletonInterface::class);
@@ -3056,9 +2801,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($registeredSingletonInstances[$instanceClassName], $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSingletonInstanceReturnsFinalClassNameWithOverriddenClass(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][SingletonClassFixture::class]['className'] = ExtendedSingletonClassFixture::class;
@@ -3070,9 +2813,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals(ExtendedSingletonClassFixture::class, get_class($anotherInstance));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetSingletonInstancesResetsPreviouslySetInstance(): void
     {
         $instance = $this->createMock(SingletonInterface::class);
@@ -3083,9 +2824,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertArrayNotHasKey($instanceClassName, $registeredSingletonInstances);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetSingletonInstancesSetsGivenInstance(): void
     {
         $instance = $this->createMock(SingletonInterface::class);
@@ -3098,9 +2837,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($registeredSingletonInstances[$instanceClassName], $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addInstanceForEmptyClassNameThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3110,9 +2847,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::addInstance('', new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3125,9 +2860,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::addInstance($singletonClassName, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addInstanceWithSingletonInstanceThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3137,9 +2870,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::addInstance(get_class($instance), $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addInstanceMakesMakeInstanceReturnThatInstance(): void
     {
         $instance = $this->createMock(\stdClass::class);
@@ -3148,9 +2879,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($instance, GeneralUtility::makeInstance($className));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeInstanceCalledTwoTimesAfterAddInstanceReturnTwoDifferentInstances(): void
     {
         $instance = $this->createMock(\stdClass::class);
@@ -3159,9 +2888,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addInstanceCalledTwoTimesMakesMakeInstanceReturnBothInstancesInAddingOrder(): void
     {
         $instance1 = $this->createMock(\stdClass::class);
@@ -3173,9 +2900,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($instance2, GeneralUtility::makeInstance($className), 'The second returned instance does not match the second added instance.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function purgeInstancesDropsAddedInstance(): void
     {
         $instance = $this->createMock(\stdClass::class);
@@ -3219,10 +2944,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getFileAbsFileNameDataProvider
-     */
+    #[DataProvider('getFileAbsFileNameDataProvider')]
+    #[Test]
     public function getFileAbsFileNameReturnsCorrectValues(string $path, string $expected): void
     {
         // build the dummy package "foo" for use in ExtensionManagementUtility::extPath('foo');
@@ -3289,10 +3012,9 @@ final class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Tests whether invalid characters are detected.
-     *
-     * @dataProvider validPathStrInvalidCharactersDataProvider
-     * @test
      */
+    #[DataProvider('validPathStrInvalidCharactersDataProvider')]
+    #[Test]
     public function validPathStrDetectsInvalidCharacters(string $path): void
     {
         self::assertFalse(GeneralUtility::validPathStr($path));
@@ -3315,10 +3037,9 @@ final class GeneralUtilityTest extends UnitTestCase
 
     /**
      * Tests whether Unicode characters are recognized as valid file name characters.
-     *
-     * @dataProvider validPathStrDataProvider
-     * @test
      */
+    #[DataProvider('validPathStrDataProvider')]
+    #[Test]
     public function validPathStrWorksWithUnicodeFileNames(string $path): void
     {
         self::assertTrue(GeneralUtility::validPathStr($path));
@@ -3327,10 +3048,7 @@ final class GeneralUtilityTest extends UnitTestCase
     /////////////////////////////////////////////////////////////////////////////////////
     // Tests concerning copyDirectory
     /////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * @test
-     */
+    #[Test]
     public function copyDirectoryCopiesFilesAndDirectoriesWithRelativePaths(): void
     {
         $sourceDirectory = 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_') . '/';
@@ -3352,9 +3070,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertFileExists($absoluteTargetDirectory . 'foo/file');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyDirectoryCopiesFilesAndDirectoriesWithAbsolutePaths(): void
     {
         $sourceDirectory = 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_') . '/';
@@ -3388,10 +3104,10 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider callUserFunctionInvalidParameterDataProvider
      * @param non-empty-string $functionName
      */
+    #[DataProvider('callUserFunctionInvalidParameterDataProvider')]
+    #[Test]
     public function callUserFunctionWillThrowExceptionForInvalidParameters(string $functionName, int $expectedException): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3400,9 +3116,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::callUserFunction($functionName, $inputData, $this);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callUserFunctionCanCallClosure(): void
     {
         $inputData = ['foo' => 'bar'];
@@ -3415,9 +3129,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('Worked fine', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callUserFunctionCanCallMethod(): void
     {
         $inputData = ['foo' => 'bar'];
@@ -3425,9 +3137,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('Worked fine', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callUserFunctionTrimsSpaces(): void
     {
         $inputData = ['foo' => 'bar'];
@@ -3435,9 +3145,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('Worked fine', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callUserFunctionAcceptsClosures(): void
     {
         $inputData = ['foo' => 'bar'];
@@ -3448,9 +3156,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('Worked fine', GeneralUtility::callUserFunction($closure, $inputData, $this));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys(): void
     {
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('directory_');
@@ -3469,9 +3175,8 @@ final class GeneralUtilityTest extends UnitTestCase
     /**
      * If the element is not empty, its contents might be treated as "something" (instead of "nothing")
      * e.g. by Fluid view helpers, which is why we want to avoid that.
-     *
-     * @test
      */
+    #[Test]
     public function array2xmlConvertsEmptyArraysToElementWithoutContent(): void
     {
         $input = [
@@ -3485,9 +3190,7 @@ final class GeneralUtilityTest extends UnitTestCase
 </phparray>', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function xml2arrayUsesCache(): void
     {
         $cacheMock = $this->createMock(FrontendInterface::class);
@@ -3556,10 +3259,8 @@ final class GeneralUtilityTest extends UnitTestCase
         return $data;
     }
 
-    /**
-     * @test
-     * @dataProvider xml2arrayProcessHandlesWhitespacesDataProvider
-     */
+    #[DataProvider('xml2arrayProcessHandlesWhitespacesDataProvider')]
+    #[Test]
     public function xml2arrayProcessHandlesWhitespaces(string $input): void
     {
         $expected = [
@@ -3611,10 +3312,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider xml2arrayProcessHandlesTagNamespacesDataProvider
-     */
+    #[DataProvider('xml2arrayProcessHandlesTagNamespacesDataProvider')]
+    #[Test]
     public function xml2arrayProcessHandlesTagNamespaces(string $input): void
     {
         $expected = [
@@ -3669,10 +3368,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider xml2arrayProcessHandlesDocumentTagDataProvider
-     */
+    #[DataProvider('xml2arrayProcessHandlesDocumentTagDataProvider')]
+    #[Test]
     public function xml2arrayProcessHandlesDocumentTag(string $input, string $docTag): void
     {
         $expected = [
@@ -3717,10 +3414,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider xml2ArrayProcessHandlesBigXmlContentDataProvider
-     */
+    #[DataProvider('xml2ArrayProcessHandlesBigXmlContentDataProvider')]
+    #[Test]
     public function xml2ArrayProcessHandlesBigXmlContent(string $input, string $testValue): void
     {
         $expected = [
@@ -3808,10 +3503,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider xml2ArrayProcessHandlesAttributeTypesDataProvider
-     */
+    #[DataProvider('xml2ArrayProcessHandlesAttributeTypesDataProvider')]
+    #[Test]
     public function xml2ArrayProcessHandlesAttributeTypes(string $input, mixed $expected): void
     {
         $result = GeneralUtility::xml2arrayProcess($input);
@@ -3853,10 +3546,10 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider locationHeaderUrlDataProvider
-     * @throws \TYPO3\CMS\Core\Exception
+     * @throws Exception
      */
+    #[DataProvider('locationHeaderUrlDataProvider')]
+    #[Test]
     public function locationHeaderUrl(string $path, string $host, string $expected): void
     {
         Environment::initialize(
@@ -3876,9 +3569,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createVersionNumberedFilenameDoesNotResolveBackpathForAbsolutePath(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] = true;
@@ -3895,9 +3586,7 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertMatchesRegularExpression('/^.*\/tests\/' . $uniqueFilename . '\.[0-9]+\.css/', $versionedFilename);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createVersionNumberedFilenameKeepsInvalidAbsolutePathInFrontendAndAddsQueryString(): void
     {
         Environment::initialize(
@@ -3933,9 +3622,7 @@ final class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::rmdir($testFileDirectory, true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMaxUploadFileSizeReturnsPositiveInt(): void
     {
         $result = GeneralUtility::getMaxUploadFileSize();

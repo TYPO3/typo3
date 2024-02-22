@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -62,10 +64,8 @@ final class ResourceCompressorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cssFixStatementsDataProvider
-     */
+    #[DataProvider('cssFixStatementsDataProvider')]
+    #[Test]
     public function cssFixStatementsMovesStatementsToTopIfNeeded(string $input, string $expected): void
     {
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
@@ -75,9 +75,7 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertEquals($expected, $resultWithReadableLinefeed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compressedCssFileIsFlaggedToNotCompressAgain(): void
     {
         $fileName = 'fooFile.css';
@@ -101,9 +99,7 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertFalse($result[$compressedFileName]['compress']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compressedJsFileIsFlaggedToNotCompressAgain(): void
     {
         $fileName = 'fooFile.js';
@@ -127,9 +123,7 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertFalse($result[$compressedFileName]['compress']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function concatenatedCssFileIsFlaggedToNotConcatenateAgain(): void
     {
         $fileName = 'fooFile.css';
@@ -153,9 +147,7 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function concatenatedCssFilesAreSeparatedByMediaType(): void
     {
         $allFileName = 'allFile.css';
@@ -197,9 +189,7 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertEquals('screen', $result['merged_' . $screenFileName1]['media']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function concatenatedCssFilesObeyForceOnTopOption(): void
     {
         $screen1FileName = 'screen1File.css';
@@ -233,9 +223,7 @@ final class ResourceCompressorTest extends UnitTestCase
         $subject->concatenateCssFiles($testFileFixture);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function concatenatedCssFilesObeyExcludeFromConcatenation(): void
     {
         $screen1FileName = 'screen1File.css';
@@ -274,9 +262,7 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertEquals('screen', $result['merged_screen']['media']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function concatenateJsFileIsFlaggedToNotConcatenateAgain(): void
     {
         $fileName = 'fooFile.js';
@@ -407,10 +393,8 @@ final class ResourceCompressorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider concatenateJsFileAsyncDataProvider
-     */
+    #[DataProvider('concatenateJsFileAsyncDataProvider')]
+    #[Test]
     public function concatenateJsFileAddsAsyncPropertyIfAllFilesAreAsync(array $input, bool $expected): void
     {
         $concatenatedFileName = 'merged_foo.js';
@@ -447,10 +431,8 @@ final class ResourceCompressorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider calcStatementsDataProvider
-     */
+    #[DataProvider('calcStatementsDataProvider')]
+    #[Test]
     public function calcFunctionMustRetainWhitespaces(string $input, string $expected): void
     {
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
@@ -459,9 +441,7 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertSame($expected, trim($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nomoduleJavascriptIsNotConcatenated(): void
     {
         $fileName = 'fooFile.js';
@@ -481,9 +461,7 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertTrue($result[$fileName]['nomodule']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deferJavascriptIsNotConcatenated(): void
     {
         $fileName = 'fooFile.js';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ApplicationTypeTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function fromRequestThrowsIfTypeIsMissing(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -34,9 +33,7 @@ final class ApplicationTypeTest extends UnitTestCase
         ApplicationType::fromRequest(new ServerRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFrontendReturnsTrueIfFrontend(): void
     {
         self::assertTrue(
@@ -45,9 +42,7 @@ final class ApplicationTypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFrontendReturnsFalseIfNotFrontend(): void
     {
         self::assertFalse(
@@ -56,9 +51,7 @@ final class ApplicationTypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isBackendReturnsTrueIfBackend(): void
     {
         self::assertTrue(
@@ -67,9 +60,7 @@ final class ApplicationTypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isBackendReturnsTrueIfNotBackend(): void
     {
         self::assertFalse(
@@ -78,9 +69,7 @@ final class ApplicationTypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFrontendEnumResolved(): void
     {
         $type = ApplicationType::FRONTEND;
@@ -88,9 +77,7 @@ final class ApplicationTypeTest extends UnitTestCase
         self::assertSame('FE', $type->abbreviate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isBackendEnumResolved(): void
     {
         $type = ApplicationType::BACKEND;

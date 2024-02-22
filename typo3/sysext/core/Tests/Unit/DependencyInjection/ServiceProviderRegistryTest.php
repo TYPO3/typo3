@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderRegistry;
@@ -46,9 +47,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         $this->packageManagerMock->method('getActivePackages')->willReturn([$package]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registry(): void
     {
         $this->mockPackage('core', TestRegistryServiceProvider::class);
@@ -56,9 +55,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         self::assertEquals(new TestRegistryServiceProvider(), $subject->get('core'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registryCaches(): void
     {
         $this->mockPackage('core', TestRegistryServiceProvider::class);
@@ -67,9 +64,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         self::assertSame($subject->get('core'), $subject->get('core'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registryPassesPackageAsConstructorArgument(): void
     {
         $this->mockPackage('core', TestStatefulServiceProvider::class);
@@ -78,9 +73,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         self::assertInstanceOf(Package::class, $subject->get('core')->package);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -88,9 +81,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         $subject->get('backend');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getServices(): void
     {
         $this->mockPackage('core', TestRegistryServiceProvider::class);
@@ -101,9 +92,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         self::assertSame($services['serviceA'], $services2['serviceA']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extendServices(): void
     {
         $this->mockPackage('core', TestRegistryServiceProvider::class);
@@ -114,9 +103,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         self::assertSame($services['serviceB'], $services2['serviceB']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getServiceFactory(): void
     {
         $this->mockPackage('core', TestRegistryServiceProvider::class);
@@ -126,9 +113,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         self::assertEquals(42, $subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getServiceExtension(): void
     {
         $this->mockPackage('core', TestRegistryServiceProvider::class);
@@ -138,9 +123,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         self::assertInstanceOf(\stdClass::class, $service);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function iterator(): void
     {
         $packages = [

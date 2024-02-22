@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -55,9 +56,7 @@ final class ConsoleCommandPassTest extends UnitTestCase
         return (new ContainerBuilder([]))->createDependencyInjectionContainer($packageManagerMock, $cacheMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function commandRegistrationViaTags(): void
     {
         $container = $this->buildContainer(__METHOD__, [
@@ -78,9 +77,7 @@ final class ConsoleCommandPassTest extends UnitTestCase
         self::assertInstanceOf(Command::class, $commandRegistry->getCommandByIdentifier('test:cmd'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withoutConfiguration(): void
     {
         $container = $this->buildContainer(__METHOD__, [

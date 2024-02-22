@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Country;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
@@ -24,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CountryProviderTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function findAllCountriesReturnsCountryObjects(): void
     {
         $subject = new CountryProvider();
@@ -34,9 +34,7 @@ final class CountryProviderTest extends UnitTestCase
         self::assertGreaterThan(150, count($countries));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByIsoCodeReturnsValidObject(): void
     {
         $subject = new CountryProvider();
@@ -48,9 +46,7 @@ final class CountryProviderTest extends UnitTestCase
         self::assertEquals('French Republic', $countryIsoCode2->getOfficialName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByThreeLetterIsoCodeReturnsValidObject(): void
     {
         $subject = new CountryProvider();
@@ -68,10 +64,8 @@ final class CountryProviderTest extends UnitTestCase
         self::assertEquals('FRA', $countryIsoCode3->getAlpha3IsoCode());
     }
 
-    /**
-     * @test
-     * @dataProvider findByFilterReturnsValidObjectDataProvider
-     */
+    #[DataProvider('findByFilterReturnsValidObjectDataProvider')]
+    #[Test]
     public function findByFilterReturnsValidObject(int $expectedCount, array $excludedCountries, array $includedCountries): void
     {
         $subject = new CountryProvider();

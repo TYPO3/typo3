@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session\Backend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Session\Backend\RedisSessionBackend;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -31,9 +32,7 @@ final class RedisSessionBackendTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function databaseConfigurationMustBeInteger(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -48,9 +47,7 @@ final class RedisSessionBackendTest extends UnitTestCase
         $subject->validateConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function databaseConfigurationMustBeZeroOrGreater(): void
     {
         $subject = new RedisSessionBackend();

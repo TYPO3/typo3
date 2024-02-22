@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyImageSourceCollectionEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $sourceCollection = '<source src="bar-file.jpg" media="(max-device-width: 600px)">';
@@ -57,9 +56,7 @@ final class ModifyImageSourceCollectionEventTest extends UnitTestCase
         self::assertEquals($contentObjectRenderer, $event->getContentObjectRenderer());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverwritesSourceCollectionData(): void
     {
         $event = new ModifyImageSourceCollectionEvent(

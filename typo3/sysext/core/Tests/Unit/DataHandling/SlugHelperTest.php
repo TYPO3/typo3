@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -134,10 +136,8 @@ final class SlugHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeDataProvider
-     */
+    #[DataProvider('sanitizeDataProvider')]
+    #[Test]
     public function sanitizeConvertsString(array $configuration, string $input, string $expected): void
     {
         $subject = new SlugHelper(
@@ -173,10 +173,8 @@ final class SlugHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider generateNeverDeliversEmptySlugDataProvider
-     * @test
-     */
+    #[DataProvider('generateNeverDeliversEmptySlugDataProvider')]
+    #[Test]
     public function generateNeverDeliversEmptySlug(string $input, string $expected): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
@@ -326,10 +324,8 @@ final class SlugHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeForPagesDataProvider
-     */
+    #[DataProvider('sanitizeForPagesDataProvider')]
+    #[Test]
     public function sanitizeConvertsStringForPages(array $configuration, string $input, string $expected): void
     {
         $subject = new SlugHelper(
@@ -365,10 +361,8 @@ final class SlugHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider generateNeverDeliversEmptySlugForPagesDataProvider
-     * @test
-     */
+    #[DataProvider('generateNeverDeliversEmptySlugForPagesDataProvider')]
+    #[Test]
     public function generateNeverDeliversEmptySlugForPages(string $input, string $expected): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
@@ -466,10 +460,8 @@ final class SlugHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider generatePrependsSlugsForPagesDataProvider
-     * @test
-     */
+    #[DataProvider('generatePrependsSlugsForPagesDataProvider')]
+    #[Test]
     public function generatePrependsSlugsForPages(string $input, string $expected, array $options): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
@@ -607,10 +599,8 @@ final class SlugHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider generateSlugWithNavTitleAndFallbackForPagesDataProvider
-     * @test
-     */
+    #[DataProvider('generateSlugWithNavTitleAndFallbackForPagesDataProvider')]
+    #[Test]
     public function generateSlugWithNavTitleAndFallbackForPages(array $input, string $expected, array $options): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
@@ -631,9 +621,7 @@ final class SlugHelperTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateSlugWithHookModifiers(): void
     {
         $options = [];
@@ -682,10 +670,8 @@ final class SlugHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider generateSlugWithPid0DataProvider
-     * @test
-     */
+    #[DataProvider('generateSlugWithPid0DataProvider')]
+    #[Test]
     public function generateSlugWithPid0(array $input, string $expected)
     {
         if (empty($GLOBALS[$input['table']]['ctrl'])) {
@@ -718,10 +704,8 @@ final class SlugHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider generatePrependsSlugsForNonPagesDataProvider
-     */
+    #[DataProvider('generatePrependsSlugsForNonPagesDataProvider')]
+    #[Test]
     public function generatePrependsSlugsForNonPages(string $input, string $expected, array $options): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];

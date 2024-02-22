@@ -17,30 +17,25 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Md5PasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class Md5PasswordHashTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordReturnsNullWithEmptyPassword(): void
     {
         self::assertNull((new Md5PasswordHash())->getHashedPassword(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordReturnsNotNullWithNonEmptyPassword(): void
     {
         self::assertNotNull((new Md5PasswordHash())->getHashedPassword('a'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordCreatesAHashThatValidates(): void
     {
         $password = 'password';
@@ -54,9 +49,8 @@ final class Md5PasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same fixed salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash(): void
     {
         $password = 'password';
@@ -66,9 +60,8 @@ final class Md5PasswordHashTest extends UnitTestCase
 
     /**
      * Tests that authentication procedure fails with broken hash to compare to
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsFalseWithBrokenHash(): void
     {
         $password = 'password';
@@ -81,9 +74,8 @@ final class Md5PasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
@@ -97,9 +89,8 @@ final class Md5PasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
@@ -113,9 +104,8 @@ final class Md5PasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
@@ -129,9 +119,8 @@ final class Md5PasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
@@ -149,9 +138,8 @@ final class Md5PasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
@@ -169,9 +157,7 @@ final class Md5PasswordHashTest extends UnitTestCase
         self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPasswordReturnsFalseWithNonValidPassword(): void
     {
         $password = 'password';
@@ -181,9 +167,7 @@ final class Md5PasswordHashTest extends UnitTestCase
         self::assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isHashUpdateNeededReturnsFalse(): void
     {
         $password = 'password';

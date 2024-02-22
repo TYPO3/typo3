@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterGetDataResolvedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $parameterString = 'field:title';
@@ -41,9 +40,7 @@ final class AfterGetDataResolvedEventTest extends UnitTestCase
         self::assertEquals($contentObjectRenderer, $event->getContentObjectRenderer());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setReturnOverwritesResolvedData(): void
     {
         $contentObjectRenderer = (new ContentObjectRenderer());

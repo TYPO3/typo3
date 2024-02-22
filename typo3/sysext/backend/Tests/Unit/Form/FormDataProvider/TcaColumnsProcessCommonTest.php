@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaColumnsProcessCommonTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersOrigUidColumn(): void
     {
         $input = [
@@ -42,9 +41,7 @@ final class TcaColumnsProcessCommonTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessCommon())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersRecordTypeColumn(): void
     {
         $input = [
@@ -62,9 +59,7 @@ final class TcaColumnsProcessCommonTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessCommon())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersRecordTypeRelationColumn(): void
     {
         $input = [
@@ -82,9 +77,7 @@ final class TcaColumnsProcessCommonTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessCommon())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersLanguageFieldColumn(): void
     {
         $input = [
@@ -102,9 +95,7 @@ final class TcaColumnsProcessCommonTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessCommon())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersTransOrigPointerColumn(): void
     {
         $input = [
@@ -122,9 +113,7 @@ final class TcaColumnsProcessCommonTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessCommon())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersTransOrigDiffSourceColumn(): void
     {
         $input = [
@@ -142,9 +131,7 @@ final class TcaColumnsProcessCommonTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessCommon())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersSingleSubtypesAddlistFields(): void
     {
         $input = [
@@ -171,9 +158,7 @@ final class TcaColumnsProcessCommonTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessCommon())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersMultipleSubtypesAddlistFields(): void
     {
         $input = [

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -115,10 +117,8 @@ final class BackendUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider calcAgeDataProvider
-     */
+    #[DataProvider('calcAgeDataProvider')]
+    #[Test]
     public function calcAgeReturnsExpectedValues(int $seconds, string $expectedLabel): void
     {
         self::assertSame($expectedLabel, BackendUtility::calcAge($seconds));
@@ -128,9 +128,9 @@ final class BackendUtilityTest extends UnitTestCase
     // Tests concerning getProcessedValue
     ///////////////////////////////////////
     /**
-     * @test
      * @see https://forge.typo3.org/issues/20994
      */
+    #[Test]
     public function getProcessedValueForZeroStringIsZero(): void
     {
         $GLOBALS['TCA'] = [
@@ -150,9 +150,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForGroup(): void
     {
         $GLOBALS['TCA'] = [
@@ -172,9 +170,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame('testLabel', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForFlexNull(): void
     {
         $GLOBALS['TCA'] = [
@@ -194,9 +190,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame('', BackendUtility::getProcessedValue('tt_content', 'pi_flexform', null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForDatetimeDbTypeDateNull(): void
     {
         $GLOBALS['TCA'] = [
@@ -218,9 +212,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame('', BackendUtility::getProcessedValue('tt_content', 'header', null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForDatetimeDbTypeDatetime(): void
     {
         $GLOBALS['TCA'] = [
@@ -243,9 +235,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame($expected, BackendUtility::getProcessedValue('tt_content', 'header', $value));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForDatetimeDbTypeDatetimeNull(): void
     {
         $GLOBALS['TCA'] = [
@@ -266,9 +256,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame('', BackendUtility::getProcessedValue('tt_content', 'header', null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForDatetimeDbTypeDate(): void
     {
         $GLOBALS['TCA'] = [
@@ -293,9 +281,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame($expected, BackendUtility::getProcessedValue('tt_content', 'header', $value));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForFlex(): void
     {
         $GLOBALS['TCA'] = [
@@ -338,9 +324,7 @@ final class BackendUtilityTest extends UnitTestCase
 </T3FlexForms>'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForGroupWithOneAllowedTable(): void
     {
         $GLOBALS['TCA'] = [
@@ -402,9 +386,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame('Page 1, Page 2', BackendUtility::getProcessedValue('tt_content', 'pages', '1,2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForGroupWithMultipleAllowedTables(): void
     {
         $GLOBALS['TCA'] = [
@@ -472,9 +454,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame('Page 1, Configuration 2', BackendUtility::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForSelectWithMMRelation(): void
     {
         $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
@@ -561,9 +541,7 @@ final class BackendUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -610,11 +588,10 @@ final class BackendUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider inputTypeDateDisplayOptions
-     *
      * @param bool|int $input
      */
+    #[DataProvider('inputTypeDateDisplayOptions')]
+    #[Test]
     public function getProcessedValueHandlesAgeDisplayCorrectly($input, string $expected): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -640,9 +617,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame($expected, BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForCheckWithSingleItem(): void
     {
         $GLOBALS['TCA'] = [
@@ -672,9 +647,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame('Yes', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForCheckWithSingleItemInvertStateDisplay(): void
     {
         $GLOBALS['TCA'] = [
@@ -800,10 +773,8 @@ final class BackendUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getCommonSelectFieldsReturnsCorrectFieldsDataProvider
-     */
+    #[DataProvider('getCommonSelectFieldsReturnsCorrectFieldsDataProvider')]
+    #[Test]
     public function getCommonSelectFieldsReturnsCorrectFields(
         string $table,
         string $prefix,
@@ -903,10 +874,8 @@ final class BackendUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getLabelFromItemlistReturnsCorrectFieldsDataProvider
-     */
+    #[DataProvider('getLabelFromItemlistReturnsCorrectFieldsDataProvider')]
+    #[Test]
     public function getLabelFromItemlistReturnsCorrectFields(
         string $table,
         string $col,
@@ -978,10 +947,8 @@ final class BackendUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
-     */
+    #[DataProvider('getLabelFromItemListMergedReturnsCorrectFieldsDataProvider')]
+    #[Test]
     public function getLabelFromItemListMergedReturnsCorrectFields(
         int $pageId,
         string $table,
@@ -1064,10 +1031,8 @@ final class BackendUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getLabelsFromItemsListDataProvider
-     */
+    #[DataProvider('getLabelsFromItemsListDataProvider')]
+    #[Test]
     public function getLabelsFromItemsListReturnsCorrectValue(
         string $table,
         string $col,
@@ -1097,9 +1062,7 @@ final class BackendUtilityTest extends UnitTestCase
         GeneralUtility::purgeInstances();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueReturnsLabelsForExistingValuesSolely(): void
     {
         $table = 'foobar';
@@ -1126,9 +1089,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertEquals('aFooLabel, aBarLabel', $label);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueReturnsPlainValueIfItemIsNotFound(): void
     {
         $table = 'foobar';
@@ -1154,9 +1115,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertEquals('invalidKey', $label);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateTimeAgeReturnsCorrectValues(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -1168,9 +1127,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame('24-03-16 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400, 1, 'date'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function purgeComputedPropertyNamesRemovesPropertiesStartingWithUnderscore(): void
     {
         $propertyNames = [
@@ -1182,9 +1139,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame(['uid', 'pid'], $computedPropertyNames);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function purgeComputedPropertiesFromRecordRemovesPropertiesStartingWithUnderscore(): void
     {
         $record = [
@@ -1222,19 +1177,15 @@ final class BackendUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider splitTableUidDataProvider
-     */
+    #[DataProvider('splitTableUidDataProvider')]
+    #[Test]
     public function splitTableUid($input, $expected): void
     {
         $result = BackendUtility::splitTable_Uid($input);
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnNullForMissingTcaConfigInResolveFileReferences(): void
     {
         $tableName = 'table_a';
@@ -1243,10 +1194,8 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
     }
 
-    /**
-     * @test
-     * @dataProvider unfitResolveFileReferencesTableConfig
-     */
+    #[DataProvider('unfitResolveFileReferencesTableConfig')]
+    #[Test]
     public function returnNullForUnfitTableConfigInResolveFileReferences(array $config): void
     {
         $tableName = 'table_a';
@@ -1291,9 +1240,7 @@ final class BackendUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function workspaceOLDoesNotChangeValuesForNoBeUserAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;
@@ -1307,9 +1254,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame($reference, $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable(): void
     {
         $tableName = 'table_a';
@@ -1338,9 +1283,7 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wsMapIdReturnsLiveIdIfNoBeUserIsAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;
@@ -1349,18 +1292,14 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame(42, BackendUtility::wsMapId($tableName, $uid));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllowedFieldsForTableReturnsEmptyArrayOnBrokenTca(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         self::assertEmpty(BackendUtility::getAllowedFieldsForTable('myTable', false));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllowedFieldsForTableReturnsUniqueList(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();

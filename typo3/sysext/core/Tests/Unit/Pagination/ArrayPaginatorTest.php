@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Pagination;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -32,17 +33,14 @@ final class ArrayPaginatorTest extends UnitTestCase
 
     /**
      * A short integration test to check that the fixtures are as expected
-     *
-     * @test
      */
+    #[Test]
     public function integration(): void
     {
         self::assertCount(14, $this->fixture);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPaginatorWithDefaultConfiguration(): void
     {
         $paginator = new ArrayPaginator($this->fixture);
@@ -53,9 +51,7 @@ final class ArrayPaginatorTest extends UnitTestCase
         self::assertCount(10, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorRespectsItemsPerPageConfiguration(): void
     {
         $paginator = new ArrayPaginator(
@@ -70,9 +66,7 @@ final class ArrayPaginatorTest extends UnitTestCase
         self::assertCount(3, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorRespectsItemsPerPageConfigurationAndCurrentPage(): void
     {
         $paginator = new ArrayPaginator(
@@ -87,9 +81,7 @@ final class ArrayPaginatorTest extends UnitTestCase
         self::assertCount(3, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorProperlyCalculatesLastPage(): void
     {
         $paginator = new ArrayPaginator(
@@ -104,9 +96,7 @@ final class ArrayPaginatorTest extends UnitTestCase
         self::assertCount(2, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withCurrentPageNumberThrowsInvalidArgumentExceptionIfCurrentPageIsLowerThanOne(): void
     {
         $this->expectExceptionCode(1573047338);
@@ -119,9 +109,7 @@ final class ArrayPaginatorTest extends UnitTestCase
         $paginator->withCurrentPageNumber(0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorSetsCurrentPageToLastPageIfCurrentPageExceedsMaximum(): void
     {
         $paginator = new ArrayPaginator(
@@ -135,9 +123,7 @@ final class ArrayPaginatorTest extends UnitTestCase
         self::assertCount(4, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorProperlyCalculatesOnlyOnePage(): void
     {
         $paginator = new ArrayPaginator(

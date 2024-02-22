@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -28,9 +29,7 @@ final class TcaGroupTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsFieldUnchangedIfFieldIsNotTypeGroup(): void
     {
         $input = [
@@ -51,9 +50,7 @@ final class TcaGroupTest extends UnitTestCase
         self::assertSame($expected, (new TcaGroup())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDatabaseData(): void
     {
         $aFieldConfig = [

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration\FormDefinition\Validators;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\CreatableFormElementPropertiesValidator;
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function validateFormElementPredefinedDefaultValueThrowsExceptionIfValueDoesNotMatch(): void
     {
         $this->expectException(PropertyException::class);
@@ -52,9 +52,7 @@ final class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         $typeConverter($input, '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateFormElementPredefinedDefaultValueThrowsNoExceptionIfValueMatches(): void
     {
         $validationDto = new ValidationDto(null, null, 'test-1', 'label');
@@ -107,10 +105,8 @@ final class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateFormElementValueThrowsExceptionIfValueDoesNotMatchDataProvider
-     */
+    #[DataProvider('validateFormElementValueThrowsExceptionIfValueDoesNotMatchDataProvider')]
+    #[Test]
     public function validateFormElementValueThrowsExceptionIfValueDoesNotMatch($input, array $allowedValues, array $untranslatedAllowedValues): void
     {
         $this->expectException(PropertyException::class);
@@ -171,10 +167,8 @@ final class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateFormElementValueThrowsNoExceptionIfValueMatchesDataProvider
-     */
+    #[DataProvider('validateFormElementValueThrowsNoExceptionIfValueMatchesDataProvider')]
+    #[Test]
     public function validateFormElementValueThrowsNoExceptionIfValueMatches($input, array $allowedValues, array $untranslatedAllowedValues, array $allPossibleAllowedValuesTranslations): void
     {
         $validationDto = new ValidationDto('standard', null, 'test-1', 'label');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class DatabaseEffectivePidTest extends UnitTestCase
         $this->subject = new DatabaseEffectivePid();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUidOfRecordIsPageIsEdited(): void
     {
         $input = [
@@ -47,9 +46,7 @@ final class DatabaseEffectivePidTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsPidOfRecordIfNoPageIsEdited(): void
     {
         $input = [
@@ -64,9 +61,7 @@ final class DatabaseEffectivePidTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUidOfParentPageRowIfParentPageRowExistsAndCommandIsNew(): void
     {
         $input = [
@@ -81,9 +76,7 @@ final class DatabaseEffectivePidTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsZeroWithMissingParentPageRowAndCommandIsNew(): void
     {
         $input = [

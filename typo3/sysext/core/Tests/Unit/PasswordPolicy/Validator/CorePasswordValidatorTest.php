@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\PasswordPolicy\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -91,10 +93,8 @@ final class CorePasswordValidatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validatorReturnsExpectedResultsDataProvider
-     */
+    #[DataProvider('validatorReturnsExpectedResultsDataProvider')]
+    #[Test]
     public function validatorReturnsExpectedResults($options, $password, $expected)
     {
         $validator = new CorePasswordValidator($options);

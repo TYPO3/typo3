@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
@@ -54,9 +56,7 @@ final class DebugExceptionHandlerTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function echoExceptionWebEscapesExceptionMessage(): void
     {
         $message = '<b>b</b><script>alert(1);</script>';
@@ -105,10 +105,8 @@ final class DebugExceptionHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider exampleUrlsForTokenAnonymization
-     */
+    #[DataProvider('exampleUrlsForTokenAnonymization')]
+    #[Test]
     public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl): void
     {
         $subject = new DebugExceptionHandler();

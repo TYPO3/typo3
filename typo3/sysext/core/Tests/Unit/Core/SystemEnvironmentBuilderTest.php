@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -36,9 +38,7 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
         $this->subject = $this->getAccessibleMock(SystemEnvironmentBuilder::class, null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathThisScriptCliReadsLocalPartFromArgv(): void
     {
         $fakedLocalPart = StringUtility::getUniqueId('Test');
@@ -46,9 +46,7 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
         self::assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathThisScriptCliReadsLocalPartFromEnv(): void
     {
         $fakedLocalPart = StringUtility::getUniqueId('Test');
@@ -57,9 +55,7 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
         self::assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathThisScriptCliReadsLocalPartFromServer(): void
     {
         $fakedLocalPart = StringUtility::getUniqueId('Test');
@@ -69,9 +65,7 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
         self::assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathThisScriptCliAddsCurrentWorkingDirectoryFromServerEnvironmentToLocalPathOnUnix(): void
     {
         $GLOBALS['_SERVER']['argv'][0] = 'foo';
@@ -80,9 +74,7 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
         self::assertStringStartsWith($fakedAbsolutePart, $this->subject->_call('getPathThisScriptCli'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeGlobalVariablesSetsGlobalT3ServicesArray(): void
     {
         unset($GLOBALS['T3_SERVICES']);
@@ -104,10 +96,10 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider
      * @param string $variable Variable to check for in $GLOBALS
      */
+    #[DataProvider('initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider')]
+    #[Test]
     public function initializeGlobalTimeTrackingVariablesSetsGlobalVariables($variable): void
     {
         unset($GLOBALS[$variable]);
@@ -115,18 +107,14 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
         self::assertTrue(isset($GLOBALS[$variable]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeGlobalTimeTrackingVariablesRoundsAccessTimeToSixtySeconds(): void
     {
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
         self::assertEquals(0, $GLOBALS['ACCESS_TIME'] % 60);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeGlobalTimeTrackingVariablesRoundsSimAccessTimeToSixtySeconds(): void
     {
         $this->subject->_call('initializeGlobalTimeTrackingVariables');

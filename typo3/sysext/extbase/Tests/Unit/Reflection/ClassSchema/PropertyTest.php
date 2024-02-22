@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchema;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
@@ -34,27 +35,21 @@ final class PropertyTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsPropertiesWithLazyAnnotation(): void
     {
         $classSchema = new ClassSchema(DummyClassWithLazyDoctrineAnnotation::class);
         self::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')->isLazy());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsPropertiesWithLazyAttribute(): void
     {
         $classSchema = new ClassSchema(DummyClassWithLazyDoctrineAnnotation::class);
         self::assertTrue($classSchema->getProperty('propertyWithLazyAttribute')->isLazy());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsPropertyVisibility(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
@@ -75,9 +70,7 @@ final class PropertyTest extends UnitTestCase
         self::assertTrue($property->isPrivate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsTransientProperty(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -86,9 +79,7 @@ final class PropertyTest extends UnitTestCase
         self::assertTrue($property->isTransient());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsTransientPropertyFromAttribute(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -97,9 +88,7 @@ final class PropertyTest extends UnitTestCase
         self::assertTrue($property->isTransient());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsCascadeProperty(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -108,9 +97,7 @@ final class PropertyTest extends UnitTestCase
         self::assertSame('remove', $property->getCascadeValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsCascadePropertyFromAttribute(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -119,9 +106,7 @@ final class PropertyTest extends UnitTestCase
         self::assertSame('remove', $property->getCascadeValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsCascadePropertyOnlyWithVarAnnotation(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -130,9 +115,7 @@ final class PropertyTest extends UnitTestCase
         self::assertNull($property->getCascadeValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsTypeAndElementType(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -154,9 +137,7 @@ final class PropertyTest extends UnitTestCase
         self::assertSame(DummyClassWithAllTypesOfProperties::class, $propertyType->getCollectionValueTypes()[0]->getClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsTypeAndElementTypeWithoutFQCN(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -168,9 +149,7 @@ final class PropertyTest extends UnitTestCase
         self::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getTypes()[0]->getCollectionValueTypes()[0]->getClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsValidateAnnotationsModelProperties(): void
     {
         $property = (new ClassSchema(DummyModel::class))
@@ -215,9 +194,7 @@ final class PropertyTest extends UnitTestCase
             $property->getValidators()
         );
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsValidateAttributeModelProperties(): void
     {
         $property = (new ClassSchema(DummyModel::class))
@@ -263,9 +240,7 @@ final class PropertyTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsValidateAttributeOnPromotedModelProperties(): void
     {
         $property = (new ClassSchema(DummyModel::class))
@@ -311,9 +286,7 @@ final class PropertyTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsTypeFromPropertyWithStringTypeHint(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -323,9 +296,7 @@ final class PropertyTest extends UnitTestCase
         self::assertSame('string', $property->getTypes()[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsTypeFromPropertyWithNullableStringTypeHint(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -335,9 +306,7 @@ final class PropertyTest extends UnitTestCase
         self::assertSame('string', $property->getTypes()[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isObjectStorageTypeDetectsObjectStorage(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -346,9 +315,7 @@ final class PropertyTest extends UnitTestCase
         self::assertTrue($property->isObjectStorageType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isObjectStorageTypeDetectsLazyObjectStorage(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -357,9 +324,7 @@ final class PropertyTest extends UnitTestCase
         self::assertTrue($property->isObjectStorageType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterLazyLoadingProxyAndLazyObjectStorageFiltersLazyLoadingProxy(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -371,9 +336,7 @@ final class PropertyTest extends UnitTestCase
         self::assertSame(DummyClassWithAllTypesOfProperties::class, $types[0]->getClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterLazyLoadingProxyAndLazyObjectStorageFiltersLazyObjectStorage(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))

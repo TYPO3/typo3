@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
@@ -34,9 +35,7 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertsJsonStringToFormDefinitionArray(): void
     {
         $sessionToken = '123';
@@ -95,9 +94,7 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
         self::assertSame($expected, $result->getArrayCopy());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsExceptionIfJsonIsInvalid(): void
     {
         $this->expectException(PropertyException::class);
@@ -109,9 +106,7 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
         $typeConverter->convertFrom($input, FormDefinitionArray::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformMultiValueElementsForFormFrameworkTransformValues(): void
     {
         $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, null, [], '', false);
@@ -157,9 +152,7 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
         self::assertSame($expected, $typeConverter->_call('transformMultiValueElementsForFormFramework', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsExceptionIfPrototypeNameWasChanged(): void
     {
         $this->expectException(PropertyException::class);
@@ -188,9 +181,7 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
         $typeConverter->convertFrom(json_encode($input), FormDefinitionArray::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsExceptionIfIdentifierWasChanged(): void
     {
         $this->expectException(PropertyException::class);

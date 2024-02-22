@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 final class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
     public static function extensionPathSoftReferenceParserDataProvider(): array
@@ -64,10 +67,8 @@ final class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferencePa
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider extensionPathSoftReferenceParserDataProvider
-     */
+    #[DataProvider('extensionPathSoftReferenceParserDataProvider')]
+    #[Test]
     public function extensionPathSoftReferenceParserTest(string $content, string $expectedContent, array $expectedElements, bool $expectedHasMatched): void
     {
         $subject = $this->getParserByKey('ext_fileref');

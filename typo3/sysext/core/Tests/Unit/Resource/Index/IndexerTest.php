@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Index;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
@@ -30,9 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class IndexerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function extractMetaDataCallsSubsequentMethodsWithCorrectArguments(): void
     {
         $mockStorage = $this->createMock(ResourceStorage::class);

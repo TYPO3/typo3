@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\Event\AfterLinkResolvedByStringRepresentationEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterLinkResolvedByStringRepresentationEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $result = [
@@ -45,9 +44,7 @@ final class AfterLinkResolvedByStringRepresentationEventTest extends UnitTestCas
         self::assertSame($resolveException, $event->getResolveException());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setterOverwritesResult(): void
     {
         $result = [

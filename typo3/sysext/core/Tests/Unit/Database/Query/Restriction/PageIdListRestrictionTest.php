@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\PageIdListRestriction;
 
 final class PageIdListRestrictionTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsPidWhereClause(): void
     {
         $subject = new PageIdListRestriction([], [0]);
@@ -31,9 +30,7 @@ final class PageIdListRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTable"."pid" IN (0)', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsAliasedPidWhereClause(): void
     {
         $subject = new PageIdListRestriction([], [13, 14]);
@@ -41,9 +38,7 @@ final class PageIdListRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTableAlias"."pid" IN (13, 14)', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsPidWhereClauseIfTableIsSpecified(): void
     {
         $subject = new PageIdListRestriction(['aTable'], [13, 14]);
@@ -51,9 +46,7 @@ final class PageIdListRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTable"."pid" IN (13, 14)', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsAliasedPidWhereClauseIfAliasIsSpecified(): void
     {
         $subject = new PageIdListRestriction(['aTableAlias'], [13, 14]);
@@ -61,9 +54,7 @@ final class PageIdListRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTableAlias"."pid" IN (13, 14)', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsConvertsToIntegers(): void
     {
         $subject = new PageIdListRestriction(['aTableAlias'], ['13', '14']);
@@ -71,9 +62,7 @@ final class PageIdListRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTableAlias"."pid" IN (13, 14)', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsSkipsUnrestrictedTablesIfOtherTableIsSpecifiedThanUsedInTheQuery(): void
     {
         $subject = new PageIdListRestriction(['aTable'], [13, 14]);

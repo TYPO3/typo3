@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Wizard;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -24,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SuggestWizardControllerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getFlexFieldConfigurationThrowsExceptionIfSimpleFlexFieldIsNotFound(): void
     {
         $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
@@ -66,9 +66,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
         (new SuggestWizardController($flexFormToolsMock))->searchAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFlexFieldConfigurationThrowsExceptionIfSectionContainerFlexFieldIsNotFound(): void
     {
         $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
@@ -108,10 +106,8 @@ final class SuggestWizardControllerTest extends UnitTestCase
         (new SuggestWizardController($flexFormToolsMock))->searchAction($request);
     }
 
-    /**
-     * @test
-     * @dataProvider isTableHiddenIsProperlyRetrievedDataProvider
-     */
+    #[DataProvider('isTableHiddenIsProperlyRetrievedDataProvider')]
+    #[Test]
     public function isTableHiddenIsProperlyRetrieved(bool $expected, array $array): void
     {
         $subject = $this->getAccessibleMock(SuggestWizardController::class, null, [], '', false);
@@ -129,10 +125,8 @@ final class SuggestWizardControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider whereClauseIsProperlyRetrievedDataProvider
-     */
+    #[DataProvider('whereClauseIsProperlyRetrievedDataProvider')]
+    #[Test]
     public function whereClauseIsProperlyRetrieved(string $expected, array $array): void
     {
         $subject = $this->getAccessibleMock(SuggestWizardController::class, null, [], '', false);

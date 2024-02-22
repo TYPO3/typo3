@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\ElementBrowser;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ElementBrowserRegistryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function registrationRequiresInterface(): void
     {
         $elementBrowser = [
@@ -40,9 +39,7 @@ final class ElementBrowserRegistryTest extends UnitTestCase
         self::assertTrue($elementBrowserRegistry->hasElementBrowser('valid-identifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registrationThrowsExceptionOnEmptyIdentifier(): void
     {
         $elementBrowser = [
@@ -55,9 +52,7 @@ final class ElementBrowserRegistryTest extends UnitTestCase
         new ElementBrowserRegistry($elementBrowser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registrationThrowsExceptionOnDuplicateIdentifier(): void
     {
         $elementBrowser = [
@@ -71,9 +66,7 @@ final class ElementBrowserRegistryTest extends UnitTestCase
         new ElementBrowserRegistry($elementBrowser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registrationThrowsExceptionOnRequestingInvalidIdentifier(): void
     {
         $this->expectException(\UnexpectedValueException::class);

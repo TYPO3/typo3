@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -162,10 +164,8 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findRefReturnsParsedElementsDataProvider
-     */
+    #[DataProvider('findRefReturnsParsedElementsDataProvider')]
+    #[Test]
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement): void
     {
         $subject = $this->getParserByKey('typolink');
@@ -250,10 +250,8 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findRefReturnsParsedElementsWithFileDataProvider
-     */
+    #[DataProvider('findRefReturnsParsedElementsWithFileDataProvider')]
+    #[Test]
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
         $storageObject = $this->createMock(ResourceStorage::class);
@@ -306,10 +304,8 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findRefReturnsNullWithFolderDataProvider
-     */
+    #[DataProvider('findRefReturnsNullWithFolderDataProvider')]
+    #[Test]
     public function findRefReturnsNullWithFolder(array $softrefConfiguration): void
     {
         $folderObject = $this->createMock(Folder::class);
@@ -347,10 +343,8 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getTypoLinkPartsThrowExceptionWithPharReferencesDataProvider
-     */
+    #[DataProvider('getTypoLinkPartsThrowExceptionWithPharReferencesDataProvider')]
+    #[Test]
     public function getTypoLinkPartsThrowExceptionWithPharReferences(string $pharUrl): void
     {
         $this->expectException(\RuntimeException::class);

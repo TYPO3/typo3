@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -33,9 +34,7 @@ final class FormManagerControllerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAccessibleFormStorageFoldersReturnsProcessedArray(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
@@ -94,9 +93,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('getAccessibleFormStorageFolders'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFormManagerAppInitialDataReturnsProcessedArray(): void
     {
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translateValuesRecursive'], [], '', false);
@@ -148,9 +145,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertSame($expected, $subject->_call('getFormManagerAppInitialData'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAvailableFormDefinitionsReturnsProcessedArray(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
@@ -197,9 +192,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('getAvailableFormDefinitions'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedReferencesRowsThrowsExceptionIfPersistenceIdentifierIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -210,9 +203,7 @@ final class FormManagerControllerTest extends UnitTestCase
         $mockController->_call('getProcessedReferencesRows', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedReferencesRowsReturnsProcessedArray(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
@@ -262,9 +253,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('getProcessedReferencesRows', 'fake'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidTemplatePathReturnsTrueIfTemplateIsDefinedAndExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
@@ -293,9 +282,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertTrue($mockController->_call('isValidTemplatePath', 'standard', 'EXT:form/Tests/Unit/Controller/Fixtures/SimpleContactForm.yaml'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidTemplatePathReturnsFalseIfTemplateIsDefinedButNotExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
@@ -324,9 +311,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertFalse($mockController->_call('isValidTemplatePath', 'standard', 'EXT:form/Tests/Unit/Controller/Fixtures/NonExistingForm.yaml'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidTemplatePathReturnsFalseIfTemplateIsNotDefinedAndExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
@@ -365,9 +350,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertFalse($mockController->_call('isValidTemplatePath', 'other', 'EXT:form/Tests/Unit/Controller/Fixtures/SimpleContactForm.yaml'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFormNameToIdentifierRemoveSpaces(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
@@ -377,9 +360,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFormNameToIdentifierConvertAccentedCharacters(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
@@ -389,9 +370,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFormNameToIdentifierConvertAccentedCharactersNotInNFC(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
@@ -401,9 +380,7 @@ final class FormManagerControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFormNameToIdentifierRemoveSpecialChars(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Button;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\SplitButton;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -29,9 +30,8 @@ final class SplitButtonTest extends UnitTestCase
 {
     /**
      * Try to validate an empty button
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidBlankCallExpectFalse(): void
     {
         $button = new SplitButton();
@@ -41,9 +41,8 @@ final class SplitButtonTest extends UnitTestCase
 
     /**
      * Try adding an invalid button to a splitButton
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidInvalidButtonGivenExpectFalse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -59,9 +58,8 @@ final class SplitButtonTest extends UnitTestCase
 
     /**
      * Try to add multiple primary actions
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidBrokenSetupMultiplePrimaryActionsGivenExpectFalse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -83,9 +81,8 @@ final class SplitButtonTest extends UnitTestCase
 
     /**
      * Try to add an invalid button as second parameter
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidBrokenSetupInvalidButtonAsSecondParametersGivenExpectFalse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -107,9 +104,8 @@ final class SplitButtonTest extends UnitTestCase
 
     /**
      * Send in a valid button
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidValidSetupExpectTrue(): void
     {
         $button = new SplitButton();

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\SystemEnvironment\ServerResponse;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ContentSecurityPolicyHeader;
 
@@ -93,10 +95,8 @@ final class ContentSecurityPolicyHeaderTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider mitigatesCrossSiteScriptingDataProvider
-     */
+    #[DataProvider('mitigatesCrossSiteScriptingDataProvider')]
+    #[Test]
     public function mitigatesCrossSiteScripting(string $header, ?string $fileName, $expectation): void
     {
         $subject = new ContentSecurityPolicyHeader($header);

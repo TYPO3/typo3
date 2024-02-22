@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,9 +25,7 @@ final class GraphicalFunctionsTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function imageMagickIdentifyReturnsFormattedValues(): void
     {
         $file = 'myImageFile.png';
@@ -45,9 +44,7 @@ final class GraphicalFunctionsTest extends UnitTestCase
         self::assertEquals($result, $expected);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function imageMagickIdentifyReturnsFormattedValuesWithOffset(): void
     {
         $file = 'myImageFile.png';

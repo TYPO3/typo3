@@ -17,23 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CategoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getTitleInitiallyReturnsEmptyString(): void
     {
         $subject = new Category();
         self::assertSame('', $subject->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTitleSetsTitle(): void
     {
         $subject = new Category();
@@ -41,18 +38,14 @@ final class CategoryTest extends UnitTestCase
         self::assertSame('foo bar', $subject->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDescriptionInitiallyReturnsEmptyString(): void
     {
         $subject = new Category();
         self::assertSame('', $subject->getDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDescriptionSetsDescription(): void
     {
         $subject = new Category();
@@ -60,18 +53,14 @@ final class CategoryTest extends UnitTestCase
         self::assertSame('foo bar', $subject->getDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParentInitiallyReturnsNull(): void
     {
         $subject = new Category();
         self::assertNull($subject->getParent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setParentSetsParent(): void
     {
         $parent = new Category();

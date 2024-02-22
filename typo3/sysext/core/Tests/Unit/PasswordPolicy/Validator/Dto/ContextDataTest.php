@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\PasswordPolicy\Validator\Dto;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ContextDataTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function contextDataContainsExpectedDefaults(): void
     {
         $subject = new ContextData();
@@ -37,9 +36,7 @@ final class ContextDataTest extends UnitTestCase
         self::assertEquals('', $subject->getNewUserFullName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function contextDataPropertiesSetInConstructor(): void
     {
         $subject = new ContextData(
@@ -59,9 +56,7 @@ final class ContextDataTest extends UnitTestCase
         self::assertEquals('fullname', $subject->getNewUserFullName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataReturnsExpectedDataForContextDataSetInConstructor(): void
     {
         $subject = new ContextData(newUserFullName: 'Firstname Lastname');
@@ -69,9 +64,7 @@ final class ContextDataTest extends UnitTestCase
         self::assertEquals('Firstname Lastname', $subject->getData('newUserFullName'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDataSetsData(): void
     {
         $subject = new ContextData();

@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Exception\InvalidPasswordRulesException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RandomTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function generateRandomBytesReturnsExpectedAmountOfBytes(): void
     {
         $subject = new Random();
@@ -57,10 +57,10 @@ final class RandomTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider generateRandomHexStringReturnsExpectedAmountOfCharsDataProvider
      * @param int $numberOfChars Number of Chars to generate
      */
+    #[DataProvider('generateRandomHexStringReturnsExpectedAmountOfCharsDataProvider')]
+    #[Test]
     public function generateRandomHexStringReturnsExpectedAmountOfChars($numberOfChars): void
     {
         $subject = new Random();
@@ -91,10 +91,8 @@ final class RandomTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider generateRandomPasswordThrowsInvalidPasswordRulesExceptionDataProvider
-     */
+    #[DataProvider('generateRandomPasswordThrowsInvalidPasswordRulesExceptionDataProvider')]
+    #[Test]
     public function generateRandomPasswordThrowsInvalidPasswordRulesException(
         array $passwordRules,
         int $exceptionCode
@@ -124,10 +122,8 @@ final class RandomTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider generateRandomPasswordGeneratesRandomWithEncodingDataProvider
-     */
+    #[DataProvider('generateRandomPasswordGeneratesRandomWithEncodingDataProvider')]
+    #[Test]
     public function generateRandomPasswordGeneratesRandomWithEncoding(
         array $passwordRules,
         string $pattern
@@ -163,10 +159,8 @@ final class RandomTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider generateRandomPasswordGeneratesRandomWithCharacterSetsDataProvider
-     */
+    #[DataProvider('generateRandomPasswordGeneratesRandomWithCharacterSetsDataProvider')]
+    #[Test]
     public function generateRandomPasswordGeneratesRandomWithCharacterSets(
         array $passwordRules,
         string $pattern
@@ -202,10 +196,8 @@ final class RandomTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider generateRandomPasswordGeneratesRandomWithLengthDataProvider
-     */
+    #[DataProvider('generateRandomPasswordGeneratesRandomWithLengthDataProvider')]
+    #[Test]
     public function generateRandomPasswordGeneratesRandomWithLength(
         array $passwordRules,
         int $length

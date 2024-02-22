@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\VersionNumberUtilityFixture;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -59,10 +61,9 @@ final class VersionNumberUtilityTest extends UnitTestCase
     /**
      * Check whether getNumericTypo3Version handles all kinds of valid
      * version strings
-     *
-     * @dataProvider getNumericTypo3VersionNumberDataProvider
-     * @test
      */
+    #[DataProvider('getNumericTypo3VersionNumberDataProvider')]
+    #[Test]
     public function getNumericTypo3VersionNumber(string $currentVersion, string $expectedVersion): void
     {
         VersionNumberUtilityFixture::$versionNumber = $currentVersion;
@@ -99,10 +100,8 @@ final class VersionNumberUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider
-     */
+    #[DataProvider('convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider')]
+    #[Test]
     public function convertVersionsStringToVersionNumbersForcesVersionNumberInRange(string $versionString, array $expectedResult): void
     {
         $versions = VersionNumberUtility::convertVersionsStringToVersionNumbers($versionString);

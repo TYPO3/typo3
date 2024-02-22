@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class InitializeProcessedTcaTest extends UnitTestCase
         $this->subject = new InitializeProcessedTca();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTableTcaFromGlobalsInResult(): void
     {
         $input = [
@@ -46,9 +45,7 @@ final class InitializeProcessedTcaTest extends UnitTestCase
         self::assertEquals($expected, $result['processedTca']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsGivenProcessedTca(): void
     {
         $input = [
@@ -63,9 +60,7 @@ final class InitializeProcessedTcaTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfGlobalTableTcaIsNotSet(): void
     {
         $input = [
@@ -78,9 +73,7 @@ final class InitializeProcessedTcaTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfGlobalTableTcaIsNotAnArray(): void
     {
         $input = [

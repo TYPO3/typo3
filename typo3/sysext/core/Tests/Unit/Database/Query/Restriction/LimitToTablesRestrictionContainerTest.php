@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -25,9 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
 
 final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsRestrictionsOnlyToGivenAlias(): void
     {
         $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
@@ -38,9 +37,7 @@ final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTes
         self::assertSame('"bt"."hidden" = 0', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsRestrictionsOfDefaultRestrictionContainerOnlyToGivenAlias(): void
     {
         $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
@@ -52,9 +49,7 @@ final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTes
         self::assertSame('(("bt"."deleted" = 0) AND ("bt"."hidden" = 0))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeByTypeRemovesRestrictionsByTypeAlsoFromDefaultRestrictionContainer(): void
     {
         $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
@@ -67,9 +62,7 @@ final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTes
         self::assertSame('"bt"."hidden" = 0', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeByTypeRemovesRestrictionsByTypeAlsoFromAnyRestrictionContainer(): void
     {
         $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';

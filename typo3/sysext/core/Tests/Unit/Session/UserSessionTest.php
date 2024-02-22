@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\CookieScope;
 use TYPO3\CMS\Core\Security\JwtTrait;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -26,9 +27,7 @@ final class UserSessionTest extends UnitTestCase
 {
     use JwtTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromRecordTest(): void
     {
         $record = [
@@ -66,9 +65,7 @@ final class UserSessionTest extends UnitTestCase
         self::assertSame($record['ses_id'], UserSession::resolveIdentifierFromJwt($session->getJwt($scope), $scope) ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNonFixated(): void
     {
         $session = UserSession::createNonFixated('fdcba54321');

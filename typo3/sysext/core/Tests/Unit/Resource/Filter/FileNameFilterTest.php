@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Filter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -53,10 +55,10 @@ final class FileNameFilterTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getItemsAndPathsWithoutHiddenFilesAndFolders_dataProvider
      * @param bool|int $expected
      */
+    #[DataProvider('getItemsAndPathsWithoutHiddenFilesAndFolders_dataProvider')]
+    #[Test]
     public function filterHiddenFilesAndFoldersFiltersHiddenFilesAndFolders(string $itemName, string $itemIdentifier, $expected): void
     {
         FileNameFilter::setShowHiddenFilesAndFolders(false);
@@ -74,10 +76,10 @@ final class FileNameFilterTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getItemsAndPathsWithHiddenFilesAndFolders_dataProvider
      * @param bool|int $expected
      */
+    #[DataProvider('getItemsAndPathsWithHiddenFilesAndFolders_dataProvider')]
+    #[Test]
     public function filterHiddenFilesAndFoldersAllowsHiddenFilesAndFolders(string $itemName, string $itemIdentifier, $expected): void
     {
         $driverMock = $this->createMock(DriverInterface::class);

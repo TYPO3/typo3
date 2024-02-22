@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterImageResourceResolvedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $file = 'field:title';
@@ -39,9 +38,7 @@ final class AfterImageResourceResolvedEventTest extends UnitTestCase
         self::assertEquals($imageResource, $event->getImageResource());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setImageResourceOverwritesResolvedDto(): void
     {
         $event = new AfterImageResourceResolvedEvent('', [], null);

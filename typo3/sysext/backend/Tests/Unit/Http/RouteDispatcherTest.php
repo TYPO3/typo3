@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
@@ -41,9 +42,7 @@ final class RouteDispatcherTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchThrowsExceptionIfTargetIsNotCallable(): void
     {
         $formProtectionMock = $this->createMock(AbstractFormProtection::class);
@@ -66,9 +65,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $subject->dispatch($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchCallsTargetIfTargetIsArray(): void
     {
         $formProtectionMock = $this->createMock(AbstractFormProtection::class);
@@ -95,9 +92,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $subject->dispatch($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchCallsTargetIfTargetIsClosure(): void
     {
         $formProtectionMock = $this->createMock(AbstractFormProtection::class);
@@ -123,9 +118,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $subject->dispatch($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchCallsTargetIfTargetIsClassImplementingInvoke(): void
     {
         $formProtectionMock = $this->createMock(AbstractFormProtection::class);
@@ -149,9 +142,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $subject->dispatch($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchCallsTargetIfTargetIsInContainer(): void
     {
         $formProtectionMock = $this->createMock(AbstractFormProtection::class);
@@ -176,9 +167,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $subject->dispatch($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchThrowsExceptionIfTargetWithClassNameOnlyDoesNotImplementInvoke(): void
     {
         $formProtectionMock = $this->createMock(AbstractFormProtection::class);
@@ -202,9 +191,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $subject->dispatch($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchCallsClassMethodCombinationGivenAsString(): void
     {
         $formProtectionMock = $this->createMock(AbstractFormProtection::class);
@@ -228,9 +215,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $subject->dispatch($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchCallsStaticClassMethodCombinationGivenAsString(): void
     {
         $formProtectionMock = $this->createMock(AbstractFormProtection::class);

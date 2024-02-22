@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Pagination;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -36,9 +37,7 @@ final class SimplePaginationTest extends UnitTestCase
         $this->paginator = new ArrayPaginator(range(1, 14, 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkSimplePaginationWithAPaginatorWithDefaultSettings(): void
     {
         $pagination = new SimplePagination($this->paginator);
@@ -52,9 +51,7 @@ final class SimplePaginationTest extends UnitTestCase
         self::assertSame([1, 2], $pagination->getAllPageNumbers());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkSimplePaginationWithAnIncreasedCurrentPageNumber(): void
     {
         $paginator = $this->paginator
@@ -72,9 +69,7 @@ final class SimplePaginationTest extends UnitTestCase
         self::assertSame([1, 2], $pagination->getAllPageNumbers());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkSimplePaginationWithAnIncreasedCurrentPageNumberAndItemsPerPage(): void
     {
         $paginator = $this->paginator
@@ -92,9 +87,7 @@ final class SimplePaginationTest extends UnitTestCase
         self::assertSame([1, 2, 3, 4, 5], $pagination->getAllPageNumbers());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPaginationWithAPaginatorThatOnlyHasOnePage(): void
     {
         $paginator = $this->paginator
@@ -111,9 +104,7 @@ final class SimplePaginationTest extends UnitTestCase
         self::assertSame([1], $pagination->getAllPageNumbers());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPaginatorWithOutOfBoundsCurrentPage(): void
     {
         $paginator = $this->paginator

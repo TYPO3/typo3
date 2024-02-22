@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\ElementBrowser\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IsFileSelectableEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function eventMethodsReturnExpected(): void
     {
         $mockResourceStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();

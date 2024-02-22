@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseFactoryInterface;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,18 +27,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ResponseFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsr17FactoryInterface(): void
     {
         $factory = new ResponseFactory();
         self::assertInstanceOf(ResponseFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responseHasStatusCode200ByDefault(): void
     {
         $factory = new ResponseFactory();
@@ -45,9 +42,7 @@ final class ResponseFactoryTest extends UnitTestCase
         self::assertSame(200, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responseHasStatusCodeSet(): void
     {
         $factory = new ResponseFactory();
@@ -55,9 +50,7 @@ final class ResponseFactoryTest extends UnitTestCase
         self::assertSame(201, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responseHasDefaultReasonPhrase(): void
     {
         $factory = new ResponseFactory();
@@ -65,9 +58,7 @@ final class ResponseFactoryTest extends UnitTestCase
         self::assertSame('Moved Permanently', $response->getReasonPhrase());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responseHasCustomReasonPhrase(): void
     {
         $factory = new ResponseFactory();

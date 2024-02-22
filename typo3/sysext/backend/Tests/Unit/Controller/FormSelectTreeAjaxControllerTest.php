@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FormSelectTreeAjaxControllerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchDataActionThrowsExceptionIfTcaOfTableDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -36,9 +35,7 @@ final class FormSelectTreeAjaxControllerTest extends UnitTestCase
         (new FormSelectTreeAjaxController(new FormDataCompiler(), new FlexFormTools(new NoopEventDispatcher())))->fetchDataAction(new ServerRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchDataActionThrowsExceptionIfTcaOfTableFieldDoesNotExist(): void
     {
         $serverRequest = (new ServerRequest())->withQueryParams([

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -34,9 +35,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
         $this->backendUserConfiguration = new BackendUserConfiguration($this->backendUserMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getsConfiguration(): void
     {
         $this->backendUserMock->uc = [
@@ -50,9 +49,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
         self::assertEquals('B', $this->backendUserConfiguration->get('nested.key'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getsAllConfiguration(): void
     {
         $configuration = [
@@ -64,9 +61,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
         self::assertEquals($configuration, $this->backendUserConfiguration->getAll());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setsConfiguration(): void
     {
         $this->backendUserMock->uc = [
@@ -89,9 +84,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
         self::assertEquals($expected, $this->backendUserMock->uc);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addsToListConfigurationOption(): void
     {
         $this->backendUserMock->uc = [
@@ -116,9 +109,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
         self::assertEquals($expected, $this->backendUserMock->uc);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesFromListConfigurationOption(): void
     {
         $this->backendUserMock->uc = [
@@ -142,18 +133,14 @@ final class BackendUserConfigurationTest extends UnitTestCase
         self::assertEquals($expected, $this->backendUserMock->uc);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearsConfiguration(): void
     {
         $this->backendUserMock->expects(self::atLeastOnce())->method('resetUC');
         $this->backendUserConfiguration->clear();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetsConfigurationOption(): void
     {
         $this->backendUserMock->uc = [

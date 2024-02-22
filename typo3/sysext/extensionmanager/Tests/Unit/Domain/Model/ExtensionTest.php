@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -79,19 +81,17 @@ final class ExtensionTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getCategoryIndexFromStringOrNumberReturnsIndexDataProvider
      * @param string|int $input Given input
      * @param int $expected Expected result
      */
+    #[DataProvider('getCategoryIndexFromStringOrNumberReturnsIndexDataProvider')]
+    #[Test]
     public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected): void
     {
         $extension = new Extension();
         self::assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function convertDependenciesToObjectsCreatesObjectStorage(): void
     {
         $serializedDependencies = [
@@ -105,9 +105,7 @@ final class ExtensionTest extends UnitTestCase
         self::assertInstanceOf(\SplObjectStorage::class, $dependencyObjects);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertDependenciesToObjectsSetsIdentifier(): void
     {
         $serializedDependencies = [
@@ -176,10 +174,8 @@ final class ExtensionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider convertDependenciesToObjectSetsVersionDataProvider
-     */
+    #[DataProvider('convertDependenciesToObjectSetsVersionDataProvider')]
+    #[Test]
     public function convertDependenciesToObjectSetsVersion(array $dependencies, array $returnValue): void
     {
         $serializedDependencies = serialize($dependencies);
@@ -190,9 +186,7 @@ final class ExtensionTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertDependenciesToObjectCanDealWithEmptyStringDependencyValues(): void
     {
         $dependencies = [
@@ -203,9 +197,7 @@ final class ExtensionTest extends UnitTestCase
         self::assertSame(0, $dependencyObjects->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDistributionImageTest(): void
     {
         $imageUrl = 'https://example.org/path/to/image.png';
@@ -219,9 +211,7 @@ final class ExtensionTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDistributionWelcomeImageTest(): void
     {
         $imageUrl = 'https://example.org/path/to/image.png';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -29,18 +30,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ServerRequestFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsr17FactoryInterface(): void
     {
         $factory = new ServerRequestFactory();
         self::assertInstanceOf(ServerRequestFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serverRequestHasMethodSet(): void
     {
         $factory = new ServerRequestFactory();
@@ -48,9 +45,7 @@ final class ServerRequestFactoryTest extends UnitTestCase
         self::assertSame('POST', $request->getMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serverRequestFactoryHasAWritableEmptyBody(): void
     {
         $factory = new ServerRequestFactory();
@@ -68,9 +63,7 @@ final class ServerRequestFactoryTest extends UnitTestCase
         self::assertSame('Foo', $body->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function raisesExceptionForInvalidMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -79,9 +72,7 @@ final class ServerRequestFactoryTest extends UnitTestCase
         $factory->createServerRequest('BOGUS-BODY', '/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uploadedFilesAreNormalizedFromFilesSuperGlobal(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -144,9 +135,7 @@ final class ServerRequestFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uploadedFilesAreNotCreatedForEmptyFilesArray(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -160,9 +149,7 @@ final class ServerRequestFactoryTest extends UnitTestCase
         self::assertEmpty($uploadedFiles);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uploadedFilesAreNotCreatedIfTmpNameIsEmpty(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -183,9 +170,7 @@ final class ServerRequestFactoryTest extends UnitTestCase
         self::assertEmpty($uploadedFiles);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handlesNumericKeys(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';

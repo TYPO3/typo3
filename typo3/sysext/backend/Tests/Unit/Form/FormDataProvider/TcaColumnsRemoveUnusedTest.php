@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class TcaColumnsRemoveUnusedTest extends UnitTestCase
         $this->subject = new TcaColumnsRemoveUnused();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsColumnsToProcess(): void
     {
         $input = [

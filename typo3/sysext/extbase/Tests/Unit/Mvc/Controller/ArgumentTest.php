@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
@@ -34,9 +36,7 @@ final class ArgumentTest extends UnitTestCase
         $this->objectArgument = new Argument('someName', 'DateTime');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructingArgumentWithoutNameThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -44,9 +44,7 @@ final class ArgumentTest extends UnitTestCase
         new Argument('', 'Text');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructingArgumentWithInvalidNameThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -54,18 +52,14 @@ final class ArgumentTest extends UnitTestCase
         new Argument(new \ArrayObject(), 'Text');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passingDataTypeToConstructorReallySetsTheDataType(): void
     {
         self::assertEquals('string', $this->simpleValueArgument->getDataType(), 'The specified data type has not been set correctly.');
         self::assertEquals('someName', $this->simpleValueArgument->getName(), 'The specified name has not been set correctly.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setShortNameProvidesFluentInterface(): void
     {
         $returnedArgument = $this->simpleValueArgument->setShortName('x');
@@ -82,10 +76,10 @@ final class ArgumentTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider invalidShortNames
      * @param string|int $invalidShortName
      */
+    #[DataProvider('invalidShortNames')]
+    #[Test]
     public function shortNameShouldThrowExceptionIfInvalid($invalidShortName): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -93,18 +87,14 @@ final class ArgumentTest extends UnitTestCase
         $this->simpleValueArgument->setShortName($invalidShortName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shortNameCanBeRetrievedAgain(): void
     {
         $this->simpleValueArgument->setShortName('x');
         self::assertEquals('x', $this->simpleValueArgument->getShortName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRequiredShouldProvideFluentInterfaceAndReallySetRequiredState(): void
     {
         $returnedArgument = $this->simpleValueArgument->setRequired(true);
@@ -112,9 +102,7 @@ final class ArgumentTest extends UnitTestCase
         self::assertTrue($this->simpleValueArgument->isRequired());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDefaultValueShouldProvideFluentInterfaceAndReallySetDefaultValue(): void
     {
         $returnedArgument = $this->simpleValueArgument->setDefaultValue('default');
@@ -122,9 +110,7 @@ final class ArgumentTest extends UnitTestCase
         self::assertSame('default', $this->simpleValueArgument->getDefaultValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValidatorShouldProvideFluentInterfaceAndReallySetValidator(): void
     {
         $mockValidator = $this->createMock(ValidatorInterface::class);
@@ -133,18 +119,14 @@ final class ArgumentTest extends UnitTestCase
         self::assertSame($mockValidator, $this->simpleValueArgument->getValidator());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueProvidesFluentInterface(): void
     {
         $returnedArgument = $this->simpleValueArgument->setValue(null);
         self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueUsesNullAsIs(): void
     {
         $this->simpleValueArgument = new Argument('dummy', 'string');
@@ -152,9 +134,7 @@ final class ArgumentTest extends UnitTestCase
         self::assertNull($this->simpleValueArgument->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultPropertyMappingConfigurationDoesNotAllowCreationOrModificationOfObjects(): void
     {
         self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));

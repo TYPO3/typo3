@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -37,9 +38,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LoginControllerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function checkRedirectRedirectsIfLoginIsInProgressAndUserWasFound(): void
     {
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
@@ -77,9 +76,7 @@ final class LoginControllerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkRedirectDoesNotRedirectIfNoUserIsFound(): void
     {
         $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);

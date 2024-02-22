@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DependencyTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getLowestAndHighestIntegerVersionsReturnsArrayWithVersions(): void
     {
         $subject = Dependency::createFromEmConf('ter', '1.0.0-2.0.0');
@@ -32,9 +31,7 @@ final class DependencyTest extends UnitTestCase
         self::assertSame(2000000, $subject->getHighestVersionAsInteger());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isVersionCompatibleReturnsCorrectResult(): void
     {
         $dependency = Dependency::createFromEmConf('typo3', '9.5.0-10.4.99');

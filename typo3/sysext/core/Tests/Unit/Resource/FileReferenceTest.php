@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -65,10 +67,8 @@ final class FileReferenceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider propertiesDataProvider
-     */
+    #[DataProvider('propertiesDataProvider')]
+    #[Test]
     public function getPropertiesReturnsMergedPropertiesAndRespectsNullValues(array $fileReferenceProperties, array $originalFileProperties, array $expectedMergedProperties): void
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
@@ -76,10 +76,8 @@ final class FileReferenceTest extends UnitTestCase
         self::assertSame($expectedMergedProperties, $actual);
     }
 
-    /**
-     * @test
-     * @dataProvider propertiesDataProvider
-     */
+    #[DataProvider('propertiesDataProvider')]
+    #[Test]
     public function hasPropertyReturnsTrueForAllMergedPropertyKeys(array $fileReferenceProperties, array $originalFileProperties, array $expectedMergedProperties): void
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
@@ -88,10 +86,8 @@ final class FileReferenceTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider propertiesDataProvider
-     */
+    #[DataProvider('propertiesDataProvider')]
+    #[Test]
     public function getPropertyReturnsAllMergedPropertyKeys(array $fileReferenceProperties, array $originalFileProperties, array $expectedMergedProperties): void
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
@@ -100,10 +96,8 @@ final class FileReferenceTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider propertiesDataProvider
-     */
+    #[DataProvider('propertiesDataProvider')]
+    #[Test]
     public function getPropertyThrowsExceptionForNotAvailableProperty(array $fileReferenceProperties, array $originalFileProperties): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -113,10 +107,8 @@ final class FileReferenceTest extends UnitTestCase
         $fixture->getProperty(StringUtility::getUniqueId('nothingHere'));
     }
 
-    /**
-     * @test
-     * @dataProvider propertiesDataProvider
-     */
+    #[DataProvider('propertiesDataProvider')]
+    #[Test]
     public function getPropertyDoesNotThrowExceptionForPropertyOnlyAvailableInOriginalFile(
         array $fileReferenceProperties,
         array $originalFileProperties
@@ -125,10 +117,8 @@ final class FileReferenceTest extends UnitTestCase
         self::assertSame($originalFileProperties['file_only_property'], $fixture->getProperty('file_only_property'));
     }
 
-    /**
-     * @test
-     * @dataProvider propertiesDataProvider
-     */
+    #[DataProvider('propertiesDataProvider')]
+    #[Test]
     public function getReferencePropertyThrowsExceptionForPropertyOnlyAvailableInOriginalFile(
         array $fileReferenceProperties,
         array $originalFileProperties
@@ -140,27 +130,21 @@ final class FileReferenceTest extends UnitTestCase
         $fixture->getReferenceProperty('file_only_property');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTitleReturnsEmptyStringWhenPropertyValueIsNull(): void
     {
         $fixture = $this->prepareFixture(['title' => null], []);
         self::assertSame('', $fixture->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAlternativeReturnsEmptyStringWhenPropertyValueIsNull(): void
     {
         $fixture = $this->prepareFixture(['alternative' => null], []);
         self::assertSame('', $fixture->getAlternative());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDescriptionReturnsEmptyStringWhenPropertyValueIsNull(): void
     {
         $fixture = $this->prepareFixture(['description' => null], []);

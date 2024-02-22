@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -44,17 +46,13 @@ final class YouTubeRendererTest extends UnitTestCase
         $this->subject->method('getOnlineMediaHelper')->willReturn($youTubeHelper);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPriorityReturnsCorrectValue(): void
     {
         self::assertSame(1, $this->subject->getPriority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $fileResourceMock1 = $this->createMock(File::class);
@@ -68,9 +66,7 @@ final class YouTubeRendererTest extends UnitTestCase
         self::assertTrue($this->subject->canRender($fileResourceMock2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderReturnsFalseOnCorrectFile(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -79,9 +75,7 @@ final class YouTubeRendererTest extends UnitTestCase
         self::assertFalse($this->subject->canRender($fileResourceMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithLoopIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -92,9 +86,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithAutoplayIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -105,9 +97,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithAutoplayFromFileReferenceIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -122,9 +112,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithAutoplayAndWithoutControlsIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -205,10 +193,8 @@ final class YouTubeRendererTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderOutputWithControlsDataProvider
-     */
+    #[DataProvider('renderOutputWithControlsDataProvider')]
+    #[Test]
     public function renderOutputWithDefaultControlsIsCorrect($expected, $options): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -219,9 +205,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithRelatedVideosTurnedOffIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -232,9 +216,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithAdditionalAttributes(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -245,9 +227,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithDataAttributesForCustomization(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -258,9 +238,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithCombinationOfDataAndAdditionalAttributes(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -271,9 +249,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithDisabledNoCookieIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -284,9 +260,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithModestbrandingIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -297,9 +271,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithCustomAllowIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -310,9 +282,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithCustomAllowAndAutoplayIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -323,9 +293,7 @@ final class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputIsEscaped(): void
     {
         $youtubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);

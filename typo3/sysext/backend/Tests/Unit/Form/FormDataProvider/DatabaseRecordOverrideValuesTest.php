@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class DatabaseRecordOverrideValuesTest extends UnitTestCase
         $this->subject = new DatabaseRecordOverrideValues();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnSameDataIfNoOverrideValuesSet(): void
     {
         $input = [
@@ -57,9 +56,7 @@ final class DatabaseRecordOverrideValuesTest extends UnitTestCase
         self::assertSame($input, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDatabaseRowAndTcaType(): void
     {
         $input = [

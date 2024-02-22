@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchema\Property;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function nullableMixedProperty(): void
     {
         $property = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -38,9 +37,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertTrue($property->isNullable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -50,9 +47,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('int', $propertyTypes[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function floatProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -62,9 +57,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('float', $propertyTypes[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function boolProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -74,9 +67,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('bool', $propertyTypes[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -86,9 +77,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('object', $propertyTypes[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function arrayProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -98,9 +87,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('array', $propertyTypes[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mixedProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -109,9 +96,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame([], $propertyTypes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullableIntProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -123,10 +108,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
     }
 
     // Collection Type Properties
-
-    /**
-     * @test
-     */
+    #[Test]
     public function listWithSquareBracketsSyntaxProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -143,9 +125,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('string', $propertyTypes[0]->getCollectionValueTypes()[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listWithArraySyntaxWithoutKeyValueTypeProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -162,9 +142,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('string', $propertyTypes[0]->getCollectionValueTypes()[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listWithArraySyntaxWithKeyValueTypeProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -181,9 +159,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('string', $propertyTypes[0]->getCollectionValueTypes()[0]->getBuiltinType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectStorageWithArraySyntaxWithoutKeyValueTypeProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -203,10 +179,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
     }
 
     // Union Type Properties (as of PHP 8.0)
-
-    /**
-     * @test
-     */
+    #[Test]
     public function intOrStringProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -219,9 +192,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertFalse($propertyTypes[1]->isNullable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullableIntOrStringProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -234,9 +205,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertTrue($propertyTypes[1]->isNullable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function concreteEntityOrLazyLoadingProxyProperty(): void
     {
         $property = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -249,9 +218,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame(DummyEntityWithoutTypeDeclarations::class, $property->getPrimaryType()?->getClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectStorageProperty(): void
     {
         $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -262,9 +229,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame(DummyEntityWithoutTypeDeclarations::class, $propertyTypes[0]->getCollectionValueTypes()[0]->getClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lazyObjectStorage(): void
     {
         $property = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
@@ -278,10 +243,7 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
     }
 
     // Intersection Type Properties (as of PHP 8.1)
-
-    /**
-     * @test
-     */
+    #[Test]
     public function arrayAccessAndTraversableProperty(): void
     {
         self::markTestSkipped('Current version of phpdoc reflection cannot detect intersection types');

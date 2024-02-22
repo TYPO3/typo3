@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
@@ -60,10 +62,8 @@ final class RecoveryServiceTest extends UnitTestCase
         $this->extbaseRequest = new Request($request);
     }
 
-    /**
-     * @test
-     * @dataProvider configurationDataProvider
-     */
+    #[DataProvider('configurationDataProvider')]
+    #[Test]
     public function sendRecoveryEmailShouldGenerateMailFromConfiguration(
         int $uid,
         array $recoveryConfiguration,

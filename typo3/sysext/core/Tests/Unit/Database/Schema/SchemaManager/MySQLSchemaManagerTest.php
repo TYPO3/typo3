@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\SchemaManager;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform as DoctrineAbstractMySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform;
@@ -33,10 +35,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MySQLSchemaManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     * @dataProvider platformDataProvider
-     */
+    #[DataProvider('platformDataProvider')]
+    #[Test]
     public function isInactiveForStandardColumnTypes(string $platform): void
     {
         /** @var DoctrineAbstractMySQLPlatform&MockObject $platformMock */
@@ -49,10 +49,8 @@ final class MySQLSchemaManagerTest extends UnitTestCase
         self::assertNull($column);
     }
 
-    /**
-     * @test
-     * @dataProvider platformDataProvider
-     */
+    #[DataProvider('platformDataProvider')]
+    #[Test]
     public function buildsColumnForEnumDataType(string $platform): void
     {
         /** @var DoctrineAbstractMySQLPlatform&MockObject $platformMock */
@@ -77,10 +75,8 @@ final class MySQLSchemaManagerTest extends UnitTestCase
         self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('unquotedValues'));
     }
 
-    /**
-     * @test
-     * @dataProvider platformDataProvider
-     */
+    #[DataProvider('platformDataProvider')]
+    #[Test]
     public function buildsColumnForSetDataType(string $platform): void
     {
         /** @var DoctrineAbstractMySQLPlatform&MockObject $platformMock */

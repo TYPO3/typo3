@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mime\Address;
@@ -40,9 +41,7 @@ final class BeforeMailerSentMessageEventTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $mailer = (new Mailer());
@@ -55,9 +54,7 @@ final class BeforeMailerSentMessageEventTest extends UnitTestCase
         self::assertEquals($rawMessage, $event->getMessage());
         self::assertEquals($envelope, $event->getEnvelope());
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyingInitializedObjects(): void
     {
         $mailer = (new Mailer());

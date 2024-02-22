@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
+use PHPUnit\Framework\Attributes\Test;
+
 final class SubstituteSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteSoftReferenceParserTest(): void
     {
         $subject = $this->getParserByKey('substitute');

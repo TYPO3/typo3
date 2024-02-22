@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyRecordOverlayIconIdentifierEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $event = new ModifyRecordOverlayIconIdentifierEvent(

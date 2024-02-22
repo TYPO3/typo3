@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
@@ -35,9 +36,7 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->subject = new FormDataCompiler();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfInputContainsKeysNotValidInResult(): void
     {
         $input = [
@@ -48,9 +47,7 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->subject->compile($input, $this->formDataGroupMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionAtUnknownCommand(): void
     {
         $input = [
@@ -61,9 +58,7 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->subject->compile($input, $this->formDataGroupMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfNoTableNameGiven(): void
     {
         $input = [
@@ -74,9 +69,7 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->subject->compile($input, $this->formDataGroupMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfUidIsNotAnInteger(): void
     {
         $input = [
@@ -87,9 +80,7 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->subject->compile($input, $this->formDataGroupMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfCommandIsEditAndUidIsNegative(): void
     {
         $input = [
@@ -101,9 +92,7 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->subject->compile($input, $this->formDataGroupMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfRequestIsNotProvidedInInitialDataArray(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -116,9 +105,7 @@ final class FormDataCompilerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileReturnsResultArrayWithInputDataSet(): void
     {
         $input = [
@@ -134,9 +121,7 @@ final class FormDataCompilerTest extends UnitTestCase
         self::assertEquals('edit', $result['command']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileReturnsResultArrayWithAdditionalDataFormFormDataGroup(): void
     {
         $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {
@@ -153,9 +138,7 @@ final class FormDataCompilerTest extends UnitTestCase
         self::assertEquals('newData', $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfFormDataGroupDoesNotReturnArray(): void
     {
         $this->formDataGroupMock->method('compile')->with(self::anything())->willReturn(null);
@@ -169,9 +152,7 @@ final class FormDataCompilerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfRenderDataIsNotEmpty(): void
     {
         $this->formDataGroupMock->method('compile')->with(self::anything())->willReturn([
@@ -187,9 +168,7 @@ final class FormDataCompilerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray(): void
     {
         $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {
@@ -207,9 +186,7 @@ final class FormDataCompilerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfFormDataGroupAddedKeysToResultArray(): void
     {
         $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {

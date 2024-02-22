@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -37,9 +38,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRadioItemsNotDefined(): void
     {
         $input = [
@@ -64,9 +63,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         (new TcaRadioItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepExistingItems(): void
     {
         $input = [
@@ -95,9 +92,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         self::assertSame($expected, (new TcaRadioItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfItemsAreNoArray(): void
     {
         $input = [
@@ -125,9 +120,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         (new TcaRadioItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfItemLabelIsNotSet(): void
     {
         $input = [
@@ -157,9 +150,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         (new TcaRadioItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfItemValueIsNotSet(): void
     {
         $input = [
@@ -189,9 +180,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         (new TcaRadioItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataTranslatesItemLabels(): void
     {
         $input = [
@@ -225,9 +214,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         (new TcaRadioItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCallsItemsProcFunc(): void
     {
         $input = [
@@ -270,9 +257,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         self::assertSame('bar', $items[0]['value']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataItemsProcFuncReceivesParameters(): void
     {
         $input = [
@@ -353,9 +338,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         (new TcaRadioItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataItemsProcFuncEnqueuesFlashMessageOnException(): void
     {
         $input = [
@@ -419,9 +402,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         (new TcaRadioItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataTranslatesItemLabelsFromPageTsConfig(): void
     {
         $input = [

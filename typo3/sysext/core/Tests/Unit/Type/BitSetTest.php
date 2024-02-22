@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Type;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BitSetTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultBitSetOnlyHasZeroByteSet(): void
     {
         $bitSet = new BitSet();
@@ -32,9 +31,7 @@ final class BitSetTest extends UnitTestCase
         self::assertFalse($bitSet->get(0b1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsInternalSet(): void
     {
         $bitSet = new BitSet(0b1 | 0b100);
@@ -43,9 +40,7 @@ final class BitSetTest extends UnitTestCase
         self::assertFalse($bitSet->get(0b10));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSetsBit(): void
     {
         $bitSet = new BitSet(0b101);
@@ -57,9 +52,7 @@ final class BitSetTest extends UnitTestCase
         self::assertTrue($bitSet->get(0b10));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueSetsBit(): void
     {
         $bitSet = new BitSet();
@@ -72,9 +65,7 @@ final class BitSetTest extends UnitTestCase
         self::assertFalse($bitSet->get(0b1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearUnsetsBit(): void
     {
         $bitSet = new BitSet(0b111);
@@ -84,9 +75,7 @@ final class BitSetTest extends UnitTestCase
         self::assertFalse($bitSet->get(0b10));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function andPerformsABinaryAnd(): void
     {
         $bitSet = new BitSet(0b101);
@@ -97,9 +86,7 @@ final class BitSetTest extends UnitTestCase
         self::assertSame('0b101', $bitSet->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orPerformsABinaryOr(): void
     {
         $bitSet = new BitSet(0b101);
@@ -110,9 +97,7 @@ final class BitSetTest extends UnitTestCase
         self::assertSame('0b111', $bitSet->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function xorPerformsABinaryXor(): void
     {
         $bitSet = new BitSet(0b1001);
@@ -123,9 +108,7 @@ final class BitSetTest extends UnitTestCase
         self::assertSame('0b11', $bitSet->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function andNotPerformsABinaryAndNot(): void
     {
         $bitSet = new BitSet(0b111);
@@ -136,18 +119,14 @@ final class BitSetTest extends UnitTestCase
         self::assertSame('0b10', $bitSet->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function __toIntReturnsIntegerRepresentationOfBitSet(): void
     {
         $bitSet = new BitSet(0b010);
         self::assertSame(2, $bitSet->__toInt());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function __toStringReturnsBinaryStringRepresentationOfBitSet(): void
     {
         $bitSet = new BitSet(13);

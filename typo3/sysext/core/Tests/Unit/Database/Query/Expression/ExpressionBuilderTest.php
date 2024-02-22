@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Expression;
 
 use Doctrine\DBAL\Platforms\TrimMode;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -43,9 +45,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject = new ExpressionBuilder($this->connectionMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function andXReturnType(): void
     {
         $result = $this->subject->and('"uid" = 1', '"pid" = 0');
@@ -54,9 +54,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame(CompositeExpression::TYPE_AND, $result->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orXReturnType(): void
     {
         $result = $this->subject->or('"uid" = 1', '"uid" = 7');
@@ -65,9 +63,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame(CompositeExpression::TYPE_OR, $result->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function eqQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -76,9 +72,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField = 1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function neqQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -87,9 +81,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField <> 1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ltQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -98,9 +90,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField < 1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lteQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -109,9 +99,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField <= 1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gtQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -120,9 +108,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField > 1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gteQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -131,9 +117,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField >= 1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNullQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -142,9 +126,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField IS NULL', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotNullQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -153,9 +135,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField IS NOT NULL', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function likeQuotesLiteral(): void
     {
         $databasePlatform = $this->createMock(MockMySQLPlatform::class);
@@ -168,9 +148,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame("aField LIKE 'aValue%' ESCAPE \"\\\"", $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notLikeQuotesLiteral(): void
     {
         $databasePlatform = $this->createMock(MockMySQLPlatform::class);
@@ -183,9 +161,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame("aField NOT LIKE 'aValue%' ESCAPE \"\\\"", $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inWithStringQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -194,9 +170,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField IN (1,2,3)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inWithArrayQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -205,9 +179,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField IN (1, 2, 3)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inThrowsExceptionWithEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -215,9 +187,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->in('aField', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inThrowsExceptionWithEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -225,9 +195,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->in('aField', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInWithStringQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -236,9 +204,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField NOT IN (1,2,3)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInWithArrayQuotesIdentifier(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
@@ -247,9 +213,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('aField NOT IN (1, 2, 3)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInThrowsExceptionWithEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -257,9 +221,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->notIn('aField', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInThrowsExceptionWithEmptyString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -267,9 +229,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->notIn('aField', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetThrowsExceptionWithEmptyValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -277,9 +237,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->inSet('aField', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetThrowsExceptionWithInvalidValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -287,9 +245,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->inSet('aField', 'an,Invalid,Value');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetForMySQL(): void
     {
         $databasePlatform = $this->createMock(MockMySQLPlatform::class);
@@ -304,9 +260,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('FIND_IN_SET(\'1\', `aField`)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetForPostgreSQL(): void
     {
         $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
@@ -331,9 +285,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('\'1\' = ANY(string_to_array("aField"::text, \',\'))', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetForPostgreSQLWithColumn(): void
     {
         $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
@@ -349,9 +301,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('"testtable"."uid"::text = ANY(string_to_array("aField"::text, \',\'))', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetForSQLite(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
@@ -381,9 +331,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('instr(\',\'||"aField"||\',\', \'%,1,%\')', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetForSQLiteWithQuoteCharactersInValue(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
@@ -412,9 +360,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('instr(\',\'||"aField"||\',\', \',\'\'Some\'\'Value,\')', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetForSQLiteThrowsExceptionOnPositionalPlaceholder(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
@@ -426,9 +372,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->inSet('aField', '?');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetForSQLiteThrowsExceptionOnNamedPlaceholder(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
@@ -440,9 +384,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->inSet('aField', ':dcValue1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetThrowsExceptionWithEmptyValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -450,9 +392,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->notInSet('aField', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetThrowsExceptionWithInvalidValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -460,9 +400,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->notInSet('aField', 'an,Invalid,Value');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetForMySQL(): void
     {
         $databasePlatform = $this->createMock(MockMySQLPlatform::class);
@@ -478,9 +416,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('NOT FIND_IN_SET(\'1\', `aField`)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetForPostgreSQL(): void
     {
         $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
@@ -505,9 +441,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('\'1\' <> ALL(string_to_array("aField"::text, \',\'))', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetForPostgreSQLWithColumn(): void
     {
         $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
@@ -524,9 +458,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('"testtable"."uid"::text <> ALL(string_to_array("aField"::text, \',\'))', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetForSQLite(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
@@ -552,9 +484,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('instr(\',\'||"aField"||\',\', \'%,1,%\') = 0', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetForSQLiteWithQuoteCharactersInValue(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
@@ -580,9 +510,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('instr(\',\'||"aField"||\',\', \',\'\'Some\'\'Value,\') = 0', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetForSQLiteThrowsExceptionOnPositionalPlaceholder(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
@@ -594,9 +522,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->notInSet('aField', '?');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetForSQLiteThrowsExceptionOnNamedPlaceholder(): void
     {
         $databasePlatform = $this->createMock(MockSQLitePlatform::class);
@@ -608,9 +534,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->subject->inSet('aField', ':dcValue1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultBitwiseAnd(): void
     {
         $databasePlatform = $this->createMock(MockMySQLPlatform::class);
@@ -624,9 +548,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         self::assertSame('"aField" & 1', $this->subject->bitAnd('aField', 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function maxQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
@@ -640,9 +562,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function minQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
@@ -656,9 +576,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sumQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
@@ -672,9 +590,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function avgQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
@@ -688,9 +604,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
@@ -704,9 +618,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lengthQuotesIdentifier(): void
     {
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
@@ -720,9 +632,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trimQuotesIdentifierWithDefaultValues(): void
     {
         $platform = new MockPlatform();
@@ -766,10 +676,8 @@ final class ExpressionBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider trimQuotesIdentifierDataProvider
-     */
+    #[DataProvider('trimQuotesIdentifierDataProvider')]
+    #[Test]
     public function trimQuotesIdentifier(TrimMode $position, string $char, string $expected): void
     {
         $platform = new MockPlatform();
@@ -792,9 +700,7 @@ final class ExpressionBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function literalQuotesValue(): void
     {
         $this->connectionMock->expects(self::atLeastOnce())->method('quote')->with('aField')

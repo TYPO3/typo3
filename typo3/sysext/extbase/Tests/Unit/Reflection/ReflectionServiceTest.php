@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
@@ -31,9 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ReflectionServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getClassSchemaThrowsExceptionIfClassIsNotFound(): void
     {
         $this->expectException(UnknownClassException::class);
@@ -43,9 +42,7 @@ final class ReflectionServiceTest extends UnitTestCase
         $reflectionService->getClassSchema('Foo\Bar\Not\Existing');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getClassSchemaThrowsExceptionIfTypeHintedClassWasNotFound(): void
     {
         $this->expectException(UnknownClassException::class);
@@ -55,9 +52,7 @@ final class ReflectionServiceTest extends UnitTestCase
         $reflectionService->getClassSchema(DummyClassWithInvalidTypeHint::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reflectionServiceCanBeSerializedAndUnserialized(): void
     {
         $class = new class () {};
@@ -72,9 +67,7 @@ final class ReflectionServiceTest extends UnitTestCase
         self::assertInstanceOf(ClassSchema::class, $reflectionService->getClassSchema($class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reflectionServiceCanBeSerializedAndUnserializedWithCacheManager(): void
     {
         $class = new class () {};

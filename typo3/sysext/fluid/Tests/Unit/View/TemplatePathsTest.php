@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -83,10 +85,10 @@ final class TemplatePathsTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getPathSetterMethodTestValues
      * @param string $method
      */
+    #[DataProvider('getPathSetterMethodTestValues')]
+    #[Test]
     public function pathSetterMethodSortsPathsByKeyDescending($method, array $paths, array $expected): void
     {
         $setter = 'set' . ucfirst($method);
@@ -97,9 +99,7 @@ final class TemplatePathsTest extends UnitTestCase
         self::assertEquals($expected, $subject->$getter());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
@@ -154,9 +154,7 @@ final class TemplatePathsTest extends UnitTestCase
         ], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
@@ -211,9 +209,7 @@ final class TemplatePathsTest extends UnitTestCase
         ], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
@@ -259,9 +255,7 @@ final class TemplatePathsTest extends UnitTestCase
         ], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContextSpecificViewConfigurationRespectsTypoScriptConfiguredPaths(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);

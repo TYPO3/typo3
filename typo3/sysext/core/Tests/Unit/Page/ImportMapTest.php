@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -62,9 +63,7 @@ final class ImportMapTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyOutputIfNoModuleIsLoaded(): void
     {
         $this->packages = ['core'];
@@ -75,9 +74,7 @@ final class ImportMapTest extends UnitTestCase
         self::assertSame('', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyOutputIfNoModuleIsDefined(): void
     {
         $this->packages = ['package1'];
@@ -90,9 +87,7 @@ final class ImportMapTest extends UnitTestCase
         self::assertNull($url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveImport(): void
     {
         $this->packages = ['core'];
@@ -103,9 +98,7 @@ final class ImportMapTest extends UnitTestCase
         self::assertStringStartsWith('Fixtures/ImportMap/core/Resources/Public/JavaScript/Contrib/lit/index.js?bust=', $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveAndImplicitlyIncludeModuleConfiguration(): void
     {
         $this->packages = ['core'];
@@ -120,9 +113,7 @@ final class ImportMapTest extends UnitTestCase
         ExtensionManagementUtility::setPackageManager($this->createMock(PackageManager::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderIncludedImportConfiguration(): void
     {
         $this->packages = ['core'];
@@ -135,9 +126,7 @@ final class ImportMapTest extends UnitTestCase
         self::assertStringContainsString('"@typo3/core/Module1.js":"/Fixtures/ImportMap/core/Resources/Public/JavaScript/Module1.js?bust=', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function composesTwoImportMaps(): void
     {
         $this->packages = ['core', 'package2'];
@@ -151,9 +140,7 @@ final class ImportMapTest extends UnitTestCase
         ExtensionManagementUtility::setPackageManager($this->createMock(PackageManager::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handlesImportMapOverwrites(): void
     {
         $this->packages = ['package2', 'package3'];
@@ -171,9 +158,7 @@ final class ImportMapTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dependenciesAreLoaded(): void
     {
         $this->packages = ['core', 'package2'];
@@ -184,9 +169,7 @@ final class ImportMapTest extends UnitTestCase
         self::assertStringContainsString('@typo3/core/', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unusedConfigurationsAreOmitted(): void
     {
         $this->packages = ['core', 'package2', 'package4'];
@@ -202,9 +185,7 @@ final class ImportMapTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function includeAllImportsIsRespected(): void
     {
         $this->packages = ['core', 'package2', 'package4'];

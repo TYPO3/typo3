@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\CKEditor5Migrator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -1978,10 +1980,8 @@ final class CKEditor5MigratorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider migrationDataProvider
-     * @test
-     */
+    #[DataProvider('migrationDataProvider')]
+    #[Test]
     public function migrationTests(array $configuration, array $expectation): void
     {
         $finalConfiguration = GeneralUtility::makeInstance(

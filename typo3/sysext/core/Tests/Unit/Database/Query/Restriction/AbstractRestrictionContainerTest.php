@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\InstantiatableAbstractRestrictionContainer;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockEnforceableQueryRestriction;
@@ -24,9 +25,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockQueryRestriction;
 
 final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function enforceableRestrictionsAreKeptWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->createMock(MockEnforceableQueryRestriction::class);
@@ -42,9 +41,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         self::assertSame('"aTable"."pid" = 0', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enforceableRestrictionsWillBeRemovedWhenRemovedByType(): void
     {
         $restriction = $this->createMock(MockEnforceableQueryRestriction::class);
@@ -59,9 +56,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         self::assertSame('', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enforceableRestrictionsWillBeRemovedWhenRemovedByTypeAndRemovedAllIsAdditionallyCalled(): void
     {
         $restriction = $this->createMock(MockEnforceableQueryRestriction::class);
@@ -77,9 +72,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         self::assertSame('', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEnforceableRestrictionsAreRemovedWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->createMock(MockQueryRestriction::class);
@@ -93,9 +86,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         self::assertSame('', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enforceableRestrictionsThatDeclareThemselvesNonStickyAreRemovedWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->createMock(MockEnforceableQueryRestriction::class);

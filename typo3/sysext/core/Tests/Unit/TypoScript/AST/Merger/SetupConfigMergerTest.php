@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST\Merger;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\AST\Merger\SetupConfigMerger;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -24,17 +25,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SetupConfigMergerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyConfigReturnsEmptyRootNode(): void
     {
         self::assertEquals(new RootNode(), (new SetupConfigMerger())->merge(null, null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existingConfigIsKept(): void
     {
         $config = new ChildNode('config');
@@ -48,9 +45,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newChildInPageConfigIsAdded(): void
     {
         $pageConfig = new ChildNode('config');
@@ -64,9 +59,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge(null, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newChildInPageConfigIsAddedToExistingConfig(): void
     {
         $config = new ChildNode('config');
@@ -86,9 +79,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newNestedChildInPageConfigIsAddedToExistingConfig(): void
     {
         $config = new ChildNode('config');
@@ -111,9 +102,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function childInPageConfigWithoutValueDoesNotOverrideExistingChildConfigValue(): void
     {
         $config = new ChildNode('config');
@@ -133,9 +122,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function childInPageConfigWithEmptyValueOverridesExistingChildConfigValue(): void
     {
         $config = new ChildNode('config');
@@ -156,9 +143,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function childInPageConfigWithDifferentValueOverridesExistingChildConfigValue(): void
     {
         $config = new ChildNode('config');
@@ -179,9 +164,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newNestedChildInPageConfigIsAddedToExistingChildConfig(): void
     {
         $config = new ChildNode('config');
@@ -211,9 +194,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nestedChildInPageConfigWithoutValueDoesNotOverrideExistingNestedChildValue(): void
     {
         $config = new ChildNode('config');
@@ -239,9 +220,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nestedChildInPageConfigWithEmptyValueOverridesExistingNestedChildValue(): void
     {
         $config = new ChildNode('config');
@@ -268,9 +247,7 @@ final class SetupConfigMergerTest extends UnitTestCase
         self::assertEquals($expected, (new SetupConfigMerger())->merge($config, $pageConfig));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nestedChildInPageConfigWithValueOverridesExistingNestedChildValue(): void
     {
         $config = new ChildNode('config');

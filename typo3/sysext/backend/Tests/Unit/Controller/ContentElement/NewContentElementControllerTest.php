@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\ContentElement;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class NewContentElementControllerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateCommonGroupToDefaultTest(): void
     {
         $input = [
@@ -102,9 +101,7 @@ final class NewContentElementControllerTest extends UnitTestCase
 
         self::assertSame($expected, $result);
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function removeWizardsByPageTsTest(): void
     {
         $wizards = [

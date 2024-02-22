@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Menu;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,9 +25,8 @@ final class MenuItemTest extends UnitTestCase
 {
     /**
      * Try a blank menu Item
-     *
-     * @test
      */
+    #[Test]
     public function isMenuItemValidBlankCallExpectFalse(): void
     {
         $menuItem = new MenuItem();
@@ -36,9 +36,8 @@ final class MenuItemTest extends UnitTestCase
 
     /**
      * Try omitting the title and a Href
-     *
-     * @test
      */
+    #[Test]
     public function isMenuItemValidOmittedHrefAndRouteExpectFalse(): void
     {
         $menuItem = new MenuItem();
@@ -49,9 +48,8 @@ final class MenuItemTest extends UnitTestCase
 
     /**
      * Try omitting the title
-     *
-     * @test
      */
+    #[Test]
     public function isMenuItemValidOmittedTitleExpectFalse(): void
     {
         $menuItem = new MenuItem();
@@ -62,9 +60,8 @@ final class MenuItemTest extends UnitTestCase
 
     /**
      * Set a valid title and href
-     *
-     * @test
      */
+    #[Test]
     public function isMenuItemValidSetValidHrefAndTitleExpectTrue(): void
     {
         $menuItem = new MenuItem();

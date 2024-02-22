@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility\String;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\String\StringFragment;
 use TYPO3\CMS\Core\Utility\String\StringFragmentCollection;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StringFragmentCollectionTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function collectionReflectsFragments(): void
     {
         $a = StringFragment::raw('aa');
@@ -64,10 +64,9 @@ final class StringFragmentCollectionTest extends UnitTestCase
      * @param list<StringFragment> $first
      * @param list<StringFragment> $second
      * @param list<StringFragment> $expectations
-     *
-     * @test
-     * @dataProvider differencesAreResolvedDataProvider
      */
+    #[DataProvider('differencesAreResolvedDataProvider')]
+    #[Test]
     public function differencesAreResolved(array $first, array $second, array $expectations): void
     {
         $firstCollection = new StringFragmentCollection(...$first);
@@ -103,10 +102,9 @@ final class StringFragmentCollectionTest extends UnitTestCase
      * @param list<StringFragment> $first
      * @param list<StringFragment> $second
      * @param list<StringFragment> $expectations
-     *
-     * @test
-     * @dataProvider intersectionsAreResolvedDataProvider
      */
+    #[DataProvider('intersectionsAreResolvedDataProvider')]
+    #[Test]
     public function intersectionsAreResolved(array $first, array $second, array $expectations): void
     {
         $firstCollection = new StringFragmentCollection(...$first);

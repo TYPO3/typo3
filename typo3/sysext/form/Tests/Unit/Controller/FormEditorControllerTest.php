@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
@@ -33,9 +34,7 @@ final class FormEditorControllerTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getInsertRenderablesPanelConfigurationReturnsGroupedAndSortedConfiguration(): void
     {
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translate'], [], '', false);
@@ -118,9 +117,7 @@ final class FormEditorControllerTest extends UnitTestCase
         self::assertSame($expected, $subject->_call('getInsertRenderablesPanelConfiguration', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFormEditorDefinitionsReturnReducedConfiguration(): void
     {
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translateValuesRecursive'], [], '', false);
@@ -239,9 +236,7 @@ final class FormEditorControllerTest extends UnitTestCase
         self::assertSame($expected, $subject->_call('getFormEditorDefinitions'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotSet(): void
     {
         $this->expectException(RenderingException::class);
@@ -260,9 +255,7 @@ final class FormEditorControllerTest extends UnitTestCase
         $mockController->_call('renderFormEditorTemplates', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotArray(): void
     {
         $this->expectException(RenderingException::class);
@@ -282,9 +275,7 @@ final class FormEditorControllerTest extends UnitTestCase
         $mockController->_call('renderFormEditorTemplates', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFormEditorTemplatesThrowsExceptionIfPartialRootPathsNotSet(): void
     {
         $this->expectException(RenderingException::class);
@@ -304,9 +295,7 @@ final class FormEditorControllerTest extends UnitTestCase
         $mockController->_call('renderFormEditorTemplates', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFormEditorTemplatesThrowsExceptionIfPartialRootPathsNotArray(): void
     {
         $this->expectException(RenderingException::class);
@@ -326,9 +315,7 @@ final class FormEditorControllerTest extends UnitTestCase
         $mockController->_call('renderFormEditorTemplates', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFormEditorTemplatesThrowsExceptionIfTemplatePathAndFilenameNotSet(): void
     {
         $this->expectException(RenderingException::class);
@@ -345,9 +332,7 @@ final class FormEditorControllerTest extends UnitTestCase
         $mockController->_call('renderFormEditorTemplates', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformMultiValuePropertiesForFormEditorConvertMultiValueDataIntoMetaData(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
@@ -425,9 +410,7 @@ final class FormEditorControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('transformMultiValuePropertiesForFormEditor', $input, 'type', $multiValueProperties));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterEmptyArraysRemovesEmptyArrayKeys(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);

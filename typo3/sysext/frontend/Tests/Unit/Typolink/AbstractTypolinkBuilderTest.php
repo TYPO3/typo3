@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -53,7 +55,6 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
     //////////////////////
     // Utility functions
     //////////////////////
-
     /**
      * Avoid logging to the file system (file writer is currently the only configured writer)
      */
@@ -167,9 +168,9 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
      * @param string $expected The expected URL
      * @param string $url The URL to parse and manipulate
      * @param array $configuration The configuration array
-     * @test
-     * @dataProvider forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider
      */
+    #[DataProvider('forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider')]
+    #[Test]
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl(string $expected, string $url, array $configuration): void
     {
         Environment::initialize(
@@ -203,9 +204,7 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         self::assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder(): void
     {
         Environment::initialize(
@@ -278,10 +277,8 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolveTargetAttributeDataProvider
-     */
+    #[DataProvider('resolveTargetAttributeDataProvider')]
+    #[Test]
     public function canResolveTheTargetAttribute(
         string $expected,
         array $conf,

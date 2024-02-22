@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class AbstractFrontendTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorAcceptsValidIdentifiers(): void
     {
         $mockBackend = $this->getMockBuilder(AbstractBackend::class)
@@ -45,9 +44,7 @@ final class AbstractFrontendTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorRejectsInvalidIdentifiers(): void
     {
         $mockBackend = $this->getMockBuilder(AbstractBackend::class)
@@ -67,9 +64,7 @@ final class AbstractFrontendTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCallsBackend(): void
     {
         $identifier = 'someCacheIdentifier';
@@ -86,9 +81,7 @@ final class AbstractFrontendTest extends UnitTestCase
         $cache->flush();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRejectsInvalidTags(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -104,9 +97,7 @@ final class AbstractFrontendTest extends UnitTestCase
         $cache->flushByTag('SomeInvalid\\Tag');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagCallsBackendIfItIsATaggableBackend(): void
     {
         $tag = 'sometag';
@@ -123,9 +114,7 @@ final class AbstractFrontendTest extends UnitTestCase
         $cache->flushByTag($tag);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagsCallsBackendIfItIsATaggableBackend(): void
     {
         $tag = 'sometag';
@@ -142,9 +131,7 @@ final class AbstractFrontendTest extends UnitTestCase
         $cache->flushByTags([$tag]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageCallsBackend(): void
     {
         $identifier = 'someCacheIdentifier';
@@ -161,9 +148,7 @@ final class AbstractFrontendTest extends UnitTestCase
         $cache->collectGarbage();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidEntryIdentifiersAreRecognizedAsInvalid(): void
     {
         $identifier = 'someCacheIdentifier';
@@ -177,9 +162,7 @@ final class AbstractFrontendTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validEntryIdentifiersAreRecognizedAsValid(): void
     {
         $identifier = 'someCacheIdentifier';
@@ -193,9 +176,7 @@ final class AbstractFrontendTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidTagsAreRecognizedAsInvalid(): void
     {
         $identifier = 'someCacheIdentifier';
@@ -209,9 +190,7 @@ final class AbstractFrontendTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validTagsAreRecognizedAsValid(): void
     {
         $identifier = 'someCacheIdentifier';

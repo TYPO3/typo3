@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Uid\Uuid;
@@ -29,7 +31,8 @@ use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
-use TYPO3\CMS\Core\SysLog;
+use TYPO3\CMS\Core\SysLog\Action;
+use TYPO3\CMS\Core\SysLog\Error;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter;
@@ -56,9 +59,7 @@ final class DataHandlerTest extends UnitTestCase
         $this->subject->start([], [], $this->backendUserMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixtureCanBeCreated(): void
     {
         self::assertInstanceOf(DataHandler::class, $this->subject);
@@ -67,27 +68,21 @@ final class DataHandlerTest extends UnitTestCase
     //////////////////////////////////////////
     // Test concerning checkModifyAccessList
     //////////////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function adminIsAllowedToModifyNonAdminTable(): void
     {
         $this->subject->admin = true;
         self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonAdminIsNorAllowedToModifyNonAdminTable(): void
     {
         $this->subject->admin = false;
         self::assertFalse($this->subject->checkModifyAccessList('tt_content'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonAdminWithTableModifyAccessIsAllowedToModifyNonAdminTable(): void
     {
         $this->subject->admin = false;
@@ -95,27 +90,21 @@ final class DataHandlerTest extends UnitTestCase
         self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function adminIsAllowedToModifyAdminTable(): void
     {
         $this->subject->admin = true;
         self::assertTrue($this->subject->checkModifyAccessList('be_users'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonAdminIsNotAllowedToModifyAdminTable(): void
     {
         $this->subject->admin = false;
         self::assertFalse($this->subject->checkModifyAccessList('be_users'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonAdminWithTableModifyAccessIsNotAllowedToModifyAdminTable(): void
     {
         $tableName = StringUtility::getUniqueId('aTable');
@@ -144,10 +133,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkValueForDatetimeDataProvider
-     */
+    #[DataProvider('checkValueForDatetimeDataProvider')]
+    #[Test]
     public function checkValueForDatetime($input, $serverTimezone, $expectedOutput): void
     {
         $oldTimezone = date_default_timezone_get();
@@ -177,10 +164,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkValueForColorDataProvider
-     */
+    #[DataProvider('checkValueForColorDataProvider')]
+    #[Test]
     public function checkValueForColor(string $input, mixed $expected, array $additionalFieldConfig = []): void
     {
         $output = $this->subject->_call(
@@ -192,9 +177,7 @@ final class DataHandlerTest extends UnitTestCase
         self::assertEquals($expected, $output['value'] ?? null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkValuePasswordWithSaltedPasswordKeepsExistingHash(): void
     {
         // Note the involved salted passwords are NOT mocked since the factory is static
@@ -203,9 +186,7 @@ final class DataHandlerTest extends UnitTestCase
         self::assertSame($inputValue, $result['value']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkValuePasswordWithSaltedPasswordReturnsHashForSaltedPassword(): void
     {
         $event = new EnrichPasswordValidationContextDataEvent(new ContextData(), [], '');
@@ -249,10 +230,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectlyDataProvider
-     */
+    #[DataProvider('numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectlyDataProvider')]
+    #[Test]
     public function numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectly(string $value, int $expectedReturnValue): void
     {
         $tcaFieldConf = [
@@ -304,10 +283,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectlyDataProvider
-     */
+    #[DataProvider('numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectlyDataProvider')]
+    #[Test]
     public function numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectly(string $value, string $expectedReturnValue): void
     {
         $tcaFieldConf = [
@@ -351,10 +328,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider inputValuesRangeDoubleDataProvider
-     */
+    #[DataProvider('inputValuesRangeDoubleDataProvider')]
+    #[Test]
     public function inputValueCheckRespectsRightLowerAndUpperLimitForDouble(string $value, string|int $expectedReturnValue): void
     {
         $tcaFieldConf = [
@@ -369,10 +344,8 @@ final class DataHandlerTest extends UnitTestCase
         self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
-    /**
-     * @test
-     * @dataProvider inputValuesRangeDoubleDataProvider
-     */
+    #[DataProvider('inputValuesRangeDoubleDataProvider')]
+    #[Test]
     public function inputValueCheckRespectsRightLowerAndUpperLimitWithDefaultValueForDouble(string $value, string|int $expectedReturnValue): void
     {
         $tcaFieldConf = [
@@ -410,10 +383,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider datetimeValuesDataProvider
-     */
+    #[DataProvider('datetimeValuesDataProvider')]
+    #[Test]
     public function valueCheckRecognizesDatetimeValuesAsIntegerValuesCorrectly(string $value, int $expected): void
     {
         $tcaFieldConf = [
@@ -455,10 +426,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider
-     * @test
-     */
+    #[DataProvider('inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider')]
+    #[Test]
     public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty(
         string|int $inputValue,
         int $expected,
@@ -515,9 +484,9 @@ final class DataHandlerTest extends UnitTestCase
 
     /**
      * Tests whether native dbtype inputs are parsed independent of the server timezone.
-     * @test
-     * @dataProvider datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider
      */
+    #[DataProvider('datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider')]
+    #[Test]
     public function datetimeValueCheckDbtypeIsIndependentFromTimezone(string $value, string $dbtype, string $expectedOutput): void
     {
         $tcaFieldConf = [
@@ -604,9 +573,9 @@ final class DataHandlerTest extends UnitTestCase
      * @param string $format
      * @param bool $nullable
      * @param mixed|null $expectedOutput
-     * @dataProvider inputValueCheckNativeDbTypeDataProvider
-     * @test
      */
+    #[DataProvider('inputValueCheckNativeDbTypeDataProvider')]
+    #[Test]
     public function inputValueCheckNativeDbType(string|null $value, string $dbType, string $format, bool $nullable, $expectedOutput): void
     {
         $tcaFieldConf = [
@@ -627,8 +596,8 @@ final class DataHandlerTest extends UnitTestCase
     //
     /**
      * Tests whether a wrong interface on the 'checkModifyAccessList' hook throws an exception.
-     * @test
      */
+    #[Test]
     public function doesCheckModifyAccessListThrowExceptionOnWrongHookInterface(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -640,9 +609,8 @@ final class DataHandlerTest extends UnitTestCase
 
     /**
      * Tests whether the 'checkModifyAccessList' hook is called correctly.
-     *
-     * @test
      */
+    #[Test]
     public function doesCheckModifyAccessListHookGetsCalled(): void
     {
         $hookClass = StringUtility::getUniqueId('tx_coretest');
@@ -658,9 +626,8 @@ final class DataHandlerTest extends UnitTestCase
 
     /**
      * Tests whether the 'checkModifyAccessList' hook modifies the $accessAllowed variable.
-     *
-     * @test
      */
+    #[Test]
     public function doesCheckModifyAccessListHookModifyAccessAllowed(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = AllowAccessHookFixture::class;
@@ -670,9 +637,7 @@ final class DataHandlerTest extends UnitTestCase
     /////////////////////////////////////
     // Tests concerning process_datamap
     /////////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function processDatamapForFrozenNonZeroWorkspaceReturnsFalse(): void
     {
         $subject = $this->getMockBuilder(DataHandler::class)
@@ -765,10 +730,9 @@ final class DataHandlerTest extends UnitTestCase
     /**
      * This test ensures, that the eval method checkValue_SW is called on
      * flexform structures.
-     *
-     * @test
-     * @dataProvider checkValue_flex_procInData_travDSDataProvider
      */
+    #[DataProvider('checkValue_flex_procInData_travDSDataProvider')]
+    #[Test]
     public function checkValue_flex_procInData_travDS(array $dataValues, array $DSelements, array $expected): void
     {
         $pParams = [
@@ -789,33 +753,27 @@ final class DataHandlerTest extends UnitTestCase
     /////////////////////////////////////
     // Tests concerning log
     /////////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->expects(self::once())->method('writelog');
         $this->subject->enableLogging = true;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::MESSAGE, 'details');
+        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::MESSAGE, 'details');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->expects(self::never())->method('writelog');
         $this->subject->enableLogging = false;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::MESSAGE, 'details');
+        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::MESSAGE, 'details');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logAddsEntryToLocalErrorLogArray(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
@@ -823,14 +781,12 @@ final class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetailsUnique = StringUtility::getUniqueId('details');
-        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::USER_ERROR, $logDetailsUnique);
+        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetailsUnique);
         self::assertArrayHasKey(0, $this->subject->errorLog);
         self::assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
@@ -838,14 +794,12 @@ final class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetails = StringUtility::getUniqueId('details');
-        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
+        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
         self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logFormatsDetailMessageWithPlaceholders(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
@@ -853,16 +807,14 @@ final class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
-        $this->subject->log('', 23, SysLog\Action::UNDEFINED, 42, SysLog\Error::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
+        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
         // UID is kept as non-replaced, and other properties are not replaced.
         $expected = 'An error occurred on tx_sometable:{uid} when localizing';
         self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
     }
 
-    /**
-     * @dataProvider equalSubmittedAndStoredValuesAreDeterminedDataProvider
-     * @test
-     */
+    #[DataProvider('equalSubmittedAndStoredValuesAreDeterminedDataProvider')]
+    #[Test]
     public function equalSubmittedAndStoredValuesAreDetermined(bool $expected, string|int|null $submittedValue, string|int|null $storedValue, string $storedType, bool $allowNull): void
     {
         $result = \Closure::bind(function () use ($submittedValue, $storedValue, $storedType, $allowNull) {
@@ -1049,9 +1001,7 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletePagesOnRootLevelIsDenied(): void
     {
         $dataHandlerMock = $this->getMockBuilder(DataHandler::class)
@@ -1068,9 +1018,7 @@ final class DataHandlerTest extends UnitTestCase
         $dataHandlerMock->deletePages(0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteRecord_procBasedOnFieldTypeRespectsEnableCascadingDelete(): void
     {
         $table = StringUtility::getUniqueId('foo_');
@@ -1124,10 +1072,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider checkValue_checkReturnsExpectedValuesDataProvider
-     * @test
-     */
+    #[DataProvider('checkValue_checkReturnsExpectedValuesDataProvider')]
+    #[Test]
     public function checkValue_checkReturnsExpectedValues(string|int $value, string|int $expectedValue): void
     {
         $expectedResult = [
@@ -1144,9 +1090,7 @@ final class DataHandlerTest extends UnitTestCase
         self::assertSame($expectedResult, $this->subject->_call('checkValueForCheck', $result, $value, $tcaFieldConfiguration, '', 0, 0, ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkValueForInputConvertsNullToEmptyString(): void
     {
         $expectedResult = ['value' => ''];
@@ -1173,10 +1117,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkValueForJsonDataProvider
-     */
+    #[DataProvider('checkValueForJsonDataProvider')]
+    #[Test]
     public function checkValueForJson(string|array $input, array $expected): void
     {
         self::assertSame(
@@ -1189,9 +1131,7 @@ final class DataHandlerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkValueForUuidReturnsValidUuidUnmodified(): void
     {
         self::assertEquals(
@@ -1200,27 +1140,21 @@ final class DataHandlerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkValueForUuidCreatesValidUuidValueForReqiredFieldsWithInvalidUuidGiven(): void
     {
         self::assertTrue(Uuid::isValid($this->subject->_call('checkValueForUuid', '', [])['value']));
         self::assertTrue(Uuid::isValid($this->subject->_call('checkValueForUuid', '-_invalid_-', [])['value']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkValueForUuidDiscardsInvalidUuidIfFieldIsNotRequired(): void
     {
         self::assertEmpty($this->subject->_call('checkValueForUuid', '', ['required' => false]));
         self::assertEmpty($this->subject->_call('checkValueForUuid', '-_invalid_-', ['required' => false]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkValueForUuidCreatesValidUuidValueWithDefinedVersion(): void
     {
         self::assertEquals(6, (int)$this->subject->_call('checkValueForUuid', '', ['version' => 6])['value'][14]);
@@ -1232,10 +1166,8 @@ final class DataHandlerTest extends UnitTestCase
         self::assertEquals(4, (int)$this->subject->_call('checkValueForUuid', '', [])['value'][14]);
     }
 
-    /**
-     * @test
-     * @dataProvider referenceValuesAreCastedDataProvider
-     */
+    #[DataProvider('referenceValuesAreCastedDataProvider')]
+    #[Test]
     public function referenceValuesAreCasted(string $value, array $configuration, bool $isNew, int|string $expected): void
     {
         self::assertEquals(
@@ -1289,10 +1221,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider clearPrefixFromValueRemovesPrefixDataProvider
-     */
+    #[DataProvider('clearPrefixFromValueRemovesPrefixDataProvider')]
+    #[Test]
     public function clearPrefixFromValueRemovesPrefix(string $input, string $expected): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -1338,18 +1268,14 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider applyFiltersToValuesFiltersValuesDataProvider
-     * @test
-     */
+    #[DataProvider('applyFiltersToValuesFiltersValuesDataProvider')]
+    #[Test]
     public function applyFiltersToValuesFiltersValues(array $tcaFieldConfiguration, array $values, array $expected): void
     {
         self::assertEqualsCanonicalizing($expected, $this->subject->_call('applyFiltersToValues', $tcaFieldConfiguration, $values));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyFiltersToValuesExpectsArray(): void
     {
         $tcaFieldConfiguration = [
@@ -1409,10 +1335,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider validateValueForRequiredReturnsExpectedValueDataHandler
-     * @test
-     */
+    #[DataProvider('validateValueForRequiredReturnsExpectedValueDataHandler')]
+    #[Test]
     public function validateValueForRequiredReturnsExpectedValue(array $tcaFieldConfig, $input, bool $expectation): void
     {
         self::assertSame($expectation, $this->subject->_call('validateValueForRequired', $tcaFieldConfig, $input));

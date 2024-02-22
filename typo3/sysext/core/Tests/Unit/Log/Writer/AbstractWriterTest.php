@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 use TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\WriterFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractWriterTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionWithInvalidConfigurationOption(): void
     {
         $this->expectException(InvalidLogWriterConfigurationException::class);

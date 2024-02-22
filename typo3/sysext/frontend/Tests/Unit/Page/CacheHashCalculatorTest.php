@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -46,10 +48,8 @@ final class CacheHashCalculatorTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @dataProvider cacheHashCalculationDataProvider
-     * @test
-     */
+    #[DataProvider('cacheHashCalculationDataProvider')]
+    #[Test]
     public function cacheHashCalculationWorks(array $params, string $expected): void
     {
         self::assertEquals($expected, $this->subject->calculateCacheHash($params));
@@ -80,10 +80,8 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider getRelevantParametersDataprovider
-     * @test
-     */
+    #[DataProvider('getRelevantParametersDataprovider')]
+    #[Test]
     public function getRelevantParametersWorks(string $params, array $expected): void
     {
         $actual = $this->subject->getRelevantParameters($params);
@@ -117,18 +115,14 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider canGenerateForParametersDataProvider
-     * @test
-     */
+    #[DataProvider('canGenerateForParametersDataProvider')]
+    #[Test]
     public function canGenerateForParameters(string $params, string $expected): void
     {
         self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateForParametersThrowsExceptionWhenIdIsNotSpecified(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -153,10 +147,8 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider parametersRequireCacheHashDataprovider
-     * @test
-     */
+    #[DataProvider('parametersRequireCacheHashDataprovider')]
+    #[Test]
     public function parametersRequireCacheHashWorks(string $params, bool $expected): void
     {
         self::assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
@@ -176,10 +168,9 @@ final class CacheHashCalculatorTest extends UnitTestCase
     /**
      * In case the $TYPO3_CONF_VARS[FE][cacheHash][cachedParametersWhiteList] is set, other parameters should not
      * influence the cHash (except the encryption key of course)
-     *
-     * @dataProvider canWhitelistParametersDataProvider
-     * @test
      */
+    #[DataProvider('canWhitelistParametersDataProvider')]
+    #[Test]
     public function canWhitelistParameters(string $params, string $expected): void
     {
         $this->subject->setConfiguration([
@@ -201,10 +192,8 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider canSkipParametersWithEmptyValuesDataProvider
-     * @test
-     */
+    #[DataProvider('canSkipParametersWithEmptyValuesDataProvider')]
+    #[Test]
     public function canSkipParametersWithEmptyValues(string $params, array $settings, array $expected): void
     {
         $this->subject->setConfiguration($settings);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Context;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -38,10 +40,8 @@ final class ContextTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validAspectKeysDataProvider
-     */
+    #[DataProvider('validAspectKeysDataProvider')]
+    #[Test]
     public function hasAspectReturnsTrueOnExistingAspect(string $aspectName): void
     {
         $subject = new Context();
@@ -59,19 +59,15 @@ final class ContextTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidAspectKeysDataProvider
-     */
+    #[DataProvider('invalidAspectKeysDataProvider')]
+    #[Test]
     public function hasAspectReturnsFalseOnNonExistingAspect(string $aspectName): void
     {
         $subject = new Context();
         self::assertFalse($subject->hasAspect($aspectName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAspectThrowsExceptionOnInvalidAspect(): void
     {
         $subject = new Context();
@@ -80,9 +76,7 @@ final class ContextTest extends UnitTestCase
         $subject->getAspect('uncoolio');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAspectReturnsValidAspect(): void
     {
         $aspect = new UserAspect();
@@ -91,9 +85,7 @@ final class ContextTest extends UnitTestCase
         self::assertSame($aspect, $subject->getAspect('coolio'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidAspectFromGetPropertyFromAspectThrowsException(): void
     {
         $subject = new Context();
@@ -102,9 +94,7 @@ final class ContextTest extends UnitTestCase
         $subject->getPropertyFromAspect('uncoolio', 'does not matter');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidPropertyFromgetPropertyFromAspectReturnsDefault(): void
     {
         $defaultValue = 'default value';
@@ -114,9 +104,7 @@ final class ContextTest extends UnitTestCase
         self::assertEquals($defaultValue, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validPropertyFromgetPropertyFromAspectReturnsValue(): void
     {
         $aspect = new WorkspaceAspect(13);
@@ -126,9 +114,7 @@ final class ContextTest extends UnitTestCase
         self::assertEquals(13, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAspectSetsAnAspectAndCanReturnIt(): void
     {
         $aspect = new UserAspect();
@@ -137,9 +123,7 @@ final class ContextTest extends UnitTestCase
         self::assertSame($aspect, $subject->getAspect('coolio'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAspectOverridesAnExisting(): void
     {
         $initialAspect = new UserAspect();

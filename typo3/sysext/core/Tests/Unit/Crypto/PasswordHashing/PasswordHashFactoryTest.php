@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PasswordHashFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfModeIsNotBeOrFe(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -37,9 +36,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionWithBrokenClassNameModeConfiguration(): void
     {
         $this->expectException(\LogicException::class);
@@ -48,9 +45,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'FE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionWithBrokenOptionsModeConfiguration(): void
     {
         $this->expectException(\LogicException::class);
@@ -59,9 +54,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'FE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfARegisteredHashDoesNotImplementSaltInterface(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ \stdClass::class ];
@@ -70,9 +63,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'BE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfNoClassIsFoundThatHandlesGivenHash(): void
     {
         $this->expectException(InvalidPasswordHashException::class);
@@ -80,9 +71,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->get('ThisIsNotAValidHash', 'BE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfClassThatHandlesAHashIsNotAvailable(): void
     {
         $phpassPasswordHashMock = $this->createMock(PhpassPasswordHash::class);
@@ -93,9 +82,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->get('$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.', 'BE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfClassThatHandlesAHashSaysNoToHash(): void
     {
         GeneralUtility::addInstance(PhpassPasswordHash::class, new PhpassPasswordHash());
@@ -105,9 +92,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->get($hash, 'BE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHandsConfiguredOptionsToHashClassIfMethodIsConfiguredDefaultForMode(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ TestPasswordHash::class ];
@@ -122,9 +107,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->get('someHash', 'FE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsInstanceOfHashClassThatHandlesHash(): void
     {
         $phpassPasswordHash = new PhpassPasswordHash();
@@ -133,9 +116,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         self::assertSame($phpassPasswordHash, (new PasswordHashFactory())->get($hash, 'BE'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashInstanceThrowsExceptionIfModeIsNotBeOrFe(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -143,9 +124,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->getDefaultHashInstance('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashInstanceThrowsExceptionWithBrokenClassNameModeConfiguration(): void
     {
         $this->expectException(\LogicException::class);
@@ -154,9 +133,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->getDefaultHashInstance('FE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashInstanceThrowsExceptionWithBrokenOptionsModeConfiguration(): void
     {
         $this->expectException(\LogicException::class);
@@ -165,27 +142,21 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->getDefaultHashInstance('FE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashReturnsInstanceOfConfiguredDefaultFeMethod(): void
     {
         $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('FE');
         self::assertInstanceOf(Argon2idPasswordHash::class, $hashInstance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashReturnsInstanceOfConfiguredDefaultBeMethod(): void
     {
         $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('BE');
         self::assertInstanceOf(Argon2idPasswordHash::class, $hashInstance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodDoesNotImplementSaltInterface(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing']['className'] = \stdClass::class;
@@ -195,9 +166,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->getDefaultHashInstance('BE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotRegistered(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing']['className'] = \stdClass::class;
@@ -207,9 +176,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->getDefaultHashInstance('BE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotAvailable(): void
     {
         $argon2idPasswordHashMock = $this->createMock(Argon2idPasswordHash::class);
@@ -220,9 +187,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->getDefaultHashInstance('BE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultHashHandsConfiguredOptionsToHashClass(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = [ TestPasswordHash::class ];
@@ -237,9 +202,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         (new PasswordHashFactory())->getDefaultHashInstance('FE');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRegisteredSaltedHashingMethodsReturnsRegisteredMethods(): void
     {
         $methods = [
@@ -250,9 +213,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
         self::assertSame($methods, PasswordHashFactory::getRegisteredSaltedHashingMethods());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRegisteredSaltedHashingMethodsThrowsExceptionIfNoMethodIsConfigured(): void
     {
         $this->expectException(\RuntimeException::class);

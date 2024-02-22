@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Module;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
@@ -38,9 +39,7 @@ final class ModuleRegistryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionOnDuplicateModuleIdentifier(): void
     {
         $this->expectException(\LogicException::class);
@@ -52,9 +51,7 @@ final class ModuleRegistryTest extends UnitTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionOnNonExistingModuleIdentifier(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -63,9 +60,7 @@ final class ModuleRegistryTest extends UnitTestCase
         (new ModuleRegistry([]))->getModule('a_module');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function accessRegisteredModulesWork(): void
     {
         $aModule = $this->createModule('a_module', ['aliases' => ['a_old_module']]);
@@ -82,9 +77,7 @@ final class ModuleRegistryTest extends UnitTestCase
         self::assertEquals(['a_old_module' => 'a_module'], $registry->getModuleAliases());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moduleAliasOverwriteStrategy(): void
     {
         $aModule = $this->createModule('a_module', ['aliases' => ['duplicate_alias']]);
@@ -96,9 +89,7 @@ final class ModuleRegistryTest extends UnitTestCase
         self::assertEquals(['duplicate_alias' => 'b_module'], $registry->getModuleAliases());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addModuleAppliesSortingAndHierarchy(): void
     {
         $modules = $random = [
@@ -183,9 +174,7 @@ final class ModuleRegistryTest extends UnitTestCase
         self::assertEquals('b', $registry->getModule('b_a_d_c')->getParentModule()->getParentModule()->getParentIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function keepsInputOrderWithoutPositionDefinition(): void
     {
         self::assertEquals(
@@ -200,9 +189,7 @@ final class ModuleRegistryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function firstModuleDeclaringTopWillBeOnTop(): void
     {
         self::assertEquals(
@@ -218,9 +205,7 @@ final class ModuleRegistryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subModulesAndDependencyChainOverruleFirstLevelDependencies(): void
     {
         self::assertEquals(
@@ -238,9 +223,7 @@ final class ModuleRegistryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dependencyChainsAreRespected(): void
     {
         self::assertEquals(

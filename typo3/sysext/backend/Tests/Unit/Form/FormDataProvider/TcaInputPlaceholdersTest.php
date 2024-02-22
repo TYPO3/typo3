@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -34,9 +35,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesEmptyPlaceholderOption(): void
     {
         $input = [
@@ -60,9 +59,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsUnmodifiedSimpleStringPlaceholder(): void
     {
         $input = [
@@ -85,9 +82,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsValueFromDatabaseRowAsPlaceholder(): void
     {
         $input = [
@@ -113,9 +108,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsValueFromSelectTypeRelation(): void
     {
         $request = new ServerRequest();
@@ -179,9 +172,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsNoPlaceholderForNewSelectTypeRelation(): void
     {
         $input = [
@@ -214,9 +205,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsValueFromGroupTypeRelation(): void
     {
         $request = new ServerRequest();
@@ -289,9 +278,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsValueFromInlineTypeRelation(): void
     {
         $request = new ServerRequest();
@@ -357,9 +344,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsValueFromRelationsRecursively(): void
     {
         $request = new ServerRequest();
@@ -464,9 +449,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCallsLanguageServiceForLocalizedPlaceholders(): void
     {
         $labelString = 'LLL:EXT:some_ext/Resources/Private/Language/locallang.xlf:my_placeholder';

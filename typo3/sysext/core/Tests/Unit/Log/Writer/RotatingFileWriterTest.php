@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogRecord;
@@ -60,9 +62,7 @@ final class RotatingFileWriterTest extends UnitTestCase
         return $this->testRoot . $this->logFileDirectory . '/' . $prependName . $this->logFileName;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writingLogWithoutLatestRotationAndEmptyLogDoesNotRotate(): void
     {
         $logFileName = $this->getDefaultFileName();
@@ -77,9 +77,7 @@ final class RotatingFileWriterTest extends UnitTestCase
         self::assertCount(0, $rotatedFiles);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writingLogWithoutLatestRotationAndNonEmptyLogRotates(): void
     {
         $logFileName = $this->getDefaultFileName();
@@ -95,10 +93,8 @@ final class RotatingFileWriterTest extends UnitTestCase
         self::assertCount(1, $rotatedFiles);
     }
 
-    /**
-     * @test
-     * @dataProvider writingLogWithLatestRotationInTimeFrameDoesNotRotateDataProvider
-     */
+    #[DataProvider('writingLogWithLatestRotationInTimeFrameDoesNotRotateDataProvider')]
+    #[Test]
     public function writingLogWithLatestRotationInTimeFrameDoesNotRotate(Interval $interval, int $rotationTimestamp): void
     {
         $rotationDate = (new \DateTimeImmutable('@' . $rotationTimestamp))->format('YmdHis');
@@ -131,10 +127,8 @@ final class RotatingFileWriterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider writingLogWithExpiredLatestRotationInTimeFrameRotatesDataProvider
-     */
+    #[DataProvider('writingLogWithExpiredLatestRotationInTimeFrameRotatesDataProvider')]
+    #[Test]
     public function writingLogWithExpiredLatestRotationInTimeFrameRotates(Interval $interval, int $rotationTimestamp): void
     {
         $rotationDate = (new \DateTimeImmutable('@' . $rotationTimestamp))->format('YmdHis');
@@ -168,9 +162,7 @@ final class RotatingFileWriterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rotationRespectsMaxAmountOfFiles(): void
     {
         $logFileName = $this->getDefaultFileName();

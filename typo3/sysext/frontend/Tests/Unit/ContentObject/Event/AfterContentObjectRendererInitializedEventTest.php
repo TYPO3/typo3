@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterContentObjectRendererInitializedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $contentObjectRenderer = (new ContentObjectRenderer());

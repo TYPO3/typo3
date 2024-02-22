@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\Logger;
@@ -69,9 +71,7 @@ final class FileWriterTest extends UnitTestCase
         return $this->testRoot . $this->logFileDirectory . '/' . $prependName . $this->logFileName;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLogFileSetsLogFile(): void
     {
         $writer = GeneralUtility::makeInstance(FileWriter::class);
@@ -79,9 +79,7 @@ final class FileWriterTest extends UnitTestCase
         self::assertEquals($this->getDefaultFileName(), $writer->getLogFile());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLogFileAcceptsAbsolutePath(): void
     {
         $writer = GeneralUtility::makeInstance(FileWriter::class);
@@ -90,18 +88,14 @@ final class FileWriterTest extends UnitTestCase
         self::assertEquals($tempFile, $writer->getLogFile());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createsLogFileDirectory(): void
     {
         $this->createWriter();
         self::assertDirectoryExists($this->testRoot . $this->logFileDirectory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createsLogFile(): void
     {
         $this->createWriter();
@@ -118,10 +112,8 @@ final class FileWriterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider logsToFileDataProvider
-     */
+    #[DataProvider('logsToFileDataProvider')]
+    #[Test]
     public function logsToFile(LogRecord $record, string $expectedResult): void
     {
         $this->createWriter()->writeLog($record);
@@ -129,10 +121,8 @@ final class FileWriterTest extends UnitTestCase
         self::assertEquals($expectedResult, $logFileContents);
     }
 
-    /**
-     * @test
-     * @dataProvider logsToFileDataProvider
-     */
+    #[DataProvider('logsToFileDataProvider')]
+    #[Test]
     public function differentWritersLogToDifferentFiles(LogRecord $record, string $expectedResult): void
     {
         $firstWriter = $this->createWriter();
@@ -148,9 +138,7 @@ final class FileWriterTest extends UnitTestCase
         self::assertEquals($expectedResult, $secondLogFileContents);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logsToFileWithUnescapedCharacters(): void
     {
         $recordWithData = GeneralUtility::makeInstance(
@@ -168,9 +156,7 @@ final class FileWriterTest extends UnitTestCase
         self::assertStringContainsString($expectedResult, $logFileContents);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aSecondLogWriterToTheSameFileDoesNotOpenTheFileTwice(): void
     {
         $firstWriter = $this->getMockBuilder(FileWriter::class)
@@ -187,9 +173,7 @@ final class FileWriterTest extends UnitTestCase
         $secondWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileHandleIsNotClosedIfSecondFileWriterIsStillUsingSameFile(): void
     {
         $firstWriter = $this->getMockBuilder(FileWriter::class)

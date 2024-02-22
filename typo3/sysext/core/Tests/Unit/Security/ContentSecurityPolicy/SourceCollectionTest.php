@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security\ContentSecurityPolicy;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SourceCollectionTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canExtend(): void
     {
         $subject = new SourceCollection();
@@ -39,9 +38,7 @@ final class SourceCollectionTest extends UnitTestCase
         self::assertSame([$schemeItem, $firstUriItem], $subject->sources);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canReduce(): void
     {
         $subject = new SourceCollection();

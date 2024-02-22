@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\StreamInterface;
 use TYPO3\CMS\Core\Http\Request;
 use TYPO3\CMS\Core\Http\Stream;
@@ -38,17 +40,13 @@ final class RequestTest extends UnitTestCase
         $this->request = new Request();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMethodIsGetByDefault(): void
     {
         self::assertEquals('GET', $this->request->getMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMethodMutatorReturnsCloneWithChangedMethod(): void
     {
         $request = $this->request->withMethod('GET');
@@ -56,9 +54,7 @@ final class RequestTest extends UnitTestCase
         self::assertEquals('GET', $request->getMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withUriReturnsNewInstanceWithNewUri(): void
     {
         $request = $this->request->withUri(new Uri('https://example.com:10082/foo/bar?baz=bat'));
@@ -69,9 +65,7 @@ final class RequestTest extends UnitTestCase
         self::assertEquals('/baz/bat?foo=bar', (string)$request2->getUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorCanAcceptAllMessageParts(): void
     {
         $uri = new Uri('http://example.com/');
@@ -96,9 +90,7 @@ final class RequestTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorRaisesExceptionForInvalidMethodByString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -118,10 +110,8 @@ final class RequestTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidRequestBodyDataProvider
-     * @test
-     */
+    #[DataProvider('invalidRequestBodyDataProvider')]
+    #[Test]
     public function constructorRaisesExceptionForInvalidBody($body): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -141,17 +131,15 @@ final class RequestTest extends UnitTestCase
 
     /**
      * @param resource|StreamInterface|string|null $body
-     * @dataProvider validRequestBodyDataProvider
-     * @test
      */
+    #[DataProvider('validRequestBodyDataProvider')]
+    #[Test]
     public function constructorDoesNotRaiseExceptionForValidBody($body): void
     {
         new Request(null, 'GET', $body);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorIgnoresInvalidHeaders(): void
     {
         $headers = [
@@ -177,18 +165,14 @@ final class RequestTest extends UnitTestCase
         self::assertEquals($expected, $request->getHeaders());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRequestTargetIsSlashWhenNoUriPresent(): void
     {
         $request = new Request();
         self::assertEquals('/', $request->getRequestTarget());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRequestTargetIsSlashWhenUriHasNoPathOrQuery(): void
     {
         $request = (new Request())
@@ -226,10 +210,8 @@ final class RequestTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider requestsWithUriDataProvider
-     * @test
-     */
+    #[DataProvider('requestsWithUriDataProvider')]
+    #[Test]
     public function getRequestTargetWhenUriIsPresent($request, $expected): void
     {
         self::assertEquals($expected, $request->getRequestTarget());
@@ -247,19 +229,15 @@ final class RequestTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider validRequestTargetsDataProvider
-     * @test
-     */
+    #[DataProvider('validRequestTargetsDataProvider')]
+    #[Test]
     public function getRequestTargetCanProvideARequestTarget($requestTarget): void
     {
         $request = (new Request())->withRequestTarget($requestTarget);
         self::assertEquals($requestTarget, $request->getRequestTarget());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withRequestTargetCannotContainWhitespace(): void
     {
         $request = new Request();
@@ -268,9 +246,7 @@ final class RequestTest extends UnitTestCase
         $request->withRequestTarget('foo bar baz');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRequestTargetDoesNotCacheBetweenInstances(): void
     {
         $request = (new Request())->withUri(new Uri('https://example.com/foo/bar'));
@@ -279,9 +255,7 @@ final class RequestTest extends UnitTestCase
         self::assertNotEquals($original, $newRequest->getRequestTarget());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRequestTargetIsResetWithNewUri(): void
     {
         $request = (new Request())->withUri(new Uri('https://example.com/foo/bar'));
@@ -289,9 +263,7 @@ final class RequestTest extends UnitTestCase
         $request->withUri(new Uri('http://mwop.net/bar/baz'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeadersContainsHostHeaderIfUriWithHostIsPresent(): void
     {
         $request = new Request('http://example.com');
@@ -300,9 +272,7 @@ final class RequestTest extends UnitTestCase
         self::assertContains('example.com', $headers['host']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeadersContainsNoHostHeaderIfNoUriPresent(): void
     {
         $request = new Request();
@@ -310,9 +280,7 @@ final class RequestTest extends UnitTestCase
         self::assertArrayNotHasKey('host', $headers);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeadersContainsNoHostHeaderIfUriDoesNotContainHost(): void
     {
         $request = new Request(new Uri());
@@ -320,9 +288,7 @@ final class RequestTest extends UnitTestCase
         self::assertArrayNotHasKey('host', $headers);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderWithHostReturnsUriHostWhenPresent(): void
     {
         $request = new Request('http://example.com');
@@ -330,27 +296,21 @@ final class RequestTest extends UnitTestCase
         self::assertEquals(['example.com'], $header);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderWithHostReturnsEmptyArrayIfNoUriPresent(): void
     {
         $request = new Request();
         self::assertSame([], $request->getHeader('host'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderWithHostReturnsEmptyArrayIfUriDoesNotContainHost(): void
     {
         $request = new Request(new Uri());
         self::assertSame([], $request->getHeader('host'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderLineWithHostReturnsUriHostWhenPresent(): void
     {
         $request = new Request('http://example.com');
@@ -358,27 +318,21 @@ final class RequestTest extends UnitTestCase
         self::assertStringContainsString('example.com', $header);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderLineWithHostReturnsEmptyStringIfNoUriPresent(): void
     {
         $request = new Request();
         self::assertSame('', $request->getHeaderLine('host'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderLineWithHostReturnsEmptyStringIfUriDoesNotContainHost(): void
     {
         $request = new Request(new Uri());
         self::assertSame('', $request->getHeaderLine('host'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderLineWithHostTakesPrecedenceOverModifiedUri(): void
     {
         $request = (new Request())
@@ -390,9 +344,7 @@ final class RequestTest extends UnitTestCase
         self::assertEquals('example.com', $new->getHeaderLine('Host'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderLineWithHostTakesPrecedenceOverEmptyUri(): void
     {
         $request = (new Request())
@@ -404,9 +356,7 @@ final class RequestTest extends UnitTestCase
         self::assertEquals('example.com', $new->getHeaderLine('Host'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderLineWithHostDoesNotTakePrecedenceOverHostWithPortFromUri(): void
     {
         $request = (new Request())
@@ -431,10 +381,8 @@ final class RequestTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider headersWithUpperAndLowerCaseValuesDataProvider
-     */
+    #[DataProvider('headersWithUpperAndLowerCaseValuesDataProvider')]
+    #[Test]
     public function headerCanBeRetrieved($header, $value, $expected): void
     {
         $request = new Request(null, 'GET', 'php://memory', [$header => $value]);
@@ -460,28 +408,22 @@ final class RequestTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider headersWithInjectionVectorsDataProvider
-     */
+    #[DataProvider('headersWithInjectionVectorsDataProvider')]
+    #[Test]
     public function constructorRaisesExceptionForHeadersWithCRLFVectors($name, $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Request(null, 'GET', 'php://memory', [$name => $value]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function supportedRequestMethodsWork(): void
     {
         $request = new Request('some-uri', 'PURGE');
         self::assertEquals('PURGE', $request->getMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonSupportedRequestMethodsRaisesException(): void
     {
         $this->expectException(\InvalidArgumentException::class);

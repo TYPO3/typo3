@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Tokenizer\Token;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TokenStreamTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getNextReturnsToken(): void
     {
         $subject = new TokenStream();
@@ -35,9 +34,7 @@ final class TokenStreamTest extends UnitTestCase
         self::assertSame($subject->getNext(), $token);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNextReturnsNullIfThereIsNoToken(): void
     {
         $subject = new TokenStream();
@@ -47,9 +44,7 @@ final class TokenStreamTest extends UnitTestCase
         self::assertNull($subject->getNext());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function peekNextReturnsTokenAndDoesNotRaisePointer(): void
     {
         $subject = new TokenStream();
@@ -62,9 +57,7 @@ final class TokenStreamTest extends UnitTestCase
         self::assertSame($subject->peekNext(), $newLineToken);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function peekNextReturnsNullIfThereIsNoNextToken(): void
     {
         $subject = new TokenStream();

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\SchemaManager;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\SQLitePlatform;
@@ -30,9 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SQLiteSchemaManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isInactiveForStandardColumnTypes(): void
     {
         /** @var DoctrineSQLitePlatform&MockObject $platformMock */
@@ -45,9 +44,7 @@ final class SQLiteSchemaManagerTest extends UnitTestCase
         self::assertNull($column);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildsColumnForEnumDataType(): void
     {
         /** @var DoctrineSQLitePlatform&MockObject $platformMock */
@@ -72,9 +69,7 @@ final class SQLiteSchemaManagerTest extends UnitTestCase
         self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('unquotedValues'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildsColumnForSetDataType(): void
     {
         /** @var DoctrineSQLitePlatform&MockObject $platformMock */

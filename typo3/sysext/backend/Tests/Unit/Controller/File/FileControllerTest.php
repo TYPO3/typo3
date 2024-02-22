@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\File\FileController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -51,9 +52,7 @@ final class FileControllerTest extends UnitTestCase
         $this->fileResourceMock->method('getParentFolder')->willReturn($parentFolderMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flattenResultDataValueReturnsAnythingElseAsIs(): void
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
@@ -61,9 +60,7 @@ final class FileControllerTest extends UnitTestCase
         self::assertSame([], $subject->_call('flattenResultDataValue', []));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flattenResultDataValueFlattensFile(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
@@ -95,9 +92,7 @@ final class FileControllerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAjaxRequestDeleteProcessActuallyDoesNotChangeFileData(): void
     {
         $subject = $this->getAccessibleMock(
@@ -117,9 +112,7 @@ final class FileControllerTest extends UnitTestCase
         $subject->processAjaxRequest(new ServerRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAjaxRequestEditFileProcessActuallyDoesNotChangeFileData(): void
     {
         $subject = $this->getAccessibleMock(
@@ -139,9 +132,7 @@ final class FileControllerTest extends UnitTestCase
         $subject->processAjaxRequest(new ServerRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAjaxRequestReturnsStatus200IfNoErrorOccurs(): void
     {
         $subject = $this->getAccessibleMock(
@@ -161,9 +152,7 @@ final class FileControllerTest extends UnitTestCase
         self::assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAjaxRequestReturnsStatus500IfErrorOccurs(): void
     {
         $flashMessageService = new FlashMessageService();

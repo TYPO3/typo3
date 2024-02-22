@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Unit\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
@@ -24,18 +25,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TaskValidatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidReturnsFalseWithClassNotExtendingAbstractTask(): void
     {
         $subject = new TaskValidator();
         self::assertFalse($subject->isValid($subject));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidReturnsFalseWithClassNotProperlyImplementingGetExecution(): void
     {
         $subject = new TaskValidator();
@@ -49,9 +46,7 @@ final class TaskValidatorTest extends UnitTestCase
         self::assertFalse($subject->isValid($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidReturnsTrueWithClassProperlyImplementingAbstractTask(): void
     {
         $subject = new TaskValidator();

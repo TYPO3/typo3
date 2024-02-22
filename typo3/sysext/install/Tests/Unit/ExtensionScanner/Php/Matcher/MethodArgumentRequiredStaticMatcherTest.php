@@ -20,14 +20,14 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentRequiredStaticMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function hitsFromFixtureAreFound(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
@@ -190,10 +190,8 @@ final class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider matchesReturnsExpectedRestFilesDataProvider
-     */
+    #[DataProvider('matchesReturnsExpectedRestFilesDataProvider')]
+    #[Test]
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);

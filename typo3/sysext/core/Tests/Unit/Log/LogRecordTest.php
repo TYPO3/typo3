@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
@@ -40,9 +41,7 @@ final class LogRecordTest extends UnitTestCase
         return $record;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsCorrectComponent(): void
     {
         $component = 'test.core.log';
@@ -50,9 +49,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($component, $record->getComponent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsCorrectLogLevel(): void
     {
         $logLevel = LogLevel::CRITICAL;
@@ -60,9 +57,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($logLevel, $record->getLevel());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsCorrectMessage(): void
     {
         $logMessage = 'test message';
@@ -70,9 +65,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($logMessage, $record->getMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsCorrectData(): void
     {
         $dataArray = [
@@ -82,9 +75,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($dataArray, $record->getData());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setComponentSetsComponent(): void
     {
         $record = $this->getRecord();
@@ -92,9 +83,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($component, $record->setComponent($component)->getComponent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLevelSetsLevel(): void
     {
         $record = $this->getRecord();
@@ -102,9 +91,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($level, $record->setLevel($level)->getLevel());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLevelValidatesLevel(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -114,9 +101,7 @@ final class LogRecordTest extends UnitTestCase
         $record->setLevel('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setMessageSetsMessage(): void
     {
         $record = $this->getRecord();
@@ -124,9 +109,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($message, $record->setMessage($message)->getMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCreatedSetsCreated(): void
     {
         $record = $this->getRecord();
@@ -134,9 +117,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($created, $record->setCreated($created)->getCreated());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRequestIdSetsRequestId(): void
     {
         $record = $this->getRecord();
@@ -144,9 +125,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($requestId, $record->setRequestId($requestId)->getRequestId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsCorrectValues(): void
     {
         $component = 'test.core.log';
@@ -161,9 +140,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertEquals($data, $recordArray['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringIncludesDataAsJson(): void
     {
         $dataArray = ['foo' => 'bar'];
@@ -171,9 +148,7 @@ final class LogRecordTest extends UnitTestCase
         self::assertStringContainsString(json_encode($dataArray), (string)$record);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringIncludesExceptionDataAsJson(): void
     {
         $dataArray = ['exception' => new \Exception('foo', 1476049451)];

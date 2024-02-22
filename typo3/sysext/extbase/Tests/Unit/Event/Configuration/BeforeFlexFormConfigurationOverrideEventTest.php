@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Event\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BeforeFlexFormConfigurationOverrideEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canAccessCurrentConfiguration(): void
     {
         $event = new BeforeFlexFormConfigurationOverrideEvent(
@@ -38,9 +37,7 @@ final class BeforeFlexFormConfigurationOverrideEventTest extends UnitTestCase
         self::assertSame(['foo' => 'bar'], $event->getFlexFormConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canOverrideFlexFormConfiguration(): void
     {
         $event = new BeforeFlexFormConfigurationOverrideEvent(

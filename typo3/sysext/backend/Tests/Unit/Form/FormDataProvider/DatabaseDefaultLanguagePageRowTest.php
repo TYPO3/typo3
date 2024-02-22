@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseDefaultLanguagePageRow;
 use TYPO3\CMS\Core\Database\Connection;
@@ -38,9 +39,7 @@ final class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotApplyToAnyNonPagesTable(): void
     {
         $input = [
@@ -56,9 +55,7 @@ final class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
         self::assertArrayNotHasKey('defaultLanguagePageRow', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesApplyToAPagesTableButNoChangeForDefaultLanguage(): void
     {
         $input = [
@@ -73,9 +70,7 @@ final class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
         self::assertSame($input, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesApplyToATranslatedPagesTable(): void
     {
         $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();

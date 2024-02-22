@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -89,9 +91,9 @@ final class PathUtilityPublicPathsTest extends UnitTestCase
 
     /**
      * @throws InvalidFileException
-     * @dataProvider getPublicResourceWebPathResolvesUrlsCorrectlyDataProvider
-     * @test
      */
+    #[DataProvider('getPublicResourceWebPathResolvesUrlsCorrectlyDataProvider')]
+    #[Test]
     public function getPublicResourceWebPathResolvesUrlsCorrectly(string $pathReference, string $expectedUrl, callable $setup): void
     {
         $setup();

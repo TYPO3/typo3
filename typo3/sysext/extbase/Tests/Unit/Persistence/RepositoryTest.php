@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
@@ -104,17 +105,13 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->injectPersistenceManager($this->mockPersistenceManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function abstractRepositoryImplementsRepositoryInterface(): void
     {
         self::assertInstanceOf(RepositoryInterface::class, $this->repository);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createQueryCallsPersistenceManagerWithExpectedClassName(): void
     {
         $mockPersistenceManager = $this->createMock(PersistenceManager::class);
@@ -126,9 +123,7 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->createQuery();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createQuerySetsDefaultOrderingIfDefined(): void
     {
         $orderings = ['foo' => QueryInterface::ORDER_ASCENDING];
@@ -146,9 +141,7 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->createQuery();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findAllCreatesQueryAndReturnsResultOfExecuteCall(): void
     {
         $expectedResult = $this->createMock(QueryResultInterface::class);
@@ -164,9 +157,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertSame($expectedResult, $repository->findAll());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByIdentifierReturnsResultOfGetObjectByIdentifierCallFromBackend(): void
     {
         $identifier = '42';
@@ -184,9 +175,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertSame($object, $this->repository->findByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDelegatesToPersistenceManager(): void
     {
         $object = new \stdClass();
@@ -197,9 +186,7 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->add($object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDelegatesToPersistenceManager(): void
     {
         $object = new \stdClass();
@@ -210,9 +197,7 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->remove($object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateDelegatesToPersistenceManager(): void
     {
         $object = new \stdClass();
@@ -223,9 +208,7 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->update($object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function magicCallMethodTriggersAnErrorIfUnknownMethodsAreCalled(): void
     {
         $this->expectException(UnsupportedMethodException::class);
@@ -236,9 +219,7 @@ final class RepositoryTest extends UnitTestCase
         $repository->__call('foo', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addChecksObjectType(): void
     {
         $this->expectException(IllegalObjectTypeException::class);
@@ -247,9 +228,7 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->add(new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeChecksObjectType(): void
     {
         $this->expectException(IllegalObjectTypeException::class);
@@ -258,9 +237,7 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->remove(new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateChecksObjectType(): void
     {
         $this->expectException(IllegalObjectTypeException::class);
@@ -271,9 +248,7 @@ final class RepositoryTest extends UnitTestCase
         $repository->update(new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructSetsObjectTypeFromClassName(): void
     {
         $repository = new EntityRepository();
@@ -284,9 +259,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertEquals(Entity::class, $objectType);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings(): void
     {
         $this->mockQuery = $this->createMock(Query::class);
@@ -298,9 +271,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertNotSame($mockDefaultQuerySettings, $instanceQuerySettings);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByUidReturnsResultOfGetObjectByIdentifierCall(): void
     {
         $fakeUid = '123';
@@ -314,9 +285,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateRejectsObjectsOfWrongType(): void
     {
         $this->expectException(IllegalObjectTypeException::class);

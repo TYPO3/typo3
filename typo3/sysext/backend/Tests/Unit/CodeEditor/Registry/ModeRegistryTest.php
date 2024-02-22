@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\CodeEditor\Registry;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\CodeEditor\Mode;
 use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -36,9 +37,7 @@ final class ModeRegistryTest extends UnitTestCase
         $this->subject = new ModeRegistry();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function latestDefaultModeIsReturned(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/foo', 'bar')->invoke();
@@ -50,9 +49,7 @@ final class ModeRegistryTest extends UnitTestCase
         self::assertSame($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function formatCodeReturnsCorrectMode(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/mode', 'formatCode')->invoke();
@@ -63,9 +60,7 @@ final class ModeRegistryTest extends UnitTestCase
         self::assertSame($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modeIsFetchedByFileExtension(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/mode', 'extension')->invoke();

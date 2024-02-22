@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -67,9 +68,7 @@ final class CaseContentObjectTest extends UnitTestCase
         $this->subject->setContentObjectRenderer($contentObjectRenderer);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsEmptyStringIfNoKeyMatchesAndIfNoDefaultObjectIsSet(): void
     {
         $conf = [
@@ -78,9 +77,7 @@ final class CaseContentObjectTest extends UnitTestCase
         self::assertSame('', $this->subject->render($conf));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsContentFromDefaultObjectIfKeyDoesNotExist(): void
     {
         $conf = [

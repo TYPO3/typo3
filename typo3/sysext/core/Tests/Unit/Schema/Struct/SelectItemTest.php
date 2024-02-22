@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Schema\Struct;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -61,10 +63,8 @@ final class SelectItemTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider selectionItemCanBeConstructedFromTcaItemDataProvider
-     */
+    #[DataProvider('selectionItemCanBeConstructedFromTcaItemDataProvider')]
+    #[Test]
     public function selectionItemCanBeConstructedFromTcaItem(array $item, string $type, array $expected): void
     {
         $selectionItem = SelectItem::fromTcaItemArray($item, $type);
@@ -72,9 +72,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertSame($expected, $selectionItem->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dividerValueCanBeIdentified(): void
     {
         $item = ['label' => 'foo', 'value' => '--div--'];
@@ -96,10 +94,8 @@ final class SelectItemTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider notSetValuesCanBeIdentifiedDataProvider
-     */
+    #[DataProvider('notSetValuesCanBeIdentifiedDataProvider')]
+    #[Test]
     public function notSetValuesCanBeIdentified(array $item, array $expected): void
     {
         $selectionItem = SelectItem::fromTcaItemArray($item);
@@ -109,9 +105,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertSame($expected['description'], $selectionItem->hasDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeAccessedAsAnArray(): void
     {
         $selectionItem = new SelectItem(
@@ -130,9 +124,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertSame('my description', $selectionItem['description']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeAccessedAsAnArrayWithLegacyIndexedKeys(): void
     {
         $selectionItem = new SelectItem(
@@ -151,9 +143,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertSame('my description', $selectionItem[4]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeManipulatedLikeAnArray(): void
     {
         $selectionItem = new SelectItem(
@@ -175,9 +165,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertSame('my description', $selectionItem->getDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeManipulatedLikeAnArrayWithLegacyIndexedKeys(): void
     {
         $selectionItem = new SelectItem(
@@ -199,9 +187,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertSame('my description', $selectionItem->getDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valuesCanBeUnsetWithUnsetFunction(): void
     {
         $selectionItem = new SelectItem(
@@ -222,9 +208,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertNull($selectionItem->getDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valuesCanBeUnsetWithUnsetFunctionWithLegacyIndexedKeys(): void
     {
         $selectionItem = new SelectItem(
@@ -245,9 +229,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertNull($selectionItem->getDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function arrayOffsetsCanBeTestedWithIssetFunction(): void
     {
         $selectionItem = new SelectItem(
@@ -263,9 +245,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertFalse(isset($selectionItem['description']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function arrayOffsetsCanBeTestedWithIssetFunctionWithLegacyIndexedKeys(): void
     {
         $selectionItem = new SelectItem(
@@ -281,9 +261,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertFalse(isset($selectionItem[4]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetCustomValueInArrayLikeFashion(): void
     {
         $selectionItem = new SelectItem(
@@ -298,9 +276,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertSame('customValue', $selectionItem['custom']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canUnsetCustomValueInArrayLikeFashion(): void
     {
         $selectionItem = new SelectItem(

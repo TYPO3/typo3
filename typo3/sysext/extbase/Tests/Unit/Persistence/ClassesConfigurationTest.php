@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ClassesConfigurationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function hasClassReturnsTrue(): void
     {
         $className = 'ClassName';
@@ -35,9 +35,7 @@ final class ClassesConfigurationTest extends UnitTestCase
         self::assertTrue($classesConfiguration->hasClass($className));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasClassReturnsFalse(): void
     {
         $className = 'ClassName';
@@ -45,9 +43,7 @@ final class ClassesConfigurationTest extends UnitTestCase
         self::assertFalse($classesConfiguration->hasClass($className));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationForReturnsArray(): void
     {
         $configuration = [
@@ -62,9 +58,7 @@ final class ClassesConfigurationTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationForReturnsNull(): void
     {
         $classesConfiguration = new ClassesConfiguration([]);
@@ -154,10 +148,8 @@ final class ClassesConfigurationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider resolveSubclassesRecursiveDataProvider
-     * @test
-     */
+    #[DataProvider('resolveSubclassesRecursiveDataProvider')]
+    #[Test]
     public function getSubclasses(array $expected, array $configuration, string $className): void
     {
         $classesConfiguration = new ClassesConfiguration($configuration);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldWizard;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FieldWizard\TableList;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -159,10 +161,8 @@ final class TableListTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderResolvesEntryPointDataProvider
-     */
+    #[DataProvider('renderResolvesEntryPointDataProvider')]
+    #[Test]
     public function renderResolvesEntryPoint(array $config, array $expected): void
     {
         $GLOBALS['TCA'] = [];

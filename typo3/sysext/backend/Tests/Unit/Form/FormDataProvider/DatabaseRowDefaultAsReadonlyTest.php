@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultAsReadonly;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseRowDefaultAsReadonlyTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReplacesCurrentDatabaseValue(): void
     {
         $input = [
@@ -60,10 +60,8 @@ final class DatabaseRowDefaultAsReadonlyTest extends UnitTestCase
         self::assertEquals($expected, (new DatabaseRowDefaultAsReadonly())->addData($input));
     }
 
-    /**
-     * @test
-     * @dataProvider addDataDoesNotReplaceCurrentDatabaseValueDataProvider
-     */
+    #[DataProvider('addDataDoesNotReplaceCurrentDatabaseValueDataProvider')]
+    #[Test]
     public function addDataDoesNotReplaceCurrentDatabaseValue(array $input): void
     {
         self::assertEquals(

@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Versioning;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class VersionStateTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeCreated(): void
     {
         $versionState = VersionState::MOVE_POINTER;
@@ -40,10 +40,8 @@ final class VersionStateTest extends UnitTestCase
         yield [12345, null];
     }
 
-    /**
-     * @test
-     * @dataProvider canBeCastedDataProvider
-     */
+    #[DataProvider('canBeCastedDataProvider')]
+    #[Test]
     public function canBeCasted(mixed $value, ?int $expectation): void
     {
         self::assertSame($expectation, VersionState::cast($value)?->value);
@@ -60,10 +58,8 @@ final class VersionStateTest extends UnitTestCase
         yield [VersionState::MOVE_POINTER, true];
     }
 
-    /**
-     * @test
-     * @dataProvider canBeComparedDataProvider
-     */
+    #[DataProvider('canBeComparedDataProvider')]
+    #[Test]
     public function canBeCompared(mixed $value, bool $expectation): void
     {
         self::assertSame($expectation, VersionState::MOVE_POINTER->equals($value));

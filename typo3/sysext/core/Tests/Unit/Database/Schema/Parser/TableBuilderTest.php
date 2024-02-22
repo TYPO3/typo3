@@ -23,6 +23,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\TextType;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -47,62 +48,48 @@ final class TableBuilderTest extends UnitTestCase
         $this->table = $parser->parse($statements[0])[0];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasExpectedTableName(): void
     {
         self::assertSame('aTestTable', $this->table->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasExpectedTableEngine(): void
     {
         self::assertTrue($this->table->hasOption('engine'));
         self::assertSame('MyISAM', $this->table->getOption('engine'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasExpectedTableCollation(): void
     {
         self::assertTrue($this->table->hasOption('charset'));
         self::assertSame('latin1', $this->table->getOption('charset'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasExpectedTableCharacterSet(): void
     {
         self::assertTrue($this->table->hasOption('collate'));
         self::assertSame('latin1_german_cs', $this->table->getOption('collate'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasExpectedTableRowFormat(): void
     {
         self::assertTrue($this->table->hasOption('row_format'));
         self::assertSame('DYNAMIC', $this->table->getOption('row_format'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasExpectedTableAutoIncrementValue(): void
     {
         self::assertTrue($this->table->hasOption('auto_increment'));
         self::assertSame('1', $this->table->getOption('auto_increment'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedUidColumn(): void
     {
         $subject = $this->table->getColumn('uid');
@@ -114,9 +101,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertTrue($subject->getAutoincrement());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedPidColumn(): void
     {
         $subject = $this->table->getColumn('pid');
@@ -128,9 +113,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame('0', $subject->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedTstampColumn(): void
     {
         $subject = $this->table->getColumn('tstamp');
@@ -142,9 +125,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame('0', $subject->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedSortingColumn(): void
     {
         $subject = $this->table->getColumn('sorting');
@@ -156,9 +137,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame(0, $subject->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedDeletedColumn(): void
     {
         $subject = $this->table->getColumn('deleted');
@@ -170,9 +149,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame('0', $subject->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedTSconfigColumn(): void
     {
         $subject = $this->table->getColumn('TSconfig');
@@ -182,9 +159,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertNull($subject->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedNoCacheColumn(): void
     {
         $subject = $this->table->getColumn('no_cache');
@@ -196,9 +171,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame('0', $subject->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedPrimaryKey(): void
     {
         $subject = $this->table->getPrimaryKey();
@@ -207,9 +180,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame(['`uid`'], $subject->getColumns());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedParentKey(): void
     {
         $subject = $this->table->getIndex('parent');
@@ -218,9 +189,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame(['`pid`', '`deleted`', '`sorting`'], $subject->getColumns());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedNoCacheKey(): void
     {
         $subject = $this->table->getIndex('noCache');
@@ -229,9 +198,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame(['`no_cache`'], $subject->getColumns());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExpectedForeignKey(): void
     {
         $subject = $this->table->getForeignKey('fk_overlay');
@@ -241,9 +208,7 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame('any_foreign_table', $subject->getForeignTableName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasColumnLengthOnIndex(): void
     {
         $subject = $this->table->getIndex('substring');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -41,9 +42,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
         $this->widgetRegistryDefinition = $this->createMock(Definition::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNothingIfWidgetRegistryIsUnknown(): void
     {
         $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(false);
@@ -52,9 +51,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
         $this->subject->process($this->container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNothingIfNoWidgetsAreTagged(): void
     {
         $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
@@ -65,9 +62,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
         $this->subject->process($this->container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makesWidgetPublic(): void
     {
         $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
@@ -82,9 +77,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
         $this->subject->process($this->container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registersTaggedWidgetWithMinimumConfigurationInRegistry(): void
     {
         $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
@@ -132,9 +125,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
         $this->subject->process($this->container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registersWidgetToMultipleGroupsByComma(): void
     {
         $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
@@ -176,9 +167,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
         $this->subject->process($this->container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registersTaggedWidgetWithMaximumConfigurationInRegistry(): void
     {
         $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);

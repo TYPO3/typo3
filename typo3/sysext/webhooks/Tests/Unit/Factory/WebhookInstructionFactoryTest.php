@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Webhooks\Tests\Unit\Factory;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Webhooks\Factory\WebhookInstructionFactory;
 use TYPO3\CMS\Webhooks\Model\WebhookType;
@@ -52,9 +53,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
         $this->webhookType = new WebhookType('typo3/test-webhook', 'My WebhookType description', 'My\Webhook\Type', 'myFactoryMethod');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWebhookInstructionWithMinimalData(): void
     {
         $webhookInstruction = WebhookInstructionFactory::create(
@@ -74,9 +73,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
         self::assertSame([], $webhookInstruction->getRow());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWebhookInstructionWithAllData(): void
     {
         $this->mockRecord['webhook_type'] = $this->webhookType;
@@ -107,9 +104,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
         self::assertSame([], $webhookInstruction->getRow());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWebhookInstructionFromRow(): void
     {
         $webhookTypesRegistryMock = $this->createMock(WebhookTypesRegistry::class);

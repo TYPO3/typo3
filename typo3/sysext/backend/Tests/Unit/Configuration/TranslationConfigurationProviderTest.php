@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -40,9 +41,7 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultLanguageIsAlwaysReturned(): void
     {
         $languageService = $this->createMock(LanguageService::class);
@@ -58,9 +57,7 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         self::assertArrayHasKey(0, $languages);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSystemLanguagesAggregatesLanguagesOfAllSitesForRootLevel(): void
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
@@ -70,9 +67,7 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         self::assertCount(3, $languages);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSystemLanguagesConcatenatesTitlesOfLanguagesForRootLevel(): void
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);

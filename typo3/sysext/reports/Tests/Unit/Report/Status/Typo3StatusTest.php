@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Reports\Report\Status\Typo3Status;
@@ -31,9 +32,7 @@ final class Typo3StatusTest extends UnitTestCase
         $GLOBALS['LANG'] = $mockLanguageService;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsXclassStatusObjectWithSeverityOkIfNoXclassExists(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = [];
@@ -43,9 +42,7 @@ final class Typo3StatusTest extends UnitTestCase
         self::assertSame(ContextualFeedbackSeverity::OK, $statusObject->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsXclassStatusObjectWithSeverityNoticeIfXclassExists(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = [

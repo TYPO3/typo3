@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security\ContentSecurityPolicy;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -32,27 +34,21 @@ final class ScopeTest extends UnitTestCase
         Scope::reset();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function backendSingletonIsCreated(): void
     {
         $scope = Scope::backend();
         self::assertSame($scope, Scope::backend());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function frontendSingletonIsCreated(): void
     {
         $scope = Scope::frontend();
         self::assertSame($scope, Scope::frontend());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function frontendSiteIsCreated(): void
     {
         $site = new Site('my-site', 1, []);
@@ -66,27 +62,21 @@ final class ScopeTest extends UnitTestCase
         yield [new NullSite()];
     }
 
-    /**
-     * @test
-     * @dataProvider frontendSingletonIsUsedForInvalidSiteDataProvider
-     */
+    #[DataProvider('frontendSingletonIsUsedForInvalidSiteDataProvider')]
+    #[Test]
     public function frontendSingletonIsUsedForInvalidSite(?SiteInterface $site): void
     {
         self::assertSame(Scope::frontend(), Scope::frontendSite($site));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function frontendSiteIdentifierSingletonIsCreated(): void
     {
         $scope = Scope::frontendSiteIdentifier('my-site');
         self::assertSame($scope, Scope::frontendSiteIdentifier('my-site'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function scopeIsCreatedFromString(): void
     {
         self::assertSame(

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnsSetValues(): void
     {
         $demand = $this->createMock(Demand::class);

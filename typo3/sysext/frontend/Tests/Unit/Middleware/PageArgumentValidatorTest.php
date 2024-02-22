@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -49,9 +50,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function givenCacheHashWithoutRequiredParametersTriggersRedirect(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/?cHash=XYZ';
@@ -70,9 +69,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         self::assertEquals($expectedResult, $response->getHeader('Location')[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function givenCacheHashNotMatchingCalculatedCacheHashTriggers404(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/?cHash=YAZ';
@@ -91,9 +88,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noPageArgumentsReturnsErrorResponse(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
@@ -107,9 +102,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function staticPageArgumentsSkipProcessingAndReturnsSuccess(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
@@ -124,9 +117,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
         self::assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidCacheHashWithDynamicArgumentsTriggers404(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Message;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MessageTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorSetsTheMessageMessageCorrectly(): void
     {
         $messageMessage = 'The message';
@@ -32,9 +31,7 @@ final class MessageTest extends UnitTestCase
         self::assertEquals($messageMessage, $error->getMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorSetsTheMessageCodeCorrectly(): void
     {
         $messageCode = 123456789;
@@ -42,9 +39,7 @@ final class MessageTest extends UnitTestCase
         self::assertEquals($messageCode, $error->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorSetsTheMessageArgumentsCorrectly(): void
     {
         $messageArguments = ['foo', 'bar'];
@@ -52,9 +47,7 @@ final class MessageTest extends UnitTestCase
         self::assertEquals($messageArguments, $error->getArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorSetsTheMessageTitleCorrectly(): void
     {
         $messageTitle = 'Title';
@@ -62,27 +55,21 @@ final class MessageTest extends UnitTestCase
         self::assertEquals($messageTitle, $error->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRendersCorrectlyWithoutArguments(): void
     {
         $error = new Message('Message', 1);
         self::assertEquals('Message', $error->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRendersCorrectlyWithArguments(): void
     {
         $error = new Message('Foo is %s and Bar is %s', 1, ['baz', 'qux']);
         self::assertEquals('Foo is baz and Bar is qux', $error->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringCallsRender(): void
     {
         $error = new Message('Foo is %s and Bar is %s', 1, ['baz', 'qux']);

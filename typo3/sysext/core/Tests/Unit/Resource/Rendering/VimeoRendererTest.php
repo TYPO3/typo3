@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -43,17 +44,13 @@ final class VimeoRendererTest extends UnitTestCase
         $this->subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPriorityReturnsCorrectValue(): void
     {
         self::assertSame(1, $this->subject->getPriority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $fileResourceMock1 = $this->createMock(File::class);
@@ -67,9 +64,7 @@ final class VimeoRendererTest extends UnitTestCase
         self::assertTrue($this->subject->canRender($fileResourceMock2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderReturnsFalseOnCorrectFile(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -78,9 +73,7 @@ final class VimeoRendererTest extends UnitTestCase
         self::assertFalse($this->subject->canRender($fileResourceMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -91,9 +84,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithLoopIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -104,9 +95,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithAutoplayIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -117,9 +106,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithAutoplayFromReferenceIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -134,9 +121,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithAutoplayAndWithoutControlsIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -147,9 +132,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithAdditionalAttributes(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -160,9 +143,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithDataAttributesForCustomization(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -173,9 +154,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithCombinationOfDataAndAdditionalAttributes(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -186,9 +165,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithCustomAllowIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -199,9 +176,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithCustomAllowAndAutoplayIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -212,9 +187,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithPrivateVimeoCodeIsCorrect(): void
     {
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
@@ -232,9 +205,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputIsEscaped(): void
     {
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
@@ -252,9 +223,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithApiIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -265,9 +234,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithEnabledNoCookieIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -278,9 +245,7 @@ final class VimeoRendererTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOutputWithDisabledNoCookieIsCorrect(): void
     {
         $fileResourceMock = $this->createMock(File::class);

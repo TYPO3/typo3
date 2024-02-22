@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -193,29 +195,23 @@ final class LinkServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function resolveReturnsSplitParameters(string $input, array $expected, string $finalString): void
     {
         $subject = new LinkService();
         self::assertEquals($expected, $subject->resolve($input));
     }
 
-    /**
-     * @test
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifier(string $input, array $parameters, string $expected): void
     {
         $subject = new LinkService();
         self::assertEquals($expected, $subject->asString($parameters));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unknownLinkHandlerExceptionIsThrown(): void
     {
         $this->expectException(UnknownLinkHandlerException::class);
@@ -224,9 +220,7 @@ final class LinkServiceTest extends UnitTestCase
         (new LinkService())->resolveByStringRepresentation('t3://invalid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unknownUrnExceptionIsThrown(): void
     {
         $this->expectException(UnknownUrnException::class);
@@ -235,9 +229,7 @@ final class LinkServiceTest extends UnitTestCase
         (new LinkService())->resolveByStringRepresentation('invalid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterLinkResolvedByStringRepresentationEventIsCalled(): void
     {
         $afterLinkResolvedByStringRepresentationEvent = null;

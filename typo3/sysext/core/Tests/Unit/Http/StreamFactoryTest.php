@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\StreamFactory;
@@ -41,18 +42,14 @@ final class StreamFactoryTest extends UnitTestCase
         return $path;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsr17FactoryInterface(): void
     {
         $factory = new StreamFactory();
         self::assertInstanceOf(StreamFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamReturnsEmptyStreamByDefault(): void
     {
         $factory = new StreamFactory();
@@ -60,9 +57,7 @@ final class StreamFactoryTest extends UnitTestCase
         self::assertSame('', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamFromEmptyString(): void
     {
         $factory = new StreamFactory();
@@ -70,9 +65,7 @@ final class StreamFactoryTest extends UnitTestCase
         self::assertSame('', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamFromNonEmptyString(): void
     {
         $factory = new StreamFactory();
@@ -80,9 +73,7 @@ final class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamReturnsWritableStream(): void
     {
         $factory = new StreamFactory();
@@ -91,9 +82,7 @@ final class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamReturnsAppendableStream(): void
     {
         $factory = new StreamFactory();
@@ -102,9 +91,7 @@ final class StreamFactoryTest extends UnitTestCase
         self::assertSame('FooBar', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamFromFile(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -115,9 +102,7 @@ final class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamFromFileWithMode(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -130,9 +115,7 @@ final class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $contents);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamFromFileWithInvalidMode(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -144,9 +127,7 @@ final class StreamFactoryTest extends UnitTestCase
         $factory->createStreamFromFile($fileName, 'z');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamFromFileWithMissingFile(): void
     {
         $unavailableFileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
@@ -156,9 +137,7 @@ final class StreamFactoryTest extends UnitTestCase
         $factory->createStreamFromFile($unavailableFileName, 'r');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamFromResource(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -172,9 +151,7 @@ final class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createStreamResourceFromInvalidResource(): void
     {
         $this->expectException(\InvalidArgumentException::class);

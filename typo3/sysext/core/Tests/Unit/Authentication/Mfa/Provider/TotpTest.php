@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider;
 
 use Base32\Base32;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -37,9 +39,7 @@ final class TotpTest extends UnitTestCase
         $this->secret = Base32::encode('TYPO3IsAwesome!'); // KRMVATZTJFZUC53FONXW2ZJB
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionOnDisallowedAlogTest(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -47,9 +47,7 @@ final class TotpTest extends UnitTestCase
         GeneralUtility::makeInstance(Totp::class, 'some-secret', 'md5');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionOnInvalidTotpLengthTest(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -57,10 +55,8 @@ final class TotpTest extends UnitTestCase
         GeneralUtility::makeInstance(Totp::class, 'some-secret', 'sha1', 4);
     }
 
-    /**
-     * @test
-     * @dataProvider totpDataProvider
-     */
+    #[DataProvider('totpDataProvider')]
+    #[Test]
     public function generateTotpTest(string $expectedTotp, array $arguments): void
     {
         $counter = (int)floor(($this->timestamp - 0) / 30); // see Totp::getTimeCounter()
@@ -71,10 +67,8 @@ final class TotpTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider totpDataProvider
-     */
+    #[DataProvider('totpDataProvider')]
+    #[Test]
     public function verifyTotpTest(string $totp, array $arguments): void
     {
         GeneralUtility::makeInstance(Context::class)
@@ -94,9 +88,7 @@ final class TotpTest extends UnitTestCase
         yield '8 digit code' => ['48337475', ['sha1', 8]];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyTotpWithGracePeriodTest(): void
     {
         GeneralUtility::makeInstance(Context::class)
@@ -123,10 +115,8 @@ final class TotpTest extends UnitTestCase
         self::assertFalse($totpInstance->verifyTotp($totpPast, 3));
     }
 
-    /**
-     * @test
-     * @dataProvider getTotpAuthUrlTestDataProvider
-     */
+    #[DataProvider('getTotpAuthUrlTestDataProvider')]
+    #[Test]
     public function getTotpAuthUrlTest(array $constructorArguments, array $methodArguments, string $expected): void
     {
         $totp = GeneralUtility::makeInstance(Totp::class, ...$constructorArguments);
@@ -168,9 +158,7 @@ final class TotpTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateEncodedSecretTest(): void
     {
         // Check 100 times WITHOUT additional auth factors

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\Event\BeforeTypoLinkEncodedEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BeforeTypoLinkEncodedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $parameters = [
@@ -57,9 +56,7 @@ final class BeforeTypoLinkEncodedEventTest extends UnitTestCase
         self::assertEquals($emptyValueSymbol, $event->getEmptyValueSymbol());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverwritesParameters(): void
     {
         $parameters = [

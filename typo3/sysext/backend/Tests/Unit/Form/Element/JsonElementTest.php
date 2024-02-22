@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\CodeEditor\Mode;
 use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Backend\Form\Element\JsonElement;
@@ -40,9 +41,7 @@ final class JsonElementTest extends UnitTestCase
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsJsonInStandardTextarea(): void
     {
         $data = [
@@ -76,9 +75,7 @@ final class JsonElementTest extends UnitTestCase
         self::assertStringContainsString('&quot;foo&quot;: &quot;bar&quot;', $result['html']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsJsonInCodeEditor(): void
     {
         $data = [

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PageAccessFailureReasonsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getMessageForReasonReturnsExpectedMessageForCode(): void
     {
         $subject = new PageAccessFailureReasons();
@@ -32,9 +31,7 @@ final class PageAccessFailureReasonsTest extends UnitTestCase
         self::assertEquals('No page on rootlevel found', $message);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMessageForReasonThrowsExceptionForWrongCode(): void
     {
         $this->expectException(\InvalidArgumentException::class);

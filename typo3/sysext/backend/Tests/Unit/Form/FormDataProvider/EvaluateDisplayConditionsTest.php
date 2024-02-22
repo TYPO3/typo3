@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
 use TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider\Fixtures\EvaluateDisplayConditionsTestClass;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class EvaluateDisplayConditionsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfMultipleConditionsAreNotCombinedWithAndOrOr(): void
     {
         $input = [
@@ -50,9 +50,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIAConditionHasNoStringAsKey(): void
     {
         $input = [
@@ -72,9 +70,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfConditionIsNotStringOrArray(): void
     {
         $input = [
@@ -92,9 +88,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfConditionTypeIsUnknown(): void
     {
         $input = [
@@ -112,9 +106,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFieldConditionHasNoFieldName(): void
     {
         $input = [
@@ -132,9 +124,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFieldConditionHasNoOperator(): void
     {
         $input = [
@@ -152,9 +142,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFieldConditionHasInvalidOperator(): void
     {
         $input = [
@@ -172,9 +160,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFieldConditionHasNoOperand(): void
     {
         $input = [
@@ -192,9 +178,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFieldConditionReqHasInvalidOperand(): void
     {
         $input = [
@@ -212,9 +196,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFieldConditionNumberComparisonHasInvalidOperand(): void
     {
         $input = [
@@ -232,9 +214,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFieldConditionRangeComparisonHasInvalidOperand(): void
     {
         $input = [
@@ -252,9 +232,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFieldConditionRangeComparisonHasInvalidMaxOperand(): void
     {
         $input = [
@@ -272,9 +250,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRecordConditionHasNoNewKeyword(): void
     {
         $input = [
@@ -292,9 +268,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRecordConditionHasInvalidNewKeyword(): void
     {
         $input = [
@@ -312,9 +286,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRecordConditionHasNoOperand(): void
     {
         $input = [
@@ -332,9 +304,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRecordConditionHasInvalidOperand(): void
     {
         $input = [
@@ -352,9 +322,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRecordConditionHasNoUidInDatabaseRow(): void
     {
         $input = [
@@ -372,9 +340,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfVersionConditionHasNoIsKeyword(): void
     {
         $input = [
@@ -392,9 +358,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfVersionConditionHasInvalidIsKeyword(): void
     {
         $input = [
@@ -412,9 +376,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfVersionConditionHasNoOperand(): void
     {
         $input = [
@@ -432,9 +394,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfVersionConditionHasInvalidOperand(): void
     {
         $input = [
@@ -452,9 +412,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfVersionConditionHasNoUidInDatabaseRow(): void
     {
         $input = [
@@ -472,9 +430,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfUserConditionHasNoUserfuncSpecified(): void
     {
         $input = [
@@ -492,9 +448,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataEvaluatesUserCondition(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -512,9 +466,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataPassesFlexContextToUserCondition(): void
     {
         $input = [
@@ -548,9 +500,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFlexSheetNameAndFieldNameCombinationsOverlap(): void
     {
         $input = [
@@ -588,9 +538,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFlexSheetConditionReferencesFieldFromSameSheet(): void
     {
         $input = [
@@ -622,9 +570,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataTrowsExceptionIfFlexFieldSheetConditionReferencesNotExistingFieldValue(): void
     {
         $input = [
@@ -654,9 +600,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFlexFieldFieldConditionReferencesNotExistingFieldValue(): void
     {
         $input = [
@@ -690,9 +634,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFlexFieldReferencingFlexFieldIsNotFoundInFieldValue(): void
     {
         $input = [
@@ -725,9 +667,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         (new EvaluateDisplayConditions())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfFlexSectionContainerFoundNoReferencedFieldValue(): void
     {
         $input = [
@@ -3500,10 +3440,8 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider
-     */
+    #[DataProvider('addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider')]
+    #[Test]
     public function addDataRemovesTcaReferencingOtherFieldsInDisplayCondition(string $processedTcaFieldToBeRemovedPath, array $databaseRow, array $processedTca): void
     {
         $input = [
@@ -3764,9 +3702,9 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @param string $condition
      * @param string $expectedResult
-     * @dataProvider conditionStringDataProvider
-     * @test
      */
+    #[DataProvider('conditionStringDataProvider')]
+    #[Test]
     public function matchConditionStrings($condition, array $record, $expectedResult): void
     {
         $input = [
@@ -3798,9 +3736,9 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @param string $condition
      * @param string $expectedResult
-     * @dataProvider conditionStringDataProvider
-     * @test
      */
+    #[DataProvider('conditionStringDataProvider')]
+    #[Test]
     public function matchConditionStringsWithRecordTestFieldBeingArray($condition, array $record, $expectedResult): void
     {
         $input = [
@@ -3837,9 +3775,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchHideForNonAdminsReturnsTrueIfBackendUserIsAdmin(): void
     {
         $input = [
@@ -3866,9 +3802,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
         self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchHideForNonAdminsReturnsFalseIfBackendUserIsNotAdmin(): void
     {
         $input = [

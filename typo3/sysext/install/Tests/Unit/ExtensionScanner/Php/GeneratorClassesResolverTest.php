@@ -24,15 +24,14 @@ use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GeneratorClassesResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function visitorCreatesFullyQualifiedNameFromStringArgumentInMakeInstance(): void
     {
         $phpCode = <<<'EOC'
@@ -53,9 +52,7 @@ EOC;
         self::assertInstanceOf(New_::class, $node->getAttribute(AbstractCoreMatcher::NODE_RESOLVED_AS));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function visitorDoesNotTransformDynamicallyCreatesFullyQualifiedNameFromStringArgumentInMakeInstance(): void
     {
         $phpCode = <<<'EOC'

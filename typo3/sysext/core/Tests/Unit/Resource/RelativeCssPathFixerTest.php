@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -69,10 +71,8 @@ final class RelativeCssPathFixerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fixRelativeUrlPathsDataProvider
-     */
+    #[DataProvider('fixRelativeUrlPathsDataProvider')]
+    #[Test]
     public function fixRelativeUrlPaths(string $css, string $newDir, string $expected): void
     {
         $subject = new RelativeCssPathFixer();

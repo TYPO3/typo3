@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
@@ -139,10 +141,8 @@ final class TableOptionsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseTableOptionsDataProvider
-     */
+    #[DataProvider('canParseTableOptionsDataProvider')]
+    #[Test]
     public function canParseTableOptions(
         string $tableOptionsSQL,
         array $expectedTableOptions

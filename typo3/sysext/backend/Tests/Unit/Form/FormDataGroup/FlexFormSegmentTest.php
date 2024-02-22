@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -33,9 +34,7 @@ final class FlexFormSegmentTest extends UnitTestCase
         $this->subject = new FlexFormSegment();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileReturnsIncomingData(): void
     {
         $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
@@ -49,9 +48,7 @@ final class FlexFormSegmentTest extends UnitTestCase
         self::assertEquals($input, $this->subject->compile($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileReturnsResultChangedByDataProvider(): void
     {
         $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
@@ -74,9 +71,7 @@ final class FlexFormSegmentTest extends UnitTestCase
         self::assertEquals(['foo'], $this->subject->compile([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
         $orderingServiceMock = $this->createMock(DependencyOrderingService::class);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -90,10 +92,9 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
     /**
      * Tests showing that values set in the link record directly will overwrite those configured
      * in the default link handler configuration
-     *
-     * @test
-     * @dataProvider attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider
      */
+    #[DataProvider('attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider')]
+    #[Test]
     public function attributesSetInRecordLinkOverwriteConfiguredAttributes(string $parameterFromTypoScript, string $parameterFromDb, string $expectedParameter): void
     {
         $confFromDb = [

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BeforeRedirectMatchDomainEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getterReturnsConstructorSetValues(): void
     {
         $event = new BeforeRedirectMatchDomainEvent('acme.com', '/some-path', '?param=value', '*');
@@ -36,9 +35,7 @@ final class BeforeRedirectMatchDomainEventTest extends UnitTestCase
         self::assertNull($event->getMatchedRedirect());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchedRedirectSetterReturnsSetMatchedRedirectAndCanBeSetToNull(): void
     {
         $redirect = ['some-redirect'];

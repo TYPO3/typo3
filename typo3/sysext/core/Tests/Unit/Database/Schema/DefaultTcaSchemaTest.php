@@ -24,6 +24,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform;
@@ -44,18 +45,14 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $this->defaultTable = new Table('aTable');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichKeepsGivenTablesArrayWithEmptyTca(): void
     {
         $GLOBALS['TCA'] = [];
         self::assertEquals(['aTable' => $this->defaultTable], $this->subject->enrich(['aTable' => $this->defaultTable]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichThrowsIfTcaTableIsNotDefinedInIncomingSet(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -66,9 +63,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $this->subject->enrich([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddColumnIfExists(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -88,9 +83,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->enrich($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsUidAndPrimaryKey(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -109,9 +102,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedPrimaryKey, $result['aTable']->getPrimaryKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsPid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -128,9 +119,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedPidColumn->toArray(), $result['aTable']->getColumn('pid')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsTstamp(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -149,9 +138,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('updatedon')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsCrdate(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -170,9 +157,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('createdon')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsDeleted(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -191,9 +176,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('deleted')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsDisabled(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -214,9 +197,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('disabled')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsStarttime(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -237,9 +218,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('starttime')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsEndtime(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -260,9 +239,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('endtime')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsFegroup(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -283,9 +260,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('fe_group')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSorting(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -304,9 +279,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('sorting')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsParentKey(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -315,9 +288,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result['aTable']->getIndex('parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsParentKeyWithDelete(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -328,9 +299,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result['aTable']->getIndex('parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsParentKeyWithDisabled(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -343,9 +312,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result['aTable']->getIndex('parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsParentKeyInCorrectOrder(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -359,9 +326,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result['aTable']->getIndex('parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSysLanguageUid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -380,9 +345,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('sys_language_uid')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsL10nParent(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -402,9 +365,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('l10n_parent')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddL10nParentIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -415,9 +376,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result['aTable']->getColumn('l10n_parent');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsDescription(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -435,9 +394,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('rowDescription')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsEditlock(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -456,9 +413,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('editlock')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsL10nSource(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -478,9 +433,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('l10n_source')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddL10nSourceIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -491,9 +444,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result['aTable']->getColumn('l10n_source');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsL10nState(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -512,9 +463,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('l10n_state')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddL10nStateIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -525,9 +474,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result['aTable']->getColumn('l10n_state');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddL10nStateIfTransOrigPointerFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -538,9 +485,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result['aTable']->getColumn('l10n_state');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3origUid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -559,9 +504,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3_origuid')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsL10nDiffsource(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -579,9 +522,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('l18n_diffsource')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verOid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -600,9 +541,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3ver_oid')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verWsid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -621,9 +560,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3ver_wsid')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verState(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -642,9 +579,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3ver_state')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verStage(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -663,9 +598,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('t3ver_stage')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsLifeTimerangeDatefield(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -694,9 +627,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result['aTable']->getColumn('aBigDateField'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsShortLifeTimerangeDatefield(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -725,9 +656,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result['aTable']->getColumn('aSmallDateField'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsDefaultTimerangeDatefield(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -752,9 +681,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result['aTable']->getColumn('aDefaultDateField'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsLargeFutureTimerangeDatefield(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -783,9 +710,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result['aTable']->getColumn('aBigDateField'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsLargePastTimerangeDatefield(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -814,9 +739,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result['aTable']->getColumn('aSmallDateField'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verOidIndex(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -827,9 +750,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result['aTable']->getIndex('t3ver_oid'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSimpleMmForSelect(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -894,9 +815,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsMmWithUidWhenMultipleIsSet(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -971,9 +890,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsMmWithTablenamesAndFieldname(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1059,9 +976,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSlug(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1084,9 +999,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('slug')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsFile(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1109,9 +1022,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('file')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsEmail(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1134,9 +1045,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('email')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsNullableEmail(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1160,9 +1069,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('email')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsCheck(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1185,9 +1092,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('check')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsFolder(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1208,9 +1113,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('folder')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsImageManipulation(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1231,9 +1134,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('imageManipulation')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsLanguage(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1256,9 +1157,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('language')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsGroup(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1279,9 +1178,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('group')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsGroupWithMM(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1305,9 +1202,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('groupWithMM')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsFlex(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1328,9 +1223,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('flex')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsText(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1351,9 +1244,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('text')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsPassword(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1375,9 +1266,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('password')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsPasswordNullable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1400,9 +1289,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('password')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsColor(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1425,9 +1312,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('color')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsColorNullable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1451,9 +1336,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('color')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsRadioString(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1486,9 +1369,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsRadioStringVerifyThatCorrectLoopIsContinued(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1547,9 +1428,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn2->toArray(), $result['aTable']->getColumn('radio2')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsRadioStringWhenNoItemsOrUserFuncAreSet(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1573,9 +1452,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsRadioStringWhenItemsProcFuncSet(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1609,9 +1486,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsRadioSmallInt(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1647,9 +1522,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsRadioInt(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1685,9 +1558,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('radio')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsLink(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1709,9 +1580,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('link')->toArray());
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsLinkNullable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1735,9 +1604,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('link')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsInlineWithMMSet(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1762,9 +1629,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('inline_MM')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsInlineWithForeignFieldSet(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1789,9 +1654,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('inline_ff')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsInlineWithForeignFieldAndChildRelationSet(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1839,9 +1702,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedChildColumnForForeignTableField->toArray(), $result['bTable']->getColumn('cField')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsInlineWithoutRelationTableSet(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1865,9 +1726,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('inline')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsNumberAsDecimalForNonSqlite(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1892,9 +1751,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsNumberAsDecimalForSqlite(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool(SQLitePlatform::class);
@@ -1918,9 +1775,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsNumberAsInteger(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1943,9 +1798,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsNumberWithoutFormatAsInteger(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1967,9 +1820,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsNumberWithoutFormatAsIntegerWithNullable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -1993,9 +1844,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsNumberWithoutFormatAsIntegerWithLowerRangePositive(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2021,9 +1870,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsNumberWithoutFormatAsIntegerWithLowerRangeNegative(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2049,9 +1896,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectText(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2079,9 +1924,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectTextWithItemProcFunc(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2103,9 +1946,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectVarcharWhenSelectSingleAndNoItems(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2129,9 +1970,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectTextWithoutAnyItemsOrTable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2155,9 +1994,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectStringWithLengthWithoutAnyItemsOrTable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2182,9 +2019,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectSingleWithMMTable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2209,9 +2044,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectSingleWithOnlyForeignTable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2236,9 +2069,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectSingleWithForeignTableAndIntegerItems(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2269,9 +2100,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectSingleWithForeignTableAndSignedIntegerItems(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2302,9 +2131,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectSingleWithForeignTableAndStringItems(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2335,9 +2162,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSelectMultipleWithForeignTableAndIntItems(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();

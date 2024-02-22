@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AdminPanelInitiatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function processCallsInitialize(): void
     {
         $tsConfig = [
@@ -62,9 +61,7 @@ final class AdminPanelInitiatorTest extends UnitTestCase
         $adminPanelInitiator->process($request, $handler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDoesNotCallInitializeIfAdminPanelIsNotEnabledInUC(): void
     {
         $tsConfig = [
@@ -82,9 +79,7 @@ final class AdminPanelInitiatorTest extends UnitTestCase
         $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDoesNotCallInitializeIfNoAdminPanelModuleIsEnabled(): void
     {
         $tsConfig = [

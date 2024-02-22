@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Evaluation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Redirects\Evaluation\SourceHost;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -66,10 +68,8 @@ final class SourceHostTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider evaluateFieldValueWorksWithDifferentInputsDataProvider
-     */
+    #[DataProvider('evaluateFieldValueWorksWithDifferentInputsDataProvider')]
+    #[Test]
     public function evaluateFieldValueWorksWithDifferentInputs(string $input, string $expected): void
     {
         $subject = new SourceHost();

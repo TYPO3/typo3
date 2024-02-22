@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaUuid;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -84,9 +85,7 @@ final class TcaUuidTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesOnlyHandleTypeUuid(): void
     {
         $input = [
@@ -109,9 +108,7 @@ final class TcaUuidTest extends UnitTestCase
         self::assertSame('', (new TcaUuid())->addData($input)['databaseRow']['aField']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotHandleFieldsWithValidUuidValue(): void
     {
         $input = [
@@ -134,9 +131,7 @@ final class TcaUuidTest extends UnitTestCase
         self::assertSame('b3190536-1431-453e-afbb-25b8c5022513', (new TcaUuid())->addData($input)['databaseRow']['aField']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCreatesValidUuidValueForInvalidUuid(): void
     {
         $input = [
@@ -160,9 +155,7 @@ final class TcaUuidTest extends UnitTestCase
         self::assertTrue(Uuid::isValid((new TcaUuid())->addData($input)['databaseRow']['aField']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCreatesValidUuidValueForEmptyField(): void
     {
         $input = [
@@ -186,9 +179,7 @@ final class TcaUuidTest extends UnitTestCase
         self::assertTrue(Uuid::isValid((new TcaUuid())->addData($input)['databaseRow']['aField']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCreatesValidUuidValueWithDefinedVersion(): void
     {
         $input = [

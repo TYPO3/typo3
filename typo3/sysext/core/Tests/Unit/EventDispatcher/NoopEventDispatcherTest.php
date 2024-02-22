@@ -17,23 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\EventDispatcher;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class NoopEventDispatcherTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsEventDispatcherInterface(): void
     {
         self::assertInstanceOf(EventDispatcherInterface::class, new NoopEventDispatcher());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchReturnsProvidedEvent(): void
     {
         $event = new \stdClass();

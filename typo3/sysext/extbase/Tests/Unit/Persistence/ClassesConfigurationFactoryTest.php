@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -31,9 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ClassesConfigurationFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function inheritPropertiesFromParentClasses(): void
     {
         $classesConfigurationFactory = new ClassesConfigurationFactory(new NullFrontend('extbase'), new PackageManager(new DependencyOrderingService()), 'PersistenceClasses');

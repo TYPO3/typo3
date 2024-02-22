@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Unit\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyUrlForCanonicalTagEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $request = (new ServerRequest(''));
@@ -42,9 +41,7 @@ final class ModifyUrlForCanonicalTagEventTest extends UnitTestCase
         self::assertSame($exception, $event->getCanonicalGenerationDisabledException());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverwritesParameters(): void
     {
         $request = (new ServerRequest(''));

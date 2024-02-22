@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Impexp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -36,10 +38,8 @@ final class ExportTest extends UnitTestCase
         $this->exportMock->_set('compressionAvailable', true);
     }
 
-    /**
-     * @test
-     * @dataProvider setExportFileNameSanitizesFileNameProvider
-     */
+    #[DataProvider('setExportFileNameSanitizesFileNameProvider')]
+    #[Test]
     public function setExportFileNameSanitizesFileName(string $fileName, string $expected): void
     {
         $this->exportMock->setExportFileName($fileName);
@@ -58,9 +58,7 @@ final class ExportTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersPidAndLevels(): void
     {
         $this->exportMock->setPid(1);
@@ -69,9 +67,7 @@ final class ExportTest extends UnitTestCase
         self::assertMatchesRegularExpression("/T3D_tree_PID1_L2_$patternDateTime.xml/", $this->exportMock->getOrGenerateExportFileNameWithFileExtension());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersRecords(): void
     {
         $this->exportMock->setRecord(['page:1', 'tt_content:1']);
@@ -79,9 +75,7 @@ final class ExportTest extends UnitTestCase
         self::assertMatchesRegularExpression("/T3D_recs_page_1-tt_conte_$patternDateTime.xml/", $this->exportMock->getOrGenerateExportFileNameWithFileExtension());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersLists(): void
     {
         $this->exportMock->setList(['sys_news:0', 'news:12']);
@@ -98,19 +92,15 @@ final class ExportTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider setExportFileTypeSucceedsWithSupportedFileTypeProvider
-     */
+    #[DataProvider('setExportFileTypeSucceedsWithSupportedFileTypeProvider')]
+    #[Test]
     public function setExportFileTypeSucceedsWithSupportedFileType(string $fileType): void
     {
         $this->exportMock->setExportFileType($fileType);
         self::assertEquals($fileType, $this->exportMock->getExportFileType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setExportFileTypeFailsWithUnsupportedFileType(): void
     {
         $this->expectException(\Exception::class);
@@ -158,10 +148,8 @@ final class ExportTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider removeRedundantSoftRefsInRelationsProcessesOriginalRelationsArrayDataProvider
-     */
+    #[DataProvider('removeRedundantSoftRefsInRelationsProcessesOriginalRelationsArrayDataProvider')]
+    #[Test]
     public function removeRedundantSoftRefsInRelationsProcessesOriginalRelationsArray(array $relations, array $expected): void
     {
         $resourceFactoryMock = $this->getAccessibleMock(
@@ -275,10 +263,9 @@ final class ExportTest extends UnitTestCase
 
     /**
      * Temporary test until there is a complex functional test which tests exportAddFilesFromRelations() implicitly.
-     *
-     * @test
-     * @dataProvider exportAddFilesFromRelationsSucceedsDataProvider
      */
+    #[DataProvider('exportAddFilesFromRelationsSucceedsDataProvider')]
+    #[Test]
     public function exportAddFilesFromRelationsSucceeds(array $dat, array $expected): void
     {
         $exportMock = $this->getAccessibleMock(

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Opendocs\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
@@ -33,9 +34,7 @@ final class OpenDocumentServiceTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $this->backendUser;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getsOpenDocumentsFromUserSession(): void
     {
         $this->backendUser->method('getModuleData')->with('FormEngine', 'ses')->willReturn([
@@ -54,9 +53,7 @@ final class OpenDocumentServiceTest extends UnitTestCase
         self::assertEquals($expected, $openDocuments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handlesUserSessionWithoutOpenDocuments(): void
     {
         $this->backendUser->method('getModuleData')->with('FormEngine', 'ses')->willReturn(null);
@@ -65,9 +62,7 @@ final class OpenDocumentServiceTest extends UnitTestCase
         self::assertEquals([], $openDocuments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getsRecentDocumentsFromUserSession(): void
     {
         $this->backendUser->method('getModuleData')->with('opendocs::recent')->willReturn([
@@ -81,9 +76,7 @@ final class OpenDocumentServiceTest extends UnitTestCase
         self::assertEquals($expected, $recentDocuments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handlesUserSessionWithoutRecentDocuments(): void
     {
         $this->backendUser->method('getModuleData')->with('opendocs::recent')->willReturn(null);
@@ -92,9 +85,7 @@ final class OpenDocumentServiceTest extends UnitTestCase
         self::assertEquals([], $recentDocuments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function closesDocument(): void
     {
         $this->backendUser->method('getModuleData')->willReturnMap([

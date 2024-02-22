@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\ExtensionUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstController;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\SecondController;
@@ -26,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtensionUtilityTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginWorksForMinimalisticSetup(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
@@ -41,9 +41,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         self::assertStringNotContainsString('USER_INT', $staticTypoScript);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginCreatesCorrectDefaultTypoScriptSetup(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
@@ -52,9 +50,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = EXTBASEPLUGIN', $staticTypoScript);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginWorksForASingleControllerAction(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
@@ -79,9 +75,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginThrowsExceptionIfExtensionNameIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -91,9 +85,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginThrowsExceptionIfPluginNameIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -103,9 +95,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginRespectsDefaultActionAsANonCacheableAction(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
@@ -133,9 +123,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginRespectsNonDefaultActionAsANonCacheableAction(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
@@ -163,9 +151,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginWorksForMultipleControllerActionsWithCacheableActionAsDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
@@ -202,9 +188,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginWorksForMultipleControllerActionsAsArrayWithCacheableActionAsDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
@@ -241,9 +225,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
@@ -285,9 +267,8 @@ final class ExtensionUtilityTest extends UnitTestCase
     /**
      * Tests method combination of registerPlugin() and its dependency addPlugin() to
      * verify plugin icon path resolving works.
-     *
-     * @test
      */
+    #[Test]
     public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfUsingUnderscoredExtensionNameAndIconPathNotGiven(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
@@ -306,9 +287,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerPluginMethodReturnsPluginSignature(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
@@ -323,9 +302,8 @@ final class ExtensionUtilityTest extends UnitTestCase
     /**
      * Tests method combination of registerPlugin() and its dependency addPlugin() to
      * verify plugin icon path resolving works.
-     *
-     * @test
      */
+    #[Test]
     public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfUsingUpperCameCasedExtensionNameAndIconPathNotGiven(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
@@ -347,9 +325,8 @@ final class ExtensionUtilityTest extends UnitTestCase
     /**
      * Tests method combination of registerPlugin() and its dependency addPlugin() to
      * verify plugin icon path resolving works.
-     *
-     * @test
      */
+    #[Test]
     public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfIconPathIsGiven(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
@@ -403,10 +380,8 @@ final class ExtensionUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkResolveControllerAliasFromControllerClassNameDataProvider
-     */
+    #[DataProvider('checkResolveControllerAliasFromControllerClassNameDataProvider')]
+    #[Test]
     public function checkResolveControllerAliasFromControllerClassName(string $expectedControllerAlias, string $controllerClassName): void
     {
         self::assertEquals(

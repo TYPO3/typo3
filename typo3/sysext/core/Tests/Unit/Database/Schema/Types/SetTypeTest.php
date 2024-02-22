@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -32,18 +33,14 @@ final class SetTypeTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNameReturnsTypeIdentifier(): void
     {
         $subject = Type::getType(SetType::TYPE);
         self::assertSame(SetType::TYPE, Type::getTypeRegistry()->lookupName($subject));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSQLDeclaration(): void
     {
         $fieldDeclaration = [

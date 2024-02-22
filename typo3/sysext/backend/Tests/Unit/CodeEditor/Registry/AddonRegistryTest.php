@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\CodeEditor\Registry;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\CodeEditor\Addon;
 use TYPO3\CMS\Backend\CodeEditor\Registry\AddonRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,9 +65,7 @@ final class AddonRegistryTest extends UnitTestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function globalAddonsGetReturned(): void
     {
         $expected = [
@@ -84,9 +83,7 @@ final class AddonRegistryTest extends UnitTestCase
         self::assertSame($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingsAreProperlyCompiled(): void
     {
         $expected = [

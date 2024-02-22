@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Processor;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -40,9 +42,7 @@ final class GalleryProcessorTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processThrowsExceptionWhenFilesProcessedDataKeyIsNotFound(): void
     {
         $this->expectException(ContentRenderingException::class);
@@ -146,10 +146,8 @@ final class GalleryProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider galleryPositionDataProvider
-     */
+    #[DataProvider('galleryPositionDataProvider')]
+    #[Test]
     public function galleryPositionTest(array $processorConfiguration, array $expected): void
     {
         $processor = new GalleryProcessor();
@@ -163,9 +161,7 @@ final class GalleryProcessorTest extends UnitTestCase
         self::assertEquals($expected, $processedData['gallery']['position']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function maxGalleryWidthTest(): void
     {
         $processor = new GalleryProcessor();
@@ -179,9 +175,7 @@ final class GalleryProcessorTest extends UnitTestCase
         self::assertEquals(200, $processedData['gallery']['width']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function maxGalleryWidthWhenInTextTest(): void
     {
         $processor = new GalleryProcessor();
@@ -246,10 +240,8 @@ final class GalleryProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider countDataProvider
-     */
+    #[DataProvider('countDataProvider')]
+    #[Test]
     public function countResultTest(int $numberOfFiles, array $data, array $processorConfiguration, array $expected): void
     {
         $files = [];
@@ -434,10 +426,8 @@ final class GalleryProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider calculateMediaWidthsAndHeightsDataProvider
-     */
+    #[DataProvider('calculateMediaWidthsAndHeightsDataProvider')]
+    #[Test]
     public function calculateMediaWidthsAndHeightsTest(array $testFiles, array $processorConfiguration, array $expected): void
     {
         $files = [];

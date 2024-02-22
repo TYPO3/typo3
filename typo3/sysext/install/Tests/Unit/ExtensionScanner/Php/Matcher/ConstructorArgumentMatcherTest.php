@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstructorArgumentMatcher;
@@ -72,10 +74,8 @@ final class ConstructorArgumentMatcherTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider hitsFromFixtureAreFoundDataProvider
-     */
+    #[DataProvider('hitsFromFixtureAreFoundDataProvider')]
+    #[Test]
     public function hitsFromFixtureAreFound(array $configuration, array $expectation): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class VerifyHostHeaderTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isAllowedHostHeaderValueReturnsFalseIfTrustedHostsIsNotConfigured(): void
     {
         $subject = new VerifyHostHeader('');
@@ -63,9 +63,9 @@ final class VerifyHostHeaderTest extends UnitTestCase
     /**
      * @param string $httpHost HTTP_HOST string
      * @param string $hostNamePattern trusted hosts pattern
-     * @test
-     * @dataProvider hostnamesMatchingTrustedHostsConfigurationDataProvider
      */
+    #[DataProvider('hostnamesMatchingTrustedHostsConfigurationDataProvider')]
+    #[Test]
     public function isAllowedHostHeaderValueReturnsTrueIfHostValueMatches(string $httpHost, string $hostNamePattern): void
     {
         $serverParams = $_SERVER;
@@ -77,9 +77,9 @@ final class VerifyHostHeaderTest extends UnitTestCase
     /**
      * @param string $httpHost HTTP_HOST string
      * @param string $hostNamePattern trusted hosts pattern
-     * @test
-     * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
      */
+    #[DataProvider('hostnamesNotMatchingTrustedHostsConfigurationDataProvider')]
+    #[Test]
     public function isAllowedHostHeaderValueReturnsFalseIfHostValueMatches(string $httpHost, string $hostNamePattern): void
     {
         $serverParams = $_SERVER;
@@ -167,10 +167,8 @@ final class VerifyHostHeaderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider serverNamePatternDataProvider
-     */
+    #[DataProvider('serverNamePatternDataProvider')]
+    #[Test]
     public function isAllowedHostHeaderValueWorksCorrectlyWithWithServerNamePattern(
         string $httpHost,
         string $serverName,
@@ -188,10 +186,8 @@ final class VerifyHostHeaderTest extends UnitTestCase
         self::assertSame($isAllowed, $subject->isAllowedHostHeaderValue($httpHost, $serverParams));
     }
 
-    /**
-     * @test
-     * @dataProvider serverNamePatternDataProvider
-     */
+    #[DataProvider('serverNamePatternDataProvider')]
+    #[Test]
     public function isAllowedHostHeaderValueWorksCorrectlyWithWithServerNamePatternAndSslProxy(
         string $httpHost,
         string $serverName,
@@ -210,10 +206,8 @@ final class VerifyHostHeaderTest extends UnitTestCase
         self::assertSame($isAllowed, $subject->isAllowedHostHeaderValue($httpHost, $serverParams));
     }
 
-    /**
-     * @test
-     * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
-     */
+    #[DataProvider('hostnamesNotMatchingTrustedHostsConfigurationDataProvider')]
+    #[Test]
     public function processThrowsExceptionForNotAllowedHostnameValues(string $httpHost, string $hostNamePattern): void
     {
         $serverParams = $_SERVER;
@@ -228,10 +222,8 @@ final class VerifyHostHeaderTest extends UnitTestCase
         $subject->process($request, $requestHandlerMock);
     }
 
-    /**
-     * @test
-     * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
-     */
+    #[DataProvider('hostnamesNotMatchingTrustedHostsConfigurationDataProvider')]
+    #[Test]
     public function processAllowsAllHostnameValuesIfHostPatternIsSetToAllowAll(string $httpHost): void
     {
         $serverParams = $_SERVER;

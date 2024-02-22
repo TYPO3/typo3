@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Console;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -35,18 +36,14 @@ final class CommandRegistryTest extends UnitTestCase
         $this->containerMock = $this->createMock(ContainerInterface::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsCommandLoaderInterface(): void
     {
         $commandRegistry = new CommandRegistry($this->containerMock);
         self::assertInstanceof(CommandLoaderInterface::class, $commandRegistry);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function iteratesLazyCommandsOfActivePackages(): void
     {
         $command1Mock = $this->createMock(Command::class);

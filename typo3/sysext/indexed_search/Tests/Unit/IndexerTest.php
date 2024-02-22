@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -39,9 +40,7 @@ final class IndexerTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractHyperLinksDoesNotReturnNonExistingLocalPath(): void
     {
         $html = 'test <a href="' . StringUtility::getUniqueId() . '">test</a> test';
@@ -51,9 +50,7 @@ final class IndexerTest extends UnitTestCase
         self::assertEquals('', $result[0]['localPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractHyperLinksReturnsCorrectPathWithBaseUrl(): void
     {
         $baseURL = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl();
@@ -64,9 +61,7 @@ final class IndexerTest extends UnitTestCase
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractHyperLinksFindsCorrectPathWithAbsolutePath(): void
     {
         $html = 'test <a href="index.php">test</a> test';
@@ -76,9 +71,7 @@ final class IndexerTest extends UnitTestCase
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractHyperLinksFindsCorrectPathUsingAbsRefPrefix(): void
     {
         $absRefPrefix = '/' . StringUtility::getUniqueId();
@@ -95,9 +88,7 @@ final class IndexerTest extends UnitTestCase
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractBaseHrefExtractsBaseHref(): void
     {
         $baseHref = 'http://example.com/';
@@ -109,9 +100,8 @@ final class IndexerTest extends UnitTestCase
 
     /**
      * Tests whether indexer can extract content between "TYPO3SEARCH_begin" and "TYPO3SEARCH_end" markers
-     *
-     * @test
      */
+    #[Test]
     public function typoSearchTagsRemovesBodyContentOutsideMarkers(): void
     {
         $body = <<<EOT
@@ -153,9 +143,8 @@ EOT;
 
     /**
      * Tests whether indexer can extract content between multiple pairs of "TYPO3SEARCH" markers
-     *
-     * @test
      */
+    #[Test]
     public function typoSearchTagsHandlesMultipleMarkerPairs(): void
     {
         $body = <<<EOT

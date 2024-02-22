@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -76,10 +78,8 @@ final class TypolinkViewHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider plainDecodedConfigurationDataProvider
-     */
+    #[DataProvider('plainDecodedConfigurationDataProvider')]
+    #[Test]
     public function mergeTypoLinkConfigurationDoesNotModifyData(array $decodedConfiguration): void
     {
         $mock = \Closure::bind(static function (TypolinkViewHelper $typolinkViewHelper) use ($decodedConfiguration, &$result) {
@@ -176,10 +176,8 @@ final class TypolinkViewHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodedConfigurationAndFluidArgumentDataProvider
-     */
+    #[DataProvider('decodedConfigurationAndFluidArgumentDataProvider')]
+    #[Test]
     public function mergeTypoLinkConfigurationMergesData(array $decodedConfiguration, array $viewHelperArguments, array $expectation): void
     {
         $mock = \Closure::bind(static function (TypolinkViewHelper $typolinkViewHelper) use ($decodedConfiguration, $viewHelperArguments, &$result) {

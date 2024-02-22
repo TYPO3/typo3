@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -25,9 +26,7 @@ final class FormDefinitionConversionServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addHmacDataAddsHmacHashes(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
@@ -130,9 +129,7 @@ final class FormDefinitionConversionServiceTest extends UnitTestCase
         self::assertSame($expected, $data);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeHmacDataRemoveHmacs(): void
     {
         $formDefinitionConversionService = new FormDefinitionConversionService();

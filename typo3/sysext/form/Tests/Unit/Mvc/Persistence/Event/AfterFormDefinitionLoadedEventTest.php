@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Persistence\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Mvc\Persistence\Event\AfterFormDefinitionLoadedEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterFormDefinitionLoadedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $persistenceIdentifier = 'ext-form-identifier';
@@ -42,9 +41,7 @@ final class AfterFormDefinitionLoadedEventTest extends UnitTestCase
         self::assertSame($cacheKey, $event->getCacheKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setterOverwritesResult(): void
     {
         $persistenceIdentifier = 'ext-form-identifier';

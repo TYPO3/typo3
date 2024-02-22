@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -79,10 +81,8 @@ final class CreateTableFragmentTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseCreateTableFragmentDataProvider
-     */
+    #[DataProvider('canParseCreateTableFragmentDataProvider')]
+    #[Test]
     public function canParseCreateTableFragment(string $statement, string $tableName, bool $isTemporary): void
     {
         $ast = (new Parser(new Lexer()))->getAST($statement);
@@ -91,9 +91,7 @@ final class CreateTableFragmentTest extends UnitTestCase
         self::assertSame($isTemporary, $ast->isTemporary);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canParseCreateTableStatementWithoutColumns(): void
     {
         $ast = (new Parser(new Lexer()))->getAST('CREATE TABLE aTable ();');

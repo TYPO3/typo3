@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DependencyUtilityTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function checkTypo3DependencyErrorsIfVersionNumberIsTooLow(): void
     {
         $dependency = Dependency::createFromEmConf('typo3', '15.0.0-0');
@@ -49,9 +48,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertSame(1399144499, $errors['foo'][0]['code']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkTypo3DependencyErrorsIfVersionNumberIsTooHigh(): void
     {
         $dependency = Dependency::createFromEmConf('typo3', '1.0.0-3.0.0');
@@ -69,9 +66,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertSame(1399144521, $errors['foo'][0]['code']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkTypo3DependencyReturnsTrueIfVersionNumberIsInRange(): void
     {
         $dependency = Dependency::createFromEmConf('typo3', '1.0.0-25.0.0');
@@ -88,9 +83,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertCount(0, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkTypo3DependencyCanHandleEmptyVersionHighestVersion(): void
     {
         $dependency = Dependency::createFromEmConf('typo3', '1.0.0');
@@ -107,9 +100,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertCount(0, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkTypo3DependencyCanHandleEmptyVersionLowestVersion(): void
     {
         $dependency = Dependency::createFromEmConf('typo3', '-15.0.0');
@@ -126,9 +117,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertCount(0, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPhpDependencyErrorsIfVersionNumberIsTooLow(): void
     {
         $dependency = Dependency::createFromEmConf('php', '15.0.0');
@@ -146,9 +135,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertSame(1377977857, $errors['foo'][0]['code']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooHigh(): void
     {
         $dependency = Dependency::createFromEmConf('php', '1.0.0-3.0.0');
@@ -166,9 +153,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertSame(1377977856, $errors['foo'][0]['code']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPhpDependencyReturnsTrueIfVersionNumberIsInRange(): void
     {
         $dependency = Dependency::createFromEmConf('php', '1.0.0-15.0.0');
@@ -186,9 +171,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertCount(0, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPhpDependencyCanHandleEmptyVersionHighestVersion(): void
     {
         $dependency = Dependency::createFromEmConf('php', '1.0.0');
@@ -206,9 +189,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertCount(0, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPhpDependencyCanHandleEmptyVersionLowestVersion(): void
     {
         $dependency = Dependency::createFromEmConf('typo3', '-25.0.0');
@@ -225,9 +206,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertCount(0, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isDependentExtensionAvailableReturnsTrueIfExtensionIsAvailable(): void
     {
         $availableExtensions = [
@@ -247,9 +226,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertTrue($dependencyUtility->_call('isDependentExtensionAvailable', 'dummy'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isDependentExtensionAvailableReturnsFalseIfExtensionIsNotAvailable(): void
     {
         $availableExtensions = [
@@ -269,9 +246,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertFalse($dependencyUtility->_call('isDependentExtensionAvailable', '42'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isAvailableVersionCompatibleCallsIsVersionCompatibleWithExtensionVersion(): void
     {
         $emConfUtility = $this->getMockBuilder(EmConfUtility::class)
@@ -293,9 +268,7 @@ final class DependencyUtilityTest extends UnitTestCase
         $dependencyUtility->_call('isAvailableVersionCompatible', $dependency);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExtensionDownloadableFromRemoteReturnsTrueIfOneVersionExists(): void
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
@@ -309,9 +282,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertTrue($count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isExtensionDownloadableFromRemoteReturnsFalseIfNoVersionExists(): void
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
@@ -325,9 +296,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertFalse($count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isDownloadableVersionCompatibleReturnsTrueIfCompatibleVersionExists(): void
     {
         $dependency = Dependency::createFromEmConf('dummy', '1.0.0-10.0.0');
@@ -342,9 +311,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertTrue($count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isDownloadableVersionCompatibleReturnsFalseIfIncompatibleVersionExists(): void
     {
         $dependency = Dependency::createFromEmConf('dummy', '1.0.0-2.0.0');
@@ -359,9 +326,7 @@ final class DependencyUtilityTest extends UnitTestCase
         self::assertFalse($count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLatestCompatibleExtensionByDependencyWillReturnExtensionModelOfLatestExtension(): void
     {
         $suitableDependency = Dependency::createFromEmConf('typo3', '3.6.1');

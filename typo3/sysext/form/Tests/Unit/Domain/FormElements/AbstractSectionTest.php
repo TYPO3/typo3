@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
@@ -33,9 +34,7 @@ final class AbstractSectionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionWhenIdentifierIsEmpty(): void
     {
         $this->expectException(IdentifierNotValidException::class);
@@ -45,18 +44,14 @@ final class AbstractSectionTest extends UnitTestCase
         new Section('', 'foobar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString(): void
     {
         $section = new Section('foobar', 'foobar');
         self::assertInstanceOf(AbstractSection::class, $section);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createElementThrowsExceptionIfTypeDefinitionNotFoundAndSkipUnknownElementsIsFalse(): void
     {
         $rootForm = $this->getMockBuilder(FormDefinition::class)
@@ -93,9 +88,7 @@ final class AbstractSectionTest extends UnitTestCase
         $mockAbstractSection->_call('createElement', '', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createElementReturnsUnknownElementsIfTypeDefinitionIsNotFoundAndSkipUnknownElementsIsTrue(): void
     {
         $rootForm = $this->getMockBuilder(FormDefinition::class)
@@ -118,9 +111,7 @@ final class AbstractSectionTest extends UnitTestCase
         self::assertSame('bar', $result->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createElementThrowsExceptionIfTypeDefinitionIsNotSet(): void
     {
         $rootForm = $this->getMockBuilder(FormDefinition::class)
@@ -141,9 +132,7 @@ final class AbstractSectionTest extends UnitTestCase
         $section->createElement('id', 'foobar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createElementThrowsExceptionIfTypeDefinitionNotInstanceOfFormElementInterface(): void
     {
         $rootForm = $this->getMockBuilder(FormDefinition::class)
@@ -171,9 +160,7 @@ final class AbstractSectionTest extends UnitTestCase
         $section->createElement('id', 'foobar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createElementExpectedToAddAndInitializeElement(): void
     {
         $implementationMock = $this->createPartialMock(TestingFormElement::class, ['setOptions', 'initializeFormElement']);

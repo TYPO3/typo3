@@ -17,16 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ReflectionServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     *
-     * Note:    Starting with PHP8.2 unserializing dynamic properties (undefined properties) emits a deprecation
-     *          warning, which fails in normal tests. This moved here to avoid failing tests.
-     */
+    #[Test]
     public function reflectionServiceIsResetDuringWakeUp(): void
     {
         $insecureString = file_get_contents(__DIR__ . '/Fixture/InsecureSerializedReflectionService.txt');

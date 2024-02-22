@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Header\MailboxHeader;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -34,17 +36,13 @@ final class MailMessageTest extends UnitTestCase
         $this->subject = new MailMessage();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isSentReturnsFalseIfMailWasNotSent(): void
     {
         self::assertFalse($this->subject->isSent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSubjectWorksAsExpected(): void
     {
         $this->subject->setSubject('Test');
@@ -53,9 +51,7 @@ final class MailMessageTest extends UnitTestCase
         self::assertSame('Test2', $this->subject->getSubject());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDateWorksAsExpected(): void
     {
         $time = time();
@@ -66,9 +62,7 @@ final class MailMessageTest extends UnitTestCase
         self::assertSame($time, (int)$this->subject->getDate()->format('U'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setReturnPathWorksAsExpected(): void
     {
         $this->subject->setReturnPath('noreply@typo3.com');
@@ -95,10 +89,8 @@ final class MailMessageTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider setSenderAddressDataProvider
-     */
+    #[DataProvider('setSenderAddressDataProvider')]
+    #[Test]
     public function setSenderWorksAsExpected(string $address, ?string $name, array $expectedAddresses): void
     {
         $this->subject->setSender($address, $name);
@@ -162,10 +154,8 @@ final class MailMessageTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider globalSetAddressDataProvider
-     */
+    #[DataProvider('globalSetAddressDataProvider')]
+    #[Test]
     public function setFromWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         // We first add one address, because set should override / remove existing addresses
@@ -174,10 +164,8 @@ final class MailMessageTest extends UnitTestCase
         $this->assertCorrectAddresses($this->subject->getFrom(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     * @dataProvider globalSetAddressDataProvider
-     */
+    #[DataProvider('globalSetAddressDataProvider')]
+    #[Test]
     public function setReplyToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         // We first add one address, because set should override / remove existing addresses
@@ -186,10 +174,8 @@ final class MailMessageTest extends UnitTestCase
         $this->assertCorrectAddresses($this->subject->getReplyTo(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     * @dataProvider globalSetAddressDataProvider
-     */
+    #[DataProvider('globalSetAddressDataProvider')]
+    #[Test]
     public function setToToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         // We first add one address, because set should override / remove existing addresses
@@ -198,10 +184,8 @@ final class MailMessageTest extends UnitTestCase
         $this->assertCorrectAddresses($this->subject->getTo(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     * @dataProvider globalSetAddressDataProvider
-     */
+    #[DataProvider('globalSetAddressDataProvider')]
+    #[Test]
     public function setCcToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         // We first add one address, because set should override / remove existing addresses
@@ -210,10 +194,8 @@ final class MailMessageTest extends UnitTestCase
         $this->assertCorrectAddresses($this->subject->getCc(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     * @dataProvider globalSetAddressDataProvider
-     */
+    #[DataProvider('globalSetAddressDataProvider')]
+    #[Test]
     public function setBccToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         // We first add one address, because set should override / remove existing addresses
@@ -243,59 +225,47 @@ final class MailMessageTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider globalAddAddressDataProvider
-     */
+    #[DataProvider('globalAddAddressDataProvider')]
+    #[Test]
     public function addFromToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         $this->subject->addFrom($address, $name);
         $this->assertCorrectAddresses($this->subject->getFrom(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     * @dataProvider globalAddAddressDataProvider
-     */
+    #[DataProvider('globalAddAddressDataProvider')]
+    #[Test]
     public function addReplyToToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         $this->subject->addReplyTo($address, $name);
         $this->assertCorrectAddresses($this->subject->getReplyTo(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     * @dataProvider globalAddAddressDataProvider
-     */
+    #[DataProvider('globalAddAddressDataProvider')]
+    #[Test]
     public function addToToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         $this->subject->addTo($address, $name);
         $this->assertCorrectAddresses($this->subject->getTo(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     * @dataProvider globalAddAddressDataProvider
-     */
+    #[DataProvider('globalAddAddressDataProvider')]
+    #[Test]
     public function addCcToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         $this->subject->addCc($address, $name);
         $this->assertCorrectAddresses($this->subject->getCc(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     * @dataProvider globalAddAddressDataProvider
-     */
+    #[DataProvider('globalAddAddressDataProvider')]
+    #[Test]
     public function addBccToWorksAsExpected(string|array $address, ?string $name, array $expectedAddresses): void
     {
         $this->subject->addBcc($address, $name);
         $this->assertCorrectAddresses($this->subject->getBcc(), $expectedAddresses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setReadReceiptToToWorksAsExpected(): void
     {
         $this->subject->setReadReceiptTo('foo@example.com');
@@ -315,10 +285,8 @@ final class MailMessageTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider exceptionIsThrownForInvalidArgumentCombinationsDataProvider
-     */
+    #[DataProvider('exceptionIsThrownForInvalidArgumentCombinationsDataProvider')]
+    #[Test]
     public function exceptionIsThrownForInvalidArgumentCombinations(string $method): void
     {
         $this->expectException(\InvalidArgumentException::class);

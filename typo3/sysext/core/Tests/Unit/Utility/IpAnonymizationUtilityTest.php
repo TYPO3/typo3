@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -48,10 +50,10 @@ final class IpAnonymizationUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider anonymizeIpReturnsCorrectValueDataProvider
      * @param int|null $mask
      */
+    #[DataProvider('anonymizeIpReturnsCorrectValueDataProvider')]
+    #[Test]
     public function anonymizeIpReturnsCorrectValue(string $address, int $mask = null, string $expected): void
     {
         // set the default if $mask is null
@@ -59,9 +61,7 @@ final class IpAnonymizationUtilityTest extends UnitTestCase
         self::assertEquals($expected, IpAnonymizationUtility::anonymizeIp($address, $mask));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wrongMaskForAnonymizeIpThrowsException(): void
     {
         $this->expectException(\UnexpectedValueException::class);

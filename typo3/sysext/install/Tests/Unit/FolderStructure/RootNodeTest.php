@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -32,9 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RootNodeTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfParentIsNotNull(): void
     {
         $this->expectException(RootNodeException::class);
@@ -44,9 +43,7 @@ final class RootNodeTest extends UnitTestCase
         $node->__construct([], $falseParent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfAbsolutePathIsNotSet(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -58,9 +55,7 @@ final class RootNodeTest extends UnitTestCase
         $node->__construct($structure, null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnWindows(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -75,9 +70,7 @@ final class RootNodeTest extends UnitTestCase
         $node->__construct($structure, null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnUnix(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -92,9 +85,7 @@ final class RootNodeTest extends UnitTestCase
         $node->__construct($structure, null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsParentToNull(): void
     {
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
@@ -108,9 +99,7 @@ final class RootNodeTest extends UnitTestCase
         self::assertNull($node->_call('getParent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getChildrenReturnsChildCreatedByConstructor(): void
     {
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
@@ -135,9 +124,7 @@ final class RootNodeTest extends UnitTestCase
         self::assertSame($childName, $child->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTargetPermission(): void
     {
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
@@ -153,9 +140,7 @@ final class RootNodeTest extends UnitTestCase
         self::assertSame($targetPermission, $node->_call('getTargetPermission'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsName(): void
     {
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
@@ -167,9 +152,7 @@ final class RootNodeTest extends UnitTestCase
         self::assertSame($name, $node->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithOkStatusAndCallsOwnStatusMethods(): void
     {
         $node = $this->getAccessibleMock(
@@ -193,9 +176,7 @@ final class RootNodeTest extends UnitTestCase
         self::assertSame(ContextualFeedbackSeverity::OK, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusCallsGetChildrenStatusForStatus(): void
     {
         $node = $this->getAccessibleMock(
@@ -224,9 +205,7 @@ final class RootNodeTest extends UnitTestCase
         self::assertSame($childStatus, $statusOfChild);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAbsolutePathReturnsGivenName(): void
     {
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);

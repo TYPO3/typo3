@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
@@ -335,10 +337,8 @@ final class ColumnDefinitionAttributesTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseColumnDefinitionAttributesDataProvider
-     */
+    #[DataProvider('canParseColumnDefinitionAttributesDataProvider')]
+    #[Test]
     public function canParseColumnDefinitionAttributes(
         string $columnAttribute,
         bool $allowNull,

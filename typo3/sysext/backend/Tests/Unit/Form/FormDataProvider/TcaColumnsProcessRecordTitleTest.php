@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaColumnsProcessRecordTitleTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersLabelColumn(): void
     {
         $input = [
@@ -43,9 +42,7 @@ final class TcaColumnsProcessRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersAlternativeLabelColumn(): void
     {
         $input = [
@@ -65,9 +62,7 @@ final class TcaColumnsProcessRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersForeignLabelInInlineContext(): void
     {
         $input = [
@@ -83,9 +78,7 @@ final class TcaColumnsProcessRecordTitleTest extends UnitTestCase
         self::assertSame($expected, (new TcaColumnsProcessRecordTitle())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersSymmetricLabelInInlineContext(): void
     {
         $input = [

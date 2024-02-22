@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -33,10 +35,8 @@ final class JavaScriptModuleInstructionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider flagsAreAssignedDataProvider
-     */
+    #[DataProvider('flagsAreAssignedDataProvider')]
+    #[Test]
     public function flagsAreAssigned(int $expectation, int $flags, int ...$additionalFlags): void
     {
         $subject = new JavaScriptModuleInstruction('Test', $flags);

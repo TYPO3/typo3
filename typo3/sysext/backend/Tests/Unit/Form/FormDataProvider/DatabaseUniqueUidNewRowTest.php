@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class DatabaseUniqueUidNewRowTest extends UnitTestCase
         $this->subject = new DatabaseUniqueUidNewRow();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnSameDataIfCommandIsEdit(): void
     {
         $input = [
@@ -44,9 +43,7 @@ final class DatabaseUniqueUidNewRowTest extends UnitTestCase
         self::assertSame($input, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsGivenUidIfAlreadySet(): void
     {
         $input = [
@@ -59,9 +56,7 @@ final class DatabaseUniqueUidNewRowTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfUidIsAlreadySetButDoesNotStartWithNewKeyword(): void
     {
         $input = [
@@ -75,9 +70,7 @@ final class DatabaseUniqueUidNewRowTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUniqueId(): void
     {
         $input = [

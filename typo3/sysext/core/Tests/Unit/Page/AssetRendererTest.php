@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
@@ -42,10 +44,8 @@ final class AssetRendererTest extends UnitTestCase
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'filesDataProvider')]
+    #[Test]
     public function styleSheets(array $files, array $expectedResult, array $expectedMarkup): void
     {
         $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
@@ -57,10 +57,8 @@ final class AssetRendererTest extends UnitTestCase
         self::assertSame($expectedMarkup['css_prio'], $this->assetRenderer->renderStyleSheets(true));
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'filesDataProvider')]
+    #[Test]
     public function javaScript(array $files, array $expectedResult, array $expectedMarkup): void
     {
         $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
@@ -72,10 +70,8 @@ final class AssetRendererTest extends UnitTestCase
         self::assertSame($expectedMarkup['js_prio'], $this->assetRenderer->renderJavaScript(true));
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'inlineDataProvider')]
+    #[Test]
     public function inlineJavaScript(array $sources, array $expectedResult, array $expectedMarkup): void
     {
         $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
@@ -87,10 +83,8 @@ final class AssetRendererTest extends UnitTestCase
         self::assertSame($expectedMarkup['js_prio'], $this->assetRenderer->renderInlineJavaScript(true));
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'inlineDataProvider')]
+    #[Test]
     public function inlineStyleSheets(array $sources, array $expectedResult, array $expectedMarkup): void
     {
         $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
@@ -102,10 +96,8 @@ final class AssetRendererTest extends UnitTestCase
         self::assertSame($expectedMarkup['css_prio'], $this->assetRenderer->renderInlineStyleSheets(true));
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::renderMethodsAndEventsDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'renderMethodsAndEventsDataProvider')]
+    #[Test]
     public function beforeRenderingEvent(
         string $renderMethodName,
         bool $isInline,

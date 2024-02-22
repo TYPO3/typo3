@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
@@ -98,9 +99,7 @@ final class RepositoryTest extends UnitTestCase
         $this->repository->injectPersistenceManager($this->mockPersistenceManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function magicCallMethodAcceptsFindBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
     {
         $mockQueryResult = $this->createMock(QueryResultInterface::class);
@@ -117,9 +116,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertSame($mockQueryResult, $repository->findByFoo('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function magicCallMethodAcceptsFindOneBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
     {
         $object = new \stdClass();
@@ -139,9 +136,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertSame($object, $repository->findOneByFoo('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function magicCallMethodAcceptsCountBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
     {
         $mockQuery = $this->createMock(QueryInterface::class);
@@ -159,9 +154,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertSame(2, $repository->countByFoo('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function magicCallMethodReturnsFirstArrayKeyInFindOneBySomethingIfQueryReturnsRawResult(): void
     {
         $queryResultArray = [
@@ -176,9 +169,7 @@ final class RepositoryTest extends UnitTestCase
         self::assertSame(['foo' => 'bar'], $this->repository->findOneByFoo('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function magicCallMethodReturnsNullInFindOneBySomethingIfQueryReturnsEmptyRawResult(): void
     {
         $queryResultArray = [];

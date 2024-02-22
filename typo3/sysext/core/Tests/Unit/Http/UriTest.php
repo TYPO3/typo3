@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UriTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsAllProperties(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -46,18 +46,14 @@ final class UriTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canSerializeToStringDataProvider
-     */
+    #[DataProvider('canSerializeToStringDataProvider')]
+    #[Test]
     public function canSerializeToString(string $uri): void
     {
         self::assertEquals($uri, (string)(new Uri($uri)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withSchemeReturnsNewInstanceWithNewScheme(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -67,9 +63,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('http://user:pass@local.example.com:3001/foo?bar=baz#quz', (string)$new);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withUserInfoReturnsNewInstanceWithProvidedUser(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -79,9 +73,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('https://matthew@local.example.com:3001/foo?bar=baz#quz', (string)$new);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withUserInfoReturnsNewInstanceWithProvidedUserAndPassword(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -91,9 +83,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('https://matthew:zf2@local.example.com:3001/foo?bar=baz#quz', (string)$new);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withHostReturnsNewInstanceWithProvidedHost(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -103,9 +93,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@framework.zend.com:3001/foo?bar=baz#quz', (string)$new);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPortAndNullValueReturnsInstanceWithProvidedPort(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -124,10 +112,8 @@ final class UriTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider validPortsDataProvider
-     * @test
-     */
+    #[DataProvider('validPortsDataProvider')]
+    #[Test]
     public function withPortReturnsNewInstanceWithProvidedPort($port): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -149,10 +135,8 @@ final class UriTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidPortsDataProviderRange
-     * @test
-     */
+    #[DataProvider('invalidPortsDataProviderRange')]
+    #[Test]
     public function withPortRaisesExceptionForInvalidPortsByRange($port): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -161,36 +145,28 @@ final class UriTest extends UnitTestCase
         $uri->withPort($port);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function standardPortAndSchemeDoesNotRenderPort(): void
     {
         $subject = new Uri('http://www.example.com:80');
         self::assertEquals('http://www.example.com', (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function standardPortAndNoSchemeDoesRenderPort(): void
     {
         $subject = new Uri('www.example.com:80');
         self::assertEquals('//www.example.com:80', (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noPortAndNoSchemeDoesNotRenderPort(): void
     {
         $subject = new Uri('www.example.com');
         self::assertEquals('/www.example.com', (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathReturnsNewInstanceWithProvidedPath(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -200,9 +176,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/bar/baz?bar=baz#quz', (string)$new);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathRaisesExceptionForInvalidPathsWithQuery(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -211,9 +185,7 @@ final class UriTest extends UnitTestCase
         $uri->withPath('/bar/baz?bat=quz');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathRaisesExceptionForInvalidPathsWithFragment(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -222,9 +194,7 @@ final class UriTest extends UnitTestCase
         $uri->withPath('/bar/baz#bat');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withQueryReturnsNewInstanceWithProvidedQuery(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -234,9 +204,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('https://user:pass@local.example.com:3001/foo?baz=bat#quz', (string)$new);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withQueryRaisesExceptionForInvalidQueryStringsByFragment(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -245,9 +213,7 @@ final class UriTest extends UnitTestCase
         $uri->withQuery('baz=bat#quz');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withFragmentReturnsNewInstanceWithProvidedFragment(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -267,19 +233,15 @@ final class UriTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider authorityInfoDataProvider
-     * @test
-     */
+    #[DataProvider('authorityInfoDataProvider')]
+    #[Test]
     public function getAuthorityReturnsExpectedValues($url, $expected): void
     {
         $uri = new Uri($url);
         self::assertEquals($expected, $uri->getAuthority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canEmitOriginFormUrl(): void
     {
         $url = '/foo/bar?baz=bat';
@@ -287,9 +249,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals($url, (string)$uri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingEmptyPathOnAbsoluteUriReturnsAnEmptyPath(): void
     {
         $uri = new Uri('http://example.com/foo');
@@ -297,27 +257,21 @@ final class UriTest extends UnitTestCase
         self::assertEquals('', $new->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringRepresentationOfAbsoluteUriWithNoPathSetsAnEmptyPath(): void
     {
         $uri = new Uri('http://example.com');
         self::assertEquals('http://example.com', (string)$uri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathOnOriginFormRemainsAnEmptyPath(): void
     {
         $uri = new Uri('?foo=bar');
         self::assertEquals('', $uri->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringRepresentationOfOriginFormWithNoPathRetainsEmptyPath(): void
     {
         $uri = new Uri('?foo=bar');
@@ -337,27 +291,21 @@ final class UriTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidConstructorUrisDataProvider
-     */
+    #[DataProvider('invalidConstructorUrisDataProvider')]
     public function constructorRaisesExceptionForNonStringURI($uri): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Uri($uri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorRaisesExceptionForSeriouslyMalformedURI(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Uri('http:///www.php-fig.org/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withSchemeStripsOffDelimiter(): void
     {
         $uri = new Uri('http://example.com');
@@ -376,10 +324,8 @@ final class UriTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidSchemesDataProvider
-     * @test
-     */
+    #[DataProvider('invalidSchemesDataProvider')]
+    #[Test]
     public function constructWithUnsupportedSchemeRaisesAnException($scheme): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -387,10 +333,8 @@ final class UriTest extends UnitTestCase
         new Uri($scheme . '://example.com');
     }
 
-    /**
-     * @dataProvider invalidSchemesDataProvider
-     * @test
-     */
+    #[DataProvider('invalidSchemesDataProvider')]
+    #[Test]
     public function withSchemeUsingUnsupportedSchemeRaisesAnException($scheme): void
     {
         $uri = new Uri('http://example.com');
@@ -399,9 +343,7 @@ final class UriTest extends UnitTestCase
         $uri->withScheme($scheme);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathIsNotPrefixedWithSlashIfSetWithoutOne(): void
     {
         $uri = new Uri('http://example.com');
@@ -409,9 +351,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('foo/bar', $new->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withEmptySchemeReturnsNewInstanceWithAbsoluteUri(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
@@ -422,9 +362,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('//user:pass@local.example.com:3001/foo?bar=baz#quz', (string)$new);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathNotSlashPrefixedIsEmittedWithSlashDelimiterWhenUriIsCastToString(): void
     {
         $uri = new Uri('http://example.com');
@@ -432,9 +370,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('http://example.com/foo/bar', $new->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withQueryStripsQueryPrefixIfPresent(): void
     {
         $uri = new Uri('http://example.com');
@@ -442,9 +378,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('foo=bar', $new->getQuery());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withFragmentStripsFragmentPrefixIfPresent(): void
     {
         $uri = new Uri('http://example.com');
@@ -460,10 +394,8 @@ final class UriTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider standardSchemePortCombinationsDataProvider
-     * @test
-     */
+    #[DataProvider('standardSchemePortCombinationsDataProvider')]
+    #[Test]
     public function getAuthorityOmitsPortForStandardSchemePortCombinations($scheme, $port): void
     {
         $uri = (new Uri())
@@ -473,9 +405,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals('example.com', $uri->getAuthority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathIsProperlyEncoded(): void
     {
         $uri = (new Uri())->withPath('/foo^bar');
@@ -483,9 +413,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals($expected, $uri->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathDoesNotBecomeDoubleEncoded(): void
     {
         $uri = (new Uri())->withPath('/foo%5Ebar');
@@ -504,29 +432,23 @@ final class UriTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider queryStringsForEncodingDataProvider
-     * @test
-     */
+    #[DataProvider('queryStringsForEncodingDataProvider')]
+    #[Test]
     public function getQueryIsProperlyEncoded($query, $expected): void
     {
         $uri = (new Uri())->withQuery($query);
         self::assertEquals($expected, $uri->getQuery());
     }
 
-    /**
-     * @dataProvider queryStringsForEncodingDataProvider
-     * @test
-     */
+    #[DataProvider('queryStringsForEncodingDataProvider')]
+    #[Test]
     public function getQueryIsNotDoubleEncoded($query, $expected): void
     {
         $uri = (new Uri())->withQuery($expected);
         self::assertEquals($expected, $uri->getQuery());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFragmentIsProperlyEncoded(): void
     {
         $uri = (new Uri())->withFragment('/p^th?key^=`bar#b@z');
@@ -534,9 +456,7 @@ final class UriTest extends UnitTestCase
         self::assertEquals($expected, $uri->getFragment());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFragmentIsNotDoubleEncoded(): void
     {
         $expected = '/p%5Eth?key%5E=%60bar%23b@z';

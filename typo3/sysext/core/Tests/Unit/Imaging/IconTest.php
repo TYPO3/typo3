@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -42,41 +44,31 @@ final class IconTest extends UnitTestCase
         $this->subject = $iconFactory->getIcon($this->iconIdentifier, IconSize::SMALL, $this->overlayIdentifier, IconState::STATE_DISABLED);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderAndCastToStringReturnsTheSameCode(): void
     {
         self::assertEquals($this->subject->render(), (string)$this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIdentifierReturnsCorrectIdentifier(): void
     {
         self::assertEquals($this->iconIdentifier, $this->subject->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOverlayIdentifierReturnsCorrectIdentifier(): void
     {
         self::assertEquals($this->overlayIdentifier, $this->subject->getOverlayIcon()->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSizeIdentifierReturnsCorrectIdentifier(): void
     {
         self::assertEquals(IconSize::SMALL->value, $this->subject->getSize());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStateReturnsCorrectIdentifier(): void
     {
         self::assertSame($this->subject->getState(), IconState::STATE_DISABLED);
@@ -110,10 +102,8 @@ final class IconTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider setSizeSetsExpectedValuesDataProvider
-     */
+    #[DataProvider('setSizeSetsExpectedValuesDataProvider')]
+    #[Test]
     public function setSizeSetsExpectedValues(IconSize $size, array $expectedDimensions): void
     {
         $icon = new Icon();

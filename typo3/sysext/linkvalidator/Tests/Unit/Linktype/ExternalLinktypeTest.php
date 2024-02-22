@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Linkvalidator\Tests\Unit\Linktype;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -42,9 +44,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         return $languageServiceMock;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkLinkWithExternalUrlNotFoundReturnsFalse(): void
     {
         $response = new Response(404);
@@ -68,9 +68,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkLinkWithExternalUrlNotFoundResultsNotFoundErrorType(): void
     {
         $response = new Response(404);
@@ -172,10 +170,8 @@ final class ExternalLinktypeTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider preprocessUrlsDataProvider
-     */
+    #[DataProvider('preprocessUrlsDataProvider')]
+    #[Test]
     public function preprocessUrlReturnsCorrectString(string $inputUrl, $expectedResult): void
     {
         $subject = new ExternalLinktype(new RequestFactory(new GuzzleClientFactory()));
@@ -184,9 +180,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         self::assertEquals($result, $expectedResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAdditionalConfigMergesHeaders(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
@@ -213,8 +207,8 @@ final class ExternalLinktypeTest extends UnitTestCase
     /**
      * If the timeout is not set via TSconfig, core $GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'] should
      * be used. Which is the case if timeout is not passed to the request() function.
-     * @test
      */
+    #[Test]
     public function requestWithNoTimeoutIsCalledIfTimeoutNotSetByTsConfig(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
@@ -238,9 +232,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAdditionalConfigOverwritesUserAgent(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
@@ -264,9 +256,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAdditionalConfigAppendsAgentUrlIfConfigured(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
@@ -290,9 +280,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAdditionalConfigAppendsEmailIfConfigured(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
@@ -316,9 +304,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAdditionalConfigAppendsEmailFromGlobalsIfConfigured(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
@@ -342,9 +328,7 @@ final class ExternalLinktypeTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAdditionalConfigSetsRangeAndMethod(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Unit\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterRecordPublishedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $table = 'some_table';

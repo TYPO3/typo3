@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 
 final class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsNoAccessGroupWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -36,9 +35,7 @@ final class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('(("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\'))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsGroupWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

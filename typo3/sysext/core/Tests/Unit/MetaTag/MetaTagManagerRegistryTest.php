@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\MetaTag\GenericMetaTagManager;
 use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
@@ -28,9 +30,7 @@ final class MetaTagManagerRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkRegisterNonExistingManagerDoesntThrowErrorWhenFetchingManagers(): void
     {
         $metaTagManagerRegistry = new MetaTagManagerRegistry();
@@ -39,10 +39,8 @@ final class MetaTagManagerRegistryTest extends UnitTestCase
         $metaTagManagerRegistry->getAllManagers();
     }
 
-    /**
-     * @dataProvider registerMetaTagManagersProvider
-     * @test
-     */
+    #[DataProvider('registerMetaTagManagersProvider')]
+    #[Test]
     public function checkRegisterExistingManagerDoRegister(array $managersToRegister, array $expected): void
     {
         $metaTagManagerRegistry = new MetaTagManagerRegistry();
@@ -66,9 +64,7 @@ final class MetaTagManagerRegistryTest extends UnitTestCase
         self::assertEquals($expected, $managers);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkConditionRaceResultsIntoException(): void
     {
         $input = [

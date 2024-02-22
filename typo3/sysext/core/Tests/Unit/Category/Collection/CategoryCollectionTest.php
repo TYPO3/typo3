@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CategoryCollectionTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function missingTableNameArgumentForObjectCategoryCollection(): void
     {
         $this->expectException(\RuntimeException::class);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -42,9 +44,7 @@ final class LocalesTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidLanguageKeyAlsoDetectsRegionSpecificKeys(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] = [
@@ -66,9 +66,7 @@ final class LocalesTest extends UnitTestCase
         self::assertTrue($locales->isValidLanguageKey('default'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLocaleDependenciesResolvesAutomaticAndDefinedDependencies(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] = [
@@ -121,10 +119,8 @@ final class LocalesTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider browserLanguageDetectionWorksDataProvider
-     */
+    #[DataProvider('browserLanguageDetectionWorksDataProvider')]
+    #[Test]
     public function browserLanguageDetectionWorks(string $acceptLanguageHeader, string $expected): void
     {
         $detectedLanguage = (new Locales())->getPreferredClientLanguage(
@@ -133,9 +129,7 @@ final class LocalesTest extends UnitTestCase
         self::assertSame($expected, $detectedLanguage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSystemLocaleFromSiteLanguageWithoutLocaleDoesNotSetLocale(): void
     {
         $site = $this->createSiteWithDefaultLanguage('');
@@ -146,9 +140,7 @@ final class LocalesTest extends UnitTestCase
         self::assertEquals($this->originalLocale, $currentLocale);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSystemLocaleFromSiteLanguageWithProperLocaleSetsLocale(): void
     {
         $locale = 'en_US';

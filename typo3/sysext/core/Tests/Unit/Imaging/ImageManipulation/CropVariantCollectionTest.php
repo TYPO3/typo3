@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\ImageManipulation;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariant;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -68,9 +69,7 @@ final class CropVariantCollectionTest extends UnitTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromJsonWorks(): void
     {
         $cropVariant1 = self::$tca;
@@ -92,9 +91,7 @@ final class CropVariantCollectionTest extends UnitTestCase
         $assertSameValues(['default' => $cropVariant1, 'Second' => $cropVariant2], $cropVariantCollection->asArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function duplicateIdThrowsException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -103,17 +100,13 @@ final class CropVariantCollectionTest extends UnitTestCase
         new CropVariantCollection([$cropVariant1, $cropVariant2]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createEmptyWorks(): void
     {
         self::assertTrue(CropVariantCollection::create('')->getCropArea()->isEmpty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function castToStringReturnsJsonArrayOnEmptyInput(): void
     {
         $variants = new CropVariantCollection([]);

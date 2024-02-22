@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Event;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -45,9 +47,7 @@ final class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wizardItemsModifyTest(): void
     {
         self::assertCount(3, $this->subject->getWizardItems());
@@ -214,10 +214,8 @@ final class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addWizardItemTestDataProvider
-     */
+    #[DataProvider('addWizardItemTestDataProvider')]
+    #[Test]
     public function addWizardItemTest(string $identifier, array $configuration, array $position, array $expected): void
     {
         $this->subject->setWizardItem($identifier, $configuration, $position);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Security;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -35,10 +37,9 @@ final class FileNameValidatorTest extends TestCase
 
     /**
      * Tests whether validator detects files with nul character without file deny pattern.
-     *
-     * @test
-     * @dataProvider deniedFilesWithoutDenyPatternDataProvider
      */
+    #[DataProvider('deniedFilesWithoutDenyPatternDataProvider')]
+    #[Test]
     public function verifyNulCharacterFilesAgainstPatternWithoutFileDenyPattern(string $deniedFile): void
     {
         $subject = new FileNameValidator('');
@@ -113,10 +114,9 @@ final class FileNameValidatorTest extends TestCase
 
     /**
      * Tests whether the basic FILE_DENY_PATTERN detects denied files.
-     *
-     * @test
-     * @dataProvider deniedFilesWithDefaultDenyPatternDataProvider
      */
+    #[DataProvider('deniedFilesWithDefaultDenyPatternDataProvider')]
+    #[Test]
     public function isValidDetectsNotAllowedFiles(string $deniedFile): void
     {
         $subject = new FileNameValidator();
@@ -132,10 +132,8 @@ final class FileNameValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider insecureFilesDataProvider
-     */
+    #[DataProvider('insecureFilesDataProvider')]
+    #[Test]
     public function isValidAcceptsNotAllowedFilesDueToInsecureSetting(string $fileName): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = '\\.phc$';
@@ -158,19 +156,16 @@ final class FileNameValidatorTest extends TestCase
 
     /**
      * Tests whether the basic file deny pattern accepts allowed files.
-     *
-     * @test
-     * @dataProvider allowedFilesDataProvider
      */
+    #[DataProvider('allowedFilesDataProvider')]
+    #[Test]
     public function isValidAcceptAllowedFiles(string $allowedFile): void
     {
         $subject = new FileNameValidator();
         self::assertTrue($subject->isValid($allowedFile));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isCustomDenyPatternConfigured(): void
     {
         $subject = new FileNameValidator('nothing-really');
@@ -185,9 +180,7 @@ final class FileNameValidatorTest extends TestCase
         self::assertFalse($subject->customFileDenyPatternConfigured());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customFileDenyPatternFindsMissingImportantParts(): void
     {
         $subject = new FileNameValidator('\\.php$|.php8$');
@@ -213,10 +206,9 @@ final class FileNameValidatorTest extends TestCase
 
     /**
      * Tests whether an accordant PHP extension is denied.
-     *
-     * @test
-     * @dataProvider phpExtensionDataProvider
      */
+    #[DataProvider('phpExtensionDataProvider')]
+    #[Test]
     public function defaultFileDenyPatternMatchesPhpExtension(string $fileName): void
     {
         self::assertGreaterThan(0, preg_match('/' . FileNameValidator::DEFAULT_FILE_DENY_PATTERN . '/', $fileName), $fileName);
@@ -224,10 +216,9 @@ final class FileNameValidatorTest extends TestCase
 
     /**
      * Tests whether an accordant PHP extension is denied.
-     *
-     * @test
-     * @dataProvider phpExtensionDataProvider
      */
+    #[DataProvider('phpExtensionDataProvider')]
+    #[Test]
     public function invalidPhpExtensionIsDetected(string $fileName): void
     {
         $subject = new FileNameValidator();

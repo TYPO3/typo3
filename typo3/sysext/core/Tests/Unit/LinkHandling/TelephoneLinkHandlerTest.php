@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\TelephoneLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -79,20 +81,16 @@ final class TelephoneLinkHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function resolveReturnsSplitParameters(array $input, array $expected): void
     {
         $subject = new TelephoneLinkHandler();
         self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
-    /**
-     * @test
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifier(array $input, array $parameters, string $expected): void
     {
         $subject = new TelephoneLinkHandler();

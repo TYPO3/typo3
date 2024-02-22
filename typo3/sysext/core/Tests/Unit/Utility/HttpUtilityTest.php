@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -25,10 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class HttpUtilityTest extends UnitTestCase
 {
-    /**
-     * @dataProvider isUrlBuiltCorrectlyDataProvider
-     * @test
-     */
+    #[DataProvider('isUrlBuiltCorrectlyDataProvider')]
+    #[Test]
     public function isUrlBuiltCorrectly(array $urlParts, string $expected): void
     {
         $url = HttpUtility::buildUrl($urlParts);
@@ -76,10 +76,8 @@ final class HttpUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider queryStringDataProvider
-     */
+    #[DataProvider('queryStringDataProvider')]
+    #[Test]
     public function buildQueryStringBuildsValidParameterString(string $name, array $input, string $expected): void
     {
         if ($name === '') {
@@ -89,9 +87,7 @@ final class HttpUtilityTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildQueryStringCanSkipEmptyParameters(): void
     {
         $input = ['one' => '√', ''];
@@ -99,9 +95,7 @@ final class HttpUtilityTest extends UnitTestCase
         self::assertSame($expected, HttpUtility::buildQueryString(['foo' => $input], '', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildQueryStringCanUrlEncodeKeyNames(): void
     {
         $input = ['one' => '√', ''];
@@ -109,9 +103,7 @@ final class HttpUtilityTest extends UnitTestCase
         self::assertSame($expected, HttpUtility::buildQueryString(['foo' => $input]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildQueryStringCanUrlEncodeKeyNamesMultidimensional(): void
     {
         $input = ['one' => ['two' => ['three' => '√']], ''];
@@ -119,9 +111,7 @@ final class HttpUtilityTest extends UnitTestCase
         self::assertSame($expected, HttpUtility::buildQueryString(['foo' => $input]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildQueryStringSkipsLeadingCharacterOnEmptyParameters(): void
     {
         $input = [];
@@ -129,9 +119,7 @@ final class HttpUtilityTest extends UnitTestCase
         self::assertSame($expected, HttpUtility::buildQueryString($input, '?', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildQueryStringSkipsLeadingCharacterOnCleanedEmptyParameters(): void
     {
         $input = ['one' => ''];

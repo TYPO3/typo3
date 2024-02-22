@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -257,10 +259,8 @@ final class InlineStackProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider structureStringIsParsedDataProvider
-     * @test
-     */
+    #[DataProvider('structureStringIsParsedDataProvider')]
+    #[Test]
     public function initializeByParsingDomObjectIdStringParsesStructureString(string $string, array $expectedInlineStructure, array $_): void
     {
         $subject = $this->getAccessibleMock(InlineStackProcessor::class, null);
@@ -269,10 +269,8 @@ final class InlineStackProcessorTest extends UnitTestCase
         self::assertEquals($expectedInlineStructure, $structure);
     }
 
-    /**
-     * @dataProvider structureStringIsParsedDataProvider
-     * @test
-     */
+    #[DataProvider('structureStringIsParsedDataProvider')]
+    #[Test]
     public function getCurrentStructureFormPrefixReturnsExpectedStringAfterInitializationByStructureString(string $string, array $_, array $expectedFormName): void
     {
         $subject = new InlineStackProcessor();
@@ -280,10 +278,8 @@ final class InlineStackProcessorTest extends UnitTestCase
         self::assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
     }
 
-    /**
-     * @dataProvider structureStringIsParsedDataProvider
-     * @test
-     */
+    #[DataProvider('structureStringIsParsedDataProvider')]
+    #[Test]
     public function getCurrentStructureDomObjectIdPrefixReturnsExpectedStringAfterInitializationByStructureString(string $string, array $_, array $expectedFormName): void
     {
         $subject = new InlineStackProcessor();

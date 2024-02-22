@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\DashboardPreset;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
@@ -35,9 +36,7 @@ final class DashboardPresetRegistryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withoutRegisteredPresetsOnlyFallbackPresetsIsReturned(): void
     {
         $presets = $this->subject->getDashboardPresets();
@@ -47,9 +46,7 @@ final class DashboardPresetRegistryTest extends UnitTestCase
         self::assertInstanceOf(DashboardPreset::class, reset($presets));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWidgetsMethodReturnsDashboardPresetsObjects(): void
     {
         $dashboardPreset1 = new DashboardPreset('identifier1', 'title1', 'description1');
@@ -63,9 +60,7 @@ final class DashboardPresetRegistryTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dashboardPresetsGetRegistered(): void
     {
         // If no dashboard preset is registered, it will return a fallback preset

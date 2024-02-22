@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http\Security;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Security\InvalidReferrerException;
@@ -109,10 +111,9 @@ final class ReferrerEnforcerTest extends UnitTestCase
 
     /**
      * @param string[]|null $options
-     *
-     * @test
-     * @dataProvider validReferrerIsHandledDataProvider
      */
+    #[DataProvider('validReferrerIsHandledDataProvider')]
+    #[Test]
     public function validReferrerIsHandled(string $requestUri, string $referrer, ?array $options, ?string $expectedResponse): void
     {
         $subject = $this->buildSubject($requestUri, $referrer);
@@ -153,9 +154,9 @@ final class ReferrerEnforcerTest extends UnitTestCase
 
     /**
      * @param string[]|null $options
-     * @test
-     * @dataProvider invalidReferrerIsHandledDataProvider
      */
+    #[DataProvider('invalidReferrerIsHandledDataProvider')]
+    #[Test]
     public function invalidReferrerIsHandled(string $requestUri, string $referrer, ?array $options): void
     {
         $this->expectException(InvalidReferrerException::class);
@@ -164,9 +165,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
         $subject->handle($options);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function missingReferrerIsHandled(): void
     {
         $this->expectException(MissingReferrerException::class);
@@ -178,9 +177,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
         $subject->handle();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonceIsAppliedToResponse(): void
     {
         $nonce = new ConsumableNonce();

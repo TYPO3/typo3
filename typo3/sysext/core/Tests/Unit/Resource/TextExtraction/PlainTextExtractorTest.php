@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class PlainTextExtractorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canExtractTextReturnsTrueForPlainTextFiles(): void
     {
         $plainTextExtractor = new PlainTextExtractor();
@@ -39,9 +38,7 @@ final class PlainTextExtractorTest extends UnitTestCase
         self::assertTrue($plainTextExtractor->canExtractText($fileResourceMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canExtractTextReturnsFalseForNonPlainTextFiles(): void
     {
         $plainTextExtractor = new PlainTextExtractor();

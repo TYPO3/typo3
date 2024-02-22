@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
@@ -82,10 +84,8 @@ final class TreeDataProviderFactoryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidConfigurationDataProvider
-     */
+    #[DataProvider('invalidConfigurationDataProvider')]
+    #[Test]
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration, int $expectedExceptionCode): void
     {
         if (isset($tcaConfiguration['type']) && $tcaConfiguration['type'] !== 'folder' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
@@ -99,9 +99,7 @@ final class TreeDataProviderFactoryTest extends UnitTestCase
         TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configuredDataProviderClassIsInstantiated(): void
     {
         $dataProviderMockClassName = TreeDataProviderFixture::class;
@@ -116,9 +114,7 @@ final class TreeDataProviderFactoryTest extends UnitTestCase
         self::assertInstanceOf($dataProviderMockClassName, $dataProvider);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configuredDataProviderClassIsInstantiatedWithTcaConfigurationInConstructor(): void
     {
         $dataProviderMockClassName = TreeDataProviderWithConfigurationFixture::class;

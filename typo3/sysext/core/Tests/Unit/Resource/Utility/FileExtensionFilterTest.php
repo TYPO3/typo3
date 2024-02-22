@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -27,9 +29,7 @@ final class FileExtensionFilterTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function areInlineChildrenFilteredWithInvalidParameters(): void
     {
         $dataHandlerMock = $this->createMock(DataHandler::class);
@@ -61,10 +61,8 @@ final class FileExtensionFilterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider
-     */
+    #[DataProvider('extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider')]
+    #[Test]
     public function extensionFilterIgnoresCaseInAllowedExtensionCheck(
         string $fileExtension,
         string $allowedExtensions,

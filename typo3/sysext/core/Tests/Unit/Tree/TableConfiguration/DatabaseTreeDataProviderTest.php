@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseTreeDataProviderTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function loadTreeDataLevelMaximumSetToZeroWorks(): void
     {
         $subject = $this->getAccessibleMock(DatabaseTreeDataProvider::class, ['getRelatedRecords', 'getStartingPoints', 'getChildrenOf'], [], '', false);
@@ -37,9 +36,7 @@ final class DatabaseTreeDataProviderTest extends UnitTestCase
         $subject->_call('loadTreeData');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadTreeDataLevelMaximumSetToOneWorks(): void
     {
         $subject = $this->getAccessibleMock(DatabaseTreeDataProvider::class, ['getRelatedRecords', 'getStartingPoints', 'getChildrenOf'], [], '', false);

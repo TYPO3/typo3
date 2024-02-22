@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class UnitDeprecatedDummyTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function dummyTest(): void
     {
         self::assertTrue(true);

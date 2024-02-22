@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtensionConfigurationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getWithEmptyPathReturnsEntireExtensionConfiguration(): void
     {
         $extConf = [
@@ -39,9 +38,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
         self::assertSame((new ExtensionConfiguration())->get('someExtension'), $extConf);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWithPathReturnsGivenValue(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = [
@@ -53,9 +50,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
         self::assertSame((new ExtensionConfiguration())->get('someExtension', 'aFeature'), 'iAmEnabled');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWithPathReturnsGivenPathSegment(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = [
@@ -67,9 +62,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
         self::assertSame((new ExtensionConfiguration())->get('someExtension', 'aFlagCategory'), ['someFlag' => 'foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionWithEmptyExtension(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -77,9 +70,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
         (new ExtensionConfiguration())->set('');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRemovesFullExtensionConfiguration(): void
     {
         $configurationManagerMock = $this->createMock(ConfigurationManager::class);
@@ -92,9 +83,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
         self::assertFalse(isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setWritesFullExtensionConfig(): void
     {
         $value = ['bar' => 'baz'];

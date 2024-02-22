@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class KauderwelschServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getWortReturnsWord(): void
     {
         self::assertEquals('lipsum', (new KauderwelschService())->getWord());

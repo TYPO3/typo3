@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteProcessorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function siteIsRetrieved(): void
     {
         $expectedName = 'currentSite';
@@ -43,9 +42,7 @@ final class SiteProcessorTest extends UnitTestCase
         self::assertEquals($site, $processedData[$expectedName]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullIsProvidedIfSiteCouldNotBeRetrieved(): void
     {
         $expectedName = 'currentSite';

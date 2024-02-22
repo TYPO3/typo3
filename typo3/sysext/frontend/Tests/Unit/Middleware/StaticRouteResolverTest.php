@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -45,9 +46,7 @@ final class StaticRouteResolverTest extends UnitTestCase
         };
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidStaticRouteDoesNotWork(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();

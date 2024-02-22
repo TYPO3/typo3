@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
@@ -56,9 +58,7 @@ final class FilePathSanitizerTest extends UnitTestCase
         $this->testFilesToDelete[] = $fakePublicDir . '/index.php';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryingToResolvePrivateResourcesFromComposerPackagesThrowsException(): void
     {
         $this->simulateWebRequestInComposerMode();
@@ -67,9 +67,7 @@ final class FilePathSanitizerTest extends UnitTestCase
         $subject->sanitize('EXT:frontend/Resources/Private/Templates/MainPage.html');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingSecondArgumentToFalseIsNotAllowed(): void
     {
         $this->expectException(\BadMethodCallException::class);
@@ -118,10 +116,8 @@ final class FilePathSanitizerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider publicAssetsInComposerModeResolvedCorrectlyDataProvider
-     */
+    #[DataProvider('publicAssetsInComposerModeResolvedCorrectlyDataProvider')]
+    #[Test]
     public function publicAssetsInComposerModeResolvedCorrectly(string $givenPathOrUrl, string $expectedPathOrUrl, ?bool $allowExtensionPath = null): void
     {
         $this->simulateWebRequestInComposerMode();
@@ -171,19 +167,15 @@ final class FilePathSanitizerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeCorrectlyResolvesPathsAndUrlsDataProvider
-     */
+    #[DataProvider('sanitizeCorrectlyResolvesPathsAndUrlsDataProvider')]
+    #[Test]
     public function sanitizeCorrectlyResolvesPathsAndUrls(string $givenPathOrUrl, string $expectedPathOrUrl, ?bool $allowExtensionPath = null): void
     {
         $subject = new FilePathSanitizer();
         self::assertSame($expectedPathOrUrl, $subject->sanitize($givenPathOrUrl, $allowExtensionPath));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeFailsIfDirectoryGiven(): void
     {
         $this->expectException(FileDoesNotExistException::class);
@@ -191,18 +183,14 @@ final class FilePathSanitizerTest extends UnitTestCase
         $subject->sanitize(__DIR__);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeThrowsExceptionWithFileNameContainingOnlySpaces(): void
     {
         self::expectException(InvalidFileNameException::class);
         (new FilePathSanitizer())->sanitize('  ');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeThrowsExceptionWithInvalidFileName(): void
     {
         self::expectException(InvalidPathException::class);

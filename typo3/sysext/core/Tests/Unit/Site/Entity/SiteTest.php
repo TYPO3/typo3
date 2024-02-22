@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -64,10 +66,8 @@ final class SiteTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getBaseReturnsProperUriDataProvider
-     */
+    #[DataProvider('getBaseReturnsProperUriDataProvider')]
+    #[Test]
     public function getBaseReturnsProperUri($input, $expected): void
     {
         $subject = new Site('all-your-base-belongs-to-us', 13, [
@@ -122,10 +122,9 @@ final class SiteTest extends UnitTestCase
     /**
      * This test shows that the a base from a site language is properly "inheriting" the base
      * from a site if it isn't absolute.
-     *
-     * @test
-     * @dataProvider getBaseForSiteLanguageReturnsProperUriDataProvider
      */
+    #[DataProvider('getBaseForSiteLanguageReturnsProperUriDataProvider')]
+    #[Test]
     public function getBaseForSiteLanguageReturnsProperUri($siteBase, $languageBase, $expected): void
     {
         $subject = new Site('all-of-base', 13, [
@@ -141,9 +140,7 @@ final class SiteTest extends UnitTestCase
         self::assertEquals(new Uri($expected), $subject->getLanguageById(0)->getBase());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getErrorHandlerReturnsConfiguredErrorHandler(): void
     {
         $subject = new Site('aint-misbehaving', 13, [
@@ -205,9 +202,7 @@ final class SiteTest extends UnitTestCase
         self::assertInstanceOf(PageContentErrorHandler::class, $subject->getErrorHandler(125));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getErrorHandlerThrowsExceptionOnInvalidErrorHandler(): void
     {
         $this->expectException(InvalidPageErrorHandlerException::class);
@@ -226,9 +221,7 @@ final class SiteTest extends UnitTestCase
         $subject->getErrorHandler(404);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getErrorHandlerThrowsExceptionWhenNoErrorHandlerIsConfigured(): void
     {
         $this->expectException(PageErrorHandlerNotConfiguredException::class);
@@ -238,9 +231,7 @@ final class SiteTest extends UnitTestCase
         $subject->getErrorHandler(404);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getErrorHandlerThrowsExceptionWhenNoErrorHandlerForStatusCodeIsConfigured(): void
     {
         $this->expectException(PageErrorHandlerNotConfiguredException::class);
@@ -258,9 +249,7 @@ final class SiteTest extends UnitTestCase
         $subject->getErrorHandler(404);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getErrorHandlerUsesFallbackWhenNoErrorHandlerForStatusCodeIsConfigured(): void
     {
         $app = new class () extends Application {

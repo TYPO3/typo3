@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -60,10 +62,10 @@ final class SiteLanguageTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider languageFallbackIdConversionDataProvider
-     * @test
      * @param string|array|null $input
      */
+    #[DataProvider('languageFallbackIdConversionDataProvider')]
+    #[Test]
     public function languageFallbackIdConversion($input, array $expected): void
     {
         $configuration = [
@@ -75,9 +77,7 @@ final class SiteLanguageTest extends UnitTestCase
         self::assertSame($expected, $subject->getFallbackLanguageIds());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsProperOverlaidData(): void
     {
         $configuration = [
@@ -150,10 +150,8 @@ final class SiteLanguageTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider typo3LanguageAndLocaleDataProvider
-     * @test
-     */
+    #[DataProvider('typo3LanguageAndLocaleDataProvider')]
+    #[Test]
     public function typo3LanguageIsEitherSetOrProperlyDerivedFromLocale(string $locale, array $configuration, $expected): void
     {
         $language = new SiteLanguage(0, $locale, new Uri('/'), $configuration);

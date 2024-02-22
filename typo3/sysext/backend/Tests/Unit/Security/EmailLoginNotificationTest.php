@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Security;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -28,9 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class EmailLoginNotificationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAtLoginSendsAnEmailIfUserHasValidEmailAndOptin(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -52,9 +51,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAtLoginDoesNotSendAnEmailIfUserHasNoOptin(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -76,9 +73,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         // no additional assertion here, as the test would fail due to missing mail mocking if it actually tried to send an email
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAtLoginDoesNotSendAnEmailIfUserHasInvalidEmail(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -100,9 +95,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         // no additional assertion here, as the test would fail due to missing mail mocking if it actually tried to send an email
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAtLoginSendsEmailToCustomEmailIfAdminWarningIsEnabled(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -126,9 +119,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAtLoginSendsEmailToCustomEmailIfRegularWarningIsEnabled(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -152,9 +143,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAtLoginSendsEmailToCustomEmailIfRegularWarningIsEnabledAndNoAdminIsLoggingIn(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -178,9 +167,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAtLoginSendsNoEmailIfAdminWarningIsEnabledAndNoAdminIsLoggingIn(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';

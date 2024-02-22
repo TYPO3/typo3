@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LocaleTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function localeWithJustLanguageCodeSanitizesIncomingValuesProperly(): void
     {
         $subject = new Locale('en');
@@ -63,9 +62,7 @@ final class LocaleTest extends UnitTestCase
         self::assertEquals('en', (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localeWithLanguageAndScriptCodeSanitizesIncomingValuesProperly(): void
     {
         $subject = new Locale('zh_HANS');
@@ -75,9 +72,7 @@ final class LocaleTest extends UnitTestCase
         self::assertEquals('zh-Hans', (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localeWithLanguageAndScriptCodeAndCountryCodeSanitizesIncomingValuesProperly(): void
     {
         $subject = new Locale('zh_HANS_CN');
@@ -87,9 +82,7 @@ final class LocaleTest extends UnitTestCase
         self::assertEquals('zh-Hans-CN', (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function variousCombinationsOfLanguageAndCountryCodeReturnsSanitizedValues(): void
     {
         $subject = new Locale('fr_CA');
@@ -104,9 +97,7 @@ final class LocaleTest extends UnitTestCase
         self::assertEquals('de-AT', (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dependenciesAreSetAndRetrievedCorrectly(): void
     {
         $subject = new Locale('fr_CA', ['fr', 'en']);

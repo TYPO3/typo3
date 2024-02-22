@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\FolderLinkHandler;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -61,10 +63,9 @@ final class FolderLinkHandlerTest extends UnitTestCase
 
     /**
      * Helpful to know in which if() clause the stuff gets in
-     *
-     * @test
-     * @dataProvider resolveParametersForFilesDataProvider
      */
+    #[DataProvider('resolveParametersForFilesDataProvider')]
+    #[Test]
     public function resolveFileReferencesToSplitParameters(array $input, array $expected): void
     {
         $storage = $this->getMockBuilder(ResourceStorage::class)
@@ -89,10 +90,9 @@ final class FolderLinkHandlerTest extends UnitTestCase
 
     /**
      * Helpful to know in which if() clause the stuff gets in
-     *
-     * @test
-     * @dataProvider resolveParametersForFilesDataProvider
      */
+    #[DataProvider('resolveParametersForFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifierForFiles(array $input, array $parameters, string $expected): void
     {
         $folderObject = $this->getMockBuilder(Folder::class)

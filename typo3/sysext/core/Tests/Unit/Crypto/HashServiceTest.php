@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Exception\Crypto\EmptyAdditionalSecretException;
 use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
@@ -33,9 +34,7 @@ final class HashServiceTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hmacThrowsExceptionIfEmptyAdditionalSecretProvided(): void
     {
         $this->expectException(EmptyAdditionalSecretException::class);
@@ -44,18 +43,14 @@ final class HashServiceTest extends UnitTestCase
         $this->subject->hmac('message', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hmacReturnsHashOfProperLength(): void
     {
         $hmac = $this->subject->hmac('message', 'additional-secret');
         self::assertSame(strlen($hmac), 40);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hmacReturnsEqualHashesForEqualInput(): void
     {
         $additionalSecret = 'additional-secret';
@@ -64,9 +59,7 @@ final class HashServiceTest extends UnitTestCase
         self::assertSame($this->subject->hmac($string1, $additionalSecret), $this->subject->hmac($string2, $additionalSecret));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hmacReturnsNoEqualHashesForNonEqualInput(): void
     {
         $additionalSecret = 'additional-secret';
@@ -75,9 +68,7 @@ final class HashServiceTest extends UnitTestCase
         self::assertNotEquals($this->subject->hmac($string1, $additionalSecret), $this->subject->hmac($string2, $additionalSecret));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatedHmacCanBeValidatedAgain(): void
     {
         $string = 'some input';
@@ -86,9 +77,7 @@ final class HashServiceTest extends UnitTestCase
         self::assertTrue($this->subject->validateHmac($string, $additionalSecret, $hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatedHmacValidationFailsIfHashIsInvalid(): void
     {
         $string = 'some input';
@@ -97,9 +86,7 @@ final class HashServiceTest extends UnitTestCase
         self::assertFalse($this->subject->validateHmac($string, $additionalSecret, $hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendHmacAppendsHmacToGivenString(): void
     {
         $string = 'This is some arbitrary string ';
@@ -108,9 +95,7 @@ final class HashServiceTest extends UnitTestCase
         self::assertSame($string, substr($hashedString, 0, -40));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort(): void
     {
         $additionalSecret = 'additional-secret';
@@ -119,9 +104,7 @@ final class HashServiceTest extends UnitTestCase
         $this->subject->validateAndStripHmac('string with less than 40 characters', $additionalSecret);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended(): void
     {
         $additionalSecret = 'additional-secret';
@@ -130,9 +113,7 @@ final class HashServiceTest extends UnitTestCase
         $this->subject->validateAndStripHmac('string with exactly a length 40 of chars', $additionalSecret);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid(): void
     {
         $additionalSecret = 'additional-secret';
@@ -141,9 +122,7 @@ final class HashServiceTest extends UnitTestCase
         $this->subject->validateAndStripHmac('some Stringac43682075d36592d4cb320e69ff0aa515886eab', $additionalSecret);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacReturnsTheStringWithoutHmac(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'Testing';

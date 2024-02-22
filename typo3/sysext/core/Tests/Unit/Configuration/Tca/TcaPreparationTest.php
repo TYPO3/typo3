@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Tca;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaPreparationTest extends UnitTestCase
 {
-    /**
-     * @test
-     * @dataProvider configureCategoryRelationsDataProvider
-     */
+    #[DataProvider('configureCategoryRelationsDataProvider')]
+    #[Test]
     public function configureCategoryRelations(array $input, array $expected): void
     {
         self::assertEquals($expected, (new TcaPreparation())->prepare($input));
@@ -240,10 +240,8 @@ final class TcaPreparationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider
-     */
+    #[DataProvider('configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider')]
+    #[Test]
     public function configureCategoryRelationsThrowsExceptionOnInvalidMaxitems(array $input, int $exceptionCode): void
     {
         $this->expectExceptionCode($exceptionCode);
@@ -318,9 +316,7 @@ final class TcaPreparationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configureCategoryRelationsThrowsExceptionOnInvalidRelationship(): void
     {
         $this->expectExceptionCode(1627898896);
@@ -339,9 +335,7 @@ final class TcaPreparationTest extends UnitTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareFileExtensionsReplacesPlaceholders(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = 'jpg,png';
@@ -352,9 +346,7 @@ final class TcaPreparationTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareFileExtensionsRemovesDuplicates(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = 'jpg,png';

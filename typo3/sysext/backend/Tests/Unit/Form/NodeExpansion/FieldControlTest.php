@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\NodeExpansion;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldControl;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FieldControlTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderMergesResultOfSingleControls(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
@@ -54,9 +56,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function echoExceptionWebEscapesExceptionMessage(): void
     {
         $typo3InformationMock = $this->createMock(Typo3Information::class);
@@ -72,9 +72,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         self::assertStringNotContainsString($message, $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function echoExceptionWebEscapesExceptionTitle(): void
     {
         $typo3InformationMock = $this->createMock(Typo3Information::class);
@@ -129,10 +127,8 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider exampleUrlsForTokenAnonymization
-     */
+    #[DataProvider('exampleUrlsForTokenAnonymization')]
+    #[Test]
     public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl): void
     {
         $typo3InformationMock = $this->createMock(Typo3Information::class);

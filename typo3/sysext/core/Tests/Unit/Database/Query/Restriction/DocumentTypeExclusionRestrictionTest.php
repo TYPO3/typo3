@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 
 final class DocumentTypeExclusionRestrictionTest extends AbstractRestrictionTestCase
@@ -39,11 +41,8 @@ final class DocumentTypeExclusionRestrictionTest extends AbstractRestrictionTest
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider buildRestrictionsAddsDoktypeWhereClauseDataProvider
-     */
+    #[DataProvider('buildRestrictionsAddsDoktypeWhereClauseDataProvider')]
+    #[Test]
     public function buildRestrictionsAddsDoktypeWhereClause($excludedDocumentTypes, string $expected): void
     {
         $subject = new DocumentTypeExclusionRestriction($excludedDocumentTypes);

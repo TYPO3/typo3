@@ -22,6 +22,8 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -41,10 +43,10 @@ final class PlatformInformationTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param class-string<DoctrineAbstractPlatform> $platform
-     * @dataProvider platformDataProvider
      */
+    #[DataProvider('platformDataProvider')]
+    #[Test]
     public function maxBindParameters(string $platform): void
     {
         $platformMock = $this->createMock($platform);
@@ -52,19 +54,17 @@ final class PlatformInformationTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param class-string<DoctrineAbstractPlatform> $platform
-     * @dataProvider platformDataProvider
      */
+    #[DataProvider('platformDataProvider')]
+    #[Test]
     public function maxIdentifierLength(string $platform): void
     {
         $platformMock = $this->createMock($platform);
         self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platformMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function maxBindParametersWithUnknownPlatform(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -73,9 +73,7 @@ final class PlatformInformationTest extends UnitTestCase
         self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platformMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function maxIdentifierLengthWithUnknownPlatform(): void
     {
         $this->expectException(\RuntimeException::class);

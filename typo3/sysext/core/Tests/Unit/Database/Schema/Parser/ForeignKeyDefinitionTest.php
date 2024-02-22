@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
@@ -65,10 +67,8 @@ final class ForeignKeyDefinitionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseForeignKeyDefinitionDataProvider
-     */
+    #[DataProvider('canParseForeignKeyDefinitionDataProvider')]
+    #[Test]
     public function canParseForeignKeyDefinition(
         string $indexDefinition,
         string $indexName,

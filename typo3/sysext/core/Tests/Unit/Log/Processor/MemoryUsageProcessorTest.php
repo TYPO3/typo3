@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MemoryUsageProcessorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function memoryUsageProcessorAddsMemoryUsageDataToLogRecord(): void
     {
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -38,45 +39,35 @@ final class CacheServiceTest extends UnitTestCase
         $this->subject = new CacheService($configurationManager, $this->cacheManagerMock, $this->createMock(ConnectionPool::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearPageCacheConvertsPageIdsToArray(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_123']);
         $this->subject->clearPageCache(123);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearPageCacheConvertsPageIdsToNumericArray(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_0']);
         $this->subject->clearPageCache('Foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearPageCacheDoesNotConvertPageIdsIfNoneAreSpecified(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroup')->with('pages');
         $this->subject->clearPageCache();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearPageCacheUsesCacheManagerToFlushCacheOfSpecifiedPages(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_1', 'pageId_2', 'pageId_3']);
         $this->subject->clearPageCache([1, 2, 3]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearsCachesOfRegisteredPageIds(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_2', 'pageId_15', 'pageId_8']);
@@ -88,9 +79,7 @@ final class CacheServiceTest extends UnitTestCase
         $this->subject->clearCachesOfRegisteredPageIds();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearsCachesOfDuplicateRegisteredPageIdsOnlyOnce(): void
     {
         $this->cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', ['pageId_2', 'pageId_15', 'pageId_8']);

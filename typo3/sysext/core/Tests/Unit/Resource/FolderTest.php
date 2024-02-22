@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -36,9 +37,7 @@ final class FolderTest extends UnitTestCase
         return new Folder($mockedStorage, $path, $name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorArgumentsAreAvailableAtRuntime(): void
     {
         $path = StringUtility::getUniqueId('path_');
@@ -50,9 +49,7 @@ final class FolderTest extends UnitTestCase
         self::assertSame($name, $fixture->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function propertiesCanBeUpdated(): void
     {
         $fixture = $this->createFolderFixture('/somePath', 'someName');
@@ -61,9 +58,7 @@ final class FolderTest extends UnitTestCase
         self::assertSame('/someOtherPath', $fixture->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function propertiesAreNotUpdatedIfNotSetInInput(): void
     {
         $fixture = $this->createFolderFixture('/somePath/someName/', 'someName');
@@ -71,9 +66,7 @@ final class FolderTest extends UnitTestCase
         self::assertSame('someName', $fixture->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesReturnsArrayWithFilenamesAsKeys(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
@@ -94,9 +87,7 @@ final class FolderTest extends UnitTestCase
         self::assertSame(['somefile.png', 'somefile.jpg'], array_keys($fileList));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesHandsOverRecursiveFALSEifNotExplicitlySet(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
@@ -110,9 +101,7 @@ final class FolderTest extends UnitTestCase
         $fixture->getFiles();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesHandsOverRecursiveTRUEifSet(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
@@ -126,9 +115,7 @@ final class FolderTest extends UnitTestCase
         $fixture->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSubfolderCallsFactoryWithCorrectArguments(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
@@ -153,9 +140,7 @@ final class FolderTest extends UnitTestCase
         self::assertEquals($subfolderFixture, $folderFixture->getSubfolder('someSubfolder'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParentFolderGetsParentFolderFromStorage(): void
     {
         $parentIdentifier = '/parent/';

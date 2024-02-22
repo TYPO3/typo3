@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Button;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -25,9 +26,8 @@ final class LinkButtonTest extends UnitTestCase
 {
     /**
      * Try validating an empty button
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidBlankCallExpectFalse(): void
     {
         $button = new LinkButton();
@@ -37,9 +37,8 @@ final class LinkButtonTest extends UnitTestCase
 
     /**
      * Omit the Icon
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidOmittedIconExpectFalse(): void
     {
         $button = new LinkButton();
@@ -50,9 +49,8 @@ final class LinkButtonTest extends UnitTestCase
 
     /**
      * Omit the title
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidOmittedTitleExpectFalse(): void
     {
         $button = new LinkButton();
@@ -64,9 +62,8 @@ final class LinkButtonTest extends UnitTestCase
 
     /**
      * Omit Href
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidOmittedHrefExpectFalse(): void
     {
         $button = new LinkButton();
@@ -78,9 +75,8 @@ final class LinkButtonTest extends UnitTestCase
 
     /**
      * Send a valid button
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidAllValuesSetExpectTrue(): void
     {
         $button = new LinkButton();

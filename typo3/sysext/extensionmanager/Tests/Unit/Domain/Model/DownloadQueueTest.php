@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -28,12 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class DownloadQueueTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
+     * @var DownloadQueue
      */
     protected $downloadQueue;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
+     * @var Extension
      */
     protected $extension;
 
@@ -46,9 +47,7 @@ final class DownloadQueueTest extends UnitTestCase
         $this->extension->setVersion('1.0.0');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addExtensionToQueueAddsExtensionToDownloadStorageArray(): void
     {
         $this->downloadQueue->addExtensionToQueue($this->extension);
@@ -57,9 +56,7 @@ final class DownloadQueueTest extends UnitTestCase
         self::assertArrayHasKey('foobar', $extensionStorage['download']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addExtensionToQueueAddsExtensionToUpdateStorageArray(): void
     {
         $this->downloadQueue->addExtensionToQueue($this->extension, 'update');
@@ -68,9 +65,7 @@ final class DownloadQueueTest extends UnitTestCase
         self::assertArrayHasKey('foobar', $extensionStorage['update']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addExtensionToQueueThrowsExceptionIfUnknownStackIsGiven(): void
     {
         $this->expectException(ExtensionManagerException::class);
@@ -78,9 +73,7 @@ final class DownloadQueueTest extends UnitTestCase
         $this->downloadQueue->addExtensionToQueue($this->extension, 'unknownStack');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addExtensionToQueueThrowsExceptionIfExtensionWithSameKeyAndDifferentValuesAlreadyExists(): void
     {
         $extension = new Extension();
@@ -93,9 +86,7 @@ final class DownloadQueueTest extends UnitTestCase
         $this->downloadQueue->addExtensionToQueue($this->extension);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeExtensionFromQueueRemovesExtension(): void
     {
         $extension = new Extension();

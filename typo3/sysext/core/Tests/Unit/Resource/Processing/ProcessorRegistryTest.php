@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Processing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Processing\AbstractTask;
 use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
@@ -27,9 +28,7 @@ final class ProcessorRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessorWhenOnlyOneIsRegistered(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] = [
@@ -49,9 +48,7 @@ final class ProcessorRegistryTest extends UnitTestCase
         self::assertInstanceOf(LocalImageProcessor::class, $processor);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessorWhenNoneIsRegistered(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] = [];
@@ -64,9 +61,7 @@ final class ProcessorRegistryTest extends UnitTestCase
         $subject->getProcessorByTask($taskMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessorWhenSameProcessorIsRegisteredTwice(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] = [

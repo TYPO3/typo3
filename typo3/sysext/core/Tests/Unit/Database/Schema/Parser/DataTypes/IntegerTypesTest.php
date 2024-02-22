@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BigIntDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\IntegerDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\MediumIntDataType;
@@ -102,10 +104,8 @@ final class IntegerTypesTest extends AbstractDataTypeBaseTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseIntegerDataTypeProvider
-     */
+    #[DataProvider('canParseIntegerDataTypeProvider')]
+    #[Test]
     public function canParseDataType(string $columnDefinition, string $className, int $length): void
     {
         $subject = $this->createSubject($columnDefinition);

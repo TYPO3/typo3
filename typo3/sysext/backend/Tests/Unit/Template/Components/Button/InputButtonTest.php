@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Button;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -25,9 +26,8 @@ final class InputButtonTest extends UnitTestCase
 {
     /**
      * Try to validate an empty button
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidBlankCallExpectFalse(): void
     {
         $button = new InputButton();
@@ -37,9 +37,8 @@ final class InputButtonTest extends UnitTestCase
 
     /**
      * Omit the Icon
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidOmittedIconExpectFalse(): void
     {
         $button = new InputButton();
@@ -50,9 +49,8 @@ final class InputButtonTest extends UnitTestCase
 
     /**
      * Omit the title
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidOmittedTitleExpectFalse(): void
     {
         $button = new InputButton();
@@ -64,9 +62,8 @@ final class InputButtonTest extends UnitTestCase
 
     /**
      * Omit the name
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidOmittedNameExpectFalse(): void
     {
         $button = new InputButton();
@@ -78,9 +75,8 @@ final class InputButtonTest extends UnitTestCase
 
     /**
      * Omit the Value
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidOmittedValueExpectFalse(): void
     {
         $button = new InputButton();
@@ -92,9 +88,8 @@ final class InputButtonTest extends UnitTestCase
 
     /**
      * Set a 100% valid button
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidAllValuesSetExpectTrue(): void
     {
         $button = new InputButton();

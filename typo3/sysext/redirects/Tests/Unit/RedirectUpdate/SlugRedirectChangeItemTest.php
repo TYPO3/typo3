@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\RedirectUpdate;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SlugRedirectChangeItemTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function withChangedReturnsNewInstanceWithChangedSet(): void
     {
         $changeItem = $this->createInitialChangeItem();
@@ -36,9 +35,7 @@ final class SlugRedirectChangeItemTest extends UnitTestCase
         self::assertSame('/changed', $extendedChangeItem->getChanged()['slug'] ?? null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withSourcesCollectionReturnsNewInstanceWithCorrectSourcesCollection(): void
     {
         $changeItem = $this->createInitialChangeItem();

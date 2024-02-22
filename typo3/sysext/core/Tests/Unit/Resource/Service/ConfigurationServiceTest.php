@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConfigurationServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeSubstitutesFileObject(): void
     {
         $fileMock = $this->createMock(ProcessedFile::class);

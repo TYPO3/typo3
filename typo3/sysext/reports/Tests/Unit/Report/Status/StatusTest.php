@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -43,9 +44,7 @@ final class StatusTest extends UnitTestCase
         $GLOBALS['LANG'] = $mockLanguageService;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSystemStatusCollectsAllStatusProvider(): void
     {
         $statusProviderArguments = [
@@ -87,9 +86,7 @@ final class StatusTest extends UnitTestCase
         self::assertSame($httpHeader[1], $result[$statusProviderArguments[2][1]][0]->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDetailedSystemStatusReturnsOnlyExtendedStatuses(): void
     {
         $statusProviderArguments = [

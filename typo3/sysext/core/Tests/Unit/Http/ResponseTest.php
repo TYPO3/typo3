@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,17 +33,13 @@ final class ResponseTest extends UnitTestCase
         $this->response = new Response();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function statusCodeIs200ByDefault(): void
     {
         self::assertEquals(200, $this->response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function statusCodeMutatorReturnsCloneWithChanges(): void
     {
         $response = $this->response->withStatus(400);
@@ -57,46 +55,36 @@ final class ResponseTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidStatusCodesDataProvider
-     */
+    #[DataProvider('invalidStatusCodesDataProvider')]
+    #[Test]
     public function cannotSetInvalidStatusCode($code): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->response->withStatus($code);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reasonPhraseDefaultsToStandards(): void
     {
         $response = $this->response->withStatus(422);
         self::assertEquals('Unprocessable Entity', $response->getReasonPhrase());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetCustomReasonPhrase(): void
     {
         $response = $this->response->withStatus(422, 'Foo Bar!');
         self::assertEquals('Foo Bar!', $response->getReasonPhrase());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorRaisesExceptionForInvalidStream(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Response(['TOTALLY INVALID']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorCanAcceptAllMessageParts(): void
     {
         $body = new Stream('php://memory');
@@ -119,10 +107,8 @@ final class ResponseTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidStatusDataProvider
-     */
+    #[DataProvider('invalidStatusDataProvider')]
+    #[Test]
     public function constructorRaisesExceptionForInvalidStatus($code): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -142,10 +128,8 @@ final class ResponseTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidResponseBodyDataProvider
-     */
+    #[DataProvider('invalidResponseBodyDataProvider')]
+    #[Test]
     public function constructorRaisesExceptionForInvalidBody($body): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -153,9 +137,7 @@ final class ResponseTest extends UnitTestCase
         new Response($body);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorIgnoresInvalidHeaders(): void
     {
         $headers = [
@@ -199,19 +181,15 @@ final class ResponseTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider headersWithInjectionVectorsDataProvider
-     */
+    #[DataProvider('headersWithInjectionVectorsDataProvider')]
+    #[Test]
     public function constructorRaisesExceptionForHeadersWithCRLFVectors($name, $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Response('php://memory', 200, [$name => $value]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderReturnsHeaderSetByConstructorArgument(): void
     {
         $subject = new Response('php://memory', 200, ['location' => 'foo']);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Html;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -96,10 +98,8 @@ final class RteHtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider hrTagCorrectlyTransformedOnWayToDataBaseDataProvider
-     */
+    #[DataProvider('hrTagCorrectlyTransformedOnWayToDataBaseDataProvider')]
+    #[Test]
     public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult): void
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
@@ -174,10 +174,8 @@ final class RteHtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
-     */
+    #[DataProvider('hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider')]
+    #[Test]
     public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult): void
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
@@ -208,10 +206,8 @@ final class RteHtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider brTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
-     */
+    #[DataProvider('brTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider')]
+    #[Test]
     public function brTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult): void
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
@@ -398,10 +394,8 @@ final class RteHtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider paragraphCorrectlyTransformedOnWayToDatabaseProvider
-     */
+    #[DataProvider('paragraphCorrectlyTransformedOnWayToDatabaseProvider')]
+    #[Test]
     public function paragraphCorrectlyTransformedOnWayToDatabase($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -498,10 +492,8 @@ final class RteHtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider lineBreakCorrectlyTransformedOnWayToRTEProvider
-     */
+    #[DataProvider('lineBreakCorrectlyTransformedOnWayToRTEProvider')]
+    #[Test]
     public function lineBreakCorrectlyTransformedOnWayToRTE($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -650,10 +642,8 @@ final class RteHtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
-     */
+    #[DataProvider('paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider')]
+    #[Test]
     public function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -686,10 +676,8 @@ final class RteHtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider anchorCorrectlyTransformedOnWayToDatabaseProvider
-     */
+    #[DataProvider('anchorCorrectlyTransformedOnWayToDatabaseProvider')]
+    #[Test]
     public function anchorCorrectlyTransformedOnWayToDatabase(string $content, string $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -722,10 +710,8 @@ final class RteHtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTEProvider
-     */
+    #[DataProvider('anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTEProvider')]
+    #[Test]
     public function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE(string $content, string $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -733,9 +719,7 @@ final class RteHtmlParserTest extends UnitTestCase
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allowTagsOutsidePreventsWrappingTaginPTag(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -744,9 +728,7 @@ final class RteHtmlParserTest extends UnitTestCase
         self::assertEquals('<p><span>Not allowed outside of p-tag</span></p>', $subject->transformTextForRichTextEditor('<span>Not allowed outside of p-tag</span>', $this->procOptions));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tableAndFigureApplyCorrectlyOutsideOfParagraphTags(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -755,9 +737,7 @@ final class RteHtmlParserTest extends UnitTestCase
         self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $this->procOptions));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetsAllowTagsWhenProcessingConfigurationChanges(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);

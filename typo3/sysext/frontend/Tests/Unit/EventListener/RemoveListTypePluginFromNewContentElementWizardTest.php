@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\EventListener;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
 use TYPO3\CMS\Frontend\EventListener\RemoveListTypePluginFromNewContentElementWizard;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RemoveListTypePluginFromNewContentElementWizardTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function pluginListTypeRemovedIfThereAreNoItems(): void
     {
         $wizardItems = [
@@ -50,9 +49,7 @@ final class RemoveListTypePluginFromNewContentElementWizardTest extends UnitTest
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pluginListTypeNotRemovedIfThereAreItems(): void
     {
         $GLOBALS['TCA']['tt_content']['types']['list']['subtype_value_field'] = 'list_type';

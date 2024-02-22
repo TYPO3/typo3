@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class PhpFrontendTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setChecksIfTheIdentifierIsValid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -45,9 +44,7 @@ final class PhpFrontendTest extends UnitTestCase
         $cache->set('foo', 'bar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPassesPhpSourceCodeTagsAndLifetimeToBackend(): void
     {
         $originalSourceCode = 'return "hello world!";';
@@ -58,9 +55,7 @@ final class PhpFrontendTest extends UnitTestCase
         $cache->set('Foo-Bar', $originalSourceCode, ['tags'], 1234);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsInvalidDataExceptionOnNonStringValues(): void
     {
         $this->expectException(InvalidDataException::class);
@@ -73,9 +68,7 @@ final class PhpFrontendTest extends UnitTestCase
         $cache->set('Foo-Bar', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireOnceCallsTheBackendsRequireOnceMethod(): void
     {
         $mockBackend = $this->createMock(PhpCapableBackendInterface::class);
@@ -85,9 +78,7 @@ final class PhpFrontendTest extends UnitTestCase
         self::assertSame('hello world!', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireCallsTheBackendsRequireMethod(): void
     {
         $mockBackend = $this->createMock(SimpleFileBackend::class);

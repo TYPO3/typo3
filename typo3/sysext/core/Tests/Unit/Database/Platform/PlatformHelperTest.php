@@ -27,6 +27,8 @@ use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform as DoctrineOraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform as Typo3MariaDB1052Platform;
 use TYPO3\CMS\Core\Database\Platform\MariaDBPlatform as Typo3MariaDBPlatform;
 use TYPO3\CMS\Core\Database\Platform\MySQL80Platform as Typo3MySQL80Platform;
@@ -66,11 +68,10 @@ final class PlatformHelperTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getTestPlatforms
-     *
      * @param DoctrineAbstractPlatform $platform
      */
+    #[DataProvider('getTestPlatforms')]
+    #[Test]
     public function getIdentifierQuoteCharacterReturnsExpectedValue(DoctrineAbstractPlatform $platform): void
     {
         $expectedIdentifierQuoteChar = $platform->quoteIdentifier('fake_identifier')[0];

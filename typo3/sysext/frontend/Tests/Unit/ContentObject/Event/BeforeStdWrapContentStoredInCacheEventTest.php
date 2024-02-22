@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapContentStoredInCacheEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BeforeStdWrapContentStoredInCacheEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $content = 'some content';
@@ -52,9 +51,7 @@ final class BeforeStdWrapContentStoredInCacheEventTest extends UnitTestCase
         self::assertSame($contentObjectRenderer, $event->getContentObjectRenderer());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setterOverwriteInitializedData(): void
     {
         $content = 'some content';

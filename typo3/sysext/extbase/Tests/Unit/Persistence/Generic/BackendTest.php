@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -37,9 +38,7 @@ final class BackendTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function insertRelationInRelationtableSetsMmMatchFieldsInRow(): void
     {
         $fixture = $this->getAccessibleMock(Backend::class, null, [], '', false);
@@ -85,9 +84,7 @@ final class BackendTest extends UnitTestCase
         $fixture->_call('insertRelationInRelationtable', $domainObject, $domainObject, '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIdentifierByObjectWithStringInsteadOfObjectReturnsNull(): void
     {
         $session = $this->createMock(Session::class);
@@ -99,9 +96,7 @@ final class BackendTest extends UnitTestCase
         self::assertNull($backend->getIdentifierByObject('invalidObject'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIdentifierByObjectReturnsIdentifierForNonLazyObject(): void
     {
         $fakeUuid = 'fakeUuid';
@@ -120,9 +115,7 @@ final class BackendTest extends UnitTestCase
         self::assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIdentifierByObjectReturnsIdentifierForLazyObject(): void
     {
         $fakeUuid = 'fakeUuid';

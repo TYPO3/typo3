@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Renderable;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Tests\Unit\Domain\Renderable\Fixtures\TestingRenderable;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractRenderableTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionSetStringValueIfKeyDoesNotExists(): void
     {
         $renderable = new TestingRenderable();
@@ -35,9 +34,7 @@ final class AbstractRenderableTest extends UnitTestCase
         self::assertSame($expected, $renderable->getRenderingOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionSetArrayValueIfKeyDoesNotExists(): void
     {
         $renderable = new TestingRenderable();
@@ -48,9 +45,7 @@ final class AbstractRenderableTest extends UnitTestCase
         self::assertSame($expected, $renderable->getRenderingOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionUnsetIfValueIsNull(): void
     {
         $renderable = new TestingRenderable();
@@ -63,9 +58,7 @@ final class AbstractRenderableTest extends UnitTestCase
         self::assertSame($expected, $renderable->getRenderingOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $renderable = new TestingRenderable();
@@ -85,9 +78,7 @@ final class AbstractRenderableTest extends UnitTestCase
         self::assertSame($expected, $renderable->getRenderingOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionAddValueIfValueIsArray(): void
     {
         $renderable = new TestingRenderable();

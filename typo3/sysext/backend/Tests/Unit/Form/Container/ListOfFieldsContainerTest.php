@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Container;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Container\ListOfFieldsContainer;
 use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ListOfFieldsContainerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderDelegatesShowitemField(): void
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
@@ -62,9 +61,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         $subject->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderDelegatesShowitemFieldAndRemovesDuplicates(): void
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
@@ -100,9 +97,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         $subject->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderDelegatesPaletteFields(): void
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
@@ -146,9 +141,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         $subject->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRemovesNotExistingTypesField(): void
     {
         $nodeFactoryMock = $this->createMock(NodeFactory::class);

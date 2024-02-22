@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class TreeNodeCollectionTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function sortNodes(): void
     {
         $nodeCollection = new TreeNodeCollection([

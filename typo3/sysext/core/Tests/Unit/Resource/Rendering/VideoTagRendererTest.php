@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class VideoTagRendererTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getPriorityReturnsCorrectValue(): void
     {
         $VideoTagRenderer = new VideoTagRenderer();
@@ -36,9 +36,7 @@ final class VideoTagRendererTest extends UnitTestCase
         self::assertSame(1, $VideoTagRenderer->getPriority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $VideoTagRenderer = new VideoTagRenderer();
@@ -58,9 +56,7 @@ final class VideoTagRendererTest extends UnitTestCase
         self::assertTrue($VideoTagRenderer->canRender($fileResourceMock4));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderReturnsFalseOnCorrectFile(): void
     {
         $VideoTagRenderer = new VideoTagRenderer();
@@ -153,10 +149,8 @@ final class VideoTagRendererTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderArgumentsDataProvider
-     */
+    #[DataProvider('renderArgumentsDataProvider')]
+    #[Test]
     public function renderOutputIsCorrect(string $url, array $arguments, string $expected): void
     {
         $VideoTagRenderer = new VideoTagRenderer();

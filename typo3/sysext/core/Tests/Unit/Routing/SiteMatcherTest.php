@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
@@ -31,9 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteMatcherTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function fullUrlMatchesSpecificLanguageWithSubdomainsAndDomainSuffixes(): void
     {
         $site = new Site('main', 1, [
@@ -124,8 +124,8 @@ final class SiteMatcherTest extends UnitTestCase
 
     /**
      * Contains a FQDN as base for the site
-     * @test
      */
+    #[Test]
     public function fullUrlMatchesSpecificLanguageWithSubdomainsAndPathSuffixes(): void
     {
         $site = new Site('main', 1, [
@@ -215,10 +215,8 @@ final class SiteMatcherTest extends UnitTestCase
         yield ['https://example.org/daother', '1-main', 'en-US'];
     }
 
-    /**
-     * @test
-     * @dataProvider bestMatchingUrlIsUsedDataProvider
-     */
+    #[DataProvider('bestMatchingUrlIsUsedDataProvider')]
+    #[Test]
     public function bestMatchingUrlIsUsed(string $requestUri, string $expectedSite, string $expectedLocale): void
     {
         $mainSite = new Site('1-main', 31, [

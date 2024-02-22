@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components\Button;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Template\Components\Buttons\FullyRenderedButton;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,9 +25,8 @@ final class FullyRenderedButtonTest extends UnitTestCase
 {
     /**
      * Try to validate an empty button
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidBlankCallExpectFalse(): void
     {
         $button = new FullyRenderedButton();
@@ -36,9 +36,8 @@ final class FullyRenderedButtonTest extends UnitTestCase
 
     /**
      * Tests a valid HTML Button
-     *
-     * @test
      */
+    #[Test]
     public function isButtonValidHtmlSourceGivenExpectTrue(): void
     {
         $button = new FullyRenderedButton();

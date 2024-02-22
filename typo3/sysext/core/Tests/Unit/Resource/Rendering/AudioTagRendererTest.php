@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class AudioTagRendererTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getPriorityReturnsCorrectValue(): void
     {
         $audioTagRenderer = new AudioTagRenderer();
@@ -36,9 +36,7 @@ final class AudioTagRendererTest extends UnitTestCase
         self::assertSame(1, $audioTagRenderer->getPriority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $audioTagRenderer = new AudioTagRenderer();
@@ -55,9 +53,7 @@ final class AudioTagRendererTest extends UnitTestCase
         self::assertTrue($audioTagRenderer->canRender($fileResourceMock3));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderReturnsFalseOnCorrectFile(): void
     {
         $audioTagRenderer = new AudioTagRenderer();
@@ -118,10 +114,8 @@ final class AudioTagRendererTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderArgumentsDataProvider
-     */
+    #[DataProvider('renderArgumentsDataProvider')]
+    #[Test]
     public function renderOutputIsCorrect(string $url, array $arguments, string $expected): void
     {
         $audioTagRenderer = new AudioTagRenderer();

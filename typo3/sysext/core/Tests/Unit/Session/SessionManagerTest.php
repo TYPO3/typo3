@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -25,18 +26,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SessionManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getSessionBackendUsesDefaultBackendFromConfiguration(): void
     {
         $subject = new SessionManager();
         self::assertInstanceOf(DatabaseSessionBackend::class, $subject->getSessionBackend('BE'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSessionBackendReturnsExpectedSessionBackendBasedOnConfiguration(): void
     {
         $backendMock = $this->createMock(SessionBackendInterface::class);
@@ -52,9 +49,7 @@ final class SessionManagerTest extends UnitTestCase
         self::assertInstanceOf($backendClassName, $subject->getSessionBackend('myidentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSessionBackendThrowsExceptionForMissingConfiguration(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -64,9 +59,7 @@ final class SessionManagerTest extends UnitTestCase
         $subject->getSessionBackend('myNewidentifier');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSessionBackendThrowsExceptionIfBackendDoesNotImplementInterface(): void
     {
         $this->expectException(\InvalidArgumentException::class);

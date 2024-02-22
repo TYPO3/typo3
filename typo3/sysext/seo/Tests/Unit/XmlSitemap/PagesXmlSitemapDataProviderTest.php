@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Unit\XmlSitemap;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\XmlSitemap\PagesXmlSitemapDataProvider;
@@ -51,9 +53,7 @@ final class PagesXmlSitemapDataProviderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfCorrectKeyIsGivenAfterConstruct(): void
     {
         $key = 'dummyKey';
@@ -69,10 +69,8 @@ final class PagesXmlSitemapDataProviderTest extends UnitTestCase
         self::assertEquals($key, $subject->getKey());
     }
 
-    /**
-     * @dataProvider numberOfItemsPerPageProvider
-     * @test
-     */
+    #[DataProvider('numberOfItemsPerPageProvider')]
+    #[Test]
     public function checkGetItemsReturnsDefinedItems(int $numberOfItemsPerPage): void
     {
         $key = 'dummyKey';
@@ -103,9 +101,7 @@ final class PagesXmlSitemapDataProviderTest extends UnitTestCase
         self::assertEquals($expectedReturnedItems, $returnedItems);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkGetLastModReturnsRightDate(): void
     {
         $key = 'dummyKey';

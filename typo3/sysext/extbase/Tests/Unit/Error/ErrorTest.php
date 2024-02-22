@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ErrorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorSetsTheErrorMessageCorrectly(): void
     {
         $errorMessage = 'The message';
@@ -32,9 +31,7 @@ final class ErrorTest extends UnitTestCase
         self::assertEquals($errorMessage, $error->getMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorSetsTheErrorCodeCorrectly(): void
     {
         $errorCode = 123456789;

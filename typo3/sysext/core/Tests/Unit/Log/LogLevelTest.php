@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\InvalidArgumentException;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LogLevelTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidLevelValidatesValidLevels(): void
     {
         $validLevels = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -34,9 +34,7 @@ final class LogLevelTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidLevelDoesNotValidateInvalidLevels(): void
     {
         $invalidLevels = [-1, 8];
@@ -56,10 +54,8 @@ final class LogLevelTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider
-     */
+    #[DataProvider('isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider')]
+    #[Test]
     public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo($inputValue): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -68,9 +64,7 @@ final class LogLevelTest extends UnitTestCase
         LogLevel::validateLevel($inputValue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function normalizeLevelConvertsValidLevelFromStringToInteger(): void
     {
         self::assertEquals(7, LogLevel::normalizeLevel('debug'));
@@ -110,10 +104,8 @@ final class LogLevelTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider atLeastReturnsCorrectListOfLevelsDataProvider
-     */
+    #[DataProvider('atLeastReturnsCorrectListOfLevelsDataProvider')]
+    #[Test]
     public function atLeastReturnsCorrectListOfLevels(string $level, array $expected): void
     {
         self::assertSame($expected, LogLevel::atLeast($level));

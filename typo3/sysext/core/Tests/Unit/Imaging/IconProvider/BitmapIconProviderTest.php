@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
@@ -45,27 +46,21 @@ final class BitmapIconProviderTest extends UnitTestCase
         $this->icon->setSize(IconSize::SMALL);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'fileadmin/foo.png']);
         self::assertEquals('<img src="fileadmin/foo.png" width="16" height="16" alt="" />', $this->icon->getMarkup());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => Environment::getPublicPath() . '/fileadmin/foo.png']);
         self::assertEquals('<img src="fileadmin/foo.png" width="16" height="16" alt="" />', $this->icon->getMarkup());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareIconMarkupEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'EXT:core/Resources/Public/Images/foo.png']);

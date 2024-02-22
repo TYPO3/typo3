@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseDefaultLanguageException;
@@ -39,9 +40,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsUnchangedResultIfTableProvidesNoTranslations(): void
     {
         $input = [
@@ -58,9 +57,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         self::assertEquals($input, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfDefaultOfLocalizedRecordIsNotFound(): void
     {
         $input = [
@@ -87,9 +84,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultLanguageRow(): void
     {
         $input = [
@@ -123,9 +118,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDiffSourceFieldIfGiven(): void
     {
         $diffSource = [
@@ -168,9 +161,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsAdditionalLanguageRowsIfRequestedInUserTypoScript(): void
     {
         $input = [
@@ -263,9 +254,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDoesNotAddHandledRowAsAdditionalLanguageRows(): void
     {
         $input = [
@@ -362,9 +351,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsSourceLanguageRow(): void
     {
         $input = [

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing\Enhancer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Routing\Enhancer\VariableProcessor;
 use TYPO3\CMS\Core\Routing\Enhancer\VariableProcessorCache;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -122,10 +124,8 @@ final class VariableProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider routePathDataProvider
-     */
+    #[DataProvider('routePathDataProvider')]
+    #[Test]
     public function isRoutePathProcessed(?string $namespace, array $arguments, string $inflatedRoutePath, string $deflatedRoutePath): void
     {
         $subject = new VariableProcessor(new VariableProcessorCache());
@@ -161,10 +161,8 @@ final class VariableProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider parametersDataProvider
-     */
+    #[DataProvider('parametersDataProvider')]
+    #[Test]
     public function parametersAreProcessed(array $arguments, array $deflatedParameters): void
     {
         $subject = new VariableProcessor(new VariableProcessorCache());
@@ -237,10 +235,8 @@ final class VariableProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider namespaceParametersDataProvider
-     */
+    #[DataProvider('namespaceParametersDataProvider')]
+    #[Test]
     public function namespaceParametersAreProcessed(string $namespace, array $arguments, array $deflatedParameters): void
     {
         $subject = new VariableProcessor(new VariableProcessorCache());
@@ -325,10 +321,8 @@ final class VariableProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider keysDataProvider
-     */
+    #[DataProvider('keysDataProvider')]
+    #[Test]
     public function keysAreDeflated(?string $namespace, array $arguments, array $deflatedKeys): void
     {
         $subject = new VariableProcessor(new VariableProcessorCache());
@@ -343,10 +337,8 @@ final class VariableProcessorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider specialKeysDataProvider
-     */
+    #[DataProvider('specialKeysDataProvider')]
+    #[Test]
     public function specialKeysAreNotInflatedWithoutBeingDeflated(?string $namespace, array $arguments, array $deflatedKeys): void
     {
         $this->expectException(\OutOfRangeException::class);

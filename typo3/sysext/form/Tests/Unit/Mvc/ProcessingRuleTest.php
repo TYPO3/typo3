@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
@@ -28,9 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ProcessingRuleTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addValidatorAddsValidator(): void
     {
         $conjunctionValidator = new ConjunctionValidator();
@@ -46,9 +45,7 @@ final class ProcessingRuleTest extends UnitTestCase
         self::assertInstanceOf(AbstractValidator::class, $validators->current());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeAllRemovesAllValidators(): void
     {
         $conjunctionValidator = new ConjunctionValidator();
@@ -63,9 +60,7 @@ final class ProcessingRuleTest extends UnitTestCase
         self::assertCount(0, $subject->getValidators());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterValidatorRemovesValidatorsDependingOnClosure(): void
     {
         $conjunctionValidator = new ConjunctionValidator();
@@ -84,9 +79,7 @@ final class ProcessingRuleTest extends UnitTestCase
         self::assertInstanceOf(AnotherTestValidator::class, $validators->current());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processNoPropertyMappingReturnsNotModifiedValue(): void
     {
         $conjunctionValidator = new ConjunctionValidator();
@@ -98,9 +91,7 @@ final class ProcessingRuleTest extends UnitTestCase
         self::assertSame($input, $subject->process($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processNoPropertyMappingAndHasErrorsIfValidatorContainsErrors(): void
     {
         $conjunctionValidator = new ConjunctionValidator();

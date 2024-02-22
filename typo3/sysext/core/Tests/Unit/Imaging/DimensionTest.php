@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\Dimension;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -36,9 +37,7 @@ final class DimensionTest extends UnitTestCase
         $this->subject = new Dimension(IconSize::MEDIUM);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWidthReturnsValidInteger(): void
     {
         $value = $this->subject->getWidth();
@@ -46,9 +45,7 @@ final class DimensionTest extends UnitTestCase
         self::assertIsInt($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeightReturnsValidInteger(): void
     {
         $value = $this->subject->getHeight();

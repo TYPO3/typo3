@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Domain\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Event\BeforePageIsRetrievedEvent;
 use TYPO3\CMS\Core\Domain\Page;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BeforePageIsRetrievedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $pageId = 2004;
@@ -42,9 +41,7 @@ final class BeforePageIsRetrievedEventTest extends UnitTestCase
         self::assertEquals($skipGroupAccessCheck, $event->isGroupAccessCheckSkipped());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyPageAndPageId(): void
     {
         $pageId = 2004;

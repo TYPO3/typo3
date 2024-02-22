@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DownloadControllerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function installFromTerReturnsArrayWithBooleanResultAndErrorArrayWhenExtensionManagerExceptionIsThrown(): void
     {
         $dummyExceptionMessage = 'exception message';

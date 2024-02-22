@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LegacyLinkNotationConverter;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
@@ -134,12 +137,8 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     *
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function resolveReturnsSplitParameters(string $input, array $expected): void
     {
         $subject = new LegacyLinkNotationConverter();
@@ -151,12 +150,10 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
-     *
-     *
-     * @throws \TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException
-     * @dataProvider resolveParametersForNonFilesDataProvider
+     * @throws UnknownLinkHandlerException
      */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifier(string $input, array $parameters, string $expected): void
     {
         $subject = new LinkService();
@@ -248,12 +245,9 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
 
     /**
      * Helpful to know in which if() clause the stuff gets in
-     *
-     * @test
-     *
-     *
-     * @dataProvider resolveParametersForFilesDataProvider
      */
+    #[DataProvider('resolveParametersForFilesDataProvider')]
+    #[Test]
     public function resolveFileReferencesToSplitParameters(string $input, array $expected): void
     {
         $storage = $this->getMockBuilder(ResourceStorage::class)
@@ -296,12 +290,11 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
     /**
      * Helpful to know in which if() clause the stuff gets in
      *
-     * @test
      *
-     *
-     * @throws \TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException
-     * @dataProvider resolveParametersForFilesDataProvider
+     * @throws UnknownLinkHandlerException
      */
+    #[DataProvider('resolveParametersForFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifierForFiles(string $input, array $parameters, string $expected): void
     {
         // fake methods to return proper objects
@@ -365,12 +358,8 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     *
-     * @dataProvider resolveThrowExceptionWithPharReferencesDataProvider
-     */
+    #[DataProvider('resolveThrowExceptionWithPharReferencesDataProvider')]
+    #[Test]
     public function resolveThrowExceptionWithPharReferences(string $pharUrl): void
     {
         $this->expectException(\RuntimeException::class);

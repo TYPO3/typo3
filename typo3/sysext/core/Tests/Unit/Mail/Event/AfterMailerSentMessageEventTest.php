@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
 use TYPO3\CMS\Core\Mail\Mailer;
@@ -37,9 +38,7 @@ final class AfterMailerSentMessageEventTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $mailer = (new Mailer());

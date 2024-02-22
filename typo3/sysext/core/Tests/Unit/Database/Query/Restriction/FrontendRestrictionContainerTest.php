@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
@@ -135,10 +137,8 @@ final class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider frontendStatesDataProvider
-     */
+    #[DataProvider('frontendStatesDataProvider')]
+    #[Test]
     public function buildExpressionAddsCorrectClause(
         string $tableName,
         string $tableAlias,

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +32,7 @@ final class TcaColumnsOverridesTest extends UnitTestCase
         $this->subject = new TcaColumnsOverrides();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesGivenColumnsOverrides(): void
     {
         $input = [
@@ -56,9 +56,7 @@ final class TcaColumnsOverridesTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataMergesColumnsOverridesIntoColumns(): void
     {
         $input = [
@@ -92,9 +90,7 @@ final class TcaColumnsOverridesTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataMergesColumnsOverridesDefaultValueIntoDatabaseRow(): void
     {
         $input = [
@@ -172,10 +168,8 @@ final class TcaColumnsOverridesTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addDataRespectsTSconfigDefaultValuesForNewRecordsDataProvider
-     */
+    #[DataProvider('addDataRespectsTSconfigDefaultValuesForNewRecordsDataProvider')]
+    #[Test]
     public function addDataRespectsTSconfigDefaultValuesForNewRecords(array $result): void
     {
         $input = array_replace_recursive([

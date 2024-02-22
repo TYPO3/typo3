@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DisjunctionValidatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorsIfOneValidatorReturnsNoError(): void
     {
         $validatorDisjunction = new DisjunctionValidator();
@@ -47,9 +46,7 @@ final class DisjunctionValidatorTest extends UnitTestCase
         self::assertFalse($validatorDisjunction->validate('some subject')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsAllErrorsIfAllValidatorsReturnErrors(): void
     {
         $validatorDisjunction = new DisjunctionValidator();

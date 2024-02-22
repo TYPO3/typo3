@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
@@ -44,9 +46,7 @@ final class PageRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderMethodCallsResetInAnyCase(): void
     {
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)
@@ -58,9 +58,7 @@ final class PageRendererTest extends UnitTestCase
         $pageRenderer->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addBodyContentAddsContent(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
@@ -74,9 +72,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertEquals($expectedReturnValue, $out);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
@@ -96,9 +92,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertSame($expectedInlineLanguageLabelFile, array_pop($actualResult));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
@@ -127,9 +121,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertSame($expectedInlineLanguageLabelFile1, array_pop($actualResult));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
@@ -142,9 +134,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertCount(1, $subject->getInlineLanguageLabelFiles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function includeLanguageFileForInlineDoesNotAddToInlineLanguageLabelsIfFileCouldNotBeRead(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, ['readLLfile'], [], '', false);
@@ -199,10 +189,8 @@ final class PageRendererTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider
-     * @test
-     */
+    #[DataProvider('includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider')]
+    #[Test]
     public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels(array $llFileContent, string $selectionPrefix, string $stripFromSelectionName, array $expectation): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, ['readLLfile'], [], '', false);
@@ -212,9 +200,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertEquals($expectation, $subject->_get('inlineLanguageLabels'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAddedMetaTag(): void
     {
         $subject = $this->getMockBuilder(PageRenderer::class)
@@ -231,9 +217,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideMetaTag(): void
     {
         $subject = $this->getMockBuilder(PageRenderer::class)
@@ -251,9 +235,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetAddedMetaTag(): void
     {
         $subject = $this->getMockBuilder(PageRenderer::class)
@@ -267,9 +249,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseLanguageLabelsForJavaScriptReturnsEmptyStringIfEmpty(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
@@ -279,9 +259,7 @@ final class PageRendererTest extends UnitTestCase
         self::assertEmpty($actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseLanguageLabelsForJavaScriptReturnsFlatArray(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);

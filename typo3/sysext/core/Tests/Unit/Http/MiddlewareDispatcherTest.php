@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -30,9 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MiddlewareDispatcherTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function executesKernelWithEmptyMiddlewareStack(): void
     {
         $kernel = new class () implements RequestHandlerInterface {
@@ -48,9 +47,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         self::assertSame(204, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executesMiddlewaresLastInFirstOut(): void
     {
         $kernel = new class () implements RequestHandlerInterface {
@@ -93,9 +90,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         self::assertSame(204, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotInstantiateLazyMiddlewareInCaseOfAnEarlyReturningOuterMiddleware(): void
     {
         $kernel = new class () implements RequestHandlerInterface {
@@ -119,9 +114,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         self::assertSame(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionForLazyNonMiddlewareInterfaceClasses(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -140,9 +133,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         $dispatcher->handle(new ServerRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeExecutedMultipleTimes(): void
     {
         $kernel = new class () implements RequestHandlerInterface {
@@ -168,9 +159,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         self::assertSame(204, $response2->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeReExecutedRecursivelyDuringDispatch(): void
     {
         $kernel = new class () implements RequestHandlerInterface {
@@ -208,9 +197,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         self::assertSame(['nested', 'outer'], $response->getHeader('X-TRACE'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchesMiddlewareFromContainer(): void
     {
         $kernel = new class () implements RequestHandlerInterface {

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging\Renderer;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -45,9 +46,7 @@ final class BootstrapRendererTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCreatesCorrectOutputForFlashMessage(): void
     {
         $rendererClass = GeneralUtility::makeInstance(BootstrapRenderer::class);
@@ -65,9 +64,7 @@ final class BootstrapRendererTest extends UnitTestCase
         self::assertStringContainsString('<p class="alert-message">messageBody</p>', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
         $rendererClass = GeneralUtility::makeInstance(BootstrapRenderer::class);

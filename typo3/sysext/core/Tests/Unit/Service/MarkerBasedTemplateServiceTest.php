@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -103,10 +105,8 @@ text
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getSubpartDataProvider
-     */
+    #[DataProvider('getSubpartDataProvider')]
+    #[Test]
     public function getSubpart(string $content, string $marker, string $expected): void
     {
         self::assertSame($expected, $this->templateService->getSubpart($content, $marker));
@@ -232,10 +232,10 @@ hello
     }
 
     /**
-     * @test
      * @param string|array $subpartContent
-     * @dataProvider substituteSubpartDataProvider
      */
+    #[DataProvider('substituteSubpartDataProvider')]
+    #[Test]
     public function substituteSubpart(
         string $content,
         string $marker,
@@ -326,14 +326,14 @@ hello
     }
 
     /**
-     * @test
-     * @dataProvider substituteMarkerArrayDataProvider
      * @param string $content The content stream, typically HTML template content.
      * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
      * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
      * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
      * @param bool $deleteUnused If set, all unused marker are deleted.
      */
+    #[DataProvider('substituteMarkerArrayDataProvider')]
+    #[Test]
     public function substituteMarkerArray(
         string $content,
         array $markContentArray,
@@ -370,12 +370,12 @@ hello
     }
 
     /**
-     * @dataProvider substituteMarkerDataProvider
      * @param string $content The content stream, typically HTML template content.
      * @param string $marker The marker string, typically on the form "###[the marker string]###
      * @param mixed $markContent The content to insert instead of the marker string found.
      * @param string $expected The expected result of the substitution
      */
+    #[DataProvider('substituteMarkerDataProvider')]
     public function substituteMarker(string $content, string $marker, $markContent, string $expected): void
     {
         self::assertSame($expected, $this->templateService->substituteMarker($content, $marker, $markContent));
@@ -404,10 +404,8 @@ world
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider substituteSubpartArrayDataProvider
-     */
+    #[DataProvider('substituteSubpartArrayDataProvider')]
+    #[Test]
     public function substituteSubpartArray(string $content, array $subpartsContent, string $expected): void
     {
         self::assertSame($expected, $this->templateService->substituteSubpartArray($content, $subpartsContent));
@@ -608,10 +606,8 @@ Value 2.2
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider
-     */
+    #[DataProvider('substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider')]
+    #[Test]
     public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray(
         string $template,
         array $markersAndSubparts,
@@ -728,10 +724,8 @@ Value 2.2
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider substituteMarkerArrayCachedReturnsExpectedContentDataProvider
-     */
+    #[DataProvider('substituteMarkerArrayCachedReturnsExpectedContentDataProvider')]
+    #[Test]
     public function substituteMarkerArrayCachedReturnsExpectedContent(
         string $content,
         array $markContentArray,

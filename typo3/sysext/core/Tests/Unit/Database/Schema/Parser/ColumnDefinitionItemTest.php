@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\AbstractCreateDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ColumnDefinitionItemTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canParseUnquotedMysqlKeywordAsTableName(): void
     {
         $subject = $this->createSubject('CREATE TABLE `aTable`(checksum VARCHAR(64));');
@@ -43,9 +42,8 @@ final class ColumnDefinitionItemTest extends UnitTestCase
      * The old regular expression based create table parser processed invalid dump files
      * where the last column/index definition included a comma before the closing parenthesis.
      * Emulate this behaviour to avoid breaking lots of (partial) dump files.
-     *
-     * @test
      */
+    #[Test]
     public function canParseCreateDefinitionWithTrailingComma(): void
     {
         $subject = $this->createSubject('CREATE TABLE `aTable`(aField VARCHAR(64), );');

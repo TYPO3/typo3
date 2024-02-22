@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -37,10 +39,8 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
         $this->subject = new TypoLinkCodecService(new NoopEventDispatcher());
     }
 
-    /**
-     * @test
-     * @dataProvider encodeReturnsExpectedResultDataProvider
-     */
+    #[DataProvider('encodeReturnsExpectedResultDataProvider')]
+    #[Test]
     public function encodeReturnsExpectedResult(array $parts, string $expected): void
     {
         self::assertSame($expected, $this->subject->encode($parts));
@@ -79,10 +79,8 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeReturnsExpectedResultDataProvider
-     */
+    #[DataProvider('decodeReturnsExpectedResultDataProvider')]
+    #[Test]
     public function decodeReturnsExpectedResult(string $typoLink, array $expected): void
     {
         self::assertSame($expected, $this->subject->decode($typoLink));
@@ -184,9 +182,7 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function beforeTypoLinkEncodedEventIsCalled(): void
     {
         $beforeTypoLinkEncodedEvent = null;
@@ -213,9 +209,7 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
         self::assertEquals(['foo', 'bar'], $beforeTypoLinkEncodedEvent->getParameters());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterTypoLinkDecodedEventIsCalled(): void
     {
         $afterTypoLinkDecodedEvent = null;

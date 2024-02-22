@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\ViewHelpers\Form;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -68,10 +70,8 @@ final class DatePickerViewHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider convertDateFormatToDatePickerFormatReturnsTransformedFormatDataProvider
-     */
+    #[DataProvider('convertDateFormatToDatePickerFormatReturnsTransformedFormatDataProvider')]
+    #[Test]
     public function convertDateFormatToDatePickerFormatReturnsTransformedFormat(string $input, string $expected): void
     {
         $mock = \Closure::bind(static function (DatePickerViewHelper $datePickerViewHelper) use ($input, &$result) {

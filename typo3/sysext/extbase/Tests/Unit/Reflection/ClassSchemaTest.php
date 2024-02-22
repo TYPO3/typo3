@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
@@ -33,9 +34,7 @@ final class ClassSchemaTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGetProperties(): void
     {
         self::assertSame(
@@ -65,9 +64,7 @@ final class ClassSchemaTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaHasMethod(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
@@ -75,9 +72,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertFalse($classSchema->hasMethod('nonExistentMethod'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGetMethods(): void
     {
         self::assertSame(
@@ -94,9 +89,7 @@ final class ClassSchemaTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsDynamicProperties(): void
     {
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
@@ -104,9 +97,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('privateProperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForParamWithoutTypeHint(): void
     {
         $this->expectException(InvalidTypeHintException::class);
@@ -116,9 +107,7 @@ final class ClassSchemaTest extends UnitTestCase
         new ClassSchema(DummyControllerWithValidateAnnotationWithoutParamTypeHint::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForMissingParam(): void
     {
         $this->expectException(InvalidValidationConfigurationException::class);
@@ -127,9 +116,7 @@ final class ClassSchemaTest extends UnitTestCase
 
         new ClassSchema(DummyControllerWithValidateAnnotationWithoutParam::class);
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForParamWithoutTypeHint(): void
     {
         $this->expectException(InvalidTypeHintException::class);
@@ -139,9 +126,7 @@ final class ClassSchemaTest extends UnitTestCase
         new ClassSchema(DummyControllerWithValidateAttributeWithoutParamTypeHint::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForMissingParam(): void
     {
         $this->expectException(InvalidValidationConfigurationException::class);
@@ -151,9 +136,7 @@ final class ClassSchemaTest extends UnitTestCase
         new ClassSchema(DummyControllerWithValidateAttributeWithoutParam::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsMethodParameterTypeViaReflection(): void
     {
         $class = new class () {
@@ -167,9 +150,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertSame(ClassSchema::class, $classSchema->getMethod('bar')->getParameter('foo')->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaPrefersMethodParameterTypeDetectionViaReflection(): void
     {
         $class = new class () {
@@ -183,9 +164,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertSame('string', $classSchema->getMethod('foo')->getParameter('foo')->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaCanHandleSelfMethodReturnTypes(): void
     {
         $class = new class () {
@@ -203,9 +182,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertSame(get_class($class), $classSchema->getMethod('bar')->getParameter('copy')->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsMethodParameterTypeDetectionViaDocBlocksIfNoTypeHintIsGiven(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);

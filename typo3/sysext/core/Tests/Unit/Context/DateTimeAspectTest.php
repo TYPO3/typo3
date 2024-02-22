@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Context;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DateTimeAspectTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getDateTimeReturnsSameObject(): void
     {
         $dateObject = new \DateTimeImmutable('2018-07-15', new \DateTimeZone('Europe/Moscow'));
@@ -34,9 +34,7 @@ final class DateTimeAspectTest extends UnitTestCase
         self::assertSame($dateObject, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(AspectPropertyNotFoundException::class);
@@ -46,9 +44,7 @@ final class DateTimeAspectTest extends UnitTestCase
         $subject->get('football');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTimestampReturnsInteger(): void
     {
         $dateObject = new \DateTimeImmutable('2018-07-15', new \DateTimeZone('Europe/Moscow'));
@@ -84,11 +80,11 @@ final class DateTimeAspectTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider dateFormatValuesDataProvider
      * @param string $key
      * @param string $expectedResult
      */
+    #[DataProvider('dateFormatValuesDataProvider')]
+    #[Test]
     public function getReturnsValidInformationFromProperty($key, $expectedResult): void
     {
         $dateObject = new \DateTimeImmutable('2018-07-15T13:00:05', new \DateTimeZone('Europe/Moscow'));

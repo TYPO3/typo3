@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ArgumentsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsObjectIsOfScopePrototype(): void
     {
         $arguments1 = new Arguments();
@@ -34,9 +33,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertNotSame($arguments1, $arguments2, 'The arguments object is not of scope prototype!');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addingAnArgumentManuallyWorks(): void
     {
         $arguments = new Arguments();
@@ -45,9 +42,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertSame($newArgument, $arguments->getArgument('argumentName1234'), 'The added and retrieved argument is not the same.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addingAnArgumentReplacesArgumentWithSameName(): void
     {
         $arguments = new Arguments();
@@ -66,9 +61,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertSame($mockSecondArgument, $arguments->getArgument('argumentName1234'), 'The added and retrieved argument is not the same.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNewArgumentProvidesFluentInterface(): void
     {
         $arguments = new Arguments();
@@ -76,9 +69,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertInstanceOf(Argument::class, $newArgument);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addingArgumentThroughArrayAccessWorks(): void
     {
         $mockArgument = $this->getMockBuilder(Argument::class)
@@ -92,9 +83,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertSame($mockArgument, $arguments->getArgument('argumentName1234'), 'Added and retrieved arguments are not the same.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrievingArgumentThroughArrayAccessWorks(): void
     {
         $mockArgument = $this->getMockBuilder(Argument::class)
@@ -107,9 +96,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertSame($mockArgument, $arguments['argumentName1234'], 'Argument retrieved by array access is not the one we added.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArgumentWithNonExistingArgumentNameThrowsException(): void
     {
         $arguments = new Arguments();
@@ -120,9 +107,7 @@ final class ArgumentsTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function issetReturnsCorrectResult(): void
     {
         $mockArgument = $this->getMockBuilder(Argument::class)
@@ -136,9 +121,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertTrue(isset($arguments['argumentName1234']), 'isset() did not return TRUE.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArgumentNamesReturnsNamesOfAddedArguments(): void
     {
         $mockArgument1 = $this->getMockBuilder(Argument::class)
@@ -164,9 +147,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertEquals($expectedArgumentNames, $arguments->getArgumentNames(), 'Returned argument names were not as expected.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArgumentShortNamesReturnsShortNamesOfAddedArguments(): void
     {
         $mockArgument1 = $this->getMockBuilder(Argument::class)
@@ -195,9 +176,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertEquals($expectedShortNames, $arguments->getArgumentShortNames(), 'Returned argument short names were not as expected.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNewArgumentCreatesAndAddsNewArgument(): void
     {
         $mockArgument = $this->getMockBuilder(Argument::class)
@@ -212,9 +191,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertSame($addedArgument, $retrievedArgument, 'The added and the retrieved argument are not the same.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNewArgumentAssumesTextDataTypeByDefault(): void
     {
         $mockArgument = $this->getMockBuilder(Argument::class)
@@ -226,9 +203,7 @@ final class ArgumentsTest extends UnitTestCase
         $arguments->addNewArgument('dummyName');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNewArgumentCanAddArgumentsMarkedAsRequired(): void
     {
         $arguments = new Arguments();
@@ -236,9 +211,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertTrue($argument->isRequired());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNewArgumentCanAddArgumentsMarkedAsOptionalWithDefaultValues(): void
     {
         $arguments = new Arguments();
@@ -246,9 +219,7 @@ final class ArgumentsTest extends UnitTestCase
         self::assertFalse($argument->isRequired());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callingInvalidMethodThrowsException(): void
     {
         $this->expectException(\LogicException::class);
@@ -257,9 +228,7 @@ final class ArgumentsTest extends UnitTestCase
         $arguments->nonExistingMethod();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeAllClearsAllArguments(): void
     {
         $mockArgument1 = $this->getMockBuilder(Argument::class)

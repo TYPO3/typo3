@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Html;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +32,7 @@ final class HtmlCropperTest extends UnitTestCase
         $this->subject = new HtmlCropper();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cropIsMultibyteSafe(): void
     {
         $actual = $this->subject->crop(
@@ -479,10 +479,8 @@ final class HtmlCropperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cropWorksDataProvicer
-     */
+    #[DataProvider('cropWorksDataProvicer')]
+    #[Test]
     public function cropWorks(string $expected, string $content, int $numberOfChars, string $replacementForEllipsis, bool $cropToSpace): void
     {
         $this->handleCharset($content, $expected);

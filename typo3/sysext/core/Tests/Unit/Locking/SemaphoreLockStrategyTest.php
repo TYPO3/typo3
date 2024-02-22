@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class SemaphoreLockStrategyTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function acquireGetsSemaphore(): void
     {
         $lock = new SemaphoreLockStrategy('99999');
@@ -37,17 +36,13 @@ final class SemaphoreLockStrategyTest extends UnitTestCase
         $lock->destroy();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPriorityReturnsDefaultPriority(): void
     {
         self::assertEquals(SimpleLockStrategy::DEFAULT_PRIORITY, SimpleLockStrategy::getPriority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPriority(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority'] = 10;

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\PageLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -58,10 +60,8 @@ final class PageLinkHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function resolveReturnsSplitParameters(array $input, array $expected, string $finalString): void
     {
         $subject = new PageLinkHandler();
@@ -72,10 +72,8 @@ final class PageLinkHandlerTest extends UnitTestCase
         self::assertSame($expected, $subject->resolveHandlerData($input));
     }
 
-    /**
-     * @test
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifier(array $input, array $parameters, string $expected): void
     {
         $subject = new PageLinkHandler();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Domain\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyDefaultConstraintsForDatabaseQueryEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $table = 'a_table';
@@ -55,9 +54,7 @@ final class ModifyDefaultConstraintsForDatabaseQueryEventTest extends UnitTestCa
         self::assertEquals($context, $event->getContext());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConstraintsAllowsModifiyingDefaultConstraints(): void
     {
         $event = new ModifyDefaultConstraintsForDatabaseQueryEvent(

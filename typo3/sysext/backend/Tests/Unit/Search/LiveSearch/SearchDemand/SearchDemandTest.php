@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Search\LiveSearch\SearchDemand;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Backend\Search\LiveSearch\DatabaseRecordProvider;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandProperty;
@@ -26,9 +27,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 
 final class SearchDemandTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyReturnsValueAsExpected(): void
     {
         $query = 'foo';
@@ -43,9 +42,7 @@ final class SearchDemandTest extends TestCase
         self::assertSame($limit, $searchDemand->getProperty(DemandPropertyName::limit)->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromRequestCreatesExpectedDemand(): void
     {
         $query = 'Karl Ranseier';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -28,9 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class AbstractFileTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getParentFolderGetsParentFolderFromStorage(): void
     {
         $parentIdentifier = '/parent/';
@@ -59,9 +58,8 @@ final class AbstractFileTest extends UnitTestCase
      * type in a field "mimetype", while the file object and the database table use mime_type.
      * The test is placed in the test case for AbstractFile because the broken functionality resides there, though
      * it is only triggered when constructing a File instance with an index record.
-     *
-     * @test
      */
+    #[Test]
     public function storageIsNotAskedForMimeTypeForPersistedRecord(): void
     {
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();

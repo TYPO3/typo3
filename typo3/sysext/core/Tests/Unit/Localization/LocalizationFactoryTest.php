@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LocalizationFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getParsedDataCallsLocalizationOverrideIfFileNotFoundExceptionIsThrown(): void
     {
         $languageStoreMock = $this->createMock(LanguageStore::class);
@@ -54,9 +53,7 @@ final class LocalizationFactoryTest extends UnitTestCase
             ->getParsedData(__DIR__ . '/Fixtures/locallang.invalid', 'default');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ensureLocalizationIsProperlyCached(): void
     {
         $packageManagerMock = $this->createMock(PackageManager::class);

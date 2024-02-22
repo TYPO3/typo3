@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -63,20 +65,16 @@ final class ClassNamingUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider repositoryAndModelClassNames
-     * @test
-     */
+    #[DataProvider('repositoryAndModelClassNames')]
+    #[Test]
     public function translateModelNameToRepositoryName(string $expectedRepositoryName, string $modelName): void
     {
         $translatedRepositoryName = ClassNamingUtility::translateModelNameToRepositoryName($modelName);
         self::assertSame($expectedRepositoryName, $translatedRepositoryName);
     }
 
-    /**
-     * @dataProvider repositoryAndModelClassNames
-     * @test
-     */
+    #[DataProvider('repositoryAndModelClassNames')]
+    #[Test]
     public function translateRepositoryNameToModelName(string $repositoryName, string $expectedModelName): void
     {
         $translatedModelName = ClassNamingUtility::translateRepositoryNameToModelName($repositoryName);
@@ -137,11 +135,8 @@ final class ClassNamingUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider controllerObjectNamesAndMatches
-     *
-     * @test
-     */
+    #[DataProvider('controllerObjectNamesAndMatches')]
+    #[Test]
     public function explodeObjectControllerName(string $controllerObjectName, array $expectedMatches): void
     {
         $actualMatches = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);

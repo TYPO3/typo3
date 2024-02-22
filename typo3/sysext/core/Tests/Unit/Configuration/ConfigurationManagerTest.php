@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
@@ -58,9 +59,7 @@ final class ConfigurationManagerTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultConfigurationExecutesDefinedDefaultConfigurationFile(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -79,9 +78,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $this->subject->getDefaultConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSystemConfigurationExecutesDefinedConfigurationFile(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -99,9 +96,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $this->subject->getLocalConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateLocalConfigurationWritesNewMergedLocalConfigurationArray(): void
     {
         $currentLocalConfiguration = [
@@ -134,9 +129,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $this->subject->updateLocalConfiguration($overrideConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultConfigurationValueByPathReturnsCorrectValue(): void
     {
         $this->createSubjectWithMockedMethods(
@@ -155,9 +148,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame('value', $this->subject->getDefaultConfigurationValueByPath('path'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLocalConfigurationValueByPathReturnsCorrectValue(): void
     {
         $this->createSubjectWithMockedMethods(
@@ -176,9 +167,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame('value', $this->subject->getLocalConfigurationValueByPath('path'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationValueByPathReturnsCorrectValue(): void
     {
         $this->createSubjectWithMockedMethods(
@@ -205,9 +194,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame('valueOverride', $this->subject->getConfigurationValueByPath('path'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLocalConfigurationValueByPathReturnFalseIfPathIsNotValid(): void
     {
         $this->createSubjectWithMockedMethods([
@@ -220,9 +207,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertFalse($this->subject->setLocalConfigurationValueByPath('path', 'value'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLocalConfigurationValueByPathUpdatesValueDefinedByPath(): void
     {
         $currentLocalConfiguration = [
@@ -254,9 +239,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $this->subject->setLocalConfigurationValueByPath('toUpdate', 'updated');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLocalConfigurationValuesByPathValuePairsSetsPathValuePairs(): void
     {
         $currentLocalConfiguration = [
@@ -293,9 +276,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $this->subject->setLocalConfigurationValuesByPathValuePairs($pairs);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeLocalConfigurationKeysByPathRemovesGivenPathsFromConfigurationAndReturnsTrue(): void
     {
         $currentLocalConfiguration = [
@@ -327,9 +308,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertTrue($this->subject->removeLocalConfigurationKeysByPath($removePaths));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeLocalConfigurationKeysByPathReturnsFalseIfNothingIsRemoved(): void
     {
         $currentLocalConfiguration = [
@@ -351,9 +330,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertFalse($this->subject->removeLocalConfigurationKeysByPath($removeNothing));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeLocalConfigurationKeysByPathReturnsFalseIfSomethingInexistentIsRemoved(): void
     {
         $currentLocalConfiguration = [
@@ -375,9 +352,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertFalse($this->subject->removeLocalConfigurationKeysByPath($removeNonExisting));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canWriteConfigurationReturnsTrueIfDirectoryAndFilesAreWritable(): void
     {
         $directory = StringUtility::getUniqueId('test_');
@@ -397,9 +372,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeLocalConfigurationWritesSortedContentToConfigurationFile(): void
     {
         $configurationFile = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('localConfiguration');
@@ -436,9 +409,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame($expectedContent, file_get_contents($configurationFile));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createLocalConfigurationFromFactoryConfigurationThrowsExceptionIfFileExists(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -452,9 +423,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $subject->createLocalConfigurationFromFactoryConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createLocalConfigurationFromFactoryConfigurationWritesContentFromFactoryFile(): void
     {
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getSystemConfigurationFileLocation', 'getFactoryConfigurationFileLocation']);
@@ -484,9 +453,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $subject->createLocalConfigurationFromFactoryConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createLocalConfigurationFromFactoryConfigurationMergesConfigurationWithAdditionalFactoryFile(): void
     {
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getSystemConfigurationFileLocation', 'getFactoryConfigurationFileLocation', 'getAdditionalFactoryConfigurationFileLocation']);
@@ -528,9 +495,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $subject->createLocalConfigurationFromFactoryConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidLocalConfigurationPathAcceptsAllowedPath(): void
     {
         $subject = $this->getAccessibleMock(ConfigurationManager::class, null);
@@ -538,9 +503,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertTrue($subject->_call('isValidLocalConfigurationPath', 'foo/bar/baz'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidLocalConfigurationPathDeniesNotAllowedPath(): void
     {
         $subject = $this->getAccessibleMock(ConfigurationManager::class, null);

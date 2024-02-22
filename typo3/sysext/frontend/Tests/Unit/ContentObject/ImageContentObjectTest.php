@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -81,10 +83,9 @@ final class ImageContentObjectTest extends UnitTestCase
 
     /**
      * Make sure that the rendering falls back to the classic <img style if nothing else is found
-     *
-     * @test
-     * @dataProvider getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider
      */
+    #[DataProvider('getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider')]
+    #[Test]
     public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound(?string $key, ?array $configuration): void
     {
         $defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###SELFCLOSINGTAGSLASH###>';
@@ -112,10 +113,9 @@ final class ImageContentObjectTest extends UnitTestCase
 
     /**
      * Assure if a layoutKey and layout is given the selected layout is returned
-     *
-     * @test
-     * @dataProvider getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider
      */
+    #[DataProvider('getImageTagTemplateReturnTemplateElementIdentifiedByKeyDataProvider')]
+    #[Test]
     public function getImageTagTemplateReturnTemplateElementIdentifiedByKey(string $key, array $configuration, string $expectation): void
     {
         $result = $this->subject->_call('getImageTagTemplate', $key, $configuration);
@@ -132,10 +132,9 @@ final class ImageContentObjectTest extends UnitTestCase
 
     /**
      * Make sure the source collection is empty if no valid configuration or source collection is defined
-     *
-     * @test
-     * @dataProvider getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider
      */
+    #[DataProvider('getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider')]
+    #[Test]
     public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefined(
         ?string $layoutKey,
         ?array $configuration,
@@ -147,9 +146,8 @@ final class ImageContentObjectTest extends UnitTestCase
 
     /**
      * Make sure the generation of subimages calls the generation of the subimages and uses the layout -> source template
-     *
-     * @test
      */
+    #[Test]
     public function getImageSourceCollectionRendersDefinedSources(): void
     {
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
@@ -238,10 +236,9 @@ final class ImageContentObjectTest extends UnitTestCase
 
     /**
      * Make sure the generation of subimages renders the expected HTML Code for the sourceset
-     *
-     * @test
-     * @dataProvider getImageSourceCollectionRendersDefinedLayoutKeyDataDefaultProvider
      */
+    #[DataProvider('getImageSourceCollectionRendersDefinedLayoutKeyDataDefaultProvider')]
+    #[Test]
     public function getImageSourceCollectionRendersDefinedLayoutKeyDefault(string $layoutKey, array $configuration): void
     {
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
@@ -353,10 +350,9 @@ final class ImageContentObjectTest extends UnitTestCase
 
     /**
      * Make sure the generation of subimages renders the expected HTML Code for the sourceset
-     *
-     * @test
-     * @dataProvider getImageSourceCollectionRendersDefinedLayoutKeyDataDataProvider
      */
+    #[DataProvider('getImageSourceCollectionRendersDefinedLayoutKeyDataDataProvider')]
+    #[Test]
     public function getImageSourceCollectionRendersDefinedLayoutKeyData(
         string $layoutKey,
         array $configuration,
@@ -403,9 +399,8 @@ final class ImageContentObjectTest extends UnitTestCase
 
     /**
      * Make sure the PSR-14 Event in get sourceCollection is called
-     *
-     * @test
      */
+    #[Test]
     public function modifyImageSourceCollectionEventIsCalled(): void
     {
         $cObj = $this->getAccessibleMock(
@@ -539,12 +534,12 @@ final class ImageContentObjectTest extends UnitTestCase
     /**
      * Check if linkWrap works properly.
      *
-     * @test
-     * @dataProvider  linkWrapDataProvider
      * @param string $expected The expected output.
      * @param string $content The parameter $content.
      * @param string|null $wrap The parameter $wrap.
      */
+    #[DataProvider('linkWrapDataProvider')]
+    #[Test]
     public function linkWrap(string $expected, string $content, $wrap): void
     {
         $pageInformation = new PageInformation();
