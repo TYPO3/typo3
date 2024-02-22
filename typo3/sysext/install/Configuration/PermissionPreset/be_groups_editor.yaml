@@ -1,0 +1,137 @@
+description: All permissions required to be the Editor role.
+dbMountpoints:
+  - 1
+groupMods:
+  - dashboard
+  - web_layout
+  - page_preview
+  - web_list
+  - media_management
+  - user_setup
+pageTypesSelect:
+  - 1 # Standard
+  - 3 # Link
+  - 4 # Shortcut
+  - 7 # Mountpoint
+  - 199 # Spacer
+  - 254 # Sys Folder
+tablesModify: &tablesModify
+  - pages
+  - sys_file
+  - sys_file_collection
+  - sys_file_metadata
+  - sys_file_reference
+  - sys_file_storage
+  - backend_layout
+  - tt_content
+  - sys_note
+tablesSelect:
+  <<: *tablesModify
+nonExcludeFields:
+  sys_file_metadata:
+    - categories
+    - title
+  sys_file_reference:
+    - alternative
+    - autoplay
+    - description
+    - crop
+    - link
+    - title
+  sys_file_collection:
+    - hidden
+    - sys_language_uid
+    - starttime
+    - endtime
+  pages:
+    - newUntil
+    - abstract
+    - fe_group
+    - author
+    - backend_layout_next_level
+    - backend_layout
+    - canonical_link
+    - categories
+    - rowDescription
+    - description
+    - author_email
+    - media
+    - no_follow
+    - layout
+    - no_search
+    - extendToSubpages
+    - no_index
+    - keywords
+    - lastUpdated
+    - nav_title
+    - og_description
+    - og_image
+    - og_title
+    - nav_hide
+    - hidden
+    - sitemap_priority
+    - shortcut_mode
+    - starttime
+    - endtime
+    - subtitle
+    - target
+    - seo_title
+    - twitter_description
+    - twitter_image
+    - twitter_title
+    - doktype
+    - twitter_card
+  tt_content:
+    - fe_group
+    - header_position
+    - imageborder
+    - categories
+    - image_zoom
+    - imagecols
+    - date
+    - rowDescription
+    - table_delimiter
+    - file_collections
+    - frame_class
+    - layout
+    - imageheight
+    - sectionIndex
+    - sys_language_uid
+    - header_link
+    - imageorient
+    - recursive
+    - filelink_size
+    - filelink_sorting
+    - filelink_sorting_direction
+    - space_after_class
+    - space_before_class
+    - starttime
+    - pages
+    - endtime
+    - subheader
+    - table_caption
+    - table_header_position
+    - table_class
+    - table_enclosure
+    - linkToTop
+    - header_layout
+    - bullets_type
+    - table_tfoot
+    - hidden
+    - imagewidth
+explicitAllowDeny:
+  tt_content:
+    CType:
+      - header
+      - text
+      - textpic
+      - image
+      - textmedia
+      - bullets
+      - table
+      - uploads
+      - shortcut
+      - list
+filePermissions:
+availableWidgets:
+  - seo-pagesWithoutMetaDescription

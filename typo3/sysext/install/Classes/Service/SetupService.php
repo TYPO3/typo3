@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
@@ -29,17 +30,20 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Command\BackendUserGroupType;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
 
 /**
- * Service class helping to manage parts of the setup process (set configuration, create backend user, create a basic site)
+ * Service class helping to manage parts of the setup process (set configuration,
+ * create backend user, create a basic site, create default backend groups, etc.)
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class SetupService
+readonly class SetupService
 {
     public function __construct(
-        private readonly ConfigurationManager $configurationManager,
-        private readonly SiteConfiguration $siteConfiguration,
+        private ConfigurationManager $configurationManager,
+        private SiteConfiguration $siteConfiguration,
+        private YamlFileLoader $yamlFileLoader,
     ) {}
 
     public function setSiteName(string $name): bool
@@ -51,7 +55,7 @@ class SetupService
      * Creates a site configuration with one language "English" which is the de-facto default language for TYPO3 in general.
      * @throws SiteConfigurationWriteException
      */
-    public function createSiteConfiguration(string $identifier, int $rootPageId, string $siteUrl)
+    public function createSiteConfiguration(string $identifier, int $rootPageId, string $siteUrl): void
     {
         // Create a default site configuration called "main" as best practice
         $this->siteConfiguration->createNewBasicSite($identifier, $rootPageId, $siteUrl);
@@ -213,5 +217,97 @@ For each website you need a TypoScript record on the main page of your website (
         );
 
         return $pageUid;
+    }
+
+    /**
+     * Initializes backend user group presets. Currently hard-coded to editor and advanced editor.
+     * When more backend user group presets are added, please refactor (maybe DTO).
+     */
+    public function createBackendUserGroups(bool $createEditor = true, bool $createAdvancedEditor = true): void
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        if ($createEditor) {
+            $connectionPool->getConnectionForTable('be_groups')->insert(
+                'be_groups',
+                [
+                    'title' => BackendUserGroupType::EDITOR->value,
+                    'description' => 'Editors have access to basic content element and modules in the backend.',
+                    'tstamp' => time(),
+                    'crdate' => time(),
+                ]
+            );
+            $editorGroupUid = (int)$connectionPool->getConnectionForTable('be_groups')->lastInsertId();
+            $editorPermissionPreset = $this->yamlFileLoader->load('EXT:install/Configuration/PermissionPreset/be_groups_editor.yaml');
+            $this->applyPermissionPreset($editorPermissionPreset, 'be_groups', $editorGroupUid);
+        }
+        if ($createAdvancedEditor) {
+            $connectionPool->getConnectionForTable('be_groups')->insert(
+                'be_groups',
+                [
+                    'title' => BackendUserGroupType::ADVANCED_EDITOR->value,
+                    'description' => 'Advanced Editors have access to all content elements and non administrative modules in the backend.',
+                    'tstamp' => time(),
+                    'crdate' => time(),
+                ]
+            );
+            $advancedEditorGroupUid = (int)$connectionPool->getConnectionForTable('be_groups')->lastInsertId();
+            $advancedEditorPermissionPreset = $this->yamlFileLoader->load('EXT:install/Configuration/PermissionPreset/be_groups_advanced_editor.yaml');
+            $this->applyPermissionPreset($advancedEditorPermissionPreset, 'be_groups', $advancedEditorGroupUid);
+        }
+    }
+
+    private function applyPermissionPreset(array $permissionPreset, string $table, int $recordId): void
+    {
+        $mappedPermissions = [];
+        if (isset($permissionPreset['dbMountpoints']) && is_array($permissionPreset['dbMountpoints'])) {
+            $mappedPermissions['db_mountpoints'] = implode(',', $permissionPreset['dbMountpoints']);
+        }
+        if (isset($permissionPreset['groupMods']) && is_array($permissionPreset['groupMods'])) {
+            $mappedPermissions['groupMods'] = implode(',', $permissionPreset['groupMods']);
+        }
+        if (isset($permissionPreset['pageTypesSelect']) && is_array($permissionPreset['pageTypesSelect'])) {
+            $mappedPermissions['pagetypes_select'] = implode(',', $permissionPreset['pageTypesSelect']);
+        }
+        if (isset($permissionPreset['tablesModify']) && is_array($permissionPreset['tablesModify'])) {
+            $mappedPermissions['tables_modify'] = implode(',', $permissionPreset['tablesModify']);
+        }
+        if (isset($permissionPreset['tablesSelect']) && is_array($permissionPreset['tablesSelect'])) {
+            $mappedPermissions['tables_select'] = implode(',', $permissionPreset['tablesSelect']);
+        }
+        if (isset($permissionPreset['nonExcludeFields']) && is_array($permissionPreset['nonExcludeFields'])) {
+            $nonExcludeFields = [];
+            foreach ($permissionPreset['nonExcludeFields'] as $tableName => $fields) {
+                foreach ($fields as $field) {
+                    $nonExcludeFields[] = "$tableName:$field";
+                }
+            }
+            if ($nonExcludeFields !== []) {
+                $mappedPermissions['non_exclude_fields'] = implode(',', $nonExcludeFields);
+            }
+        }
+        if (isset($permissionPreset['explicitAllowDeny']) && is_array($permissionPreset['explicitAllowDeny'])) {
+            $explicitAllowDeny = [];
+            foreach ($permissionPreset['explicitAllowDeny'] as $tableName => $columns) {
+                foreach ($columns as $column => $values) {
+                    foreach ($values as $value) {
+                        $explicitAllowDeny[] = "$tableName:$column:$value";
+                    }
+                }
+            }
+            if ($explicitAllowDeny !== []) {
+                $mappedPermissions['explicit_allowdeny'] = implode(',', $explicitAllowDeny);
+            }
+        }
+        if (isset($permissionPreset['availableWidgets']) && is_array($permissionPreset['availableWidgets'])) {
+            $mappedPermissions['availableWidgets'] = implode(',', $permissionPreset['availableWidgets']);
+        }
+        if ($mappedPermissions !== []) {
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $connectionPool->getConnectionForTable($table)->update(
+                $table,
+                $mappedPermissions,
+                ['uid' => $recordId]
+            );
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Context\Context;
@@ -104,9 +105,11 @@ class ServiceProvider extends AbstractServiceProvider
             Command\UpgradeWizardRunCommand::class => self::getUpgradeWizardRunCommand(...),
             Command\UpgradeWizardListCommand::class => self::getUpgradeWizardListCommand(...),
             Command\SetupCommand::class => self::getSetupCommand(...),
+            Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
             Mailer::class => self::getMailer(...),
             Updates\DatabaseUpdatedPrerequisite::class => self::getDatabaseUpdatedPrerequisite(...),
+            YamlFileLoader::class => self::getYamlFileLoader(...),
         ];
     }
 
@@ -235,6 +238,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\SetupService(
             $container->get(ConfigurationManager::class),
             $container->get(SiteConfiguration::class),
+            $container->get(YamlFileLoader::class)
         );
     }
 
@@ -405,6 +409,14 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
+    public function getSetupDefaultBackendUserGroupsCommand(ContainerInterface $container): Command\SetupDefaultBackendUserGroupsCommand
+    {
+        return new Command\SetupDefaultBackendUserGroupsCommand(
+            'setup:begroups:default',
+            $container->get(Service\SetupService::class),
+        );
+    }
+
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
@@ -423,6 +435,11 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Updates\DatabaseUpdatedPrerequisite::class, [
             $container->get(Service\DatabaseUpgradeWizardsService::class),
         ]);
+    }
+
+    public static function getYamlFileLoader(ContainerInterface $container): YamlFileLoader
+    {
+        return new YamlFileLoader();
     }
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry
@@ -448,6 +465,11 @@ class ServiceProvider extends AbstractServiceProvider
             'setup',
             Command\SetupCommand::class,
             'Setup TYPO3 via CLI.'
+        );
+        $commandRegistry->addLazyCommand(
+            'setup:begroups:default',
+            Command\SetupDefaultBackendUserGroupsCommand::class,
+            'Setup default backend user groups "Editor" and "Advanced Editor".'
         );
         return $commandRegistry;
     }

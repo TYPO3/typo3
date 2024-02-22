@@ -1,0 +1,225 @@
+description: All permissions required by the Advanced Editor role.
+dbMountpoints:
+  - 1
+groupMods:
+  - dashboard
+  - web_layout
+  - page_preview
+  - web_list
+  - web_FormFormbuilder
+  - web_info
+  - web_info_overview
+  - web_info_translations
+  - media_management
+  - site_redirects
+  - user_setup
+  - system_BelogLog
+pageTypesSelect:
+  - 1 # Standard
+  - 3 # Link
+  - 4 # Shortcut
+  - 6 # Backend User Section
+  - 7 # Mountpoint
+  - 199 # Spacer
+  - 254 # Sys Folder
+tablesModify: &tablesModify
+  - pages
+  - sys_category
+  - sys_file
+  - sys_file_collection
+  - sys_file_metadata
+  - sys_file_reference
+  - sys_file_storage
+  - backend_layout
+  - fe_groups
+  - fe_users
+  - tt_content
+  - tx_impexp_presets
+  - sys_redirect
+  - sys_note
+tablesSelect:
+  <<: *tablesModify
+nonExcludeFields:
+  backend_layout:
+    - hidden
+    - icon
+  sys_category:
+    - hidden
+    - sys_language_uid
+    - starttime
+    - endtime
+  sys_file_metadata:
+    - categories
+    - title
+  sys_file_reference:
+    - alternative
+    - autoplay
+    - description
+    - crop
+    - link
+    - title
+  sys_file_collection:
+    - hidden
+    - sys_language_uid
+    - starttime
+    - endtime
+  pages:
+    - newUntil
+    - abstract
+    - fe_group
+    - author
+    - backend_layout_next_level
+    - backend_layout
+    - cache_timeout
+    - cache_tags
+    - canonical_link
+    - categories
+    - sitemap_changefreq
+    - module
+    - rowDescription
+    - description
+    - author_email
+    - media
+    - no_follow
+    - layout
+    - php_tree_stop
+    - no_search
+    - extendToSubpages
+    - no_index
+    - is_siteroot
+    - keywords
+    - lastUpdated
+    - l18n_cfg
+    - mount_pid_ol
+    - nav_title
+    - og_description
+    - og_image
+    - og_title
+    - nav_hide
+    - hidden
+    - sitemap_priority
+    - shortcut_mode
+    - content_from_pid
+    - starttime
+    - endtime
+    - subtitle
+    - target
+    - seo_title
+    - twitter_description
+    - twitter_image
+    - twitter_title
+    - doktype
+    - twitter_card
+  tt_content:
+    - pi_flexform;felogin_login;sDEF;settings.pages
+    - fe_group
+    - header_position
+    - imageborder
+    - categories
+    - image_zoom
+    - imagecols
+    - date
+    - rowDescription
+    - uploads_description
+    - uploads_type
+    - table_delimiter
+    - file_collections
+    - frame_class
+    - layout
+    - imageheight
+    - sectionIndex
+    - sys_language_uid
+    - header_link
+    - imageorient
+    - recursive
+    - filelink_size
+    - filelink_sorting
+    - filelink_sorting_direction
+    - space_after_class
+    - space_before_class
+    - starttime
+    - pages
+    - endtime
+    - subheader
+    - table_caption
+    - table_header_position
+    - table_class
+    - table_enclosure
+    - linkToTop
+    - header_layout
+    - bullets_type
+    - table_tfoot
+    - hidden
+    - imagewidth
+  sys_redirect:
+    - hitcount
+    - createdon
+    - description
+    - disabled
+    - force_https
+    - disable_hitcount
+    - is_regexp
+    - keep_query_parameters
+    - lasthiton
+    - protected
+    - respect_query_parameters
+    - starttime
+    - target_statuscode
+    - endtime
+  fe_users:
+    - address
+    - city
+    - company
+    - country
+    - email
+    - disable
+    - fax
+    - first_name
+    - image
+    - lastlogin
+    - last_name
+    - middle_name
+    - name
+    - telephone
+    - tx_extbase_type
+    - felogin_redirectPid
+    - starttime
+    - endtime
+    - title
+    - www
+    - zip
+  fe_groups:
+    - hidden
+    - felogin_redirectPid
+    - subgroup
+explicitAllowDeny:
+  tt_content:
+    CType:
+      - header
+      - text
+      - textpic
+      - image
+      - textmedia
+      - bullets
+      - table
+      - uploads
+      - menu_abstract
+      - menu_categorized_content
+      - menu_categorized_pages
+      - menu_pages
+      - menu_subpages
+      - menu_recently_updated
+      - menu_related_pages
+      - menu_section
+      - menu_section_pages
+      - menu_sitemap
+      - menu_sitemap_pages
+      - shortcut
+      - list
+      - div
+      - html
+      - form_formframework
+      - felogin_login
+filePermissions:
+availableWidgets:
+  - seo-pagesWithoutMetaDescription

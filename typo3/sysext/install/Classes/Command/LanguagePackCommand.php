@@ -40,6 +40,7 @@ class LanguagePackCommand extends Command
     ) {
         parent::__construct($name);
     }
+
     /**
      * Configure the command by defining the name, options and arguments
      */

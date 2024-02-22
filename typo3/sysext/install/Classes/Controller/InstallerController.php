@@ -643,7 +643,9 @@ final class InstallerController
                 )
             );
         }
-
+        if (($request->getParsedBody()['install']['values']['backendgroups'] ?? '') === 'creategroups') {
+            $this->setupService->createBackendUserGroups();
+        }
         // Mark upgrade wizards as done
         $this->setupDatabaseService->markWizardsDone($container);
 

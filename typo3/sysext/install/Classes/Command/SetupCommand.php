@@ -62,7 +62,6 @@ class SetupCommand extends Command
         private readonly FailsafePackageManager $packageManager,
     ) {
         parent::__construct($name);
-
     }
 
     protected function configure()
