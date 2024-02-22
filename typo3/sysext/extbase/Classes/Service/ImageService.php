@@ -156,7 +156,7 @@ class ImageService implements SingletonInterface
         }
         if (MathUtility::canBeInterpretedAsInteger($src)) {
             if ($treatIdAsReference) {
-                $image = $this->resourceFactory->getFileReferenceObject($src);
+                $image = $this->resourceFactory->getFileReferenceObject((int)$src);
             } else {
                 $image = $this->resourceFactory->getFileObject($src);
             }

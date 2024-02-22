@@ -551,16 +551,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/FileReference.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileReferenceObject\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Filter/FileExtensionFilter.php
-
-		-
-			message: "#^Parameter \\#2 \\$id of method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:deleteAction\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Filter/FileExtensionFilter.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getReadablePath\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
@@ -1146,11 +1136,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Service/ImageService.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileReferenceObject\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Service/ImageService.php
-
-		-
 			message: "#^Result of && is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Utility/DebuggerUtility.php
@@ -1631,11 +1616,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Mvc/Property/PropertyMappingConfiguration.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileReferenceObject\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php
-
-		-
 			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getStorageObject\\(\\) expects int\\|null, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php
@@ -1737,11 +1717,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileObject\\(\\) expects int, string given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileReferenceObject\\(\\) expects int, string given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 

@@ -151,7 +151,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
                         $resource = $this->createFileReferenceFromFalFileObject($this->resourceFactory->getFileObject($fileUid));
                     } else {
                         $resource = $this->createFileReferenceFromFalFileReferenceObject(
-                            $this->resourceFactory->getFileReferenceObject($resourcePointer),
+                            $this->resourceFactory->getFileReferenceObject((int)$resourcePointer),
                             (int)$resourcePointer
                         );
                     }

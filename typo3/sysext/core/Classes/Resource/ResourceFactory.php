@@ -53,7 +53,7 @@ class ResourceFactory implements SingletonInterface
     /**
      * @var FileReference[]
      */
-    protected $fileReferenceInstances = [];
+    protected array $fileReferenceInstances = [];
 
     public function __construct(
         protected readonly StorageRepository $storageRepository,
@@ -422,18 +422,10 @@ class ResourceFactory implements SingletonInterface
      * @param int $uid The uid of the file usage (sys_file_reference) to instantiate.
      * @param array $fileReferenceData The record row from database.
      * @param bool $raw Whether to get raw results without performing overlays
-     * @return FileReference
-     * @throws \InvalidArgumentException
      * @throws Exception\ResourceDoesNotExistException
      */
-    public function getFileReferenceObject($uid, array $fileReferenceData = [], $raw = false)
+    public function getFileReferenceObject(int $uid, array $fileReferenceData = [], bool $raw = false): FileReference
     {
-        if (!is_numeric($uid)) {
-            throw new \InvalidArgumentException(
-                'The reference UID for the file (sys_file_reference) has to be numeric. UID given: "' . $uid . '"',
-                1300086584
-            );
-        }
         if (!($this->fileReferenceInstances[$uid] ?? false)) {
             // Fetches data in case $fileData is empty
             if (empty($fileReferenceData)) {
@@ -454,13 +446,10 @@ class ResourceFactory implements SingletonInterface
      * Creates a file usage object from an array of fileReference data
      * from sys_file_reference table.
      * Requires a database row to be already fetched and present.
-     *
-     * @return FileReference
      */
-    public function createFileReferenceObject(array $fileReferenceData)
+    public function createFileReferenceObject(array $fileReferenceData): FileReference
     {
-        $fileReferenceObject = GeneralUtility::makeInstance(FileReference::class, $fileReferenceData);
-        return $fileReferenceObject;
+        return GeneralUtility::makeInstance(FileReference::class, $fileReferenceData);
     }
 
     /**

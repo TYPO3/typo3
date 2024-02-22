@@ -62,7 +62,7 @@ class FileExtensionFilter
                 continue;
             }
             $parts = GeneralUtility::revExplode('_', (string)$reference, 2);
-            $fileReferenceUid = $parts[count($parts) - 1];
+            $fileReferenceUid = (int)$parts[count($parts) - 1];
             try {
                 $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($fileReferenceUid);
                 $file = $fileReference->getOriginalFile();

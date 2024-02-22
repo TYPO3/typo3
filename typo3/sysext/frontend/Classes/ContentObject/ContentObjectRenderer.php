@@ -428,7 +428,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 if ($objectType === 'File') {
                     $this->currentFile = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($identifier);
                 } elseif ($objectType === 'FileReference') {
-                    $this->currentFile = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($identifier);
+                    $this->currentFile = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject((int)$identifier);
                 }
             } catch (ResourceDoesNotExistException $e) {
                 $this->currentFile = null;
@@ -3587,7 +3587,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     if (MathUtility::canBeInterpretedAsInteger($file)) {
                         $treatIdAsReference = $this->stdWrapValue('treatIdAsReference', $fileArray);
                         if (!empty($treatIdAsReference)) {
-                            $fileReference = $this->getResourceFactory()->getFileReferenceObject($file);
+                            $fileReference = $this->getResourceFactory()->getFileReferenceObject((int)$file);
                             $fileObject = $fileReference->getOriginalFile();
                         } else {
                             $fileObject = $this->getResourceFactory()->getFileObject($file);
@@ -3620,10 +3620,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $processingConfiguration['sample'] = (bool)$this->stdWrapValue('sample', $fileArray);
                 $processingConfiguration['additionalParameters'] = $this->stdWrapValue('params', $fileArray);
                 $processingConfiguration['frame'] = (int)$this->stdWrapValue('frame', $fileArray);
-                if ($fileReference instanceof FileReference) {
-                    $processingConfiguration['crop'] = $this->getCropAreaFromFileReference($fileReference, $fileArray);
-                } else {
+                if ($fileReference === null) {
                     $processingConfiguration['crop'] = $this->getCropAreaFromFromTypoScriptSettings($fileObject, $fileArray);
+                } else {
+                    $processingConfiguration['crop'] = $this->getCropAreaFromFileReference($fileReference, $fileArray);
                 }
 
                 // Possibility to cancel/force profile extraction
