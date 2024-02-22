@@ -196,10 +196,9 @@ class DataHandler implements LoggerAwareInterface
      * Object. Call back object for FlexForm traversal. Useful when external classes wants to use the
      * iteration functions inside DataHandler for traversing a FlexForm structure.
      *
-     * @var object
      * @internal should only be used from within TYPO3 Core
      */
-    public $callBackObj;
+    public ?object $callBackObj = null;
 
     /**
      * A string which can be used as correlationId for RecordHistory entries.
@@ -278,10 +277,8 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * The user-object the script uses. If not set from outside, this is set to the current global $BE_USER.
-     *
-     * @var BackendUserAuthentication
      */
-    public $BE_USER;
+    public BackendUserAuthentication $BE_USER;
 
     /**
      * Will be set to uid of be_user executing this script
@@ -311,15 +308,21 @@ class DataHandler implements LoggerAwareInterface
     protected array $control = [];
 
     /**
-     * Set with incoming data array
+     * Set with incoming data array. The array shape is checked in start() before setting this property.
      *
-     * @var array<int|string, array<int|string, array>>
+     * @todo: This is public to allow manipulation by hooks (e.g. workspaces). Consider
+     *        introduction of a public setter setCommandMap() that checks the array shape
+     *        as done in start() already. Then have a getter as well and protect this property.
+     * @var array<string, array<int|string, array>>
      */
     public array $datamap = [];
 
     /**
-     * Set with incoming cmd array
+     * Incoming command array. The array shape is checked in start() before setting this property.
      *
+     * @todo: This is public to allow manipulation by hooks (e.g. workspaces). Consider
+     *        introduction of a public setter setCommandMap() that checks the array shape
+     *        as done in start() already. Then have a getter as well and protect this property.
      * @var array<string, array<int|string, array>>
      */
     public array $cmdmap = [];
@@ -364,7 +367,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Used for caching page records in pageInfo()
      *
-     * @var array<int, array<string, array>>
+     * @var array<int, array<string, int|string|null>>
      */
     protected array $pageCache = [];
 
@@ -507,16 +510,16 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Initializing.
      * For details, see 'TYPO3 Core API' document.
-     * This function does not start the processing of data, but merely initializes the object
+     * This method does not start the processing of data, but merely initializes the object.
      *
-     * @param array $data Data to be modified or inserted in the database
-     * @param array $cmd Commands to copy, move, delete, localize, versionize records.
-     * @param BackendUserAuthentication|null $altUserObject An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
+     * @param array $dataMap Data to be modified or inserted in the database
+     * @param array $commandMap Commands to copy, move, delete, localize, versionize records.
+     * @param BackendUserAuthentication|null $backendUser An alternative user, default is $GLOBALS['BE_USER']
      */
-    public function start($data, $cmd, $altUserObject = null): void
+    public function start(array $dataMap, array $commandMap, ?BackendUserAuthentication $backendUser = null): void
     {
         // Initializing BE_USER
-        $this->BE_USER = is_object($altUserObject) ? $altUserObject : $GLOBALS['BE_USER'];
+        $this->BE_USER = $backendUser ?: $GLOBALS['BE_USER'];
         $this->userid = (int)($this->BE_USER->user['uid'] ?? 0);
         $this->admin = $this->BE_USER->user['admin'] ?? false;
 
@@ -535,15 +538,27 @@ class DataHandler implements LoggerAwareInterface
         if (!$this->admin) {
             $this->excludedTablesAndFields = array_flip($this->getExcludeListArray());
         }
-        // Setting the data and cmd arrays
-        if (is_array($data)) {
-            reset($data);
-            $this->datamap = $data;
+
+        foreach ($dataMap as $tableName => $tableRecordArray) {
+            // @todo: Move this to a public setter and call it here. Then protect the property.
+            if (!is_string($tableName) || !is_array($tableRecordArray)) {
+                throw new \UnexpectedValueException('Data array must be shaped ["tableName" => [uid/"NEW.." => ["fieldName" => value]]]', 1709035799);
+            }
         }
-        if (is_array($cmd)) {
-            reset($cmd);
-            $this->cmdmap = $cmd;
+        $this->datamap = $dataMap;
+
+        foreach ($commandMap as $idCommandArray) {
+            // @todo: Move this to a public setter and call it here. Then protect the property.
+            if (!is_array($idCommandArray)) {
+                throw new \UnexpectedValueException('Command array must be shaped ["table" => [uid => ["command" => value]]]', 1708586415);
+            }
+            foreach ($idCommandArray as $id => $commandValueArray) {
+                if (!MathUtility::canBeInterpretedAsInteger($id) || !is_array($commandValueArray)) {
+                    throw new \UnexpectedValueException('Single record commands must be shaped [uid => ["command" => value]]', 1708586979);
+                }
+            }
         }
+        $this->cmdmap = $commandMap;
     }
 
     /**
@@ -1124,7 +1139,7 @@ class DataHandler implements LoggerAwareInterface
      * @return array Field Array
      * @internal should only be used from within DataHandler
      */
-    public function fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $realPid, $status, $tscPID)
+    public function fillInFieldArray($table, $id, array $fieldArray, array $incomingFieldArray, $realPid, $status, $tscPID)
     {
         // Initialize:
         $originalLanguageRecord = null;
@@ -1133,13 +1148,9 @@ class DataHandler implements LoggerAwareInterface
         $isNewRecord = str_contains((string)$id, 'NEW');
         // Setting 'currentRecord' and 'checkValueRecord':
         if ($isNewRecord) {
-            // Must have the 'current' array - not the values after processing below...
+            // Overlay default values with incoming values.
             $checkValueRecord = $fieldArray;
-            // IF $incomingFieldArray is an array, overlay it.
-            // The point is that when new records are created as copies with flex type fields there might be a field containing information about which DataStructure to use and without that information the flexforms cannot be correctly processed.... This should be OK since the $checkValueRecord is used by the flexform evaluation only anyways...
-            if (is_array($incomingFieldArray) && is_array($checkValueRecord)) {
-                ArrayUtility::mergeRecursiveWithOverrule($checkValueRecord, $incomingFieldArray);
-            }
+            ArrayUtility::mergeRecursiveWithOverrule($checkValueRecord, $incomingFieldArray);
             $currentRecord = $checkValueRecord;
         } else {
             $id = (int)$id;
@@ -1619,11 +1630,11 @@ class DataHandler implements LoggerAwareInterface
             }
             $valueArray = explode('.', $value);
             $dec = array_pop($valueArray);
-            $value = implode('', $valueArray) . '.' . $dec;
+            $value = (float)(implode('', $valueArray) . '.' . $dec);
             if ($negative) {
-                $value *= -1;
+                $value = $value * -1;
             }
-            $result['value'] = number_format((float)$value, $precision, '.', '');
+            $result['value'] = number_format($value, $precision, '.', '');
         } else {
             $result['value'] = (int)$value;
         }
@@ -2165,7 +2176,7 @@ class DataHandler implements LoggerAwareInterface
             //        are permanently removed from the value.
             //        Suggestion: Throw an exception instead? Maybe a specific, catchable exception that generates a
             //        error message to the user - dynamic item sets via itemProcFunc on check would be a bad idea anyway.
-            $value = $value & $maxV;
+            $value = (int)$value & $maxV;
         }
         if ($field && $value > 0 && !empty($tcaFieldConf['eval'])) {
             $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
@@ -3338,19 +3349,19 @@ class DataHandler implements LoggerAwareInterface
         }
         $pasteDatamap = [];
         // Traverse command map:
-        foreach ($this->cmdmap as $table => $_) {
+        foreach ($this->cmdmap as $table => $idCommandArray) {
             // Check if the table may be modified!
             $modifyAccessList = $this->checkModifyAccessList($table);
             if (!$modifyAccessList) {
                 $this->log($table, 0, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify table "{table}" without permission', 1, ['table' => $table]);
             }
             // Check basic permissions and circumstances:
-            if (!isset($GLOBALS['TCA'][$table]) || $this->tableReadOnly($table) || !is_array($this->cmdmap[$table]) || !$modifyAccessList) {
+            if (!isset($GLOBALS['TCA'][$table]) || $this->tableReadOnly($table) || !$modifyAccessList) {
                 continue;
             }
 
             // Traverse the command map:
-            foreach ($this->cmdmap[$table] as $id => $incomingCmdArray) {
+            foreach ($idCommandArray as $id => $incomingCmdArray) {
                 if (!is_array($incomingCmdArray)) {
                     continue;
                 }
@@ -3382,6 +3393,7 @@ class DataHandler implements LoggerAwareInterface
                     $commandIsProcessed = false;
                     foreach ($hookObjectsArr as $hookObj) {
                         if (method_exists($hookObj, 'processCmdmap')) {
+                            /** @var bool $commandIsProcessed */
                             $hookObj->processCmdmap($command, $table, $id, $value, $commandIsProcessed, $this, $pasteUpdate);
                         }
                     }
@@ -4362,6 +4374,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'moveRecord')) {
+                /** @var bool $recordWasMoved */
                 $hookObj->moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, $recordWasMoved, $this);
             }
         }
@@ -5038,6 +5051,7 @@ class DataHandler implements LoggerAwareInterface
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] ?? [] as $className) {
                 $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'processCmdmap_deleteAction')) {
+                    /** @var bool $recordWasDeleted */
                     $hookObj->processCmdmap_deleteAction($table, $id, $recordToDelete, $recordWasDeleted, $this);
                 }
             }
@@ -5798,6 +5812,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'processCmdmap_discardAction')) {
+                /** @var bool $recordWasDiscarded */
                 $hookObj->processCmdmap_discardAction($table, $uid, $record, $recordWasDiscarded);
             }
         }
@@ -7061,29 +7076,28 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Checks if a table is allowed on a certain page id according to allowed tables set for the page "doktype" and its [ctrl][rootLevel]-settings if any.
      *
-     * @param int $page_uid Page id for which to check, including 0 (zero) if checking for page tree root.
+     * @param int $pageUid Page id for which to check, including 0 (zero) if checking for page tree root.
      * @param string $checkTable Table name to check
      * @return bool TRUE if OK
      * @internal should only be used from within DataHandler
      */
-    public function isTableAllowedForThisPage($page_uid, $checkTable): bool
+    protected function isTableAllowedForThisPage(int $pageUid, $checkTable): bool
     {
-        $page_uid = (int)$page_uid;
         $rootLevelSetting = (int)($GLOBALS['TCA'][$checkTable]['ctrl']['rootLevel'] ?? 0);
         // Check if rootLevel flag is set and we're trying to insert on rootLevel - and reversed - and that the table is not "pages" which are allowed anywhere.
-        if ($checkTable !== 'pages' && $rootLevelSetting !== -1 && ($rootLevelSetting xor !$page_uid)) {
+        if ($checkTable !== 'pages' && $rootLevelSetting !== -1 && ($rootLevelSetting xor !$pageUid)) {
             return false;
         }
         $allowed = false;
         // Check root-level
-        if (!$page_uid) {
+        if (!$pageUid) {
             if ($this->admin || BackendUtility::isRootLevelRestrictionIgnored($checkTable)) {
                 $allowed = true;
             }
             return $allowed;
         }
         // Check non-root-level
-        $doktype = $this->pageInfo($page_uid, 'doktype');
+        $doktype = $this->pageInfo($pageUid, 'doktype');
         return GeneralUtility::makeInstance(PageDoktypeRegistry::class)->isRecordTypeAllowedForDoktype($checkTable, (int)$doktype);
     }
 
@@ -7326,10 +7340,10 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param int $id Page uid
      * @param string $field Field name for which to return value
-     * @return string Value of the field. Result is cached in $this->pageCache[$id][$field] and returned from there next time!
+     * @return string|int|null Value of the field. Result is cached in $this->pageCache[$id][$field] and returned from there next time!
      * @internal should only be used from within DataHandler
      */
-    public function pageInfo($id, $field)
+    protected function pageInfo(int $id, string $field): int|string|null
     {
         if (!isset($this->pageCache[$id])) {
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
@@ -8039,7 +8053,7 @@ class DataHandler implements LoggerAwareInterface
      * @return array Array with default values.
      * @internal should only be used from within DataHandler
      */
-    public function newFieldArray($table)
+    public function newFieldArray($table): array
     {
         $fieldArray = [];
         if (is_array($GLOBALS['TCA'][$table]['columns'])) {
@@ -9522,9 +9536,8 @@ class DataHandler implements LoggerAwareInterface
      * Gets elements of the command map that match a particular command.
      *
      * @param string $needle The command to be matched
-     * @return array
      */
-    protected function getCommandMapElements($needle)
+    protected function getCommandMapElements(string $needle): array
     {
         $elements = [];
         foreach ($this->cmdmap as $tableName => $idArray) {

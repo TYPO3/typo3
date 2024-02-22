@@ -789,28 +789,24 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $this->subject->BE_USER = $backendUser;
-        $this->subject->enableLogging = true;
-        $this->subject->errorLog = [];
+        $subject = new DataHandler();
+        $subject->start([], [], $this->createMock(BackendUserAuthentication::class));
         $logDetails = StringUtility::getUniqueId('details');
-        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
+        $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
-        self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
+        self::assertStringEndsWith($expected, $subject->errorLog[0]);
     }
 
     #[Test]
     public function logFormatsDetailMessageWithPlaceholders(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $this->subject->BE_USER = $backendUser;
-        $this->subject->enableLogging = true;
-        $this->subject->errorLog = [];
+        $subject = new DataHandler();
+        $subject->start([], [], $this->createMock(BackendUserAuthentication::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
-        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
+        $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
         // UID is kept as non-replaced, and other properties are not replaced.
         $expected = 'An error occurred on tx_sometable:{uid} when localizing';
-        self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
+        self::assertStringEndsWith($expected, $subject->errorLog[0]);
     }
 
     #[DataProvider('equalSubmittedAndStoredValuesAreDeterminedDataProvider')]

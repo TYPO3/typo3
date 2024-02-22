@@ -230,8 +230,6 @@ class TcaMigration
      *
      * The list of references to usages below is not necessarily complete.
      *
-     * @param array $tca
-     *
      * @see \TYPO3\CMS\Core\DataHandling\DataHandler::fillInFieldArray()
      */
     protected function sanitizeControlSectionIntegrity(array $tca): array

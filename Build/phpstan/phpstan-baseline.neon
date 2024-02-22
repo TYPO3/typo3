@@ -301,46 +301,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Crypto/HashService.php
 
 		-
-			message: "#^Binary operation \"&\" between string and int\\<1, max\\> results in an error\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Binary operation \"\\*\\=\" between non\\-falsy\\-string and \\-1 results in an error\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Left side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:pageInfo\\(\\) should return string but returns array\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Negated boolean expression is always true\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Result of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapProcessor\\:\\:fetchDependencies\\(\\) should return array\\<array\\<TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\> but returns array\\<int\\|string, array\\<string, array\\<int, TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\>\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
@@ -631,11 +591,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
 
 		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Resource/Security/FileMetadataPermissionsAspect.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\MappableProcessor\\:\\:fetchMappers\\(\\) should return array\\<TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\MappableAspectInterface\\> but returns array\\<TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Aspect\\\\AspectInterface\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/Aspect/MappableProcessor.php
@@ -854,11 +809,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$sourceCode of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\:\\:set\\(\\) expects string, array given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Frontend/PhpFrontendTest.php
-
-		-
-			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
 
 		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Log\\\\Logger\\:\\:\\$records\\.$#"

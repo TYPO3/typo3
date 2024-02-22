@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * We do not have AOP in TYPO3 for now, thus the aspect which
@@ -68,27 +67,16 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
     public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent)
     {
         if ($table === 'sys_file_metadata') {
-            if (isset($parent->cmdmap[$table]) && is_array($parent->cmdmap[$table])) {
-                foreach ($parent->cmdmap[$table] as $id => $command) {
-                    if (empty($id) || !MathUtility::canBeInterpretedAsInteger($id)) {
-                        throw new \UnexpectedValueException(
-                            'Integer expected for data manipulation command.
-							This can only happen in the case of an attack attempt or when something went horribly wrong.
-							To not compromise security, we exit here.',
-                            1399982816
-                        );
-                    }
-
-                    $fileMetadataRecord = (array)BackendUtility::getRecord('sys_file_metadata', (int)$id);
-                    $accessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
-                    if (!$accessAllowed) {
-                        // If for any item in the array, access is not allowed, we deny the whole operation
-                        break;
-                    }
+            foreach (($parent->cmdmap['sys_file_metadata'] ?? []) as $id => $command) {
+                $fileMetadataRecord = (array)BackendUtility::getRecord('sys_file_metadata', (int)$id);
+                $accessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
+                if (!$accessAllowed) {
+                    // If for any item in the array, access is not allowed, we deny the whole operation
+                    break;
                 }
             }
 
-            if (isset($parent->datamap[$table]) && is_array($parent->datamap[$table])) {
+            if (isset($parent->datamap[$table])) {
                 foreach ($parent->datamap[$table] as $id => $data) {
                     $recordAccessAllowed = false;
 
