@@ -285,9 +285,11 @@ class FilesControlContainer extends AbstractContainer
             }
         }
 
-        $controls = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
             new CustomFileControlsEvent($resultArray, $table, $field, $row, $config, $formFieldIdentifier, $formFieldName)
-        )->getControls();
+        );
+        $resultArray = $event->getResultArray();
+        $controls = $event->getControls();
 
         if ($controls !== []) {
             $view->assign('customControls', [
@@ -296,9 +298,9 @@ class FilesControlContainer extends AbstractContainer
             ]);
         }
 
-        $resultArray['html'] = $view->render('Form/FilesControlContainer');
-        $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $this->javaScriptModules);
+        $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'] ?? [], $this->javaScriptModules);
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/container/files-control-container.js');
+        $resultArray['html'] = $view->render('Form/FilesControlContainer');
 
         return $resultArray;
     }
