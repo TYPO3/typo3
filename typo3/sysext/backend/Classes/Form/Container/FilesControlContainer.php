@@ -271,9 +271,11 @@ class FilesControlContainer extends AbstractContainer
             }
         }
 
-        $controls = $this->eventDispatcher->dispatch(
+        $event = $this->eventDispatcher->dispatch(
             new CustomFileControlsEvent($resultArray, $table, $field, $row, $config, $formFieldIdentifier, $formFieldName)
-        )->getControls();
+        );
+        $resultArray = $event->getResultArray();
+        $controls = $event->getControls();
 
         if ($controls !== []) {
             $view->assign('customControls', [
