@@ -155,7 +155,7 @@ available in the reaction's table selection, add the table in a corresponding
     if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reactions')) {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
             'sys_reaction',
-            'tx_myextension_domain_model_mytable',
+            'table_name',
             [
                 'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:tx_myextension_domain_model_mytable',
                 'tx_myextension_domain_model_mytable',
