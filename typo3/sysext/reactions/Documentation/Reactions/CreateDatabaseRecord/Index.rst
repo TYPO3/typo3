@@ -157,8 +157,8 @@ available in the reaction's table selection, add the table in a corresponding
             'sys_reaction',
             'table_name',
             [
-                'label' => LLL:EXT:myext/Resources/Private/Language/locallang.xlf:tx_myextension_domain_model_mytable',
-                'value' => tx_myextension_domain_model_mytable',
+                'label' => 'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:tx_myextension_domain_model_mytable',
+                'value' => 'tx_myextension_domain_model_mytable',
                 'icon' => 'myextension-tx_myextension_domain_model_mytable-icon',
             ]
         );
