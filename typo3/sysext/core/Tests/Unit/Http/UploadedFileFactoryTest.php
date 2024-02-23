@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Http\Stream;
@@ -25,18 +26,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UploadedFileFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsr17FactoryInterface(): void
     {
         $factory = new UploadedFileFactory();
         self::assertInstanceOf(UploadedFileFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUploadedFile(): void
     {
         $stream = new Stream('php://memory');
@@ -49,9 +46,7 @@ final class UploadedFileFactoryTest extends UnitTestCase
         self::assertNull($uploadedFile->getClientMediaType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUploadedFileWithParams(): void
     {
         $stream = new Stream('php://memory');
@@ -64,9 +59,7 @@ final class UploadedFileFactoryTest extends UnitTestCase
         self::assertSame('text/html', $uploadedFile->getClientMediaType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUploadedFileCreateSizeFromStreamSize(): void
     {
         $stream = new Stream('php://memory', 'rw');
@@ -78,9 +71,7 @@ final class UploadedFileFactoryTest extends UnitTestCase
         self::assertSame(5, $uploadedFile->getSize());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUploadedFileThrowsExceptionWhenStreamSizeCanNotBeDetermined(): void
     {
         $this->expectException(\InvalidArgumentException::class);

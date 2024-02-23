@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -176,20 +178,16 @@ final class LinkServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function resolveReturnsSplitParameters(string $input, array $expected, string $finalString): void
     {
         $subject = new LinkService();
         self::assertEquals($expected, $subject->resolve($input));
     }
 
-    /**
-     * @test
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifier(string $input, array $parameters, string $expected): void
     {
         $subject = new LinkService();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
@@ -26,9 +27,7 @@ final class YamlSourceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadThrowsExceptionIfFileToLoadNotExists(): void
     {
         $this->expectException(ParseErrorException::class);
@@ -43,9 +42,7 @@ final class YamlSourceTest extends UnitTestCase
         $mockYamlSource->_call('load', $input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadThrowsExceptionIfFileToLoadIsNotValidYamlUseSymfonyParser(): void
     {
         $this->expectException(ParseErrorException::class);
@@ -60,9 +57,7 @@ final class YamlSourceTest extends UnitTestCase
         $mockYamlSource->_call('load', $input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderFromFileReturnsHeaderPart(): void
     {
         $mockYamlSource = $this->getAccessibleMock(YamlSource::class, null, [], '', false);
@@ -76,9 +71,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertSame($expected, $mockYamlSource->_call('getHeaderFromFile', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadOverruleNonArrayValuesOverArrayValues(): void
     {
         $mockYamlSource = $this->getAccessibleMock(YamlSource::class, null, [], '', false);
@@ -98,9 +91,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertSame($expected, $mockYamlSource->_call('load', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadRemovesVendorNamespacePrefixFromConfiguration(): void
     {
         $mockYamlSource = $this->getAccessibleMock(YamlSource::class, null, [], '', false);

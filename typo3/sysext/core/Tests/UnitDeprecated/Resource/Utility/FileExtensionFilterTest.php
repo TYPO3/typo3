@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Resource\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -50,9 +52,9 @@ final class FileExtensionFilterTest extends UnitTestCase
      * @param array|string $allowed
      * @param array|string $disallowed
      * @param array|string $values
-     * @test
-     * @dataProvider invalidInlineChildrenFilterParametersDataProvider
      */
+    #[DataProvider('invalidInlineChildrenFilterParametersDataProvider')]
+    #[Test]
     public function areInlineChildrenFilteredWithInvalidParameters($allowed, $disallowed, $values): void
     {
         $parameters = [

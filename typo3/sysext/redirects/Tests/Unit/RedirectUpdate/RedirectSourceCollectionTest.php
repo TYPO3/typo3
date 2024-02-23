@@ -17,24 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\RedirectUpdate;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
 use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RedirectSourceCollectionTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function countReturnsZeroIfNoItemsAdded(): void
     {
         $count = (new RedirectSourceCollection())->count();
         self::assertSame(0, $count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countReturnsCorrectCountOfItemsAdded(): void
     {
         $item = $this->createMock(RedirectSourceInterface::class);
@@ -42,9 +39,7 @@ final class RedirectSourceCollectionTest extends UnitTestCase
         self::assertSame(3, $subject->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allReturnsItemsInTheSameOrderTheyHaveBeenAdded(): void
     {
         $item1 = $this->createMock(RedirectSourceInterface::class);
@@ -54,9 +49,7 @@ final class RedirectSourceCollectionTest extends UnitTestCase
         self::assertSame([$item3, $item1, $item2], $subject->all());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsTypeExceptionIfInvalidItemIsAdded(): void
     {
         $this->expectException(\TypeError::class);

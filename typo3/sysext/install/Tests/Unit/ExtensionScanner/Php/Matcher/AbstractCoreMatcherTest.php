@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractCoreMatcherTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function validateMatcherDefinitionsRunsFineWithProperDefinition(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
@@ -40,9 +39,7 @@ final class AbstractCoreMatcherTest extends UnitTestCase
         $matcher->_call('validateMatcherDefinitions', ['requiredArg1']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateMatcherDefinitionsThrowsIfRequiredArgIsNotInConfig(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
@@ -60,9 +57,7 @@ final class AbstractCoreMatcherTest extends UnitTestCase
         $matcher->_call('validateMatcherDefinitions', ['requiredArg1']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateMatcherDefinitionsThrowsWithMissingRestFiles(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
@@ -77,9 +72,7 @@ final class AbstractCoreMatcherTest extends UnitTestCase
         $matcher->_call('validateMatcherDefinitions', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateMatcherDefinitionsThrowsWithEmptySingleRestFile(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
@@ -97,9 +90,7 @@ final class AbstractCoreMatcherTest extends UnitTestCase
         $matcher->_call('validateMatcherDefinitions', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeMethodNameArrayThrowsWithInvalidKeys(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);

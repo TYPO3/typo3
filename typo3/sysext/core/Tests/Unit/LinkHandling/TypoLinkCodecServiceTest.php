@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,10 +32,8 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
         $this->subject = new TypoLinkCodecService();
     }
 
-    /**
-     * @test
-     * @dataProvider encodeReturnsExpectedResultDataProvider
-     */
+    #[DataProvider('encodeReturnsExpectedResultDataProvider')]
+    #[Test]
     public function encodeReturnsExpectedResult(array $parts, string $expected): void
     {
         self::assertSame($expected, $this->subject->encode($parts));
@@ -72,10 +72,8 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeReturnsExpectedResultDataProvider
-     */
+    #[DataProvider('decodeReturnsExpectedResultDataProvider')]
+    #[Test]
     public function decodeReturnsExpectedResult(string $typoLink, array $expected): void
     {
         self::assertSame($expected, $this->subject->decode($typoLink));

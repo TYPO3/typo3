@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\OnlineMedia\Helpers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper;
@@ -39,10 +41,8 @@ final class VimeoHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider transformUrlDataProvider
-     */
+    #[DataProvider('transformUrlDataProvider')]
+    #[Test]
     public function transformUrlToFileReturnsExpectedResult(?string $url, ?string $videoId, bool $expectsMock): void
     {
         $mockedFolder = $this->createMock(Folder::class);

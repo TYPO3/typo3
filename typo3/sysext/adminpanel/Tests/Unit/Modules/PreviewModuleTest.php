@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Modules;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Context\Context;
@@ -45,10 +47,8 @@ final class PreviewModuleTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider simulateDateDataProvider
-     */
+    #[DataProvider('simulateDateDataProvider')]
+    #[Test]
     public function initializeFrontendPreviewSetsDateForSimulation(string $dateToSimulate, int $expectedExecTime, int $expectedAccessTime): void
     {
         $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
@@ -71,9 +71,7 @@ final class PreviewModuleTest extends UnitTestCase
         self::assertSame($GLOBALS['SIM_ACCESS_TIME'], $expectedAccessTime, 'ACCESS_TIME');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeFrontendPreviewSetsUserGroupForSimulation(): void
     {
         $request = (new ServerRequest())->withAttribute('frontend.user', $this->getMockBuilder(FrontendUserAuthentication::class)->getMock());

@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class VariableFrontendTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setChecksIfTheIdentifierIsValid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -39,9 +38,7 @@ final class VariableFrontendTest extends UnitTestCase
         $cache->set('foo', 'bar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPassesSerializedStringToBackend(): void
     {
         $theString = 'Just some value';
@@ -56,9 +53,7 @@ final class VariableFrontendTest extends UnitTestCase
         $cache->set('VariableCacheTest', $theString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPassesSerializedArrayToBackend(): void
     {
         $theArray = ['Just some value', 'and another one.'];
@@ -73,9 +68,7 @@ final class VariableFrontendTest extends UnitTestCase
         $cache->set('VariableCacheTest', $theArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPassesLifetimeToBackend(): void
     {
         $theString = 'Just some value';
@@ -91,9 +84,7 @@ final class VariableFrontendTest extends UnitTestCase
         $cache->set('VariableCacheTest', $theString, [], $theLifetime);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFetchesStringValueFromBackend(): void
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
@@ -107,9 +98,7 @@ final class VariableFrontendTest extends UnitTestCase
         self::assertEquals('Just some value', $cache->get('VariableCacheTest'), 'The returned value was not the expected string.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFetchesArrayValueFromBackend(): void
     {
         $theArray = ['Just some value', 'and another one.'];
@@ -124,9 +113,7 @@ final class VariableFrontendTest extends UnitTestCase
         self::assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFetchesFalseBooleanValueFromBackend(): void
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
@@ -140,9 +127,7 @@ final class VariableFrontendTest extends UnitTestCase
         self::assertFalse($cache->get('VariableCacheTest'), 'The returned value was not the FALSE.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsResultFromBackend(): void
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
@@ -156,9 +141,7 @@ final class VariableFrontendTest extends UnitTestCase
         self::assertTrue($cache->has('VariableCacheTest'), 'has() did not return TRUE.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeCallsBackend(): void
     {
         $cacheIdentifier = 'someCacheIdentifier';

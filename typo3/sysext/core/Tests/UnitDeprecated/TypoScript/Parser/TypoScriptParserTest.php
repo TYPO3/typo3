@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\TypoScript\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -228,10 +230,8 @@ final class TypoScriptParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider executeValueModifierDataProvider
-     */
+    #[DataProvider('executeValueModifierDataProvider')]
+    #[Test]
     public function executeValueModifierReturnsModifiedResult(
         string $modifierName,
         string $currentValue,
@@ -289,10 +289,8 @@ final class TypoScriptParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider executeGetEnvModifierDataProvider
-     */
+    #[DataProvider('executeGetEnvModifierDataProvider')]
+    #[Test]
     public function executeGetEnvModifierReturnsModifiedResult(
         array $environmentVariables,
         ?string $currentValue,
@@ -335,10 +333,8 @@ final class TypoScriptParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider executeValueModifierInvalidDataProvider
-     */
+    #[DataProvider('executeValueModifierInvalidDataProvider')]
+    #[Test]
     public function executeValueModifierThrowsException(
         string $modifierName,
         string $currentValue,
@@ -349,9 +345,7 @@ final class TypoScriptParserTest extends UnitTestCase
         $this->typoScriptParser->_call('executeValueModifier', $modifierName, $modifierArgument, $currentValue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidCharactersInObjectNamesAreReported(): void
     {
         $timeTrackerMock = $this->createMock(TimeTracker::class);
@@ -372,10 +366,8 @@ final class TypoScriptParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidConditionsDataProvider
-     */
+    #[DataProvider('invalidConditionsDataProvider')]
+    #[Test]
     public function invalidConditionsAreReported(string $condition, bool $isValid): void
     {
         $timeTrackerMock = $this->createMock(TimeTracker::class);
@@ -388,9 +380,7 @@ final class TypoScriptParserTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyConditionIsReported(): void
     {
         $timeTrackerMock = $this->createMock(TimeTracker::class);
@@ -411,10 +401,8 @@ final class TypoScriptParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider doubleSlashCommentsDataProvider
-     */
+    #[DataProvider('doubleSlashCommentsDataProvider')]
+    #[Test]
     public function doubleSlashCommentsAreValid(string $typoScript): void
     {
         $this->typoScriptParser->parse($typoScript);
@@ -439,10 +427,8 @@ final class TypoScriptParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider includeFileDataProvider
-     */
+    #[DataProvider('includeFileDataProvider')]
+    #[Test]
     public function includeFilesWithConditions(string $typoScript): void
     {
         // This test triggers a BackendUtility::BEgetRootLine() down below, we need to suppress the cache call
@@ -661,10 +647,8 @@ test.TYPO3Forever.TypoScript = 1
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider importFilesDataProvider
-     */
+    #[DataProvider('importFilesDataProvider')]
+    #[Test]
     public function importFiles(string $typoScript, string $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
@@ -673,10 +657,8 @@ test.TYPO3Forever.TypoScript = 1
         self::assertEquals($expected, $resolvedIncludeLines);
     }
 
-    /**
-     * @dataProvider typoScriptIsParsedToArrayDataProvider
-     * @test
-     */
+    #[DataProvider('typoScriptIsParsedToArrayDataProvider')]
+    #[Test]
     public function typoScriptIsParsedToArray(string $typoScript, array $expected): void
     {
         $this->typoScriptParser->parse($typoScript);
@@ -1117,9 +1099,7 @@ test.TYPO3Forever.TypoScript = 1
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValCanBeCalledWithArrayValueParameter(): void
     {
         $string = '';
@@ -1136,9 +1116,7 @@ test.TYPO3Forever.TypoScript = 1
         $mock($typoScriptParser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValCanBeCalledWithStringValueParameter(): void
     {
         $string = '';
@@ -1155,10 +1133,8 @@ test.TYPO3Forever.TypoScript = 1
         $mock($typoScriptParser);
     }
 
-    /**
-     * @test
-     * @dataProvider parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider
-     */
+    #[DataProvider('parseNextKeySegmentReturnsCorrectNextKeySegmentDataProvider')]
+    #[Test]
     public function parseNextKeySegmentReturnsCorrectNextKeySegment(
         string $key,
         string $expectedKeySegment,
@@ -1226,9 +1202,7 @@ test.TYPO3Forever.TypoScript = 1
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typoScriptWithModifierReturningNullDoesNotCreateErrors(): void
     {
         $typoScript = '

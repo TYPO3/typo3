@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -118,9 +120,7 @@ final class InstallUtilityTest extends UnitTestCase
         return $extKey;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installCallsUpdateDatabase(): void
     {
         $this->installMock->expects(self::once())->method('updateDatabase');
@@ -130,9 +130,7 @@ final class InstallUtilityTest extends UnitTestCase
         $this->installMock->install($this->extensionKey);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installCallsLoadExtension(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
@@ -141,9 +139,7 @@ final class InstallUtilityTest extends UnitTestCase
         $this->installMock->install($this->extensionKey);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installCallsFlushCaches(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
@@ -152,9 +148,7 @@ final class InstallUtilityTest extends UnitTestCase
         $this->installMock->install($this->extensionKey);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installCallsReloadCaches(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
@@ -163,9 +157,7 @@ final class InstallUtilityTest extends UnitTestCase
         $this->installMock->install($this->extensionKey);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installCallsSaveDefaultConfigurationWithExtensionKey(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
@@ -200,10 +192,8 @@ final class InstallUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider
-     */
+    #[DataProvider('importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider')]
+    #[Test]
     public function importT3DFileDoesNotImportFileIfAlreadyImported(string $fileName, string $registryNameReturnsFalse, string $registryNameReturnsTrue): void
     {
         $extKey = $this->createFakeExtension();

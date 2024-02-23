@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class OrderedProviderListTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function compileReturnsIncomingData(): void
     {
         $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
@@ -41,9 +40,7 @@ final class OrderedProviderListTest extends UnitTestCase
         self::assertEquals($input, $subject->compile($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileReturnsResultChangedByDataProvider(): void
     {
         $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
@@ -66,9 +63,7 @@ final class OrderedProviderListTest extends UnitTestCase
         self::assertEquals(['foo'], $subject->compile([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileDoesNotCallDisabledDataProvider(): void
     {
         $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
@@ -85,9 +80,7 @@ final class OrderedProviderListTest extends UnitTestCase
         self::assertEquals($input, $subject->compile($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfImplementationClassDoesNotExist(): void
     {
         $orderingServiceMock = $this->createMock(DependencyOrderingService::class);
@@ -104,9 +97,7 @@ final class OrderedProviderListTest extends UnitTestCase
         $subject->compile([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
         $orderingServiceMock = $this->createMock(DependencyOrderingService::class);

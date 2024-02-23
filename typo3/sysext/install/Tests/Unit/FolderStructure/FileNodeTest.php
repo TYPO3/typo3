@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -30,9 +31,7 @@ use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 
 final class FileNodeTest extends AbstractFolderStructureTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfParentIsNull(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -41,9 +40,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->__construct([], null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfNameContainsForwardSlash(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -56,9 +53,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->__construct($structure, $parent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsParent(): void
     {
         $parent = $this->createMock(NodeInterface::class);
@@ -70,9 +65,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($parent, $node->_call('getParent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTargetPermission(): void
     {
         $parent = $this->createMock(NodeInterface::class);
@@ -86,9 +79,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($targetPermission, $node->_call('getTargetPermission'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsName(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
@@ -98,9 +89,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($name, $node->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfBothTargetContentAndTargetContentFileAreSet(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -115,9 +104,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->__construct($structure, $parent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTargetContent(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
@@ -131,9 +118,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($targetContent, $node->_get('targetContent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTargetContentToContentOfTargetContentFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
@@ -149,9 +134,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($targetContent, $node->_get('targetContent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfTargetContentFileDoesNotExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -166,9 +149,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->__construct($structure, $parent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function targetContentIsNullIfNotGiven(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
@@ -180,9 +161,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertNull($node->_get('targetContent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArray(): void
     {
         $node = $this->getAccessibleMock(
@@ -206,9 +185,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertIsArray($node->getStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithWarningStatusIFileNotExists(): void
     {
         $node = $this->getAccessibleMock(
@@ -230,9 +207,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::WARNING, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithErrorStatusIfNodeIsNotAFile(): void
     {
         $node = $this->getAccessibleMock(
@@ -255,9 +230,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::ERROR, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayNoticeStatusIfFileExistsButIsNotWritable(): void
     {
         $node = $this->getAccessibleMock(
@@ -280,9 +253,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::NOTICE, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithNoticeStatusIfFileExistsButPermissionAreNotCorrect(): void
     {
         $node = $this->getAccessibleMock(
@@ -305,9 +276,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::NOTICE, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithNoticeStatusIfFileExistsButContentIsNotCorrect(): void
     {
         $node = $this->getAccessibleMock(
@@ -330,9 +299,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::NOTICE, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithOkStatusIfFileExistsAndPermissionAreCorrect(): void
     {
         $node = $this->getAccessibleMock(
@@ -355,9 +322,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::OK, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixCallsFixSelfAndReturnsItsResult(): void
     {
         $node = $this->getAccessibleMock(
@@ -372,9 +337,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($uniqueReturn, $node->fix());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfCallsCreateFileIfFileDoesNotExistAndReturnsResult(): void
     {
         $node = $this->getAccessibleMock(
@@ -394,9 +357,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($message, $actualReturn);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfCallsSetsContentIfFileCreationWasSuccessfulAndTargetContentIsNotNullAndReturnsResult(): void
     {
         $node = $this->getAccessibleMock(
@@ -419,9 +380,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($message2, $actualReturn);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfDoesNotCallSetContentIfFileCreationFailed(): void
     {
         $node = $this->getAccessibleMock(
@@ -441,9 +400,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->_call('fixSelf');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfDoesNotCallSetContentIfFileTargetContentIsNull(): void
     {
         $node = $this->getAccessibleMock(
@@ -463,9 +420,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->_call('fixSelf');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfReturnsErrorStatusIfNodeExistsButIsNotAFileAndReturnsResult(): void
     {
         $node = $this->getAccessibleMock(
@@ -483,9 +438,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame([$message], $node->_call('fixSelf'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfCallsFixPermissionIfFileExistsButPermissionAreWrong(): void
     {
         $node = $this->getAccessibleMock(
@@ -501,9 +454,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->_call('fixSelf');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfReturnsArrayOfStatusMessages(): void
     {
         $node = $this->getAccessibleMock(
@@ -519,9 +470,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertIsArray($node->_call('fixSelf'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFileThrowsExceptionIfNodeExists(): void
     {
         $this->expectException(Exception::class);
@@ -532,9 +481,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->_call('createFile');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFileReturnsOkStatusIfFileWasCreated(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
@@ -545,9 +492,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::OK, $node->_call('createFile')->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFileCreatesFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
@@ -559,9 +504,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue(is_file($path));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isContentCorrectThrowsExceptionIfTargetIsNotAFile(): void
     {
         $this->expectException(Exception::class);
@@ -572,9 +515,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->_call('isContentCorrect');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isContentCorrectReturnsTrueIfTargetContentPropertyIsNull(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
@@ -585,9 +526,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->_call('isContentCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isContentCorrectReturnsTrueIfTargetContentEqualsCurrentContent(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
@@ -599,9 +538,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->_call('isContentCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isContentCorrectReturnsFalseIfTargetContentNotEqualsCurrentContent(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
@@ -614,9 +551,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertFalse($node->_call('isContentCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPermissionCorrectReturnsTrueIfTargetPermissionAndCurrentPermissionAreIdentical(): void
     {
         $parent = $this->createMock(NodeInterface::class);
@@ -632,9 +567,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->_call('isPermissionCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setContentThrowsExceptionIfTargetIsNotAFile(): void
     {
         $this->expectException(Exception::class);
@@ -646,9 +579,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->_call('setContent');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setContentThrowsExceptionIfTargetContentIsNull(): void
     {
         $this->expectException(Exception::class);
@@ -661,9 +592,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->_call('setContent');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setContentSetsContentToFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
@@ -677,9 +606,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($targetContent, $resultContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setContentReturnsOkStatusIfContentWasSuccessfullySet(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
@@ -691,9 +618,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::OK, $node->_call('setContent')->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFileReturnsTrueIfNameIsFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
@@ -703,9 +628,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->_call('isFile'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFileReturnsFalseIfNameIsALinkFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);

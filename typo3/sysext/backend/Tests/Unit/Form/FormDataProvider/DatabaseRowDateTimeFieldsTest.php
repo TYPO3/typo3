@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTimestampZeroForDefaultDateField(): void
     {
         $input = [
@@ -46,9 +45,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTimestampNullForDefaultDateField(): void
     {
         $input = [
@@ -78,9 +75,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         self::assertSame($expected, $actual['databaseRow']['aField']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTimestampZeroForDefaultDateTimeField(): void
     {
         $input = [
@@ -101,9 +96,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTimestampNullForDefaultDateTimeField(): void
     {
         $input = [
@@ -135,9 +128,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         self::assertSame($expected, $actual['databaseRow']['aField']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTimestampZeroForDefaultTimeField(): void
     {
         $input = [
@@ -158,9 +149,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTimestampNullForDefaultTimeField(): void
     {
         $input = [
@@ -189,9 +178,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         self::assertSame($expected, $actual['databaseRow']['aField']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataConvertsDateStringToTimestamp(): void
     {
         $oldTimezone = date_default_timezone_get();
@@ -218,9 +205,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         date_default_timezone_set($oldTimezone);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataConvertsDateTimeStringToTimestamp(): void
     {
         $oldTimezone = date_default_timezone_get();
@@ -247,9 +232,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         date_default_timezone_set($oldTimezone);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataConvertsTimeStringToTimestamp(): void
     {
         $oldTimezone = date_default_timezone_get();
@@ -276,9 +259,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         date_default_timezone_set($oldTimezone);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataConvertsMidnightTimeStringOfNullableFieldToDefaultValue(): void
     {
         $oldTimezone = date_default_timezone_get();
@@ -307,9 +288,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         date_default_timezone_set($oldTimezone);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataConvertsMidnightTimeStringOfNullableFieldToNull(): void
     {
         $oldTimezone = date_default_timezone_get();
@@ -338,9 +317,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         date_default_timezone_set($oldTimezone);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAppliesResetValueForEmptyValue(): void
     {
         foreach (QueryHelper::getDateTimeTypes() as $dbType) {

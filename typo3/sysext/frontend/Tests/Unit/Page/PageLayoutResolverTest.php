@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PageLayoutResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getLayoutForPageFetchesSelectedPageDirectly(): void
     {
         $subject = new PageLayoutResolver();
@@ -32,9 +31,7 @@ final class PageLayoutResolverTest extends UnitTestCase
         self::assertEquals('1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLayoutForPageTreatsSpecialMinusOneValueAsNone(): void
     {
         $subject = new PageLayoutResolver();
@@ -42,9 +39,7 @@ final class PageLayoutResolverTest extends UnitTestCase
         self::assertEquals('none', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLayoutForPageTreatsSpecialValueZeroOrEmptyAsDefaultWithEmptyRootLine(): void
     {
         $subject = new PageLayoutResolver();
@@ -57,9 +52,7 @@ final class PageLayoutResolverTest extends UnitTestCase
         self::assertEquals('default', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLayoutForPageTreatsSpecialValueZeroOrEmptyAsDefaultWhenNothingGivenInRootLine(): void
     {
         $subject = new PageLayoutResolver();
@@ -70,9 +63,7 @@ final class PageLayoutResolverTest extends UnitTestCase
         self::assertEquals('default', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLayoutForPageFetchesRootLinePagesUpUntilSomethingWasFound(): void
     {
         $subject = new PageLayoutResolver();
@@ -83,9 +74,7 @@ final class PageLayoutResolverTest extends UnitTestCase
         self::assertEquals('regular', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLayoutForPageFetchesRootLinePagesUpWhenNoneWasSelectedExplicitly(): void
     {
         $subject = new PageLayoutResolver();

@@ -24,6 +24,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -39,18 +40,14 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $this->defaultTable = new Table('aTable');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichKeepsGivenTablesArrayWithEmptyTca(): void
     {
         $GLOBALS['TCA'] = [];
         self::assertEquals([$this->defaultTable], $this->subject->enrich([$this->defaultTable]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddColumnIfExists(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -70,9 +67,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->enrich($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddColumnIfTableExistsMultipleTimesAndUidExists(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -98,9 +93,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->enrich($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsFieldToFirstTableDefinitionOfThatName(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -118,9 +111,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertInstanceOf(Column::class, $result[0]->getColumn('uid'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsUidAndPrimaryKey(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -139,9 +130,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedPrimaryKey, $result[0]->getPrimaryKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsPid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -158,9 +147,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedPidColumn, $result[0]->getColumn('pid'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsTstamp(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -179,9 +166,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('updatedon'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsCrdate(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -200,9 +185,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('createdon'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsDeleted(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -221,9 +204,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('deleted'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsDisabled(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -244,9 +225,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('disabled'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsStarttime(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -267,9 +246,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('starttime'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsEndtime(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -290,9 +267,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('endtime'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsFegroup(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -313,9 +288,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('fe_group'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSorting(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -334,9 +307,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('sorting'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsParentKey(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
@@ -345,9 +316,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsParentKeyWithDelete(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -358,9 +327,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsParentKeyWithDisabled(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -373,9 +340,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsParentKeyInCorrectOrder(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -389,9 +354,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSysLanguageUid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -410,9 +373,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('sys_language_uid'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsL10nParent(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -432,9 +393,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddL10nParentIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -445,9 +404,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result[0]->getColumn('l10n_parent');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsDescription(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -465,9 +422,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('rowDescription'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsEditlock(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -486,9 +441,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('editlock'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsL10nSource(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -508,9 +461,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_source'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddL10nSourceIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -521,9 +472,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result[0]->getColumn('l10n_source');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsL10nState(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -542,9 +491,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_state'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddL10nStateIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -555,9 +502,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result[0]->getColumn('l10n_state');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichDoesNotAddL10nStateIfTransOrigPointerFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -568,9 +513,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result[0]->getColumn('l10n_state');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3origUid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -589,9 +532,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('t3_origuid'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsL10nDiffsource(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -609,9 +550,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('l18n_diffsource'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verOid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -630,9 +569,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_oid'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verWsid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -651,9 +588,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_wsid'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verState(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -672,9 +607,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_state'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verStage(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -693,9 +626,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_stage'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsT3verOidIndex(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -706,9 +637,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedIndex, $result[0]->getIndex('t3ver_oid'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSimpleMmForSelect(): void
     {
         $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
@@ -772,9 +701,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedMmTable, $result[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsMmWithTcaHasUid(): void
     {
         $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
@@ -848,9 +775,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedMmTable, $result[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsMmWithTablenamesAndFieldname(): void
     {
         $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
@@ -935,9 +860,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         self::assertEquals($expectedMmTable, $result[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enrichAddsSlug(): void
     {
         $GLOBALS['TCA']['aTable']['columns']['slug'] = [

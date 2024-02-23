@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 
 final class HiddenRestrictionTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsHiddenWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

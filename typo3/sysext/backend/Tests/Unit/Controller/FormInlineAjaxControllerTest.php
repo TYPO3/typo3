@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -30,9 +31,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createActionThrowsExceptionIfContextIsEmpty(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -47,9 +46,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         (new FormInlineAjaxController())->createAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -64,9 +61,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         (new FormInlineAjaxController())->createAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -88,9 +83,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         (new FormInlineAjaxController())->createAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detailsActionThrowsExceptionIfContextIsEmpty(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -105,9 +98,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         (new FormInlineAjaxController())->detailsAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detailsActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -122,9 +113,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         (new FormInlineAjaxController())->detailsAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detailsActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -146,9 +135,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         (new FormInlineAjaxController())->detailsAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextIsEmpty(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -163,9 +150,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         (new FormInlineAjaxController())->synchronizeLocalizeAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -180,9 +165,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         (new FormInlineAjaxController())->synchronizeLocalizeAction($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
         $request = (new ServerRequest())->withQueryParams(
@@ -207,9 +190,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     /**
      * Fallback for IRRE items without inline view attribute
      * @see https://forge.typo3.org/issues/76561
-     *
-     * @test
      */
+    #[Test]
     public function getInlineExpandCollapseStateArraySwitchesToFallbackIfTheBackendUserDoesNotHaveAnUCInlineViewProperty(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
@@ -230,9 +212,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     /**
      * Unserialize uc inline view string for IRRE item
      * @see https://forge.typo3.org/issues/76561
-     *
-     * @test
      */
+    #[Test]
     public function getInlineExpandCollapseStateArrayWillUnserializeUCInlineViewPropertyAsAnArrayWithData(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);

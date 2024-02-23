@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DecimalDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\NumericDataType;
 use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCase;
@@ -71,10 +73,8 @@ final class FixedPointTypesTest extends AbstractDataTypeBaseTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseFixedPointTypesProvider
-     */
+    #[DataProvider('canParseFixedPointTypesProvider')]
+    #[Test]
     public function canParseDataType(
         string $columnDefinition,
         string $className,

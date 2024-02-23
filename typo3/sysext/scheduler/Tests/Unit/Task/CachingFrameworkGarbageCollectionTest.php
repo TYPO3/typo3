@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -29,9 +30,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeCallsCollectGarbageOfConfiguredBackend(): void
     {
         $cache = $this->createMock(VariableFrontend::class);
@@ -54,9 +53,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
         $subject->execute();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeDoesNotCallCollectGarbageOfNotConfiguredBackend(): void
     {
         $cache = $this->createMock(VariableFrontend::class);

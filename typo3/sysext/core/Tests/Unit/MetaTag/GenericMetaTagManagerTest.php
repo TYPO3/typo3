@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\MetaTag\GenericMetaTagManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GenericMetaTagManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray(): void
     {
         $manager = new GenericMetaTagManager();
@@ -33,9 +33,7 @@ final class GenericMetaTagManagerTest extends UnitTestCase
         self::assertEmpty($handledProperties);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfMethodCanHandlePropertyAlwaysReturnsTrue(): void
     {
         $manager = new GenericMetaTagManager();
@@ -44,11 +42,8 @@ final class GenericMetaTagManagerTest extends UnitTestCase
         self::assertTrue($manager->canHandleProperty('og:title'));
     }
 
-    /**
-     * @dataProvider propertiesProvider
-     *
-     * @test
-     */
+    #[DataProvider('propertiesProvider')]
+    #[Test]
     public function checkIfPropertyIsStoredAfterAddingProperty($property, $expected, $expectedRenderedTag): void
     {
         $manager = new GenericMetaTagManager();
@@ -64,9 +59,7 @@ final class GenericMetaTagManagerTest extends UnitTestCase
         self::assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkRenderAllPropertiesRendersCorrectMetaTags(): void
     {
         $properties = [
@@ -128,9 +121,7 @@ final class GenericMetaTagManagerTest extends UnitTestCase
         self::assertEquals($expected, $manager->renderAllProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfRemovePropertyReallyRemovesProperty(): void
     {
         $manager = new GenericMetaTagManager();

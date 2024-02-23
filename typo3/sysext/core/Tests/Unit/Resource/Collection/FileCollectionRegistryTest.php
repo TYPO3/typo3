@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures\OtherTestingFileCollection;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures\TestingFileCollection;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileCollectionRegistryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredFileCollectionClassesCanBeRetrieved(): void
     {
         $className = TestingFileCollection::class;
@@ -37,9 +36,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         self::assertEquals($className, $returnedClassName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerFileCollectionClassThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -48,9 +45,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $subject->registerFileCollectionClass(StringUtility::getUniqueId('class_'), substr(StringUtility::getUniqueId('type_'), 0, 30));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerFileCollectionClassThrowsExceptionIfTypeIsTooLong(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -61,9 +56,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $subject->registerFileCollectionClass($className, $type);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerFileCollectionClassThrowsExceptionIfTypeIsAlreadyRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -75,9 +68,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $subject->registerFileCollectionClass($className2, 'foobar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerFileCollectionClassOverridesExistingRegisteredFileCollectionClass(): void
     {
         $className = TestingFileCollection::class;
@@ -87,9 +78,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $subject->registerFileCollectionClass($className2, 'foobar', true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileCollectionClassThrowsExceptionIfClassIsNotRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -98,9 +87,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $subject->getFileCollectionClass(StringUtility::getUniqueId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileCollectionClassAcceptsClassNameIfClassIsRegistered(): void
     {
         $className = TestingFileCollection::class;
@@ -109,9 +96,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         self::assertEquals($className, $subject->getFileCollectionClass('foobar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileCollectionRegistryIsInitializedWithPreconfiguredFileCollections(): void
     {
         $className = TestingFileCollection::class;
@@ -123,9 +108,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         self::assertEquals($className, $subject->getFileCollectionClass($type));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileCollectionExistsReturnsTrueForAllExistingFileCollections(): void
     {
         $className = TestingFileCollection::class;
@@ -138,9 +121,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         self::assertFalse($subject->fileCollectionTypeExists('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileCollectionExistsReturnsFalseIfFileCollectionDoesNotExist(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredFileCollections'] = [];
@@ -148,9 +129,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
         self::assertFalse($subject->fileCollectionTypeExists(StringUtility::getUniqueId('name_')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNewTypeToTCA(): void
     {
         // Create a TCA fixture for sys_file_collection

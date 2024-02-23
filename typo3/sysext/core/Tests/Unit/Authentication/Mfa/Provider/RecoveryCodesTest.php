@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider\Fixtures\Crypto\PasswordHashing\NoopPasswordHash;
@@ -42,9 +44,7 @@ final class RecoveryCodesTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateRecoveryCodesTest(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
@@ -66,9 +66,7 @@ final class RecoveryCodesTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatePlainRecoveryCodesThrowsExceptionOnInvalidLengthTest(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -76,10 +74,8 @@ final class RecoveryCodesTest extends UnitTestCase
         $this->subject->generatePlainRecoveryCodes(6);
     }
 
-    /**
-     * @test
-     * @dataProvider generatePlainRecoveryCodesTestDataProvider
-     */
+    #[DataProvider('generatePlainRecoveryCodesTestDataProvider')]
+    #[Test]
     public function generatePlainRecoveryCodesTest(int $length, int $quantity): void
     {
         $recoveryCodes = $this->subject->generatePlainRecoveryCodes($length, $quantity);
@@ -99,9 +95,7 @@ final class RecoveryCodesTest extends UnitTestCase
         yield '10 codes with 10 chars' => [10, 10];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatedHashedRecoveryCodesAreHashedWithDefaultHashInstanceTest(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
@@ -118,9 +112,7 @@ final class RecoveryCodesTest extends UnitTestCase
         self::assertCount(2, $codes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyRecoveryCodeTest(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
@@ -146,9 +138,7 @@ final class RecoveryCodesTest extends UnitTestCase
         self::assertFalse($this->subject->verifyRecoveryCode($recoveryCode, $codes));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyRecoveryCodeUsesTheCorrectHashInstanceTest(): void
     {
         $code = '18742989';

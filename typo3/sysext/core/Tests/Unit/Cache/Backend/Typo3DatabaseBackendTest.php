@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -30,9 +31,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheCalculatesCacheTableName(): void
     {
         $frontend = new NullFrontend('test');
@@ -42,9 +41,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         self::assertEquals('cache_test', $subject->getCacheTable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheCalculatesTagsTableName(): void
     {
         $frontend = new NullFrontend('test');
@@ -54,9 +51,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         self::assertEquals('cache_test_tags', $subject->getTagsTable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
@@ -65,9 +60,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->set('identifier', 'data');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfDataIsNotAString(): void
     {
         $frontend = new NullFrontend('test');
@@ -80,9 +73,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->set('identifier', ['iAmAnArray']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
@@ -91,9 +82,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->get('identifier');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
@@ -102,9 +91,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->has('identifier');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
@@ -113,9 +100,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->remove('identifier');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
@@ -124,9 +109,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->collectGarbage();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
@@ -135,9 +118,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->findIdentifiersByTag('identifier');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
@@ -146,9 +127,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->flush();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushRemovesAllCacheEntries(): void
     {
         $frontend = new NullFrontend('test');
@@ -228,9 +207,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->flushByTags(['Tag1', 'Tag2']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
@@ -239,9 +216,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->flushByTag('Tag');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagsThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');

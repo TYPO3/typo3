@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 
 final class RootLevelRestrictionTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsPidWhereClause(): void
     {
         $subject = new RootLevelRestriction();
@@ -31,9 +30,7 @@ final class RootLevelRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTable"."pid" = 0', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsAliasedPidWhereClause(): void
     {
         $subject = new RootLevelRestriction();
@@ -41,9 +38,7 @@ final class RootLevelRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTableAlias"."pid" = 0', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsPidWhereClauseIfTableIsSpecified(): void
     {
         $subject = new RootLevelRestriction(['aTable']);
@@ -51,9 +46,7 @@ final class RootLevelRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTable"."pid" = 0', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsAliasedPidWhereClauseIfAliasIsSpecified(): void
     {
         $subject = new RootLevelRestriction(['aTableAlias']);
@@ -61,9 +54,7 @@ final class RootLevelRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('"aTableAlias"."pid" = 0', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsSkipsUnrestrictedTablesIfOtherTableIsSpecifiedThanUsedInTheQuery(): void
     {
         $subject = new RootLevelRestriction(['aTable']);

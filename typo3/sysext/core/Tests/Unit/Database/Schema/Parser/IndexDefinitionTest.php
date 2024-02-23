@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier;
@@ -515,10 +517,8 @@ final class IndexDefinitionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseIndexDefinitionDataProvider
-     */
+    #[DataProvider('canParseIndexDefinitionDataProvider')]
+    #[Test]
     public function canParseIndexDefinition(
         string $indexDefinition,
         string $indexName,

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging\Renderer;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\ListRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ListRendererTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCreatesCorrectOutputForFlashMessage(): void
     {
         $rendererClass = GeneralUtility::makeInstance(ListRenderer::class);
@@ -40,9 +39,7 @@ final class ListRendererTest extends UnitTestCase
         self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><h4 class="alert-title">messageTitle</h4><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
         $rendererClass = GeneralUtility::makeInstance(ListRenderer::class);

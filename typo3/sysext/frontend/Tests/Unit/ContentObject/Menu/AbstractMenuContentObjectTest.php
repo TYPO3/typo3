@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 
 use Doctrine\DBAL\Result;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -128,9 +130,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionIndexReturnsEmptyArrayIfTheRequestedPageCouldNotBeFetched(): void
     {
         $this->prepareSectionIndexTest();
@@ -141,9 +141,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         self::assertEquals([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionIndexUsesTheInternalIdIfNoPageIdWasGiven(): void
     {
         $this->prepareSectionIndexTest();
@@ -155,9 +153,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         self::assertEquals([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionIndexThrowsAnExceptionIfTheInternalQueryFails(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -175,9 +171,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_call('sectionIndex', 'field');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage(): void
     {
         $statementMock = $this->createMock(Result::class);
@@ -243,10 +237,8 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sectionIndexFiltersDataProvider
-     */
+    #[DataProvider('sectionIndexFiltersDataProvider')]
+    #[Test]
     public function sectionIndexFilters(int $expectedAmount, array $dataRow): void
     {
         $statementMock = $this->createMock(Result::class);
@@ -306,10 +298,8 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sectionIndexQueriesWithDifferentColPosDataProvider
-     */
+    #[DataProvider('sectionIndexQueriesWithDifferentColPosDataProvider')]
+    #[Test]
     public function sectionIndexQueriesWithDifferentColPos(array $configuration, string $colPosFromStdWrapValue, string $whereClausePrefix): void
     {
         $statementMock = $this->createMock(Result::class);
@@ -428,10 +418,8 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isItemStateChecksExcludeUidListDataProvider
-     */
+    #[DataProvider('isItemStateChecksExcludeUidListDataProvider')]
+    #[Test]
     public function isItemStateChecksExcludeUidList(array $menuItems, string $excludeUidList, bool $expectedResult): void
     {
         $subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class, [], '', true, true, true, ['getRuntimeCache']);
@@ -623,10 +611,8 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider
-     */
+    #[DataProvider('menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider')]
+    #[Test]
     public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, string $oTarget, string|int $addParams = '', string|int $typeOverride = '', int|string|null $overrideId = null): void
     {
         $expected['page'] = new Page($page);

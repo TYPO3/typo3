@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RegistryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionForInvalidNamespacesUsingNoNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -32,9 +31,7 @@ final class RegistryTest extends UnitTestCase
         (new Registry())->get('', 'someKey');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionForInvalidNamespacesUsingTooShortNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -42,9 +39,7 @@ final class RegistryTest extends UnitTestCase
         (new Registry())->get('t', 'someKey');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsAnExceptionOnEmptyNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -52,9 +47,7 @@ final class RegistryTest extends UnitTestCase
         (new Registry())->set('', 'someKey', 'someValue');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsAnExceptionOnWrongNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -62,9 +55,7 @@ final class RegistryTest extends UnitTestCase
         (new Registry())->set('t', 'someKey', 'someValue');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeThrowsAnExceptionOnWrongNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -72,9 +63,7 @@ final class RegistryTest extends UnitTestCase
         (new Registry())->remove('t', 'someKey');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeAllByNamespaceThrowsAnExceptionOnWrongNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);

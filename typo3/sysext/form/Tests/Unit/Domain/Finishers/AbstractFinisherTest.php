@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
@@ -28,9 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractFinisherTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function parseOptionReturnsNullIfOptionNameIsTranslation(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -43,9 +42,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertNull($mockAbstractFinisher->_call('parseOption', 'translation'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseOptionReturnsNullIfOptionNameNotExistsWithinOptions(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -60,9 +57,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertNull($mockAbstractFinisher->_call('parseOption', 'foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseOptionReturnsNullIfOptionNameNotExistsWithinDefaultOptions(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -77,9 +72,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertNull($mockAbstractFinisher->_call('parseOption', 'foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseOptionReturnsBoolOptionValuesAsBool(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -96,9 +89,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertFalse($mockAbstractFinisher->_call('parseOption', 'foo1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseOptionReturnsDefaultOptionValueIfOptionNameNotExistsWithinOptionsButWithinDefaultOptions(): void
     {
         $expected = 'defaultValue';
@@ -139,9 +130,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseOptionReturnsDefaultOptionValueIfOptionValueIsAFormElementReferenceAndTheFormElementValueIsEmpty(): void
     {
         $elementIdentifier = 'element-identifier-1';
@@ -183,9 +172,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseOptionResolvesFormElementReferenceFromTranslation(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -228,9 +215,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsArrayIfInputIsArray(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -248,9 +233,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsStringIfInputIsString(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -268,9 +251,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceAFormElementIdentifierWhoseValueIsAString(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -291,9 +272,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceMultipleFormElementIdentifierWhoseValueIsAString(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -324,9 +303,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceAFormElementIdentifierWhoseValueIsAnArray(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -347,9 +324,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputIsArrayAndSomeItemsReferenceAFormElementIdentifierWhoseValueIsAnArray(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -396,9 +371,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsNoReplacedValueIfInputReferenceANonExistingFormElement(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -423,9 +396,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsTimestampIfInputIsATimestampRequestTrigger(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -446,9 +417,7 @@ final class AbstractFinisherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesReturnsResolvesElementIdentifiersInArrayKeys(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
@@ -489,9 +458,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesConvertsObjectsToString(): void
     {
         $date = new \DateTime('@1574415600');
@@ -527,9 +494,7 @@ final class AbstractFinisherTest extends UnitTestCase
         self::assertSame('When: 2019-11-22', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesThrowsExceptionOnObjectWithoutStringableElement(): void
     {
         $formRuntimeMock = $this->createMock(FormRuntime::class);
@@ -556,9 +521,7 @@ final class AbstractFinisherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function substituteRuntimeReferencesThrowsExceptionOnMultipleVariablesResolvedAsArray(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(

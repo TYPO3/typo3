@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Tokenizer\Line;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ConditionLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConditionLineTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueTokenThrowsIfTokenIsNotOfTypeValue(): void
     {
         $this->expectException(\LogicException::class);

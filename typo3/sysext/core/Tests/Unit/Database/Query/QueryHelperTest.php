@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -46,10 +48,8 @@ final class QueryHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider stripLogicalOperatorPrefixDataProvider
-     */
+    #[DataProvider('stripLogicalOperatorPrefixDataProvider')]
+    #[Test]
     public function stripLogicalOperatorPrefixRemovesConstraintPrefixes(string $input, string $expectedSql): void
     {
         self::assertSame($expectedSql, QueryHelper::stripLogicalOperatorPrefix($input));
@@ -128,10 +128,8 @@ final class QueryHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider parseOrderByDataProvider
-     */
+    #[DataProvider('parseOrderByDataProvider')]
+    #[Test]
     public function parseOrderByTest(string $input, array $expectedResult): void
     {
         self::assertSame($expectedResult, QueryHelper::parseOrderBy($input));
@@ -200,10 +198,8 @@ final class QueryHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider parseTableListDataProvider
-     */
+    #[DataProvider('parseTableListDataProvider')]
+    #[Test]
     public function parseTableListTest(string $input, array $expectedResult): void
     {
         self::assertSame($expectedResult, QueryHelper::parseTableList($input));
@@ -246,10 +242,8 @@ final class QueryHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider parseGroupByDataProvider
-     */
+    #[DataProvider('parseGroupByDataProvider')]
+    #[Test]
     public function parseGroupByTest(string $input, array $expectedResult): void
     {
         self::assertSame($expectedResult, QueryHelper::parseGroupBy($input));
@@ -416,10 +410,8 @@ final class QueryHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider parseJoinDataProvider
-     */
+    #[DataProvider('parseJoinDataProvider')]
+    #[Test]
     public function parseJoinSplitsStatement(string $input, array $expected): void
     {
         self::assertSame($expected, QueryHelper::parseJoin($input));
@@ -450,10 +442,8 @@ final class QueryHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider quoteDatabaseIdentifierDataProvider
-     */
+    #[DataProvider('quoteDatabaseIdentifierDataProvider')]
+    #[Test]
     public function quoteDatabaseIdentifiers(string $input, string $expected): void
     {
         $connectionMock = $this->createMock(Connection::class);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\EventDispatcher;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
@@ -38,18 +40,14 @@ final class EventDispatcherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsrInterface(): void
     {
         self::assertInstanceOf(EventDispatcherInterface::class, $this->eventDispatcher);
     }
 
-    /**
-     * @test
-     * @dataProvider callables
-     */
+    #[DataProvider('callables')]
+    #[Test]
     public function dispatchesEvent(callable $callable): void
     {
         $event = new \stdClass();
@@ -64,10 +62,8 @@ final class EventDispatcherTest extends UnitTestCase
         self::assertEquals(1, $event->invoked);
     }
 
-    /**
-     * @test
-     * @dataProvider callables
-     */
+    #[DataProvider('callables')]
+    #[Test]
     public function doesNotDispatchStoppedEvent(callable $callable): void
     {
         $event = new class () implements StoppableEventInterface {
@@ -88,10 +84,8 @@ final class EventDispatcherTest extends UnitTestCase
         self::assertEquals(0, $event->invoked);
     }
 
-    /**
-     * @test
-     * @dataProvider callables
-     */
+    #[DataProvider('callables')]
+    #[Test]
     public function dispatchesMultipleListeners(callable $callable): void
     {
         $event = new \stdClass();
@@ -107,10 +101,8 @@ final class EventDispatcherTest extends UnitTestCase
         self::assertEquals(2, $event->invoked);
     }
 
-    /**
-     * @test
-     * @dataProvider callables
-     */
+    #[DataProvider('callables')]
+    #[Test]
     public function stopsOnStoppedEvent(callable $callable): void
     {
         $event = new class () implements StoppableEventInterface {
@@ -137,9 +129,7 @@ final class EventDispatcherTest extends UnitTestCase
         self::assertEquals(2, $event->invoked);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listenerExceptionIsPropagated(): void
     {
         $this->expectException(\BadMethodCallException::class);

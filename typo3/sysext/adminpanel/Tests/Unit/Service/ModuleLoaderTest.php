@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\DisabledMainModuleFixture;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\MainModuleFixture;
@@ -26,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModuleLoaderTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function validateSortAndInitializeModulesReturnsEmptyArrayIfNoModulesAreConfigured(): void
     {
         $moduleLoader = new ModuleLoader();
@@ -45,10 +45,8 @@ final class ModuleLoaderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider missingConfigurationDataProvider
-     */
+    #[DataProvider('missingConfigurationDataProvider')]
+    #[Test]
     public function validateSortAndInitializeModulesThrowsExceptionIfModuleHasMissingConfiguration(array $configuration): void
     {
         $this->expectException(\RuntimeException::class);
@@ -84,10 +82,8 @@ final class ModuleLoaderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidConfigurationDataProvider
-     */
+    #[DataProvider('invalidConfigurationDataProvider')]
+    #[Test]
     public function validateSortAndInitializeModulesThrowsExceptionIfModuleHasInvalidConfiguration(array $configuration): void
     {
         $this->expectException(\RuntimeException::class);
@@ -97,9 +93,7 @@ final class ModuleLoaderTest extends UnitTestCase
         $moduleLoader->validateSortAndInitializeModules($configuration);
     }
 
-    /**
-    * @test
-    */
+    #[Test]
     public function validateSortAndInitializeModulesOrdersModulesWithDependencyOrderingService(): void
     {
         $config = [
@@ -117,9 +111,7 @@ final class ModuleLoaderTest extends UnitTestCase
         $moduleLoader->validateSortAndInitializeModules($config);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateSortAndInitializeModulesInstantiatesMainModulesOnlyIfEnabled(): void
     {
         $config = [

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,9 +41,7 @@ final class LinkNodeTest extends UnitTestCase
         GeneralUtility::mkdir_deep($this->testRoot);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfParentIsNull(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -51,9 +50,7 @@ final class LinkNodeTest extends UnitTestCase
         $node->__construct([], null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfNameContainsForwardSlash(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -66,9 +63,7 @@ final class LinkNodeTest extends UnitTestCase
         $node->__construct($structure, $parent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsParent(): void
     {
         $parent = $this->createMock(NodeInterface::class);
@@ -80,9 +75,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertSame($parent, $node->_call('getParent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsName(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, null, [], '', false);
@@ -92,9 +85,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertSame($name, $node->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsNameAndTarget(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, null, [], '', false);
@@ -105,9 +96,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertSame($target, $node->_call('getTarget'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArray(): void
     {
         $node = $this->getAccessibleMock(
@@ -122,9 +111,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertIsArray($node->getStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithInformationStatusIfRunningOnWindows(): void
     {
         $node = $this->getAccessibleMock(
@@ -141,9 +128,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertSame(ContextualFeedbackSeverity::INFO, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithErrorStatusIfLinkNotExists(): void
     {
         $node = $this->getAccessibleMock(
@@ -161,9 +146,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertSame(ContextualFeedbackSeverity::ERROR, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithWarningStatusIfNodeIsNotALink(): void
     {
         $node = $this->getAccessibleMock(
@@ -180,9 +163,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertSame(ContextualFeedbackSeverity::WARNING, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsErrorStatusIfLinkTargetIsNotCorrect(): void
     {
         $node = $this->getAccessibleMock(
@@ -201,9 +182,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertSame(ContextualFeedbackSeverity::ERROR, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsOkStatusIfLinkExistsAndTargetIsCorrect(): void
     {
         $node = $this->getAccessibleMock(
@@ -222,9 +201,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertSame(ContextualFeedbackSeverity::OK, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixReturnsEmptyArray(): void
     {
         $node = $this->getAccessibleMock(
@@ -238,9 +215,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertEmpty($statusArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isLinkThrowsExceptionIfLinkNotExists(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -250,9 +225,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertFalse($node->_call('isLink'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isLinkReturnsTrueIfNameIsLink(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
@@ -265,9 +238,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertTrue($node->_call('isLink'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFileReturnsFalseIfNameIsAFile(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
@@ -278,9 +249,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertFalse($node->_call('isLink'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTargetCorrectThrowsExceptionIfLinkNotExists(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -290,9 +259,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertFalse($node->_call('isTargetCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTargetCorrectThrowsExceptionIfNodeIsNotALink(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -303,9 +270,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertTrue($node->_call('isTargetCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTargetCorrectReturnsTrueIfNoExpectedLinkTargetIsSpecified(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'isLink', 'getTarget'], [], '', false);
@@ -315,9 +280,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertTrue($node->_call('isTargetCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTargetCorrectAcceptsATargetWithATrailingSlash(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'isLink', 'getCurrentTarget', 'getTarget'], [], '', false);
@@ -328,9 +291,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertTrue($node->_call('isTargetCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTargetCorrectReturnsTrueIfActualTargetIsIdenticalToSpecifiedTarget(): void
     {
         $path = $this->testRoot . StringUtility::getUniqueId('link_');
@@ -351,9 +312,7 @@ final class LinkNodeTest extends UnitTestCase
         self::assertTrue($node->_call('isTargetCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTargetCorrectReturnsFalseIfActualTargetIsNotIdenticalToSpecifiedTarget(): void
     {
         $path = $this->testRoot . StringUtility::getUniqueId('link_');

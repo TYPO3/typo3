@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Configuration\FlexForm;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -56,10 +58,8 @@ final class FlexFormToolsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider tceFormsRemovedInMigrationDataProvider
-     * @test
-     */
+    #[DataProvider('tceFormsRemovedInMigrationDataProvider')]
+    #[Test]
     public function tceFormsRemovedInMigration(array $dataStructure, array $expected): void
     {
         $eventDispatcher = new class () implements EventDispatcherInterface {

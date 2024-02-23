@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Unit\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PagesRepositoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function doesRootLineContainHiddenPagesReturnTrueForCurrentPage(): void
     {
         $subject = new PagesRepository();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldDescriptions;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -34,9 +35,7 @@ final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
         $this->subject = new TcaColumnsProcessFieldDescriptions();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsDescriptionAsIsIfNoOverrideIsGiven(): void
     {
         $input = [
@@ -60,9 +59,7 @@ final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsDescriptionToExistingField(): void
     {
         $input = [
@@ -93,9 +90,7 @@ final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDescriptionFromPageTsConfig(): void
     {
         $input = [
@@ -128,9 +123,7 @@ final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDescriptionFromPageTsConfigForSpecificLanguage(): void
     {
         $input = [

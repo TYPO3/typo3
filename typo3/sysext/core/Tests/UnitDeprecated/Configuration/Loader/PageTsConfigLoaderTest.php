@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Configuration\Loader;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PageTsConfigLoaderTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function alwaysLoadDefaultSettings(): void
     {
         $expected = [
@@ -45,9 +44,7 @@ final class PageTsConfigLoaderTest extends UnitTestCase
         self::assertSame($expectedString, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadDefaultSettingsAtTheBeginningAndKeepEmptyEntriesExpectUidZero(): void
     {
         $expected = [
@@ -64,9 +61,7 @@ final class PageTsConfigLoaderTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadExternalInclusionsCorrectlyAndKeepLoadingOrder(): void
     {
         $expected = [
@@ -83,9 +78,7 @@ final class PageTsConfigLoaderTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidExternalFileIsNotLoaded(): void
     {
         $expected = [

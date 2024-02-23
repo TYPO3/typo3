@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\ApplicationContext;
@@ -45,9 +46,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotChangeResultIfCommandIsNotEdit(): void
     {
         $input = [
@@ -58,9 +57,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationMock))->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotChangeResultIfDatabaseRowIsNotEmpty(): void
     {
         $input = [
@@ -73,9 +70,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationMock))->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfTableNameIsNotExpected(): void
     {
         $input = [
@@ -90,9 +85,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         (new SiteDatabaseEditRow($siteConfigurationMock))->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDataForSysSite(): void
     {
         $input = [
@@ -130,9 +123,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         self::assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration))->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionWithInvalidErrorHandling(): void
     {
         $input = [
@@ -158,9 +149,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         (new SiteDatabaseEditRow($siteConfiguration))->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionWithInvalidLanguage(): void
     {
         $input = [
@@ -186,9 +175,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         (new SiteDatabaseEditRow($siteConfiguration))->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddLanguageRow(): void
     {
         $input = [

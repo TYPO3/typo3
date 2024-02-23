@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteLanguageProcessorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function siteLanguageIsRetrieved(): void
     {
         $expectedName = 'currentLanguage';
@@ -43,9 +42,7 @@ final class SiteLanguageProcessorTest extends UnitTestCase
         self::assertEquals($siteLanguage->toArray(), $processedData[$expectedName]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullIsProvidedIfSiteLanguageCouldNotBeRetrieved(): void
     {
         $expectedName = 'currentSiteLanguage';

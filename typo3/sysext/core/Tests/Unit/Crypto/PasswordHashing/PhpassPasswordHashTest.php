@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PhpassPasswordHashTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfHashCountIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -32,9 +31,7 @@ final class PhpassPasswordHashTest extends UnitTestCase
         new PhpassPasswordHash(['hash_count' => 6]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfHashCountIsTooHigh(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -42,27 +39,21 @@ final class PhpassPasswordHashTest extends UnitTestCase
         new PhpassPasswordHash(['hash_count' => 25]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordReturnsNullWithEmptyPassword(): void
     {
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         self::assertNull($subject->getHashedPassword(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordReturnsNotNullWithNotEmptyPassword(): void
     {
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         self::assertNotNull($subject->getHashedPassword('a'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordValidates(): void
     {
         $password = 'password';
@@ -76,9 +67,8 @@ final class PhpassPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same fixed salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash(): void
     {
         $password = 'password';
@@ -89,9 +79,8 @@ final class PhpassPasswordHashTest extends UnitTestCase
 
     /**
      * Tests that authentication procedure fails with broken hash to compare to
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsFalseWithBrokenHash(): void
     {
         $password = 'password';
@@ -105,9 +94,8 @@ final class PhpassPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
@@ -121,9 +109,8 @@ final class PhpassPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
@@ -137,9 +124,8 @@ final class PhpassPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
@@ -153,9 +139,8 @@ final class PhpassPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
@@ -173,9 +158,8 @@ final class PhpassPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
@@ -193,9 +177,7 @@ final class PhpassPasswordHashTest extends UnitTestCase
         self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPasswordReturnsFalseWithNonValidPassword(): void
     {
         $password = 'password';
@@ -205,9 +187,7 @@ final class PhpassPasswordHashTest extends UnitTestCase
         self::assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isHashUpdateNeededReturnsFalseForValidSaltedPassword(): void
     {
         $password = 'password';
@@ -216,9 +196,7 @@ final class PhpassPasswordHashTest extends UnitTestCase
         self::assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isHashUpdateNeededReturnsFalseForChangedHashCountSaltedPassword(): void
     {
         $password = 'password';

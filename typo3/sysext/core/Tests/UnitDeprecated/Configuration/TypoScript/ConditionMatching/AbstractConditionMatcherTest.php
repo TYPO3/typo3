@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Configuration\TypoScript\ConditionMatching;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -109,10 +111,8 @@ final class AbstractConditionMatcherTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider requestFunctionDataProvider
-     */
+    #[DataProvider('requestFunctionDataProvider')]
+    #[Test]
     public function checkConditionMatcherForRequestFunction(string $expression, bool $expected): void
     {
         $request = (new ServerRequest())
@@ -142,10 +142,8 @@ final class AbstractConditionMatcherTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider datesFunctionDataProvider
-     */
+    #[DataProvider('datesFunctionDataProvider')]
+    #[Test]
     public function checkConditionMatcherForDateFunction(string $format, int $expressionValue, bool $expected): void
     {
         $GLOBALS['SIM_EXEC_TIME'] = gmmktime(11, 4, 0, 1, 17, 1945);
@@ -157,9 +155,7 @@ final class AbstractConditionMatcherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkConditionMatcherForFeatureFunction(): void
     {
         $featureName = 'test.testFeature';
@@ -212,10 +208,8 @@ final class AbstractConditionMatcherTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider matchingApplicationContextConditionsDataProvider
-     */
+    #[DataProvider('matchingApplicationContextConditionsDataProvider')]
+    #[Test]
     public function evaluateConditionCommonReturnsTrueForMatchingContexts($matchingContextCondition): void
     {
         Environment::initialize(
@@ -253,10 +247,8 @@ final class AbstractConditionMatcherTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider notMatchingApplicationContextConditionsDataProvider
-     */
+    #[DataProvider('notMatchingApplicationContextConditionsDataProvider')]
+    #[Test]
     public function evaluateConditionCommonReturnsNullForNotMatchingApplicationContexts($notMatchingApplicationContextCondition): void
     {
         Environment::initialize(
@@ -330,10 +322,8 @@ final class AbstractConditionMatcherTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider evaluateConditionCommonDevIpMaskDataProvider
-     */
+    #[DataProvider('evaluateConditionCommonDevIpMaskDataProvider')]
+    #[Test]
     public function evaluateConditionCommonEvaluatesIpAddressesCorrectly($devIpMask, $actualIp, $expectedResult): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $devIpMask;
@@ -357,9 +347,7 @@ final class AbstractConditionMatcherTest extends UnitTestCase
         self::assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typoScriptElseConditionIsNotEvaluatedAndAlwaysReturnsFalse(): void
     {
         $this->initConditionMatcher();

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\UnitDeprecated\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FilePathSanitizerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeCorrectlyResolvesPathsForLegacySystemsEvenForPrivateResources(): void
     {
         $subject = new FilePathSanitizer();

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -36,10 +38,10 @@ final class RedirectFinisherTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     /**
-     * @test
-     * @dataProvider pageUidOptionForFinisherAcceptsVariousPageRepresentationsDataProvider
      * @param string|int|null $pageUid
      */
+    #[DataProvider('pageUidOptionForFinisherAcceptsVariousPageRepresentationsDataProvider')]
+    #[Test]
     public function pageUidOptionForFinisherAcceptsVariousPageRepresentations($pageUid, int $expectedPage): void
     {
         $uriPrefix = 'https://site.test/?id=';

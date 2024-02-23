@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\FlexFormService;
@@ -27,9 +28,7 @@ final class FlexFormServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFlexFormContentToArrayResolvesComplexArrayStructure(): void
     {
         $input = '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>

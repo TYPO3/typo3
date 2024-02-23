@@ -25,6 +25,7 @@ use GuzzleHttp\Handler\MockHandler as GuzzleMockHandler;
 use GuzzleHttp\HandlerStack as GuzzleHandlerStack;
 use GuzzleHttp\Middleware as GuzzleMiddleware;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
@@ -37,18 +38,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ClientTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsr18ClientInterface(): void
     {
         $client = new Client();
         self::assertInstanceOf(ClientInterface::class, $client);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sendRequest(): void
     {
         $transactions = [];
@@ -79,9 +76,7 @@ final class ClientTest extends UnitTestCase
         self::assertSame('Baz', $response2->getHeaderLine('X-Foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requestException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
@@ -95,9 +90,7 @@ final class ClientTest extends UnitTestCase
         $client->sendRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function networkException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
@@ -111,9 +104,7 @@ final class ClientTest extends UnitTestCase
         $client->sendRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function genericGuzzleException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
@@ -127,9 +118,7 @@ final class ClientTest extends UnitTestCase
         $client->sendRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectIsNotHandledRecursivelyButReturnedAsResponse(): void
     {
         $transactions = [];
@@ -148,9 +137,7 @@ final class ClientTest extends UnitTestCase
         self::assertSame('https://example.com', $response->getHeaderLine('Location'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function errorResponsesDoNotThrowAnException(): void
     {
         $mock = new GuzzleMockHandler([

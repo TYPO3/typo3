@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Resource\File;
@@ -167,10 +169,8 @@ final class ImageDimensionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider givenProcessingInstructionsCalculatesCorrectDimensionDataProvider
-     * @test
-     */
+    #[DataProvider('givenProcessingInstructionsCalculatesCorrectDimensionDataProvider')]
+    #[Test]
     public function givenProcessingInstructionsCalculatesCorrectDimension(
         array $processingConfiguration,
         ImageDimension $originalImageDimension,

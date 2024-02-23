@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
@@ -27,18 +28,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IconRegistryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultIconIdentifierReturnsTheCorrectDefaultIconIdentifierString(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getDefaultIconIdentifier();
         self::assertEquals('default-not-found', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isRegisteredReturnsTrueForRegisteredIcon(): void
     {
         $subject = new IconRegistry(new NullFrontend('test'), 'BackendIcons');
@@ -46,18 +43,14 @@ final class IconRegistryTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isRegisteredReturnsFalseForNotRegisteredIcon(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->isRegistered('my-super-unregistered-identifier');
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerIconAddNewIconToRegistry(): void
     {
         $unregisteredIcon = 'foo-bar-unregistered';
@@ -70,9 +63,7 @@ final class IconRegistryTest extends UnitTestCase
         self::assertTrue($subject->isRegistered($unregisteredIcon));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerIconThrowsInvalidArgumentExceptionWithInvalidIconProvider(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -81,9 +72,7 @@ final class IconRegistryTest extends UnitTestCase
         (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->registerIcon('my-super-unregistered-identifier', GeneralUtility::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconConfigurationByIdentifierThrowsExceptionWithUnregisteredIconIdentifier(): void
     {
         $this->expectException(Exception::class);
@@ -92,9 +81,7 @@ final class IconRegistryTest extends UnitTestCase
         (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getIconConfigurationByIdentifier('my-super-unregistered-identifier');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconConfigurationByIdentifierReturnsCorrectConfiguration(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getIconConfigurationByIdentifier('default-not-found');
@@ -105,17 +92,13 @@ final class IconRegistryTest extends UnitTestCase
         self::assertContains(IconProviderInterface::class, class_implements($result['provider']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentifiers(): void
     {
         self::assertIsArray((new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getAllRegisteredIconIdentifiers());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllRegisteredIconIdentifiersReturnsArrayWithAllRegisteredIconIdentifiers(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getAllRegisteredIconIdentifiers();
@@ -123,36 +106,28 @@ final class IconRegistryTest extends UnitTestCase
         self::assertContains('default-not-found', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForEmptyFileExtension(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getIconIdentifierForFileExtension('');
         self::assertEquals('mimetypes-other-other', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForUnknownFileExtension(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getIconIdentifierForFileExtension('xyz');
         self::assertEquals('mimetypes-other-other', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconIdentifierForFileExtensionReturnsImageIconIdentifierForImageFileExtension(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getIconIdentifierForFileExtension('jpg');
         self::assertEquals('mimetypes-media-image', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerFileExtensionRegisterAnIcon(): void
     {
         $subject = new IconRegistry(new NullFrontend('test'), 'BackendIcons');
@@ -161,9 +136,7 @@ final class IconRegistryTest extends UnitTestCase
         self::assertEquals('xyz', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerFileExtensionOverwriteAnExistingIcon(): void
     {
         $subject = new IconRegistry(new NullFrontend('test'), 'BackendIcons');
@@ -172,9 +145,7 @@ final class IconRegistryTest extends UnitTestCase
         self::assertEquals('xyz', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerMimeTypeIconRegisterAnIcon(): void
     {
         $subject = new IconRegistry(new NullFrontend('test'), 'BackendIcons');
@@ -183,9 +154,7 @@ final class IconRegistryTest extends UnitTestCase
         self::assertEquals('mimetype-foo-bar', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerMimeTypeIconOverwriteAnExistingIcon(): void
     {
         $subject = new IconRegistry(new NullFrontend('test'), 'BackendIcons');
@@ -194,9 +163,7 @@ final class IconRegistryTest extends UnitTestCase
         self::assertEquals('mimetype-foo-bar', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconIdentifierForMimeTypeWithUnknownMimeTypeReturnNull(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getIconIdentifierForMimeType('bar/foo');

@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Html\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Html\SimpleNode;
+use TYPO3\CMS\Core\Html\SimpleParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ParserTest extends UnitTestCase
@@ -104,12 +107,12 @@ final class ParserTest extends UnitTestCase
 
     /**
      * @param string[] $expectation
-     * @test
-     * @dataProvider nodesAreResolvedDataProvider
      */
+    #[DataProvider('nodesAreResolvedDataProvider')]
+    #[Test]
     public function nodesAreResolved(string $html, array $expectation): void
     {
-        $parser = \TYPO3\CMS\Core\Html\SimpleParser::fromString($html);
+        $parser = SimpleParser::fromString($html);
         $nodes = array_map(
             static function (SimpleNode $node) {
                 return sprintf('[%s]: %s', self::TYPES[$node->getType()], $node);

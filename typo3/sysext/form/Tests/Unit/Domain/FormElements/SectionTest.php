@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -36,27 +37,20 @@ final class SectionTest extends UnitTestCase
      */
     protected $sectionInstance;
 
-    /**
-     * @before
-     */
     public function setUp(): void
     {
         parent::setUp();
         $this->sectionInstance = new Section(self::$IDENTIFIER, self::$TYPE);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newInstanceHasNoProperties(): void
     {
         self::assertNotNull($this->sectionInstance);
         self::assertCount(0, $this->sectionInstance->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSimpleProperties(): void
     {
         $this->sectionInstance->setProperty('foo', 'bar');
@@ -70,9 +64,7 @@ final class SectionTest extends UnitTestCase
         self::assertEquals('qax', $properties['buz']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideProperties(): void
     {
         $this->sectionInstance->setProperty('foo', 'bar');
@@ -84,9 +76,7 @@ final class SectionTest extends UnitTestCase
         self::assertEquals('buz', $properties['foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setArrayProperties(): void
     {
         $this->sectionInstance->setProperty('foo', ['bar' => 'baz', 'bla' => 'blubb']);
@@ -102,9 +92,7 @@ final class SectionTest extends UnitTestCase
         self::assertEquals('baz', $properties['foo']['bar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyUnsetIfValueIsNull(): void
     {
         $expected = ['foo-1' => ['bar-1' => 'foo-2']];
@@ -115,9 +103,7 @@ final class SectionTest extends UnitTestCase
         self::assertSame($expected, $this->sectionInstance->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $expected = [
@@ -135,9 +121,7 @@ final class SectionTest extends UnitTestCase
         self::assertSame($expected, $this->sectionInstance->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionSetStringValueIfKeyDoesNotExists(): void
     {
         $expected = ['foo' => 'bar'];
@@ -146,9 +130,7 @@ final class SectionTest extends UnitTestCase
         self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionSetArrayValueIfKeyDoesNotExists(): void
     {
         $expected = ['foo-1' => ['bar' => 'foo-2']];
@@ -157,9 +139,7 @@ final class SectionTest extends UnitTestCase
         self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionUnsetIfValueIsNull(): void
     {
         $expected = ['foo-1' => ['bar-1' => 'foo-2']];
@@ -170,9 +150,7 @@ final class SectionTest extends UnitTestCase
         self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $expected = [
@@ -190,9 +168,7 @@ final class SectionTest extends UnitTestCase
         self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRenderingOptionAddValueIfValueIsArray(): void
     {
         $expected = [

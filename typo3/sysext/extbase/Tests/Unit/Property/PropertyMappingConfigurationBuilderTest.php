@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,9 +32,7 @@ final class PropertyMappingConfigurationBuilderTest extends UnitTestCase
         $this->propertyMappingConfigurationBuilder = new PropertyMappingConfigurationBuilder();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration(): void
     {
         $defaultConfiguration = $this->propertyMappingConfigurationBuilder->build();

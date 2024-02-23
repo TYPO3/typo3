@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LogEntryRepositoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeObjectSetsRespectStoragePidToFalse(): void
     {
         $querySettings = $this->getMockBuilder(QuerySettingsInterface::class)->getMock();

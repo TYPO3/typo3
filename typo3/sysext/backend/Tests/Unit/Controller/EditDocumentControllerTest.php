@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,10 +26,8 @@ final class EditDocumentControllerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     * @dataProvider slugDependentFieldsAreAddedToColumnsOnlyDataProvider
-     */
+    #[DataProvider('slugDependentFieldsAreAddedToColumnsOnlyDataProvider')]
+    #[Test]
     public function slugDependentFieldsAreAddedToColumnsOnly(string $result, string $selectedFields, string $tableName, array $configuration): void
     {
         $GLOBALS['TCA'][$tableName]['columns'] = $configuration;
@@ -115,10 +115,8 @@ final class EditDocumentControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolvePreviewRecordIdDataProvider
-     */
+    #[DataProvider('resolvePreviewRecordIdDataProvider')]
+    #[Test]
     public function resolvePreviewRecordIdReturnsExpectedUid(int $expected, array $previewConfiguration): void
     {
         $recordArray = ['uid' => 2, 'l10n_parent' => 1];
@@ -148,10 +146,8 @@ final class EditDocumentControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolvePreviewRecordIdForNonTranslatableTableDataProvider
-     */
+    #[DataProvider('resolvePreviewRecordIdForNonTranslatableTableDataProvider')]
+    #[Test]
     public function resolvePreviewRecordIdReturnsExpectedUidForNonTranslatableTable(int $expected, array $previewConfiguration): void
     {
         $recordArray = ['uid' => 2];

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -29,9 +30,7 @@ final class InstallToolFormProtectionTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tokenFromSessionDataIsAvailableForValidateToken(): void
     {
         $sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
@@ -45,9 +44,7 @@ final class InstallToolFormProtectionTest extends UnitTestCase
         self::assertTrue($subject->validateToken($tokenId, $formName, $action, $formInstanceName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function persistSessionTokenWritesTokensToSession(): void
     {
         $_SESSION['installToolFormToken'] = 'foo';

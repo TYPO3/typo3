@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Context;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class WorkspaceAspectTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getterReturnsProperDefaultValues(): void
     {
         $subject = new WorkspaceAspect();
@@ -36,9 +35,7 @@ final class WorkspaceAspectTest extends UnitTestCase
         self::assertFalse($subject->get('isOffline'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getterReturnsProperCustomValues(): void
     {
         $subject = new WorkspaceAspect(13);
@@ -49,9 +46,7 @@ final class WorkspaceAspectTest extends UnitTestCase
         self::assertTrue($subject->get('isOffline'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(AspectPropertyNotFoundException::class);

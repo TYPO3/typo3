@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\SetDataType;
 use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCase;
 
@@ -49,10 +51,8 @@ final class SetDataTypeTest extends AbstractDataTypeBaseTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseSetDataTypeProvider
-     */
+    #[DataProvider('canParseSetDataTypeProvider')]
+    #[Test]
     public function canParseDataType(string $columnDefinition, string $className, array $values): void
     {
         $subject = $this->createSubject($columnDefinition);

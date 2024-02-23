@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filelist\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Resource\File;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileListTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function sortResourcesByNameSortsCorrectly(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -69,9 +68,7 @@ final class FileListTest extends UnitTestCase
         self::assertSame($expected, $fileList->_call('sortResources', $resources, 'name'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sortResourcesByFileextNameSortsCorrectly(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);

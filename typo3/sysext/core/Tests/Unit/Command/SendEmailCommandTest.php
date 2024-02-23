@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Command;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use TYPO3\CMS\Core\Command\SendEmailCommand;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SendEmailCommandTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function executeWillFlushTheQueue(): void
     {
         $delayedTransportMock = $this->createMock(DelayedTransportInterface::class);

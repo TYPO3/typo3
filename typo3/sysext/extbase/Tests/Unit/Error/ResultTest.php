@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -45,10 +47,8 @@ final class ResultTest extends UnitTestCase
         return $this->createMock('TYPO3\\CMS\\Extbase\\Error\\' . $type);
     }
 
-    /**
-     * @test
-     * @dataProvider dataTypes
-     */
+    #[DataProvider('dataTypes')]
+    #[Test]
     public function addedMessagesShouldBeRetrievableAgain(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message = $this->getMockMessage($dataTypeInSingular);
@@ -58,10 +58,8 @@ final class ResultTest extends UnitTestCase
         self::assertEquals([$message], $this->result->{$getterMethodName}());
     }
 
-    /**
-     * @test
-     * @dataProvider dataTypes
-     */
+    #[DataProvider('dataTypes')]
+    #[Test]
     public function getMessageShouldNotBeRecursive(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message = $this->getMockMessage($dataTypeInSingular);
@@ -71,10 +69,8 @@ final class ResultTest extends UnitTestCase
         self::assertEquals([], $this->result->{$getterMethodName}());
     }
 
-    /**
-     * @test
-     * @dataProvider dataTypes
-     */
+    #[DataProvider('dataTypes')]
+    #[Test]
     public function getFirstMessageShouldReturnFirstMessage(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message1 = $this->getMockMessage($dataTypeInSingular);
@@ -86,9 +82,7 @@ final class ResultTest extends UnitTestCase
         self::assertSame($message1, $this->result->{$getterMethodName}());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forPropertyShouldReturnSubResult(): void
     {
         $container2 = $this->result->forProperty('foo.bar');
@@ -96,28 +90,22 @@ final class ResultTest extends UnitTestCase
         self::assertSame($container2, $this->result->forProperty('foo')->forProperty('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forPropertyWithEmptyStringShouldReturnSelf(): void
     {
         $container2 = $this->result->forProperty('');
         self::assertSame($container2, $this->result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forPropertyWithNullShouldReturnSelf(): void
     {
         $container2 = $this->result->forProperty(null);
         self::assertSame($container2, $this->result);
     }
 
-    /**
-     * @test
-     * @dataProvider dataTypes
-     */
+    #[DataProvider('dataTypes')]
+    #[Test]
     public function hasMessagesShouldReturnTrueIfTopLevelObjectHasMessages(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message = $this->getMockMessage($dataTypeInSingular);
@@ -127,10 +115,8 @@ final class ResultTest extends UnitTestCase
         self::assertTrue($this->result->{$methodName}());
     }
 
-    /**
-     * @test
-     * @dataProvider dataTypes
-     */
+    #[DataProvider('dataTypes')]
+    #[Test]
     public function hasMessagesShouldReturnTrueIfSubObjectHasErrors(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $addMethodName = 'add' . $dataTypeInSingular;
@@ -140,10 +126,8 @@ final class ResultTest extends UnitTestCase
         self::assertTrue($this->result->{$methodName}());
     }
 
-    /**
-     * @test
-     * @dataProvider dataTypes
-     */
+    #[DataProvider('dataTypes')]
+    #[Test]
     public function hasMessagesShouldReturnFalseIfSubObjectHasNoErrors(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $methodName = 'has' . $dataTypeInPlural;
@@ -152,10 +136,8 @@ final class ResultTest extends UnitTestCase
         self::assertFalse($this->result->{$methodName}());
     }
 
-    /**
-     * @test
-     * @dataProvider dataTypes
-     */
+    #[DataProvider('dataTypes')]
+    #[Test]
     public function getFlattenedMessagesShouldReturnAllSubMessages(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message1 = $this->getMockMessage($dataTypeInSingular);
@@ -179,10 +161,8 @@ final class ResultTest extends UnitTestCase
         self::assertEquals($expected, $this->result->{$getMethodName}());
     }
 
-    /**
-     * @test
-     * @dataProvider dataTypes
-     */
+    #[DataProvider('dataTypes')]
+    #[Test]
     public function getFlattenedMessagesShouldNotContainEmptyResults(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message1 = $this->getMockMessage($dataTypeInSingular);
@@ -198,9 +178,7 @@ final class ResultTest extends UnitTestCase
         self::assertEquals($expected, $this->result->{$getMethodName}());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mergeShouldMergeTwoResults(): void
     {
         $notice1 = $this->getMockMessage('Notice');
@@ -231,9 +209,7 @@ final class ResultTest extends UnitTestCase
         self::assertSame([$error1, $error2], $this->result->forProperty('foo')->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFirstReturnsFalseOnEmptyResult(): void
     {
         $subject = new Result();

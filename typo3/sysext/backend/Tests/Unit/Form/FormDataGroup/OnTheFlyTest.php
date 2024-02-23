@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,9 +33,7 @@ final class OnTheFlyTest extends UnitTestCase
         $this->subject = new OnTheFly();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionWithEmptyOnTheFlyList(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -42,9 +41,7 @@ final class OnTheFlyTest extends UnitTestCase
         $this->subject->compile([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileReturnsIncomingData(): void
     {
         $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
@@ -62,9 +59,7 @@ final class OnTheFlyTest extends UnitTestCase
         self::assertEquals($input, $this->subject->compile($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileReturnsResultChangedByDataProvider(): void
     {
         $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
@@ -81,9 +76,7 @@ final class OnTheFlyTest extends UnitTestCase
         self::assertEquals($providerResult, $this->subject->compile([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
         $providerList = [

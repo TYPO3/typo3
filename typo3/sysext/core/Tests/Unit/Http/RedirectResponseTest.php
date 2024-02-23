@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RedirectResponseTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeadersReturnsLocationUrlSetByConstructorArgument(): void
     {
         $subject = new RedirectResponse('theRedirectUrl');
@@ -36,9 +35,7 @@ final class RedirectResponseTest extends UnitTestCase
         self::assertSame($expected, $subject->getHeaders());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderReturnsLocationUrlSetByConstructorArgument(): void
     {
         $subject = new RedirectResponse('theRedirectUrl');
@@ -48,9 +45,7 @@ final class RedirectResponseTest extends UnitTestCase
         self::assertSame($expected, $subject->getHeader('location'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeadersReturnsHeaderSetByConstructorArgument(): void
     {
         $input = [
@@ -72,9 +67,7 @@ final class RedirectResponseTest extends UnitTestCase
         self::assertSame($expected, $subject->getHeaders());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderReturnsHeaderSetByConstructorArgument(): void
     {
         $input = [
@@ -87,9 +80,7 @@ final class RedirectResponseTest extends UnitTestCase
         self::assertSame($expected, $subject->getHeader('lowercasedheadername'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHeaderReturnsHeaderSetByConstructorArgumentLowerCased(): void
     {
         $input = [

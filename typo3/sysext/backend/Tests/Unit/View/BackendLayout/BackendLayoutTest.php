@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,9 +31,7 @@ final class BackendLayoutTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidIdentifierIsRecognizedOnCreation(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -43,9 +42,7 @@ final class BackendLayoutTest extends UnitTestCase
         new BackendLayout($identifier, $title, $configuration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectIsCreated(): void
     {
         $backendLayoutView = $this->createMock(BackendLayoutView::class);

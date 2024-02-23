@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Tokenizer\Line;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierFunctionLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IdentifierFunctionLineTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setIdentifierTokenStreamThrowsIfStreamIsEmpty(): void
     {
         $this->expectException(\LogicException::class);
@@ -35,9 +34,7 @@ final class IdentifierFunctionLineTest extends UnitTestCase
         (new IdentifierFunctionLine())->setIdentifierTokenStream(new IdentifierTokenStream());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFunctionNameTokenThrowsIfTokenIsNotOfTypeFunction(): void
     {
         $this->expectException(\LogicException::class);
@@ -45,9 +42,7 @@ final class IdentifierFunctionLineTest extends UnitTestCase
         (new IdentifierFunctionLine())->setFunctionNameToken(new Token(TokenType::T_BLANK, ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFunctionValueTokenThrowsIfTokenIsNotOfTypeValue(): void
     {
         $this->expectException(\LogicException::class);

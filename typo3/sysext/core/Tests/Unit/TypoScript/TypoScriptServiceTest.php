@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -146,11 +148,11 @@ final class TypoScriptServiceTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider convertTypoScriptArrayToPlainArrayTestdata
      * @param mixed $typoScriptSettings
      * @param mixed $expectedSettings
      */
+    #[DataProvider('convertTypoScriptArrayToPlainArrayTestdata')]
+    #[Test]
     public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray(
         $typoScriptSettings,
         $expectedSettings
@@ -280,11 +282,11 @@ final class TypoScriptServiceTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider convertPlainArrayToTypoScriptArrayTestdata
      * @param mixed $extbaseTS
      * @param mixed $classic
      */
+    #[DataProvider('convertPlainArrayToTypoScriptArrayTestdata')]
+    #[Test]
     public function convertPlainArrayToTypoScriptArray($extbaseTS, $classic): void
     {
         $typoScriptService = new TypoScriptService();
@@ -401,10 +403,10 @@ final class TypoScriptServiceTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider explodeConfigurationForOptionSplitProvider
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ObjectsAndProperties/Index.html#objects-optionsplit
      */
+    #[DataProvider('explodeConfigurationForOptionSplitProvider')]
+    #[Test]
     public function explodeConfigurationForOptionSplitTest($configuration, $splitCount, $expected): void
     {
         $serviceObject = new TypoScriptService();

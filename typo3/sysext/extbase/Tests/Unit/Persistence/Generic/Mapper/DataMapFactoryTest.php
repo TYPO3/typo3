@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DataMapFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildDataMapThrowsExceptionIfClassNameIsNotKnown(): void
     {
         $this->expectException(InvalidClassException::class);
@@ -53,10 +53,8 @@ final class DataMapFactoryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider classNameTableNameMappings
-     */
+    #[DataProvider('classNameTableNameMappings')]
+    #[Test]
     public function resolveTableNameReturnsExpectedTablenames($className, $expected): void
     {
         $subject = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);

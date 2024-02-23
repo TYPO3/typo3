@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -85,10 +87,8 @@ final class CsvUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider csvToArrayDataProvider
-     * @test
-     */
+    #[DataProvider('csvToArrayDataProvider')]
+    #[Test]
     public function csvToArraySplitsAsExpected(string $input, string $fieldDelimiter, string $fieldEnclosure, int $maximumColumns, array $expectedResult): void
     {
         self::assertEquals($expectedResult, CsvUtility::csvToArray($input, $fieldDelimiter, $fieldEnclosure, $maximumColumns));
@@ -156,10 +156,8 @@ final class CsvUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider csvValuesDataProvider
-     * @test
-     */
+    #[DataProvider('csvValuesDataProvider')]
+    #[Test]
     public function csvValuesReturnsExpectedResult(array $row, string $delimiter, string $quote, string $expectedResult, int $flag): void
     {
         self::assertEquals($expectedResult, CsvUtility::csvValues($row, $delimiter, $quote, $flag));

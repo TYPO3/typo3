@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
@@ -26,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtractorServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isFileTypeSupportedByExtractorReturnsFalseForFileTypeTextAndExtractorLimitedToFileTypeImage(): void
     {
         $fileMock = $this->createMock(File::class);
@@ -48,9 +48,7 @@ final class ExtractorServiceTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFileTypeSupportedByExtractorReturnsTrueForFileTypeImageAndExtractorLimitedToFileTypeImage(): void
     {
         $fileMock = $this->createMock(File::class);
@@ -70,9 +68,7 @@ final class ExtractorServiceTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFileTypeSupportedByExtractorReturnsTrueForFileTypeTextAndExtractorHasNoFileTypeLimitation(): void
     {
         $fileMock = $this->createMock(File::class);
@@ -92,9 +88,7 @@ final class ExtractorServiceTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractMetaDataComposesDataByAvailableExtractors(): void
     {
         $storageMock = $this->createMock(ResourceStorage::class);
@@ -207,10 +201,8 @@ final class ExtractorServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider extractMetaDataComposesDataByAvailableExtractorsWithDifferentPrioritiesDataProvider
-     */
+    #[DataProvider('extractMetaDataComposesDataByAvailableExtractorsWithDifferentPrioritiesDataProvider')]
+    #[Test]
     public function extractMetaDataComposesDataByAvailableExtractorsWithDifferentPriorities(
         int $extractorOneDataPriority,
         int $extractorOneExecutionPriority,

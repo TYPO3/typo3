@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\View;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -43,9 +45,9 @@ final class BackendLayoutViewTest extends UnitTestCase
 
     /**
      * @param bool|string $expected
-     * @test
-     * @dataProvider selectedCombinedIdentifierIsDeterminedDataProvider
      */
+    #[DataProvider('selectedCombinedIdentifierIsDeterminedDataProvider')]
+    #[Test]
     public function selectedCombinedIdentifierIsDetermined($expected, array $page, array $rootLine): void
     {
         $pageId = $page['uid'];

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractFormElementTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function newInstanceHasNoProperties(): void
     {
         $subject = new TestingFormElement();
@@ -36,9 +35,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertCount(0, $subject->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSimpleProperties(): void
     {
         $subject = new TestingFormElement();
@@ -54,9 +51,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertEquals('qax', $properties['buz']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideProperties(): void
     {
         $subject = new TestingFormElement();
@@ -70,9 +65,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertEquals('buz', $properties['foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setArrayProperties(): void
     {
         $subject = new TestingFormElement();
@@ -90,9 +83,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertEquals('baz', $properties['foo']['bar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyUnsetIfValueIsNull(): void
     {
         $subject = new TestingFormElement();
@@ -105,9 +96,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertSame($expected, $subject->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $subject = new TestingFormElement();
@@ -127,9 +116,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertSame($expected, $subject->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionWhenIdentifierIsEmpty(): void
     {
         $this->expectException(IdentifierNotValidException::class);
@@ -139,9 +126,7 @@ final class AbstractFormElementTest extends UnitTestCase
         new GenericFormElement('', 'a_type');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString(): void
     {
         $formElement = new TestingFormElement();
@@ -149,9 +134,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertInstanceOf(TestingFormElement::class, $formElement);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeFormElementExpectedCallInitializeFormObjectHooks(): void
     {
         $formElement = new TestingFormElement();
@@ -172,9 +155,7 @@ final class AbstractFormElementTest extends UnitTestCase
         $formElement->initializeFormElement();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUniqueIdentifierExpectedUnique(): void
     {
         $formDefinition1 = $this->createMock(FormDefinition::class);
@@ -199,9 +180,7 @@ final class AbstractFormElementTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDefaultValueSetStringValueIfKeyDoesNotExists(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
@@ -216,9 +195,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertSame($expected, $formElement->getDefaultValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDefaultValueSetArrayValueIfKeyDoesNotExists(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
@@ -233,9 +210,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertSame($expected, $formElement->getDefaultValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDefaultValueUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);
@@ -273,9 +248,7 @@ final class AbstractFormElementTest extends UnitTestCase
         self::assertSame($expected, $formElement->getDefaultValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDefaultValueAddValueIfValueIsArray(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, null, [], '', false);

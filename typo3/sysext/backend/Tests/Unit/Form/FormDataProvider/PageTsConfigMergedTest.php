@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class PageTsConfigMergedTest extends UnitTestCase
         $this->subject = new PageTsConfigMerged();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsMergedTsConfigToTsConfig(): void
     {
         $input = [
@@ -47,9 +46,7 @@ final class PageTsConfigMergedTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsTableSpecificConfigurationWithoutType(): void
     {
         $input = [
@@ -70,9 +67,7 @@ final class PageTsConfigMergedTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataMergesTypeSpecificConfiguration(): void
     {
         $input = [
@@ -105,9 +100,7 @@ final class PageTsConfigMergedTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataTypeSpecificConfigurationOverwritesMainConfiguration(): void
     {
         $input = [

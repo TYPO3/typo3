@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -65,9 +66,7 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
         return $container;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function simpleServiceProvider(): void
     {
         $container = $this->getContainer([
@@ -84,9 +83,7 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertIsObject($container->get('function'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serviceProviderOverrides(): void
     {
         $container = $this->getContainer([
@@ -106,9 +103,7 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertEquals('baz', $serviceE->parameter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serviceProviderFactoryOverrides(): void
     {
         $container = $this->getContainer([
@@ -122,9 +117,7 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertEquals('remotehost', $serviceA->serviceB->parameter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serviceProviderFactoryOverridesForSymfonyDefinedServices(): void
     {
         $container = $this->getContainer(
@@ -149,9 +142,7 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertEquals('foobar', $serviceA->serviceB->symfony_defined_parameter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serviceProviderFactoryOverrideResetsAutowiring(): void
     {
         $container = $this->getContainer(
@@ -178,9 +169,7 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertFalse($container->getDefinition('serviceB')->isAutowired());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exceptionForNonNullableExtensionArgument(): void
     {
         $this->expectException(\Exception::class);

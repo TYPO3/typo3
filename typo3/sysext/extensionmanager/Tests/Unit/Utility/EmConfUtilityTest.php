@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class EmConfUtilityTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructEmConfAddsCommentBlock(): void
     {
         $subject = new EmConfUtility();
@@ -32,9 +31,7 @@ final class EmConfUtilityTest extends UnitTestCase
         self::assertStringContainsString('Extension Manager/Repository config file for ext', $emConf);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixEmConfTransfersOldConflictSettingToNewFormatWithSingleConflictingExtension(): void
     {
         $input = [
@@ -59,9 +56,7 @@ final class EmConfUtilityTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixEmConfTransfersOldConflictSettingToNewFormatWithTwoConflictingExtensions(): void
     {
         $input = [

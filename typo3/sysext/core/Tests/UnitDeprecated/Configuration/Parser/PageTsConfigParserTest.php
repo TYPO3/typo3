@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Configuration\Parser;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -30,9 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PageTsConfigParserTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidCacheAlwaysExecutesMatcher(): void
     {
         $input = 'mod.web_layout = disabled';
@@ -53,9 +52,7 @@ final class PageTsConfigParserTest extends UnitTestCase
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cachedHitOnlyExecutesMatcher(): void
     {
         $cachedSection = 'mod.web_layout = disabled';
@@ -83,9 +80,7 @@ final class PageTsConfigParserTest extends UnitTestCase
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseReplacesSiteSettings(): void
     {
         $input = 'mod.web_layout = {$numberedThings.1}' . "\n" .
@@ -132,9 +127,7 @@ final class PageTsConfigParserTest extends UnitTestCase
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseReplacesSiteSettingsWithMultipleSitesAndCache(): void
     {
         $input = 'mod.web_layout = {$numberedThings.1}';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -32,9 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PersistenceManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function persistAllPassesAddedObjectsToBackend(): void
     {
         $entity2 = new Entity2();
@@ -53,9 +52,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $manager->persistAll();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function persistAllPassesRemovedObjectsToBackend(): void
     {
         $entity2 = new Entity2();
@@ -74,9 +71,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $manager->persistAll();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIdentifierByObjectReturnsIdentifierFromBackend(): void
     {
         $fakeUuid = 'fakeUuid';
@@ -94,9 +89,7 @@ final class PersistenceManagerTest extends UnitTestCase
         self::assertEquals($manager->getIdentifierByObject($object), $fakeUuid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getObjectByIdentifierReturnsObjectFromSessionIfAvailable(): void
     {
         $fakeUuid = 'fakeUuid';
@@ -115,9 +108,7 @@ final class PersistenceManagerTest extends UnitTestCase
         self::assertEquals($manager->getObjectByIdentifier($fakeUuid, $object::class), $object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getObjectByIdentifierReturnsObjectFromPersistenceIfAvailable(): void
     {
         $fakeUuid = '42';
@@ -142,9 +133,7 @@ final class PersistenceManagerTest extends UnitTestCase
         self::assertEquals($manager->getObjectByIdentifier($fakeUuid, $fakeEntityType), $object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getObjectByIdentifierReturnsNullForUnknownObject(): void
     {
         $fakeUuid = '42';
@@ -171,9 +160,7 @@ final class PersistenceManagerTest extends UnitTestCase
         self::assertNull($manager->getObjectByIdentifier($fakeUuid, $fakeEntityType));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addActuallyAddsAnObjectToTheInternalObjectsArray(): void
     {
         $someObject = new \stdClass();
@@ -197,9 +184,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager->persistAll();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeActuallyRemovesAnObjectFromTheInternalObjectsArray(): void
     {
         $object1 = new \stdClass();
@@ -234,9 +219,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager->persistAll();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeRemovesTheRightObjectEvenIfItHasBeenModifiedSinceItsAddition(): void
     {
         $object1 = new \ArrayObject(['val' => '1']);
@@ -277,9 +260,8 @@ final class PersistenceManagerTest extends UnitTestCase
     /**
      * Make sure we remember the objects that are not currently add()ed
      * but might be in persistent storage.
-     *
-     * @test
      */
+    #[Test]
     public function removeRetainsObjectForObjectsNotInCurrentSession(): void
     {
         $object = new \ArrayObject(['val' => '1']);
@@ -303,9 +285,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager->persistAll();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateSchedulesAnObjectForPersistence(): void
     {
         $className = StringUtility::getUniqueId('BazFixture');
@@ -356,9 +336,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager->persistAll();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tearDownWithBackendSupportingTearDownDelegatesCallToBackend(): void
     {
         $mockBackend = $this->getMockBuilder(BackendInterface::class)
@@ -376,9 +354,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $persistenceManager->tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function persistAllAddsNamespacedReconstitutedObjectFromSessionToBackendsAggregateRootObjects(): void
     {
         $className = StringUtility::getUniqueId('BazFixture');

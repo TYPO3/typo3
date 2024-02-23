@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Context;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Security\NoncePool;
 use TYPO3\CMS\Core\Security\RequestToken;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SecurityAspectTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function receivedRequestTokenIsFunctional(): void
     {
         $aspect = new SecurityAspect();
@@ -40,18 +39,14 @@ final class SecurityAspectTest extends UnitTestCase
         self::assertNull($aspect->getReceivedRequestToken());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function signingSecretResolverIsFunctional(): void
     {
         $aspect = new SecurityAspect();
         self::assertInstanceOf(NoncePool::class, $aspect->getSigningSecretResolver()->findByType('nonce'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noncePoolIsFunctional(): void
     {
         $aspect = new SecurityAspect();

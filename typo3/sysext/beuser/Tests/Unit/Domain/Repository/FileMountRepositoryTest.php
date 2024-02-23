@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Beuser\Domain\Repository\FileMountRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileMountRepositoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function classCanBeInstantiated(): void
     {
         new FileMountRepository();

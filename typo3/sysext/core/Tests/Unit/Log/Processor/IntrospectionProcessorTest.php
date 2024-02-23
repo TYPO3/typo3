@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
@@ -64,9 +66,7 @@ final class IntrospectionProcessorTest extends UnitTestCase
         $this->processor = $this->getAccessibleMock(IntrospectionProcessor::class, ['getDebugBacktrace']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function introspectionProcessorAddsLastBacktraceItemToLogRecord(): void
     {
         $this->processor->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
@@ -79,9 +79,7 @@ final class IntrospectionProcessorTest extends UnitTestCase
         self::assertEquals($this->dummyBacktrace[0]['function'], $logRecord['data']['function']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function introspectionProcessorShiftsLogRelatedFunctionsFromBacktrace(): void
     {
         $dummyBacktrace = $this->dummyBacktrace;
@@ -123,10 +121,8 @@ final class IntrospectionProcessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider introspectionProcessorShiftsGivenNumberOfEntriesFromBacktraceDataProvider
-     */
+    #[DataProvider('introspectionProcessorShiftsGivenNumberOfEntriesFromBacktraceDataProvider')]
+    #[Test]
     public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktrace($number): void
     {
         $this->processor->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
@@ -141,9 +137,7 @@ final class IntrospectionProcessorTest extends UnitTestCase
         self::assertEquals($this->dummyBacktrace[$number]['function'], $logRecord['data']['function']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function introspectionProcessorLeavesOneEntryIfGivenNumberOfEntriesFromBacktraceIsGreaterOrEqualNumberOfBacktraceLevels(): void
     {
         $this->processor->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
@@ -158,9 +152,7 @@ final class IntrospectionProcessorTest extends UnitTestCase
         self::assertEquals($this->dummyBacktrace[3]['function'], $logRecord['data']['function']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendFullBacktraceAddsTheFullBacktraceAsStringToTheLog(): void
     {
         $this->processor->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);

@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
     public static function emailSoftReferenceParserTestDataProvider(): array
@@ -74,10 +77,8 @@ final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider emailSoftReferenceParserTestDataProvider
-     */
+    #[DataProvider('emailSoftReferenceParserTestDataProvider')]
+    #[Test]
     public function emailSoftReferenceParserTest(string $content, string $expectedContent, array $expectedElements, bool $expectedHasMatched): void
     {
         $subject = $this->getParserByKey('email');
@@ -87,9 +88,7 @@ final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         self::assertEquals($expectedHasMatched, $result->hasMatched());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailSoftReferenceParserSubstituteTest(): void
     {
         $content = 'My email is: foo@bar.baz';

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
@@ -35,20 +37,14 @@ final class DateTimeConverterTest extends UnitTestCase
         $this->converter = new DateTimeConverter();
     }
 
-    /** String to DateTime testcases  **/
-
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsErrorIfGivenStringCantBeConverted(): void
     {
         $error = $this->converter->convertFrom('1980-12-13', 'DateTime');
         self::assertInstanceOf(Error::class, $error);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromProperlyConvertsStringWithDefaultDateFormat(): void
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
@@ -57,9 +53,7 @@ final class DateTimeConverterTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromUsesDefaultDateFormatIfItIsNotConfigured(): void
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
@@ -75,9 +69,7 @@ final class DateTimeConverterTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromEmptyStringReturnsNull(): void
     {
         $date = $this->converter->convertFrom('', 'DateTime', [], null);
@@ -105,9 +97,9 @@ final class DateTimeConverterTest extends UnitTestCase
      * @param string $source the string to be converted
      * @param string|null $dateFormat the expected date format
      * @param bool $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
-     * @test
-     * @dataProvider convertFromStringDataProvider
      */
+    #[DataProvider('convertFromStringDataProvider')]
+    #[Test]
     public function convertFromStringTests(string $source, ?string $dateFormat, bool $isValid): void
     {
         if ($dateFormat !== null) {
@@ -145,10 +137,8 @@ final class DateTimeConverterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider
-     */
+    #[DataProvider('convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider')]
+    #[Test]
     public function convertFromIntegerOrDigitStringWithoutConfigurationTests(string|int $source): void
     {
         $date = $this->converter->convertFrom($source, 'DateTime', [], null);
@@ -156,12 +146,8 @@ final class DateTimeConverterTest extends UnitTestCase
         self::assertSame((string)$source, $date->format('U'));
     }
 
-    /** Array to DateTime testcases  **/
-
-    /**
-     * @test
-     * @dataProvider convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider
-     */
+    #[DataProvider('convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider')]
+    #[Test]
     public function convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests(string|int $source): void
     {
         $date = $this->converter->convertFrom(['date' => $source], 'DateTime', [], null);
@@ -169,18 +155,14 @@ final class DateTimeConverterTest extends UnitTestCase
         self::assertSame((string)$source, $date->format('U'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsErrorIfGivenArrayCantBeConverted(): void
     {
         $error = $this->converter->convertFrom(['date' => '1980-12-13'], 'DateTime');
         self::assertInstanceOf(Error::class, $error);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsExceptionIfGivenArrayDoesNotSpecifyTheDate(): void
     {
         $this->expectException(TypeConverterException::class);
@@ -188,9 +170,7 @@ final class DateTimeConverterTest extends UnitTestCase
         $this->converter->convertFrom(['hour' => '12', 'minute' => '30'], 'DateTime');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromProperlyConvertsArrayWithDefaultDateFormat(): void
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
@@ -214,10 +194,8 @@ final class DateTimeConverterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidDatePartKeyValuesDataProvider
-     */
+    #[DataProvider('invalidDatePartKeyValuesDataProvider')]
+    #[Test]
     public function convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified($source): void
     {
         $this->expectException(TypeConverterException::class);
@@ -225,9 +203,7 @@ final class DateTimeConverterTest extends UnitTestCase
         $this->converter->convertFrom($source, 'DateTime');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromProperlyConvertsArrayWithDateAsArray(): void
     {
         $source = ['day' => '13', 'month' => '10', 'year' => '2010'];
@@ -243,9 +219,7 @@ final class DateTimeConverterTest extends UnitTestCase
         self::assertSame('2010-10-13', $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromAllowsToOverrideTheTime(): void
     {
         $source = [
@@ -262,9 +236,7 @@ final class DateTimeConverterTest extends UnitTestCase
         self::assertSame('59', $date->format('s'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromAllowsToOverrideTheTimezone(): void
     {
         $source = [
@@ -280,9 +252,7 @@ final class DateTimeConverterTest extends UnitTestCase
         self::assertSame('Atlantic/Reykjavik', $date->getTimezone()->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsExceptionIfSpecifiedTimezoneIsInvalid(): void
     {
         $this->expectException(TypeConverterException::class);
@@ -295,9 +265,7 @@ final class DateTimeConverterTest extends UnitTestCase
         $this->converter->convertFrom($source, 'DateTime');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromArrayThrowsExceptionForEmptyArray(): void
     {
         $this->expectException(TypeConverterException::class);
@@ -305,9 +273,7 @@ final class DateTimeConverterTest extends UnitTestCase
         $this->converter->convertFrom([], 'DateTime', [], null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromArrayReturnsNullForEmptyDate(): void
     {
         self::assertNull($this->converter->convertFrom(['date' => ''], 'DateTime', [], null));
@@ -336,9 +302,9 @@ final class DateTimeConverterTest extends UnitTestCase
     /**
      * @param array $source the array to be converted
      * @param bool $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
-     * @test
-     * @dataProvider convertFromArrayDataProvider
      */
+    #[DataProvider('convertFromArrayDataProvider')]
+    #[Test]
     public function convertFromArrayTests(array $source, $isValid, ?string $expectedResult): void
     {
         $dateFormat = isset($source['dateFormat']) && $source['dateFormat'] !== '' ? $source['dateFormat'] : null;
@@ -370,9 +336,7 @@ final class DateTimeConverterTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromSupportsDateTimeSubClasses(): void
     {
         $className = DateTimeSubFixture::class;

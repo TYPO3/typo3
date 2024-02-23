@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TimeTracker;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class TimeTrackerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getParseTimeReturnsZeroOrOneIfNoValuesAreSet(): void
     {
         $parseTime = (new TimeTracker())->getParseTime();

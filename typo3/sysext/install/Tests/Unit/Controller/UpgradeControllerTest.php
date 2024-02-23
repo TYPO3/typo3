@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Install\Controller\UpgradeController;
@@ -46,10 +48,8 @@ final class UpgradeControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider versionDataProvider
-     * @test
-     */
+    #[DataProvider('versionDataProvider')]
+    #[Test]
     public function versionIsAsserted(string $version, bool $expectsException): void
     {
         if ($expectsException) {

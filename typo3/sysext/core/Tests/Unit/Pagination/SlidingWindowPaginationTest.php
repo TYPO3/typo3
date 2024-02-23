@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Pagination;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -25,9 +26,7 @@ final class SlidingWindowPaginationTest extends UnitTestCase
 {
     protected $paginator = [];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkSlidingWindowPaginationWithAPaginatorWithDefaultSettings(): void
     {
         $pagination = new SlidingWindowPagination($this->paginator, 5);
@@ -46,9 +45,7 @@ final class SlidingWindowPaginationTest extends UnitTestCase
         self::assertSame(5, $pagination->getMaximumNumberOfLinks());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkSlidingWindowPaginationWithAnIncreasedCurrentPageNumber(): void
     {
         $paginator = $this->paginator->withCurrentPageNumber(2);
@@ -68,9 +65,7 @@ final class SlidingWindowPaginationTest extends UnitTestCase
         self::assertSame(5, $pagination->getMaximumNumberOfLinks());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkSlidingWindowPaginationWithAnIncreasedCurrentPageNumberAndItemsPerPage(): void
     {
         $paginator = $this->paginator
@@ -92,9 +87,7 @@ final class SlidingWindowPaginationTest extends UnitTestCase
         self::assertSame(5, $pagination->getMaximumNumberOfLinks());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPaginationWithAPaginatorThatOnlyHasOnePage(): void
     {
         $paginator = $this->paginator->withItemsPerPage(50);
@@ -114,9 +107,7 @@ final class SlidingWindowPaginationTest extends UnitTestCase
         self::assertSame(5, $pagination->getMaximumNumberOfLinks());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPaginatorWithOutOfBoundsCurrentPage(): void
     {
         $paginator = $this->paginator

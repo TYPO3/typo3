@@ -17,23 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Updates\RowUpdater;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\Updates\RowUpdater\L18nDiffsourceToJsonMigration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function hasPotentialUpdateForTableReturnsFalseIfTableIsNotLocalizable(): void
     {
         $GLOBALS['TCA']['testTable'] = [];
         self::assertFalse((new L18nDiffsourceToJsonMigration())->hasPotentialUpdateForTable('testTable'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasPotentialUpdateForTableReturnsTrueIfTableIsLocalizable(): void
     {
         $GLOBALS['TCA']['testTable'] = [
@@ -46,9 +44,7 @@ final class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
         self::assertTrue((new L18nDiffsourceToJsonMigration())->hasPotentialUpdateForTable('testTable'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateTableRowDoesNothingIfFieldIsNotSet(): void
     {
         $GLOBALS['TCA']['testTable'] = [
@@ -107,12 +103,11 @@ final class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider updateTableRowUpdatesFieldDataProvider
-     *
      * @param mixed $input
      * @param mixed $expected
      */
+    #[DataProvider('updateTableRowUpdatesFieldDataProvider')]
+    #[Test]
     public function updateTableRowUpdatesField($input, $expected): void
     {
         $GLOBALS['TCA']['testTable'] = [

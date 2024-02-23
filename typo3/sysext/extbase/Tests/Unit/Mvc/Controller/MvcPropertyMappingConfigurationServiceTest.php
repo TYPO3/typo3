@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
@@ -120,10 +122,8 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForGenerateTrustedPropertiesToken
-     */
+    #[DataProvider('dataProviderForGenerateTrustedPropertiesToken')]
+    #[Test]
     public function generateTrustedPropertiesTokenGeneratesTheCorrectHashesInNormalOperation($input, $expected): void
     {
         $requestHashService = $this->getMockBuilder(MvcPropertyMappingConfigurationService::class)
@@ -133,10 +133,8 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService->generateTrustedPropertiesToken($input);
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues
-     */
+    #[DataProvider('dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues')]
+    #[Test]
     public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases(array $input, int $expectExceptionCode): void
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
@@ -147,9 +145,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService->generateTrustedPropertiesToken($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeAndHashFormFieldArrayWorks(): void
     {
         $formFieldArray = [
@@ -173,9 +169,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet(): void
     {
         $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', null);
@@ -187,9 +181,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationThrowsBadRequestExceptionOnInvalidHmac(): void
     {
         $this->expectException(BadRequestException::class);
@@ -206,9 +198,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationWithNonDecodableTrustedPropertiesThrowsException(): void
     {
         $hashService = new HashService();
@@ -228,9 +218,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationWithOutdatedTrustedPropertiesThrowsException(): void
     {
         $hashService = new HashService();
@@ -250,9 +238,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationReturnsEarlyIfNoTrustedPropertiesAreSet(): void
     {
         $trustedProperties = [
@@ -261,9 +247,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $this->initializePropertyMappingConfiguration($trustedProperties);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationReturnsEarlyIfArgumentIsUnknown(): void
     {
         $trustedProperties = [
@@ -273,9 +257,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         self::assertFalse($arguments->hasArgument('nonExistingArgument'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationSetsModificationAllowedIfIdentityPropertyIsSet(): void
     {
         $trustedProperties = [
@@ -297,9 +279,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         self::assertFalse($propertyMappingConfiguration->forProperty('nested')->shouldMap('someProperty'), 'Value is not FALSE at line ' . __LINE__);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationSetsCreationAllowedIfIdentityPropertyIsNotSet(): void
     {
         $trustedProperties = [
@@ -318,9 +298,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         self::assertFalse($propertyMappingConfiguration->forProperty('bar')->shouldMap('someProperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationSetsAllowedFields(): void
     {
         $trustedProperties = [
@@ -334,9 +312,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         self::assertTrue($propertyMappingConfiguration->shouldMap('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializePropertyMappingConfigurationSetsAllowedFieldsRecursively(): void
     {
         $trustedProperties = [

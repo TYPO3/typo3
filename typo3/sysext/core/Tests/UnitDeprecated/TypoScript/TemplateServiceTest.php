@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -77,9 +78,7 @@ final class TemplateServiceTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested(): void
     {
         $queryBuilderMock = $this->createMock(QueryBuilder::class);
@@ -96,9 +95,7 @@ final class TemplateServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extensionStaticsAreProcessedIfExplicitlyRequested(): void
     {
         $queryBuilderMock = $this->createMock(QueryBuilder::class);

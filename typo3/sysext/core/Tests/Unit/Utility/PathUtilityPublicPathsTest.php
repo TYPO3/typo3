@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -81,9 +83,7 @@ final class PathUtilityPublicPathsTest extends UnitTestCase
         self::simulateWebRequest(Environment::getPublicPath(), $subDirectory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryingToResolveNonExtensionResourcesThrowsException(): void
     {
         $this->expectException(InvalidFileException::class);
@@ -91,9 +91,7 @@ final class PathUtilityPublicPathsTest extends UnitTestCase
         PathUtility::getPublicResourceWebPath('typo3/sysext/core/Resources/Public/Icons/Extension.svg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryingToResolvePrivateResourcesFromComposerPackagesThrowsException(): void
     {
         self::simulateWebRequestInComposerMode();
@@ -135,9 +133,9 @@ final class PathUtilityPublicPathsTest extends UnitTestCase
 
     /**
      * @throws InvalidFileException
-     * @dataProvider getPublicResourceWebPathResolvesUrlsCorrectlyDataProvider
-     * @test
      */
+    #[DataProvider('getPublicResourceWebPathResolvesUrlsCorrectlyDataProvider')]
+    #[Test]
     public function getPublicResourceWebPathResolvesUrlsCorrectly(string $pathReference, string $expectedUrl, callable $setup): void
     {
         $setup();

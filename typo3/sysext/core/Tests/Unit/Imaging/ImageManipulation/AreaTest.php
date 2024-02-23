@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\ImageManipulation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Ratio;
 use TYPO3\CMS\Core\Resource\File;
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AreaTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function makeRelativeToFileReducesSizes(): void
     {
         $imageArea = new Area(50.0, 50.0, 100.0, 100.0);
@@ -68,10 +68,8 @@ final class AreaTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider applyRatioRestrictsAreaToRespectRatioDataProvider
-     */
+    #[DataProvider('applyRatioRestrictsAreaToRespectRatioDataProvider')]
+    #[Test]
     public function applyRatioRestrictsAreaToRespectRatio(array $areaSize, float $ratio): void
     {
         $area = new Area(...$areaSize);
@@ -80,9 +78,7 @@ final class AreaTest extends UnitTestCase
         self::assertSame($areaData['width'] / $areaData['height'], $ratio);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyRatioDoesNothingForFreeRatio(): void
     {
         $area = new Area(0.1, 0.1, 0.2, 0.4);

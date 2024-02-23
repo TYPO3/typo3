@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Parser\ExtensionXmlParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtensionXmlParserTest extends UnitTestCase
 {
-    /**
-     * @test
-     * @dataProvider isValidVersionNumberDataProvider
-     */
+    #[DataProvider('isValidVersionNumberDataProvider')]
+    #[Test]
     public function isValidVersionNumber(string $versionNumber, bool $isValid): void
     {
         $subject = $this->getAccessibleMock(ExtensionXmlParser::class, null);

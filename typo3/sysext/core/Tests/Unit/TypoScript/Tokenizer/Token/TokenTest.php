@@ -17,47 +17,38 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Tokenizer\Token;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TokenTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeReturnsType(): void
     {
         self::assertSame(TokenType::T_VALUE, (new Token(TokenType::T_VALUE, '', 0, 0))->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getValueReturnsValue(): void
     {
         self::assertSame('foo', (new Token(TokenType::T_VALUE, 'foo', 0, 0))->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLineReturnsLine(): void
     {
         self::assertSame(42, (new Token(TokenType::T_VALUE, '', 42, 0))->getLine());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getColumnReturnsColumn(): void
     {
         self::assertSame(42, (new Token(TokenType::T_VALUE, '', 0, 42))->getColumn());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringCastReturnsValue(): void
     {
         self::assertSame('foo', (string)(new Token(TokenType::T_VALUE, 'foo', 0, 0)));

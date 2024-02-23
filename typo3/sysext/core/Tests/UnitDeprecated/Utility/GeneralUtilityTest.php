@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GeneralUtilityTest extends UnitTestCase
 {
-    /**
-     * @test
-     * @dataProvider gpMergedDataProvider
-     */
+    #[DataProvider('gpMergedDataProvider')]
+    #[Test]
     public function gpMergedWillMergeArraysFromGetAndPost($get, $post, $expected): void
     {
         $_POST = $post;
@@ -66,20 +66,16 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAndPostDataProvider
-     */
+    #[DataProvider('getAndPostDataProvider')]
+    #[Test]
     public function canRetrieveGlobalInputsThroughGet($key, $get, $expected): void
     {
         $_GET = $get;
         self::assertSame($expected, GeneralUtility::_GET($key));
     }
 
-    /**
-     * @test
-     * @dataProvider getAndPostDataProvider
-     */
+    #[DataProvider('getAndPostDataProvider')]
+    #[Test]
     public function canRetrieveGlobalInputsThroughPost($key, $post, $expected): void
     {
         $_POST = $post;
@@ -104,10 +100,8 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider gpDataProvider
-     */
+    #[DataProvider('gpDataProvider')]
+    #[Test]
     public function canRetrieveValueWithGP($key, $get, $post, $expected): void
     {
         $_GET = $get;

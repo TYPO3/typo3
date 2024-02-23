@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security\ContentSecurityPolicy;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -48,10 +50,8 @@ final class UriValueTest extends UnitTestCase
         yield ['*.typo3.org?key=value', '/%2A.typo3.org?key=value'];
     }
 
-    /**
-     * @test
-     * @dataProvider uriIsParsedAndSerializedDataProvider
-     */
+    #[DataProvider('uriIsParsedAndSerializedDataProvider')]
+    #[Test]
     public function uriIsParsedAndSerialized(string $value, string $expectation = null): void
     {
         $uri = new UriValue($value);
@@ -68,10 +68,8 @@ final class UriValueTest extends UnitTestCase
         yield ['*.example.com', '*.example.com', true];
     }
 
-    /**
-     * @test
-     * @dataProvider urisAreEqualDataProvider
-     */
+    #[DataProvider('urisAreEqualDataProvider')]
+    #[Test]
     public function urisAreEqual(string $a, string $b, bool $expectation): void
     {
         self::assertSame($expectation, (new UriValue($a))->equals(new UriValue($b)));
@@ -99,10 +97,8 @@ final class UriValueTest extends UnitTestCase
         yield ['*.example.com', '*', false];
     }
 
-    /**
-     * @test
-     * @dataProvider uriIsCoveredDataProvider
-     */
+    #[DataProvider('uriIsCoveredDataProvider')]
+    #[Test]
     public function uriIsCovered(string $a, string $b, bool $expectation): void
     {
         self::assertSame($expectation, (new UriValue($a))->covers(new UriValue($b)));

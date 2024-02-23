@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -377,10 +379,8 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkboxConfigurationDataProvider
-     */
+    #[DataProvider('checkboxConfigurationDataProvider')]
+    #[Test]
     public function addDataKeepExistingItems(array $input, array $expectedResult): void
     {
         $languageService = $this->createMock(LanguageService::class);
@@ -390,9 +390,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         self::assertSame($expectedResult, (new TcaCheckboxItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfItemsAreNoArray(): void
     {
         $input = [
@@ -420,9 +418,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         (new TcaCheckboxItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfItemLabelIsNotSet(): void
     {
         $input = [
@@ -452,9 +448,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         (new TcaCheckboxItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataTranslatesItemLabels(): void
     {
         $input = [
@@ -487,9 +481,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCallsItemsProcFunc(): void
     {
         $input = [
@@ -531,9 +523,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         self::assertSame('foo', $items[0]['label']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataItemsProcFuncReceivesParameters(): void
     {
         $input = [
@@ -619,9 +609,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         (new TcaCheckboxItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataItemsProcFuncEnqueuesFlashMessageOnException(): void
     {
         $input = [
@@ -685,9 +673,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         (new TcaCheckboxItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataTranslatesItemLabelsFromPageTsConfig(): void
     {
         $input = [

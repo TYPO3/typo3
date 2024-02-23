@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Template\Components;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\Template\Components\MenuRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -25,9 +26,8 @@ final class MenuTest extends UnitTestCase
 {
     /**
      * Try setting an empty menu
-     *
-     * @test
      */
+    #[Test]
     public function isMenuValidBlankCallExpectFalse(): void
     {
         $menu = new Menu();
@@ -37,9 +37,8 @@ final class MenuTest extends UnitTestCase
 
     /**
      * Set a valid menu
-     *
-     * @test
      */
+    #[Test]
     public function isMenuValidValidMenuWithDefaultsExpectTrue(): void
     {
         $menu = new Menu();
@@ -50,9 +49,8 @@ final class MenuTest extends UnitTestCase
 
     /**
      * Set a valid menu
-     *
-     * @test
      */
+    #[Test]
     public function makeMenuAllGoodExpectTrue(): void
     {
         $menuRegistry = new MenuRegistry();
@@ -65,9 +63,8 @@ final class MenuTest extends UnitTestCase
 
     /**
      * Tests if empty menus get removed from the stack
-     *
-     * @test
      */
+    #[Test]
     public function getMenusRemovedEmptyMenusExpectsEquals(): void
     {
         $menuRegistry = new MenuRegistry();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -45,9 +46,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForInlineFieldWithoutForeignTableConfig(): void
     {
         $input = [
@@ -68,9 +67,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         (new TcaInlineConfiguration())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaults(): void
     {
         $input = [
@@ -90,9 +87,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsGivenMinitems(): void
     {
         $input = [
@@ -114,9 +109,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataForcesMinitemsPositive(): void
     {
         $input = [
@@ -138,9 +131,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsGivenMaxitems(): void
     {
         $input = [
@@ -162,9 +153,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataForcesMaxitemsPositive(): void
     {
         $input = [
@@ -186,9 +175,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataMergesWithGivenAppearanceSettings(): void
     {
         $input = [
@@ -216,9 +203,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataForcesLevelLinksWithForeignSelector(): void
     {
         $input = [
@@ -261,9 +246,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsLevelLinksPositionWithForeignSelectorAndUseCombination(): void
     {
         $input = [
@@ -305,9 +288,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsShowPossibleLocalizationRecordsButForcesBooleanTrue(): void
     {
         $input = [
@@ -331,9 +312,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsShowPossibleLocalizationRecordsButForcesBooleanFalse(): void
     {
         $input = [
@@ -357,9 +336,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfForeignSelectorAndForeignUniquePointToDifferentFields(): void
     {
         $input = [
@@ -382,9 +359,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         (new TcaInlineConfiguration())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfForeignSelectorPointsToANotExistingField(): void
     {
         $input = [
@@ -406,9 +381,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         (new TcaInlineConfiguration())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfForeignUniquePointsToANotExistingField(): void
     {
         $input = [
@@ -430,9 +403,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         (new TcaInlineConfiguration())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfForeignUniqueTargetIsNotTypeSelectOrGroup(): void
     {
         $input = [
@@ -457,9 +428,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         (new TcaInlineConfiguration())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfForeignUniqueSelectDoesNotDefineForeignTable(): void
     {
         $input = [
@@ -484,9 +453,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         (new TcaInlineConfiguration())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfForeignUniqueGroupDoesNotDefineForeignTable(): void
     {
         $input = [
@@ -511,9 +478,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         (new TcaInlineConfiguration())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsSelectorOrUniqueConfigurationForForeignUnique(): void
     {
         $input = [
@@ -549,9 +514,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataMergesForeignSelectorFieldTcaOverride(): void
     {
         $input = [

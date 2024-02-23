@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 use TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -34,10 +35,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         $this->subject = new InheritancesResolverService();
     }
 
-    /**
-     * @test
-     * Test for the explicit example in service class comment
-     */
+    #[Test]
     public function getDocExampleInheritance(): void
     {
         $input = [
@@ -74,9 +72,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMergedConfigurationSimpleInheritance(): void
     {
         $input = [
@@ -115,9 +111,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMergedConfigurationSimpleInheritanceOverrideValue(): void
     {
         $input = [
@@ -148,9 +142,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMergedConfigurationSimpleInheritanceRemoveValue(): void
     {
         $input = [
@@ -213,9 +205,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMergedConfigurationSimpleMixin(): void
     {
         $input = [
@@ -257,9 +247,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMergedConfigurationAdvancedMixin(): void
     {
         $input = [
@@ -350,9 +338,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMergedConfigurationResolvesInheritancesWithAndWithoutVendorNamespacePrefix(): void
     {
         $input = [
@@ -439,9 +425,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnSameLevelIsFound(): void
     {
         $input = [
@@ -463,9 +447,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnSameLevelWithGapIsFound(): void
     {
         $input = [
@@ -497,9 +479,7 @@ final class InheritancesResolverServiceTest extends UnitTestCase
         $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getResolvedConfigurationThrowsExceptionIfCycleDependenciesOnHigherLevelIsFound(): void
     {
         $input = [

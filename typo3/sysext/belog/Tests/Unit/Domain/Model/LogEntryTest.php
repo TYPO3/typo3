@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,35 +32,27 @@ final class LogEntryTest extends UnitTestCase
         $this->subject = new LogEntry();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLogDataInitiallyReturnsEmptyArray(): void
     {
         self::assertSame([], $this->subject->getLogData());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLogDataForEmptyStringLogDataReturnsEmptyArray(): void
     {
         $this->subject->setLogData('');
         self::assertSame([], $this->subject->getLogData());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLogDataForGarbageStringLogDataReturnsEmptyArray(): void
     {
         $this->subject->setLogData('foo bar');
         self::assertSame([], $this->subject->getLogData());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLogDataForSerializedArrayReturnsThatArray(): void
     {
         $logData = ['foo', 'bar'];
@@ -66,9 +60,7 @@ final class LogEntryTest extends UnitTestCase
         self::assertSame($logData, $this->subject->getLogData());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLogDataForSerializedObjectReturnsEmptyArray(): void
     {
         $this->subject->setLogData(serialize(new \stdClass()));
@@ -97,10 +89,8 @@ final class LogEntryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getErrorIconReturnsCorrespondingClassDataProvider
-     */
+    #[DataProvider('getErrorIconReturnsCorrespondingClassDataProvider')]
+    #[Test]
     public function getErrorIconReturnsCorrespondingClass(int $error, string $expectedClass): void
     {
         $this->subject->setError($error);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -154,10 +156,8 @@ final class DateFormatterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider formatDateProvider
-     */
+    #[DataProvider('formatDateProvider')]
+    #[Test]
     public function formatFormatsCorrectly(string $expected, mixed $format, string|Locale|null $locale = 'C'): void
     {
         $input = new \DateTimeImmutable('2023-02-02 13:05:00');

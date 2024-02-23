@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Tree\TreeRepresentationNode;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TreeNodeTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeFixture(): void
     {
         $expected = trim(file_get_contents(__DIR__ . '/Fixtures/serialized.txt'));
@@ -57,9 +56,7 @@ final class TreeNodeTest extends UnitTestCase
         self::assertSame($expected, $serializedString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deserializeFixture(): void
     {
         $source = trim(file_get_contents(__DIR__ . '/Fixtures/serialized.txt'));
@@ -68,9 +65,7 @@ final class TreeNodeTest extends UnitTestCase
         self::assertSame($source, $serializedString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function compareNodes(): void
     {
         $node = new TreeNode(['id' => '15']);

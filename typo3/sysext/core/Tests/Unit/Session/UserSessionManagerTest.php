@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\IpLocker;
@@ -53,10 +55,8 @@ final class UserSessionManagerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider willExpireDataProvider
-     */
+    #[DataProvider('willExpireDataProvider')]
+    #[Test]
     public function willExpireWillExpire(int $sessionLifetime, int $gracePeriod, bool $expectedResult): void
     {
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
@@ -86,9 +86,7 @@ final class UserSessionManagerTest extends UnitTestCase
         self::assertFalse($subject->hasExpired($newSession));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromRequestOrAnonymousCreatesProperSessionObjectForValidSessionJwt(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
@@ -138,9 +136,7 @@ final class UserSessionManagerTest extends UnitTestCase
         self::assertNull($persistedSession->get('propertyC'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromRequestOrAnonymousCreatesProperSessionObjectForInvalidSession(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
@@ -174,9 +170,7 @@ final class UserSessionManagerTest extends UnitTestCase
         self::assertTrue($anonymousSessionFromInvalidBackendRequest->isAnonymous());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateSessionWillSetLastUpdated(): void
     {
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
@@ -198,9 +192,7 @@ final class UserSessionManagerTest extends UnitTestCase
         self::assertSame(7654321, $session->getLastUpdated());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixateAnonymousSessionWillUpdateSessionObject(): void
     {
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);

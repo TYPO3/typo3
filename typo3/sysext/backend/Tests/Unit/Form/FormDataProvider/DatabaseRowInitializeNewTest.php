@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseRowInitializeNewTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnSameDataIfCommandIsEdit(): void
     {
         $input = [
@@ -45,9 +44,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($input, (new DatabaseRowInitializeNew())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfDatabaseRowIsNotArray(): void
     {
         $input = [
@@ -60,9 +57,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         (new DatabaseRowInitializeNew())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsGivenDefaultsIfCommandIsNew(): void
     {
         $input = [
@@ -81,9 +76,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultDataFromUserTsIfColumnIsDefinedInTca(): void
     {
         $input = [
@@ -115,9 +108,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotSetDefaultDataFromUserTsIfColumnIsMissingInTca(): void
     {
         $input = [
@@ -146,9 +137,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultDataFromPageTsIfColumnIsDefinedInTca(): void
     {
         $input = [
@@ -180,9 +169,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotSetDefaultDataFromPageTsIfColumnIsMissingInTca(): void
     {
         $input = [
@@ -211,9 +198,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultDataOverrulingFromPageTs(): void
     {
         $input = [
@@ -252,9 +237,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultFromNeighborRow(): void
     {
         $input = [
@@ -284,9 +267,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultDataOverrulingFromNeighborRow(): void
     {
         $input = [
@@ -330,9 +311,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultDataFromDefaultValuesIfColumnIsDefinedInTca(): void
     {
         $input = [
@@ -362,9 +341,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotSetDefaultDataFromDefaultValuesIfColumnIsMissingInTca(): void
     {
         $input = [
@@ -398,9 +375,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultDataOverrulesOtherDefaults(): void
     {
         $input = [
@@ -449,9 +424,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionWithGivenChildChildUidButMissingInlineConfig(): void
     {
         $input = [
@@ -467,9 +440,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         (new DatabaseRowInitializeNew())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionWithGivenChildChildUidButIsNotInteger(): void
     {
         $input = [
@@ -485,9 +456,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         (new DatabaseRowInitializeNew())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsForeignSelectorFieldToValueOfChildChildUid(): void
     {
         $input = [
@@ -517,9 +486,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfForeignSelectorDoesNotPointToGroupOrSelectField(): void
     {
         $input = [
@@ -547,9 +514,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         (new DatabaseRowInitializeNew())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfInlineParentLanguageIsNoInteger(): void
     {
         $input = [
@@ -577,9 +542,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         (new DatabaseRowInitializeNew())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsSysLanguageUidFromParent(): void
     {
         $input = [
@@ -612,9 +575,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsPidToVanillaUid(): void
     {
         $input = [
@@ -632,9 +593,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotUsePageTsValueForPidIfRecordIsNotInlineChild(): void
     {
         $input = [
@@ -658,9 +617,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfPageTsConfigPidValueCanNotBeInterpretedAsInteger(): void
     {
         $input = [
@@ -684,9 +641,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         (new DatabaseRowInitializeNew())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesUsePageTsValueForPidIfRecordIsInlineChild(): void
     {
         $input = [
@@ -710,9 +665,7 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
         self::assertSame($expected, (new DatabaseRowInitializeNew())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUidOfParentFieldIfRecordIsInlineChild(): void
     {
         $input = [

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction\AbstractRestrictionTestCase;
 
 final class BackendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -35,9 +34,7 @@ final class BackendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('(("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_state" <= 0))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsNonLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -48,9 +45,7 @@ final class BackendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('(("aTable"."t3ver_wsid" = 42) OR ("aTable"."t3ver_state" <= 0))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsLiveWorkspaceLimitedWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -61,9 +56,7 @@ final class BackendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('(("aTable"."t3ver_wsid" = 0) AND ("aTable"."t3ver_oid" = 0))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsNonLiveWorkspaceLimitedWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

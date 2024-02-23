@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -44,10 +46,8 @@ final class CorrelationIdTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canBeParsedDataProvider
-     */
+    #[DataProvider('canBeParsedDataProvider')]
+    #[Test]
     public function canBeParsed(string $string, array $expectations): void
     {
         $correlationId = CorrelationId::fromString($string);
@@ -59,9 +59,7 @@ final class CorrelationIdTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subjectIsConsidered(): void
     {
         $correlationId = CorrelationId::forSubject('subject')
@@ -69,9 +67,7 @@ final class CorrelationIdTest extends UnitTestCase
         self::assertSame('0400$subject/aspect-a', (string)$correlationId);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function scopeIsConsidered(): void
     {
         $correlationId = CorrelationId::forScope('scope')
@@ -80,9 +76,7 @@ final class CorrelationIdTest extends UnitTestCase
         self::assertSame('0400$scope:subject/aspect-a', (string)$correlationId);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotVary(): void
     {
         $correlationId = '0400$scope:subject/aspect-a/aspect-b';

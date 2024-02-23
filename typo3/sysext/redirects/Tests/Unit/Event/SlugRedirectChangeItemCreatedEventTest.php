@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SlugRedirectChangeItemCreatedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function slugRedirectChangeItemGetterReturnsChangeItemUsedForInstantiation(): void
     {
         $changeItem = new SlugRedirectChangeItem(
@@ -46,9 +45,7 @@ final class SlugRedirectChangeItemCreatedEventTest extends UnitTestCase
         self::assertSame($changeItem, $event->getSlugRedirectChangeItem());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function slugRedirectChangeItemGetterReturnsChangedItemSetBySetter(): void
     {
         $changeItem = new SlugRedirectChangeItem(

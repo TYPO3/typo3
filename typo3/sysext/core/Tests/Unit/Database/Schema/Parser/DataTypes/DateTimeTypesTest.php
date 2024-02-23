@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DateDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DateTimeDataType;
@@ -79,10 +81,8 @@ final class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseDateTimeTypeProvider
-     */
+    #[DataProvider('canParseDateTimeTypeProvider')]
+    #[Test]
     public function canParseDataType(string $columnDefinition, string $className, int $length = null): void
     {
         $subject = $this->createSubject($columnDefinition);
@@ -95,9 +95,7 @@ final class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDateTimeTypeWithInvalidLowerBound(): void
     {
         $this->expectException(StatementException::class);
@@ -107,9 +105,7 @@ final class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
         $this->createSubject('TIME(-1)');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDateTimeTypeWithInvalidUpperBound(): void
     {
         $this->expectException(StatementException::class);

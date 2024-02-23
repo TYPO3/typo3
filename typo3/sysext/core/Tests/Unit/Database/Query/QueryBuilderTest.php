@@ -24,6 +24,8 @@ use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Doctrine\DBAL\Result;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -57,9 +59,7 @@ final class QueryBuilderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exprReturnsExpressionBuilderForConnection(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('getExpressionBuilder')
@@ -67,9 +67,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->expr();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getType')
@@ -77,9 +75,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->getType();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStateDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getState')
@@ -87,9 +83,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->getState();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSQLDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getSQL')
@@ -99,9 +93,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->getSQL();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setParameter')->with('aField', 5, self::anything())
@@ -109,9 +101,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->setParameter('aField', 5);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setParametersDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setParameters')->with(['aField' => 'aValue'], [])
@@ -119,9 +109,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->setParameters(['aField' => 'aValue']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParametersDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getParameters')
@@ -129,9 +117,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->getParameters();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getParameter')->with('aField')
@@ -139,18 +125,14 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->getParameter('aField');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParameterTypesDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getParameterTypes')->willReturn([]);
         $this->subject->getParameterTypes();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParameterTypeDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getParameterType')->with('aField')
@@ -158,9 +140,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->getParameterType('aField');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFirstResultDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setFirstResult')->with(self::anything())
@@ -168,18 +148,14 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->setFirstResult(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFirstResultDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getFirstResult')->willReturn(1);
         $this->subject->getFirstResult();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setMaxResultsDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setMaxResults')->with(self::anything())
@@ -187,18 +163,14 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->setMaxResults(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMaxResultsDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getMaxResults')->willReturn(1);
         $this->subject->getMaxResults();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('add')->with('select', 'aField', self::anything())
@@ -206,9 +178,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->add('select', 'aField');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countBuildsExpressionAndCallsSelect(): void
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
@@ -217,9 +187,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->count('*');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $series = [
@@ -295,10 +263,8 @@ final class QueryBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider quoteIdentifiersForSelectDataProvider
-     */
+    #[DataProvider('quoteIdentifiersForSelectDataProvider')]
+    #[Test]
     public function quoteIdentifiersForSelect(string $identifier, string $expectedResult): void
     {
         $this->connection->method('quoteIdentifier')->willReturnCallback(
@@ -309,9 +275,7 @@ final class QueryBuilderTest extends UnitTestCase
         self::assertSame([$expectedResult], $this->subject->quoteIdentifiersForSelect([$identifier]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function quoteIdentifiersForSelectWithInvalidAlias(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -324,9 +288,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->quoteIdentifiersForSelect(['aField AS anotherField,someField AS someThing']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectDoesNotQuoteStarPlaceholder(): void
     {
         $this->connection->expects(self::never())->method('quoteIdentifier')->with('*');
@@ -335,9 +297,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->select('*');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addSelectQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $series = [
@@ -355,9 +315,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->addSelect('aField', 'anotherField');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addSelectDoesNotQuoteStarPlaceholder(): void
     {
         $this->connection->expects(self::never())->method('quoteIdentifier')->with('*');
@@ -366,9 +324,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->addSelect('*');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectLiteralDirectlyDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::never())->method('quoteIdentifier')->with(self::anything());
@@ -377,9 +333,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->selectLiteral('MAX(aField) AS anAlias');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addSelectLiteralDirectlyDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::never())->method('quoteIdentifier')->with(self::anything());
@@ -389,9 +343,9 @@ final class QueryBuilderTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @todo: Test with alias
      */
+    #[Test]
     public function deleteQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
@@ -401,9 +355,9 @@ final class QueryBuilderTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @todo: Test with alias
      */
+    #[Test]
     public function updateQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
@@ -412,9 +366,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->update('aTable');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function insertQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
@@ -424,9 +376,9 @@ final class QueryBuilderTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @todo: Test with alias
      */
+    #[Test]
     public function fromQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
@@ -435,9 +387,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->from('aTable');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function joinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $series = [
@@ -456,9 +406,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->join('fromAlias', 'join', 'alias');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function innerJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $series = [
@@ -477,9 +425,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->innerJoin('fromAlias', 'join', 'alias');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function leftJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $series = [
@@ -500,9 +446,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->leftJoin('fromAlias', 'join', 'alias');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rightJoinQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $series = [
@@ -524,9 +468,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->rightJoin('fromAlias', 'join', 'alias');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
@@ -538,9 +480,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->set('aField', 'aValue');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setWithoutNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
@@ -551,9 +491,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->set('aField', 'aValue', false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function whereDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('where')->with('uid=1', 'type=9')
@@ -561,9 +499,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->where('uid=1', 'type=9');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function andWhereDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('andWhere')->with('uid=1', 'type=9')
@@ -571,9 +507,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->andWhere('uid=1', 'type=9');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orWhereDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('orWhere')->with('uid=1', 'type=9')
@@ -581,9 +515,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->orWhere('uid=1', 'type=9');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function groupByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifiers')->with(['aField', 'anotherField'])
@@ -593,9 +525,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->groupBy('aField', 'anotherField');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addGroupByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifiers')->with(['aField', 'anotherField'])
@@ -605,9 +535,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->addGroupBy('aField', 'anotherField');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
@@ -619,9 +547,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->setValue('aField', 'aValue');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueWithoutNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
@@ -631,9 +557,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->setValue('aField', 'aValue', false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valuesQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteColumnValuePairs')
@@ -653,9 +577,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->values(['aField' => 1, 'aValue' => 2]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valuesWithoutNamedParametersQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteColumnValuePairs')
@@ -665,9 +587,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->values(['aField' => 1, 'aValue' => 2], false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function havingDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('having')->with('uid=1', 'type=9')
@@ -675,9 +595,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->having('uid=1', 'type=9');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function andHavingDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('andHaving')->with('uid=1', 'type=9')
@@ -685,9 +603,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->andHaving('uid=1', 'type=9');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orHavingDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('orHaving')->with('uid=1', 'type=9')
@@ -695,9 +611,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->orHaving('uid=1', 'type=9');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orderByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
@@ -707,9 +621,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->orderBy('aField');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addOrderByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
@@ -719,9 +631,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->addOrderBy('aField', 'DESC');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getQueryPartDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getQueryPart')->with('from')
@@ -729,9 +639,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->getQueryPart('from');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getQueryPartsDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getQueryParts')
@@ -739,9 +647,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->getQueryParts();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetQueryPartsDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('resetQueryParts')->with(['select', 'from'])
@@ -749,9 +655,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->resetQueryParts(['select', 'from']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetQueryPartDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('resetQueryPart')->with('select')
@@ -759,9 +663,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->resetQueryPart('select');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNamedParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('createNamedParameter')
@@ -769,9 +671,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->createNamedParameter(5);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPositionalParameterDelegatesToConcreteQueryBuilder(): void
     {
         $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('createPositionalParameter')
@@ -779,9 +679,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->subject->createPositionalParameter(5);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryRestrictionsAreAddedForSelectOnExecuteQuery(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
@@ -824,9 +722,7 @@ final class QueryBuilderTest extends UnitTestCase
         $subject->executeQuery();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryRestrictionsAreAddedForCountOnExecuteQuery(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
@@ -869,9 +765,7 @@ final class QueryBuilderTest extends UnitTestCase
         $subject->executeQuery();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryRestrictionsAreReevaluatedOnSettingsChangeForGetSQL(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
@@ -915,9 +809,7 @@ final class QueryBuilderTest extends UnitTestCase
         self::assertSame($expectedSQL, $subject->getSQL());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryRestrictionsAreReevaluatedOnSettingsChangeForExecuteQuery(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
@@ -974,9 +866,7 @@ final class QueryBuilderTest extends UnitTestCase
         $subject->executeQuery();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getQueriedTablesReturnsSameTableTwiceForInnerJoin(): void
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
@@ -1036,7 +926,7 @@ final class QueryBuilderTest extends UnitTestCase
                 'expected' => 'anIdentifier',
             ],
             'postgres' => [
-                'platform' => PostgreSqlPlatform::class,
+                'platform' => PostgreSQLPlatform::class,
                 'quoteChar' => '"',
                 'input' => '"anIdentifier"',
                 'expected' => 'anIdentifier',
@@ -1044,10 +934,8 @@ final class QueryBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider
-     */
+    #[DataProvider('unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider')]
+    #[Test]
     public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatforms(string $platform, string $quoteChar, string $input, string $expected): void
     {
         $connectionMock = $this->createMock(Connection::class);
@@ -1059,18 +947,14 @@ final class QueryBuilderTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cloningQueryBuilderClonesConcreteQueryBuilder(): void
     {
         $clonedQueryBuilder = clone $this->subject;
         self::assertNotSame($this->subject->getConcreteQueryBuilder(), $clonedQueryBuilder->getConcreteQueryBuilder());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changingClonedQueryBuilderDoesNotInfluenceSourceOne(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
@@ -1128,9 +1012,7 @@ final class QueryBuilderTest extends UnitTestCase
         self::assertSame($expectedCountSQL, $clonedQueryBuilder->getSQL());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConstructor(): void
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
@@ -1149,9 +1031,7 @@ final class QueryBuilderTest extends UnitTestCase
         $queryBuilder->setRestrictions($container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration(): void
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
@@ -1168,9 +1048,7 @@ final class QueryBuilderTest extends UnitTestCase
         $queryBuilder->setRestrictions($container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingRestrictionContainerWillNotAddAdditionalRestrictionsFromConfigurationIfNotDisabled(): void
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
@@ -1187,9 +1065,7 @@ final class QueryBuilderTest extends UnitTestCase
         $queryBuilder->setRestrictions($container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resettingToDefaultRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration(): void
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
@@ -1210,10 +1086,10 @@ final class QueryBuilderTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider createNamedParameterInput
      * @param mixed $input
      */
+    #[DataProvider('createNamedParameterInput')]
+    #[Test]
     public function setWithNamedParameterPassesGivenTypeToCreateNamedParameter($input, int $type): void
     {
         $this->connection->method('quoteIdentifier')->with('aField')
@@ -1255,7 +1131,7 @@ final class QueryBuilderTest extends UnitTestCase
                 'CONVERT(aField, CHAR)',
             ],
             'Test cast for PostgreSqlPlatform' => [
-                new PostgreSqlPlatform(),
+                new PostgreSQLPlatform(),
                 'aField::text',
             ],
             'Test cast for SqlitePlatform' => [
@@ -1269,10 +1145,8 @@ final class QueryBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider castFieldToTextTypeDataProvider
-     */
+    #[DataProvider('castFieldToTextTypeDataProvider')]
+    #[Test]
     public function castFieldToTextType(AbstractPlatform $platform, string $expectation): void
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
@@ -1288,9 +1162,7 @@ final class QueryBuilderTest extends UnitTestCase
         self::assertSame($expectation, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function limitRestrictionsToTablesLimitsRestrictionsInTheContainerToTheGivenTables(): void
     {
         $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
@@ -1337,9 +1209,7 @@ final class QueryBuilderTest extends UnitTestCase
         $subject->executeQuery();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restrictionsCanStillBeRemovedAfterTheyHaveBeenLimitedToTables(): void
     {
         $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
@@ -1387,9 +1257,7 @@ final class QueryBuilderTest extends UnitTestCase
         $subject->executeQuery();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restrictionsAreAppliedInJoinConditionForLeftJoins(): void
     {
         $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
@@ -1435,9 +1303,7 @@ final class QueryBuilderTest extends UnitTestCase
         $subject->executeQuery();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restrictionsAreAppliedInJoinConditionForRightJoins(): void
     {
         $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [

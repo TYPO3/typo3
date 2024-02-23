@@ -22,6 +22,8 @@ use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Result;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -73,9 +75,7 @@ final class ConnectionTest extends UnitTestCase
             ->willReturn(new MockPlatform());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createQueryBuilderReturnsInstanceOfTypo3QueryBuilder(): void
     {
         self::assertInstanceOf(QueryBuilder::class, $this->connection->createQueryBuilder());
@@ -128,18 +128,14 @@ final class ConnectionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider quoteIdentifierDataProvider
-     */
+    #[DataProvider('quoteIdentifierDataProvider')]
+    #[Test]
     public function quoteIdentifier(string $input, string $expected): void
     {
         self::assertSame($expected, $this->connection->quoteIdentifier($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function quoteIdentifiers(): void
     {
         $input = [
@@ -189,10 +185,8 @@ final class ConnectionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider insertQueriesDataProvider
-     */
+    #[DataProvider('insertQueriesDataProvider')]
+    #[Test]
     public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
         $this->connection->expects(self::once())
@@ -203,9 +197,7 @@ final class ConnectionTest extends UnitTestCase
         $this->connection->insert(...$args);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bulkInsert(): void
     {
         $this->connection->expects(self::once())
@@ -246,10 +238,8 @@ final class ConnectionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider updateQueriesDataProvider
-     */
+    #[DataProvider('updateQueriesDataProvider')]
+    #[Test]
     public function updateQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
         // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
@@ -298,10 +288,8 @@ final class ConnectionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider deleteQueriesDataProvider
-     */
+    #[DataProvider('deleteQueriesDataProvider')]
+    #[Test]
     public function deleteQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
         // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
@@ -383,10 +371,8 @@ final class ConnectionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider selectQueriesDataProvider
-     */
+    #[DataProvider('selectQueriesDataProvider')]
+    #[Test]
     public function selectQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
         $resultStatement = $this->createMock(Result::class);
@@ -428,10 +414,8 @@ final class ConnectionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider countQueriesDataProvider
-     */
+    #[DataProvider('countQueriesDataProvider')]
+    #[Test]
     public function countQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
         $resultStatement = $this->createMock(Result::class);
@@ -446,9 +430,7 @@ final class ConnectionTest extends UnitTestCase
         $this->connection->count(...$args);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function truncateQuery(): void
     {
         $this->connection->expects(self::once())
@@ -459,9 +441,7 @@ final class ConnectionTest extends UnitTestCase
         $this->connection->truncate('aTestTable', false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getServerVersionReportsPlatformVersion(): void
     {
         $wrappedConnectionMock = $this->createMock(Connection::class);

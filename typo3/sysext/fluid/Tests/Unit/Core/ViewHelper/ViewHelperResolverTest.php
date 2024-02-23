@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
@@ -27,12 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class ViewHelperResolverTest extends UnitTestCase
 {
     /**
-     * @test
-     * @dataProvider getResolveViewHelperNameTestValues
      * @param string $namespace
      * @param string $method
      * @param string $expected
      */
+    #[DataProvider('getResolveViewHelperNameTestValues')]
+    #[Test]
     public function resolveViewHelperClassNameResolvesExpectedViewHelperClassName($namespace, $method, $expected): void
     {
         $viewHelperResolver = new ViewHelperResolver(

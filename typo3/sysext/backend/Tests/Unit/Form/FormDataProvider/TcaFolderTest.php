@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -27,9 +28,7 @@ final class TcaFolderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataReturnsFieldUnchangedIfFieldIsNotTypeFolder(): void
     {
         $input = [
@@ -50,9 +49,7 @@ final class TcaFolderTest extends UnitTestCase
         self::assertSame($expected, (new TcaFolder())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsFolderData(): void
     {
         $input = [

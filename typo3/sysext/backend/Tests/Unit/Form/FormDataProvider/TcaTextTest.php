@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaText;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaTextTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsRichtextConfigurationAndTransformsContent(): void
     {
         $input = [
@@ -100,9 +99,7 @@ final class TcaTextTest extends UnitTestCase
         self::assertSame($expected, (new TcaText())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotTransformsContentWhenRichtextIsNotSet(): void
     {
         $input = [
@@ -128,9 +125,7 @@ final class TcaTextTest extends UnitTestCase
         self::assertSame($expected, (new TcaText())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotTransformsContentWhenRichtextIsDisabledInConfiguration(): void
     {
         $input = [

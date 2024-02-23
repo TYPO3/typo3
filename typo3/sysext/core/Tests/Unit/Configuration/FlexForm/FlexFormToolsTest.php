@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FlexFormToolsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingField(): void
     {
         $dataStruct = [
@@ -47,9 +46,7 @@ final class FlexFormToolsTest extends UnitTestCase
         $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingArrayField(): void
     {
         $dataStruct = [

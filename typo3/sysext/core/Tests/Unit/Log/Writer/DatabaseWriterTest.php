@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Log\Writer\DatabaseWriter;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseWriterTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getTableReturnsPreviouslySetTable(): void
     {
         $logTable = StringUtility::getUniqueId('logtable_');

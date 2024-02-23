@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 
 final class EndTimeRestrictionTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsThrowsExceptionInStartTimeIfGlobalsAccessTimeIsMissing(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -40,9 +39,7 @@ final class EndTimeRestrictionTest extends AbstractRestrictionTestCase
         $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsAddsStartTimeWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

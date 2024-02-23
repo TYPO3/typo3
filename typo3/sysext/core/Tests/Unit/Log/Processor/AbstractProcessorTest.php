@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException;
 use TYPO3\CMS\Core\Log\Logger;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractProcessorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function processorRefusesInvalidConfigurationOptions(): void
     {
         $this->expectException(InvalidLogProcessorConfigurationException::class);
@@ -43,9 +42,7 @@ final class AbstractProcessorTest extends UnitTestCase
         GeneralUtility::makeInstance(ProcessorFixture::class, $invalidConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loggerExecutesProcessors(): void
     {
         $logger = new Logger('test.core.log');

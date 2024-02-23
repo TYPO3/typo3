@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider;
@@ -44,9 +45,7 @@ final class SvgSpriteIconProviderTest extends UnitTestCase
         $this->icon->setSize(Icon::SIZE_SMALL);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, [
@@ -56,9 +55,7 @@ final class SvgSpriteIconProviderTest extends UnitTestCase
         self::assertEquals('<svg class="icon-color"><use xlink:href="fileadmin/sprites/actions.svg#actions-plus" /></svg>', $this->icon->getMarkup());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, [
@@ -68,9 +65,7 @@ final class SvgSpriteIconProviderTest extends UnitTestCase
         self::assertEquals('<svg class="icon-color"><use xlink:href="fileadmin/sprites/actions.svg#actions-plus" /></svg>', $this->icon->getMarkup());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconWithEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, [
@@ -80,9 +75,7 @@ final class SvgSpriteIconProviderTest extends UnitTestCase
         self::assertEquals('<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Images/sprites/actions.svg#actions-plus" /></svg>', $this->icon->getMarkup());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconWithInlineOptionReturnsCleanSvgMarkup(): void
     {
         $testFile = GeneralUtility::tempnam('svg_', '.svg');

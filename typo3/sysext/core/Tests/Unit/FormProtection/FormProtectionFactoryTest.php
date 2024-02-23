@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
@@ -61,18 +62,14 @@ final class FormProtectionFactoryTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createForTypeReturnsDisabledIfInvalidTypeIsGiven(): void
     {
         $formProtection = $this->subject->createForType('invalid-type');
         self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createForTypeReturnsDisabledIfInvalidTypeIsGivenAndSameInstanceIfDisabledIsGivenLaterOn(): void
     {
         $formProtection = $this->subject->createForType('invalid-type');
@@ -82,9 +79,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         self::assertSame($formProtectionDisabled, $formProtection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createForTypeReturnsDisabledForValidTypeButWithoutValidGlobalArguments(): void
     {
         $formProtection = $this->subject->createForType('frontend');
@@ -93,18 +88,14 @@ final class FormProtectionFactoryTest extends UnitTestCase
         self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createForTypeAlwaysReturnsInstallToolRegardlessOfRequirementsIfRequested(): void
     {
         $formProtection = $this->subject->createForType('installtool');
         self::assertInstanceOf(InstallToolFormProtection::class, $formProtection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createForTypeReturnsDisabledIfBackendUserIsNotAvailable(): void
     {
         $user = new BackendUserAuthentication();
@@ -114,9 +105,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         self::assertInstanceOf(DisabledFormProtection::class, $formProtection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createForTypeReturnsBackendIfBackendUserIsLoggedIn(): void
     {
         $user = new BackendUserAuthentication();
@@ -127,9 +116,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         self::assertInstanceOf(BackendFormProtection::class, $formProtection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createForTypeReturnsTheSameInstanceEvenThoughUserWasLoggedInLaterOn(): void
     {
         $user = new BackendUserAuthentication();

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -81,10 +83,8 @@ final class AuthenticationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider processLoginDataProvider
-     */
+    #[DataProvider('processLoginDataProvider')]
+    #[Test]
     public function processLoginReturnsCorrectData(string $passwordSubmissionStrategy, array $loginData, array $expectedProcessedData): void
     {
         $subject = new AuthenticationService();
@@ -93,9 +93,7 @@ final class AuthenticationServiceTest extends UnitTestCase
         self::assertEquals($expectedProcessedData, $loginData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authUserReturns100IfSubmittedPasswordIsEmpty(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
@@ -108,9 +106,7 @@ final class AuthenticationServiceTest extends UnitTestCase
         self::assertSame(100, $subject->authUser([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authUserReturns100IfUserSubmittedUsernameIsEmpty(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
@@ -123,9 +119,7 @@ final class AuthenticationServiceTest extends UnitTestCase
         self::assertSame(100, $subject->authUser([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authUserThrowsExceptionIfUserTableIsNotSet(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
@@ -140,9 +134,7 @@ final class AuthenticationServiceTest extends UnitTestCase
         $subject->authUser([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authUserThrowsExceptionIfPasswordInDbDoesNotResolveToAValidHash(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
@@ -170,9 +162,7 @@ final class AuthenticationServiceTest extends UnitTestCase
         self::assertEquals(100, $subject->authUser($dbUser));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authUserReturns0IfPasswordDoesNotMatch(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
@@ -201,9 +191,7 @@ final class AuthenticationServiceTest extends UnitTestCase
         self::assertSame(0, $subject->authUser($dbUser));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authUserReturns200IfPasswordMatch(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class DatabaseRowDefaultValuesTest extends UnitTestCase
         $this->subject = new DatabaseRowDefaultValues();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsExistingValue(): void
     {
         $input = [
@@ -49,9 +48,7 @@ final class DatabaseRowDefaultValuesTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsExistingNullValueWithEvalNull(): void
     {
         $input = [
@@ -72,9 +69,7 @@ final class DatabaseRowDefaultValuesTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsNullValueWithDefaultNullForNewRecord(): void
     {
         $input = [
@@ -95,9 +90,7 @@ final class DatabaseRowDefaultValuesTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultValueIfEvalNullIsSet(): void
     {
         $input = [
@@ -118,9 +111,7 @@ final class DatabaseRowDefaultValuesTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultValueIsSet(): void
     {
         $input = [

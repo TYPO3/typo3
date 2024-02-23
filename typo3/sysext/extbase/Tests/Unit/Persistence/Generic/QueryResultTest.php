@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -65,27 +66,21 @@ final class QueryResultTest extends UnitTestCase
         $this->mockDataMapper->method('map')->willReturn($this->sampleResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getQueryReturnsQueryObject(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
         self::assertInstanceOf(QueryInterface::class, $this->queryResult->getQuery());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getQueryReturnsAClone(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
         self::assertNotSame($this->mockQuery, $this->queryResult->getQuery());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetExistsWorksAsExpected(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
@@ -94,9 +89,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertFalse($this->queryResult->offsetExists('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetGetWorksAsExpected(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
@@ -105,9 +98,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertNull($this->queryResult->offsetGet('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetSetWorksAsExpected(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
@@ -115,9 +106,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertInstanceOf(\stdClass::class, $this->queryResult->offsetGet(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetUnsetWorksAsExpected(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
@@ -125,9 +114,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertFalse($this->queryResult->offsetExists(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countDoesNotInitializeProxy(): void
     {
         $queryResult = $this->getAccessibleMock(QueryResult::class, ['initialize'], [], '', false);
@@ -138,9 +125,7 @@ final class QueryResultTest extends UnitTestCase
         $queryResult->count();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countCallsGetObjectCountByQueryOnPersistenceManager(): void
     {
         $queryResult = $this->getAccessibleMock(QueryResult::class, ['initialize'], [], '', false);
@@ -150,9 +135,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertEquals(2, $queryResult->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countCountsQueryResultDirectlyIfAlreadyInitialized(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
@@ -161,9 +144,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertEquals(2, $this->queryResult->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countOnlyCallsGetObjectCountByQueryOnPersistenceManagerOnce(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
@@ -172,9 +153,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertEquals(2, $this->queryResult->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countCallsGetObjectCountByQueryIfOffsetChanges(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
@@ -191,9 +170,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertSame(3, $thirdCount);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function iteratorMethodsAreCorrectlyImplemented(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
@@ -214,9 +191,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertEquals($array1, $this->queryResult->current());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeExecutesQueryWithArrayFetchMode(): void
     {
         $queryResult = $this->getAccessibleMock(QueryResult::class, null, [], '', false);

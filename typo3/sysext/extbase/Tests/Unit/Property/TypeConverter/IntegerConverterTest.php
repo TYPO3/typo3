@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
@@ -35,42 +36,32 @@ final class IntegerConverterTest extends UnitTestCase
         $this->converter = new IntegerConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromShouldCastTheStringToInteger(): void
     {
         self::assertSame(15, $this->converter->convertFrom('15', 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromDoesNotModifyIntegers(): void
     {
         $source = 123;
         self::assertSame($source, $this->converter->convertFrom($source, 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsNullIfEmptyStringSpecified(): void
     {
         self::assertNull($this->converter->convertFrom('', 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric(): void
     {
         self::assertInstanceOf(Error::class, $this->converter->convertFrom('not numeric', 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray(): void
     {
         self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));

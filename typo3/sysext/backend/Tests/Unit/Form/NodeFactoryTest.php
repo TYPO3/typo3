@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\SelectSingleElement;
 use TYPO3\CMS\Backend\Form\Element\SelectTreeElement;
 use TYPO3\CMS\Backend\Form\Element\UnknownElement;
@@ -31,9 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class NodeFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfOverrideMissesNodeNameKey(): void
     {
         $this->expectException(Exception::class);
@@ -47,9 +46,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfOverrideMissesPriorityKey(): void
     {
         $this->expectException(Exception::class);
@@ -63,9 +60,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfOverrideMissesClassKey(): void
     {
         $this->expectException(Exception::class);
@@ -79,9 +74,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfOverridePriorityIsLowerThanZero(): void
     {
         $this->expectException(Exception::class);
@@ -95,9 +88,7 @@ final class NodeFactoryTest extends UnitTestCase
         ];
         new NodeFactory();
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfOverridePriorityIsHigherThanHundred(): void
     {
         $this->expectException(Exception::class);
@@ -112,9 +103,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfOverrideTwoNodesWithSamePriorityAndSameNodeNameAreRegistered(): void
     {
         $this->expectException(Exception::class);
@@ -134,9 +123,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfResolverMissesNodeNameKey(): void
     {
         $this->expectException(Exception::class);
@@ -150,9 +137,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfResolverMissesPriorityKey(): void
     {
         $this->expectException(Exception::class);
@@ -166,9 +151,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfResolverMissesClassKey(): void
     {
         $this->expectException(Exception::class);
@@ -182,9 +165,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfResolverPriorityIsLowerThanZero(): void
     {
         $this->expectException(Exception::class);
@@ -198,9 +179,7 @@ final class NodeFactoryTest extends UnitTestCase
         ];
         new NodeFactory();
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsExceptionIfResolverPriorityIsHigherThanHundred(): void
     {
         $this->expectException(Exception::class);
@@ -215,9 +194,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfResolverTwoNodesWithSamePriorityAndSameNodeNameAreRegistered(): void
     {
         $this->expectException(Exception::class);
@@ -237,9 +214,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsNoExceptionIfResolverWithSamePriorityButDifferentNodeNameAreRegistered(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
@@ -257,9 +232,7 @@ final class NodeFactoryTest extends UnitTestCase
         new NodeFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createThrowsExceptionIfRenderTypeIsNotGiven(): void
     {
         $this->expectException(Exception::class);
@@ -268,9 +241,7 @@ final class NodeFactoryTest extends UnitTestCase
         $subject->create([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsInstanceOfUnknownElementIfTypeIsNotRegistered(): void
     {
         $unknownElementMock = $this->createMock(UnknownElement::class);
@@ -279,9 +250,7 @@ final class NodeFactoryTest extends UnitTestCase
         self::assertSame($unknownElementMock, $subject->create(['renderType' => 'foo']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsInstanceOfSelectTreeElementIfNeeded(): void
     {
         $data = [
@@ -294,9 +263,7 @@ final class NodeFactoryTest extends UnitTestCase
         self::assertSame($selectTreeElementMock, $subject->create($data));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsInstanceOfSelectSingleElementIfNeeded(): void
     {
         $data = [
@@ -314,9 +281,7 @@ final class NodeFactoryTest extends UnitTestCase
         self::assertSame($selectSingleElementMock, $subject->create($data));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createInstantiatesNewRegisteredElement(): void
     {
         $data = ['renderType' => 'foo'];
@@ -332,9 +297,7 @@ final class NodeFactoryTest extends UnitTestCase
         self::assertInstanceOf(FooElement::class, ($subject->create($data)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createInstantiatesElementRegisteredWithHigherPriorityWithOneGivenOrder(): void
     {
         $data = ['renderType' => 'foo'];
@@ -354,9 +317,7 @@ final class NodeFactoryTest extends UnitTestCase
         self::assertInstanceOf(BarElement::class, ($subject->create($data)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createInstantiatesElementRegisteredWithHigherPriorityWithOtherGivenOrder(): void
     {
         $data = ['renderType' => 'foo'];
@@ -376,9 +337,7 @@ final class NodeFactoryTest extends UnitTestCase
         self::assertInstanceOf(FooElement::class, ($subject->create($data)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createInstantiatesResolverWithHighestPriorityFirstWithOneGivenOrder(): void
     {
         $data = ['renderType' => 'foo'];
@@ -406,9 +365,7 @@ final class NodeFactoryTest extends UnitTestCase
         self::assertInstanceOf(BarElement::class, ($subject->create($data)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createInstantiatesResolverWithHighestPriorityFirstWithOtherGivenOrder(): void
     {
         $data = ['renderType' => 'foo'];
@@ -436,9 +393,7 @@ final class NodeFactoryTest extends UnitTestCase
         self::assertInstanceOf(BarElement::class, ($subject->create($data)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createInstantiatesNodeClassReturnedByResolver(): void
     {
         $data = ['renderType' => 'foo'];

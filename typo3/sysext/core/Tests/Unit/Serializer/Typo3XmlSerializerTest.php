@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class Typo3XmlSerializerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeReturnsRootNodeIfArrayIsEmpty(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -34,9 +34,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanPreventWrappingByRootNode(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -48,9 +46,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 ', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeSupportsInlineXml(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -61,9 +57,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
         self::assertEquals('<phparray><node>value</node></phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeSupportsPrettyPrintWithTabIndentation(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -76,9 +70,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeSupportsPrettyPrintWith4SpacesIndentation(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -91,9 +83,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeEnsuresAlphaNumericCharactersAndMinusAndUnderscoreInNodeName(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -103,9 +93,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanPrependNamespaceToNodeName(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -118,9 +106,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanPrependNToNodeNameIfNodeNameIsNumber(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -134,9 +120,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanReplaceNodeNameAndAddAsIndexIfNodeNameIsNumber(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -156,9 +140,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanReplaceNodeNameAndAddAsIndexIfNodeNameIsString(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -178,9 +160,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanReplaceNodeNameAndAddAsIndexIfParentMatchesName(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -212,9 +192,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanReplaceNodeNameAndAddAsIndexIfParentAndNodeMatchNames(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -248,9 +226,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanReplaceNodeNameAndAddAsIndexIfParentMatchesNameAndNodeNameIsNumber(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -282,9 +258,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanReplaceNodeNameAndAddAsIndexIfGrandParentAndParentAndNodeMatchNames(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -320,9 +294,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanWrapStringWithCDATAIfStringContainsSpecialCharacters(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -342,9 +314,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeAddsTypeAttributeToNodeIfValueIsNotString(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -374,10 +344,8 @@ final class Typo3XmlSerializerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider encodeCanDisableAddingTypeAttributeToNodeExceptIfValueIsArrayDataProvider
-     */
+    #[DataProvider('encodeCanDisableAddingTypeAttributeToNodeExceptIfValueIsArrayDataProvider')]
+    #[Test]
     public function encodeCanDisableAddingTypeAttributeToNodeExceptIfValueIsArray(mixed $disableTypeAttrib): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -405,9 +373,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanDisableAddingTypeAttributeToNode(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -435,9 +401,7 @@ final class Typo3XmlSerializerTest extends UnitTestCase
 </phparray>', $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeAddsBase64AttributeAndEncodesWithBase64IfValueIsBinaryData(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();
@@ -452,9 +416,7 @@ $contentBase64Encoded</binary>
 </phparray>", $xml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeCanSetAlternativeOptionsPerNestingLevel(): void
     {
         $xmlEncoder = new Typo3XmlSerializer();

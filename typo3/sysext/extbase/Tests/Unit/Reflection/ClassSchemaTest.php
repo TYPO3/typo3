@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
@@ -38,9 +39,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassSchemaTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses(): void
     {
         $this->resetSingletonInstances = true;
@@ -49,18 +48,14 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertTrue($classSchema->isAggregateRoot());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaHasConstructor(): void
     {
         $classSchema = new ClassSchema(DummyClassWithConstructorAndConstructorArguments::class);
         self::assertTrue($classSchema->hasConstructor());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGetProperties(): void
     {
         self::assertSame(
@@ -96,9 +91,7 @@ final class ClassSchemaTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaHasMethod(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
@@ -106,9 +99,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertFalse($classSchema->hasMethod('nonExistentMethod'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGetMethods(): void
     {
         self::assertSame(
@@ -132,9 +123,7 @@ final class ClassSchemaTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsPropertyDefaultValue(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
@@ -143,9 +132,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertSame('foo', $propertyDefinition->getDefaultValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaSkipsDetectionOfDefaultValuesOfStaticClassProperties(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
@@ -154,51 +141,39 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertNull($propertyDefinition->getDefaultValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsSingletons(): void
     {
         self::assertTrue((new ClassSchema(DummySingleton::class))->isSingleton());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsModels(): void
     {
         self::assertTrue((new ClassSchema(DummyEntity::class))->isModel());
         self::assertTrue((new ClassSchema(DummyValueObject::class))->isModel());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsEntities(): void
     {
         self::assertTrue((new ClassSchema(DummyEntity::class))->isEntity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsValueObjects(): void
     {
         self::assertTrue((new ClassSchema(DummyValueObject::class))->isValueObject());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsClassName(): void
     {
         $this->resetSingletonInstances = true;
         self::assertSame(DummyModel::class, (new ClassSchema(DummyModel::class))->getClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsNonStaticProperties(): void
     {
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
@@ -206,9 +181,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('privateProperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsStaticProperties(): void
     {
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicStaticProperty'));
@@ -216,9 +189,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('privateStaticProperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForParamWithoutTypeHint(): void
     {
         $this->resetSingletonInstances = true;
@@ -229,9 +200,7 @@ final class ClassSchemaTest extends UnitTestCase
         new ClassSchema(DummyControllerWithValidateAnnotationWithoutParamTypeHint::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForMissingParam(): void
     {
         $this->resetSingletonInstances = true;
@@ -241,9 +210,7 @@ final class ClassSchemaTest extends UnitTestCase
 
         new ClassSchema(DummyControllerWithValidateAnnotationWithoutParam::class);
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForParamWithoutTypeHint(): void
     {
         $this->resetSingletonInstances = true;
@@ -254,9 +221,7 @@ final class ClassSchemaTest extends UnitTestCase
         new ClassSchema(DummyControllerWithValidateAttributeWithoutParamTypeHint::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForMissingParam(): void
     {
         $this->resetSingletonInstances = true;
@@ -267,9 +232,7 @@ final class ClassSchemaTest extends UnitTestCase
         new ClassSchema(DummyControllerWithValidateAttributeWithoutParam::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsMethodParameterTypeViaReflection(): void
     {
         $class = new class () {
@@ -283,9 +246,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertSame(ClassSchema::class, $classSchema->getMethod('bar')->getParameter('foo')->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaPrefersMethodParameterTypeDetectionViaReflection(): void
     {
         $class = new class () {
@@ -299,9 +260,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertSame('string', $classSchema->getMethod('foo')->getParameter('foo')->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaCanHandleSelfMethodReturnTypes(): void
     {
         $class = new class () {
@@ -319,9 +278,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertSame(get_class($class), $classSchema->getMethod('bar')->getParameter('copy')->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsMethodParameterTypeDetectionViaDocBlocksIfNoTypeHintIsGiven(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);

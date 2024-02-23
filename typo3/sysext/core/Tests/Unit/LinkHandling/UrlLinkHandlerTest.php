@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\LinkHandlingInterface;
 use TYPO3\CMS\Core\LinkHandling\UrlLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -135,31 +137,23 @@ final class UrlLinkHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function resolveReturnsSplitParameters(array $input, array $expected, string $finalString): void
     {
         $subject = new UrlLinkHandler();
         self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider resolveParametersForNonFilesDataProvider
-     */
+    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[Test]
     public function splitParametersToUnifiedIdentifier(array $input, array $parameters, string $expected): void
     {
         $subject = new UrlLinkHandler();
         self::assertEquals($expected, $subject->asString($parameters));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultSchemeForNoSchemeInConfigurationReturnsFallbackScheme(): void
     {
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultScheme']);
@@ -169,9 +163,7 @@ final class UrlLinkHandlerTest extends UnitTestCase
         self::assertSame(LinkHandlingInterface::DEFAULT_SCHEME, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultSchemeForEmptySchemeInConfigurationReturnsFallbackScheme(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultScheme'] = '';
@@ -181,9 +173,7 @@ final class UrlLinkHandlerTest extends UnitTestCase
         self::assertSame(LinkHandlingInterface::DEFAULT_SCHEME, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultSchemeForSchemeInConfigurationReturnsSchemeFromConfiguration(): void
     {
         $scheme = 'https';

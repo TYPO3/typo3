@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -79,9 +80,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         $this->subject->setLogger($this->logger);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSenderShouldReturnAddressWithFallbackFromGlobals(): void
     {
         $this->settings['email_from'] = null;
@@ -103,9 +102,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSenderShouldReturnAddressWithConfigFromTypoScript(): void
     {
         $this->setupSubject();
@@ -122,9 +119,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getEmailTemplateNameThrowsExceptionIfTemplateNameIsEmpty(): void
     {
         $this->settings['email']['templateName'] = '';
@@ -134,9 +129,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         $this->subject->getMailTemplateName();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLifeTimeTimestampShouldReturnTimestamp(): void
     {
         $timestamp = time();
@@ -150,9 +143,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         self::assertSame($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForgotHashShouldReturnHashWithLifeTimeTimestamp(): void
     {
         $timestamp = time();
@@ -170,9 +161,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReplyToShouldReturnNullIfNoneAreSet(): void
     {
         $this->setupSubject();
@@ -180,9 +169,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         self::assertNull($this->subject->getReplyTo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMailTemplatePathsReturnsAnInstanceOfTemplatePathsObjectWithConfigurationOfTypoScript(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] = [
@@ -201,9 +188,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMailTemplatePathsReplacesTemplatePathsWithPathsConfiguredInTypoScript(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] = [
@@ -222,18 +207,14 @@ final class RecoveryConfigurationTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMailTemplateNameWillReturnTemplateNameConfiguredInTypoScript(): void
     {
         $this->setupSubject();
         self::assertSame($this->settings['email']['templateName'], $this->subject->getMailTemplateName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recoveryConfigurationWillCreateAnInstanceOfAddressIfDefaultMailReplyToAddressIsSet(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailReplyToAddress'] = 'typo3@example.com';
@@ -241,9 +222,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         self::assertInstanceOf(Address::class, $this->subject->getReplyTo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recoveryConfigurationWillCreateAnInstanceOfAddressWithName(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailReplyToName'] = 'TYPO3';

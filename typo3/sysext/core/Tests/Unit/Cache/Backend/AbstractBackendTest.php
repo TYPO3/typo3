@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Backend\Fixtures\ConcreteBackendFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,9 +25,7 @@ final class AbstractBackendTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorCallsSetterMethodsForAllSpecifiedOptions(): void
     {
         // The fixture class implements methods setSomeOption() and getSomeOption()

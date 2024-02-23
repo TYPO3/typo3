@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -49,10 +51,8 @@ final class MetaDataTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider typeIsCorrectlyResolvedDataProvider
-     */
+    #[DataProvider('typeIsCorrectlyResolvedDataProvider')]
+    #[Test]
     public function typeIsCorrectlyResolved(?string $type, bool $isExtension, bool $isFramework): void
     {
         $metaData = new MetaData('foo');

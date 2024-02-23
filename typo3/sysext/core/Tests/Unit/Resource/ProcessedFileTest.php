@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
@@ -84,18 +85,14 @@ final class ProcessedFileTest extends UnitTestCase
         return new ProcessedFile($originalFile, 'dummy', [], $dbRow ?: $this->databaseRow);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function propertiesOfProcessedFileAreSetFromDatabaseRow(): void
     {
         $processedFileObject = $this->getProcessedFileFixture();
         self::assertSame($this->databaseRow, $processedFileObject->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletingProcessedFileRemovesFile(): void
     {
         $this->storageMock->expects(self::once())->method('deleteFile');
@@ -105,9 +102,7 @@ final class ProcessedFileTest extends UnitTestCase
         $processedFile->delete(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletingProcessedFileThatUsesOriginalFileDoesNotRemoveFile(): void
     {
         $this->storageMock->expects(self::never())->method('deleteFile');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
         $this->subject = new TcaColumnsProcessPlaceholders();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersPlaceholderColumns(): void
     {
         $input = [
@@ -54,9 +53,7 @@ final class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersFirstPlaceholderColumn(): void
     {
         $input = [
@@ -78,9 +75,7 @@ final class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRegistersAlternativeLabelColumn(): void
     {
         $input = [

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Tokenizer\Token;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IdentifierTokenStreamTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function appendThrowsExceptionIfTokenIsNotOfTypeIdentifier(): void
     {
         $this->expectException(\LogicException::class);
@@ -35,26 +34,20 @@ final class IdentifierTokenStreamTest extends UnitTestCase
         (new IdentifierTokenStream())->append($token);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canAppendIdentifierToken(): void
     {
         $token = new Token(TokenType::T_IDENTIFIER, '', 0, 0);
         (new IdentifierTokenStream())->append($token);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonRelativeStreamIsNotRelative(): void
     {
         self::assertFalse((new IdentifierTokenStream())->isRelative());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function relativeStreamIsRelative(): void
     {
         $tokenStream = (new IdentifierTokenStream());

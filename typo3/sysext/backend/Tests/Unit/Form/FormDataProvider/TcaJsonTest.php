@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaJson;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -230,10 +232,8 @@ final class TcaJsonTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resultArrayDataProvider
-     */
+    #[DataProvider('resultArrayDataProvider')]
+    #[Test]
     public function addDataDoesHandleJsonRecords(array $input, array $expected): void
     {
         self::assertSame($expected, (new TcaJson())->addData($input));

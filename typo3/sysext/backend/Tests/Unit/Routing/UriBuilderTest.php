@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Routing;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
@@ -72,10 +74,8 @@ final class UriBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validRoutesAreBuiltDataProvider
-     */
+    #[DataProvider('validRoutesAreBuiltDataProvider')]
+    #[Test]
     public function validRoutesAreBuilt(
         array $routes,
         string $routeName,
@@ -98,9 +98,7 @@ final class UriBuilderTest extends UnitTestCase
         self::assertEquals($expectation, $uri->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonExistingRouteThrowsException(): void
     {
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);

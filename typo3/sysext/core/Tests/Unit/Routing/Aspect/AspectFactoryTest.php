@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Routing\Aspect;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\AspectInterface;
@@ -36,9 +38,7 @@ final class AspectFactoryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAspectsThrowsExceptionOnMissingType(): void
     {
         $contextMock = $this->createMock(Context::class);
@@ -52,9 +52,7 @@ final class AspectFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAspectsThrowsExceptionOnUnregisteredType(): void
     {
         $contextMock = $this->createMock(Context::class);
@@ -130,10 +128,9 @@ final class AspectFactoryTest extends UnitTestCase
 
     /**
      * @param string[] $expectation
-     *
-     * @test
-     * @dataProvider aspectsDataProvider
      */
+    #[DataProvider('aspectsDataProvider')]
+    #[Test]
     public function aspectsAreCreatedAndSorted(array $settings, array $expectation): void
     {
         $contextMock = $this->createMock(Context::class);

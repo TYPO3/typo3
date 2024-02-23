@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -30,9 +31,7 @@ use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 
 final class DirectoryNodeTest extends AbstractFolderStructureTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfParentIsNull(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -40,9 +39,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         new DirectoryNode([], null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfNameContainsForwardSlash(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -54,9 +51,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         new DirectoryNode($structure, $parent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorCallsCreateChildrenIfChildrenAreSet(): void
     {
         $parent = $this->createMock(NodeInterface::class);
@@ -75,9 +70,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->__construct($structure, $parent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsParent(): void
     {
         $parent = $this->createMock(NodeInterface::class);
@@ -89,9 +82,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($parent, $node->_call('getParent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsTargetPermission(): void
     {
         $parent = $this->createMock(NodeInterface::class);
@@ -105,9 +96,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($targetPermission, $node->_call('getTargetPermission'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsName(): void
     {
         $parent = $this->createMock(RootNodeInterface::class);
@@ -116,9 +105,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($name, $node->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArray(): void
     {
         $node = $this->getAccessibleMock(
@@ -138,9 +125,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertIsArray($node->getStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithWarningStatusIfDirectoryNotExists(): void
     {
         $node = $this->getAccessibleMock(
@@ -161,9 +146,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::WARNING, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithErrorStatusIfNodeIsNotADirectory(): void
     {
         $node = $this->getAccessibleMock(
@@ -185,9 +168,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::ERROR, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithErrorStatusIfDirectoryExistsButIsNotWritable(): void
     {
         $node = $this->getAccessibleMock(
@@ -209,9 +190,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::ERROR, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithNoticeStatusIfDirectoryExistsButPermissionAreNotCorrect(): void
     {
         $node = $this->getAccessibleMock(
@@ -233,9 +212,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::NOTICE, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithOkStatusIfDirectoryExistsAndPermissionAreCorrect(): void
     {
         $node = $this->getAccessibleMock(
@@ -257,9 +234,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::OK, $statusArray[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusCallsGetStatusOnChildren(): void
     {
         $node = $this->getAccessibleMock(
@@ -281,9 +256,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->getStatus();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArrayWithOwnStatusAndStatusOfChild(): void
     {
         $node = $this->getAccessibleMock(
@@ -308,9 +281,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($childMessage, $statusOfChild);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixCallsFixSelfAndReturnsItsResult(): void
     {
         $node = $this->getMockBuilder(DirectoryNode::class)
@@ -322,9 +293,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($uniqueReturn, $node->fix());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixCallsFixOnChildrenAndReturnsMergedResult(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['fixSelf'], [], '', false);
@@ -344,9 +313,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame([$uniqueReturnSelf, $uniqueReturnChild1, $uniqueReturnChild2], $node->fix());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfCallsCreateDirectoryIfDirectoryDoesNotExistAndReturnsResult(): void
     {
         $node = $this->getAccessibleMock(
@@ -363,9 +330,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame([$uniqueReturn], $node->_call('fixSelf'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfReturnsErrorStatusIfNodeExistsButIsNotADirectoryAndReturnsResult(): void
     {
         $node = $this->getAccessibleMock(
@@ -384,9 +349,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::ERROR, $result[0]->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixSelfCallsFixPermissionIfDirectoryExistsButIsNotWritable(): void
     {
         $node = $this->getAccessibleMock(
@@ -403,9 +366,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame([$message], $node->_call('fixSelf'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createDirectoryThrowsExceptionIfNodeExists(): void
     {
         $this->expectException(Exception::class);
@@ -416,9 +377,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->_call('createDirectory');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createDirectoryCreatesDirectory(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
@@ -430,9 +389,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertDirectoryExists($path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createDirectoryReturnsOkStatusIfDirectoryWasCreated(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
@@ -443,9 +400,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame(ContextualFeedbackSeverity::OK, $node->_call('createDirectory')->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createChildrenThrowsExceptionIfAChildTypeIsNotSet(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -459,9 +414,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->_call('createChildren', $brokenStructure);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createChildrenThrowsExceptionIfAChildNameIsNotSet(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -475,9 +428,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->_call('createChildren', $brokenStructure);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createChildrenThrowsExceptionForMultipleChildrenWithSameName(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -496,9 +447,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->_call('createChildren', $brokenStructure);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getChildrenReturnsCreatedChild(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
@@ -522,9 +471,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($childName, $child->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isWritableReturnsFalseIfNodeDoesNotExist(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
@@ -533,9 +480,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertFalse($node->isWritable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isWritableReturnsTrueIfNodeExistsAndFileCanBeCreated(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
@@ -544,9 +489,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->isWritable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isDirectoryReturnsTrueIfNameIsADirectory(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
@@ -555,9 +498,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->_call('isDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isDirectoryReturnsFalseIfNameIsALinkToADirectory(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);

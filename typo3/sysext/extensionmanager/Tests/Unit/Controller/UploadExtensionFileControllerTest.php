@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -62,10 +64,8 @@ final class UploadExtensionFileControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getExtensionFromZipFileExtractsExtensionKeyDataProvider
-     */
+    #[DataProvider('getExtensionFromZipFileExtractsExtensionKeyDataProvider')]
+    #[Test]
     public function getExtensionKeyFromFileNameExtractsExtensionKey(string $filename, string $expectedKey): void
     {
         $subject = $this->getAccessibleMock(UploadExtensionFileController::class, null, [], '', false);

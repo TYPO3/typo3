@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
@@ -36,9 +38,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $this->beUser;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMainConfigurationReturnsTsConfigFromUser(): void
     {
         $userTsAdmPanelConfig = [
@@ -54,9 +54,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         self::assertSame($userTsAdmPanelConfig, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOptionReturnsEmptyStringIfNoConfigurationFound(): void
     {
         $configurationService = new ConfigurationService();
@@ -64,9 +62,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         self::assertSame('', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOptionReturnsOverrideOptionIfSet(): void
     {
         $this->setUpUserTsConfigForAdmPanel(
@@ -85,9 +81,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         self::assertSame('1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOptionCastsResultToString(): void
     {
         $this->setUpUserTsConfigForAdmPanel(
@@ -124,10 +118,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getConfigurationOptionEmptyArgumentDataProvider
-     */
+    #[DataProvider('getConfigurationOptionEmptyArgumentDataProvider')]
+    #[Test]
     public function getConfigurationOptionThrowsExceptionOnEmptyArgument(string $identifier, string $option): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -137,9 +129,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->getConfigurationOption($identifier, $option);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOptionReturnsSettingFromUcIfNoOverrideGiven(): void
     {
         $this->setUpUserTsConfigForAdmPanel([]);
@@ -155,9 +145,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         self::assertSame('1', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveConfigurationTriggersOnSubmitOnEnabledModules(): void
     {
         $requestMock = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
@@ -178,9 +166,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->saveConfiguration($modules, $requestMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveConfigurationSavesMergedExistingAndNewConfiguration(): void
     {
         // existing configuration from UC

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class TcaTypesShowitemTest extends UnitTestCase
         $this->subject = new TcaTypesShowitem();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesTypeRelatedFields(): void
     {
         $input = [
@@ -58,9 +57,7 @@ final class TcaTypesShowitemTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataInsertsMatchingSubtypeAddListAfterSubtypeValueField(): void
     {
         $input = [
@@ -96,9 +93,7 @@ final class TcaTypesShowitemTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataInsertsMatchingSubtypeAddListAfterPaletteWithSubtypeValueField(): void
     {
         $input = [
@@ -144,9 +139,7 @@ final class TcaTypesShowitemTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesMatchingSubtypeExcludeListItems(): void
     {
         $input = [
@@ -182,9 +175,7 @@ final class TcaTypesShowitemTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesMatchingSubtypeExcludeListItemsFromPalettes(): void
     {
         $input = [
@@ -230,9 +221,7 @@ final class TcaTypesShowitemTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesMatchingBitmaskExcludeListItems(): void
     {
         $input = [
@@ -269,9 +258,7 @@ final class TcaTypesShowitemTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesMatchingBitmaskExcludeListItemsFromPalettes(): void
     {
         $input = [

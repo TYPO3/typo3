@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Localization;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,10 +32,8 @@ final class StateTest extends UnitTestCase
         $GLOBALS['TCA'] = [];
     }
 
-    /**
-     * @test
-     * @dataProvider stateObjectCanBeCreatedDataProvider
-     */
+    #[DataProvider('stateObjectCanBeCreatedDataProvider')]
+    #[Test]
     public function stateObjectCanBeCreated(string $tableName, array $states): void
     {
         $subject = new State($tableName, $states);
@@ -55,10 +55,8 @@ final class StateTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider statesAreEnrichedAndSanitizedOnObjectCreationDataProvider
-     */
+    #[DataProvider('statesAreEnrichedAndSanitizedOnObjectCreationDataProvider')]
+    #[Test]
     public function statesAreEnrichedAndSanitizedOnObjectCreation(
         array $states,
         array $expected

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -33,9 +34,7 @@ final class RelationHandlerTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function purgeItemArrayReturnsFalseIfVersioningForTableIsDisabled(): void
     {
         $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = false;
@@ -47,9 +46,7 @@ final class RelationHandlerTest extends UnitTestCase
         self::assertFalse($this->subject->purgeItemArray(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function purgeItemArrayReturnsTrueIfItemsHaveBeenPurged(): void
     {
         $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = true;

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -41,27 +43,21 @@ final class ObjectAccessTest extends UnitTestCase
         $this->dummyObject->setAnotherProperty(42);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyReturnsExpectedValueForGetterProperty(): void
     {
         $property = ObjectAccess::getProperty($this->dummyObject, 'property');
         self::assertEquals('string1', $property);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyReturnsExpectedValueForPublicProperty(): void
     {
         $property = ObjectAccess::getProperty($this->dummyObject, 'publicProperty2');
         self::assertEquals(42, $property, 'A property of a given object was not returned correctly.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyThrowsExceptionIfPropertyDoesNotExist(): void
     {
         $this->expectException(PropertyNotAccessibleException::class);
@@ -69,53 +65,41 @@ final class ObjectAccessTest extends UnitTestCase
         ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyReturnsNullIfArrayKeyDoesNotExist(): void
     {
         $result = ObjectAccess::getProperty([], 'notExistingProperty');
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyTriesToCallABooleanGetterMethodIfItExists(): void
     {
         $property = ObjectAccess::getProperty($this->dummyObject, 'booleanProperty');
         self::assertTrue($property);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyReturnsFalseIfPropertyIsNotAccessible(): void
     {
         self::assertFalse(ObjectAccess::setProperty($this->dummyObject, 'protectedProperty', 42));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyCallsASetterMethodToSetThePropertyValueIfOneIsAvailable(): void
     {
         ObjectAccess::setProperty($this->dummyObject, 'property', 4242);
         self::assertEquals(4242, $this->dummyObject->getProperty(), 'setProperty does not work with setter.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyWorksWithPublicProperty(): void
     {
         ObjectAccess::setProperty($this->dummyObject, 'publicProperty', 4242);
         self::assertEquals(4242, $this->dummyObject->publicProperty, 'setProperty does not work with public property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyCanDirectlySetValuesInAnArrayObjectOrArray(): void
     {
         $arrayObject = new \ArrayObject();
@@ -126,9 +110,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals('value', $array['key']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyCanAccessPropertiesOfAnArrayObject(): void
     {
         $arrayObject = new \ArrayObject(['key' => 'value']);
@@ -136,9 +118,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals('value', $actual, 'getProperty does not work with ArrayObject property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyCanAccessPropertiesOfAnObjectStorageObject(): void
     {
         $objectStorage = new ObjectStorage();
@@ -148,9 +128,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertSame($object, $actual, 'getProperty does not work with ObjectStorage property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyCanAccessPropertiesOfAnObjectImplementingArrayAccess(): void
     {
         $arrayAccessInstance = new ArrayAccessClass(['key' => 'value']);
@@ -158,9 +136,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals('value', $actual, 'getProperty does not work with Array Access property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyCanAccessPropertiesOfArrayAccessWithGetterMethodWhenOffsetNotExists(): void
     {
         $arrayAccessInstance = new ArrayAccessClass([]);
@@ -168,9 +144,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals('default-value', $actual, 'getProperty does not work with Array Access property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyCanAccessPropertiesOfArrayAccessWithPriorityForOffsetIfOffsetExists(): void
     {
         $arrayAccessInstance = new ArrayAccessClass(['virtual' => 'overridden-value']);
@@ -178,9 +152,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals('overridden-value', $actual, 'getProperty does not work with Array Access property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyCanAccessPropertiesOfAnArray(): void
     {
         $array = ['key' => 'value'];
@@ -188,9 +160,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals('value', $expected, 'getProperty does not work with Array property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathCanAccessPropertiesOfAnArray(): void
     {
         $array = ['parent' => ['key' => 'value']];
@@ -198,9 +168,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals('value', $actual, 'getPropertyPath does not work with Array property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathCanAccessPropertiesOfAnObjectImplementingArrayAccess(): void
     {
         $array = ['parent' => new \ArrayObject(['key' => 'value'])];
@@ -208,9 +176,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals('value', $actual, 'getPropertyPath does not work with Array Access property.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathCanAccessPropertiesOfAnExtbaseObjectStorageObject(): void
     {
         $objectStorage = $this->setUpObjectStorageWithTwoItems();
@@ -221,9 +187,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertSame('value2', ObjectAccess::getPropertyPath($array, 'parent.1.key'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathOnObjectStorageDoesNotAffectOngoingLoop(): void
     {
         $objectStorage = $this->setUpObjectStorageWithTwoItems();
@@ -247,9 +211,7 @@ final class ObjectAccessTest extends UnitTestCase
         return $objectStorage;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathCanAccessPropertiesOfAnSplObjectStorageObject(): void
     {
         $objectStorage = $this->setUpSplObjectStorageWithTwoItems();
@@ -260,9 +222,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertSame('value2', ObjectAccess::getPropertyPath($array, 'parent.1.key'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathOnSplObjectStorageDoesNotAffectOngoingLoop(): void
     {
         $objectStorage = $this->setUpSplObjectStorageWithTwoItems();
@@ -286,9 +246,7 @@ final class ObjectAccessTest extends UnitTestCase
         return $objectStorage;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getGettablePropertyNamesReturnsAllPropertiesWhichAreAvailable(): void
     {
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
@@ -297,9 +255,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames returns not all gettable properties.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getGettablePropertyNamesRespectsMethodArguments(): void
     {
         $dateTimeZone = new \DateTimeZone('+2');
@@ -311,9 +267,7 @@ final class ObjectAccessTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSettablePropertyNamesReturnsAllPropertiesWhichAreAvailable(): void
     {
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
@@ -322,9 +276,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals($settablePropertyNames, $expectedPropertyNames, 'getSettablePropertyNames returns not all settable properties.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSettablePropertyNamesReturnsPropertyNamesOfStdClass(): void
     {
         $stdClassObject = new \stdClass();
@@ -335,9 +287,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals($expectedPropertyNames, $settablePropertyNames, 'getSettablePropertyNames returns not all settable properties.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getGettablePropertiesReturnsTheCorrectValuesForAllProperties(): void
     {
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
@@ -355,9 +305,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals($allProperties, $expectedProperties, 'expectedProperties did not return the right values for the properties.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getGettablePropertiesReturnsPropertiesOfStdClass(): void
     {
         $stdClassObject = new \stdClass();
@@ -373,9 +321,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals($expectedProperties, $allProperties, 'expectedProperties did not return the right values for the properties.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPropertySettableTellsIfAPropertyCanBeSet(): void
     {
         self::assertTrue(ObjectAccess::isPropertySettable($this->dummyObject, 'writeOnlyMagicProperty'));
@@ -384,9 +330,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertFalse(ObjectAccess::isPropertySettable($this->dummyObject, 'privateProperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPropertySettableWorksOnStdClass(): void
     {
         $stdClassObject = new \stdClass();
@@ -396,12 +340,11 @@ final class ObjectAccessTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider propertyGettableTestValues
-     * @test
-     *
      * @param string $property
      * @param bool $expected
      */
+    #[DataProvider('propertyGettableTestValues')]
+    #[Test]
     public function isPropertyGettableTellsIfAPropertyCanBeRetrieved($property, $expected): void
     {
         self::assertEquals($expected, ObjectAccess::isPropertyGettable($this->dummyObject, $property));
@@ -419,9 +362,7 @@ final class ObjectAccessTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPropertyGettableWorksOnArrayAccessObjects(): void
     {
         $arrayObject = new \ArrayObject();
@@ -430,9 +371,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertFalse(ObjectAccess::isPropertyGettable($arrayObject, 'undefinedKey'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPropertyGettableWorksOnObjectsMixingRegularPropertiesAndArrayAccess(): void
     {
         /** @var \ArrayAccess $object */
@@ -453,9 +392,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertSame('v', ObjectAccess::getProperty($object, 'key'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPropertyGettableWorksOnStdClass(): void
     {
         $stdClassObject = new \stdClass();
@@ -464,9 +401,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertFalse(ObjectAccess::isPropertyGettable($stdClassObject, 'undefinedProperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathCanRecursivelyGetPropertiesOfAnObject(): void
     {
         $alternativeObject = new DummyClassWithGettersAndSetters();
@@ -477,9 +412,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathReturnsNullForNonExistingPropertyPath(): void
     {
         $alternativeObject = new DummyClassWithGettersAndSetters();
@@ -488,18 +421,14 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertNull(ObjectAccess::getPropertyPath($this->dummyObject, 'property2.property.not.existing'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathReturnsNullIfSubjectIsNoObject(): void
     {
         $string = 'Hello world';
         self::assertNull(ObjectAccess::getPropertyPath($string, 'property2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyPathReturnsNullIfSubjectOnPathIsNoObject(): void
     {
         $object = new \stdClass();

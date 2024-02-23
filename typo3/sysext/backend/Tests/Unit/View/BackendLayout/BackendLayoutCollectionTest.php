@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class BackendLayoutCollectionTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidIdentifierIsRecognizedOnCreation(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -38,9 +37,7 @@ final class BackendLayoutCollectionTest extends UnitTestCase
         new BackendLayoutCollection($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectIsCreated(): void
     {
         $identifier = StringUtility::getUniqueId('identifier');
@@ -49,9 +46,7 @@ final class BackendLayoutCollectionTest extends UnitTestCase
         self::assertEquals($identifier, $backendLayoutCollection->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidBackendLayoutIsRecognizedOnAdding(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -68,9 +63,7 @@ final class BackendLayoutCollectionTest extends UnitTestCase
         $backendLayoutCollection->add($backendLayoutMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function duplicateBackendLayoutIsRecognizedOnAdding(): void
     {
         $this->expectException(\LogicException::class);
@@ -93,9 +86,7 @@ final class BackendLayoutCollectionTest extends UnitTestCase
         $backendLayoutCollection->add($secondBackendLayoutMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function backendLayoutCanBeFetched(): void
     {
         $identifier = StringUtility::getUniqueId('identifier');

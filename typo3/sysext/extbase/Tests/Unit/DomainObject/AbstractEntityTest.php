@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\DomainObject;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractEntityTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties(): void
     {
         $domainObject = new class () extends AbstractEntity {
@@ -36,9 +35,7 @@ final class AbstractEntityTest extends UnitTestCase
         self::assertFalse($domainObject->_isDirty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectIsDirtyAfterCallingMemorizeCleanStateWithSimplePropertiesAndModifyingThePropertiesAfterwards(): void
     {
         $domainObject = new class () extends AbstractEntity {
@@ -51,9 +48,7 @@ final class AbstractEntityTest extends UnitTestCase
         self::assertTrue($domainObject->_isDirty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithObjectProperties(): void
     {
         $domainObject = new class () extends AbstractEntity {
@@ -66,9 +61,7 @@ final class AbstractEntityTest extends UnitTestCase
         self::assertFalse($domainObject->_isDirty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties(): void
     {
         $domainObject = new class () extends AbstractEntity {

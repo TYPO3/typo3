@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SimpleLockStrategyTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorCreatesLockDirectoryIfNotExisting(): void
     {
         GeneralUtility::rmdir(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER, true);
@@ -35,18 +35,14 @@ final class SimpleLockStrategyTest extends UnitTestCase
         self::assertDirectoryExists(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsResourceToPathWithIdIfUsingSimpleLocking(): void
     {
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, null, ['999999999']);
         self::assertSame(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER . 'simple_' . md5('999999999'), $lock->_get('filePath'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function acquireFixesPermissionsOnLockFile(): void
     {
         if (Environment::isWindows()) {
@@ -67,9 +63,7 @@ final class SimpleLockStrategyTest extends UnitTestCase
         self::assertEquals('0777', $resultFilePermissions);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function releaseRemovesLockfileInTypo3TempLocks(): void
     {
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, null, ['999999999']);
@@ -91,10 +85,8 @@ final class SimpleLockStrategyTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectoryDataProvider
-     */
+    #[DataProvider('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectoryDataProvider')]
+    #[Test]
     public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory(string $file): void
     {
         // Create test file
@@ -112,17 +104,13 @@ final class SimpleLockStrategyTest extends UnitTestCase
         self::assertTrue($fileExists);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPriorityReturnsDefaultPriority(): void
     {
         self::assertEquals(SemaphoreLockStrategy::DEFAULT_PRIORITY, SemaphoreLockStrategy::getPriority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPriority(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SimpleLockStrategy::class]['priority'] = 10;

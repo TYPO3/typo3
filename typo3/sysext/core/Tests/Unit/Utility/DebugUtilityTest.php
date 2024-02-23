@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -32,9 +34,7 @@ final class DebugUtilityTest extends UnitTestCase
         DebugUtility::useAnsiColor(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function debugNotEncodesHtmlInputIfPlainText(): void
     {
         DebugUtility::usePlainTextOutput(true);
@@ -51,9 +51,7 @@ final class DebugUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function debugEncodesHtmlInputIfNoPlainText(): void
     {
         DebugUtility::usePlainTextOutput(false);
@@ -106,10 +104,10 @@ final class DebugUtilityTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider convertVariableToStringReturnsVariableContentDataProvider
      * @param mixed $variable
      */
+    #[DataProvider('convertVariableToStringReturnsVariableContentDataProvider')]
+    #[Test]
     public function convertVariableToStringReturnsVariableContent($variable, string $expected): void
     {
         self::assertSame($expected, DebugUtility::convertVariableToString($variable));

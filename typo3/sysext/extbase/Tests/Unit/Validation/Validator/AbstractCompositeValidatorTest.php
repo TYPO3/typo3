@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture\AbstractCompositeValidatorClass;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractCompositeValidatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorAcceptsSupportedOptions(): void
     {
         $inputOptions = [
@@ -38,9 +37,7 @@ final class AbstractCompositeValidatorTest extends UnitTestCase
         self::assertSame($expectedOptions, $validator->getOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorHasDefaultOptions(): void
     {
         $inputOptions = ['requiredOption' => 666];
@@ -53,9 +50,7 @@ final class AbstractCompositeValidatorTest extends UnitTestCase
         self::assertSame($expectedOptions, $validator->getOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExceptionOnNotSupportedOptions(): void
     {
         $inputOptions = ['invalidoption' => 42];
@@ -65,9 +60,7 @@ final class AbstractCompositeValidatorTest extends UnitTestCase
         $validator->setOptions($inputOptions);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExceptionOnMissingRequiredOptions(): void
     {
         $inputOptions = [];

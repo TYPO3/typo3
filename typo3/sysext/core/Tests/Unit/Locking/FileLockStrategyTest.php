@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Locking\FileLockStrategy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class FileLockStrategyTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorCreatesLockDirectoryIfNotExisting(): void
     {
         GeneralUtility::rmdir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER, true);
@@ -37,26 +36,20 @@ final class FileLockStrategyTest extends UnitTestCase
         self::assertDirectoryExists(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsFilePathToExpectedValue(): void
     {
         $lock = $this->getAccessibleMock(FileLockStrategy::class, null, ['999999999']);
         self::assertSame(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER . 'flock_' . md5('999999999'), $lock->_get('filePath'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPriorityReturnsDefaultPriority(): void
     {
         self::assertEquals(FileLockStrategy::DEFAULT_PRIORITY, FileLockStrategy::getPriority());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPriority(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][FileLockStrategy::class]['priority'] = 10;

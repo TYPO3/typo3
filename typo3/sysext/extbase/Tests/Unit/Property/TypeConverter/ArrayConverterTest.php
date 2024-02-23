@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
@@ -25,18 +27,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ArrayConverterTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromDoesNotModifyTheSourceArray(): void
     {
         $sourceArray = ['Foo' => 'Bar', 'Baz'];
         self::assertEquals($sourceArray, (new ArrayConverter())->convertFrom($sourceArray, 'array'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromEmptyStringToArray(): void
     {
         self::assertEquals([], (new ArrayConverter())->convertFrom('', 'array'));
@@ -93,18 +91,14 @@ final class ArrayConverterTest extends UnitTestCase
         return $configuration;
     }
 
-    /**
-     * @test
-     * @dataProvider stringToArrayWithConfigurationDataProvider
-     */
+    #[DataProvider('stringToArrayWithConfigurationDataProvider')]
+    #[Test]
     public function canConvertWithConfigurationFromString(string $source, PropertyMappingConfigurationInterface $configuration, array $expectedResult): void
     {
         self::assertEquals($expectedResult, (new ArrayConverter())->convertFrom($source, 'array', [], $configuration));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsTypeConverterExceptionIfDelimiterIsNotGiven(): void
     {
         $this->expectException(TypeConverterException::class);
@@ -112,9 +106,7 @@ final class ArrayConverterTest extends UnitTestCase
         (new ArrayConverter())->convertFrom('foo', 'array', [], new PropertyMappingConfiguration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSourceUnchangedIfNonEmptyValueWithNoConfigurationIsGiven(): void
     {
         self::assertSame('foo', (new ArrayConverter())->convertFrom('foo', 'array', []));

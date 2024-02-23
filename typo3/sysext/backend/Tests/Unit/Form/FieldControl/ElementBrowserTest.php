@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldControl;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FieldControl\ElementBrowser;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -24,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ElementBrowserTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTrimsAllowedValuesFromConfigSection(): void
     {
         $nodeFactory = $this->createMock(NodeFactory::class);
@@ -53,9 +53,7 @@ final class ElementBrowserTest extends UnitTestCase
         self::assertSame($result['linkAttributes']['data-params'], '|||be_users,be_groups|');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTrimsAllowedValues(): void
     {
         $nodeFactory = $this->createMock(NodeFactory::class);
@@ -81,10 +79,8 @@ final class ElementBrowserTest extends UnitTestCase
         self::assertSame($result['linkAttributes']['data-params'], '|||jpg,png|');
     }
 
-    /**
-     * @test
-     * @dataProvider renderResolvesEntryPointDataProvider
-     */
+    #[DataProvider('renderResolvesEntryPointDataProvider')]
+    #[Test]
     public function renderResolvesEntryPoint(array $config, string $expected): void
     {
         $nodeFactory = $this->createMock(NodeFactory::class);
@@ -234,9 +230,7 @@ final class ElementBrowserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderUsesCustomTitle(): void
     {
         $title = 'Custom title';
@@ -265,9 +259,7 @@ final class ElementBrowserTest extends UnitTestCase
         self::assertSame($title, $result['title']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderUsesFallbackTitle(): void
     {
         $nodeFactory = $this->createMock(NodeFactory::class);

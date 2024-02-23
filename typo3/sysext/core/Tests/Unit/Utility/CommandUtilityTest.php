@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -72,12 +74,12 @@ final class CommandUtilityTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider getConfiguredAppsDataProvider
      * @param array $globalsBinSetup
      * @param array $expected
-     * @test
      * @todo When specifying parameter types test bench errors occur
      */
+    #[DataProvider('getConfiguredAppsDataProvider')]
+    #[Test]
     public function getConfiguredApps($globalsBinSetup, $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup'] = $globalsBinSetup;
@@ -189,10 +191,9 @@ final class CommandUtilityTest extends UnitTestCase
 
     /**
      * Tests if the commands are exploded and unquoted correctly
-     *
-     * @dataProvider unQuoteFilenameUnquotesCorrectlyDataProvider
-     * @test
      */
+    #[DataProvider('unQuoteFilenameUnquotesCorrectlyDataProvider')]
+    #[Test]
     public function unQuoteFilenameUnquotesCorrectly(string $source, array $expectedQuoted): void
     {
         $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, null);
@@ -204,9 +205,8 @@ final class CommandUtilityTest extends UnitTestCase
      * Test to ensure that, the error isn't happening
      * Error: Typed static property TYPO3\CMS\Core\Utility\CommandUtility::$paths must not be
      * accessed before initialization
-     *
-     * @test
      */
+    #[Test]
     public function getCommandWithPhpReturnsPathToPhpExecutable(): void
     {
         $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, null);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SaveToDatabaseFinisherTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionOnInconsistentConfigurationThrowsExceptionOnInconsistentConfiguration(): void
     {
         $this->expectException(FinisherException::class);
@@ -40,9 +40,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $mockSaveToDatabaseFinisher->_call('throwExceptionOnInconsistentConfiguration');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareDataConvertsArrayValuesToCsv(): void
     {
         $elementsConfiguration = [
@@ -64,9 +62,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         self::assertSame('one,two', $databaseData['bar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeInternalProcessesSingleTable(): void
     {
         $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
@@ -115,10 +111,10 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider skipIfValueIsEmptyDataProvider
      * @param mixed $value
      */
+    #[DataProvider('skipIfValueIsEmptyDataProvider')]
+    #[Test]
     public function skipIfValueIsEmptyDetectsEmptyValues($value, bool $expectedEmpty): void
     {
         $elementsConfiguration = [
@@ -138,9 +134,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         self::assertSame($expectedEmpty, empty($databaseData));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeInternalProcessesMultipleTables(): void
     {
         $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)->onlyMethods(['process'])->getMock();
@@ -162,9 +156,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareDataConvertsDateTimeToUnixTimestamp(): void
     {
         $elementsConfiguration = [
@@ -184,9 +176,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         self::assertMatchesRegularExpression($expected, $databaseData['date']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prepareDataConvertsDateTimeToFormat(): void
     {
         $elementsConfiguration = [

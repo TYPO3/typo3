@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\UriFactory;
@@ -27,18 +28,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class UriFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsr17FactoryInterface(): void
     {
         $factory = new UriFactory();
         self::assertInstanceOf(UriFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriIsCreated(): void
     {
         $factory = new UriFactory();

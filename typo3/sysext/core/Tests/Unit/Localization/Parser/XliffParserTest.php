@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\Parser\XliffParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class XliffParserTest extends UnitTestCase
 {
-    /**
-     * @test
-     * @dataProvider canParseXliffDataProvider
-     */
+    #[DataProvider('canParseXliffDataProvider')]
+    #[Test]
     public function canParseXliff(string $languageKey, array $expectedLabels, bool $requireApprovedLocalizations): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['requireApprovedLocalizations'] = $requireApprovedLocalizations;

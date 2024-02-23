@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchema;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class MethodTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsMethodVisibility(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
@@ -49,9 +48,7 @@ final class MethodTest extends UnitTestCase
         self::assertTrue($methodDefinition->isPrivate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsInjectMethods(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
@@ -73,9 +70,7 @@ final class MethodTest extends UnitTestCase
         self::assertArrayHasKey('injectFoo', $injectMethods);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSchemaDetectsStaticMethods(): void
     {
         self::assertTrue(

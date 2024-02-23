@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\EventDispatcher;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
@@ -37,17 +39,13 @@ final class ListenerProviderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsrInterface(): void
     {
         self::assertInstanceOf(ListenerProviderInterface::class, $this->listenerProvider);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addedListenersAreReturnedByGetAllListenerDefinitions(): void
     {
         $this->listenerProvider->addListener('Event\\Name', 'listener1');
@@ -61,9 +59,7 @@ final class ListenerProviderTest extends UnitTestCase
         ], $this->listenerProvider->getAllListenerDefinitions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addedListenerCorrectlySetsTheListenerIdentifier(): void
     {
         $this->listenerProvider->addListener(event: 'Event\\Name', service: 'service.name1');
@@ -77,10 +73,8 @@ final class ListenerProviderTest extends UnitTestCase
         ], $this->listenerProvider->getAllListenerDefinitions());
     }
 
-    /**
-     * @test
-     * @dataProvider listeners
-     */
+    #[DataProvider('listeners')]
+    #[Test]
     public function dispatchesEvent($listener, string $method = null): void
     {
         $event = new \stdClass();
@@ -96,10 +90,8 @@ final class ListenerProviderTest extends UnitTestCase
         self::assertEquals(1, $event->invoked);
     }
 
-    /**
-     * @test
-     * @dataProvider listeners
-     */
+    #[DataProvider('listeners')]
+    #[Test]
     public function associatesToEventParentClass($listener, string $method = null): void
     {
         $extendedEvent = new class () extends \stdClass {
@@ -115,10 +107,8 @@ final class ListenerProviderTest extends UnitTestCase
         self::assertEquals(1, $extendedEvent->invoked);
     }
 
-    /**
-     * @test
-     * @dataProvider listeners
-     */
+    #[DataProvider('listeners')]
+    #[Test]
     public function associatesToImplementedInterfaces($listener, string $method = null): void
     {
         $eventImplementation = new class () implements \IteratorAggregate {
@@ -139,9 +129,7 @@ final class ListenerProviderTest extends UnitTestCase
         self::assertEquals(1, $eventImplementation->invoked);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addListenerPreservesOrder(): void
     {
         $this->listenerProvider->addListener(\stdClass::class, 'listener1');
@@ -164,9 +152,7 @@ final class ListenerProviderTest extends UnitTestCase
         self::assertEquals('ab', $event->sequence);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionForInvalidCallable(): void
     {
         $this->expectException(\InvalidArgumentException::class);

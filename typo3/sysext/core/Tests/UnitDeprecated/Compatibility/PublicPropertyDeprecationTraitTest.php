@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -77,18 +79,14 @@ final class PublicPropertyDeprecationTraitTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider issetDataProvider
-     * @test
-     */
+    #[DataProvider('issetDataProvider')]
+    #[Test]
     public function issetWorksAsExpected(bool $expected, string $property): void
     {
         self::assertSame($expected, isset($this->fixture->$property));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unknownPropertyCanBeHandledAsUsual(): void
     {
         // Uses __isset()
@@ -105,9 +103,7 @@ final class PublicPropertyDeprecationTraitTest extends UnitTestCase
         self::assertFalse(isset($this->fixture->unknownProperty));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function publicPropertyCanBeHandledAsUsual(): void
     {
         self::assertFalse(isset($this->fixture->unsetPublicProperty));
@@ -118,9 +114,7 @@ final class PublicPropertyDeprecationTraitTest extends UnitTestCase
         self::assertFalse(isset($this->fixture->unsetPublicProperty));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function taggedPropertyCanBeHandledLikePublicProperty(): void
     {
         self::assertFalse(isset($this->fixture->unsetTaggedProperty));

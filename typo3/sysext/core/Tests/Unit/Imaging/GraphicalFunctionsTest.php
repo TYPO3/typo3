@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -285,10 +287,8 @@ final class GraphicalFunctionsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getScaleForImageDataProvider
-     */
+    #[DataProvider('getScaleForImageDataProvider')]
+    #[Test]
     public function getScaleForImage(array $info, string $width, string $height, array $options, bool $mayScaleUp, array $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = $mayScaleUp;
@@ -297,9 +297,7 @@ final class GraphicalFunctionsTest extends UnitTestCase
         self::assertSame($result, $expected);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function imageMagickIdentifyReturnsFormattedValues(): void
     {
         $file = 'myImageFile.png';
@@ -318,9 +316,7 @@ final class GraphicalFunctionsTest extends UnitTestCase
         self::assertEquals($result, $expected);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function imageMagickIdentifyReturnsFormattedValuesWithOffset(): void
     {
         $file = 'myImageFile.png';

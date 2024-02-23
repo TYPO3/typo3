@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Security\NonceException;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -32,10 +34,8 @@ final class NonceTest extends UnitTestCase
         yield [60, 60];
     }
 
-    /**
-     * @test
-     * @dataProvider nonceIsCreatedDataProvider
-     */
+    #[DataProvider('nonceIsCreatedDataProvider')]
+    #[Test]
     public function isCreated(int $length, int $expectedLength): void
     {
         $nonce = Nonce::create($length);
@@ -43,9 +43,7 @@ final class NonceTest extends UnitTestCase
         self::assertSame($nonce->b64, StringUtility::base64urlEncode($nonce->binary));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isCreatedWithProperties(): void
     {
         $binary = random_bytes(40);
@@ -55,9 +53,7 @@ final class NonceTest extends UnitTestCase
         self::assertEquals($time, $nonce->time);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isEncodedAndDecoded(): void
     {
         $nonce = Nonce::create();
@@ -65,9 +61,7 @@ final class NonceTest extends UnitTestCase
         self::assertEquals($recodedNonce, $nonce);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidJwtThrowsException(): void
     {
         $this->expectException(NonceException::class);

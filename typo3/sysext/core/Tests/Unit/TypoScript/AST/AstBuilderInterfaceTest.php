@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
@@ -1276,10 +1278,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildDataProvider
-     */
+    #[DataProvider('buildDataProvider')]
+    #[Test]
     public function build(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1288,10 +1288,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    /**
-     * @test
-     * @dataProvider buildDataProvider
-     */
+    #[DataProvider('buildDataProvider')]
+    #[Test]
     public function buildCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1300,10 +1298,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     * @dataProvider buildDataProvider
-     */
+    #[DataProvider('buildDataProvider')]
+    #[Test]
     public function buildCommentAware(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1312,10 +1308,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    /**
-     * @test
-     * @dataProvider buildDataProvider
-     */
+    #[DataProvider('buildDataProvider')]
+    #[Test]
     public function buildCompatArray(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1324,10 +1318,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
-    /**
-     * @test
-     * @dataProvider buildDataProvider
-     */
+    #[DataProvider('buildDataProvider')]
+    #[Test]
     public function buildCompatArrayCommentAware(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1501,10 +1493,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildWithPreviousValueDataProvider
-     */
+    #[DataProvider('buildWithPreviousValueDataProvider')]
+    #[Test]
     public function buildWithPreviousValue(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1513,10 +1503,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    /**
-     * @test
-     * @dataProvider buildWithPreviousValueDataProvider
-     */
+    #[DataProvider('buildWithPreviousValueDataProvider')]
+    #[Test]
     public function buildWithPreviousValueCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1525,10 +1513,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     * @dataProvider buildWithPreviousValueDataProvider
-     */
+    #[DataProvider('buildWithPreviousValueDataProvider')]
+    #[Test]
     public function buildWithPreviousValueCommentAware(string $source, RootNode $_, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1841,10 +1827,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildReferenceDataProvider
-     */
+    #[DataProvider('buildReferenceDataProvider')]
+    #[Test]
     public function buildReference(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1853,10 +1837,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    /**
-     * @test
-     * @dataProvider buildReferenceDataProvider
-     */
+    #[DataProvider('buildReferenceDataProvider')]
+    #[Test]
     public function buildReferenceCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst): void
     {
         $this->registerComparator(new IdentifierTokenWithoutLineAndColumnComparator());
@@ -1866,10 +1848,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     * @dataProvider buildReferenceDataProvider
-     */
+    #[DataProvider('buildReferenceDataProvider')]
+    #[Test]
     public function buildReferenceCommentAware(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1878,10 +1858,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    /**
-     * @test
-     * @dataProvider buildReferenceDataProvider
-     */
+    #[DataProvider('buildReferenceDataProvider')]
+    #[Test]
     public function buildReferenceArray(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -1890,10 +1868,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
-    /**
-     * @test
-     * @dataProvider buildReferenceDataProvider
-     */
+    #[DataProvider('buildReferenceDataProvider')]
+    #[Test]
     public function buildReferenceArrayCommentAware(string $source, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2023,10 +1999,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildConstantDataProvider
-     */
+    #[DataProvider('buildConstantDataProvider')]
+    #[Test]
     public function buildConstant(string $source, array $constants, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2035,10 +2009,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    /**
-     * @test
-     * @dataProvider buildConstantDataProvider
-     */
+    #[DataProvider('buildConstantDataProvider')]
+    #[Test]
     public function buildConstantCreatesSameAstWhenUnserialized(string $source, array $constants, RootNode $expectedAst): void
     {
         $this->registerComparator(new AbstractNodeWithoutOriginalValueTokenStreamIdentifierComparator());
@@ -2048,10 +2020,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     * @dataProvider buildConstantDataProvider
-     */
+    #[DataProvider('buildConstantDataProvider')]
+    #[Test]
     public function buildConstantCommentAware(string $source, array $constants, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2060,10 +2030,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    /**
-     * @test
-     * @dataProvider buildConstantDataProvider
-     */
+    #[DataProvider('buildConstantDataProvider')]
+    #[Test]
     public function buildConstantCompatArray(string $source, array $constants, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2072,10 +2040,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
-    /**
-     * @test
-     * @dataProvider buildConstantDataProvider
-     */
+    #[DataProvider('buildConstantDataProvider')]
+    #[Test]
     public function buildConstantCompatArrayCommentAware(string $source, array $constants, RootNode $_, array $expectedArray): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2084,9 +2050,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedArray, $ast->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExtendsGivenAst(): void
     {
         $fooNode = new ChildNode('foo');
@@ -2114,9 +2078,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedArray, $resultAst->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExtendsGivenAstCommentAware(): void
     {
         $fooNode = new ChildNode('foo');
@@ -2157,10 +2119,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider functionSortListThrowsSortingNonNumericListNumericDataProvider
-     */
+    #[DataProvider('functionSortListThrowsSortingNonNumericListNumericDataProvider')]
+    #[Test]
     public function functionSortListThrowsSortingNonNumericListNumeric(string $source): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2170,10 +2130,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode());
     }
 
-    /**
-     * @test
-     * @dataProvider functionSortListThrowsSortingNonNumericListNumericDataProvider
-     */
+    #[DataProvider('functionSortListThrowsSortingNonNumericListNumericDataProvider')]
+    #[Test]
     public function functionSortListThrowsSortingNonNumericListNumericCommentAware(string $source): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2255,10 +2213,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider functionGetEnvDataProvider
-     */
+    #[DataProvider('functionGetEnvDataProvider')]
+    #[Test]
     public function functionGetEnv(?string $envVarName, ?string $envVarValue, $source, RootNode $expectedAst): void
     {
         if ($envVarName) {
@@ -2273,10 +2229,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider functionGetEnvDataProvider
-     */
+    #[DataProvider('functionGetEnvDataProvider')]
+    #[Test]
     public function functionGetEnvCommentAware(?string $envVarName, ?string $envVarValue, $source, RootNode $expectedAst): void
     {
         if ($envVarName) {
@@ -2380,20 +2334,16 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider flattenDataProvider
-     */
+    #[DataProvider('flattenDataProvider')]
+    #[Test]
     public function flatten(string $typoscript, array $expected)
     {
         $ast = (new AstBuilder(new NoopEventDispatcher()))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode());
         self::assertSame($expected, $ast->flatten());
     }
 
-    /**
-     * @test
-     * @dataProvider flattenDataProvider
-     */
+    #[DataProvider('flattenDataProvider')]
+    #[Test]
     public function flattenCommentAware(string $typoscript, array $expected)
     {
         $ast = (new CommentAwareAstBuilder(new NoopEventDispatcher()))->build((new LosslessTokenizer())->tokenize($typoscript), new RootNode());
@@ -2762,10 +2712,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     /**
      * This is for CommentAwareAstBuilder only, AstBuilder ignores comments.
-     *
-     * @test
-     * @dataProvider buildWithCommentsDataProvider
      */
+    #[DataProvider('buildWithCommentsDataProvider')]
+    #[Test]
     public function buildWithComments(string $source, RootNode $expectedAst): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2774,9 +2723,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         self::assertEquals($expectedAst, $ast);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildWithCommentsSetsPreviousValue(): void
     {
         $source = "foo = fooValue1\n" .

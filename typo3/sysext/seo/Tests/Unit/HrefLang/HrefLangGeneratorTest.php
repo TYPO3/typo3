@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Unit\HrefLang;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -65,10 +67,8 @@ final class HrefLangGeneratorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider urlPathWithoutHostDataProvider
-     */
+    #[DataProvider('urlPathWithoutHostDataProvider')]
+    #[Test]
     public function checkIfSiteLanguageGetBaseIsCalledForUrlsWithoutHost(string $url): void
     {
         $mockUriInterface = $this->getMockBuilder(UriInterface::class)->getMock();
@@ -95,10 +95,8 @@ final class HrefLangGeneratorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider urlPathWithHostDataProvider
-     */
+    #[DataProvider('urlPathWithHostDataProvider')]
+    #[Test]
     public function checkIfSiteLanguageGetBaseIsNotCalledForUrlsWithHost(string $url): void
     {
         $mockUriInterface = $this->getMockBuilder(UriInterface::class)->getMock();

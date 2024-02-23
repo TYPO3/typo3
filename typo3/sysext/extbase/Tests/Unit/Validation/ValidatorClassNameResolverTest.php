@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Tests\Unit\Validation\Fixtures\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Tests\Unit\Validation\Fixtures\Validation\Validator\CustomValidatorThatDoesNotImplementValidatorInterfaceValidator;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
@@ -34,18 +36,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ValidatorClassNameResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveResolvesFullyQualifiedClassNames(): void
     {
         $validatorIdentifier = IntegerValidator::class;
         self::assertSame($validatorIdentifier, ValidatorClassNameResolver::resolve($validatorIdentifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveResolvesCoreShorthandIdentifiers(): void
     {
         self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('int'));
@@ -55,17 +53,13 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
         self::assertSame(FloatValidator::class, ValidatorClassNameResolver::resolve('float'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveResolvesExtensionShorthandIdentifiers(): void
     {
         self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('TYPO3.CMS.Extbase:Integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveThrowsNoSuchValidatorExceptionDueToMissingClass(): void
     {
         $this->expectExceptionCode(1365799920);
@@ -88,10 +82,8 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider namespacedShorthandValidatorNamesDataProvider
-     */
+    #[DataProvider('namespacedShorthandValidatorNamesDataProvider')]
+    #[Test]
     public function resolveWithShortHandNotationReturnsValidatorNameIfClassExists(string $validatorName, string $expectedClassName): void
     {
         self::assertSame(
@@ -100,9 +92,7 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveWithShortHandNotationThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(NoSuchValidatorException::class);
@@ -112,9 +102,7 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
         ValidatorClassNameResolver::resolve($validatorName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveThrowsNoSuchValidatorExceptionDueToClassInheritance(): void
     {
         $this->expectExceptionCode(1365776838);
@@ -130,9 +118,7 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveThrowsExceptionWithValidatorThatDoesNotImplementValidatorInterface(): void
     {
         $this->expectException(NoSuchValidatorException::class);
@@ -142,9 +128,7 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
         ValidatorClassNameResolver::resolve($validatorName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveReturnsValidatorNameForFullQualifiedValidatorName(): void
     {
         $validatorName = CustomValidator::class;
@@ -156,9 +140,7 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveReturnsValidatorNameForFullQualifiedValidatorNameWithLeadingBackslash(): void
     {
         $validatorName = '\\' . CustomValidator::class;

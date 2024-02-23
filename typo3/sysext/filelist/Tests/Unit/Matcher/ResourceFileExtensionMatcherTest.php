@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filelist\Tests\Unit\Matcher;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Filelist\Matcher\ResourceFileExtensionMatcher;
@@ -32,9 +33,7 @@ final class ResourceFileExtensionMatcherTest extends UnitTestCase
         $this->storage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileExtensionsAreTransformedToLowercase(): void
     {
         $matcher = new ResourceFileExtensionMatcher();
@@ -50,9 +49,7 @@ final class ResourceFileExtensionMatcherTest extends UnitTestCase
         self::assertTrue($matcher->match($this->getFile('png')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ignoredFileExtensionsAreTransformedToLowercase(): void
     {
         $matcher = new ResourceFileExtensionMatcher();

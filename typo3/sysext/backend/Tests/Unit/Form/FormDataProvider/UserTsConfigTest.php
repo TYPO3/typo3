@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,9 +32,7 @@ final class UserTsConfigTest extends UnitTestCase
         $this->subject = new UserTsConfig();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUserTypoScriptInResult(): void
     {
         $expected = ['foo'];

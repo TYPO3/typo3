@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\IncludeTree\IncludeNode;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConditionIncludeTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setConditionTokenThrowsIfTokenIsNotOfTypeValue(): void
     {
         $this->expectException(\LogicException::class);
@@ -34,9 +33,7 @@ final class ConditionIncludeTest extends UnitTestCase
         (new ConditionInclude())->setConditionToken(new Token(TokenType::T_BLANK, ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOriginalConditionTokenThrowsIfTokenIsNotOfTypeValue(): void
     {
         $this->expectException(\LogicException::class);

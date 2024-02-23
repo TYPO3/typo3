@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Repository;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -36,10 +38,8 @@ final class DemandTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getParametersRespectsDemandStateStateDataProvider
-     */
+    #[DataProvider('getParametersRespectsDemandStateStateDataProvider')]
+    #[Test]
     public function getParametersRespectsDemandState(array $input, array $expected): void
     {
         self::assertEquals($expected, (new Demand(...$input))->getParameters());

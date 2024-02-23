@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST\Node;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ReferenceChildNode;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ReferenceChildNodeTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getIdentifierThrowsExceptionIfNotIdentifierHasBeenSet(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -33,9 +32,7 @@ final class ReferenceChildNodeTest extends UnitTestCase
         (new ReferenceChildNode('someName'))->getIdentifier();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setIdentifierCreatesIdentifierString(): void
     {
         $rootNode = new ReferenceChildNode('someName');
@@ -43,9 +40,7 @@ final class ReferenceChildNodeTest extends UnitTestCase
         self::assertIsString($rootNode->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setIdentifierTriggersIdentifierCalculationForChild(): void
     {
         $node = new ReferenceChildNode('someName');

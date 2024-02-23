@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
@@ -39,9 +40,7 @@ final class DatabaseEditRowTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRetrievesRecordInformationFromDatabase(): void
     {
         $input = [
@@ -60,9 +59,7 @@ final class DatabaseEditRowTest extends UnitTestCase
         self::assertSame($resultRow, $result['databaseRow']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRetrievedRowHasNoPid(): void
     {
         $input = [
@@ -81,9 +78,7 @@ final class DatabaseEditRowTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfGivenUidIsNotPositive(): void
     {
         $input = [
@@ -98,9 +93,7 @@ final class DatabaseEditRowTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfDatabaseFetchingReturnsNoRow(): void
     {
         $input = [
@@ -116,9 +109,7 @@ final class DatabaseEditRowTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionDatabaseRecordExceptionWithAdditionalInformationSet(): void
     {
         $input = [
@@ -136,9 +127,7 @@ final class DatabaseEditRowTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsWorkspaceDeletePlaceholderExceptionWithDeletePlaceholderRecord(): void
     {
         $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
@@ -165,9 +154,7 @@ final class DatabaseEditRowTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSkipsDatabaseLookupIfDatabaseRowIsPopulated(): void
     {
         $virtualRow = [

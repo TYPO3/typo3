@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\JsonDataType;
 use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCase;
 
@@ -25,9 +26,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCas
  */
 final class JsonDataTypeTest extends AbstractDataTypeBaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canParseBitDataType(): void
     {
         $subject = $this->createSubject('JSON');

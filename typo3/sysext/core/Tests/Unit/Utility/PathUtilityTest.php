@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -30,9 +32,9 @@ final class PathUtilityTest extends UnitTestCase
 
     /**
      * @param string $expected
-     * @dataProvider isCommonPrefixResolvedCorrectlyDataProvider
-     * @test
      */
+    #[DataProvider('isCommonPrefixResolvedCorrectlyDataProvider')]
+    #[Test]
     public function isCommonPrefixResolvedCorrectly(array $paths, $expected): void
     {
         $commonPrefix = PathUtility::getCommonPrefix($paths);
@@ -135,9 +137,9 @@ final class PathUtilityTest extends UnitTestCase
      * @param string $source
      * @param string $target
      * @param string $expected
-     * @dataProvider isRelativePathResolvedCorrectlyDataProvider
-     * @test
      */
+    #[DataProvider('isRelativePathResolvedCorrectlyDataProvider')]
+    #[Test]
     public function isRelativePathResolvedCorrectly($source, $target, $expected): void
     {
         $relativePath = PathUtility::getRelativePath($source, $target);
@@ -184,9 +186,9 @@ final class PathUtilityTest extends UnitTestCase
      * @param string $path
      * @param string $separator
      * @param string $expected
-     * @dataProvider isTrailingSeparatorSanitizedCorrectlyDataProvider
-     * @test
      */
+    #[DataProvider('isTrailingSeparatorSanitizedCorrectlyDataProvider')]
+    #[Test]
     public function isTrailingSeparatorSanitizedCorrectly($path, $separator, $expected): void
     {
         $sanitizedPath = PathUtility::sanitizeTrailingSeparator($path, $separator);
@@ -241,10 +243,8 @@ final class PathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider
-     */
+    #[DataProvider('getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider')]
+    #[Test]
     public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly(string $baseFileName, string $includeFileName, string $expectedFileName): void
     {
         $resolvedFilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($baseFileName, $includeFileName);
@@ -354,10 +354,8 @@ final class PathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getCanonicalPathCorrectlyCleansPathDataProvider
-     */
+    #[DataProvider('getCanonicalPathCorrectlyCleansPathDataProvider')]
+    #[Test]
     public function getCanonicalPathCorrectlyCleansPath(string $inputName, string $expectedResult): void
     {
         // Ensure Environment runs as Windows test
@@ -405,10 +403,8 @@ final class PathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dirnameDuringBootstrapCorrectlyFetchesParentDataProvider
-     */
+    #[DataProvider('dirnameDuringBootstrapCorrectlyFetchesParentDataProvider')]
+    #[Test]
     public function dirnameDuringBootstrapCorrectlyFetchesParent(string $inputPath, string $expectedResult): void
     {
         self::assertSame(
@@ -442,10 +438,8 @@ final class PathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider
-     */
+    #[DataProvider('basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider')]
+    #[Test]
     public function basenameDuringBootstrapCorrectlyFetchesBasename(string $inputPath, string $expectedResult): void
     {
         self::assertSame(
@@ -510,10 +504,8 @@ final class PathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isAbsolutePathRespectsAllOperatingSystemsPathDataProvider
-     */
+    #[DataProvider('isAbsolutePathRespectsAllOperatingSystemsPathDataProvider')]
+    #[Test]
     public function isAbsolutePathRespectsAllOperatingSystems(string $inputPath, bool $isWindows, bool $expectedResult): void
     {
         if ($isWindows) {
@@ -552,10 +544,8 @@ final class PathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider hasProtocolAndSchemeDataProvider
-     */
+    #[DataProvider('hasProtocolAndSchemeDataProvider')]
+    #[Test]
     public function hasProtocolAndScheme(string $url, bool $result): void
     {
         self::assertSame($result, PathUtility::hasProtocolAndScheme($url));
@@ -588,10 +578,8 @@ final class PathUtilityTest extends UnitTestCase
         yield [['/var/shared/'], '/var', false];
     }
 
-    /**
-     * @test
-     * @dataProvider allowedAdditionalPathsAreEvaluatedDataProvider
-     */
+    #[DataProvider('allowedAdditionalPathsAreEvaluatedDataProvider')]
+    #[Test]
     public function allowedAdditionalPathsAreEvaluated(mixed $lockRootPath, string $path, bool $expectation): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] = $lockRootPath;

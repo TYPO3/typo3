@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration\FormDefinition\Validators;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\CreatablePropertyCollectionElementPropertiesValidator;
@@ -25,9 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function validatePropertyCollectionElementPredefinedDefaultValueThrowsExceptionIfValueDoesNotMatch(): void
     {
         $this->expectException(PropertyException::class);
@@ -49,9 +49,7 @@ final class CreatablePropertyCollectionElementPropertiesValidatorTest extends Un
         $typeConverter->_call('validatePropertyCollectionElementPredefinedDefaultValue', $input, $validationDto);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatePropertyCollectionElementPredefinedDefaultValueThrowsNoExceptionIfValueMatches(): void
     {
         $validationDto = new ValidationDto(null, null, 'test-1', 'label', 'validators', 'StringLength');
@@ -98,10 +96,8 @@ final class CreatablePropertyCollectionElementPropertiesValidatorTest extends Un
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatchDataProvider
-     */
+    #[DataProvider('validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatchDataProvider')]
+    #[Test]
     public function validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatch($input, array $allowedValues, array $untranslatedAllowedValues): void
     {
         $this->expectException(PropertyException::class);
@@ -162,10 +158,8 @@ final class CreatablePropertyCollectionElementPropertiesValidatorTest extends Un
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatchesDataProvider
-     */
+    #[DataProvider('validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatchesDataProvider')]
+    #[Test]
     public function validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatches($input, array $allowedValues, array $untranslatedAllowedValues, array $allPossibleAllowedValuesTranslations): void
     {
         $validationDto = new ValidationDto('standard', null, 'test-1', 'label', 'validators', 'StringLength');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
@@ -43,9 +44,7 @@ final class ContentDataProcessorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionIfProcessorDoesNotExist(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -60,9 +59,7 @@ final class ContentDataProcessorTest extends UnitTestCase
         $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionIfProcessorClassDoesNotImplementInterface(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -77,9 +74,7 @@ final class ContentDataProcessorTest extends UnitTestCase
         $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processorClassIsCalled(): void
     {
         $contentObjectRendererStub = new ContentObjectRenderer();
@@ -96,9 +91,7 @@ final class ContentDataProcessorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionIfProcessorServiceDoesNotImplementInterface(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -114,9 +107,7 @@ final class ContentDataProcessorTest extends UnitTestCase
         $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processorServiceIsCalled(): void
     {
         $contentObjectRendererStub = new ContentObjectRenderer();

@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 
 final class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -34,9 +33,7 @@ final class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('(("aTable"."t3ver_wsid" = 0) AND ((("aTable"."t3ver_oid" = 0) OR ("aTable"."t3ver_state" = 4))))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsNonLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -47,9 +44,7 @@ final class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('(("aTable"."t3ver_wsid" IN (0, 42)) AND ((("aTable"."t3ver_oid" = 0) OR ("aTable"."t3ver_state" = 4))))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsLiveWorkspaceLimitedWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -60,9 +55,7 @@ final class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsNonLiveWorkspaceLimitedWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -73,9 +66,7 @@ final class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionQueriesAllVersionedRecordsWithinAWorkspaceAsWell(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
@@ -85,9 +76,7 @@ final class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         self::assertSame('(("aTable"."t3ver_wsid" IN (0, 42)) AND ("t3ver_state" <> 2))', (string)$expression);
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionQueriesAllVersionedRecordsWithinLiveStillRemovesDeletedState(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [

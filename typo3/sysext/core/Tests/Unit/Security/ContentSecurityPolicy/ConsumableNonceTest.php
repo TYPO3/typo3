@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security\ContentSecurityPolicy;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -29,10 +31,8 @@ final class ConsumableNonceTest extends UnitTestCase
         yield 'consumed twice' => [2];
     }
 
-    /**
-     * @test
-     * @dataProvider consumptionIsRecognizedDataProvider
-     */
+    #[DataProvider('consumptionIsRecognizedDataProvider')]
+    #[Test]
     public function consumptionIsRecognized(int $consumption): void
     {
         $subject = new ConsumableNonce();
@@ -42,9 +42,7 @@ final class ConsumableNonceTest extends UnitTestCase
         self::assertCount($consumption, $subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usesExistingValue(): void
     {
         $value = str_repeat('a', 40);

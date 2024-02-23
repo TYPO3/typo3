@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
@@ -39,9 +40,7 @@ final class DataProviderCollectionTest extends UnitTestCase
         $this->dataProviderCollection = new DataProviderCollection();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidIdentifierIsRecognizedOnAdding(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -52,9 +51,7 @@ final class DataProviderCollectionTest extends UnitTestCase
         $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidInterfaceIsRecognizedOnAdding(): void
     {
         $this->expectException(\LogicException::class);
@@ -65,9 +62,7 @@ final class DataProviderCollectionTest extends UnitTestCase
         $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultBackendLayoutIsFound(): void
     {
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
@@ -90,9 +85,7 @@ final class DataProviderCollectionTest extends UnitTestCase
         self::assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function providedBackendLayoutIsFound(): void
     {
         $dataProviderIdentifier = StringUtility::getUniqueId('custom');

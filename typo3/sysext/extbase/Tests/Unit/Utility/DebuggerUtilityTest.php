@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DebuggerUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DummyClass;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DebuggerUtilityTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function debuggerRewindsInstancesOfIterator(): void
     {
         $objectStorage = $this->getMockBuilder(ObjectStorage::class)
@@ -42,9 +41,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertTrue($objectStorage->valid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function debuggerDoesNotRewindInstancesOfGenerator(): void
     {
         $generator = (static function () {
@@ -56,9 +53,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('Generator', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsPropertiesOfStdClassObjects(): void
     {
         $testObject = new \stdClass();
@@ -67,18 +62,14 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertMatchesRegularExpression('/foo.*bar/', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpHandlesVariadicArguments(): void
     {
         $result = DebuggerUtility::var_dump(static function (...$args) {}, null, 8, true, false, true);
         self::assertStringContainsString('function (...$args)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpRespectsBlacklistedProperties(): void
     {
         $testClass = new \stdClass();
@@ -89,9 +80,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringNotContainsString($testClass->secretData, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpRespectsBlacklistedClasses(): void
     {
         $testClass = new \stdClass();
@@ -101,9 +90,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringNotContainsString($testClass->data, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsDumpOfDateTime(): void
     {
         $date = \DateTime::createFromFormat('Y-m-d H:i:s', '2018-11-26 09:27:28', new \DateTimeZone('UTC'));
@@ -112,9 +99,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('2018-11-26T09:27:28', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsDumpOfDateTimeImmutable(): void
     {
         $date = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2018-11-26 09:27:28', new \DateTimeZone('UTC'));
@@ -123,9 +108,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('2018-11-26T09:27:28', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsDumpOfClosureWithArrayParameterType(): void
     {
         $closure = (static function (array $array) {});
@@ -134,9 +117,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('function (array $array)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsDumpOfClosureWithNullableArrayParameterTypeShowingOnlyArray(): void
     {
         $closure = (static function (?array $array) {});
@@ -145,9 +126,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('function (array $array)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsDumpOfClosureWithDummyClassParameterType(): void
     {
         $closure = (static function (DummyClass $class) {});
@@ -156,9 +135,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('function (TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\DummyClass $class)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsDumpOfClosureWithIntClassParameterType(): void
     {
         $closure = (static function (int $int) {});
@@ -167,9 +144,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('function ($int)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsDumpOfClosureWithStringClassParameterType(): void
     {
         $closure = (static function (string $string) {});
@@ -178,9 +153,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('function ($string)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsDumpOfClosureWithoutClassParameterType(): void
     {
         $closure = (static function ($typeless) {});
@@ -189,9 +162,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('function ($typeless)', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpShowsUninitializedVariable(): void
     {
         $class = new class () {
@@ -202,9 +173,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertStringContainsString('test => protected uninitialized', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpUsesNonceValue(): void
     {
         DebuggerUtilityAccessibleProxy::setStylesheetEchoed(false);

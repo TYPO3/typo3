@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
@@ -44,9 +45,7 @@ final class BackendFormProtectionTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateTokenReadsTokenFromSessionData(): void
     {
         $this->backendUserMock
@@ -57,9 +56,7 @@ final class BackendFormProtectionTest extends UnitTestCase
         $this->subject->generateToken('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tokenFromSessionDataIsAvailableForValidateToken(): void
     {
         $sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
@@ -82,9 +79,7 @@ final class BackendFormProtectionTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restoreSessionTokenFromRegistryThrowsExceptionIfSessionTokenIsEmpty(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -93,9 +88,7 @@ final class BackendFormProtectionTest extends UnitTestCase
         $this->subject->setSessionTokenFromRegistry();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function persistSessionTokenWritesTokenToSession(): void
     {
         $this->backendUserMock
@@ -104,9 +97,7 @@ final class BackendFormProtectionTest extends UnitTestCase
         $this->subject->persistSessionToken();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function failingTokenValidationInvokesFailingTokenClosure(): void
     {
         $this->expectException(\Exception::class);

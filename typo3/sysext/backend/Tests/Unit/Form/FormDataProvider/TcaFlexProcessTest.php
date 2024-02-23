@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
@@ -45,9 +46,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionWithMissingDataStructureIdentifier(): void
     {
         $input = [
@@ -71,9 +70,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         (new TcaFlexProcess())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesSheetIfDisabledByPageTsConfig(): void
     {
         $input = [
@@ -136,9 +133,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsSheetTitleFromPageTsConfig(): void
     {
         $input = [
@@ -219,9 +214,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsSheetDescriptionFromPageTsConfig(): void
     {
         $input = [
@@ -302,9 +295,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsSheetShortDescriptionFromPageTsConfig(): void
     {
         $input = [
@@ -385,9 +376,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsSheetShortDescriptionForSingleSheetFromPageTsConfig(): void
     {
         $input = [
@@ -468,9 +457,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesExcludeFieldFromDataStructure(): void
     {
         $input = [
@@ -535,9 +522,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsExcludeFieldInDataStructureWithUserAccess(): void
     {
         $input = [
@@ -610,9 +595,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsExcludeFieldInDataStructureForAdminUser(): void
     {
         $input = [
@@ -685,9 +668,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesPageTsDisabledFieldFromDataStructure(): void
     {
         $input = [
@@ -762,9 +743,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataHandlesPageTsConfigSettingsOfSingleFlexField(): void
     {
         $input = [
@@ -871,9 +850,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultValueFromFlexTcaForField(): void
     {
         $input = [
@@ -937,9 +914,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForDataStructureTypeArrayWithoutSection(): void
     {
         $input = [
@@ -987,9 +962,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         (new TcaFlexProcess())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForDataStructureSectionWithoutTypeArray(): void
     {
         $input = [
@@ -1037,9 +1010,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         (new TcaFlexProcess())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsValuesAndStructureForSectionContainerElements(): void
     {
         $input = [
@@ -1147,9 +1118,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForInlineElementsNestedInSectionContainers(): void
     {
         $input = [
@@ -1208,9 +1177,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         (new TcaFlexProcess())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForNestedSectionContainers(): void
     {
         $input = [
@@ -1269,9 +1236,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         (new TcaFlexProcess())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForSelectElementsInSectionContainers(): void
     {
         $input = [
@@ -1330,9 +1295,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         (new TcaFlexProcess())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForGroupElementsInSectionContainers(): void
     {
         $input = [
@@ -1391,9 +1354,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         (new TcaFlexProcess())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCallsFlexFormSegmentGroupForFieldAndAddsFlexParentDatabaseRow(): void
     {
         $input = [
@@ -1450,9 +1411,7 @@ final class TcaFlexProcessTest extends UnitTestCase
         (new TcaFlexProcess())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCallsFlexFormSegmentGroupForDummyContainerAndAddsFlexParentDatabaseRow(): void
     {
         $input = [

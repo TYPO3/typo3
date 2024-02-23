@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Module;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -35,9 +36,7 @@ final class ModuleFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function adaptAliasMappingFromModuleConfigurationMapsAliasesProperly(): void
     {
         $moduleConfiguration = [

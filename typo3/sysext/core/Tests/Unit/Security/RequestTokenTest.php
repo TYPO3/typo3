@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Security\NoncePool;
 use TYPO3\CMS\Core\Security\RequestToken;
@@ -27,9 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RequestTokenTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isCreated(): void
     {
         $scope = $this->createRandomString();
@@ -40,9 +40,7 @@ final class RequestTokenTest extends UnitTestCase
         self::assertSame([], $token->params);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isCreatedWithProperties(): void
     {
         $scope = $this->createRandomString();
@@ -54,9 +52,7 @@ final class RequestTokenTest extends UnitTestCase
         self::assertSame($params, $token->params);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paramsAreOverriddenInNewInstance(): void
     {
         $scope = $this->createRandomString();
@@ -67,9 +63,7 @@ final class RequestTokenTest extends UnitTestCase
         self::assertSame($params, $modifiedToken->params);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paramsAreMergedInNewInstance(): void
     {
         $scope = $this->createRandomString();
@@ -89,10 +83,8 @@ final class RequestTokenTest extends UnitTestCase
         yield 'secret to be resolved' => [$nonce, new SigningSecretResolver(['nonce' => $pool])];
     }
 
-    /**
-     * @test
-     * @dataProvider isEncodedAndDecodedDataProvider
-     */
+    #[DataProvider('isEncodedAndDecodedDataProvider')]
+    #[Test]
     public function isEncodedAndDecoded(Nonce $nonce, SigningSecretInterface|SigningSecretResolver $secret): void
     {
         $scope = $this->createRandomString();
@@ -121,10 +113,8 @@ final class RequestTokenTest extends UnitTestCase
         yield 'use resolver (bogus)' => ['no.jwt.value', new SigningSecretResolver(['nonce' => $pool]), 1664202134];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidJwtThrowsExceptionDataProvider
-     */
+    #[DataProvider('invalidJwtThrowsExceptionDataProvider')]
+    #[Test]
     public function invalidJwtThrowsException(string $jwt, SigningSecretInterface|SigningSecretResolver $secret, int $exceptionCode): void
     {
         $this->expectException(RequestTokenException::class);

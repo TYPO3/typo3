@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -62,9 +63,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         return $extKey;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists(): void
     {
         $extKey = $this->createFakeExtension();
@@ -79,9 +78,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeAndClearExtensionDirAddsDir(): void
     {
         $extKey = $this->createFakeExtension();
@@ -95,9 +92,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeAndClearExtensionDirThrowsExceptionOnInvalidPath(): void
     {
         $this->expectException(ExtensionManagerException::class);
@@ -112,9 +107,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDirectoryAddsDirectory(): void
     {
         $extDirPath = $this->testRoot . StringUtility::getUniqueId('test-extensions-');
@@ -123,9 +116,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         self::assertDirectoryExists($extDirPath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDirectoryRemovesDirectory(): void
     {
         $extDirPath = $this->testRoot . StringUtility::getUniqueId('test-extensions-');
@@ -135,9 +126,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         self::assertDirectoryDoesNotExist($extDirPath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDirectoryRemovesSymlink(): void
     {
         $absoluteSymlinkPath = $this->testRoot . StringUtility::getUniqueId('test_symlink_');
@@ -149,9 +138,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         self::assertFalse(is_link($absoluteSymlinkPath));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDirectoryDoesNotRemoveContentOfSymlinkedTargetDirectory(): void
     {
         $absoluteSymlinkPath = $this->testRoot . StringUtility::getUniqueId('test_symlink_');
@@ -168,9 +155,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         self::assertTrue(is_file($absoluteDirectoryPath . $relativeFilePath));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unpackExtensionFromExtensionDataArrayCreatesTheExtensionDirectory(): void
     {
         $extensionKey = 'test';
@@ -187,9 +172,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock->unpackExtensionFromExtensionDataArray($extensionKey, []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unpackExtensionFromExtensionDataArrayStripsDirectoriesFromFilesArray(): void
     {
         $extensionData = [
@@ -255,9 +238,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock->unpackExtensionFromExtensionDataArray('test', $extensionData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeExtensionFilesWritesFiles(): void
     {
         $files = [
@@ -282,9 +263,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         self::assertFileExists($rootPath . 'ChangeLog');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractDirectoriesFromExtensionDataExtractsDirectories(): void
     {
         $files = [
@@ -333,9 +312,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         self::assertSame($expected, array_values($extractedDirectories));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createDirectoriesForExtensionFilesCreatesDirectories(): void
     {
         $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
@@ -351,9 +328,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         self::assertDirectoryExists($rootPath . 'mod/doc/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeEmConfWritesEmConfFile(): void
     {
         $extKey = $this->createFakeExtension();

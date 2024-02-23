@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility\Fixtures\PublicMethodDeprecationTraitTextFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PublicMethodDeprecationTraitTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function publicMethodCanBeCalled(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -32,27 +31,21 @@ final class PublicMethodDeprecationTraitTest extends UnitTestCase
         (new PublicMethodDeprecationTraitTextFixture())->standardPublicMethod();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedMethodNotHandledByTraitThrowsError(): void
     {
         $this->expectException(\Error::class);
         (new PublicMethodDeprecationTraitTextFixture())->standardProtectedMethod();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notExistingMethodThrowsError(): void
     {
         $this->expectException(\Error::class);
         (new PublicMethodDeprecationTraitTextFixture())->doesNotExist();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodMadeProtectedCanBeCalled(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -60,17 +53,13 @@ final class PublicMethodDeprecationTraitTest extends UnitTestCase
         (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtected();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodMadeProtectedReturnsValue(): void
     {
         self::assertEquals('foo', (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtectedWithReturn());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodMadeProtectedCanBeCalledWithArguments(): void
     {
         $this->expectException(\RuntimeException::class);

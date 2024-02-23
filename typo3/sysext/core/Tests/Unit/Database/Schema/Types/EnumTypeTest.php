@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -32,18 +33,14 @@ final class EnumTypeTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNameReturnsTypeIdentifier(): void
     {
         $subject = Type::getType(EnumType::TYPE);
         self::assertSame(EnumType::TYPE, $subject->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSQLDeclaration(): void
     {
         $fieldDeclaration = [

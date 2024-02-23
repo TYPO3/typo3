@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mime\Address;
@@ -39,10 +41,8 @@ final class FileSpoolTest extends UnitTestCase
         $this->subject->setTimeLimit(1);
     }
 
-    /**
-     * @test
-     * @dataProvider messageCountProvider
-     */
+    #[DataProvider('messageCountProvider')]
+    #[Test]
     public function spoolsMessagesCorrectly(int $count): void
     {
         for ($i = 1; $i <= $count; $i++) {

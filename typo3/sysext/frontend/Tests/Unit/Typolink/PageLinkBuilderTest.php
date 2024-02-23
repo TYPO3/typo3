@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -47,10 +49,8 @@ final class PageLinkBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getQueryArgumentsExcludesParametersDataProvider
-     */
+    #[DataProvider('getQueryArgumentsExcludesParametersDataProvider')]
+    #[Test]
     public function getQueryArgumentsExcludesParameters(string $queryString, string $queryInformation, array $configuration, string $expectedResult): void
     {
         parse_str($queryString, $queryParameters);

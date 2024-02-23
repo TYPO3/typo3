@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Html;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -123,32 +125,28 @@ final class HtmlParserTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param string $tag List of tags, comma separated.
      * @param string $content HTML-content
      * @param bool $eliminateExtraEndTags If set, excessive end tags are ignored - you should probably set this in most cases.
      * @param array $expected The expected result
-     * @dataProvider splitIntoBlockDataProvider
      */
+    #[DataProvider('splitIntoBlockDataProvider')]
+    #[Test]
     public function splitIntoBlock(string $tag, string $content, bool $eliminateExtraEndTags, array $expected): void
     {
         self::assertSame($expected, $this->subject->splitIntoBlock($tag, $content, $eliminateExtraEndTags));
     }
 
-    /**
-     * @test
-     * @dataProvider cDataWillRemainUnmodifiedDataProvider
-     */
+    #[DataProvider('cDataWillRemainUnmodifiedDataProvider')]
+    #[Test]
     public function xHtmlCleaningDoesNotModifyCDATA(string $source, string $expected): void
     {
         $result = $this->subject->HTMLcleaner($source, [], 1);
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     * @dataProvider htmlWithDifferentSingleTagsDataProvider
-     */
+    #[DataProvider('htmlWithDifferentSingleTagsDataProvider')]
+    #[Test]
     public function htmlCleanerKeepsSingleTagsWithAndWithoutEndingSlashUnchanged(string $exampleString): void
     {
         $result = $this->subject->HTMLcleaner($exampleString, ['br' => true], 0);
@@ -188,10 +186,8 @@ final class HtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider
-     */
+    #[DataProvider('spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider')]
+    #[Test]
     public function tagCorrectlyRemovedWhenRmTagIfNoAttribIsConfigured(string $content, string $expectedResult): void
     {
         $tsConfig = [
@@ -206,9 +202,7 @@ final class HtmlParserTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rmTagIfNoAttribIsConfiguredDoesNotChangeNestingType(): void
     {
         $tsConfig = [
@@ -250,10 +244,8 @@ final class HtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider localNestingCorrectlyRemovesInvalidTagsDataProvider
-     */
+    #[DataProvider('localNestingCorrectlyRemovesInvalidTagsDataProvider')]
+    #[Test]
     public function localNestingCorrectlyRemovesInvalidTags(string $content, string $expectedResult): void
     {
         $tsConfig = [
@@ -292,10 +284,8 @@ final class HtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider globalNestingCorrectlyRemovesInvalidTagsDataProvider
-     */
+    #[DataProvider('globalNestingCorrectlyRemovesInvalidTagsDataProvider')]
+    #[Test]
     public function globalNestingCorrectlyRemovesInvalidTags(string $content, string $expectedResult): void
     {
         $tsConfig = [
@@ -344,14 +334,14 @@ final class HtmlParserTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider emptyTagsDataProvider
      * @param bool $stripOn TRUE if stripping should be activated.
      * @param string|bool $tagList Comma separated list of tags that should be stripped.
      * @param bool $treatNonBreakingSpaceAsEmpty If TRUE &nbsp; will be considered empty.
      * @param string $content The HTML code that should be modified.
      * @param string $expectedResult The expected HTML code result.
      */
+    #[DataProvider('emptyTagsDataProvider')]
+    #[Test]
     public function stripEmptyTags(
         bool $stripOn,
         $tagList,
@@ -391,13 +381,13 @@ final class HtmlParserTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider stripEmptyTagsKeepsConfiguredTagsDataProvider
      * @param string $tagList List of tags that should be kept, event if they are empty.
      * @param bool $treatNonBreakingSpaceAsEmpty If true &nbsp; will be considered empty.
      * @param string $content The HTML content that should be parsed.
      * @param string $expectedResult The expected HTML code result.
      */
+    #[DataProvider('stripEmptyTagsKeepsConfiguredTagsDataProvider')]
+    #[Test]
     public function stripEmptyTagsKeepsConfiguredTags(
         string $tagList,
         bool $treatNonBreakingSpaceAsEmpty,
@@ -462,12 +452,12 @@ final class HtmlParserTest extends UnitTestCase
      * Returns the first tag in $str
      * Actually everything from the beginning of the $str is returned, so you better make sure the tag is the first thing...
      *
-     * @test
-     * @dataProvider getFirstTagDataProvider
      *
      * @param string $str HTML string with tags
      * @param string $expected The expected result.
      */
+    #[DataProvider('getFirstTagDataProvider')]
+    #[Test]
     public function getFirstTag(string $str, string $expected): void
     {
         self::assertEquals($expected, $this->subject->getFirstTag($str));
@@ -531,13 +521,13 @@ final class HtmlParserTest extends UnitTestCase
     /**
      * Returns the NAME of the first tag in $str
      *
-     * @test
-     * @dataProvider getFirstTagNameDataProvider
      *
      * @param string $str HTML tag (The element name MUST be separated from the attributes by a space character! Just *whitespace* will not do)
      * @param bool $preserveCase If set, then the tag is NOT converted to uppercase by case is preserved.
      * @param string $expected The expected result.
      */
+    #[DataProvider('getFirstTagNameDataProvider')]
+    #[Test]
     public function getFirstTagName(string $str, bool $preserveCase, string $expected): void
     {
         self::assertEquals($expected, $this->subject->getFirstTagName($str, $preserveCase));
@@ -585,10 +575,10 @@ final class HtmlParserTest extends UnitTestCase
      * Removes the first and last tag in the string
      * Anything before the first and after the last tags respectively is also removed
      *
-     * @test
-     * @dataProvider removeFirstAndLastTagDataProvider
      * @param string $str String to process
      */
+    #[DataProvider('removeFirstAndLastTagDataProvider')]
+    #[Test]
     public function removeFirstAndLastTag(string $str, string $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->subject->removeFirstAndLastTag($str));
@@ -626,10 +616,10 @@ final class HtmlParserTest extends UnitTestCase
      * Returns an array with all attributes and its meta information from a tag.
      * Removes tag-name if found
      *
-     * @test
-     * @dataProvider getTagAttributesDataProvider
      * @param string $tag String to process
      */
+    #[DataProvider('getTagAttributesDataProvider')]
+    #[Test]
     public function getTagAttributes(string $tag, array $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->subject->get_tag_attributes($tag));
@@ -673,13 +663,13 @@ final class HtmlParserTest extends UnitTestCase
     /**
      * Strips empty tags from HTML.
      *
-     * @test
-     * @dataProvider stripEmptyTagsDataProvider
      * @param string $content The content to be stripped of empty tags
      * @param string $tagList The comma separated list of tags to be stripped.
      *                        If empty, all empty tags will be stripped
      * @param bool $treatNonBreakingSpaceAsEmpty If TRUE tags containing only &nbsp; entities will be treated as empty.
      */
+    #[DataProvider('stripEmptyTagsDataProvider')]
+    #[Test]
     public function rawStripEmptyTagsTest(
         string $content,
         string $tagList,
@@ -764,10 +754,8 @@ final class HtmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider prefixResourcePathDataProvider
-     */
+    #[DataProvider('prefixResourcePathDataProvider')]
+    #[Test]
     public function prefixResourcePathTest(string $content, string $prefix, string $expectedResult): void
     {
         self::assertSame(

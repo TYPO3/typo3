@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\ResourceUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -63,10 +65,8 @@ final class ResourceUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider recursiveFileListSortingHelperTestDataProvider
-     * @test
-     */
+    #[DataProvider('recursiveFileListSortingHelperTestDataProvider')]
+    #[Test]
     public function recursiveFileListSortingHelperCorrectlySorts(array $unsortedList, array $expectedList): void
     {
         $result = $unsortedList;

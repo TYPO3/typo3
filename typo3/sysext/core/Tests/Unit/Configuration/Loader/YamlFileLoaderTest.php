@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Loader;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -85,10 +87,9 @@ final class YamlFileLoaderTest extends UnitTestCase
 
     /**
      * Method checking for env placeholders
-     *
-     * @dataProvider loadWithEnvVarDataProvider
-     * @test
      */
+    #[DataProvider('loadWithEnvVarDataProvider')]
+    #[Test]
     public function loadWithEnvVarPlaceholders(array $envs, string $yamlContent, array $expected): void
     {
         foreach ($envs as $env) {
@@ -110,9 +111,8 @@ final class YamlFileLoaderTest extends UnitTestCase
 
     /**
      * Method checking for env placeholders
-     *
-     * @test
      */
+    #[Test]
     public function loadWithEnvVarPlaceholdersDoesNotReplaceWithNonExistingValues(): void
     {
         $fileName = 'Berta.yml';
@@ -194,10 +194,8 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
         ];
     }
 
-    /**
-     * @dataProvider isPlaceholderDataProvider
-     * @test
-     */
+    #[DataProvider('isPlaceholderDataProvider')]
+    #[Test]
     public function containsPlaceholderTest(mixed $placeholderValue, bool $expected): void
     {
         $subject = $this->getAccessibleMock(YamlFileLoader::class, null);

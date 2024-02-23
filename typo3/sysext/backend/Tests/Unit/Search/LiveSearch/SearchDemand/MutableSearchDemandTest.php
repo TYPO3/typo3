@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Search\LiveSearch\SearchDemand;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Backend\Search\LiveSearch\DatabaseRecordProvider;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandProperty;
@@ -26,9 +27,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 
 final class MutableSearchDemandTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setPropertyWorksAsExpected(): void
     {
         $query = 'foo';
@@ -39,9 +38,7 @@ final class MutableSearchDemandTest extends TestCase
         self::assertSame($query, $mutableSearchDemand->getProperty(DemandPropertyName::query)->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function consecutiveSetPropertyCallWithSameNameWorksAsExpected(): void
     {
         $limit = 42;
@@ -54,9 +51,7 @@ final class MutableSearchDemandTest extends TestCase
         self::assertSame($limit, $mutableSearchDemand->getProperty(DemandPropertyName::limit)->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function freezeSetsSameDemandProperties(): void
     {
         $mutableSearchDemand = new MutableSearchDemand([
@@ -67,9 +62,7 @@ final class MutableSearchDemandTest extends TestCase
         self::assertSame($mutableSearchDemand->getProperties(), $searchDemand->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromRequestCreatesExpectedDemand(): void
     {
         $query = 'Karl Ranseier';

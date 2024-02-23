@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Routing\Aspect;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Routing\Aspect\StaticRangeMapper;
 
@@ -177,10 +179,8 @@ final class StaticRangeMapperTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider valueSettingsDataProvider
-     */
+    #[DataProvider('valueSettingsDataProvider')]
+    #[Test]
     public function resolveDeterminesValues(string $start, string $end, array $expectations): void
     {
         $subject = new StaticRangeMapper([

@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Context;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class VisibilityAspectTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getterReturnsProperDefaultValues(): void
     {
         $subject = new VisibilityAspect();
@@ -35,9 +34,7 @@ final class VisibilityAspectTest extends UnitTestCase
         self::assertFalse($subject->includeScheduledRecords());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getterReturnsProperValues(): void
     {
         $subject = new VisibilityAspect(true, true, true, true);
@@ -47,9 +44,7 @@ final class VisibilityAspectTest extends UnitTestCase
         self::assertTrue($subject->includeScheduledRecords());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsProperValues(): void
     {
         $subject = new VisibilityAspect(true, true, true, true);
@@ -59,9 +54,7 @@ final class VisibilityAspectTest extends UnitTestCase
         self::assertTrue($subject->get('includeScheduledRecords'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(AspectPropertyNotFoundException::class);

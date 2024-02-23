@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateTableStatement;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -170,10 +172,8 @@ final class ReferenceDefinitionTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseReferenceDefinitionDataProvider
-     */
+    #[DataProvider('canParseReferenceDefinitionDataProvider')]
+    #[Test]
     public function canParseReferenceDefinition(
         string $columnAttribute,
         string $table,

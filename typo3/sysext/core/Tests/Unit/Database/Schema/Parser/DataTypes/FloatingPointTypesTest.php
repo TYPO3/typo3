@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\DoubleDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\FloatDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\RealDataType;
@@ -90,10 +92,8 @@ final class FloatingPointTypesTest extends AbstractDataTypeBaseTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseFloatingPointTypesProvider
-     */
+    #[DataProvider('canParseFloatingPointTypesProvider')]
+    #[Test]
     public function canParseDataType(
         string $columnDefinition,
         string $className,

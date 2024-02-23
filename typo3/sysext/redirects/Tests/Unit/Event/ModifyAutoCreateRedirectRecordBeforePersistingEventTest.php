@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Redirects\Event\ModifyAutoCreateRedirectRecordBeforePersistingEvent;
@@ -56,9 +57,7 @@ final class ModifyAutoCreateRedirectRecordBeforePersistingEventTest extends Unit
         self::assertSame($redirectRecord, $event->getRedirectRecord());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyAutoCreateRedirectRecordBeforePersistingRedirectRecordCanBeSet(): void
     {
         $source = new PlainSlugReplacementRedirectSource(

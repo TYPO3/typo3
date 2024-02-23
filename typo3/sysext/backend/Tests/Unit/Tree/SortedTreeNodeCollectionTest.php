@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -48,9 +49,7 @@ final class SortedTreeNodeCollectionTest extends UnitTestCase
         return $nodeCollection;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendsSorted(): void
     {
         $nodeCollection = $this->createTestCollection();
@@ -62,9 +61,7 @@ final class SortedTreeNodeCollectionTest extends UnitTestCase
         self::assertSame($expected, $ids);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectionContainsNode(): void
     {
         $nodeCollection = $this->createTestCollection();
@@ -72,9 +69,7 @@ final class SortedTreeNodeCollectionTest extends UnitTestCase
         self::assertTrue($nodeCollection->contains($node));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchDataWithBinarySearch(): void
     {
         $nodeCollection = $this->createTestCollection();

@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FlashMessageTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function jsonSerializeReturnsArrayWithDetailData(): void
     {
         $message = new FlashMessage('aMessage', 'aTitle', ContextualFeedbackSeverity::INFO);

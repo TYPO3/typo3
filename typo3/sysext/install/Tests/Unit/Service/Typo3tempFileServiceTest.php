@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class Typo3tempFileServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function clearAssetsFolderThrowsWithInvalidPath(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -37,9 +36,7 @@ final class Typo3tempFileServiceTest extends UnitTestCase
         $subject->clearAssetsFolder('../foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearAssetsFolderThrowsIfPathDoesNotStartWithTypotempAssets(): void
     {
         $this->expectException(\RuntimeException::class);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\Query\Restriction\PagePermissionRestriction;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -62,9 +63,7 @@ final class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
         };
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsOnlyWorksOnPagesTable(): void
     {
         $aspect = $this->getPreparedUserAspect(true, false, 2, [13]);
@@ -75,9 +74,7 @@ final class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
         self::assertEmpty((string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsReturnsAZeroReturnSetWhenNotLoggedIn(): void
     {
         $aspect = $this->getPreparedUserAspect(false, false, 2, [13]);
@@ -86,9 +83,7 @@ final class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('1 = 0', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsIsSkippedForAdmins(): void
     {
         $aspect = $this->getPreparedUserAspect(true, true, 2, [13]);
@@ -97,9 +92,7 @@ final class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
         self::assertEmpty((string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsContainsNonAdminUserIdAsOwnerAndGroupIdsAsOwnerGroup(): void
     {
         $aspect = $this->getPreparedUserAspect(true, false, 2, [13, 14, 15, 16]);
@@ -108,9 +101,7 @@ final class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
         self::assertEquals('(("pages"."perms_everybody" & 1 = 1) OR ((("pages"."perms_userid" = 2) AND ("pages"."perms_user" & 1 = 1))) OR ((("pages"."perms_groupid" IN (13, 14, 15, 16)) AND ("pages"."perms_group" & 1 = 1))))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildRestrictionsChecksForDeletionPermission(): void
     {
         $aspect = $this->getPreparedUserAspect(true, false, 42, [13, 14, 15, 16]);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -104,10 +106,8 @@ final class DatabaseIntegrityControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getSubscriptReturnsExpectedValuesDataProvider
-     */
+    #[DataProvider('getSubscriptReturnsExpectedValuesDataProvider')]
+    #[Test]
     public function getSubscriptReturnsExpectedValues($input, array $expectedArray): void
     {
         $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);

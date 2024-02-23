@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Tokenizer\Line;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierAssignmentLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IdentifierAssignmentLineTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setIdentifierTokenStreamThrowsIfStreamIsEmpty(): void
     {
         $this->expectException(\LogicException::class);
@@ -33,9 +32,7 @@ final class IdentifierAssignmentLineTest extends UnitTestCase
         (new IdentifierAssignmentLine())->setIdentifierTokenStream(new IdentifierTokenStream());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setValueTokenStreamThrowsIfStreamIsEmpty(): void
     {
         $this->expectException(\LogicException::class);

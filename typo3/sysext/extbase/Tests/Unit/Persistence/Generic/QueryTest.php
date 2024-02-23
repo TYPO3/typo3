@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -59,9 +61,7 @@ final class QueryTest extends UnitTestCase
         $this->query->_set('container', $this->container);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeReturnsQueryResultInstanceAndInjectsItself(): void
     {
         $queryResult = $this->createMock(QueryResult::class);
@@ -70,9 +70,7 @@ final class QueryTest extends UnitTestCase
         self::assertSame($queryResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function executeReturnsRawObjectDataIfReturnRawQueryResultIsSet(): void
     {
         $this->persistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->query)->willReturn('rawQueryResult');
@@ -81,9 +79,7 @@ final class QueryTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLimitAcceptsOnlyIntegers(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -91,9 +87,7 @@ final class QueryTest extends UnitTestCase
         $this->query->setLimit(1.5);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLimitRejectsIntegersLessThanOne(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -101,9 +95,7 @@ final class QueryTest extends UnitTestCase
         $this->query->setLimit(0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLimitSetsLimit(): void
     {
         $this->query->setLimit(15);
@@ -114,9 +106,7 @@ final class QueryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetLimitWillResetLimitToNull(): void
     {
         $this->query->setLimit(15);
@@ -127,9 +117,7 @@ final class QueryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOffsetAcceptsOnlyIntegers(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -137,9 +125,7 @@ final class QueryTest extends UnitTestCase
         $this->query->setOffset(1.5);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOffsetRejectsIntegersLessThanZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -160,11 +146,11 @@ final class QueryTest extends UnitTestCase
     /**
      * Checks if equals condition makes utf-8 argument lowercase correctly
      *
-     * @test
-     * @dataProvider equalsForCaseSensitiveFalseLowercasesOperandProvider
      * @param string $propertyName The name of the property to compare against
      * @param mixed $operand The value to compare with
      */
+    #[DataProvider('equalsForCaseSensitiveFalseLowercasesOperandProvider')]
+    #[Test]
     public function equalsForCaseSensitiveFalseLowercasesOperand(string $propertyName, $operand, string $expectedOperand): void
     {
         $qomFactory = $this->getAccessibleMock(QueryObjectModelFactory::class, ['comparison']);
@@ -174,9 +160,7 @@ final class QueryTest extends UnitTestCase
         $this->query->equals($propertyName, $operand, false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logicalAndSupportsMultipleConstraintsAsMethodArguments(): void
     {
         $subject = new Query(
@@ -197,9 +181,7 @@ final class QueryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logicalOrSupportsMultipleConstraintsAsMethodArguments(): void
     {
         $subject = new Query(

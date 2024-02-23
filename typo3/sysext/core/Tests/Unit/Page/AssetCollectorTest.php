@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -32,10 +34,8 @@ final class AssetCollectorTest extends UnitTestCase
         $this->assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'filesDataProvider')]
+    #[Test]
     public function styleSheets(array $files, array $expectedResult): void
     {
         foreach ($files as $file) {
@@ -63,10 +63,8 @@ final class AssetCollectorTest extends UnitTestCase
         self::assertSame([], $this->assetCollector->getMedia());
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'filesDataProvider')]
+    #[Test]
     public function javaScript(array $files, array $expectedResult): void
     {
         foreach ($files as $file) {
@@ -94,10 +92,8 @@ final class AssetCollectorTest extends UnitTestCase
         self::assertSame([], $this->assetCollector->getMedia());
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'inlineDataProvider')]
+    #[Test]
     public function inlineJavaScript(array $sources, array $expectedResult): void
     {
         foreach ($sources as $source) {
@@ -125,10 +121,8 @@ final class AssetCollectorTest extends UnitTestCase
         self::assertSame([], $this->assetCollector->getMedia());
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'inlineDataProvider')]
+    #[Test]
     public function inlineStyles(array $sources, array $expectedResult): void
     {
         foreach ($sources as $source) {
@@ -156,10 +150,8 @@ final class AssetCollectorTest extends UnitTestCase
         self::assertSame([], $this->assetCollector->getMedia());
     }
 
-    /**
-     * @test
-     * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::mediaDataProvider
-     */
+    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'mediaDataProvider')]
+    #[Test]
     public function media(array $images, array $expectedResult): void
     {
         foreach ($images as $image) {

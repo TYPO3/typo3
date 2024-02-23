@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\Uri;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseSystemLanguageRowsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfSiteObjectIsNotSet(): void
     {
         $this->expectException(\LogicException::class);
@@ -37,9 +36,7 @@ final class DatabaseSystemLanguageRowsTest extends UnitTestCase
         (new DatabaseSystemLanguageRows())->addData([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultLanguageAndAllEntries(): void
     {
         $languageService = $this->createMock(LanguageService::class);

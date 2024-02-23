@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\InputHiddenElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -28,9 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class InputHiddenElementTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsElementsAsAdditionalHiddenFields(): void
     {
         $data = [

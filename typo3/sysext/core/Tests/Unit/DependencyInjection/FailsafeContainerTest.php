@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -27,17 +29,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FailsafeContainerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsInterface(): void
     {
         self::assertInstanceOf(ContainerInterface::class, new Container());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withString(): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -53,10 +51,8 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertEquals('value', $container->get('param'));
     }
 
-    /**
-     * @test
-     * @dataProvider objectFactories
-     */
+    #[DataProvider('objectFactories')]
+    #[Test]
     public function get(mixed $factory): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -70,10 +66,8 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertInstanceOf(Service::class, $container->get('service'));
     }
 
-    /**
-     * @test
-     * @dataProvider objectFactories
-     */
+    #[DataProvider('objectFactories')]
+    #[Test]
     public function multipleGetServicesShouldBeEqual(mixed $factory): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -93,9 +87,7 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertSame($extensionOne, $extensionTwo);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passesContainerAsParameter(): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -114,9 +106,7 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertSame($container, $container->get('container'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullValueEntry(): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -132,9 +122,7 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertNull($container->get('null'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullValueEntryCallsFactoryOnlyOnce(): void
     {
         $calledCount = 0;
@@ -156,9 +144,7 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertEquals(1, $calledCount);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function has(): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -193,9 +179,7 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertFalse($container->has('non_existent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultEntry(): void
     {
         $default = ['param' => 'value'];
@@ -204,9 +188,7 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertSame('value', $container->get('param'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getValidatesKeyIsPresent(): void
     {
         $container = new Container();
@@ -216,10 +198,8 @@ final class FailsafeContainerTest extends UnitTestCase
         $container->get('foo');
     }
 
-    /**
-     * @test
-     * @dataProvider objectFactories
-     */
+    #[DataProvider('objectFactories')]
+    #[Test]
     public function extension(mixed $factory): void
     {
         $providerMockA = $this->createMock(ServiceProviderInterface::class);
@@ -243,10 +223,8 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertSame('value', $container->get('service')->value);
     }
 
-    /**
-     * @test
-     * @dataProvider objectFactories
-     */
+    #[DataProvider('objectFactories')]
+    #[Test]
     public function extendingLaterProvider(mixed $factory): void
     {
         $providerMockA = $this->createMock(ServiceProviderInterface::class);
@@ -266,10 +244,8 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertSame('value', $container->get('service')->value);
     }
 
-    /**
-     * @test
-     * @dataProvider objectFactories
-     */
+    #[DataProvider('objectFactories')]
+    #[Test]
     public function extendingOwnFactory(mixed $factory): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -287,9 +263,7 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertSame('value', $container->get('service')->value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extendingNonExistingFactory(): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -308,10 +282,8 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertSame('value', $container->get('service')->value);
     }
 
-    /**
-     * @test
-     * @dataProvider objectFactories
-     */
+    #[DataProvider('objectFactories')]
+    #[Test]
     public function multipleExtensions(mixed $factory): void
     {
         $providerMockA = $this->createMock(ServiceProviderInterface::class);
@@ -340,10 +312,8 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertSame('12', $container->get('service')->value);
     }
 
-    /**
-     * @test
-     * @dataProvider objectFactories
-     */
+    #[DataProvider('objectFactories')]
+    #[Test]
     public function entryOverriding(mixed $factory): void
     {
         $providerMockA = $this->createMock(ServiceProviderInterface::class);
@@ -362,9 +332,7 @@ final class FailsafeContainerTest extends UnitTestCase
         self::assertEquals('value', $container->get('service'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cyclicDependency(): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -385,9 +353,7 @@ final class FailsafeContainerTest extends UnitTestCase
         $container->get('A');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cyclicDependencyRetrievedTwice(): void
     {
         $providerMock = $this->createMock(ServiceProviderInterface::class);
@@ -413,18 +379,14 @@ final class FailsafeContainerTest extends UnitTestCase
         $container->get('A');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullContainer(): void
     {
         $container = new Container();
         self::assertFalse($container->has('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullContainerWithDefaultEntries(): void
     {
         $container = new Container([], ['foo' => 'bar']);

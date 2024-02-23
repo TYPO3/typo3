@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TypoScriptServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveTypoScriptConfigurationReturnsResolvedConfiguration(): void
     {
         $mockTypoScriptService = $this->getAccessibleMock(TypoScriptService::class, [

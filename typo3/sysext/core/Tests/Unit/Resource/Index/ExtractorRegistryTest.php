@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Index;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ExtractorRegistryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredExtractorClassCanBeRetrieved(): void
     {
         $extractorClass = 'a9f4d5e4ebb4b03547a2a6094e1170ac';
@@ -43,9 +42,7 @@ final class ExtractorRegistryTest extends UnitTestCase
         self::assertContains($extractorObject, $extractorRegistry->getExtractors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerExtractorClassThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -56,9 +53,7 @@ final class ExtractorRegistryTest extends UnitTestCase
         $extractorRegistry->registerExtractionService($className);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerExtractorClassThrowsExceptionIfClassDoesNotImplementRightInterface(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -69,9 +64,7 @@ final class ExtractorRegistryTest extends UnitTestCase
         $extractorRegistry->registerExtractionService($className);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerExtractorClassWithHighestPriorityIsFirstInResult(): void
     {
         $extractorClass1 = 'db76010e5c24658c35ea1605cce2391d';
@@ -110,9 +103,7 @@ final class ExtractorRegistryTest extends UnitTestCase
         self::assertInstanceOf($extractorClass1, $extractorInstances[2]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredExtractorClassWithSamePriorityAreAllReturned(): void
     {
         $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
@@ -141,9 +132,7 @@ final class ExtractorRegistryTest extends UnitTestCase
         self::assertContains($extractorObject2, $extractorInstances);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredExtractorsCanBeFilteredByDriverTypeButNoTyeREstrictionIsTreatedAsCompatible(): void
     {
         $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
@@ -174,9 +163,7 @@ final class ExtractorRegistryTest extends UnitTestCase
         self::assertContains($extractorObject2, $extractorInstances);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredExtractorsCanBeFilteredByDriverType(): void
     {
         $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';

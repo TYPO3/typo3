@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Redirects\Event\AfterAutoCreateRedirectHasBeenPersistedEvent;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterAutoCreateRedirectHasBeenPersistedEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function afterAutoCreateRedirectHasBeenPersistedGettersReturnsCreationValues(): void
     {
         $source = new PlainSlugReplacementRedirectSource(

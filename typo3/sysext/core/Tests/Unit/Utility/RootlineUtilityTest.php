@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -70,36 +71,28 @@ final class RootlineUtilityTest extends UnitTestCase
         self::assertSame($subsetCandidate, array_intersect_assoc($subsetCandidate, $superset));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isMountedPageWithoutMountPointsReturnsFalse(): void
     {
         $this->subject->__construct(1, '', new Context());
         self::assertFalse($this->subject->isMountedPage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isMountedPageWithMatchingMountPointParameterReturnsTrue(): void
     {
         $this->subject->__construct(1, '1-99', new Context());
         self::assertTrue($this->subject->isMountedPage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isMountedPageWithNonMatchingMountPointParameterReturnsFalse(): void
     {
         $this->subject->__construct(1, '99-99', new Context());
         self::assertFalse($this->subject->isMountedPage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processMountedPageWithNonMountedPageThrowsException(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -113,9 +106,7 @@ final class RootlineUtilityTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processMountedPageWithMountedPageNotThrowsException(): void
     {
         $this->subject->__construct(1, '1-99', new Context());
@@ -126,9 +117,7 @@ final class RootlineUtilityTest extends UnitTestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processMountedPageWithMountedPageAddsMountedFromParameter(): void
     {
         $this->subject->__construct(1, '1-99', new Context());
@@ -141,9 +130,7 @@ final class RootlineUtilityTest extends UnitTestCase
         self::assertSame(1, $result['_MOUNTED_FROM']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processMountedPageWithMountedPageAddsMountPointParameterToReturnValue(): void
     {
         $this->subject->__construct(1, '1-99', new Context());
@@ -156,9 +143,7 @@ final class RootlineUtilityTest extends UnitTestCase
         self::assertSame('1-99', $result['_MP_PARAM']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processMountedPageForMountPageIsOverlayAddsMountOLParameter(): void
     {
         $this->subject->__construct(1, '1-99', new Context());
@@ -171,9 +156,7 @@ final class RootlineUtilityTest extends UnitTestCase
         self::assertTrue($result['_MOUNT_OL']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processMountedPageForMountPageIsOverlayAddsDataInformationAboutMountPage(): void
     {
         $this->subject->__construct(1, '1-99', new Context());
@@ -189,9 +172,7 @@ final class RootlineUtilityTest extends UnitTestCase
         self::assertSame(['uid' => 99, 'pid' => 5, 'title' => 'TestCase'], $result['_MOUNT_PAGE']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processMountedPageForMountPageWithoutOverlayReplacesMountedPageWithMountPage(): void
     {
         $mountPointPageData = [
@@ -205,9 +186,7 @@ final class RootlineUtilityTest extends UnitTestCase
         $this->assertIsSubset($mountPointPageData, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnHasRelationToResolveDetectsGroupFieldAsLocal(): void
     {
         self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
@@ -215,9 +194,7 @@ final class RootlineUtilityTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnHasRelationToResolveDetectsGroupFieldWithMMAsRemote2(): void
     {
         self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
@@ -228,9 +205,7 @@ final class RootlineUtilityTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnHasRelationToResolveDetectsInlineFieldAsLocal(): void
     {
         self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
@@ -240,9 +215,7 @@ final class RootlineUtilityTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnHasRelationToResolveDetectsInlineFieldWithForeignKeyAsRemote(): void
     {
         self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
@@ -253,9 +226,7 @@ final class RootlineUtilityTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnHasRelationToResolveDetectsInlineFieldWithFMMAsRemote(): void
     {
         self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
@@ -266,9 +237,7 @@ final class RootlineUtilityTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnHasRelationToResolveDetectsSelectFieldAsLocal(): void
     {
         self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
@@ -278,9 +247,7 @@ final class RootlineUtilityTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnHasRelationToResolveDetectsSelectFieldWithMMAsRemote(): void
     {
         self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
@@ -291,9 +258,7 @@ final class RootlineUtilityTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheIdentifierContainsAllContextParameters(): void
     {
         $this->subject->method('resolvePageId')->willReturn(42);
@@ -312,9 +277,7 @@ final class RootlineUtilityTest extends UnitTestCase
         self::assertSame('42_47-11_8_0_0_1', $this->subject->getCacheIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter(): void
     {
         $this->subject->method('resolvePageId')->willReturn(42);

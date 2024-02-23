@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DependencyOrderingServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     * @dataProvider orderByDependenciesBuildsCorrectOrderDataProvider
-     */
+    #[DataProvider('orderByDependenciesBuildsCorrectOrderDataProvider')]
+    #[Test]
     public function orderByDependenciesBuildsCorrectOrder(array $items, string $beforeKey, string $afterKey, array $expectedOrderedItems): void
     {
         $orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
@@ -151,10 +151,10 @@ final class DependencyOrderingServiceTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider prepareDependenciesBuildsFullIdentifierListDataProvider
      * @throws \InvalidArgumentException
      */
+    #[DataProvider('prepareDependenciesBuildsFullIdentifierListDataProvider')]
+    #[Test]
     public function prepareDependenciesBuildsFullIdentifierList(array $dependencies, array $expectedDependencies): void
     {
         $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, null);
@@ -203,10 +203,8 @@ final class DependencyOrderingServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildDependencyGraphBuildsValidGraphDataProvider
-     */
+    #[DataProvider('buildDependencyGraphBuildsValidGraphDataProvider')]
+    #[Test]
     public function buildDependencyGraphBuildsValidGraph(array $dependencies, array $expectedGraph): void
     {
         $graph = (new DependencyOrderingService())->buildDependencyGraph($dependencies);
@@ -570,10 +568,8 @@ final class DependencyOrderingServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider calculateOrderResolvesCorrectOrderDataProvider
-     */
+    #[DataProvider('calculateOrderResolvesCorrectOrderDataProvider')]
+    #[Test]
     public function calculateOrderResolvesCorrectOrder(array $graph, array $expectedList): void
     {
         $list = (new DependencyOrderingService())->calculateOrder($graph);
@@ -623,9 +619,7 @@ final class DependencyOrderingServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function calculateOrderDetectsCyclicGraph(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -679,10 +673,8 @@ final class DependencyOrderingServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findPathInGraphReturnsCorrectPathDataProvider
-     */
+    #[DataProvider('findPathInGraphReturnsCorrectPathDataProvider')]
+    #[Test]
     public function findPathInGraphReturnsCorrectPath(array $graph, string $from, string $to, array $expected): void
     {
         $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, null);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -47,9 +48,7 @@ final class FormFrontendControllerTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideByFlexFormSettingsReturnsNoOverriddenConfigurationIfFlexformOverridesDisabled(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);
@@ -176,9 +175,7 @@ final class FormFrontendControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideByFlexFormSettingsReturnsOverriddenConfigurationIfFlexformOverridesEnabled(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);
@@ -328,9 +325,7 @@ final class FormFrontendControllerTest extends UnitTestCase
         self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideByFlexFormSettingsReturnsNotOverriddenConfigurationKeyIfFlexformOverridesAreNotRepresentedInFormEngineConfiguration(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);

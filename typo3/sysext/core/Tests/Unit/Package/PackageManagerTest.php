@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -107,9 +109,9 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws UnknownPackageException
      */
+    #[Test]
     public function getPackageReturnsTheSpecifiedPackage(): void
     {
         $this->createPackage('TYPO3.MyPackage');
@@ -119,9 +121,9 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws UnknownPackageException
      */
+    #[Test]
     public function getPackageThrowsExceptionOnUnknownPackage(): void
     {
         $this->expectException(UnknownPackageException::class);
@@ -130,9 +132,7 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->getPackage('PrettyUnlikelyThatThisPackageExists');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds(): void
     {
         $expectedPackageKeys = [
@@ -161,9 +161,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertEquals(sort($expectedPackageKeys), sort($actualPackageKeys));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function scanAvailablePackagesKeepsExistingPackageConfiguration(): void
     {
         $expectedPackageKeys = [
@@ -206,9 +204,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertEquals('Application/' . $packageKey . '/', $packageStates['packages'][$packageKey]['packagePath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractPackageKeyFromPackagePathFindsPackageKey(): void
     {
         $package = $this->createPackage('typo3/my-package');
@@ -219,9 +215,9 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws UnknownPackagePathException
      */
+    #[Test]
     public function extractPackageKeyFromPackagePathThrowsExceptionOnNonPackagePaths(): void
     {
         $this->expectException(UnknownPackageException::class);
@@ -231,9 +227,9 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws UnknownPackageException
      */
+    #[Test]
     public function extractPackageKeyFromPackagePathThrowsExceptionOnInvalidPackagePaths(): void
     {
         $this->expectException(UnknownPackagePathException::class);
@@ -242,9 +238,7 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->extractPackageKeyFromPackagePath('EXT:typo3/my-package/path/to/file');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function packageStatesConfigurationContainsRelativePaths(): void
     {
         $packageKeys = [
@@ -294,10 +288,8 @@ final class PackageManagerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider packageKeysAndPaths
-     */
+    #[DataProvider('packageKeysAndPaths')]
+    #[Test]
     public function createPackageCreatesPackageFolderAndReturnsPackage($packageKey, $expectedPackagePath): void
     {
         $actualPackage = $this->createPackage($packageKey);
@@ -310,11 +302,11 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
      * @throws PackageStatesFileNotWritableException
      */
+    #[Test]
     public function activatePackageAndDeactivatePackageActivateAndDeactivateTheGivenPackage(): void
     {
         $packageKey = 'Acme.YetAnotherTestPackage';
@@ -331,11 +323,11 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws PackageStatesFileNotWritableException
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
      */
+    #[Test]
     public function deactivatePackageThrowsAnExceptionIfPackageIsProtected(): void
     {
         $this->expectException(ProtectedPackageKeyException::class);
@@ -348,11 +340,11 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
      * @throws Exception
      */
+    #[Test]
     public function deletePackageThrowsErrorIfPackageIsNotAvailable(): void
     {
         $this->expectException(UnknownPackageException::class);
@@ -363,12 +355,12 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws InvalidPackageStateException
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
      * @throws Exception
      */
+    #[Test]
     public function deletePackageThrowsAnExceptionIfPackageIsProtected(): void
     {
         $this->expectException(ProtectedPackageKeyException::class);
@@ -380,12 +372,12 @@ final class PackageManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @throws InvalidPackageStateException
      * @throws ProtectedPackageKeyException
      * @throws UnknownPackageException
      * @throws Exception
      */
+    #[Test]
     public function deletePackageRemovesPackageFromAvailableAndActivePackagesAndDeletesThePackageDirectory(): void
     {
         $this->createPackage('Acme.YetAnotherTestPackage');
@@ -582,10 +574,8 @@ final class PackageManagerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildDependencyGraphBuildsCorrectGraphDataProvider
-     */
+    #[DataProvider('buildDependencyGraphBuildsCorrectGraphDataProvider')]
+    #[Test]
     public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph): void
     {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService()]);
@@ -706,10 +696,8 @@ final class PackageManagerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider packageSortingDataProvider
-     */
+    #[DataProvider('packageSortingDataProvider')]
+    #[Test]
     public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays(
         array $unsortedPackageStatesConfiguration,
         array $frameworkPackageKeys,
@@ -723,9 +711,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertEquals($expectedSortedPackageKeys, $sortedPackageKeys, 'The package states configurations have not been ordered according to their dependencies!');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sortPackageStatesConfigurationByDependencyThrowsExceptionWhenCycleDetected(): void
     {
         $unsortedPackageStatesConfiguration = [

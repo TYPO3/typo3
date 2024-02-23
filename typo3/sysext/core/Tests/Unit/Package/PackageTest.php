@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
@@ -40,9 +42,7 @@ final class PackageTest extends UnitTestCase
         $this->testFilesToDelete[] = $this->testRoot;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructThrowsPackageDoesNotExistException(): void
     {
         $this->expectException(InvalidPackagePathException::class);
@@ -64,10 +64,8 @@ final class PackageTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validPackageKeys
-     */
+    #[DataProvider('validPackageKeys')]
+    #[Test]
     public function constructAcceptsValidPackageKeys($packageKey): void
     {
         $packagePath = $this->testRoot . str_replace('\\', '/', $packageKey) . '/';
@@ -90,10 +88,8 @@ final class PackageTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidPackageKeys
-     */
+    #[DataProvider('invalidPackageKeys')]
+    #[Test]
     public function constructRejectsInvalidPackageKeys($packageKey): void
     {
         $this->expectException(InvalidPackageKeyException::class);
@@ -106,9 +102,7 @@ final class PackageTest extends UnitTestCase
         new Package($packageManagerMock, $packageKey, $packagePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aPackageCanBeFlaggedAsProtected(): void
     {
         $packagePath = $this->testRoot . 'Application/Vendor/Dummy/';

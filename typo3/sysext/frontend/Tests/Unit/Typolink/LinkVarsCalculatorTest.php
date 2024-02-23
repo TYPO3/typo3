@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -62,10 +64,8 @@ final class LinkVarsCalculatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider calculateLinkVarsDataProvider
-     */
+    #[DataProvider('calculateLinkVarsDataProvider')]
+    #[Test]
     public function calculateLinkVarsConsidersCorrectVariables(string $linkVars, array $getVars, string $expected): void
     {
         $subject = new LinkVarsCalculator();
@@ -177,10 +177,8 @@ final class LinkVarsCalculatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider splitLinkVarsDataProvider
-     */
+    #[DataProvider('splitLinkVarsDataProvider')]
+    #[Test]
     public function splitLinkVarsStringSplitsStringByComma(string $string, array $expected): void
     {
         $subject = $this->getAccessibleMock(LinkVarsCalculator::class, null);

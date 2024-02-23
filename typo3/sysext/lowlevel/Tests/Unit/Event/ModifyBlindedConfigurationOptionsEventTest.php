@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Tests\Unit\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Lowlevel\Event\ModifyBlindedConfigurationOptionsEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyBlindedConfigurationOptionsEventTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $identifier = 'myidentifier';

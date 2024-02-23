@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\File\ThumbnailController;
 use TYPO3\CMS\Core\Http\Response;
@@ -52,10 +54,9 @@ final class ThumbnailControllerTest extends UnitTestCase
 
     /**
      * @param string|null $hmac
-     *
-     * @test
-     * @dataProvider exceptionIsThrownOnInvalidHMACDataProvider
      */
+    #[DataProvider('exceptionIsThrownOnInvalidHMACDataProvider')]
+    #[Test]
     public function exceptionIsThrownOnInvalidHMAC(string $hmac = null): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -82,10 +83,9 @@ final class ThumbnailControllerTest extends UnitTestCase
 
     /**
      * @param array|null $parameters
-     *
-     * @test
-     * @dataProvider generateThumbnailIsInvokedDataProvider
      */
+    #[DataProvider('generateThumbnailIsInvokedDataProvider')]
+    #[Test]
     public function generateThumbnailIsInvoked(array $parameters = null): void
     {
         $this->subject->expects(self::once())

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -68,99 +70,77 @@ final class Typo3QuerySettingsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider booleanValueProvider
-     */
+    #[DataProvider('booleanValueProvider')]
+    #[Test]
     public function setRespectStoragePageSetsRespectStoragePageCorrectly(bool $input): void
     {
         $this->subject->setRespectStoragePage($input);
         self::assertEquals($input, $this->subject->getRespectStoragePage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRespectStoragePageAllowsChaining(): void
     {
         self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setRespectStoragePage(true));
     }
 
-    /**
-     * @test
-     * @dataProvider arrayValueProvider
-     */
+    #[DataProvider('arrayValueProvider')]
+    #[Test]
     public function setStoragePageIdsSetsStoragePageIdsCorrectly(array $input): void
     {
         $this->subject->setStoragePageIds($input);
         self::assertEquals($input, $this->subject->getStoragePageIds());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setStoragePageIdsAllowsChaining(): void
     {
         self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setStoragePageIds([1, 2, 3]));
     }
 
-    /**
-     * @test
-     * @dataProvider booleanValueProvider
-     */
+    #[DataProvider('booleanValueProvider')]
+    #[Test]
     public function setRespectSysLanguageSetsRespectSysLanguageCorrectly(bool $input): void
     {
         $this->subject->setRespectSysLanguage($input);
         self::assertEquals($input, $this->subject->getRespectSysLanguage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRespectSysLanguageAllowsChaining(): void
     {
         self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setRespectSysLanguage(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLanguageAspectHasFluentInterface(): void
     {
         self::assertSame($this->subject, $this->subject->setLanguageAspect(new LanguageAspect(1)));
     }
 
-    /**
-     * @test
-     * @dataProvider booleanValueProvider
-     */
+    #[DataProvider('booleanValueProvider')]
+    #[Test]
     public function setIgnoreEnableFieldsSetsIgnoreEnableFieldsCorrectly(bool $input): void
     {
         $this->subject->setIgnoreEnableFields($input);
         self::assertEquals($input, $this->subject->getIgnoreEnableFields());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setIgnoreEnableFieldsAllowsChaining(): void
     {
         self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setIgnoreEnableFields(true));
     }
 
-    /**
-     * @test
-     * @dataProvider arrayValueProvider
-     */
+    #[DataProvider('arrayValueProvider')]
+    #[Test]
     public function setEnableFieldsToBeIgnoredSetsEnableFieldsToBeIgnoredCorrectly(array $input): void
     {
         $this->subject->setEnableFieldsToBeIgnored($input);
         self::assertEquals($input, $this->subject->getEnableFieldsToBeIgnored());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setEnableFieldsToBeIgnoredAllowsChaining(): void
     {
         self::assertInstanceOf(
@@ -169,19 +149,15 @@ final class Typo3QuerySettingsTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider booleanValueProvider
-     */
+    #[DataProvider('booleanValueProvider')]
+    #[Test]
     public function setIncludeDeletedSetsIncludeDeletedCorrectly(bool $input): void
     {
         $this->subject->setIncludeDeleted($input);
         self::assertEquals($input, $this->subject->getIncludeDeleted());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setIncludeDeletedAllowsChaining(): void
     {
         self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setIncludeDeleted(true));

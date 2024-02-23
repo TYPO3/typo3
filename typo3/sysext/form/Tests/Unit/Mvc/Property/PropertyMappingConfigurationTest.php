@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -90,8 +91,8 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * A bare minimum test that checks if the function maybe potentially works.
-     * @test
      */
+    #[Test]
     public function afterBuildingFinishedAddsFileReferenceConverter(): void
     {
         // No validators
@@ -115,9 +116,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedAddsMimeTypeConverter(): void
     {
         $mimeTypes = ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']];
@@ -156,9 +155,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedSetsUpStoragePathToPropertySaveToFileMountIfItExists(): void
     {
         $resourceFactory = $this->createMock(ResourceFactory::class);
@@ -190,9 +187,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedSetsUpStoragePathToToFormDefinitionPathIfSaveToFileMountIsNotDefinedAndFormWasNotAddedProgrammatically(): void
     {
         $resourceFactory = $this->createMock(ResourceFactory::class);
@@ -228,9 +223,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedSetsStoragePathToUserUploadIfNeitherSaveToFileMountIsSetNorThereIsAFormDefinitionPath(): void
     {
         // Don't add any validators for now
@@ -260,9 +253,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedCopiesValidators(): void
     {
         // Some other Validator
@@ -292,9 +283,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedDoesNotCopyNotEmptyValidator(): void
     {
         // Not Empty Validator

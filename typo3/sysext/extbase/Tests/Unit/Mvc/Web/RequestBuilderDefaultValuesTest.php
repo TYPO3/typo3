@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilderDefaultValues;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -38,18 +39,14 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationThrowsExceptionIfConfigurationMissesExtensionName(): void
     {
         self::expectExceptionCode(1289843275);
         RequestBuilderDefaultValues::fromConfiguration([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationThrowsExceptionIfConfigurationMissesPluginName(): void
     {
         self::expectExceptionCode(1289843277);
@@ -58,9 +55,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationThrowsExceptionIfConfigurationMissesControllerConfigurations(): void
     {
         self::expectExceptionCode(1316104317);
@@ -70,9 +65,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationSetsExtensionName(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -80,9 +73,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame('news', $defaultValues->getExtensionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationSetsPluginName(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -90,9 +81,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame('list', $defaultValues->getPluginName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationFallsBackToDefaultFormat(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -100,9 +89,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame('html', $defaultValues->getDefaultFormat());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationSetsFormat(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(
@@ -114,9 +101,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame('json', $defaultValues->getDefaultFormat());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationSetsDefaultControllerClassName(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -124,9 +109,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame(ActionController::class, $defaultValues->getDefaultControllerClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromConfigurationSetsDefaultControllerAlias(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -134,9 +117,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame('ActionController', $defaultValues->getDefaultControllerAlias());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerAliasForControllerClassName(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -144,9 +125,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame('ActionController', $defaultValues->getControllerAliasForControllerClassName(ActionController::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerClassNameForAlias(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -154,9 +133,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame(ActionController::class, $defaultValues->getControllerClassNameForAlias('ActionController'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllowedControllerActions(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -164,9 +141,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame([ActionController::class => ['list', 'show']], $defaultValues->getAllowedControllerActions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerAliasToClassMapping(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);
@@ -174,9 +149,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
         self::assertSame(['ActionController' => ActionController::class], $defaultValues->getControllerAliasToClassMapping());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerClassToAliasMapping(): void
     {
         $defaultValues = RequestBuilderDefaultValues::fromConfiguration(self::MINIMAL_WORKING_CONFIGURATION);

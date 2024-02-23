@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -63,9 +64,7 @@ final class PageRepositoryTest extends UnitTestCase
     ///////////////////////////////
     // Tests concerning getExtURL
     ///////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function getExtUrlForDokType3UsesTheSameValue(): void
     {
         self::assertEquals('http://www.example.com', $this->pageSelectObject->getExtURL([
@@ -74,9 +73,7 @@ final class PageRepositoryTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getExtUrlForDokType3PrependsSiteUrl(): void
     {
         $request = (new ServerRequest('https://foo.de', 'GET'))
@@ -91,9 +88,7 @@ final class PageRepositoryTest extends UnitTestCase
         unset($GLOBALS['TYPO3_REQUEST']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getExtUrlForDokType3AssumesAbsoluteUrl(): void
     {
         self::assertEquals('/hello/world/', $this->pageSelectObject->getExtURL([
@@ -102,9 +97,7 @@ final class PageRepositoryTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getExtUrlForDokType3UsesEmailAsSameValue(): void
     {
         self::assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
@@ -113,9 +106,7 @@ final class PageRepositoryTest extends UnitTestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getExtUrlForDokType3UsesValidEmailWithoutProtocolAsEmail(): void
     {
         self::assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([

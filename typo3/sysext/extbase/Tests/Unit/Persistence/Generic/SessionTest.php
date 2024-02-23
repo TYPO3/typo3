@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\Session;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SessionTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function objectRegisteredWithRegisterReconstitutedEntityCanBeRetrievedWithGetReconstitutedEntities(): void
     {
         $someObject = new class () extends AbstractDomainObject {};
@@ -37,9 +36,7 @@ final class SessionTest extends UnitTestCase
         self::assertTrue($ReconstitutedEntities->contains($someObject));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unregisterReconstitutedEntityRemovesObjectFromSession(): void
     {
         $someObject = new class () extends AbstractDomainObject {};
@@ -52,9 +49,7 @@ final class SessionTest extends UnitTestCase
         self::assertFalse($ReconstitutedEntities->contains($someObject));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasObjectReturnsTrueForRegisteredObject(): void
     {
         $object1 = new class () extends AbstractDomainObject {};
@@ -66,9 +61,7 @@ final class SessionTest extends UnitTestCase
         self::assertFalse($session->hasObject($object2), 'Session claims it does have unregistered object.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasIdentifierReturnsTrueForRegisteredObject(): void
     {
         $object = new class () extends AbstractDomainObject {};
@@ -79,9 +72,7 @@ final class SessionTest extends UnitTestCase
         self::assertFalse($session->hasIdentifier('67890', $object::class), 'Session claims it does have unregistered object.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIdentifierByObjectReturnsRegisteredUUIDForObject(): void
     {
         $object = new class () extends AbstractDomainObject {};
@@ -91,9 +82,7 @@ final class SessionTest extends UnitTestCase
         self::assertEquals('12345', $session->getIdentifierByObject($object), 'Did not get UUID registered for object.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getObjectByIdentifierReturnsRegisteredObjectForUUID(): void
     {
         $object = new class () extends AbstractDomainObject {};
@@ -103,9 +92,7 @@ final class SessionTest extends UnitTestCase
         self::assertSame($session->getObjectByIdentifier('12345', $object::class), $object, 'Did not get object registered for UUID.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unregisterObjectRemovesRegisteredObject(): void
     {
         $object1 = new class () extends AbstractDomainObject {};
@@ -127,9 +114,7 @@ final class SessionTest extends UnitTestCase
         self::assertTrue($session->hasIdentifier('67890', $object2::class), 'Session claims it does not have registered object.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newSessionIsEmpty(): void
     {
         $persistenceSession = new Session();
@@ -137,9 +122,7 @@ final class SessionTest extends UnitTestCase
         self::assertCount(0, $reconstitutedObjects, 'The reconstituted objects storage was not empty.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectCanBeRegisteredAsReconstituted(): void
     {
         $persistenceSession = new Session();
@@ -149,9 +132,7 @@ final class SessionTest extends UnitTestCase
         self::assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectCanBeUnregisteredAsReconstituted(): void
     {
         $persistenceSession = new Session();

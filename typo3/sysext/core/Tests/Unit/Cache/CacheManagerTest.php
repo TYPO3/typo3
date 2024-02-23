@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException;
@@ -40,9 +41,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CacheManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier(): void
     {
         $this->expectException(DuplicateIdentifierException::class);
@@ -63,9 +62,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->registerCache($cache2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function managerReturnsThePreviouslyRegisteredCache(): void
     {
         $manager = new CacheManager();
@@ -84,9 +81,7 @@ final class CacheManagerTest extends UnitTestCase
         self::assertSame($cache2, $manager->getCache('cache2'), 'The cache returned by getCache() was not the same I registered.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheThrowsExceptionForNonExistingIdentifier(): void
     {
         $this->expectException(NoSuchCacheException::class);
@@ -103,9 +98,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache('doesnotexist');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasCacheReturnsCorrectResult(): void
     {
         $manager = new CacheManager();
@@ -119,9 +112,7 @@ final class CacheManagerTest extends UnitTestCase
         self::assertFalse($manager->hasCache('cache2'), 'hasCache() did not return FALSE.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCachesByTagCallsTheFlushByTagMethodOfAllRegisteredCaches(): void
     {
         $manager = new CacheManager();
@@ -141,9 +132,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->flushCachesByTag('theTag');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCachesByTagsCallsTheFlushByTagsMethodOfAllRegisteredCaches(): void
     {
         $manager = new CacheManager();
@@ -163,9 +152,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->flushCachesByTags(['theTag']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCachesCallsTheFlushMethodOfAllRegisteredCaches(): void
     {
         $manager = new CacheManager();
@@ -185,9 +172,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->flushCaches();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCachesInGroupThrowsExceptionForNonExistingGroup(): void
     {
         $this->expectException(NoSuchCacheGroupException::class);
@@ -197,9 +182,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->flushCachesInGroup('nonExistingGroup');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCachesInGroupByTagThrowsExceptionForNonExistingGroup(): void
     {
         $this->expectException(NoSuchCacheGroupException::class);
@@ -209,9 +192,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->flushCachesInGroup('nonExistingGroup');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheThrowsExceptionIfConfiguredFrontendDoesNotImplementFrontendInterface(): void
     {
         $manager = new CacheManager();
@@ -229,9 +210,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheThrowsExceptionIfConfiguredBackendDoesNotImplementBackendInterface(): void
     {
         $manager = new CacheManager();
@@ -249,9 +228,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheCallsInitializeObjectOnFrontendInstance(): void
     {
         $manager = new CacheManager();
@@ -270,9 +247,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheCallsInitializeObjectOnBackendInstance(): void
     {
         $manager = new CacheManager();
@@ -291,9 +266,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheCreatesBackendWithGivenConfiguration(): void
     {
         $manager = new CacheManager();
@@ -314,9 +287,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend(): void
     {
         $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
@@ -339,9 +310,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend(): void
     {
         $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
@@ -364,9 +333,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheReturnsInstanceOfTheSpecifiedCacheFrontend(): void
     {
         $manager = new CacheManager();
@@ -382,9 +349,7 @@ final class CacheManagerTest extends UnitTestCase
         self::assertInstanceOf(FrontendFixture::class, $manager->getCache($cacheIdentifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheGivesIdentifierToCacheFrontend(): void
     {
         $manager = new CacheManager();
@@ -402,9 +367,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheGivesBackendInstanceToCacheFrontend(): void
     {
         $manager = new CacheManager();
@@ -422,9 +385,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->getCache($cacheIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCachesInGroupByTagsWithEmptyTagsArrayDoesNotFlushCaches(): void
     {
         $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
@@ -457,9 +418,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->flushCachesInGroupByTags('group2', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCachesInGroupByTagsDeletesByTag(): void
     {
         $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
@@ -493,9 +452,7 @@ final class CacheManagerTest extends UnitTestCase
         $manager->flushCachesInGroupByTags('group2', $tags);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheConfigurationsThrowsExceptionIfConfiguredCacheDoesNotHaveAnIdentifier(): void
     {
         $this->expectException(\InvalidArgumentException::class);

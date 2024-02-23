@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSlug;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -349,10 +351,8 @@ final class TcaSlugTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resultArrayDataProvider
-     */
+    #[DataProvider('resultArrayDataProvider')]
+    #[Test]
     public function getSlugPrefixForDefinedLanguagesAndUserFunc(array $input, array $expected): void
     {
         self::assertEquals($expected, $this->subject->addData($input));

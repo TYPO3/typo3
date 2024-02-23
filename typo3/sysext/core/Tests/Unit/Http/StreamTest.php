@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,17 +39,13 @@ final class StreamTest extends UnitTestCase
         return $path;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canInstantiateWithStreamIdentifier(): void
     {
         self::assertInstanceOf(Stream::class, new Stream('php://memory', 'wb+'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canInstantiateWithStreamResource(): void
     {
         $resource = fopen('php://memory', 'wb+');
@@ -55,9 +53,7 @@ final class StreamTest extends UnitTestCase
         self::assertInstanceOf(Stream::class, $subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isReadableReturnsFalseIfStreamIsNotReadable(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -66,18 +62,14 @@ final class StreamTest extends UnitTestCase
         self::assertFalse($subject->isReadable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isWritableReturnsFalseIfStreamIsNotWritable(): void
     {
         $subject = new Stream('php://memory', 'r');
         self::assertFalse($subject->isWritable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringRetrievesFullContentsOfStream(): void
     {
         $message = 'foo bar';
@@ -86,9 +78,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals($message, (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detachReturnsResource(): void
     {
         $resource = fopen('php://memory', 'wb+');
@@ -96,18 +86,14 @@ final class StreamTest extends UnitTestCase
         self::assertSame($resource, $subject->detach());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorRaisesExceptionWhenPassingInvalidStreamResource(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Stream(['  THIS WILL NOT WORK  ']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringSerializationReturnsEmptyStringWhenStreamIsNotReadable(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -117,9 +103,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals('', $subject->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function closeClosesResource(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -132,9 +116,7 @@ final class StreamTest extends UnitTestCase
         self::assertFalse($isResource);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function closeUnsetsResource(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -145,9 +127,7 @@ final class StreamTest extends UnitTestCase
         self::assertNull($subject->detach());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function closeDoesNothingAfterDetach(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -160,9 +140,7 @@ final class StreamTest extends UnitTestCase
         self::assertSame($resource, $detached);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSizeReportsNullWhenNoResourcePresent(): void
     {
         $subject = new Stream('php://memory', 'wb+');
@@ -170,9 +148,7 @@ final class StreamTest extends UnitTestCase
         self::assertNull($subject->getSize());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tellReportsCurrentPositionInResource(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -183,9 +159,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals(2, $subject->tell());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tellRaisesExceptionIfResourceIsDetached(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -199,9 +173,7 @@ final class StreamTest extends UnitTestCase
         $subject->tell();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function eofReportsFalseWhenNotAtEndOfStream(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -212,9 +184,7 @@ final class StreamTest extends UnitTestCase
         self::assertFalse($subject->eof());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function eofReportsTrueWhenAtEndOfStream(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -227,9 +197,7 @@ final class StreamTest extends UnitTestCase
         self::assertTrue($subject->eof());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function eofReportsTrueWhenStreamIsDetached(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -241,9 +209,7 @@ final class StreamTest extends UnitTestCase
         self::assertTrue($subject->eof());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isSeekableReturnsTrueForReadableStreams(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -253,9 +219,7 @@ final class StreamTest extends UnitTestCase
         self::assertTrue($subject->isSeekable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isSeekableReturnsFalseForDetachedStreams(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -266,9 +230,7 @@ final class StreamTest extends UnitTestCase
         self::assertFalse($subject->isSeekable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function seekAdvancesToGivenOffsetOfStream(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -279,9 +241,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals(2, $subject->tell());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rewindResetsToStartOfStream(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -293,9 +253,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals(0, $subject->tell());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function seekRaisesExceptionWhenStreamIsDetached(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -308,9 +266,7 @@ final class StreamTest extends UnitTestCase
         $subject->seek(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isWritableReturnsFalseWhenStreamIsDetached(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -321,9 +277,7 @@ final class StreamTest extends UnitTestCase
         self::assertFalse($subject->isWritable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeRaisesExceptionWhenStreamIsDetached(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -336,9 +290,7 @@ final class StreamTest extends UnitTestCase
         $subject->write('bar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isReadableReturnsFalseWhenStreamIsDetached(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -349,9 +301,7 @@ final class StreamTest extends UnitTestCase
         self::assertFalse($subject->isReadable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function readRaisesExceptionWhenStreamIsDetached(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -364,9 +314,7 @@ final class StreamTest extends UnitTestCase
         $subject->read(4096);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function readReturnsEmptyStringWhenAtEndOfFile(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -379,9 +327,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals('', $subject->read(4096));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContentsReturnsEmptyStringIfStreamIsNotReadable(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -404,10 +350,8 @@ final class StreamTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidResourcesDataProvider
-     * @test
-     */
+    #[DataProvider('invalidResourcesDataProvider')]
+    #[Test]
     public function attachWithNonStringNonResourceRaisesExceptionByType($resource): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -416,9 +360,7 @@ final class StreamTest extends UnitTestCase
         $subject->attach($resource);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attachWithNonStringNonResourceRaisesExceptionByString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -427,9 +369,7 @@ final class StreamTest extends UnitTestCase
         $subject->attach('foo-bar-baz');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attachWithResourceAttachesResource(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -441,9 +381,7 @@ final class StreamTest extends UnitTestCase
         self::assertSame($resource, $reflection->getValue($subject));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attachWithStringRepresentingResourceCreatesAndAttachesResource(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -456,9 +394,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals('FooBar', (string)$subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContentsShouldGetFullStreamContents(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -472,9 +408,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals('FooBar', $subject->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContentsShouldReturnStreamContentsFromCurrentPointer(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -488,9 +422,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals('Bar', $subject->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMetadataReturnsAllMetadataWhenNoKeyPresent(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -502,9 +434,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals($expected, $subject->getMetadata());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMetadataReturnsDataForSpecifiedKey(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -517,9 +447,7 @@ final class StreamTest extends UnitTestCase
         self::assertEquals($expected, $subject->getMetadata('uri'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMetadataReturnsNullIfNoDataExistsForKey(): void
     {
         $fileName = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
@@ -530,9 +458,7 @@ final class StreamTest extends UnitTestCase
         self::assertNull($subject->getMetadata('TOTALLY_MADE_UP'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSizeReturnsStreamSize(): void
     {
         $resource = fopen(__FILE__, 'r');

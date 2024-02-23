@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Validation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -97,10 +99,8 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateRedirectUrlClearsUrlDataProvider
-     */
+    #[DataProvider('validateRedirectUrlClearsUrlDataProvider')]
+    #[Test]
     public function validateRedirectUrlClearsUrl(string $url): void
     {
         Environment::initialize(
@@ -135,10 +135,8 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateRedirectUrlKeepsCleanUrlDataProvider
-     */
+    #[DataProvider('validateRedirectUrlKeepsCleanUrlDataProvider')]
+    #[Test]
     public function validateRedirectUrlKeepsCleanUrl(string $url): void
     {
         Environment::initialize(
@@ -170,10 +168,8 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider
-     */
+    #[DataProvider('validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider')]
+    #[Test]
     public function validateRedirectUrlClearsInvalidUrlInSubdirectory(string $url): void
     {
         GeneralUtility::flushInternalRuntimeCaches();
@@ -198,10 +194,8 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider
-     */
+    #[DataProvider('validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider')]
+    #[Test]
     public function validateRedirectUrlKeepsCleanUrlInSubdirectory(string $url): void
     {
         Environment::initialize(
@@ -223,7 +217,6 @@ final class RedirectUrlValidatorTest extends UnitTestCase
     /**************************************************
      * Tests concerning isInCurrentDomain
      **************************************************/
-
     /**
      * Dataprovider for isInCurrentDomainIgnoresScheme
      */
@@ -254,12 +247,12 @@ final class RedirectUrlValidatorTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider isInCurrentDomainIgnoresSchemeDataProvider
      * @param string $host $_SERVER['HTTP_HOST']
      * @param string $https $_SERVER['HTTPS']
      * @param string $url The url to test
      */
+    #[DataProvider('isInCurrentDomainIgnoresSchemeDataProvider')]
+    #[Test]
     public function isInCurrentDomainIgnoresScheme(string $host, string $https, string $url): void
     {
         Environment::initialize(
@@ -300,11 +293,11 @@ final class RedirectUrlValidatorTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider
      * @param string $host $_SERVER['HTTP_HOST']
      * @param string $url The url to test
      */
+    #[DataProvider('isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider')]
+    #[Test]
     public function isInCurrentDomainReturnsFalseIfDomainsAreDifferent(string $host, string $url): void
     {
         $_SERVER['HTTP_HOST'] = $host;
@@ -321,10 +314,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
     /**************************************************
      * Tests concerning isInLocalDomain
      **************************************************/
-
-    /**
-     * @test
-     */
+    #[Test]
     public function isInLocalDomainValidatesSites(): void
     {
         $url = 'http://example.com';

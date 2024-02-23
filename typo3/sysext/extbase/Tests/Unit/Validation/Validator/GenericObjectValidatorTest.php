@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
@@ -25,17 +27,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GenericObjectValidatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorShouldReturnErrorsIfTheValueIsNoObjectAndNotNull(): void
     {
         self::assertTrue((new GenericObjectValidator())->validate('foo')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorShouldReturnNoErrorsIfTheValueIsNull(): void
     {
         self::assertFalse((new GenericObjectValidator())->validate(null)->hasErrors());
@@ -75,14 +73,13 @@ final class GenericObjectValidatorTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider dataProviderForValidator
-     *
      * @param mixed $objectToBeValidated
      * @param mixed $validationResultForFoo
      * @param mixed $validationResultForBar
      * @param mixed $errors
      */
+    #[DataProvider('dataProviderForValidator')]
+    #[Test]
     public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($objectToBeValidated, $validationResultForFoo, $validationResultForBar, $errors): void
     {
         $validator = new GenericObjectValidator();
@@ -103,9 +100,7 @@ final class GenericObjectValidatorTest extends UnitTestCase
         self::assertEquals($errors, $validator->validate($objectToBeValidated)->getFlattenedErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateCanHandleRecursiveTargetsWithoutEndlessLooping(): void
     {
         $A = new class () {
@@ -128,9 +123,7 @@ final class GenericObjectValidatorTest extends UnitTestCase
         self::assertFalse($aValidator->validate($A)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateDetectsFailuresInRecursiveTargetsI(): void
     {
         $A = new class () {
@@ -162,9 +155,7 @@ final class GenericObjectValidatorTest extends UnitTestCase
         self::assertSame(['b.uuid' => [$error]], $aValidator->validate($A)->getFlattenedErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateDetectsFailuresInRecursiveTargetsII(): void
     {
         $A = new class () {
@@ -198,9 +189,7 @@ final class GenericObjectValidatorTest extends UnitTestCase
         self::assertSame(['b.uuid' => [$error1], 'uuid' => [$error1]], $aValidator->validate($A)->getFlattenedErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateDetectsFailuresInRecursiveTargetsIII(): void
     {
         // Create to test-entities. Use the same uuid to make the same validator trigger on both objects

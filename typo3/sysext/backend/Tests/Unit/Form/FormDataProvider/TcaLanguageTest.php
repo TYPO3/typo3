@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaLanguage;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -42,18 +44,14 @@ final class TcaLanguageTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataIgnoresEmptyOrWrongTcaType(): void
     {
         $input = $this->getDefaultResultArray(['config' => ['type' => 'none']]);
         self::assertEquals($input, (new TcaLanguage())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRespectsCustomRenderType(): void
     {
         $input = $this->getDefaultResultArray(['config' => ['renderType' => 'customRenderType']]);
@@ -64,9 +62,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfAnItemIsNotAnArray(): void
     {
         $input = $this->getDefaultResultArray(['config' => ['items' => ['foo']]]);
@@ -77,9 +73,7 @@ final class TcaLanguageTest extends UnitTestCase
         (new TcaLanguage())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsAllSiteLanguages(): void
     {
         $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages());
@@ -99,9 +93,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataOmitsLanguageAllForPages(): void
     {
         $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), [], ['tableName' => 'pages']);
@@ -119,9 +111,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataOmitsLanguageAllIfNotAllowed(): void
     {
         $systemLanguages =  $this->getDefaultSystemLanguages();
@@ -143,9 +133,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsUserDefinedItems(): void
     {
         $input = $this->getDefaultResultArray(
@@ -178,9 +166,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsUserDefinedItemsOnEmptySystemLanguages(): void
     {
         $input = $this->getDefaultResultArray(
@@ -207,9 +193,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesAllItemsByEmptyKeepItems(): void
     {
         $input = $this->getDefaultResultArray(
@@ -232,9 +216,7 @@ final class TcaLanguageTest extends UnitTestCase
         self::assertEmpty((new TcaLanguage())->addData($input)['processedTca']['columns']['aField']['config']['items']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRespectsKeepItems(): void
     {
         $input = $this->getDefaultResultArray(
@@ -265,9 +247,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRespectsAddItems(): void
     {
         $input = $this->getDefaultResultArray(
@@ -303,9 +283,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRespectsRemoveItems(): void
     {
         $input = $this->getDefaultResultArray(
@@ -336,9 +314,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsInvalidDatabaseValue(): void
     {
         $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), ['aField' => 5], ['tableName' => 'pages']);
@@ -356,9 +332,7 @@ final class TcaLanguageTest extends UnitTestCase
             (new TcaLanguage())->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRepsetcsConfigurationOnAddingInvalidDatabaseValue(): void
     {
         $input = $this->getDefaultResultArray(
@@ -424,9 +398,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRespectsAltLabels(): void
     {
         $input = $this->getDefaultResultArray(
@@ -464,9 +436,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRespectsAltIcons(): void
     {
         $input = $this->getDefaultResultArray(
@@ -504,9 +474,7 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesLastItemIfDivider(): void
     {
         $input = $this->getDefaultResultArray(
@@ -539,10 +507,8 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider addDataAddsAllSiteLanguagesDataProvider
-     */
+    #[DataProvider('addDataAddsAllSiteLanguagesDataProvider')]
+    #[Test]
     public function addDataAddsAllSiteLanguagesFromAllSites(array $config): void
     {
         $siteFinder = $this->createMock(SiteFinder::class);

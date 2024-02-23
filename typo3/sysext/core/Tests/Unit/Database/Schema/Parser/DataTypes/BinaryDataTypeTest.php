@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BinaryDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarBinaryDataType;
@@ -52,10 +54,8 @@ final class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseBinaryDataTypeProvider
-     */
+    #[DataProvider('canParseBinaryDataTypeProvider')]
+    #[Test]
     public function canParseDataType(string $columnDefinition, string $className, int $length): void
     {
         $subject = $this->createSubject($columnDefinition);
@@ -64,9 +64,7 @@ final class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
         self::assertSame($length, $subject->dataType->getLength());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lengthIsRequiredForVarBinaryType(): void
     {
         $this->expectException(StatementException::class);

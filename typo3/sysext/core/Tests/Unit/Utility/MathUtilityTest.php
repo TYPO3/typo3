@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -42,18 +44,14 @@ final class MathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider
-     */
+    #[DataProvider('forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider')]
+    #[Test]
     public function forceIntegerInRangeForcesIntegerIntoDefaultBoundaries($expected, $value): void
     {
         self::assertEquals($expected, MathUtility::forceIntegerInRange($value, 0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forceIntegerInRangeSetsDefaultValueIfZeroValueIsGiven(): void
     {
         self::assertEquals(42, MathUtility::forceIntegerInRange('', 0, 2000000000, 42));
@@ -62,17 +60,13 @@ final class MathUtilityTest extends UnitTestCase
     //////////////////////////////////
     // Tests concerning convertToPositiveInteger
     //////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function convertToPositiveIntegerReturnsZeroForNegativeValues(): void
     {
         self::assertEquals(0, MathUtility::convertToPositiveInteger(-123));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertToPositiveIntegerReturnsTheInputValueForPositiveValues(): void
     {
         self::assertEquals(123, MathUtility::convertToPositiveInteger(123));
@@ -99,10 +93,8 @@ final class MathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider functionCanBeInterpretedAsIntegerValidDataProvider
-     */
+    #[DataProvider('functionCanBeInterpretedAsIntegerValidDataProvider')]
+    #[Test]
     public function canBeInterpretedAsIntegerReturnsTrue($int): void
     {
         self::assertTrue(MathUtility::canBeInterpretedAsInteger($int));
@@ -148,10 +140,8 @@ final class MathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider functionCanBeInterpretedAsIntegerInvalidDataProvider
-     */
+    #[DataProvider('functionCanBeInterpretedAsIntegerInvalidDataProvider')]
+    #[Test]
     public function canBeInterpretedAsIntegerReturnsFalse($int): void
     {
         self::assertFalse(MathUtility::canBeInterpretedAsInteger($int));
@@ -179,10 +169,8 @@ final class MathUtilityTest extends UnitTestCase
         return array_merge($intTestcases, $floatTestcases);
     }
 
-    /**
-     * @test
-     * @dataProvider functionCanBeInterpretedAsFloatValidDataProvider
-     */
+    #[DataProvider('functionCanBeInterpretedAsFloatValidDataProvider')]
+    #[Test]
     public function canBeInterpretedAsFloatReturnsTrue($val): void
     {
         self::assertTrue(MathUtility::canBeInterpretedAsFloat($val));
@@ -224,10 +212,8 @@ final class MathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider functionCanBeInterpretedAsFloatInvalidDataProvider
-     */
+    #[DataProvider('functionCanBeInterpretedAsFloatInvalidDataProvider')]
+    #[Test]
     public function canBeInterpretedAsFloatReturnsFalse($int): void
     {
         self::assertFalse(MathUtility::canBeInterpretedAsFloat($int));
@@ -260,10 +246,8 @@ final class MathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider calculateWithPriorityToAdditionAndSubtractionDataProvider
-     */
+    #[DataProvider('calculateWithPriorityToAdditionAndSubtractionDataProvider')]
+    #[Test]
     public function calculateWithPriorityToAdditionAndSubtractionCorrectlyCalculatesExpression($expected, $expression): void
     {
         self::assertEquals($expected, MathUtility::calculateWithPriorityToAdditionAndSubtraction($expression));
@@ -288,10 +272,8 @@ final class MathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider calculateWithParenthesesDataProvider
-     */
+    #[DataProvider('calculateWithParenthesesDataProvider')]
+    #[Test]
     public function calculateWithParenthesesCorrectlyCalculatesExpression($expected, $expression): void
     {
         self::assertEquals($expected, MathUtility::calculateWithParentheses($expression));
@@ -300,33 +282,25 @@ final class MathUtilityTest extends UnitTestCase
     //////////////////////////////////
     // Tests concerning isIntegerInRange
     //////////////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function isIntegerInRangeIncludesLowerBoundary(): void
     {
         self::assertTrue(MathUtility::isIntegerInRange(1, 1, 2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isIntegerInRangeIncludesUpperBoundary(): void
     {
         self::assertTrue(MathUtility::isIntegerInRange(2, 1, 2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isIntegerInRangeAcceptsValueInRange(): void
     {
         self::assertTrue(MathUtility::isIntegerInRange(10, 1, 100));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isIntegerInRangeRejectsValueOutsideOfRange(): void
     {
         self::assertFalse(MathUtility::isIntegerInRange(10, 1, 2));
@@ -348,10 +322,8 @@ final class MathUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isIntegerInRangeRejectsOtherDataTypesDataProvider
-     */
+    #[DataProvider('isIntegerInRangeRejectsOtherDataTypesDataProvider')]
+    #[Test]
     public function isIntegerInRangeRejectsOtherDataTypes($inputValue): void
     {
         self::assertFalse(MathUtility::isIntegerInRange($inputValue, 0, 10));

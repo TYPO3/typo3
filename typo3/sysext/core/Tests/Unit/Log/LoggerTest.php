@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogRecord;
@@ -27,18 +29,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LoggerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getNameGetsLoggerName(): void
     {
         $logger = new Logger('test.core.log');
         self::assertSame('test.core.log', $logger->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loggerDoesNotLogRecordsLessCriticalThanLogLevel(): void
     {
         $logger = new Logger('test.core.log');
@@ -49,9 +47,7 @@ final class LoggerTest extends UnitTestCase
         self::assertEmpty($writer->getRecords());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loggerCallsProcessor(): void
     {
         $component = 'test.core.log';
@@ -68,9 +64,7 @@ final class LoggerTest extends UnitTestCase
         $logger->warning($message);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loggerLogsRecord(): void
     {
         $logger = new Logger('test.core.log');
@@ -82,9 +76,7 @@ final class LoggerTest extends UnitTestCase
         $logger->warning('test');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loggerLogsRecordsAtLeastAsCriticalAsLogLevel(): void
     {
         $logger = new Logger('test.core.log');
@@ -109,10 +101,8 @@ final class LoggerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider loggerLogsRecordsThroughShorthandMethodDataProvider
-     */
+    #[DataProvider('loggerLogsRecordsThroughShorthandMethodDataProvider')]
+    #[Test]
     public function loggerLogsRecordsThroughShorthandMethod(string $shorthandMethod): void
     {
         $logger = new Logger('test.core.log');
@@ -122,9 +112,7 @@ final class LoggerTest extends UnitTestCase
         self::assertNotEmpty($writer->getRecords());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loggerLogsRecordsMoreCriticalThanLogLevel(): void
     {
         $logger = new Logger('test.core.log');
@@ -135,9 +123,7 @@ final class LoggerTest extends UnitTestCase
         self::assertNotEmpty($writer->getRecords());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addWriterAddsWriterToTheSpecifiedLevel(): void
     {
         $logger = new Logger('test.core.log');
@@ -147,9 +133,7 @@ final class LoggerTest extends UnitTestCase
         self::assertContains($writer, $writers[LogLevel::NOTICE]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addWriterAddsWriterAlsoToHigherLevelsThanSpecified(): void
     {
         $logger = new Logger('test.core.log');

@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Redirects\ViewHelpers\TargetPageIdViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TargetPageIdViewHelperTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function nonTypo3TargetInRenderStaticReturnsEmptyString(): void
     {
         $renderingContext = new class () extends RenderingContext {
@@ -35,9 +34,7 @@ final class TargetPageIdViewHelperTest extends UnitTestCase
         self::assertSame('', TargetPageIdViewHelper::renderStatic($args, static fn() => '', $renderingContext));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyTargetInRenderStaticReturnsEmptyString(): void
     {
         $renderingContext = new class () extends RenderingContext {

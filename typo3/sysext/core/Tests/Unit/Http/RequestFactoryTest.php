@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
@@ -28,18 +29,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class RequestFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function implementsPsr17FactoryInterface(): void
     {
         $factory = new RequestFactory(new GuzzleClientFactory());
         self::assertInstanceOf(RequestFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requestHasMethodSet(): void
     {
         $factory = new RequestFactory(new GuzzleClientFactory());
@@ -47,9 +44,7 @@ final class RequestFactoryTest extends UnitTestCase
         self::assertSame('POST', $request->getMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requestFactoryHasAWritableEmptyBody(): void
     {
         $factory = new RequestFactory(new GuzzleClientFactory());
@@ -67,9 +62,7 @@ final class RequestFactoryTest extends UnitTestCase
         self::assertSame('Foo', $body->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function raisesExceptionForInvalidMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);

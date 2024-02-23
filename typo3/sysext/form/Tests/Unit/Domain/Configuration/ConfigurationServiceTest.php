@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
@@ -29,9 +31,7 @@ final class ConfigurationServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPrototypeConfigurationReturnsPrototypeConfiguration(): void
     {
         $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
@@ -52,9 +52,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         self::assertSame($expected, $configurationService->getPrototypeConfiguration('standard'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPrototypeConfigurationThrowsExceptionIfNoPrototypeFound(): void
     {
         $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
@@ -72,9 +70,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->getPrototypeConfiguration('standard');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSelectablePrototypeNamesDefinedInFormEditorSetupReturnsPrototypes(): void
     {
         $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
@@ -104,10 +100,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         self::assertSame($expected, $configurationService->getSelectablePrototypeNamesDefinedInFormEditorSetup());
     }
 
-    /**
-     * @test
-     * @dataProvider isFormElementPropertyDefinedInFormEditorSetupDataProvider
-     */
+    #[DataProvider('isFormElementPropertyDefinedInFormEditorSetupDataProvider')]
+    #[Test]
     public function isFormElementPropertyDefinedInFormEditorSetup(
         array $configuration,
         ValidationDto $validationDto,
@@ -130,10 +124,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider
-     */
+    #[DataProvider('isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider')]
+    #[Test]
     public function isPropertyCollectionPropertyDefinedInFormEditorSetup(
         array $configuration,
         ValidationDto $validationDto,
@@ -156,10 +148,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider
-     */
+    #[DataProvider('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider')]
+    #[Test]
     public function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
         array $configuration,
         ValidationDto $validationDto,
@@ -182,10 +172,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider
-     */
+    #[DataProvider('isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider')]
+    #[Test]
     public function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
         array $configuration,
         ValidationDto $validationDto,
@@ -210,9 +198,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFormElementPredefinedDefaultValueFromFormEditorSetupThrowsExceptionIfNoPredefinedDefaultIsAvailable(
     ): void {
         $this->expectException(PropertyException::class);
@@ -233,9 +219,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->getFormElementPredefinedDefaultValueFromFormEditorSetup($validationDto);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFormElementPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue(): void
     {
         $expected = 'foo';
@@ -266,9 +250,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupThrowsExceptionIfNoPredefinedDefaultIsAvailable(
     ): void {
         $this->expectException(PropertyException::class);
@@ -296,9 +278,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup($validationDto);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue(): void
     {
         $expected = 'foo';
@@ -336,10 +316,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider isFormElementTypeCreatableByFormEditorDataProvider
-     */
+    #[DataProvider('isFormElementTypeCreatableByFormEditorDataProvider')]
+    #[Test]
     public function isFormElementTypeCreatableByFormEditor(
         array $configuration,
         ValidationDto $validationDto,
@@ -362,10 +340,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider
-     */
+    #[DataProvider('isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider')]
+    #[Test]
     public function isPropertyCollectionElementIdentifierCreatableByFormEditor(
         array $configuration,
         ValidationDto $validationDto,
@@ -388,9 +364,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFormElementTypeDefinedInFormSetup(): void
     {
         $configuration = [
@@ -415,9 +389,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         self::assertFalse($configurationService->isFormElementTypeDefinedInFormSetup($validationDto));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addAdditionalPropertyPathsFromHookThrowsExceptionIfHookResultIsNoFormDefinitionValidation(): void
     {
         $this->expectException(PropertyException::class);
@@ -429,9 +401,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->_call('addAdditionalPropertyPathsFromHook', '', '', $input, []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPrototypeDoesNotMatch(): void
     {
         $this->expectException(PropertyException::class);
@@ -444,9 +414,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addAdditionalPropertyPathsFromHookThrowsExceptionIfFormElementTypeDoesNotMatch(): void
     {
         $this->expectException(PropertyException::class);
@@ -466,9 +434,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPropertyCollectionNameIsInvalid(): void
     {
         $this->expectException(PropertyException::class);
@@ -488,9 +454,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         $configurationService->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addAdditionalPropertyPathsFromHookAddPaths(): void
     {
         $configurationService = $this->getAccessibleMock(
@@ -547,10 +511,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider
-     */
+    #[DataProvider('buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider')]
+    #[Test]
     public function buildFormDefinitionValidationConfigurationFromFormEditorSetup(array $configuration, array $expected): void
     {
         $configurationService = $this->getAccessibleMock(
@@ -621,10 +583,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider
-     */
+    #[DataProvider('formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider')]
+    #[Test]
     public function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
         array $configuration,
         ValidationDto $validationDto,
@@ -647,9 +607,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllowedValuesForFormElementPropertyFromFormEditorSetupThrowsExceptionIfNoLimitedAllowedValuesAreAvailable(): void
     {
         $this->expectException(PropertyException::class);
@@ -696,10 +654,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider
-     */
+    #[DataProvider('getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider')]
+    #[Test]
     public function getAllowedValuesForFormElementPropertyFromFormEditorSetup(
         array $configuration,
         ValidationDto $validationDto,
@@ -753,10 +709,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider
-     */
+    #[DataProvider('propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider')]
+    #[Test]
     public function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
         array $configuration,
         ValidationDto $validationDto,
@@ -779,9 +733,7 @@ final class ConfigurationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupThrowsExceptionIfNoLimitedAllowedValuesAreAvailable(): void
     {
         $this->expectException(PropertyException::class);
@@ -828,10 +780,8 @@ final class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider
-     */
+    #[DataProvider('getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider')]
+    #[Test]
     public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup(
         array $configuration,
         ValidationDto $validationDto,

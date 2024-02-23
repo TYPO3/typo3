@@ -17,23 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FeaturesTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function nonExistingFeatureReturnsFalse(): void
     {
         $features = new Features();
         self::assertFalse($features->isFeatureEnabled('nonExistingFeature'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfExistingDisabledFeatureIsDisabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['nativeFunctionality'] = false;
@@ -41,9 +38,7 @@ final class FeaturesTest extends UnitTestCase
         self::assertFalse($features->isFeatureEnabled('nativeFunctionality'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfExistingEnabledFeatureIsEnabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['nativeFunctionality'] = true;
@@ -51,9 +46,7 @@ final class FeaturesTest extends UnitTestCase
         self::assertTrue($features->isFeatureEnabled('nativeFunctionality'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfExistingEnabledFeatureIsDisabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['nativeFunctionality'] = false;

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\Service\ClearTableService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClearTableServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function clearSelectedTableThrowsWithInvalidTableName(): void
     {
         $this->expectException(\RuntimeException::class);

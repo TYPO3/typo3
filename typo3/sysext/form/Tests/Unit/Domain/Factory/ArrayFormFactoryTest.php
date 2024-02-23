@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Factory;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Section;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ArrayFormFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addNestedRenderableThrowsExceptionIfIdentifierIsMissing(): void
     {
         $this->expectException(IdentifierNotValidException::class);
@@ -39,9 +38,7 @@ final class ArrayFormFactoryTest extends UnitTestCase
         $arrayFormFactory->_call('addNestedRenderable', [], $section);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNestedRenderableSkipChildElementRenderingIfCompositeElementIsUnknown(): void
     {
         $unknownElement = new UnknownFormElement('test-2', 'test');

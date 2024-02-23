@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
@@ -36,10 +38,8 @@ final class CacheHashConfigurationTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider nonArrayValueThrowsExceptionDataProvider
-     */
+    #[DataProvider('nonArrayValueThrowsExceptionDataProvider')]
+    #[Test]
     public function nonArrayValueThrowsException(string $aspect, mixed $value): void
     {
         $this->expectException(\LogicException::class);
@@ -60,10 +60,8 @@ final class CacheHashConfigurationTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider nonScalarValueThrowsExceptionDataProvider
-     */
+    #[DataProvider('nonScalarValueThrowsExceptionDataProvider')]
+    #[Test]
     public function nonScalarValueThrowsException(string $aspect, mixed $value): void
     {
         $this->expectException(\LogicException::class);
@@ -84,10 +82,8 @@ final class CacheHashConfigurationTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider emptyIndicatedValueThrowsExceptionDataProvider
-     */
+    #[DataProvider('emptyIndicatedValueThrowsExceptionDataProvider')]
+    #[Test]
     public function emptyIndicatedValueThrowsException(string $aspect, string $value): void
     {
         $this->expectException(\LogicException::class);
@@ -110,10 +106,8 @@ final class CacheHashConfigurationTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider equalsResolvesParameterValueDataProvider
-     */
+    #[DataProvider('equalsResolvesParameterValueDataProvider')]
+    #[Test]
     public function equalsResolvesParameterValue(string $aspect, array $values, array $positives, array $negatives): void
     {
         $configuration = new CacheHashConfiguration([$aspect => $values]);
@@ -140,10 +134,8 @@ final class CacheHashConfigurationTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider startsWithResolvesParameterValueDataProvider
-     */
+    #[DataProvider('startsWithResolvesParameterValueDataProvider')]
+    #[Test]
     public function startsWithResolvesParameterValue(string $aspect, array $values, array $positives, array $negatives): void
     {
         $configuration = new CacheHashConfiguration([$aspect => $values]);
@@ -170,10 +162,8 @@ final class CacheHashConfigurationTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider containsResolvesParameterValueDataProvider
-     */
+    #[DataProvider('containsResolvesParameterValueDataProvider')]
+    #[Test]
     public function containsResolvesParameterValue(string $aspect, array $values, array $positives, array $negatives): void
     {
         $configuration = new CacheHashConfiguration([$aspect => $values]);
@@ -191,10 +181,8 @@ final class CacheHashConfigurationTest extends TestCase
         return self::containsResolvesParameterValueDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider appliesResolvesParameterValueDataProvider
-     */
+    #[DataProvider('appliesResolvesParameterValueDataProvider')]
+    #[Test]
     public function appliesResolvesParameterValue(string $aspect, array $values, array $positives, array $negatives): void
     {
         $configuration = new CacheHashConfiguration([$aspect => $values]);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Database\Query\Restriction;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction\AbstractRestrictionTestCase;
 
@@ -24,9 +25,7 @@ final class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA'] = [
@@ -42,9 +41,7 @@ final class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('(("aTable"."t3ver_state" <= 0) AND ("aTable"."t3ver_oid" = 0))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsNonLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA'] = [
@@ -60,9 +57,7 @@ final class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         self::assertSame('(((("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_wsid" = 42))) AND ("aTable"."t3ver_oid" = 0))', (string)$expression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildExpressionAddsNonLiveWorkspaceExclusiveWhereClause(): void
     {
         $GLOBALS['TCA'] = [

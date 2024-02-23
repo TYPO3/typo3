@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\RecordLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RecordLinkHandlerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function asStringReturnsUrl(): void
     {
         $subject = new RecordLinkHandler();
@@ -57,10 +57,8 @@ final class RecordLinkHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider missingParameterDataProvider
-     */
+    #[DataProvider('missingParameterDataProvider')]
+    #[Test]
     public function resolveHandlerDataThrowsExceptionIfParameterIsMissing(array $parameters): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -70,10 +68,8 @@ final class RecordLinkHandlerTest extends UnitTestCase
         $subject->resolveHandlerData($parameters);
     }
 
-    /**
-     * @test
-     * @dataProvider missingParameterDataProvider
-     */
+    #[DataProvider('missingParameterDataProvider')]
+    #[Test]
     public function asStringThrowsExceptionIfParameterIsMissing(array $parameters): void
     {
         $this->expectException(\InvalidArgumentException::class);

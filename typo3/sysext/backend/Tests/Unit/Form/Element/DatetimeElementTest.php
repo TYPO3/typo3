@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\DatetimeElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -75,10 +77,8 @@ final class DatetimeElementTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderAppliesCorrectTimestampConversionDataProvider
-     */
+    #[DataProvider('renderAppliesCorrectTimestampConversionDataProvider')]
+    #[Test]
     public function renderAppliesCorrectTimestampConversion(int $input, string $serverTimezone, string $expectedOutput): void
     {
         date_default_timezone_set($serverTimezone);

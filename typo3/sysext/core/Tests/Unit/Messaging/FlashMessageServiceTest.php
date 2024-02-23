@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class FlashMessageServiceTest extends UnitTestCase
         $this->flashMessageService = new FlashMessageService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMessageQueueByIdentifierRegistersNewFlashmessageQueuesOnlyOnce(): void
     {
         self::assertSame(

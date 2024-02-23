@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,9 +30,7 @@ use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 
 final class AbstractNodeTest extends AbstractFolderStructureTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getNameReturnsSetName(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
@@ -40,9 +39,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($name, $node->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetPermissionReturnsSetTargetPermission(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
@@ -51,9 +48,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($permission, $node->_call('getTargetPermission'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getChildrenReturnsSetChildren(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
@@ -62,9 +57,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($children, $node->_call('getChildren'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParentReturnsSetParent(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
@@ -73,9 +66,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($parent, $node->_call('getParent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAbsolutePathCallsParentForPathAndAppendsOwnName(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
@@ -88,9 +79,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame($parentPath . '/' . $name, $node->getAbsolutePath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isWritableCallsParentIsWritable(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
@@ -100,9 +89,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         $node->isWritable();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isWritableReturnsWritableStatusOfParent(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
@@ -112,9 +99,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->isWritable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existsReturnsTrueIfNodeExists(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
@@ -123,9 +108,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->_call('exists'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existsReturnsTrueIfIsLinkAndTargetIsDead(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
@@ -141,9 +124,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->_call('exists'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existsReturnsFalseIfNodeNotExists(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
@@ -152,9 +133,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertFalse($node->_call('exists'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionThrowsExceptionIfPermissionAreAlreadyCorrect(): void
     {
         $node = $this->getAccessibleMock(
@@ -171,9 +150,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         $node->_call('fixPermission');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fixPermissionReturnsOkStatusIfPermissionCanBeFixedAndSetsPermissionToCorrectValue(): void
     {
         $node = $this->getAccessibleMock(
@@ -196,9 +173,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame('2770', $resultDirectoryPermissions);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPermissionCorrectReturnsTrueOnWindowsOs(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['isWindowsOs'], [], '', false);
@@ -206,9 +181,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertTrue($node->_call('isPermissionCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPermissionCorrectReturnsFalseIfTargetPermissionAndCurrentPermissionAreNotIdentical(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['isWindowsOs', 'getCurrentPermission'], [], '', false);
@@ -218,9 +191,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertFalse($node->_call('isPermissionCorrect'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentPermissionReturnsCurrentDirectoryPermission(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
@@ -231,9 +202,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame('0444', $node->_call('getCurrentPermission'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentPermissionReturnsCurrentFilePermission(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
@@ -245,9 +214,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame('0770', $node->_call('getCurrentPermission'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRelativePathBelowSiteRootThrowsExceptionIfGivenPathIsNotBelowPathSiteConstant(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -256,9 +223,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         $node->_call('getRelativePathBelowSiteRoot', '/tmp');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRelativePathCallsGetAbsolutePathIfPathIsNull(): void
     {
         $node = $this->getAccessibleMock(
@@ -272,9 +237,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         $node->_call('getRelativePathBelowSiteRoot', null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRelativePathBelowSiteRootReturnsSingleForwardSlashIfGivenPathEqualsPathSiteConstant(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
@@ -282,9 +245,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         self::assertSame('/', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRelativePathBelowSiteRootReturnsSubPath(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);

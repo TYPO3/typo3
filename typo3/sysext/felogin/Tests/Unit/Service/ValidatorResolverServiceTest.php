@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\CMS\FrontendLogin\Service\ValidatorResolverService;
@@ -26,9 +28,7 @@ final class ValidatorResolverServiceTest extends UnitTestCase
 {
     protected ValidatorResolverService $subject;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveShouldReturnEmptyArrayIfEmptyConfigurationIsPassed(): void
     {
         $result = $this->subject->resolve([]);
@@ -36,10 +36,8 @@ final class ValidatorResolverServiceTest extends UnitTestCase
         self::assertEmpty($result->current());
     }
 
-    /**
-     * @test
-     * @dataProvider validatorConfigDataProvider
-     */
+    #[DataProvider('validatorConfigDataProvider')]
+    #[Test]
     public function resolveShouldReturnValidators(array $config): void
     {
         $validators = $this->subject->resolve($config);

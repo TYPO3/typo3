@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
@@ -38,9 +40,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAllFormElementPropertyValuesByHmacThrowsExceptionIfHmacIsInvalid(): void
     {
         $this->expectException(PropertyException::class);
@@ -66,9 +66,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         $typeConverter->_call('validateAllFormElementPropertyValuesByHmac', $input, $sessionToken, $validationDto);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAllFormElementPropertyValuesByHmacThrowsExceptionIfHmacDoesNotExists(): void
     {
         $this->expectException(PropertyException::class);
@@ -90,9 +88,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         $typeConverter->_call('validateAllFormElementPropertyValuesByHmac', $input, $sessionToken, $validationDto);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAllFormElementPropertyValuesByHmacThrowsNoExceptionIfHmacIsValid(): void
     {
         $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
@@ -126,9 +122,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         self::assertFalse($failed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAllPropertyCollectionElementValuesByHmacThrowsExceptionIfHmacIsInvalid(): void
     {
         $this->expectException(PropertyException::class);
@@ -166,9 +160,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAllPropertyCollectionElementValuesByHmacThrowsExceptionIfHmacDoesNotExists(): void
     {
         $this->expectException(PropertyException::class);
@@ -202,9 +194,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAllPropertyCollectionElementValuesByHmacThrowsNoExceptionIfHmacIsValid(): void
     {
         $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
@@ -382,10 +372,8 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateAllPropertyValuesFromCreatableFormElementDataProvider
-     */
+    #[DataProvider('validateAllPropertyValuesFromCreatableFormElementDataProvider')]
+    #[Test]
     public function validateAllPropertyValuesFromCreatableFormElement(
         array $mockConfiguration,
         array $formElement,
@@ -560,10 +548,8 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider
-     */
+    #[DataProvider('validateAllPropertyValuesFromCreatablePropertyCollectionElementDataProvider')]
+    #[Test]
     public function validateAllPropertyValuesFromCreatablePropertyCollectionElement(
         array $mockConfiguration,
         array $formElement,

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -51,9 +52,7 @@ final class ListenerProviderPassTest extends UnitTestCase
         return $container;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function simpleChainsAndDependencies(): void
     {
         $container = $this->getContainerWithListenerProvider([
@@ -88,9 +87,7 @@ final class ListenerProviderPassTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cycleException(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -102,9 +99,7 @@ final class ListenerProviderPassTest extends UnitTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withoutConfiguration(): void
     {
         $container = $this->getContainerWithListenerProvider([]);

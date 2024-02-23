@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\TestingDriver;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DriverRegistryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredDriverClassesCanBeRetrieved(): void
     {
         $className = get_class($this->createMock(DriverInterface::class));
@@ -37,9 +36,7 @@ final class DriverRegistryTest extends UnitTestCase
         self::assertEquals($className, $returnedClassName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerDriverClassThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -48,9 +45,7 @@ final class DriverRegistryTest extends UnitTestCase
         $subject->registerDriverClass(StringUtility::getUniqueId('class_'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTakenByAnotherDriverClass(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -62,9 +57,7 @@ final class DriverRegistryTest extends UnitTestCase
         $subject->registerDriverClass($className2, 'foobar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDriverClassThrowsExceptionIfClassIsNotRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -73,9 +66,7 @@ final class DriverRegistryTest extends UnitTestCase
         $subject->getDriverClass(StringUtility::getUniqueId('class_'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDriverClassAcceptsClassNameIfClassIsRegistered(): void
     {
         $className = get_class($this->createMock(DriverInterface::class));
@@ -84,9 +75,7 @@ final class DriverRegistryTest extends UnitTestCase
         self::assertEquals($className, $subject->getDriverClass($className));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function driverRegistryIsInitializedWithPreconfiguredDrivers(): void
     {
         $className = get_class($this->createMock(DriverInterface::class));
@@ -100,9 +89,7 @@ final class DriverRegistryTest extends UnitTestCase
         self::assertEquals($className, $subject->getDriverClass($shortName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function driverExistsReturnsTrueForAllExistingDrivers(): void
     {
         $className = get_class($this->createMock(DriverInterface::class));
@@ -117,9 +104,7 @@ final class DriverRegistryTest extends UnitTestCase
         self::assertFalse($subject->driverExists(StringUtility::getUniqueId('class')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function driverExistsReturnsFalseIfDriverDoesNotExist(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];

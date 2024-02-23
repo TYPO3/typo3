@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Transport\NullTransport;
@@ -54,9 +55,7 @@ final class TransportFactoryTest extends UnitTestCase
         return $transportFactory;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsSpoolTransportUsingFileSpool(): void
     {
         $mailSettings = [
@@ -88,9 +87,7 @@ final class TransportFactoryTest extends UnitTestCase
         self::assertStringContainsString($mailSettings['transport_spool_filepath'], $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsSpoolTransportUsingMemorySpool(): void
     {
         $mailSettings = [
@@ -119,9 +116,7 @@ final class TransportFactoryTest extends UnitTestCase
         self::assertInstanceOf(MemorySpool::class, $transport);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsSpoolTransportUsingCustomSpool(): void
     {
         $mailSettings = [
@@ -149,9 +144,7 @@ final class TransportFactoryTest extends UnitTestCase
         self::assertSame($mailSettings, $transport->getSettings());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsRuntimeExceptionForInvalidCustomSpool(): void
     {
         $this->expectExceptionCode(1466799482);
@@ -177,9 +170,7 @@ final class TransportFactoryTest extends UnitTestCase
         $this->getSubject($eventDispatcher)->get($mailSettings);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionForMissingDsnConfig(): void
     {
         $this->expectExceptionCode(1615021869);
@@ -192,9 +183,7 @@ final class TransportFactoryTest extends UnitTestCase
         $this->getSubject($eventDispatcher)->get($mailSettings);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dsnTransportCallsDispatchOfDispatcher(): void
     {
         $mailSettings = [
@@ -217,9 +206,7 @@ final class TransportFactoryTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsMailerTransportInterface(): void
     {
         $mailSettings = [
@@ -244,9 +231,7 @@ final class TransportFactoryTest extends UnitTestCase
         self::assertInstanceOf(TransportInterface::class, $transport);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function smtpTransportCallsDispatchOfDispatcher(): void
     {
         $mailSettings = [
@@ -280,9 +265,7 @@ final class TransportFactoryTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sendmailTransportCallsDispatchOfDispatcher(): void
     {
         $mailSettings = [
@@ -316,9 +299,7 @@ final class TransportFactoryTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullTransportCallsDispatchOfDispatcher(): void
     {
         $mailSettings = [
@@ -348,9 +329,7 @@ final class TransportFactoryTest extends UnitTestCase
         $transport->send($message);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function smtpTransportIsCorrectlyConfigured(): void
     {
         $mailSettings = [

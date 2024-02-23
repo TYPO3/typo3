@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,9 +49,8 @@ final class ActionControllerTest extends UnitTestCase
 
     /**
      * Warning: This test asserts multiple things at once to keep the setup short.
-     *
-     * @test
      */
+    #[Test]
     public function createZipFileFromExtensionGeneratesCorrectArchive(): void
     {
         // 42 second of first day in 1970 - used to have achieve stable file names

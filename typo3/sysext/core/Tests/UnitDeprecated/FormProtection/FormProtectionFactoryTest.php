@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\UnitDeprecated\FormProtection;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
@@ -65,9 +66,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
     /////////////////////////
     // Tests concerning get
     /////////////////////////
-    /**
-     * @test
-     */
+    #[Test]
     public function getForNotExistingClassThrowsException(): void
     {
         GeneralUtility::addInstance(FormProtectionFactory::class, $this->subject);
@@ -77,9 +76,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         FormProtectionFactory::get('noSuchClass');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForClassThatIsNoFormProtectionSubclassThrowsException(): void
     {
         GeneralUtility::addInstance(FormProtectionFactory::class, $this->subject);
@@ -89,9 +86,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         FormProtectionFactory::get(\stdClass::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForTypeBackEndWithExistingBackEndReturnsBackEndFormProtection(): void
     {
         GeneralUtility::addInstance(FormProtectionFactory::class, $this->subject);
@@ -107,9 +102,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForTypeBackEndCalledTwoTimesReturnsTheSameInstance(): void
     {
         GeneralUtility::addInstance(FormProtectionFactory::class, $this->subject);
@@ -127,9 +120,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForTypeInstallToolReturnsInstallToolFormProtection(): void
     {
         GeneralUtility::addInstance(FormProtectionFactory::class, $this->subject);
@@ -139,9 +130,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForTypeInstallToolCalledTwoTimesReturnsTheSameInstance(): void
     {
         GeneralUtility::addInstance(FormProtectionFactory::class, $this->subject);
@@ -152,9 +141,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForTypesInstallToolAndDisabledReturnsDifferentInstances(): void
     {
         GeneralUtility::addInstance(FormProtectionFactory::class, $this->subject);

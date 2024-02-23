@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Hooks;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -60,9 +62,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateAvailableTablesTest(): void
     {
         $fieldDefinition = ['items' => [0 => ['label' => '---', 'value' => 0]]];
@@ -98,9 +98,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateAvailablePageTypesTest(): void
     {
         $fieldDefinition = ['items' => []];
@@ -142,9 +140,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateAvailableUserModulesTest(): void
     {
         $moduleProviderMock = $this->createMock(ModuleProvider::class);
@@ -191,10 +187,8 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    /**
-     * @test
-     * @dataProvider populateExcludeFieldsTestDataProvider
-     */
+    #[DataProvider('populateExcludeFieldsTestDataProvider')]
+    #[Test]
     public function populateExcludeFieldsTest(array $tca, array $expectedItems): void
     {
         $GLOBALS['TCA'] = $tca;
@@ -322,9 +316,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateExcludeFieldsWithFlexFormTest(): void
     {
         $GLOBALS['TCA'] = [
@@ -392,10 +384,8 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    /**
-     * @test
-     * @dataProvider populateExplicitAuthValuesTestDataProvider
-     */
+    #[DataProvider('populateExplicitAuthValuesTestDataProvider')]
+    #[Test]
     public function populateExplicitAuthValuesTest(array $tca, array $expectedItems): void
     {
         $GLOBALS['TCA'] = $tca;
@@ -447,9 +437,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateCustomPermissionOptionsTest(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'] = [
@@ -492,9 +480,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateAvailableCategoryFieldsThrowsExceptionOnMissingTable(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -504,9 +490,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         (new TcaItemsProcessorFunctions())->populateAvailableCategoryFields($fieldDefinition);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateAvailableCategoryFieldsThrowsExceptionOnInvalidTable(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -516,10 +500,8 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         (new TcaItemsProcessorFunctions())->populateAvailableCategoryFields($fieldDefinition);
     }
 
-    /**
-     * @test
-     * @dataProvider populateAvailableCategoryFieldsDataProvider
-     */
+    #[DataProvider('populateAvailableCategoryFieldsDataProvider')]
+    #[Test]
     public function populateAvailableCategoryFields(array $itemsProcConfig, array $expectedItems): void
     {
         $GLOBALS['TCA']['aTable']['columns'] = [

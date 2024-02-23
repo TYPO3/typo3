@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Unit\MetaTag;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class OpenGraphMetaTagManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray(): void
     {
         $manager = new OpenGraphMetaTagManager();
@@ -33,11 +33,8 @@ final class OpenGraphMetaTagManagerTest extends UnitTestCase
         self::assertNotEmpty($handledProperties);
     }
 
-    /**
-     * @dataProvider propertiesProvider
-     *
-     * @test
-     */
+    #[DataProvider('propertiesProvider')]
+    #[Test]
     public function checkIfPropertyIsStoredAfterAddingProperty(array $property, array $expected, string $expectedRenderedTag): void
     {
         $manager = new OpenGraphMetaTagManager();
@@ -51,9 +48,7 @@ final class OpenGraphMetaTagManagerTest extends UnitTestCase
         self::assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfAddingOnlySubPropertyAndNoMainPropertyIsReturningException(): void
     {
         $manager = new OpenGraphMetaTagManager();
@@ -62,9 +57,7 @@ final class OpenGraphMetaTagManagerTest extends UnitTestCase
         $manager->addProperty('og:image:width', '400');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkRenderAllPropertiesRendersCorrectMetaTags(): void
     {
         $properties = [
@@ -127,9 +120,7 @@ final class OpenGraphMetaTagManagerTest extends UnitTestCase
         self::assertEquals($expected, $manager->renderAllProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfRemovePropertyReallyRemovesProperty(): void
     {
         $manager = new OpenGraphMetaTagManager();

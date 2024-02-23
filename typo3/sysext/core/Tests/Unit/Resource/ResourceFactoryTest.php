@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -55,9 +56,7 @@ final class ResourceFactoryTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFolderCreatesObjectWithCorrectArguments(): void
     {
         $mockedMount = $this->createMock(ResourceStorage::class);
@@ -72,10 +71,7 @@ final class ResourceFactoryTest extends UnitTestCase
     /***********************************
      *  File Handling
      ***********************************/
-
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithRelativePath(): void
     {
         $subject = $this->getAccessibleMock(
@@ -92,9 +88,7 @@ final class ResourceFactoryTest extends UnitTestCase
         $subject->retrieveFileOrFolderObject('typo3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithAbsolutePath(): void
     {
         $subject = $this->getAccessibleMock(
@@ -111,9 +105,7 @@ final class ResourceFactoryTest extends UnitTestCase
         $subject->retrieveFileOrFolderObject(Environment::getPublicPath() . '/typo3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven(): void
     {
         $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
@@ -127,9 +119,7 @@ final class ResourceFactoryTest extends UnitTestCase
         $this->subject->retrieveFileOrFolderObject($filename);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveFileOrFolderObjectReturnsFileFromPublicFolderWhenProjectRootIsNotPublic(): void
     {
         Environment::initialize(
@@ -157,9 +147,7 @@ final class ResourceFactoryTest extends UnitTestCase
         $this->subject->retrieveFileOrFolderObject($filename);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveFileOrFolderObjectReturnsFileFromPublicExtensionResourceWhenExtensionIsNotPublic(): void
     {
         Environment::initialize(
@@ -181,9 +169,7 @@ final class ResourceFactoryTest extends UnitTestCase
         $this->subject->retrieveFileOrFolderObject('EXT:core/Resources/Public/Icons/Extension.svg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveFileOrFolderObjectThrowsExceptionFromPrivateExtensionResourceWhenExtensionIsNotPublic(): void
     {
         Environment::initialize(

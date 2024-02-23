@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\CoreUpdateService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CoreUpdateServiceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getMessagesReturnsPreviouslySetMessage(): void
     {
         $instance = $this->getAccessibleMock(CoreUpdateService::class, null, [], '', false);
@@ -34,9 +33,7 @@ final class CoreUpdateServiceTest extends UnitTestCase
         self::assertSame($aMessage, $instance->getMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isCoreUpdateEnabledReturnsTrueForEnvironmentVariableNotSet(): void
     {
         if (defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE) {
@@ -48,9 +45,7 @@ final class CoreUpdateServiceTest extends UnitTestCase
         self::assertTrue($instance->isCoreUpdateEnabled());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isCoreUpdateEnabledReturnsFalseFor_TYPO3_DISABLE_CORE_UPDATER_EnvironmentVariableSet(): void
     {
         $instance = $this->getAccessibleMock(CoreUpdateService::class, null, [], '', false);
@@ -59,9 +54,7 @@ final class CoreUpdateServiceTest extends UnitTestCase
         self::assertFalse($instance->isCoreUpdateEnabled());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isCoreUpdateEnabledReturnsFalseFor_REDIRECT_TYPO3_DISABLE_CORE_UPDATER_EnvironmentVariableSet(): void
     {
         $instance = $this->getAccessibleMock(CoreUpdateService::class, null, [], '', false);

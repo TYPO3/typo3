@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\TestingHierarchicalFilesystemDriver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -60,10 +62,8 @@ final class AbstractHierarchicalFilesystemDriverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canonicalizeAndCheckFileIdentifierCanonicalizesPathDataProvider
-     */
+    #[DataProvider('canonicalizeAndCheckFileIdentifierCanonicalizesPathDataProvider')]
+    #[Test]
     public function canonicalizeAndCheckFileIdentifierCanonicalizesPath(string $expectedPath, string $fileIdentifier): void
     {
         $subject = new TestingHierarchicalFilesystemDriver();
@@ -104,10 +104,8 @@ final class AbstractHierarchicalFilesystemDriverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifierDataProvider
-     */
+    #[DataProvider('canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifierDataProvider')]
+    #[Test]
     public function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifier(string $expectedPath, string $identifier): void
     {
         $subject = new TestingHierarchicalFilesystemDriver();

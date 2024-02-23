@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineIsOnSymmetricSide;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -33,9 +34,7 @@ final class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
         $this->subject = new TcaInlineIsOnSymmetricSide();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsIsOnSymmetricSideToTrue(): void
     {
         $input = [
@@ -56,9 +55,7 @@ final class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsIsOnSymmetricSideToTrueWhenSymmetricFieldArrayIsDetailed()
     {
         $input = [

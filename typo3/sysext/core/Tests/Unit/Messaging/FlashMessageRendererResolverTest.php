@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\Renderer\FlashMessageRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FlashMessageRendererResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function flashMessageRendererResolverResolveRendererWithoutContext(): void
     {
         $rendererClass = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve();

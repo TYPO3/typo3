@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -33,9 +34,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfTcaTypesAreEmpty(): void
     {
         $input = [
@@ -51,9 +50,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsExistingTcaRecordTypeValue(): void
     {
         $input = [
@@ -68,9 +65,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsExistingTcaRecordTypeValueWithValueZero(): void
     {
         $input = [
@@ -85,9 +80,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsRecordTypeValueToHistoricalOneIfTypeZeroIsNotDefined(): void
     {
         $input = [
@@ -103,9 +96,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsRecordTypeValueToZero(): void
     {
         $input = [
@@ -123,9 +114,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfTypePointsToANotExistingField(): void
     {
         $input = [
@@ -150,9 +139,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsRecordTypeValueToValueOfDatabaseField(): void
     {
         $input = [
@@ -176,9 +163,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsRecordTypeValueToZeroIfValueOfDatabaseFieldIsNotDefinedInTca(): void
     {
         $input = [
@@ -202,9 +187,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsRecordTypeValueToZeroIfValueOfDatabaseFieldIsEmptyString(): void
     {
         $input = [
@@ -228,9 +211,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfValueTypesNotExistsAndNoFallbackExists(): void
     {
         $input = [
@@ -255,9 +236,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForForeignTypeConfigurationNotAsSelectOrGroup(): void
     {
         $input = [
@@ -285,9 +264,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForForeignTypeIfPointerConfigurationHasNoTable(): void
     {
         $input = [
@@ -319,9 +296,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         $this->subject->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTypeValueFromForeignTableRecord(): void
     {
         $input = [
@@ -363,9 +338,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsTypeValueFromNestedTcaGroupField(): void
     {
         $input = [

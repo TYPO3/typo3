@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,9 +31,7 @@ final class InlineOverrideChildTcaTest extends UnitTestCase
         $this->subject = new InlineOverrideChildTca();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataOverrulesShowitemByGivenOverrideChildTca(): void
     {
         $input = [
@@ -63,9 +62,7 @@ final class InlineOverrideChildTcaTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsTypeShowitemByGivenOverrideChildTca(): void
     {
         $input = [
@@ -100,9 +97,7 @@ final class InlineOverrideChildTcaTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataMergesForeignSelectorFieldTcaOverride(): void
     {
         $input = [
@@ -157,9 +152,7 @@ final class InlineOverrideChildTcaTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsDefaultValueForChildRecordColumn(): void
     {
         $input = [
@@ -189,9 +182,7 @@ final class InlineOverrideChildTcaTest extends UnitTestCase
         self::assertSame($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForRestrictedField(): void
     {
         $input = [

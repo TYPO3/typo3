@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,17 +26,13 @@ final class MailUtilityTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function breakLinesForEmailReturnsEmptyStringIfEmptyStringIsGiven(): void
     {
         self::assertEmpty(MailUtility::breakLinesForEmail(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function breakLinesForEmailReturnsOneLineIfCharWithIsNotExceeded(): void
     {
         $newlineChar = LF;
@@ -44,9 +42,7 @@ final class MailUtilityTest extends UnitTestCase
         self::assertCount(1, explode($newlineChar, $returnString));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function breakLinesForEmailBreaksTextIfCharWithIsExceeded(): void
     {
         $newlineChar = LF;
@@ -56,9 +52,7 @@ final class MailUtilityTest extends UnitTestCase
         self::assertCount(2, explode($newlineChar, $returnString));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function breakLinesForEmailBreaksTextWithNoSpaceFoundBeforeLimit(): void
     {
         $newlineChar = LF;
@@ -69,9 +63,7 @@ final class MailUtilityTest extends UnitTestCase
         self::assertEquals($returnString, 'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function breakLinesForEmailBreaksTextIfLineIsLongerThanTheLineWidth(): void
     {
         $str = 'Mein Link auf eine News (Link: http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)';
@@ -104,10 +96,8 @@ final class MailUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider parseAddressesProvider
-     */
+    #[DataProvider('parseAddressesProvider')]
+    #[Test]
     public function parseAddressesTest(string $source, array $addressList): void
     {
         $returnArray = MailUtility::parseAddresses($source);
@@ -136,10 +126,8 @@ final class MailUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider replyToProvider
-     */
+    #[DataProvider('replyToProvider')]
+    #[Test]
     public function getSystemReplyToTest(array $configuration, array $expectedReplyTo): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $configuration;

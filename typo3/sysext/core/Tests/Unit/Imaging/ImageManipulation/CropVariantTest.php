@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\ImageManipulation;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariant;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -77,9 +78,7 @@ final class CropVariantTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromTcaWorks(): void
     {
         $cropVariant = CropVariant::createFromConfiguration(self::$expectedConfig['id'], self::$tca);
@@ -87,9 +86,7 @@ final class CropVariantTest extends UnitTestCase
         self::assertSame(self::$expectedConfig, $cropVariant->asArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectedRatioCanBeNull(): void
     {
         $tca = self::$tca;
@@ -97,9 +94,7 @@ final class CropVariantTest extends UnitTestCase
         self::assertInstanceOf(CropVariant::class, CropVariant::createFromConfiguration(self::$expectedConfig['id'], $tca));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionOnTypeMismatchInRatio(): void
     {
         $tca = self::$tca;

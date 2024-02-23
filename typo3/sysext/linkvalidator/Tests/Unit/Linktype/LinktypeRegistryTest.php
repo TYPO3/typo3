@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Unit\Linktype;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LinktypeRegistryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function registrationRequiresInterface(): void
     {
         $linktypes = [
@@ -40,9 +39,7 @@ final class LinktypeRegistryTest extends UnitTestCase
         self::assertEquals(['valid-identifier'], $linkTypeRegistry->getIdentifiers());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registrationThrowsExceptionOnEmptyIdentifier(): void
     {
         $linktypes = [
@@ -55,9 +52,7 @@ final class LinktypeRegistryTest extends UnitTestCase
         new LinktypeRegistry($linktypes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registrationThrowsExceptionOnDuplicateIdentifier(): void
     {
         $linktypes = [

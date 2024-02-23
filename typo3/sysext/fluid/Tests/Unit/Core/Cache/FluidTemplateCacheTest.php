@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Cache;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FluidTemplateCacheTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCallsFlushOnBackend(): void
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
@@ -34,9 +33,7 @@ final class FluidTemplateCacheTest extends UnitTestCase
         $instance->flush();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDelegatesToRequireOnce(): void
     {
         $instance = $this->getMockBuilder(FluidTemplateCache::class)
@@ -47,9 +44,7 @@ final class FluidTemplateCacheTest extends UnitTestCase
         $instance->get('foobar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCallsSetOnBackend(): void
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
@@ -63,9 +58,7 @@ final class FluidTemplateCacheTest extends UnitTestCase
         $instance->set('test', 'test', ['foobar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRemovesLeadingPhpTagBeforeCallingParentWhichAddsLeadingPhpTag(): void
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);

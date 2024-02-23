@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -54,10 +56,8 @@ final class UploadedFileTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidStreamsDataProvider
-     * @test
-     */
+    #[DataProvider('invalidStreamsDataProvider')]
+    #[Test]
     public function constructorRaisesExceptionOnInvalidStreamOrFile($streamOrFile): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -72,10 +72,8 @@ final class UploadedFileTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidErrorStatusesDataProvider
-     * @test
-     */
+    #[DataProvider('invalidErrorStatusesDataProvider')]
+    #[Test]
     public function constructorRaisesExceptionOnInvalidErrorStatus($status): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -83,9 +81,7 @@ final class UploadedFileTest extends UnitTestCase
         new UploadedFile(fopen('php://temp', 'wb+'), 0, $status);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStreamReturnsOriginalStreamObject(): void
     {
         $stream = new Stream('php://temp');
@@ -93,9 +89,7 @@ final class UploadedFileTest extends UnitTestCase
         self::assertSame($stream, $upload->getStream());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStreamReturnsWrappedPhpStream(): void
     {
         $stream = fopen('php://temp', 'wb+');
@@ -104,9 +98,7 @@ final class UploadedFileTest extends UnitTestCase
         self::assertSame($stream, $uploadStream);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStreamReturnsStreamForFile(): void
     {
         $this->tmpFile = $stream = tempnam(sys_get_temp_dir(), 'phly');
@@ -116,9 +108,7 @@ final class UploadedFileTest extends UnitTestCase
         self::assertSame($stream, $r->getValue($uploadStream));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveToMovesFileToDesignatedPath(): void
     {
         $stream = new Stream('php://temp', 'wb+');
@@ -132,9 +122,7 @@ final class UploadedFileTest extends UnitTestCase
         self::assertEquals($stream->__toString(), $contents);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveToRaisesExceptionForEmptyPath(): void
     {
         $stream = new Stream('php://temp', 'wb+');
@@ -145,9 +133,7 @@ final class UploadedFileTest extends UnitTestCase
         $upload->moveTo('');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveToCannotBeCalledMoreThanOnce(): void
     {
         $stream = new Stream('php://temp', 'wb+');
@@ -163,9 +149,7 @@ final class UploadedFileTest extends UnitTestCase
         $upload->moveTo($to);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getGetStreamRaisesExceptionAfterMove(): void
     {
         $stream = new Stream('php://temp', 'wb+');
@@ -183,8 +167,8 @@ final class UploadedFileTest extends UnitTestCase
 
     /**
      * see https://en.wikipedia.org/wiki/Unicode_equivalence#Normalization, "NFD"
-     * @test
      */
+    #[Test]
     public function nfdFileNameIsNormalized(): void
     {
         $clientFileName = hex2bin('6fcc88') . '.png';

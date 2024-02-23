@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -33,18 +34,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtensionStatusTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function extensionStatusImplementsStatusProviderInterface(): void
     {
         $reportMock = $this->createMock(ExtensionStatus::class);
         self::assertInstanceOf(StatusProviderInterface::class, $reportMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsArray(): void
     {
         $report = $this->getMockBuilder(ExtensionStatus::class)
@@ -54,9 +51,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertIsArray($report->getStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnArrayContainsFiveEntries(): void
     {
         $report = $this->getMockBuilder(ExtensionStatus::class)
@@ -66,9 +61,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertCount(5, $report->getStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnArrayContainsInstancesOfReportsStatusStatus(): void
     {
         $statusObject = $this->getMockBuilder(Status::class)
@@ -87,9 +80,7 @@ final class ExtensionStatusTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusCallsMainRepositoryForMainRepositoryStatusResult(): void
     {
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
@@ -109,9 +100,7 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject->getStatus();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsErrorStatusIfRepositoryIsNotFound(): void
     {
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
@@ -132,9 +121,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertEquals(ContextualFeedbackSeverity::ERROR, $statusObject->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsNoticeIfRepositoryUpdateIsLongerThanSevenDaysAgo(): void
     {
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
@@ -169,9 +156,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertEquals(ContextualFeedbackSeverity::NOTICE, $statusObject->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsOkForLoadedExtensionIfNoInsecureExtensionIsLoaded(): void
     {
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
@@ -192,9 +177,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertEquals(ContextualFeedbackSeverity::OK, $statusObject->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsErrorForLoadedExtensionIfInsecureExtensionIsLoaded(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -215,9 +198,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertEquals(ContextualFeedbackSeverity::ERROR, $statusObject->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsOkForExistingExtensionIfNoInsecureExtensionExists(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -239,9 +220,7 @@ final class ExtensionStatusTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsWarningForExistingExtensionIfInsecureExtensionExistsButIsNotLoaded(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -262,9 +241,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertEquals(ContextualFeedbackSeverity::WARNING, $statusObject->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsWarningForLoadedExtensionIfOutdatedExtensionIsLoaded(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -285,9 +262,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertEquals(ContextualFeedbackSeverity::WARNING, $statusObject->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatusReturnsErrorForExistingExtensionIfOutdatedExtensionExists(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);

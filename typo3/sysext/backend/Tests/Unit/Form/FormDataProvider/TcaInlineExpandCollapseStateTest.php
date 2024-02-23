@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaInlineExpandCollapseStateTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsInlineStatusForTableUid(): void
     {
         $input = [
@@ -60,9 +60,7 @@ final class TcaInlineExpandCollapseStateTest extends UnitTestCase
         self::assertSame($expected, (new TcaInlineExpandCollapseState())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsInlineStatusForSecondLevelChild(): void
     {
         $input = [
@@ -317,10 +315,8 @@ final class TcaInlineExpandCollapseStateTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addDataAddsCorrectIsInlineChildExpandedDataProvider
-     */
+    #[DataProvider('addDataAddsCorrectIsInlineChildExpandedDataProvider')]
+    #[Test]
     public function addDataAddsCorrectIsInlineChildExpanded(array $input, bool $expectedIsInlineChildExpanded): void
     {
         $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);

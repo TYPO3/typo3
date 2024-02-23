@@ -19,14 +19,13 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php;
 
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CodeStatisticsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function enterNodeSumsStatistics(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);

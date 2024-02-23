@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Connection;
@@ -50,9 +52,7 @@ final class MetaDataAspectTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function knownMetaDataIsAdded(): void
     {
         $metaData = [
@@ -64,9 +64,7 @@ final class MetaDataAspectTest extends UnitTestCase
         self::assertSame($metaData, $file->getMetaData()->get());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function manuallyAddedMetaDataIsMerged(): void
     {
         $metaData = [
@@ -89,9 +87,7 @@ final class MetaDataAspectTest extends UnitTestCase
         self::assertSame($expected, $file->getMetaData()->get());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function metaDataGetsRemoved(): void
     {
         $metaData = ['foo' => 'bar'];
@@ -109,9 +105,7 @@ final class MetaDataAspectTest extends UnitTestCase
         self::assertEmpty($metaDataAspectMock->get());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function positiveUidOfFileIsExpectedToLoadMetaData(): void
     {
         $this->expectException(InvalidUidException::class);
@@ -121,9 +115,7 @@ final class MetaDataAspectTest extends UnitTestCase
         $file->getMetaData()->get();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newMetaDataIsCreated(): void
     {
         $GLOBALS['EXEC_TIME'] = 1534530781;
@@ -166,9 +158,7 @@ final class MetaDataAspectTest extends UnitTestCase
         self::assertSame($expected, $file->getMetaData()->get());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existingMetaDataGetsUpdated(): void
     {
         $metaData = ['uid' => 12, 'foo' => 'bar'];
@@ -244,10 +234,8 @@ final class MetaDataAspectTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider propertyDataProvider
-     */
+    #[DataProvider('propertyDataProvider')]
+    #[Test]
     public function propertyIsFetchedProperly(array $metaData, array $has, array $get): void
     {
         $file = new File([], $this->storageMock, $metaData);

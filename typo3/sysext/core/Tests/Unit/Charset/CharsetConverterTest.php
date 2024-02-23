@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Charset;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CharsetConverterTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8DecodeACharacterToAscii(): void
     {
         $charsetConverter = new CharsetConverter();
@@ -42,9 +42,7 @@ final class CharsetConverterTest extends UnitTestCase
         self::assertSame('ASCII', mb_detect_encoding($targetString, ['ASCII', 'UTF-8']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8DecodeACharacterToIso885915(): void
     {
         $charsetConverter = new CharsetConverter();
@@ -64,9 +62,7 @@ final class CharsetConverterTest extends UnitTestCase
         self::assertNotSame($string, $targetString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8DecodeEuroSignCharacterToIso885915(): void
     {
         $charsetConverter = new CharsetConverter();
@@ -86,9 +82,7 @@ final class CharsetConverterTest extends UnitTestCase
         self::assertNotSame($string, $targetString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8DecodeAKanjiToBig5(): void
     {
         $charsetConverter = new CharsetConverter();
@@ -108,9 +102,7 @@ final class CharsetConverterTest extends UnitTestCase
         self::assertNotSame($string, $targetString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertingAUtf8EmojiSignToNonExistingAsciiRepresentationResultsInAQuestionMarkSign(): void
     {
         $charsetConverter = new CharsetConverter();
@@ -125,9 +117,7 @@ final class CharsetConverterTest extends UnitTestCase
         self::assertSame('&#x1f602;', $charsetConverter->utf8_decode($string, 'ascii', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8DecodeToUtf8ReturnsTheSameSign(): void
     {
         self::assertSame(
@@ -136,9 +126,7 @@ final class CharsetConverterTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8EncodeIso885915ACharacter(): void
     {
         $string = "\x41"; // A
@@ -151,9 +139,7 @@ final class CharsetConverterTest extends UnitTestCase
         self::assertSame($string, $targetString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8EncodeIso885915EuroSign(): void
     {
         $string = "\xA4"; // € sign encoded as iso-8859-15
@@ -165,9 +151,7 @@ final class CharsetConverterTest extends UnitTestCase
         self::assertNotSame($string, $targetString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8EncodeABig5EncodedSign(): void
     {
         $string = "\xA2\xC5"; // 〣 sign encoded as big5
@@ -180,9 +164,7 @@ final class CharsetConverterTest extends UnitTestCase
         self::assertNotSame($string, $targetString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8EncodeAlreadyUtf8EncodedSign(): void
     {
         self::assertSame(
@@ -191,9 +173,7 @@ final class CharsetConverterTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function utf8ToNumberArray(): void
     {
         $string = "\xF0\x9F\x98\x82 &ndash; a joyful emoji";
@@ -241,10 +221,8 @@ final class CharsetConverterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validInputForSpecCharsToAscii
-     */
+    #[DataProvider('validInputForSpecCharsToAscii')]
+    #[Test]
     public function specCharsToAsciiConvertsUmlautsToAscii(
         string $input,
         string $expectedString
@@ -277,10 +255,10 @@ final class CharsetConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider invalidInputForSpecCharsToAscii
      * @param mixed $input
      */
+    #[DataProvider('invalidInputForSpecCharsToAscii')]
+    #[Test]
     public function specCharsToAsciiConvertsInvalidInputToEmptyString($input): void
     {
         $subject = new CharsetConverter();

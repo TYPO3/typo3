@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
@@ -56,9 +58,7 @@ final class FileTest extends UnitTestCase
         return $fixture;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function commonPropertiesAreAvailableWithOwnGetters(): void
     {
         $properties = [
@@ -74,18 +74,15 @@ final class FileTest extends UnitTestCase
 
     /**
      * Tests if a file is seen as indexed if the record has a uid
-     *
-     * @test
      */
+    #[Test]
     public function fileIndexStatusIsTrueIfUidIsSet(): void
     {
         $fixture = new File(['uid' => 1], $this->storageMock);
         self::assertTrue($fixture->isIndexed());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePropertiesUpdatesFileProperties(): void
     {
         $identifier = '/' . StringUtility::getUniqueId('identifier_');
@@ -94,9 +91,7 @@ final class FileTest extends UnitTestCase
         self::assertEquals($identifier, $fixture->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePropertiesLeavesPropertiesUntouchedIfNotSetInNewProperties(): void
     {
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $this->storageMock);
@@ -105,9 +100,7 @@ final class FileTest extends UnitTestCase
         self::assertEquals('/test', $fixture->getProperty('identifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePropertiesDiscardsUidIfAlreadySet(): void
     {
         $fixture = new File(['uid' => 1, 'identifier' => '/test'], $this->storageMock);
@@ -115,9 +108,7 @@ final class FileTest extends UnitTestCase
         self::assertEquals(1, $fixture->getUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePropertiesRecordsNamesOfChangedProperties(): void
     {
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $this->storageMock);
@@ -125,9 +116,7 @@ final class FileTest extends UnitTestCase
         self::assertEquals(['foo', 'baz'], $fixture->getUpdatedProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePropertiesDoesNotRecordPropertyNameIfSameValueIsProvided(): void
     {
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $this->storageMock);
@@ -135,9 +124,7 @@ final class FileTest extends UnitTestCase
         self::assertEmpty($fixture->getUpdatedProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePropertiesMarksPropertyAsChangedOnlyOnce(): void
     {
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $this->storageMock);
@@ -146,9 +133,7 @@ final class FileTest extends UnitTestCase
         self::assertEquals(['foo', 'baz'], $fixture->getUpdatedProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePropertiesReloadsStorageObjectIfStorageChanges(): void
     {
         $fileProperties = [
@@ -171,9 +156,7 @@ final class FileTest extends UnitTestCase
         self::assertSame($mockedNewStorage, $subject->getStorage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyToCallsCopyOperationOnTargetFolderStorage(): void
     {
         $targetStorage = $this->createMock(ResourceStorage::class);
@@ -184,9 +167,7 @@ final class FileTest extends UnitTestCase
         $fixture->copyTo($targetFolder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveToCallsMoveOperationOnTargetFolderStorage(): void
     {
         $targetStorage = $this->createMock(ResourceStorage::class);
@@ -208,10 +189,8 @@ final class FileTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider filenameExtensionDataProvider
-     */
+    #[DataProvider('filenameExtensionDataProvider')]
+    #[Test]
     public function getNameWithoutExtensionReturnsCorrectName($originalFilename, $expectedBasename): void
     {
         $fixture = new File(
@@ -224,10 +203,8 @@ final class FileTest extends UnitTestCase
         self::assertSame($expectedBasename, $fixture->getNameWithoutExtension());
     }
 
-    /**
-     * @test
-     * @dataProvider filenameExtensionDataProvider
-     */
+    #[DataProvider('filenameExtensionDataProvider')]
+    #[Test]
     public function getExtensionReturnsCorrectExtension($originalFilename, $expectedBasename, $expectedExtension): void
     {
         $fixture = new File([
@@ -237,18 +214,14 @@ final class FileTest extends UnitTestCase
         self::assertSame($expectedExtension, $fixture->getExtension());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasPropertyReturnsTrueFilePropertyExists(): void
     {
         $fixture = new File(['testproperty' => 'testvalue'], $this->storageMock);
         self::assertTrue($fixture->hasProperty('testproperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasPropertyReturnsTrueIfMetadataPropertyExists(): void
     {
         $fixture = $this->getMockBuilder(File::class)
@@ -268,9 +241,7 @@ final class FileTest extends UnitTestCase
         self::assertSame('testvalue', $fixture->getProperty('testproperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertiesContainsUidOfSysFileMetadata(): void
     {
         $fileData = [

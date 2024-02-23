@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
@@ -65,9 +66,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $this->managementService->injectDownloadQueue($this->downloadQueue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installDownloadsExtensionIfNecessary(): void
     {
         $extension = new Extension();
@@ -87,9 +86,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $this->managementService->installExtension($extension);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installExtensionReturnsFalseIfDependenciesCannotBeResolved(): void
     {
         $extension = new Extension();
@@ -101,9 +98,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installExtensionWillReturnInstalledExtensions(): void
     {
         $extension = new Extension();
@@ -113,9 +108,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         self::assertSame(['installed' => ['foo' => 'foo']], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installExtensionWillReturnDownloadedExtensions(): void
     {
         $downloadQueue = new DownloadQueue();
@@ -135,9 +128,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         self::assertSame(['downloaded' => ['foo' => $extension], 'installed' => ['foo' => 'foo']], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installExtensionWillReturnUpdatedExtensions(): void
     {
         $downloadQueue = new DownloadQueue();
@@ -161,9 +152,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         self::assertSame(['updated' => ['foo' => $extension], 'installed' => ['foo' => 'foo']], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function markExtensionForDownloadAddsExtensionToDownloadQueueAndChecksDependencies(): void
     {
         $extension = new Extension();
@@ -176,9 +165,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         self::assertSame(['download' => ['foo' => $extension]], $this->downloadQueue->getExtensionQueue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function markExtensionForUpdateAddsExtensionToUpdateQueueAndChecksDependencies(): void
     {
         $extension = new Extension();

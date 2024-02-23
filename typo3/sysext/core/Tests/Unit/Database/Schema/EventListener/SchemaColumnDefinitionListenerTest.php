@@ -21,6 +21,7 @@ use Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
@@ -41,9 +42,7 @@ final class SchemaColumnDefinitionListenerTest extends UnitTestCase
         $this->connectionMock = $this->createMock(Connection::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isInactiveForStandardColumnTypes(): void
     {
         $event = new SchemaColumnDefinitionEventArgs(
@@ -58,9 +57,7 @@ final class SchemaColumnDefinitionListenerTest extends UnitTestCase
         self::assertNull($event->getColumn());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildsColumnForEnumDataType(): void
     {
         if (Type::hasType('enum')) {
@@ -86,9 +83,7 @@ final class SchemaColumnDefinitionListenerTest extends UnitTestCase
         self::assertSame(['value1', 'value2', 'value3'], $event->getColumn()->getPlatformOption('unquotedValues'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildsColumnForSetDataType(): void
     {
         if (Type::hasType('set')) {

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -88,10 +90,9 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
      * in the default link handler configuration
      *
      * Note that the TypolinkCodecService is not mocked on purpose to get the full unit tested.
-     *
-     * @test
-     * @dataProvider attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider
      */
+    #[DataProvider('attributesSetInRecordLinkOverwriteConfiguredAttributesDataProvider')]
+    #[Test]
     public function attributesSetInRecordLinkOverwriteConfiguredAttributes(string $parameterFromTypoScript, string $parameterFromDb, string $expectedParameter): void
     {
         $confFromDb = [

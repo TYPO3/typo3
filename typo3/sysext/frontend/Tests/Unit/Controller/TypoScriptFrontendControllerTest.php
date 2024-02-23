@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -48,10 +50,8 @@ final class TypoScriptFrontendControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider baseUrlWrapHandlesDifferentUrlsDataProvider
-     * @test
-     */
+    #[DataProvider('baseUrlWrapHandlesDifferentUrlsDataProvider')]
+    #[Test]
     public function baseUrlWrapHandlesDifferentUrls(string $baseUrl, string $url, string $expected): void
     {
         $subject = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->onlyMethods([])->getMock();

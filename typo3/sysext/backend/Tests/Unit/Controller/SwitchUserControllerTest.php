@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\SwitchUserController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -42,9 +43,7 @@ final class SwitchUserControllerTest extends UnitTestCase
         $this->subject = $this->getAccessibleMock(SwitchUserController::class, null, [], '', false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateListOfLatestSwitchedUsersReturnsCorrectAmountAndOrder(): void
     {
         $items = range(1, self::RECENT_USERS_LIMIT + 5);
@@ -57,9 +56,7 @@ final class SwitchUserControllerTest extends UnitTestCase
         self::assertSame($expected, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listOfLatestSwitchedUsersDoesNotContainTheSameUserTwice(): void
     {
         $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', 100);

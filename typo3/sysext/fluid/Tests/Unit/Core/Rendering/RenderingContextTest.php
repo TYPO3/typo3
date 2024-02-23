@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -43,9 +45,7 @@ final class RenderingContextTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function templateVariableContainerCanBeReadCorrectly(): void
     {
         $templateVariableContainer = $this->createMock(StandardVariableProvider::class);
@@ -53,9 +53,7 @@ final class RenderingContextTest extends UnitTestCase
         self::assertSame($this->renderingContext->getVariableProvider(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperVariableContainerCanBeReadCorrectly(): void
     {
         $viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
@@ -64,11 +62,11 @@ final class RenderingContextTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider getControllerActionTestValues
      * @param string $input
      * @param string $expected
      */
+    #[DataProvider('getControllerActionTestValues')]
+    #[Test]
     public function setControllerActionProcessesInputCorrectly($input, $expected): void
     {
         $subject = $this->getMockBuilder(RenderingContext::class)

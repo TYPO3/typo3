@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -77,10 +79,9 @@ final class QueryFactoryTest extends UnitTestCase
      * @param bool $static
      * @param bool $rootLevel
      * @param bool $expectedResult
-     *
-     * @dataProvider getStaticAndRootLevelAndExpectedResult
-     * @test
      */
+    #[DataProvider('getStaticAndRootLevelAndExpectedResult')]
+    #[Test]
     public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue($static, $rootLevel, $expectedResult): void
     {
         $this->dataMap->method('getIsStatic')->willReturn($static);

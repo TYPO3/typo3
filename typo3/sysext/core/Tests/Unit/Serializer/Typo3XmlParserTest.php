@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParser;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
@@ -44,10 +46,8 @@ final class Typo3XmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeReturnsStringOrArrayDataProvider
-     */
+    #[DataProvider('decodeReturnsStringOrArrayDataProvider')]
+    #[Test]
     public function decodeReturnsStringOrArray(string $data, mixed $expected): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -73,10 +73,8 @@ final class Typo3XmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeHandlesCommentsDataProvider
-     */
+    #[DataProvider('decodeHandlesCommentsDataProvider')]
+    #[Test]
     public function decodeHandlesComments(array $config, array $expected): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -87,9 +85,7 @@ final class Typo3XmlParserTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decodeIgnoresNodeAttributes(): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -156,10 +152,10 @@ final class Typo3XmlParserTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider decodeHandlesWhitespacesDataProvider
      * @param string $input
      */
+    #[DataProvider('decodeHandlesWhitespacesDataProvider')]
+    #[Test]
     public function decodeHandlesWhitespaces(string $input): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -259,10 +255,8 @@ final class Typo3XmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeHandlesTagNamespacesDataProvider
-     */
+    #[DataProvider('decodeHandlesTagNamespacesDataProvider')]
+    #[Test]
     public function decodeHandlesTagNamespaces(string $input, array $expected, array $options = []): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -314,10 +308,8 @@ final class Typo3XmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeReturnsRootNodeNameDataProvider
-     */
+    #[DataProvider('decodeReturnsRootNodeNameDataProvider')]
+    #[Test]
     public function decodeReturnsRootNodeName(string $input, string $rootNodeName): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -335,10 +327,8 @@ final class Typo3XmlParserTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider decodeReturnsRootNodeNameDataProvider
-     */
+    #[DataProvider('decodeReturnsRootNodeNameDataProvider')]
+    #[Test]
     public function decodeCanIncludeRootNode(string $input, string $rootNodeName, array $options = []): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -399,10 +389,8 @@ final class Typo3XmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeHandlesBigXmlContentDataProvider
-     */
+    #[DataProvider('decodeHandlesBigXmlContentDataProvider')]
+    #[Test]
     public function decodeHandlesBigXmlContent(string $input, string $testValue): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -499,10 +487,8 @@ final class Typo3XmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeHandlesAttributeTypesDataProvider
-     */
+    #[DataProvider('decodeHandlesAttributeTypesDataProvider')]
+    #[Test]
     public function decodeHandlesAttributeTypes(string $input, mixed $expected): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -510,9 +496,7 @@ final class Typo3XmlParserTest extends UnitTestCase
         self::assertSame($expected, $result['index']['vDEF']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decodeHandlesBase64Attribute(): void
     {
         $xmlDecoder = new Typo3XmlParser();
@@ -556,10 +540,8 @@ final class Typo3XmlParserTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider decodeThrowsExceptionOnXmlParsingErrorDataProvider
-     */
+    #[DataProvider('decodeThrowsExceptionOnXmlParsingErrorDataProvider')]
+    #[Test]
     public function decodeThrowsExceptionOnXmlParsingError(
         string $data,
         array $config,
@@ -571,9 +553,7 @@ final class Typo3XmlParserTest extends UnitTestCase
         $xmlDecoder->decode($data, new Typo3XmlSerializerOptions($config));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeDecodePingPongSucceeds(): void
     {
         $input = [
@@ -640,9 +620,7 @@ final class Typo3XmlParserTest extends UnitTestCase
         self::assertEquals($input, $arrayEncodedDecoded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encodeDecodePingPongFailsForEmptyArray(): void
     {
         self::markTestSkipped(

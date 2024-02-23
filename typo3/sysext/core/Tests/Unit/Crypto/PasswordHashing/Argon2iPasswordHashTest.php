@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -38,9 +39,7 @@ final class Argon2iPasswordHashTest extends UnitTestCase
         $this->subject = new Argon2iPasswordHash($options);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfMemoryCostIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -48,9 +47,7 @@ final class Argon2iPasswordHashTest extends UnitTestCase
         new Argon2iPasswordHash(['memory_cost' => 1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfTimeCostIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -58,17 +55,13 @@ final class Argon2iPasswordHashTest extends UnitTestCase
         new Argon2iPasswordHash(['time_cost' => 1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordReturnsNullOnEmptyPassword(): void
     {
         self::assertNull($this->subject->getHashedPassword(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordReturnsString(): void
     {
         $hash = $this->subject->getHashedPassword('password');
@@ -76,9 +69,7 @@ final class Argon2iPasswordHashTest extends UnitTestCase
         self::assertIsString($hash);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isValidSaltedPwValidatesHastCreatedByGetHashedPassword(): void
     {
         $hash = $this->subject->getHashedPassword('password');
@@ -87,9 +78,8 @@ final class Argon2iPasswordHashTest extends UnitTestCase
 
     /**
      * Tests authentication procedure with alphabet characters.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueForHashedPasswordWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
@@ -99,9 +89,8 @@ final class Argon2iPasswordHashTest extends UnitTestCase
 
     /**
      * Tests authentication procedure with numeric characters.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueForHashedPasswordWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
@@ -111,9 +100,8 @@ final class Argon2iPasswordHashTest extends UnitTestCase
 
     /**
      * Tests authentication procedure with US-ASCII special characters.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueForHashedPasswordWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
@@ -123,9 +111,8 @@ final class Argon2iPasswordHashTest extends UnitTestCase
 
     /**
      * Tests authentication procedure with latin1 special characters.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
@@ -139,9 +126,8 @@ final class Argon2iPasswordHashTest extends UnitTestCase
 
     /**
      * Tests authentication procedure with latin1 umlauts.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
@@ -156,9 +142,7 @@ final class Argon2iPasswordHashTest extends UnitTestCase
         self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPasswordReturnsTrueForHashedPasswordWithNonValidPassword(): void
     {
         $password = 'password';
@@ -167,9 +151,7 @@ final class Argon2iPasswordHashTest extends UnitTestCase
         self::assertFalse($this->subject->checkPassword($password1, $hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isHashUpdateNeededReturnsFalseForJustGeneratedHash(): void
     {
         $password = 'password';
@@ -177,9 +159,7 @@ final class Argon2iPasswordHashTest extends UnitTestCase
         self::assertFalse($this->subject->isHashUpdateNeeded($hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions(): void
     {
         $originalOptions = [

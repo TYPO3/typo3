@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\NullLogger;
@@ -47,9 +49,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logoffCleansFormProtectionIfBackendUserIsLoggedIn(): void
     {
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
@@ -150,10 +150,8 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider
-     */
+    #[DataProvider('getFilePermissionsTakesUserDefaultAndStoragePermissionsIntoAccountIfUserIsNotAdminDataProvider')]
+    #[Test]
     public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -300,10 +298,8 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getFilePermissionsFromStorageDataProvider
-     */
+    #[DataProvider('getFilePermissionsFromStorageDataProvider')]
+    #[Test]
     public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, int $storageUid, array $storagePermissions, array $expectedPermissions): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -335,10 +331,8 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($expectedPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
 
-    /**
-     * @test
-     * @dataProvider getFilePermissionsFromStorageDataProvider
-     */
+    #[DataProvider('getFilePermissionsFromStorageDataProvider')]
+    #[Test]
     public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, int $storageUid, array $storagePermissions): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -476,10 +470,8 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider
-     */
+    #[DataProvider('getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider')]
+    #[Test]
     public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin(string $permissionValue, array $expectedPermissions): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -497,9 +489,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($expectedPermissions, $subject->getFilePermissions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilePermissionsGrantsAllPermissionsToAdminUsers(): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -531,9 +521,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($expectedPermissions, $subject->getFilePermissions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function jsConfirmationReturnsTrueIfPassedValueEqualsConfiguration(): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -548,9 +536,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         self::assertFalse($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function jsConfirmationAllowsSettingMultipleBitsInValue(): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -565,10 +551,8 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         self::assertTrue($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }
 
-    /**
-     * @test
-     * @dataProvider jsConfirmationsWithUnsetBits
-     */
+    #[DataProvider('jsConfirmationsWithUnsetBits')]
+    #[Test]
     public function jsConfirmationAllowsUnsettingBitsInValue(int $jsConfirmation, bool $typeChangeAllowed, bool $copyMovePasteAllowed, bool $deleteAllowed, bool $feEditAllowed, bool $otherAllowed): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -608,9 +592,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function jsConfirmationAlwaysReturnsFalseIfNoConfirmationIsSet(): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -625,9 +607,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         self::assertFalse($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function jsConfirmationReturnsTrueIfConfigurationIsMissing(): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -678,10 +658,8 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getPagePermissionsClauseWithValidUserDataProvider
-     */
+    #[DataProvider('getPagePermissionsClauseWithValidUserDataProvider')]
+    #[Test]
     public function getPagePermissionsClauseWithValidUser(int $perms, bool $admin, array $groups, string $expected): void
     {
         // We only need to setup the mocking for the non-admin cases
@@ -720,10 +698,8 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($expected, $subject->getPagePermsClause($perms));
     }
 
-    /**
-     * @test
-     * @dataProvider checkAuthModeReturnsExpectedValueDataProvider
-     */
+    #[DataProvider('checkAuthModeReturnsExpectedValueDataProvider')]
+    #[Test]
     public function checkAuthModeReturnsExpectedValue(string $theValue, bool $expectedResult): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)

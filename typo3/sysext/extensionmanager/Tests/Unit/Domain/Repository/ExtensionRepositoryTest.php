@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtensionRepositoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function filterYoungestVersionOfExtensionListFiltersAListToLatestVersion(): void
     {
         // foo2 should be kept
@@ -53,9 +52,7 @@ final class ExtensionRepositoryTest extends UnitTestCase
         self::assertEquals(['foo' => $foo2, 'bar' => $bar1], $subject->_call('filterYoungestVersionOfExtensionList', $input, true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterYoungestVersionOfExtensionListFiltersAListToLatestVersionWithOnlyCompatibleExtensions(): void
     {
         $suitableDependency = Dependency::createFromEmConf('typo3', '3.6.1');
@@ -94,9 +91,7 @@ final class ExtensionRepositoryTest extends UnitTestCase
         self::assertEquals(['foo' => $foo1, 'bar' => $bar2], $subject->_call('filterYoungestVersionOfExtensionList', $input, false));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getExtensionsSuitableForTypo3VersionReturnsOnlySuitableOnes(): void
     {
         $suitableDependency = Dependency::createFromEmConf('typo3', '10.4.0-99.99.99');

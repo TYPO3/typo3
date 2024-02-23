@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -35,10 +37,8 @@ final class StringUtilityTest extends UnitTestCase
         yield 'bool' => [true];
     }
 
-    /**
-     * @test
-     * @dataProvider stringCastableValuesDataProvider
-     */
+    #[DataProvider('stringCastableValuesDataProvider')]
+    #[Test]
     public function castWithStringCastableReturnsValueCastToString(mixed $value): void
     {
         $expected = (string)$value;
@@ -62,10 +62,8 @@ final class StringUtilityTest extends UnitTestCase
         yield 'NaN' => [acos(2)];
     }
 
-    /**
-     * @test
-     * @dataProvider nonStringCastableValuesDataProvider
-     */
+    #[DataProvider('nonStringCastableValuesDataProvider')]
+    #[Test]
     public function castWithWithNonStringCastableReturnsDefault(mixed $value): void
     {
         $default = 'default';
@@ -73,10 +71,8 @@ final class StringUtilityTest extends UnitTestCase
         self::assertSame($default, StringUtility::cast($value, $default));
     }
 
-    /**
-     * @test
-     * @dataProvider nonStringCastableValuesDataProvider
-     */
+    #[DataProvider('nonStringCastableValuesDataProvider')]
+    #[Test]
     public function castWithWithNonStringCastableAndNoDefaultProvidedReturnsNull(mixed $value): void
     {
         self::assertNull(StringUtility::cast($value));
@@ -101,10 +97,8 @@ final class StringUtilityTest extends UnitTestCase
         yield 'NaN' => [acos(2)];
     }
 
-    /**
-     * @test
-     * @dataProvider nonStringValueToFilterDataProvider
-     */
+    #[DataProvider('nonStringValueToFilterDataProvider')]
+    #[Test]
     public function filterForNonStringValueAndDefaultProvidedReturnsDefault(mixed $value): void
     {
         $default = 'default';
@@ -112,10 +106,8 @@ final class StringUtilityTest extends UnitTestCase
         self::assertSame($default, StringUtility::filter($value, $default));
     }
 
-    /**
-     * @test
-     * @dataProvider nonStringValueToFilterDataProvider
-     */
+    #[DataProvider('nonStringValueToFilterDataProvider')]
+    #[Test]
     public function filterForNonStringValueAndNoDefaultProvidedReturnsNull(mixed $value): void
     {
         self::assertNull(StringUtility::filter($value));
@@ -129,36 +121,28 @@ final class StringUtilityTest extends UnitTestCase
         yield 'empty string' => [''];
         yield 'non-empty string' => ['value'];
     }
-    /**
-     * @test
-     * @dataProvider stringValueToFilterDataProvider
-     */
+    #[DataProvider('stringValueToFilterDataProvider')]
+    #[Test]
     public function filterForStringValuesReturnsProvidedValue(string $value): void
     {
         self::assertSame($value, StringUtility::filter($value, 'some default'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUniqueIdReturnsIdWithPrefix(): void
     {
         $id = StringUtility::getUniqueId('NEW');
         self::assertEquals('NEW', substr($id, 0, 3));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUniqueIdReturnsIdWithoutDot(): void
     {
         self::assertStringNotContainsString('.', StringUtility::getUniqueId());
     }
 
-    /**
-     * @test
-     * @dataProvider escapeCssSelectorDataProvider
-     */
+    #[DataProvider('escapeCssSelectorDataProvider')]
+    #[Test]
     public function escapeCssSelector(string $selector, string $expectedValue): void
     {
         self::assertEquals($expectedValue, StringUtility::escapeCssSelector($selector));
@@ -175,10 +159,8 @@ final class StringUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider removeByteOrderMarkDataProvider
-     */
+    #[DataProvider('removeByteOrderMarkDataProvider')]
+    #[Test]
     public function removeByteOrderMark(string $input, string $expectedValue): void
     {
         // assertContains is necessary as one test contains non-string characters
@@ -199,10 +181,8 @@ final class StringUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider searchStringWildcardDataProvider
-     */
+    #[DataProvider('searchStringWildcardDataProvider')]
+    #[Test]
     public function searchStringWildcard(string $haystack, string $needle, bool $result): void
     {
         self::assertSame($result, StringUtility::searchStringWildcard($haystack, $needle));
@@ -265,10 +245,8 @@ final class StringUtilityTest extends UnitTestCase
         yield 'List with multiple consecutive commas' => ['one,,two', 'one,two'];
     }
 
-    /**
-     * @test
-     * @dataProvider uniqueListUnifiesCommaSeparatedListDataProvider
-     */
+    #[DataProvider('uniqueListUnifiesCommaSeparatedListDataProvider')]
+    #[Test]
     public function uniqueListUnifiesCommaSeparatedList(string $initialList, string $unifiedList): void
     {
         self::assertSame($unifiedList, StringUtility::uniqueList($initialList));
@@ -297,10 +275,9 @@ final class StringUtilityTest extends UnitTestCase
     /**
      * Tests that StringUtility::multibyteStringPad() returns the same value as \str_pad()
      * for ASCII strings.
-     *
-     * @test
-     * @dataProvider multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider
      */
+    #[DataProvider('multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider')]
+    #[Test]
     public function multibyteStringPadReturnsSameValueAsStrPadForAsciiStrings(string $string, int $length, string $pad_string, int $pad_type): void
     {
         self::assertEquals(
@@ -326,10 +303,8 @@ final class StringUtilityTest extends UnitTestCase
         yield 'Pad both to 8 with string with even length and 2 character padding with MB char'  => ['äöähüäöä', 'hü', 8, 'äö', STR_PAD_BOTH];
     }
 
-    /**
-     * @test
-     * @dataProvider multibyteStringPadReturnsCorrectResultsMultibyteDataProvider
-     */
+    #[DataProvider('multibyteStringPadReturnsCorrectResultsMultibyteDataProvider')]
+    #[Test]
     public function multibyteStringPadReturnsCorrectResultsMultibyte(string $expectedResult, string $string, int $length, string $pad_string, int $pad_type): void
     {
         self::assertEquals(
@@ -349,10 +324,8 @@ final class StringUtilityTest extends UnitTestCase
         yield [random_bytes(33)];
     }
 
-    /**
-     * @test
-     * @dataProvider base64urlRoundTripWorksDataProvider
-     */
+    #[DataProvider('base64urlRoundTripWorksDataProvider')]
+    #[Test]
     public function base64urlRoundTripWorks(string $rawValue): void
     {
         $encoded = StringUtility::base64urlEncode($rawValue);
@@ -371,19 +344,15 @@ final class StringUtilityTest extends UnitTestCase
         yield ['aaaa', 'YWFhYQ'];
     }
 
-    /**
-     * @test
-     * @dataProvider base64urlDataProvider
-     */
+    #[DataProvider('base64urlDataProvider')]
+    #[Test]
     public function base64urlEncodeWorks(string $rawValue, string $encodedValue): void
     {
         self::assertSame($encodedValue, StringUtility::base64urlEncode($rawValue));
     }
 
-    /**
-     * @test
-     * @dataProvider base64urlDataProvider
-     */
+    #[DataProvider('base64urlDataProvider')]
+    #[Test]
     public function base64urlDecodeWorks(string $rawValue, string $encodedValue): void
     {
         self::assertSame($rawValue, StringUtility::base64urlDecode($encodedValue));
@@ -406,10 +375,8 @@ final class StringUtilityTest extends UnitTestCase
         yield ["Y\tW\tE", 'aa'];
     }
 
-    /**
-     * @test
-     * @dataProvider base64urlStrictDataProvider
-     */
+    #[DataProvider('base64urlStrictDataProvider')]
+    #[Test]
     public function base64urlStrictDecodeWorks(string $encodedValue, string|bool $expectation): void
     {
         self::assertSame($expectation, StringUtility::base64urlDecode($encodedValue, true));
@@ -456,10 +423,8 @@ final class StringUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider explodeEscapedDataProvider
-     */
+    #[DataProvider('explodeEscapedDataProvider')]
+    #[Test]
     public function explodeEscapedWorks(string $escaped, array $unescapedExploded): void
     {
         self::assertSame($unescapedExploded, StringUtility::explodeEscaped('.', $escaped));

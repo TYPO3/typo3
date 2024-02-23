@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BlowfishPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BlowfishPasswordHashTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfHashCountIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -32,9 +31,7 @@ final class BlowfishPasswordHashTest extends UnitTestCase
         new BlowfishPasswordHash(['hash_count' => 3]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionIfHashCountIsTooHigh(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -42,27 +39,21 @@ final class BlowfishPasswordHashTest extends UnitTestCase
         new BlowfishPasswordHash(['hash_count' => 18]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordWithEmptyPasswordResultsInNullSaltedPassword(): void
     {
         $password = '';
         self::assertNull((new BlowfishPasswordHash(['hash_count' => 4]))->getHashedPassword($password));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordWithNonEmptyPasswordResultsInNonNullSaltedPassword(): void
     {
         $password = 'a';
         self::assertNotNull((new BlowfishPasswordHash(['hash_count' => 4]))->getHashedPassword($password));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHashedPasswordValidates(): void
     {
         $password = 'password';
@@ -76,9 +67,8 @@ final class BlowfishPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same fixed salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash(): void
     {
         $password = 'password';
@@ -88,9 +78,8 @@ final class BlowfishPasswordHashTest extends UnitTestCase
 
     /**
      * Tests that authentication procedure fails with broken hash to compare to
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsFalseFailsWithBrokenHash(): void
     {
         $password = 'password';
@@ -103,9 +92,8 @@ final class BlowfishPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
@@ -119,9 +107,8 @@ final class BlowfishPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
@@ -135,9 +122,8 @@ final class BlowfishPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
@@ -151,9 +137,8 @@ final class BlowfishPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
@@ -171,9 +156,8 @@ final class BlowfishPasswordHashTest extends UnitTestCase
      *
      * Checks if a "plain-text password" is every time mapped to the
      * same "salted password hash" when using the same salt.
-     *
-     * @test
      */
+    #[Test]
     public function checkPasswordReturnsReturnsTrueWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
@@ -191,9 +175,7 @@ final class BlowfishPasswordHashTest extends UnitTestCase
         self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPasswordReturnsFalseWithNonValidPassword(): void
     {
         $password = 'password';
@@ -203,9 +185,7 @@ final class BlowfishPasswordHashTest extends UnitTestCase
         self::assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isHashUpdateNeededReturnsFalseForValidSaltedPassword(): void
     {
         $password = 'password';
@@ -214,9 +194,7 @@ final class BlowfishPasswordHashTest extends UnitTestCase
         self::assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions(): void
     {
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);

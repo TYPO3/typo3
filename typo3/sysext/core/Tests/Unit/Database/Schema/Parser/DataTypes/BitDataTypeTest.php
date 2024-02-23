@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\BitDataType;
 use TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\AbstractDataTypeBaseTestCase;
 
@@ -44,10 +46,8 @@ final class BitDataTypeTest extends AbstractDataTypeBaseTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseBitDataTypeProvider
-     */
+    #[DataProvider('canParseBitDataTypeProvider')]
+    #[Test]
     public function canParseDataType(string $columnDefinition, string $className, int $length): void
     {
         $subject = $this->createSubject($columnDefinition);

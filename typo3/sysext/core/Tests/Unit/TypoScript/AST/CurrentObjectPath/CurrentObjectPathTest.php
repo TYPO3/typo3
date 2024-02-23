@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\AST\CurrentObjectPath;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\AST\CurrentObjectPath\CurrentObjectPath;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CurrentObjectPathTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllReturnsPathArray()
     {
         $firstNode = new ChildNode('foo');
@@ -36,9 +35,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         self::assertSame([$firstNode, $secondNode], $currentObjectPath->getAll());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathAsStringReturnsPath()
     {
         $currentObjectPath = new CurrentObjectPath(new RootNode());
@@ -47,9 +44,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         self::assertSame('foo.bar', $currentObjectPath->getPathAsString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathAsStringReturnsQuotedPath()
     {
         $currentObjectPath = new CurrentObjectPath(new ChildNode('foo'));
@@ -57,9 +52,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         self::assertSame('foo.bar\.baz', $currentObjectPath->getPathAsString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathAsStringReturnsPathWithZero()
     {
         $currentObjectPath = new CurrentObjectPath(new ChildNode('foo'));
@@ -68,9 +61,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         self::assertSame('foo.0.bar', $currentObjectPath->getPathAsString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathAsStringThrowsWithNodeNameEmptyString()
     {
         $this->expectExceptionCode(\RuntimeException::class);
@@ -80,9 +71,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         $currentObjectPath->getPathAsString();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFirstReturnsFirstNode()
     {
         $firstNode = new ChildNode('foo');
@@ -94,9 +83,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         self::assertSame($firstNode, $currentObjectPath->getFirst());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLastReturnsLastNode()
     {
         $firstNode = new ChildNode('foo');
@@ -108,9 +95,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         self::assertSame($thirdNode, $currentObjectPath->getLast());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSecondLastReturnsSecondLastNode()
     {
         $firstNode = new ChildNode('foo');
@@ -122,9 +107,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         self::assertSame($secondNode, $currentObjectPath->getSecondLast());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSecondLastReturnsFirstIfThereIsOnlyOne()
     {
         $firstNode = new ChildNode('foo');
@@ -132,9 +115,7 @@ final class CurrentObjectPathTest extends UnitTestCase
         self::assertSame($firstNode, $currentObjectPath->getSecondLast());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeLastRemovesLastNode()
     {
         $firstNode = new ChildNode('foo');

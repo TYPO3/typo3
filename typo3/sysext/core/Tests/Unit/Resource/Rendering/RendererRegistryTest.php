@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
@@ -46,9 +47,7 @@ final class RendererRegistryTest extends UnitTestCase
         return $rendererRegistry;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredFileRenderClassCanBeRetrieved(): void
     {
         $rendererClass = StringUtility::getUniqueId('myRenderer');
@@ -62,9 +61,7 @@ final class RendererRegistryTest extends UnitTestCase
         self::assertContains($rendererObject, $rendererRegistry->getRendererInstances());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerRendererClassThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -74,9 +71,7 @@ final class RendererRegistryTest extends UnitTestCase
         $rendererRegistry->registerRendererClass(StringUtility::getUniqueId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerRendererClassThrowsExceptionIfClassDoesNotImplementRightInterface(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -87,9 +82,7 @@ final class RendererRegistryTest extends UnitTestCase
         $rendererRegistry->registerRendererClass($className);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerRendererClassWithHighestPriorityIsFirstInResult(): void
     {
         $rendererClass1 = StringUtility::getUniqueId('myRenderer1');
@@ -127,9 +120,7 @@ final class RendererRegistryTest extends UnitTestCase
         self::assertInstanceOf($rendererClass1, $rendererInstances[2]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredFileRendererClassWithSamePriorityAreAllReturned(): void
     {
         $rendererClass1 = StringUtility::getUniqueId('myRenderer1');
@@ -158,9 +149,7 @@ final class RendererRegistryTest extends UnitTestCase
         self::assertContains($rendererObject2, $rendererInstances);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRendererReturnsCorrectInstance(): void
     {
         $rendererClass1 = StringUtility::getUniqueId('myVideoRenderer');
@@ -197,9 +186,7 @@ final class RendererRegistryTest extends UnitTestCase
         self::assertInstanceOf($rendererClass1, $renderer);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRendererReturnsCorrectInstance2(): void
     {
         $this->resetSingletonInstances = true;

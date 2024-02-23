@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Console\CommandRegistry;
@@ -36,9 +37,7 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends UnitTes
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsAndOptionsWithSameNameAreAdded(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();

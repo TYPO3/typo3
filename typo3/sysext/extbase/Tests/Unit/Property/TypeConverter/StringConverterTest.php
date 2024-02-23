@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -34,17 +35,13 @@ final class StringConverterTest extends UnitTestCase
         $this->converter = new StringConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromShouldReturnSourceString(): void
     {
         self::assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray(): void
     {
         self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));

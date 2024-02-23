@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
     public static function urlSoftReferenceParserTestDataProvider(): array
@@ -99,10 +102,8 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider urlSoftReferenceParserTestDataProvider
-     */
+    #[DataProvider('urlSoftReferenceParserTestDataProvider')]
+    #[Test]
     public function urlSoftReferenceParserTest(string $content, string $expectedContent, array $expectedElements): void
     {
         $subject = $this->getParserByKey('url');
@@ -111,9 +112,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
         self::assertEquals($expectedElements, $result->getMatchedElements());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function urlSoftReferenceParserSubstituteTest(): void
     {
         $content = 'My website is: https://www.foo-bar.baz';

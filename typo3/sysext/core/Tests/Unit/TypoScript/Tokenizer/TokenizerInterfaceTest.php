@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Tokenizer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\BlockCloseLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\CommentLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ConditionElseLine;
@@ -7998,30 +8000,24 @@ final class TokenizerInterfaceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tokenizeStringDataProvider
-     */
+    #[DataProvider('tokenizeStringDataProvider')]
+    #[Test]
     public function tokenize(string $source, LineStream $expected): void
     {
         $tokens = (new LosslessTokenizer())->tokenize($source);
         self::assertEquals($expected, $tokens);
     }
 
-    /**
-     * @test
-     * @dataProvider tokenizeStringDataProvider
-     */
+    #[DataProvider('tokenizeStringDataProvider')]
+    #[Test]
     public function tokenizeLossy(string $source, LineStream $_, LineStream $expected): void
     {
         $tokens = (new LossyTokenizer())->tokenize($source);
         self::assertEquals($expected, $tokens);
     }
 
-    /**
-     * @test
-     * @dataProvider tokenizeStringDataProvider
-     */
+    #[DataProvider('tokenizeStringDataProvider')]
+    #[Test]
     public function untokenize(string $source): void
     {
         $tokenizer = new LosslessTokenizer();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -45,9 +46,7 @@ final class AbstractRepositoryTest extends UnitTestCase
         return $queryBuilderMock;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByUidFailsIfUidIsString(): void
     {
         $this->expectException(\InvalidArgumentException::class);

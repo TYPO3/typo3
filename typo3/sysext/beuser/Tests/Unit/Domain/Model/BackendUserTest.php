@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,25 +31,19 @@ final class BackendUserTest extends UnitTestCase
         $this->subject = new BackendUser();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUidReturnsInitialValueForInt(): void
     {
         self::assertNull($this->subject->getUid(), 'Not uid set after initialization.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUserNameReturnsInitialValueForString(): void
     {
         self::assertSame($this->subject->getUserName(), '', 'Username not empty');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setUserNameForStringSetsUserName(): void
     {
         $newUserName = 'DonJuan';
@@ -56,17 +51,13 @@ final class BackendUserTest extends UnitTestCase
         self::assertSame($this->subject->getUserName(), $newUserName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRealNameReturnInitialValueForString(): void
     {
         self::assertSame($this->subject->getRealName(), '', 'Real name not empty');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRealNameForStringSetsName(): void
     {
         $realName = 'Conceived at T3CON2018';
@@ -74,26 +65,20 @@ final class BackendUserTest extends UnitTestCase
         self::assertSame($this->subject->getRealName(), $realName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAdminReturnInitialValueForBoolean(): void
     {
         self::assertFalse($this->subject->getIsAdministrator(), 'Admin status is correct.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAdminToTrueSetsAdmin(): void
     {
         $this->subject->setIsAdministrator(true);
         self::assertTrue($this->subject->getIsAdministrator(), 'Admin status is not true, after setting to true.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAdminToFalseSetsAdmin(): void
     {
         $this->subject->setIsAdministrator(false);

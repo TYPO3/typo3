@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Type\TypeInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -45,9 +46,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         $this->subject->add(new BooleanConverter(), 10, ['boolean', 'integer'], 'boolean');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addThrowsDuplicateTypeConverterException(): void
     {
         $extendedBooleanConverter = new class () extends BooleanConverter {};
@@ -66,18 +65,14 @@ final class TypeConverterRegistryTest extends UnitTestCase
         $this->subject->add($extendedBooleanConverter, 10, ['boolean', 'integer'], 'boolean');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterFindsConverterForSimpleTypes(): void
     {
         $converter = $this->subject->findTypeConverter('boolean', 'boolean');
         self::assertInstanceOf(BooleanConverter::class, $converter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterFindsConverterForSimpleTargetTypesWithHighestPriority(): void
     {
         $extendedBooleanConverter = new class () extends BooleanConverter {};
@@ -88,9 +83,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         self::assertInstanceOf($extendedBooleanConverterClassName, $converter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterThrowsTypeConverterExceptionWhenConverterForSimpleTypeTargetCannotBeFound(): void
     {
         $this->expectException(TypeConverterException::class);
@@ -100,9 +93,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         $this->subject->findTypeConverter('array', 'boolean');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterThrowsInvalidTargetException(): void
     {
         $this->expectException(InvalidTargetException::class);
@@ -112,9 +103,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         $this->subject->findTypeConverter('integer', 'NonExistingClass');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterThrowsTypeConverterExceptionWhenThereIsNoConverterRegisteredForGivenSourceTypeAndObjectTargetType(): void
     {
         $this->expectException(TypeConverterException::class);
@@ -124,9 +113,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         $this->subject->findTypeConverter('array', \stdClass::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterFindsTypeConverterForClassOrInterfaceTargetTypes(): void
     {
         $this->subject->add(new FileReferenceConverter(), 10, ['integer'], FileReference::class);
@@ -135,9 +122,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         self::assertInstanceOf(FileReferenceConverter::class, $converter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterFindsTypeConverterForClassOrInterfaceParentClassOfTargetType(): void
     {
         $this->subject->add(new FileReferenceConverter(), 10, ['integer'], FileReference::class);
@@ -149,9 +134,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         self::assertInstanceOf(FileReferenceConverter::class, $converter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterFindsTypeConverterForClassInterfaceOfTargetType(): void
     {
         $this->subject->add(new CoreTypeConverter(), 10, ['integer'], TypeInterface::class);
@@ -160,9 +143,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         self::assertInstanceOf(CoreTypeConverter::class, $converter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterFindsLeastSpecificTypeConverterForClassOrInterfaceWithoutSpecificTypeConverterSet(): void
     {
         /*
@@ -190,10 +171,9 @@ final class TypeConverterRegistryTest extends UnitTestCase
     }
 
     /**
-     * @test
-     *
      * @see testFindConverterThrowsTypeConverterExceptionWhenThereIsNoConverterRegisteredForGivenSourceTypeAndObjectTargetType
      */
+    #[Test]
     public function findConverterThrowsExceptionIfNoConverterCanBeFoundToConvertSourceToAnObject(): void
     {
         /*
@@ -212,9 +192,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
         $this->subject->findTypeConverter('array', LoginType::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findConverterThrowsDuplicateTypeConverterException(): void
     {
         /*

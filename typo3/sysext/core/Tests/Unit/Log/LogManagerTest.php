@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -27,33 +28,25 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LogManagerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function logManagerReturnsLoggerWhenRequestedWithGetLogger(): void
     {
         self::assertInstanceOf(Logger::class, (new LogManager())->getLogger('test'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logManagerTurnsUnderScoreStyleLoggerNamesIntoDotStyleLoggerNames(): void
     {
         self::assertSame('test.a.b', (new LogManager())->getLogger('test_a_b')->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logManagerTurnsNamespaceStyleLoggerNamesIntoDotStyleLoggerNames(): void
     {
         self::assertSame('test.a.b', (new LogManager())->getLogger('test\\a\\b')->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function managerReturnsSameLoggerOnRepeatedRequest(): void
     {
         $loggerName = StringUtility::getUniqueId('test.core.log');
@@ -64,9 +57,7 @@ final class LogManagerTest extends UnitTestCase
         self::assertSame($logger1, $logger2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configuresLoggerWithConfiguredWriter(): void
     {
         $component = 'test';
@@ -82,9 +73,7 @@ final class LogManagerTest extends UnitTestCase
         self::assertInstanceOf($writer, $writers[$level][0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configuresLoggerWithConfiguredProcessor(): void
     {
         $component = 'test';

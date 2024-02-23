@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Record\AbstractRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
@@ -36,9 +37,7 @@ final class WorkspaceRecordTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isAbstractRecord(): void
     {
         $subject = new WorkspaceRecord([]);
@@ -46,9 +45,7 @@ final class WorkspaceRecordTest extends UnitTestCase
         self::assertInstanceOf(AbstractRecord::class, $subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsWorkspaceRecordInstance(): void
     {
         $instance = WorkspaceRecord::get(1, ['title' => '']);
@@ -56,9 +53,7 @@ final class WorkspaceRecordTest extends UnitTestCase
         self::assertInstanceOf(WorkspaceRecord::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWithNonZeroUidAndNonEmptyDataReturnsInstanceWithTheProvidedData(): void
     {
         $title = 'some record title';
@@ -68,9 +63,7 @@ final class WorkspaceRecordTest extends UnitTestCase
         self::assertSame($title, $instance->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCalledTwoTimesWithTheSameUidAndDataDataReturnsDifferentInstancesForEachCall(): void
     {
         $uid = 1;
@@ -82,9 +75,7 @@ final class WorkspaceRecordTest extends UnitTestCase
         self::assertNotSame($instance1, $instance2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForConfiguredXclassReturnsInstanceOfXclass(): void
     {
         $xclassInstance = new class ([]) extends WorkspaceRecord {};

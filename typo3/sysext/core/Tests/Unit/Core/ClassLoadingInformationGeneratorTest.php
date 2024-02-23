@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
 use Composer\Autoload\ClassLoader;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\ClassLoadingInformationGenerator;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -27,9 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassLoadingInformationGeneratorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function buildClassAliasMapForPackageThrowsExceptionForWrongComposerManifestInformation(): void
     {
         $this->expectException(Exception::class);
@@ -50,9 +50,7 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
         $generator->buildClassAliasMapForPackage($packageMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildClassAliasMapForPackageThrowsExceptionForWrongClassAliasMapFile(): void
     {
         $this->expectException(Exception::class);
@@ -72,9 +70,7 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
         $generator->buildClassAliasMapForPackage($packageMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildClassAliasMapForPackageReturnsClassAliasMapForClassAliasMapFile(): void
     {
         $expectedClassMap = [
@@ -97,9 +93,7 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
         self::assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildClassAliasMapForPackageReturnsClassAliasMapForComposerManifestInformation(): void
     {
         $expectedClassMap = [
@@ -247,10 +241,8 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider autoloadFilesAreBuildCorrectlyDataProvider
-     */
+    #[DataProvider('autoloadFilesAreBuildCorrectlyDataProvider')]
+    #[Test]
     public function autoloadFilesAreBuildCorrectly(array $packageManifest, array $expectedPsr4Files, array $expectedClassMapFiles): void
     {
         $classLoaderMock = $this->createMock(ClassLoader::class);
@@ -347,10 +339,8 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider autoloadDevFilesAreBuildCorrectlyDataProvider
-     */
+    #[DataProvider('autoloadDevFilesAreBuildCorrectlyDataProvider')]
+    #[Test]
     public function autoloadDevFilesAreBuildCorrectly(array $packageManifest, array $expectedPsr4Files, array $expectedClassMapFiles): void
     {
         $classLoaderMock = $this->createMock(ClassLoader::class);

@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security\ContentSecurityPolicy\Reporting;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Uid\UuidV4;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Report;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ReportTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function effectiveDirectiveIsTakenFromViolatedDirective(): void
     {
         $report = Report::fromArray([
@@ -40,9 +39,7 @@ final class ReportTest extends UnitTestCase
         self::assertSame('script-src', $report->details['effective-directive']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayUsesNativeDetailKeys(): void
     {
         $details = [
@@ -58,9 +55,7 @@ final class ReportTest extends UnitTestCase
         self::assertSame($details, json_decode($report->toArray()['details'], true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function jsonEncodeUsesCamelCasedDetailKeys(): void
     {
         $details = [

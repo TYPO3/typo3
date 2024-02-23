@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
@@ -56,17 +58,13 @@ final class SiteConfigurationTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveAllExistingSitesReturnsEmptyArrayForNoSiteConfigsFound(): void
     {
         self::assertEmpty($this->siteConfiguration->resolveAllExistingSites());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveAllExistingSitesReadsConfiguration(): void
     {
         $configuration = [
@@ -83,9 +81,7 @@ final class SiteConfigurationTest extends UnitTestCase
         self::assertEquals(new Uri('https://example.com'), $currentSite->getBase());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeOnlyWritesModifiedKeys(): void
     {
         $identifier = 'testsite';
@@ -114,9 +110,7 @@ final class SiteConfigurationTest extends UnitTestCase
         self::assertFileEquals($expected, $siteConfig);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writingOfNestedStructuresPreservesOrder(): void
     {
         $identifier = 'testsite';
@@ -169,10 +163,8 @@ final class SiteConfigurationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider writingPlaceholdersIsHandledDataProvider
-     */
+    #[DataProvider('writingPlaceholdersIsHandledDataProvider')]
+    #[Test]
     public function writingPlaceholdersIsHandled(array $changes, bool $expectedException): void
     {
         if ($expectedException) {

@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteConfigurationControllerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function duplicateEntryPointsAreRecognized(): void
     {
         $mockedSiteConfigurationController = $this->getAccessibleMock(SiteConfigurationController::class, null, [], '', false);
@@ -127,9 +126,7 @@ final class SiteConfigurationControllerTest extends UnitTestCase
         self::assertEquals($expected, $mockedSiteConfigurationController->_call('getDuplicatedEntryPoints', $sites, $rootPages));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function languageBaseVariantsAreKept(): void
     {
         $mockedSiteConfigurationController = $this->getAccessibleMock(SiteConfigurationController::class, null, [], '', false);

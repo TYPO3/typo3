@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser\DataTypes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\LongTextDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\MediumTextDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TextDataType;
@@ -53,10 +55,8 @@ final class TextTypesTest extends AbstractDataTypeBaseTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider canParseTextDataTypeProvider
-     */
+    #[DataProvider('canParseTextDataTypeProvider')]
+    #[Test]
     public function canParseDataType(string $columnDefinition, string $className): void
     {
         $subject = $this->createSubject($columnDefinition);

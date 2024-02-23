@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -26,9 +27,7 @@ final class SiteResolvingTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsSiteObjectOfDefaultLanguageRow(): void
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
@@ -47,9 +46,7 @@ final class SiteResolvingTest extends UnitTestCase
         self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsSiteObjectOfEffectivePid(): void
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);

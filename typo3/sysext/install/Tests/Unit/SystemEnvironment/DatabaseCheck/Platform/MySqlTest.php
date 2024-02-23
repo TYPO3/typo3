@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\SystemEnvironment\DatabaseCheck\Platform;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -79,10 +81,8 @@ final class MySqlTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkMySQLOrMariaDBVersionReportsExpectedStatusDataProvider
-     */
+    #[DataProvider('checkMySQLOrMariaDBVersionReportsExpectedStatusDataProvider')]
+    #[Test]
     public function checkMySQLOrMariaDBVersionReportsExpectedStatus(
         AbstractPlatform $platform,
         string $serverVersionString,

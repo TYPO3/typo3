@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
@@ -50,9 +51,7 @@ final class BulkInsertTest extends UnitTestCase
             ->willReturn(new MockPlatform());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSQLWithoutSpecifiedValuesThrowsException(): void
     {
         $this->expectException(\LogicException::class);
@@ -63,9 +62,7 @@ final class BulkInsertTest extends UnitTestCase
         $query->getSQL();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function insertWithoutColumnAndTypeSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable);
@@ -88,9 +85,7 @@ final class BulkInsertTest extends UnitTestCase
         self::assertSame([], $query->getParameterTypes());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function singleInsertWithoutColumnSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable);
@@ -113,9 +108,7 @@ final class BulkInsertTest extends UnitTestCase
         self::assertSame([null, Connection::PARAM_INT, Connection::PARAM_BOOL], $query->getParameterTypes());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multiInsertWithoutColumnSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable);
@@ -156,9 +149,7 @@ final class BulkInsertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function singleInsertWithColumnSpecificationAndPositionalTypeValues(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
@@ -178,9 +169,7 @@ final class BulkInsertTest extends UnitTestCase
         self::assertSame([null, Connection::PARAM_BOOL], $query->getParameterTypes());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function singleInsertWithColumnSpecificationAndNamedTypeValues(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
@@ -200,9 +189,7 @@ final class BulkInsertTest extends UnitTestCase
         self::assertSame([null, Connection::PARAM_INT], $query->getParameterTypes());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function singleInsertWithColumnSpecificationAndMixedTypeValues(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
@@ -222,9 +209,7 @@ final class BulkInsertTest extends UnitTestCase
         self::assertSame([Connection::PARAM_INT, Connection::PARAM_BOOL], $query->getParameterTypes());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multiInsertWithColumnSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
@@ -271,9 +256,7 @@ final class BulkInsertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyInsertWithColumnSpecificationThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -283,9 +266,7 @@ final class BulkInsertTest extends UnitTestCase
         $query->addValues([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function insertWithColumnSpecificationAndMultipleValuesForColumnThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -295,9 +276,7 @@ final class BulkInsertTest extends UnitTestCase
         $query->addValues(['bar', 'baz', 'baz' => 666]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function insertWithColumnSpecificationAndMultipleTypesForColumnThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);

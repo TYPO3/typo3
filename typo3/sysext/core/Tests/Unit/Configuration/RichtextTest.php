@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RichtextTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationUsesOverruleModeFromType(): void
     {
         $fieldConfig = [
@@ -76,9 +76,7 @@ final class RichtextTest extends UnitTestCase
         self::assertSame($expected, $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationUsesOverruleModeFromConfig(): void
     {
         $fieldConfig = [
@@ -126,9 +124,7 @@ final class RichtextTest extends UnitTestCase
         self::assertSame($expected, $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationSetsOverruleModeIfMissing(): void
     {
         $fieldConfig = [
@@ -164,9 +160,7 @@ final class RichtextTest extends UnitTestCase
         self::assertSame($expected, $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOverridesByDefault(): void
     {
         $fieldConfig = [
@@ -243,9 +237,7 @@ final class RichtextTest extends UnitTestCase
         self::assertSame($expected, $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOverridesByFieldSpecificConfig(): void
     {
         $fieldConfig = [
@@ -333,9 +325,7 @@ final class RichtextTest extends UnitTestCase
         self::assertSame($expected, $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationOverridesByFieldAndTypeSpecificConfig(): void
     {
         $fieldConfig = [
@@ -437,9 +427,7 @@ final class RichtextTest extends UnitTestCase
         self::assertSame($expected, $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationPageTsOverridesPreset(): void
     {
         $pageId = 42;
@@ -817,10 +805,8 @@ final class RichtextTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderGetConfigurationFindPresetInPageTsOverridesPreset
-     * @test
-     */
+    #[DataProvider('dataProviderGetConfigurationFindPresetInPageTsOverridesPreset')]
+    #[Test]
     public function getConfigurationFindPresetInPageTsOverridesPreset($fieldConfig, $pageTsConfig, $expected, $message): void
     {
         // Accessible mock to $subject since getRtePageTsConfigOfPid calls BackendUtility::getPagesTSconfig()

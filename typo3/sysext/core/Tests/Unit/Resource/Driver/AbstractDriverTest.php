@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\TestingDriver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractDriverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured(): void
     {
         $subject = new TestingDriver();

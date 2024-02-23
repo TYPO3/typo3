@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -26,9 +28,7 @@ final class SqlReaderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatementArraySplitsStatements(): void
     {
         $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
@@ -42,9 +42,7 @@ final class SqlReaderTest extends UnitTestCase
         self::assertStringStartsWith('INSERT INTO', $result[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStatementArrayFiltersStatements(): void
     {
         $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
@@ -58,9 +56,7 @@ final class SqlReaderTest extends UnitTestCase
         self::assertStringStartsWith('CREATE TABLE', array_pop($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getInsertStatementArrayResult(): void
     {
         $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
@@ -74,9 +70,7 @@ final class SqlReaderTest extends UnitTestCase
         self::assertStringStartsWith('INSERT', array_pop($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getInsertStatementArrayResultWithNewline(): void
     {
         $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
@@ -92,9 +86,7 @@ final class SqlReaderTest extends UnitTestCase
         self::assertSame('INSERT INTO aTestTable(`aTestField`) VALUES(1);', array_pop($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCreateTableStatementArrayResult(): void
     {
         $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
@@ -107,10 +99,8 @@ final class SqlReaderTest extends UnitTestCase
         self::assertStringStartsWith('CREATE TABLE', array_pop($result));
     }
 
-    /**
-     * @dataProvider commentProvider
-     * @test
-     */
+    #[DataProvider('commentProvider')]
+    #[Test]
     public function getCreateTableStatementArrayResultWithComment(string $comment): void
     {
         $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));

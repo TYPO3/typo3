@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
@@ -47,9 +48,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $GLOBALS['BE_USER']->user['uid'] = 42;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUserPermissionsOnPageForAdminUser(): void
     {
         $this->beUserMock->method('isAdmin')->willReturn(true);
@@ -59,9 +58,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfUserHasNoTablesModifyPermissionForGivenTable(): void
     {
         $input = [
@@ -76,9 +73,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfUserHasNoContentEditPermissionsOnPage(): void
     {
         $input = [
@@ -104,9 +99,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsUserPermissionsOnPageForContentIfUserHasCorrespondingPermissions(): void
     {
         $input = [
@@ -131,9 +124,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoPagePermissions(): void
     {
         $input = [
@@ -158,9 +149,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoDoktypePermissions(): void
     {
         $input = [
@@ -201,9 +190,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsUserPermissionsOnPageIfTableIsPagesAndUserHasPagePermissions(): void
     {
         $input = [
@@ -243,9 +230,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         self::assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnoredForContentEditRecord(): void
     {
         $input = [
@@ -270,9 +255,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRootNodeShouldBeEditedWithoutPermissions(): void
     {
         $input = [
@@ -297,9 +280,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfRecordEditAccessInternalsReturnsFalse(): void
     {
         $input = [
@@ -326,9 +307,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForNewContentRecordWithoutPermissions(): void
     {
         $input = [
@@ -354,9 +333,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForNewPageWithoutPermissions(): void
     {
         $input = [
@@ -384,9 +361,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfHookDeniesAccess(): void
     {
         $input = [
@@ -418,9 +393,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         (new DatabaseUserPermissionCheck())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUserPermissionsOnPageForNewPageIfPageNewIsDeniedAndHookAllowsAccess(): void
     {
         $input = [
@@ -451,9 +424,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUserPermissionsOnPageForNewPage(): void
     {
         $input = [
@@ -478,9 +449,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         self::assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsUserPermissionsOnPageForNewContentRecord(): void
     {
         $input = [
@@ -505,9 +474,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnoredForNewContentRecord(): void
     {
         $input = [
@@ -529,9 +496,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForNewRecordsOnRootLevelWithoutPermissions(): void
     {
         $input = [

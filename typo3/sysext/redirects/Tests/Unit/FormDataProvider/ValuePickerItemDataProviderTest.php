@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
@@ -39,9 +40,7 @@ final class ValuePickerItemDataProviderTest extends UnitTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNothingIfNoRedirectDataGiven(): void
     {
         $result = [
@@ -54,9 +53,7 @@ final class ValuePickerItemDataProviderTest extends UnitTestCase
         self::assertSame($result, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsHostsAsKeyAndValueToRedirectValuePicker(): void
     {
         // no results for now
@@ -75,9 +72,7 @@ final class ValuePickerItemDataProviderTest extends UnitTestCase
         self::assertSame($expected, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataDoesNotChangeResultSetIfNoSitesAreFound(): void
     {
         $siteFinderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();

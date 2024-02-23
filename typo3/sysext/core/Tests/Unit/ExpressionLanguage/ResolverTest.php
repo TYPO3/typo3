@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\ExpressionLanguage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Features;
@@ -61,10 +63,8 @@ final class ResolverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider basicExpressionsDataProvider
-     */
+    #[DataProvider('basicExpressionsDataProvider')]
+    #[Test]
     public function basicExpressionHandlingResultsWorksAsExpected(string $expression, mixed $expectedResult): void
     {
         $defaultProvider = new DefaultProvider(new Typo3Version(), new Context(), new Features());
@@ -89,10 +89,8 @@ final class ResolverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider basicExpressionsWithVariablesDataProvider
-     */
+    #[DataProvider('basicExpressionsWithVariablesDataProvider')]
+    #[Test]
     public function basicExpressionHandlingWithCustomVariablesWorksAsExpected(string $expression, mixed $expectedResult): void
     {
         $contextMock = $this->createMock(DefaultProvider::class);
@@ -117,10 +115,8 @@ final class ResolverTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider basicExpressionHandlingWithContextVariablesDataProvider
-     */
+    #[DataProvider('basicExpressionHandlingWithContextVariablesDataProvider')]
+    #[Test]
     public function basicExpressionHandlingWithContextVariablesWorksAsExpected(string $expression, array $contextVariables, mixed $expectedResult): void
     {
         $contextMock = $this->createMock(DefaultProvider::class);
@@ -147,10 +143,10 @@ final class ResolverTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider basicExpressionsWithVariablesAndExpressionLanguageProviderDataProvider
      * @param mixed $expectedResult
      */
+    #[DataProvider('basicExpressionsWithVariablesAndExpressionLanguageProviderDataProvider')]
+    #[Test]
     public function basicExpressionHandlingWithCustomVariablesAndExpressionLanguageProviderWorksAsExpected(string $expression, mixed $expectedResult): void
     {
         $expressionProviderMock = $this->createMock(DefaultFunctionsProvider::class);

@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Security;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\Nonce;
 use TYPO3\CMS\Core\Security\NoncePool;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class NoncePoolTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function instantiationReflectsState(): void
     {
         $items = self::createItems();
@@ -39,9 +39,7 @@ final class NoncePoolTest extends UnitTestCase
         self::assertSame([], $pool->getEmittableNonces());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itemsAreMerged(): void
     {
         $itemsA = self::createItems();
@@ -61,9 +59,7 @@ final class NoncePoolTest extends UnitTestCase
         self::assertSame([], $poolA->getEmittableNonces());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function provideSigningSecretDoesNotUseReceivedNonce(): void
     {
         $items = self::createItems();
@@ -98,10 +94,8 @@ final class NoncePoolTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider itemsArePurgedDataProvider
-     */
+    #[DataProvider('itemsArePurgedDataProvider')]
+    #[Test]
     public function itemsArePurged(array $options, array $items, array $validItems, array $revocableNames): void
     {
         $pool = (new NoncePool($items, $options))->purge();

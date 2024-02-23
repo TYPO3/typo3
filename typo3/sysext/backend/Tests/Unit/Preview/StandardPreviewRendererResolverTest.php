@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Preview;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Preview\PreviewRendererInterface;
 use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
@@ -52,9 +53,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveStandardContentPreviewRenderer(): void
     {
         $table = 'tt_content';
@@ -68,9 +67,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveCustomContentPreviewRenderer(): void
     {
         $customPreviewRenderer = $this->getMockBuilder(PreviewRendererInterface::class)->getMock();
@@ -88,9 +85,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveStandardContentPreviewRendererWithCustomPreviewRendererDefined(): void
     {
         $customPreviewRenderer = $this->getMockBuilder(PreviewRendererInterface::class)->getMock();
@@ -108,9 +103,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveStandardContentPreviewRendererWithGeneralPreviewRendererDefinedForAllSubTypes(): void
     {
         $customPreviewRenderer = $this->getMockBuilder(PreviewRendererInterface::class)->getMock();
@@ -128,9 +121,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getExceptionWithNoPreviewRendererDefined(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [];

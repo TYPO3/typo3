@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\IncludeTree\Traverser;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IncludeTreeTraverserTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function traverseThrowsExceptionWithVisitorNotImplementingInterface(): void
     {
         $this->expectException(\RuntimeException::class);

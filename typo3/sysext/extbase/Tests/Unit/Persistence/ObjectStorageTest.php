@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\Entity;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ObjectStorageTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function currentForEmptyStorageReturnsNull(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -36,9 +36,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countForEmptyStorageIsZero(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -47,9 +45,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(0, $objectStorage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getInfoForEmptyStorageReturnsNull(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -60,9 +56,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attachWithInformationMakesAttachedInformationAvailableUsingTheObjectAsKey(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -75,9 +69,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame($information, $objectStorage[$object]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attachForEmptyStorageIncreasesCountByOne(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -89,9 +81,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(1, $objectStorage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attachForNonEmptyStorageIncreasesCountByOne(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -104,9 +94,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(2, $objectStorage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attachingAnObjectUsingArrayAssignmentWithInformationIncreasesCountByOne(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -119,9 +107,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(2, $objectStorage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detachForAttachedObjectReducesCountByOne(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -137,9 +123,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(1, $objectStorage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetSetIncreasesCountByOne(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -152,9 +136,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(2, $objectStorage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetUnsetWithObjectReducesCountByOne(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -169,9 +151,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(1, $objectStorage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetUnsetWithIntegerKeyReducesCountByOne(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -186,9 +166,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(1, $objectStorage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetGetForNoneExistingIntegerEntryReturnsNull(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -197,9 +175,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertNull($objectStorage->offsetGet(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetGetForNoneExistingObjectEntryReturnsNull(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -209,9 +185,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertNull($objectStorage->offsetGet($object));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetGetForObjectAttachedWithoutWithoutInformationReturnsNull(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -222,9 +196,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertNull($objectStorage->offsetGet($object));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetGetForObjectWithInformationAttachedUsingArrayAssignmentReturnsTheAssociatedInformation(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -236,9 +208,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame($information, $objectStorage->offsetGet($object1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetGetForObjectWithInformationAttachedUsingAttachReturnsTheAssociatedInformation(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -250,9 +220,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame($information, $objectStorage->offsetGet($object1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetGetWithIntegerKeyReturnsTheAssociatedObject(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -263,9 +231,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame($object, $objectStorage->offsetGet(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetExistsWithObjectAddedToStorageReturnsTrue(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -276,9 +242,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertTrue($objectStorage->offsetExists($object));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetExistsWithObjectNotAddedToStorageReturnsFalse(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -287,9 +251,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertFalse($objectStorage->offsetExists(new Entity()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetExistsWithIntegerKeyInStorageReturnsTrue(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -300,9 +262,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertTrue($objectStorage->offsetExists(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetExistsWithIntegerKeyNotInStorageReturnsFalse(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -311,9 +271,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertFalse($objectStorage->offsetExists(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetExistsWithNumericStringKeyNotInStorageReturnsFalse(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -334,10 +292,8 @@ final class ObjectStorageTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider informationDataProvider
-     */
+    #[DataProvider('informationDataProvider')]
+    #[Test]
     public function getInfoReturnsTheInformationAssociatedWithTheCurrentIteratorEntry(mixed $information): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -349,10 +305,8 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame($information, $objectStorage->getInfo());
     }
 
-    /**
-     * @test
-     * @dataProvider informationDataProvider
-     */
+    #[DataProvider('informationDataProvider')]
+    #[Test]
     public function setInfoSetsTheInformationAssociatedWithTheCurrentIteratorEntry(mixed $information): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -365,10 +319,8 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame($information, $objectStorage[$object]);
     }
 
-    /**
-     * @test
-     * @dataProvider informationDataProvider
-     */
+    #[DataProvider('informationDataProvider')]
+    #[Test]
     public function setInfoOverwritesTheInformationAssociatedWithTheCurrentIteratorEntry(mixed $information): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -381,9 +333,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame($information, $objectStorage[$object]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeAllRemovesObjectsContainedInAnotherStorageFromTheCurrentStorage(): void
     {
         $object1 = new Entity();
@@ -400,9 +350,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(0, $objectStorageToRemoveFrom);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeAllRemovesRemovesObjectWithDifferentInformationFromTheCurrentStorage(): void
     {
         $object1 = new Entity();
@@ -419,9 +367,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(0, $objectStorageToRemoveFrom);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeAllKeepsObjectsNotContainedInTheOtherStorage(): void
     {
         $object1 = new Entity();
@@ -439,9 +385,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(1, $objectStorageToRemoveFrom);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeAlIgnoresAdditionsObjectsContainedInOtherStorage(): void
     {
         $object1 = new Entity();
@@ -459,9 +403,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertCount(1, $objectStorageToRemoveFrom);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addAllAddsAllObjectsFromAnotherStorage(): void
     {
         $object = new Entity();
@@ -477,9 +419,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertTrue($storageToAddTo->contains($object));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addAllAlsoAddsInformationOfTheAddedObjects(): void
     {
         $object = new Entity();
@@ -496,9 +436,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame($information, $storageToAddTo[$object]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayReturnsObjectsInStorageUsingIntegerKeys(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -511,9 +449,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame([0 => $object1, 1 => $object2], $objectStorage->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArrayReturnsObjectsInStorageUsingIntegerKeys(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -526,9 +462,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertSame([0 => $object1, 1 => $object2], $objectStorage->getArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function relationsAreNotDirtyOnAttaching(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -540,9 +474,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertFalse($objectStorage->isRelationDirty($object));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function relationsAreNotDirtyOnAttachingAndRemoving(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -555,9 +487,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertFalse($objectStorage->isRelationDirty($object1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function relationsAreNotDirtyOnReAddingAtSamePosition(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */
@@ -576,9 +506,7 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertFalse($objectStorage->isRelationDirty($object2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function relationsAreDirtyOnReAddingAtOtherPosition(): void
     {
         /** @var ObjectStorage<Entity> $objectStorage */

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,27 +31,21 @@ final class BooleanConverterTest extends UnitTestCase
         $this->converter = new BooleanConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromDoesNotModifyTheBooleanSource(): void
     {
         $source = true;
         self::assertEquals($source, $this->converter->convertFrom($source, 'boolean'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromCastsSourceStringToBoolean(): void
     {
         $source = 'true';
         self::assertTrue($this->converter->convertFrom($source, 'boolean'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromCastsNumericSourceStringToBoolean(): void
     {
         $source = '1';

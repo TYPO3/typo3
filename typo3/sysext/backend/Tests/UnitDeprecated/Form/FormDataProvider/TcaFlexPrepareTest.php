@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\UnitDeprecated\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -51,9 +52,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataMigratesFlexformTca(): void
     {
         $input = [
@@ -125,9 +124,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
         self::assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataMigratesFlexformTcaInContainer(): void
     {
         $input = [

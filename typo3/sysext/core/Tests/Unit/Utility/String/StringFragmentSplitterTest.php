@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility\String;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\String\StringFragment;
 use TYPO3\CMS\Core\Utility\String\StringFragmentPattern;
 use TYPO3\CMS\Core\Utility\String\StringFragmentSplitter;
@@ -78,10 +80,9 @@ final class StringFragmentSplitterTest extends UnitTestCase
     /**
      * @param list<StringFragmentPattern> $patterns
      * @param list<StringFragment> $expectations
-     *
-     * @test
-     * @dataProvider stringIsSplitDataProvider
      */
+    #[DataProvider('stringIsSplitDataProvider')]
+    #[Test]
     public function stringIsSplit(string $value, array $patterns, int $flags, ?array $expectations): void
     {
         $splitter = new StringFragmentSplitter(...$patterns);

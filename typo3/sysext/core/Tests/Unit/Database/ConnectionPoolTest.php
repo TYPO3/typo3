@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConnectionPoolTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getConnectionNamesReturnsConfiguredConnectionNames(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'] = [
