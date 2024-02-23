@@ -251,21 +251,6 @@ final class TcaPreparationTest extends UnitTestCase
 
     public static function configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider(): \Generator
     {
-        yield 'No relationship with maxitems=1 (falls back to manyToMany)' => [
-            [
-                'aTable' => [
-                    'columns' => [
-                        'foo' => [
-                            'config' => [
-                                'type' => 'category',
-                                'maxitems' => 1,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            1627335017,
-        ];
         yield 'oneToOne relationship with maxitems=2' => [
             [
                 'aTable' => [
@@ -283,22 +268,6 @@ final class TcaPreparationTest extends UnitTestCase
             1627335016,
         ];
         yield 'oneToMany relationship with maxitems=1' => [
-            [
-                'aTable' => [
-                    'columns' => [
-                        'foo' => [
-                            'config' => [
-                                'type' => 'category',
-                                'relationship' => 'oneToMany',
-                                'maxitems' => 1,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            1627335017,
-        ];
-        yield 'manyToMany relationship with maxitems=1' => [
             [
                 'aTable' => [
                     'columns' => [

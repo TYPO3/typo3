@@ -116,7 +116,9 @@ class TcaPreparation
                 } elseif (!($fieldConfig['config']['maxitems'] ?? false)) {
                     // In case maxitems is not set or set to 0, set the default value "99999"
                     $fieldConfig['config']['maxitems'] = 99999;
-                } elseif ((int)($fieldConfig['config']['maxitems'] ?? 0) === 1) {
+                } elseif ($fieldConfig['config']['relationship'] === 'oneToMany'
+                    && (int)($fieldConfig['config']['maxitems'] ?? 0) === 1
+                ) {
                     throw new \RuntimeException(
                         $fieldName . ' of table ' . $table . ' is defined as type category with a ' . $fieldConfig['config']['relationship'] .
                         ' relationship. Therefore, maxitems can not be set to 1. Use oneToOne as relationship instead.',
