@@ -18,7 +18,7 @@
         <form style="display:inline;"
                 data-global-event="submit"
                 data-action-navigate="$form=~s/$value/"
-                data-navigate-value="{f:uri.action(arguments:'{searchTerm: \'$[value]\'}')}"
+                data-navigate-value="{f:uri.action(action:'index', arguments:'{searchTerm: \'$[value]\'}')}"
                 data-value-selector="input[name='searchTerm']"
         >
             <div class="row mb-3">

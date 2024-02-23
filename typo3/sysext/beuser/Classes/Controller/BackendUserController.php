@@ -389,15 +389,15 @@ class BackendUserController extends ActionController
 
         $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
 
-        $backendUsers = $this->backendUserGroupRepository->findByFilter($userGroupDto);
-        $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
+        $backendUserGroups = $this->backendUserGroupRepository->findByFilter($userGroupDto);
+        $paginator = new QueryResultPaginator($backendUserGroups, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
         $compareGroupUidList = array_keys((array)$this->moduleData->get('compareGroupUidList', []));
         $this->moduleTemplate->assignMultiple(
             [
                 'paginator' => $paginator,
                 'pagination' => $pagination,
-                'totalAmountOfBackendUserGroups' => $backendUsers->count(),
+                'totalAmountOfBackendUserGroups' => $backendUserGroups->count(),
                 'compareGroupUidList' => array_map(static function (int $value): int { // uid as key and force value to 1
                     return 1;
                 }, array_flip($compareGroupUidList)),
