@@ -67,9 +67,9 @@ override file with:
             'sys_reaction',
             'table_name',
             [
-                'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:my_table',
-                'my_table',
-                'myext-my_table-icon',
+                'label' => 'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:my_table',
+                'value' => 'my_table',
+                'icon' => 'myext-my_table-icon',
             ]
         );
     }
