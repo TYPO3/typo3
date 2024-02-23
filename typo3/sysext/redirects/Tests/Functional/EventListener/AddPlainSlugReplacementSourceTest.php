@@ -45,7 +45,7 @@ final class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
 
         // Removing AddPageTypeZeroSource event is needed to avoid cross dependency here for this test.
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             AddPageTypeZeroSource::class,
             static function (SlugRedirectChangeItemCreatedEvent $event) {}

@@ -419,7 +419,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_ModifyAutoCreateRedirectRecordBeforePersistingEvent.csv');
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'modify-auto-create-redirect-record-before-persisting',
             static function (ModifyAutoCreateRedirectRecordBeforePersistingEvent $event) use (
@@ -471,7 +471,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_AfterAutoCreateRedirectHasBeenPersistedEvent.csv');
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-auto-create-redirect-has-been-persisted',
             static function (AfterAutoCreateRedirectHasBeenPersistedEvent $event) use (

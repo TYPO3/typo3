@@ -646,7 +646,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $defaultConstraint = new CompositeExpression('foo');
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'modify-default-constraints-for-database-query-listener',
             static function (ModifyDefaultConstraintsForDatabaseQueryEvent $event) use (&$modifyDefaultConstraintsForDatabaseQueryEvent, $defaultConstraint) {
@@ -679,7 +679,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $beforePageIsRetrievedEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'before-page-is-retrieved-listener',
             static function (BeforePageIsRetrievedEvent $event) use (&$beforePageIsRetrievedEvent, $page, $pageId) {

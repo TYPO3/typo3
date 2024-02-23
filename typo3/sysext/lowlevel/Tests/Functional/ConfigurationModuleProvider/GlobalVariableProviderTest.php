@@ -40,7 +40,7 @@ final class GlobalVariableProviderTest extends FunctionalTestCase
         $modifiedBlindedConfigurationOptions = [$globalVariableKey => $blindedConfiguration];
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'modify-blinded-configuration-options',
             static function (ModifyBlindedConfigurationOptionsEvent $event) use (

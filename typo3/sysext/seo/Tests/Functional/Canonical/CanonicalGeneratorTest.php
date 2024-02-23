@@ -159,7 +159,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         $modifyUrlForCanonicalTagEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'modify-url-for-canonical-tag-listener',
             static function (ModifyUrlForCanonicalTagEvent $event) use (&$modifyUrlForCanonicalTagEvent) {

@@ -1476,11 +1476,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/MediaViewHelper.php
 
 		-
-			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
-			count: 4
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Form/SelectViewHelperTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$input of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:retrieveFileOrFolderObject\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/FileViewHelperTest.php
@@ -2109,11 +2104,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
-
-		-
-			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Functional/ViewHelpers/Format/PhpErrorCodeViewHelperTest.php
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{string, string, string\\} and array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> will always evaluate to false\\.$#"

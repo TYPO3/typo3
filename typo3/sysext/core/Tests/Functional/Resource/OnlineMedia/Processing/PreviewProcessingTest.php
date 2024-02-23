@@ -45,7 +45,7 @@ final class PreviewProcessingTest extends FunctionalTestCase
         $onlineMediaId = '2004';
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             $afterVideoPreviewFetchedEventListener,
             static function (AfterVideoPreviewFetchedEvent $event) use (

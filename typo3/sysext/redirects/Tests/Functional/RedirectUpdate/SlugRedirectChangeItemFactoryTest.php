@@ -118,7 +118,7 @@ final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
         ]);
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'slug-redirect-change-item-created',
             static function (SlugRedirectChangeItemCreatedEvent $event) use (

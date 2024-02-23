@@ -50,7 +50,7 @@ final class BrowseLinksControllerTest extends FunctionalTestCase
     public function linkEventsAreTriggered(): void
     {
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
 
         $state = [
             'modify-link-handl-listener' => null,

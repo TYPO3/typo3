@@ -39,7 +39,7 @@ final class ContentContentObjectTest extends FunctionalTestCase
         $modifyRecordsAfterFetchingContentEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'modify-records-after-fetching-content-listener',
             static function (ModifyRecordsAfterFetchingContentEvent $event) use (&$modifyRecordsAfterFetchingContentEvent, $records, $finalContent) {

@@ -141,7 +141,7 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         $listenerResult = ['foo' => 'bar'];
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'package-initialization-listener',
             static function (PackageInitializationEvent $event) use (&$packageInitializationEvent, $listenerResult) {

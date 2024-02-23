@@ -429,7 +429,7 @@ EOT;
                 return (string)$object->getId();
             }
         );
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
         $context = $container->get(RenderingContextFactory::class)->create();
@@ -461,7 +461,7 @@ EOT;
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $mockPersistenceManager->method('getIdentifierByObject')->willReturn('fakeUid');
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
         $context = $container->get(RenderingContextFactory::class)->create();
@@ -490,7 +490,7 @@ EOT;
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $mockPersistenceManager->method('getIdentifierByObject')->willReturn('fakeUid');
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
         $context = $container->get(RenderingContextFactory::class)->create();
@@ -519,7 +519,7 @@ EOT;
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $mockPersistenceManager->method('getIdentifierByObject')->willReturn(null);
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
         $context = $container->get(RenderingContextFactory::class)->create();

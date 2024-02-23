@@ -622,7 +622,7 @@ final class IconFactoryTest extends FunctionalTestCase
         $modifyRecordOverlayIconIdentifierEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'modify-record-overlay-icon-identifier-event-listener',
             static function (ModifyRecordOverlayIconIdentifierEvent $event) use (&$modifyRecordOverlayIconIdentifierEvent) {

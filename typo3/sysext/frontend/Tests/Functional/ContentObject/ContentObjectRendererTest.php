@@ -1266,7 +1266,7 @@ And another one';
         $afterContentObjectRendererInitializedEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-content-object-renderer-initialized-listener',
             static function (AfterContentObjectRendererInitializedEvent $event) use (&$afterContentObjectRendererInitializedEvent) {
@@ -1306,7 +1306,7 @@ And another one';
         $afterGetDataResolvedEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-get-data-resolved-listener',
             static function (AfterGetDataResolvedEvent $event) use (&$afterGetDataResolvedEvent) {
@@ -1337,7 +1337,7 @@ And another one';
         $afterImageResourceResolvedEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-image-resource-resolved-listener',
             static function (AfterImageResourceResolvedEvent $event) use (&$afterImageResourceResolvedEvent) {
@@ -1370,7 +1370,7 @@ And another one';
         $enhanceStdWrapEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'enhance-stdWrap-listener',
             static function (EnhanceStdWrapEvent $event) use (&$enhanceStdWrapEvent, $content) {
