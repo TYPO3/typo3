@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
@@ -77,9 +79,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function linkForRedirectToAccessRestrictedPageIsBuild(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectToAccessRestrictedPages.csv');
@@ -158,10 +158,8 @@ final class RedirectServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider redirectsDataProvider
-     */
+    #[DataProvider('redirectsDataProvider')]
+    #[Test]
     public function checkReponseCodeOnRedirect($url, $statusCode, $targetUrl, $redirectUid): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectToPages.csv');
@@ -309,10 +307,8 @@ final class RedirectServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkRegExpRedirectsDataProvider
-     */
+    #[DataProvider('checkRegExpRedirectsDataProvider')]
+    #[Test]
     public function checkRegExpRedirects(string $url, int $expectedStatusCode, string $expectedRedirectUri, int $expectedRedirectUid)
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_regexp.csv');
@@ -338,9 +334,9 @@ final class RedirectServiceTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @see https://forge.typo3.org/issues/101739
      */
+    #[Test]
     public function regexpWithNoParamRegexpAndRespectingGetParameteresIssuesNotFoundStatusIfParamsAreGivenInUrl(): void
     {
         $url = 'https://acme.com/regexp-respect-get-parameter?param1=value1';
@@ -364,9 +360,9 @@ final class RedirectServiceTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @see https://forge.typo3.org/issues/101739
      */
+    #[Test]
     public function regexpWithNoParamRegexpAndRespectingGetParameteresRedirectsIfNoParamsAreGiven(): void
     {
         $url = 'https://acme.com/regexp-respect-get-parameter';
@@ -525,10 +521,8 @@ final class RedirectServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider samePathWithSameDomainT3TargetDataProvider
-     */
+    #[DataProvider('samePathWithSameDomainT3TargetDataProvider')]
+    #[Test]
     public function samePathWithSameDomainT3Target(string $url, string $baseUri, int $expectedStatusCode, ?string $expectedRedirectUri, ?int $expectedRedirectUid): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_samePathWithSameDomainT3Target.csv');
@@ -670,10 +664,8 @@ final class RedirectServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider samePathWithSameDomainAndRelativeTargetDataProvider
-     */
+    #[DataProvider('samePathWithSameDomainAndRelativeTargetDataProvider')]
+    #[Test]
     public function samePathWithSameDomainAndRelativeTarget(string $url, string $baseUri, int $expectedStatusCode, ?string $expectedRedirectUri, ?int $expectedRedirectUid): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_samePathWithSameDomainAndRelativeTarget.csv');
@@ -835,10 +827,8 @@ final class RedirectServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider samePathRedirectsWithExternalTargetDataProvider
-     */
+    #[DataProvider('samePathRedirectsWithExternalTargetDataProvider')]
+    #[Test]
     public function samePathRedirectsWithExternalTarget(string $url, string $baseUri, int $expectedStatusCode, ?string $expectedRedirectUri, ?int $expectedRedirectUid): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_samePathRedirectsWithExternalTarget.csv');
@@ -865,9 +855,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function beforeRedirectMatchDomainEventIsTriggered(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BeforeRedirectMatchDomainEventIsTriggered.csv');
@@ -956,10 +944,8 @@ final class RedirectServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider regExpRedirectsWithArgumentMatchesWithSimilarRegExpWithoutQueryParamInRecordDataProvider
-     */
+    #[DataProvider('regExpRedirectsWithArgumentMatchesWithSimilarRegExpWithoutQueryParamInRecordDataProvider')]
+    #[Test]
     public function regExpRedirectsWithArgumentMatchesWithSimilarRegExpWithoutQueryParamInRecord(
         string $importDataSet,
         string $url,

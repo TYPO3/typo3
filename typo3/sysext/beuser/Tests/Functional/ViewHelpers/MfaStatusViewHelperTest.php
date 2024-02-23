@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -46,25 +47,19 @@ final class MfaStatusViewHelperTest extends FunctionalTestCase
         $this->view = new TemplateView($context);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsEmptyResultForInvalidUserUid(): void
     {
         self::assertEmpty($this->view->assign('userUid', 0)->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsEmptyResultForUnknownUserUid(): void
     {
         self::assertEmpty($this->view->assign('userUid', 123)->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsMfaEnabledLabel(): void
     {
         self::assertEquals(
@@ -73,9 +68,7 @@ final class MfaStatusViewHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsMfaLockedLabel(): void
     {
         self::assertEquals(
@@ -84,9 +77,7 @@ final class MfaStatusViewHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsMfaLockedLabelOnMixedProviders(): void
     {
         self::assertEquals(

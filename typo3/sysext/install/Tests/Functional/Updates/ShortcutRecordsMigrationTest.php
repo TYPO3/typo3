@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\TextType;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,9 +39,7 @@ final class ShortcutRecordsMigrationTest extends FunctionalTestCase
     protected string $baseDataSet = __DIR__ . '/Fixtures/ShortcutsBase.csv';
     protected string $resultDataSet = __DIR__ . '/Fixtures/ShortcutsMigratedToRoutes.csv';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shortcutRecordsUpdated(): void
     {
         $subject = new ShortcutRecordsMigration();

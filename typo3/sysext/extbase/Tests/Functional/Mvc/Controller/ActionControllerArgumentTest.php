@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -69,10 +71,10 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
     }
 
     /**
-     * @test
-     * @dataProvider validationErrorReturnsToForwardedPreviousActionDataProvider
      * @todo: It might be better if these tests would executeFrontendSubRequest() to setup less stuff on their own?!
      */
+    #[DataProvider('validationErrorReturnsToForwardedPreviousActionDataProvider')]
+    #[Test]
     public function validationErrorReturnsToForwardedPreviousAction(string $forwardTargetAction, array $forwardTargetArguments, string $validateAction, array $expectations): void
     {
         $inputRequest = $this->buildRequest('forward');

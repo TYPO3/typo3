@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\Container;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Form\Container\FilesControlContainer;
 use TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent;
@@ -39,9 +40,7 @@ final class FilesControlContainerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customFileControlsEventIsCalled(): void
     {
         $customFileControlsEvent = null;

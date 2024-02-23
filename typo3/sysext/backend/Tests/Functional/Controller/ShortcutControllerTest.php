@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem;
 use TYPO3\CMS\Backend\Controller\ShortcutController;
@@ -51,10 +53,8 @@ final class ShortcutControllerTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $this->request;
     }
 
-    /**
-     * @dataProvider addShortcutTestDataProvide
-     * @test
-     */
+    #[DataProvider('addShortcutTestDataProvide')]
+    #[Test]
     public function addShortcutTest(array $parsedBody, string $expectedResponseBody, int $expectedResponseStatus): void
     {
         $request = $this->request->withParsedBody($parsedBody);

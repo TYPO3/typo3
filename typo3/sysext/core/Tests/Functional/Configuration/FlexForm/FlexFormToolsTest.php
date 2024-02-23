@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Configuration\FlexForm;
 
 use Doctrine\DBAL\Result;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -64,9 +66,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierWithNoListenersReturnsDefault(): void
     {
         $subject = new FlexFormTools();
@@ -85,9 +85,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierWithNoOpListenerReturnsDefault(): void
     {
         $subject = new FlexFormTools();
@@ -118,9 +116,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierWithListenerReturnsThatListenersValue(): void
     {
         $subject = new FlexFormTools();
@@ -146,9 +142,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierWithModifyListenerCallsListener(): void
     {
         $subject = new FlexFormTools();
@@ -181,9 +175,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfDsIsNotAnArrayAndNoDsPointerField(): void
     {
         $fieldTca = [
@@ -197,9 +189,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsDefaultIfDsIsSetButNoDsPointerField(): void
     {
         $fieldTca = [
@@ -213,9 +203,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionsIfNoDsPointerFieldIsSetAndDefaultDoesNotExist(): void
     {
         $fieldTca = [
@@ -228,9 +216,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame('default', (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfPointerFieldStringHasMoreThanTwoFields(): void
     {
         $fieldTca = [
@@ -244,9 +230,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfPointerFieldWithStringSingleFieldDoesNotExist(): void
     {
         $fieldTca = [
@@ -263,9 +247,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfPointerFieldSWithTwoFieldsFirstDoesNotExist(): void
     {
         $fieldTca = [
@@ -282,9 +264,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfPointerFieldSWithTwoFieldsSecondDoesNotExist(): void
     {
         $fieldTca = [
@@ -301,9 +281,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsPointerFieldValueIfDataStructureExists(): void
     {
         $fieldTca = [
@@ -321,9 +299,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsDefaultIfPointerFieldValueDoesNotExist(): void
     {
         $fieldTca = [
@@ -341,9 +317,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfPointerFieldValueDoesNotExistAndDefaultToo(): void
     {
         $fieldTca = [
@@ -459,10 +433,8 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider
-     */
+    #[DataProvider('getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider')]
+    #[Test]
     public function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinations(array $row, array $ds, string $expected): void
     {
         $fieldTca = [
@@ -474,9 +446,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionForTwoFieldsWithNoMatchAndNoDefault(): void
     {
         $fieldTca = [
@@ -497,9 +467,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfParentRowLookupFails(): void
     {
         $fieldTca = [
@@ -544,9 +512,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfParentRowsFormALoop(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
@@ -637,9 +603,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfNoValidPointerFoundUntilRoot(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
@@ -730,9 +694,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfNoValidPointerValueFound(): void
     {
         $fieldTca = [
@@ -748,9 +710,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfReservedPointerValueIsIntegerButDsFieldNameIsNotConfigured(): void
     {
         $fieldTca = [
@@ -766,9 +726,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierThrowsExceptionIfDsTableFieldIsMisconfigured(): void
     {
         $fieldTca = [
@@ -785,9 +743,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsValidIdentifierForPointerField(): void
     {
         $fieldTca = [
@@ -803,9 +759,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsValidIdentifierForParentLookup(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
@@ -895,9 +849,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsValidIdentifierForParentLookupAndBreaksLoop(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
@@ -952,9 +904,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsValidIdentifierForParentLookupAndPrefersSubField(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
@@ -1013,9 +963,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsValidIdentifierForTableAndFieldPointer(): void
     {
         $fieldTca = [
@@ -1033,9 +981,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDataStructureIdentifierReturnsValidIdentifierForTableAndFieldPointerWithParentLookup(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
@@ -1095,9 +1041,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionWithEmptyString(): void
     {
         $this->expectException(InvalidIdentifierException::class);
@@ -1105,9 +1049,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier('');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionOnInvalidJson(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -1115,9 +1057,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier('egon');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierRejectsInvalidInput(): void
     {
         $this->expectException(InvalidIdentifierException::class);
@@ -1125,9 +1065,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier('{"some":"input"}');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierParsesDataStructureReturnedByEvent(): void
     {
         /** @var Container $container */
@@ -1155,9 +1093,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForInvalidSyntax(): void
     {
         $this->expectException(InvalidIdentifierException::class);
@@ -1165,9 +1101,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier('{"type":"bernd"}');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForIncompleteTcaSyntax(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -1176,9 +1110,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForInvalidTcaSyntaxPointer(): void
     {
         $this->expectException(InvalidIdentifierException::class);
@@ -1187,9 +1119,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierResolvesTcaSyntaxPointer(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1204,9 +1134,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForIncompleteRecordSyntax(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -1215,9 +1143,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierResolvesRecordSyntaxPointer(): void
     {
         // Mocks for a lot of the database stack classes
@@ -1254,9 +1180,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionIfDataStructureFileDoesNotExist(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default']
@@ -1267,9 +1191,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierFetchesFromFile(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default']
@@ -1296,9 +1218,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForInvalidXmlStructure(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1314,9 +1234,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionIfStructureHasBothSheetAndRoot(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1331,9 +1249,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierCreatesDefaultSheet(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1374,9 +1290,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierResolvesExtReferenceForSingleSheets(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1410,9 +1324,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierResolvesExtReferenceForSingleSheetsWithFilePrefix(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1446,9 +1358,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierModifyEventManipulatesDataStructure(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1482,9 +1392,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierPreparesCategoryField(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1548,9 +1456,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionOnInvalidCategoryRelationship(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1577,9 +1483,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsEsxceptionOnInvalidMaxitemsForOneToOne(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -1607,9 +1511,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionOnInvalidMaxitems(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '

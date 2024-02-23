@@ -17,67 +17,54 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignFieldNonWs\Modify;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignFieldNonWs\AbstractActionTestCase;
 
 final class ActionTest extends AbstractActionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createParentContent(): void
     {
         parent::createParentContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentContent(): void
     {
         parent::modifyParentContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteParentContent(): void
     {
         parent::deleteParentContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyParentContent(): void
     {
         parent::copyParentContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDifferentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyParentContentToLanguageWithAllChildren(): void
     {
         // Create translated page first
@@ -86,9 +73,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToLanguageWAllChildren.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
@@ -97,9 +82,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentWAllChildren.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeParentContentWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -108,9 +91,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeParentContentChainLanguageSynchronizationSource(): void
     {
         // Create translated page first
@@ -120,9 +101,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentChainLanguageSynchronizationSource.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -131,9 +110,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentNCreateNestedChildrenWLanguageSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeParentContentAndSetInvalidChildReferenceWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -143,9 +120,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeParentContentAndSetInvalidChildReferenceWithLateLanguageSynchronization(): void
     {
         // Create translated page first
@@ -155,98 +130,70 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeParentContentSorting(): void
     {
         parent::changeParentContentSorting();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeParentContentSorting.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveParentContentToDifferentPage(): void
     {
         parent::moveParentContentToDifferentPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPageNChangeSorting.csv');
     }
 
-    /**
-     * Page records
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyPage(): void
     {
         parent::modifyPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletePage(): void
     {
         parent::deletePage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPageWithHotelBeforeParentContent(): void
     {
         parent::copyPageWithHotelBeforeParentContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageWHotelBeforeParentContent.csv');
     }
 
-    /**
-     * IRRE Child Records
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContentNHotelNOfferChildren.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createNCopyParentContentNHotelNOfferChildren.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         // Create translated page first
@@ -255,9 +202,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createNLocalizeParentContentNHotelNOfferChildren.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration(): void
     {
         // Create translated page first
@@ -266,108 +211,84 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createNLocalizeParentContentNHotelNOfferChildrenWOSortBy.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyOnlyHotelChild(): void
     {
         parent::modifyOnlyHotelChild();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyOnlyHotelChild.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndChangeHotelChildrenSorting(): void
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNChangeHotelChildrenSorting.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentWithHotelChild(): void
     {
         parent::modifyParentWithHotelChild();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNHotelChild.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndAddHotelChild(): void
     {
         parent::modifyParentAndAddHotelChild();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNAddHotelChild.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndDeleteHotelChild(): void
     {
         parent::modifyParentAndDeleteHotelChild();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNDeleteHotelChild.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageWithLocalizationExclude(): void
     {
         parent::localizePageWithLocalizationExclude();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageWExclude.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageTwiceWithLocalizationExclude(): void
     {
         parent::localizePageTwiceWithLocalizationExclude();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageTwiceWExclude.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageAndAddHotelChildWithLocalizationExclude(): void
     {
         parent::localizePageAndAddHotelChildWithLocalizationExclude();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddHotelChildWExclude.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageWithLanguageSynchronization(): void
     {
         parent::localizePageWithLanguageSynchronization();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageWSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageAndAddHotelChildWithLanguageSynchronization(): void
     {
         parent::localizePageAndAddHotelChildWithLanguageSynchronization();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddHotelChildWSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageAndAddMonoglotHotelChildWithLanguageSynchronization(): void
     {
         parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddMonoglotHotelChildWSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeAndCopyPageWithLanguageSynchronization(): void
     {
         parent::localizeAndCopyPageWithLanguageSynchronization();
@@ -377,18 +298,15 @@ final class ActionTest extends AbstractActionTestCase
     /**
      * Checks for a page having an IRRE record. The page is then localized and
      * an IRRE record is then added to the localized page
-     *
-     * @test
      */
+    #[Test]
     public function localizePageWithSynchronizationAndCustomLocalizedHotel(): void
     {
         parent::localizePageWithSynchronizationAndCustomLocalizedHotel();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageWithSynchronizationAndCustomLocalizedHotel.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageAddMonoglotHotelChildAndCopyPageWithLanguageSynchronization(): void
     {
         parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
@@ -396,9 +314,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAddMonoglotHotelChildNCopyPageWSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inlineLocalizeSynchronizeLocalizeMissing(): void
     {
         parent::inlineLocalizeSynchronizeLocalizeMissing();

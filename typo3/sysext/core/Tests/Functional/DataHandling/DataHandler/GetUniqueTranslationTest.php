@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
@@ -38,9 +39,7 @@ final class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         $this->backendUser->workspace = 0;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueOfUniqueFieldExcludedInTranslationIsUntouchedInTranslation(): void
     {
         // Mis-using the "keywords" field in the scenario data-set to check for uniqueness
@@ -58,9 +57,7 @@ final class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         self::assertEquals('datahandler', $translatedRecord['keywords']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueOfUniqueFieldExcludedInTranslationIsUntouchedInOriginalLanguage(): void
     {
         // Mis-using the "nav_title" field in the scenario data-set to check for uniqueness
@@ -83,9 +80,7 @@ final class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         self::assertEquals('datahandler', $translatedRecord['nav_title']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueOfUniqueFieldExcludedInTranslationIsIncrementedInNewOriginalRecord(): void
     {
         // Mis-using the "nav_title" field in the scenario data-set to check for uniqueness
@@ -108,9 +103,7 @@ final class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         self::assertEquals('datahandler0', $newRecord['nav_title']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueOfUniqueFieldExcludedInTranslationIsIncrementedInNewTranslatedRecord(): void
     {
         // Mis-using the "nav_title" field in the scenario data-set to check for uniqueness

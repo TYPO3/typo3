@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Routing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
@@ -31,9 +32,7 @@ final class RouterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routerReturnsRouteForAlias(): void
     {
         $subject = $this->get(Router::class);
@@ -46,9 +45,7 @@ final class RouterTest extends FunctionalTestCase
         self::assertTrue($subject->hasRoute('old_route_identifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchResultFindsProperRoute(): void
     {
         $subject = $this->get(Router::class);
@@ -58,9 +55,7 @@ final class RouterTest extends FunctionalTestCase
         self::assertEquals('/login', $result->getRoute()->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchResultThrowsExceptionOnInvalidRoute(): void
     {
         $subject = $this->get(Router::class);
@@ -70,9 +65,7 @@ final class RouterTest extends FunctionalTestCase
         $subject->matchResult($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchResultThrowsInvalidMethodForValidRoute(): void
     {
         $subject = $this->get(Router::class);
@@ -82,9 +75,7 @@ final class RouterTest extends FunctionalTestCase
         $subject->matchResult($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchResultReturnsRouteWithMethodLimitation(): void
     {
         $subject = $this->get(Router::class);
@@ -94,9 +85,7 @@ final class RouterTest extends FunctionalTestCase
         self::assertEquals('/login/password-reset/initiate-reset', $result->getRoute()->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchResultReturnsRouteForBackendModuleWithMethodLimitation(): void
     {
         $subject = $this->get(Router::class);
@@ -107,9 +96,7 @@ final class RouterTest extends FunctionalTestCase
         self::assertInstanceOf(ModuleInterface::class, $result->getRoute()->getOption('module'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchResultThrowsExceptionForWrongHttpMethod(): void
     {
         $this->expectException(MethodNotAllowedException::class);
@@ -121,9 +108,7 @@ final class RouterTest extends FunctionalTestCase
         $subject->matchResult($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchResultReturnsRouteWithPlaceholderAndMethodLimitation(): void
     {
         $subject = $this->get(Router::class);
@@ -135,9 +120,7 @@ final class RouterTest extends FunctionalTestCase
         self::assertEquals(['identifier' => 'my-identifier'], $result->getArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchResultReturnsRouteForSubRoute(): void
     {
         $subject = $this->get(Router::class);

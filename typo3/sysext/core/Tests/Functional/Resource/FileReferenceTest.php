@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,9 +31,7 @@ final class FileReferenceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/FileReference.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileReferenceCanBeDeleted(): void
     {
         $fileReference = GeneralUtility::makeInstance(FileReference::class, ['uid' => 1, 'uid_local' => 1]);

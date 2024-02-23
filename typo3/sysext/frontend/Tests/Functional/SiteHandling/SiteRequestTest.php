@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\Uri;
@@ -73,10 +75,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider shortcutsAreRedirectedDataProvider
-     */
+    #[DataProvider('shortcutsAreRedirectedDataProvider')]
+    #[Test]
     public function shortcutsAreRedirectedToFirstSubPage(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -95,10 +95,8 @@ final class SiteRequestTest extends AbstractTestCase
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
-    /**
-     * @test
-     * @dataProvider shortcutsAreRedirectedDataProvider
-     */
+    #[DataProvider('shortcutsAreRedirectedDataProvider')]
+    #[Test]
     public function shortcutsAreRedirectedAndRenderFirstSubPage(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -166,10 +164,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithPathsDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithPathsDataProvider')]
+    #[Test]
     public function pageIsRenderedWithPaths(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -230,10 +226,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider')]
+    #[Test]
     public function pageIsRenderedWithPathsAndChineseDefaultLanguage(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -268,10 +262,8 @@ final class SiteRequestTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithPathsAndChineseBaseDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithPathsAndChineseBaseDataProvider')]
+    #[Test]
     public function pageIsRenderedWithPathsAndChineseBase(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -333,10 +325,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithDomainsDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithDomainsDataProvider')]
+    #[Test]
     public function pageIsRenderedWithDomains(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -406,10 +396,8 @@ final class SiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageIsRenderedDataProvider
-     */
+    #[DataProvider('restrictedPageIsRenderedDataProvider')]
+    #[Test]
     public function restrictedPageIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -458,10 +446,8 @@ final class SiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithoutHavingErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -488,10 +474,10 @@ final class SiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @test
-     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
      */
+    #[DataProvider('restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
         self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
@@ -514,10 +500,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -555,10 +539,8 @@ final class SiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderIsRenderedDataProvider
-     */
+    #[DataProvider('restrictedPageWithParentSysFolderIsRenderedDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -599,10 +581,8 @@ final class SiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingFluidErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -635,10 +615,10 @@ final class SiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
      */
+    #[DataProvider('restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
         self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
@@ -661,10 +641,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -705,10 +683,8 @@ final class SiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider
-     */
+    #[DataProvider('hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider')]
+    #[Test]
     public function hiddenPageSends404ResponseRegardlessOfVisitorGroup(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -756,10 +732,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     */
+    #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
+    #[Test]
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingFluidErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -785,10 +759,10 @@ final class SiteRequestTest extends AbstractTestCase
     }
 
     /**
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
      */
+    #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
+    #[Test]
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri): void
     {
         self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
@@ -808,10 +782,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     */
+    #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
+    #[Test]
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPhpErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -862,10 +834,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithValidCacheHashDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithValidCacheHashDataProvider')]
+    #[Test]
     public function pageIsRenderedWithValidCacheHash($uri): void
     {
         $this->writeSiteConfiguration(
@@ -902,10 +872,8 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvidedDataProvider
-     */
+    #[DataProvider('checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvidedDataProvider')]
+    #[Test]
     public function checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvided(string $uri)
     {
         $this->writeSiteConfiguration(
@@ -975,10 +943,8 @@ final class SiteRequestTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider crossSiteShortcutsAreRedirectedDataProvider
-     */
+    #[DataProvider('crossSiteShortcutsAreRedirectedDataProvider')]
+    #[Test]
     public function crossSiteShortcutsAreRedirected(string $uri, int $expectedStatusCode, array $expectedHeaders): void
     {
         $this->writeSiteConfiguration(
@@ -1023,10 +989,8 @@ final class SiteRequestTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider crossSiteShortcutsWithWrongSiteHostSendsPageNotFoundWithoutHavingErrorHandlingDataProvider
-     */
+    #[DataProvider('crossSiteShortcutsWithWrongSiteHostSendsPageNotFoundWithoutHavingErrorHandlingDataProvider')]
+    #[Test]
     public function crossSiteShortcutsWithWrongSiteHostSendsPageNotFoundWithoutHavingErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -1084,10 +1048,8 @@ final class SiteRequestTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getUrisWithInvalidLegacyQueryParameters
-     */
+    #[DataProvider('getUrisWithInvalidLegacyQueryParameters')]
+    #[Test]
     public function requestWithInvalidLegacyQueryParametersDisplayPageNotFoundPage(UriInterface $uri): void
     {
         $this->writeSiteConfiguration(

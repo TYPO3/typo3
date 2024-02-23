@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendConfigurationManagerTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setConfigurationSetsExtensionAndPluginName(): void
     {
         $subject = $this->get(BackendConfigurationManager::class);
@@ -40,9 +39,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals('SomePluginName', (new \ReflectionProperty($subject, 'pluginName'))->getValue($subject));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConfigurationConvertsTypoScriptArrayToPlainArray(): void
     {
         $configuration = [
@@ -60,9 +57,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, (new \ReflectionProperty($subject, 'configuration'))->getValue($subject));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationRecursivelyMergesCurrentExtensionConfigurationWithFrameworkConfiguration(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerTestTypoScript.csv');
@@ -99,9 +94,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $subject->getConfiguration('CurrentExtensionName'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationRecursivelyMergesCurrentPluginConfigurationWithFrameworkConfiguration(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerTestTypoScript.csv');
@@ -138,9 +131,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $subject->getConfiguration('CurrentExtensionName', 'CurrentPluginName'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentPageIdReturnsPageIdFromGet(): void
     {
         $request = (new ServerRequest())->withQueryParams(['id' => 123]);
@@ -150,9 +141,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals(123, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentPageIdReturnsPageIdFromPost(): void
     {
         $request = (new ServerRequest())->withQueryParams(['id' => 123])->withParsedBody(['id' => 321]);
@@ -162,9 +151,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals(321, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert(
@@ -182,9 +169,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals(123, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet(): void
     {
         (new ConnectionPool())->getConnectionForTable('pages')->insert(
@@ -201,9 +186,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals(1, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound(): void
     {
         $subject = $this->get(BackendConfigurationManager::class);
@@ -212,9 +195,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals(0, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRecursiveStoragePidsReturnsListOfPages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerRecursivePids.csv');
@@ -226,18 +207,14 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         self::assertEquals([1, 2, 4, 5, 3, 6, 7], $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContentObjectReturnsInstanceOfContentObjectRenderer(): void
     {
         $subject = $this->get(BackendConfigurationManager::class);
         self::assertInstanceOf(ContentObjectRenderer::class, $subject->getContentObject());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getContentObjectTheCurrentContentObject(): void
     {
         $subject = $this->get(BackendConfigurationManager::class);

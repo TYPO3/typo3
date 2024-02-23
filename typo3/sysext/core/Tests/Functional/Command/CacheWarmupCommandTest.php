@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -24,9 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class CacheWarmupCommandTest extends AbstractCommandTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function cachesCanBeWarmed(): void
     {
         $containerBuilder = $this->get(ContainerBuilder::class);
@@ -41,9 +40,7 @@ final class CacheWarmupCommandTest extends AbstractCommandTestCase
         self::assertFileExists(Environment::getVarPath() . '/cache/code/core/sites-configuration.php');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function systemCachesCanBeWarmed(): void
     {
         $containerBuilder = $this->get(ContainerBuilder::class);
@@ -58,9 +55,7 @@ final class CacheWarmupCommandTest extends AbstractCommandTestCase
         self::assertFileExists(Environment::getVarPath() . '/cache/code/core/sites-configuration.php');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function diCachesDoesNotWarmSystemCaches(): void
     {
         $containerBuilder = $this->get(ContainerBuilder::class);
@@ -75,9 +70,7 @@ final class CacheWarmupCommandTest extends AbstractCommandTestCase
         self::assertFileDoesNotExist(Environment::getVarPath() . '/cache/code/core/sites-configuration.php');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function systemCachesCanBeWarmedIfCacheIsBroken(): void
     {
         $containerBuilder = $this->get(ContainerBuilder::class);

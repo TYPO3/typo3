@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Tester\CommandTester;
 use TYPO3\CMS\Impexp\Command\ImportCommand;
@@ -25,20 +28,16 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 final class ImportCommandTest extends AbstractImportExportTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function importCommandRequiresFileArgument(): void
     {
-        $this->expectException(\Symfony\Component\Console\Exception\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Not enough arguments (missing: "file")');
         $tester = new CommandTester(new ImportCommand(new Import()));
         $tester->execute([], []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importCommandRequiresFileArgumentOnly(): void
     {
         $filePath = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_news.xml';
@@ -47,9 +46,7 @@ final class ImportCommandTest extends AbstractImportExportTestCase
         self::assertEquals(0, $tester->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importCommandPassesArgumentsToImportObject(): void
     {
         $input = [
@@ -133,10 +130,8 @@ final class ImportCommandTest extends AbstractImportExportTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider importCommandFailsDataProvider
-     */
+    #[DataProvider('importCommandFailsDataProvider')]
+    #[Test]
     public function importCommandFails(array $input, string $expected): void
     {
         $tester = new CommandTester(new ImportCommand(new Import()));

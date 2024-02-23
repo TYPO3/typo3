@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Install\Updates\BackendGroupsExplicitAllowDenyMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendGroupsExplicitAllowDenyMigrationTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function backendGroupsRowsAreUpdated(): void
     {
         $outputMock = $this->getMockBuilder(OutputInterface::class)->getMock();

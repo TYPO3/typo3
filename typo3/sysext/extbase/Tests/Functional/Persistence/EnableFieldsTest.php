@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -41,9 +42,7 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedRecordsNotFoundIfNoUserLoggedIn(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
@@ -52,9 +51,7 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function onlyReturnProtectedRecordsForTheFirstUserGroup(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
@@ -63,9 +60,7 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function onlyReturnProtectedRecordsForTheSecondUserGroup(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
@@ -74,9 +69,7 @@ final class EnableFieldsTest extends AbstractDataHandlerActionTestCase
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function onlyOwnProtectedRecordsWithQueryCacheInvolvedAreReturned(): void
     {
         // first request to fill the query cache

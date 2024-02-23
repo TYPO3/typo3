@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -51,10 +53,8 @@ final class DateTimeValidatorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider acceptsDateTimeValuesDataProvider
-     */
+    #[DataProvider('acceptsDateTimeValuesDataProvider')]
+    #[Test]
     public function acceptsDateTimeValues($value): void
     {
         $validator = new DateTimeValidator();
@@ -62,9 +62,7 @@ final class DateTimeValidatorTest extends FunctionalTestCase
         self::assertFalse($result->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addsErrorForInvalidValue(): void
     {
         $validator = new DateTimeValidator();

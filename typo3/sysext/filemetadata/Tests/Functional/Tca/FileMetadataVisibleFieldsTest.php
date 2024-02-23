@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filemetadata\Tests\Functional\Tca;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\File;
@@ -142,9 +143,7 @@ final class FileMetadataVisibleFieldsTest extends FunctionalTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileMetadataFormContainsExpectedFields(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

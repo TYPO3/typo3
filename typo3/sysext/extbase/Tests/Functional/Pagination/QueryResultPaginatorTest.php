@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Pagination;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
@@ -43,18 +44,15 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
 
     /**
      * A short integration test to check that the fixtures are as expected
-     *
-     * @test
      */
+    #[Test]
     public function integration(): void
     {
         $queryResult = $this->postRepository->findAll();
         self::assertCount(14, $queryResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkPaginatorWithDefaultConfiguration(): void
     {
         $paginator = new QueryResultPaginator($this->postRepository->findAll());
@@ -65,9 +63,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
         self::assertCount(10, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorRespectsItemsPerPageConfiguration(): void
     {
         $paginator = new QueryResultPaginator(
@@ -82,9 +78,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
         self::assertCount(3, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorRespectsItemsPerPageConfigurationAndCurrentPage(): void
     {
         $paginator = new QueryResultPaginator(
@@ -99,9 +93,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
         self::assertCount(3, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorProperlyCalculatesLastPage(): void
     {
         $paginator = new QueryResultPaginator(
@@ -116,9 +108,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
         self::assertCount(2, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withCurrentPageNumberThrowsInvalidArgumentExceptionIfCurrentPageIsLowerThanOne(): void
     {
         $this->expectExceptionCode(1573047338);
@@ -131,9 +121,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
         $paginator->withCurrentPageNumber(0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorSetsCurrentPageToLastPageIfCurrentPageExceedsMaximum(): void
     {
         $paginator = new QueryResultPaginator(
@@ -147,9 +135,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
         self::assertCount(4, $paginator->getPaginatedItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function paginatorProperlyCalculatesOnlyOnePage(): void
     {
         $paginator = new QueryResultPaginator(

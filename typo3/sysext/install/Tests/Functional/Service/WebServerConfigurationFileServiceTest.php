@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -26,15 +28,14 @@ final class WebServerConfigurationFileServiceTest extends FunctionalTestCase
     protected bool $initializeDatabase = false;
 
     /**
-     * @dataProvider webServerConfigurationIsChangedDataProvider
-     * @test
-     *
      * @param string $webServer The webserver to use
      * @param string $configurationFile The file to update
      * @param bool $shouldBeChanged Whether the file should be updated
      * @param array $addedParts String parts, the file should contain after the update
      * @param array $removedParts String parts, the file should not longer contain after the update
      */
+    #[DataProvider('webServerConfigurationIsChangedDataProvider')]
+    #[Test]
     public function addWebServerSpecificBackendRoutingRewriteRulesTest(
         string $webServer,
         string $configurationFile,

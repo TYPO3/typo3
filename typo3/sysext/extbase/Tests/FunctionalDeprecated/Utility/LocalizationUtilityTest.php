@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\FunctionalDeprecated\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,10 +46,8 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider translateDataProvider
-     * @test
-     */
+    #[DataProvider('translateDataProvider')]
+    #[Test]
     public function translateTestWithBackendUserLanguage(
         string $key,
         string $languageKey,
@@ -68,10 +68,8 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, alternativeLanguageKeys: $altLanguageKeys));
     }
 
-    /**
-     * @dataProvider translateDataProvider
-     * @test
-     */
+    #[DataProvider('translateDataProvider')]
+    #[Test]
     public function translateTestWithExplicitLanguageParameters(
         string $key,
         string $languageKey,

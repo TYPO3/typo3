@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
+use Doctrine\DBAL\Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
@@ -37,7 +40,7 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
     protected $subject;
 
     /**
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      * @throws \TYPO3\TestingFramework\Core\Exception
      */
     protected function setUp(): void
@@ -60,9 +63,7 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         $this->subject = $backendUser;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileMountRecordsReturnsFilemounts(): void
     {
         $backendUser = $this->setUpBackendUser(3);
@@ -70,18 +71,14 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertCount(3, $records);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTranslatedPageOnWebMountIsInWebMountForNonAdminUser(): void
     {
         $result = $this->subject->isInWebMount(2);
         self::assertNotNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigIsResolvedProperlyWithPrioritization(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = "custom.generic = installation-wide-configuration\ncustom.property = from configuration";
@@ -95,9 +92,7 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertEquals('installation-wide-configuration', $result['custom.']['generic']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnWebmountsFilterOutInaccessiblePages(): void
     {
         $result = $this->subject->returnWebmounts();
@@ -109,9 +104,7 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertEquals(['1', '40'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultUploadFolderFallsBackToDefaultStorage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -130,9 +123,7 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertEquals('/' . $path . '/', $folder->getIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadGroupsWithProperSettingsAndOrder(): void
     {
         $subject = $this->setUpBackendUser(3);
@@ -142,9 +133,7 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertEquals(['groupValue' => 'from_group_6', 'userValue' => 'from_user_3'], $subject->getTSConfig()['test.']['default.']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mfaRequiredExceptionIsThrown(): void
     {
         $this->expectException(MfaRequiredException::class);
@@ -174,10 +163,8 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isImportEnabledDataProvider
-     */
+    #[DataProvider('isImportEnabledDataProvider')]
+    #[Test]
     public function isImportEnabledReturnsExpectedValues(int $userId, string $tsConfig, bool $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = $tsConfig;
@@ -207,10 +194,8 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isExportEnabledDataProvider
-     */
+    #[DataProvider('isExportEnabledDataProvider')]
+    #[Test]
     public function isExportEnabledReturnsExpectedValues(int $userId, string $tsConfig, bool $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = $tsConfig;

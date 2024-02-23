@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Tests\Functional\Reaction;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -44,9 +46,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reactWorksForAValidRequest(): void
     {
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('visual-reaction-uuid');
@@ -72,9 +72,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         self::assertCount(1, $this->getTestPages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reactFailsOnInvalidTable(): void
     {
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('invalid-table');
@@ -87,9 +85,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         self::assertEquals('Invalid argument "table_name"', json_decode((string)$response->getBody(), true)['error']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reactFailsOnInvalidFields(): void
     {
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('invalid-fields');
@@ -301,10 +297,8 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider replacePlaceHolderDataProvider
-     * @test
-     */
+    #[DataProvider('replacePlaceHolderDataProvider')]
+    #[Test]
     public function replacePlaceHolders(mixed $value, array $payload, string $expected): void
     {
         $subject = GeneralUtility::makeInstance(CreateRecordReaction::class);

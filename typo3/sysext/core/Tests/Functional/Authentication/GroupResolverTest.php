@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -65,10 +67,10 @@ final class GroupResolverTest extends FunctionalTestCase
     }
 
     /**
-     * @test
-     * @dataProvider findAllUsersOfGroupsHandlesRecursiveCallsDataProvider
      * @param int[] $groupIds
      */
+    #[DataProvider('findAllUsersOfGroupsHandlesRecursiveCallsDataProvider')]
+    #[Test]
     public function findAllUsersOfGroupsHandlesRecursiveCalls(array $groupIds, array $expectedUsers): void
     {
         $subject = GeneralUtility::makeInstance(GroupResolver::class);

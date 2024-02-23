@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -31,9 +32,7 @@ final class UriViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRendersTagWithHrefFromRoute(): void
     {
         // Mock Uribuilder in this functional test so we don't have to work with existing routes
@@ -51,9 +50,7 @@ final class UriViewHelperTest extends FunctionalTestCase
         self::assertEquals('theUri', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPassesEmptyArrayToUriBuilderForNoParameters(): void
     {
         // Mock Uribuilder in this functional test so we don't have to work with existing routes

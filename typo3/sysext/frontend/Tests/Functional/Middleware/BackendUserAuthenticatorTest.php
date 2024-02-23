@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Middleware;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -45,9 +46,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonAuthenticatedRequestDoesNotSendHeaders(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
@@ -56,9 +55,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
         self::assertArrayNotHasKey('Expires', $response->getHeaders());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authenticatedRequestIncludesInvalidCacheHeaders(): void
     {
         $response = $this->executeFrontendSubRequest(

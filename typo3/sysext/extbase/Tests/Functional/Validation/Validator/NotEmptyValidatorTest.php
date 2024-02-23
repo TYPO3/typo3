@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -33,9 +34,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorReturnsNoErrorForASimpleString(): void
     {
         $validator = new NotEmptyValidator();
@@ -43,9 +42,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('a not empty string')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorReturnsErrorForAnEmptyString(): void
     {
         $validator = new NotEmptyValidator();
@@ -53,9 +50,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorReturnsErrorForANullValue(): void
     {
         $validator = new NotEmptyValidator();
@@ -63,9 +58,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject(): void
     {
         $validator = new NotEmptyValidator();
@@ -73,9 +66,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
         self::assertCount(1, $validator->validate('')->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorCreatesTheCorrectErrorForANullValue(): void
     {
         $validator = new NotEmptyValidator();
@@ -83,9 +74,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
         self::assertCount(1, $validator->validate(null)->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorWorksForEmptyArrays(): void
     {
         $validator = new NotEmptyValidator();
@@ -94,9 +83,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate([1 => 2])->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorWorksForEmptyCountableObjects(): void
     {
         $validator = new NotEmptyValidator();
@@ -104,9 +91,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate(new \SplObjectStorage())->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorWorksForNotEmptyCountableObjects(): void
     {
         $countableObject = new \SplObjectStorage();

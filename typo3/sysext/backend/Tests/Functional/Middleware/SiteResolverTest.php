@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Middleware;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -28,9 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SiteResolverTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function requestHasNullSiteAttributeIfIdParameterIsNoInteger(): void
     {
         $this->expectException(\RuntimeException::class);

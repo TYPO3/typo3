@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -42,9 +43,7 @@ final class ProcessedFileTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processedFileArrayCanBeSerialized(): void
     {
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);

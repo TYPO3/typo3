@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -45,9 +47,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/test_translate',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionIfNoKeyOrIdParameterIsGiven(): void
     {
         $this->expectException(Exception::class);
@@ -57,9 +57,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionIfOnlyDefaultValueIsGiven(): void
     {
         $this->expectException(Exception::class);
@@ -69,9 +67,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionInNonExtbaseContextWithoutExtensionNameAndDefaultValue(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -163,10 +159,8 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsStringInNonExtbaseContextDataProvider
-     */
+    #[DataProvider('renderReturnsStringInNonExtbaseContextDataProvider')]
+    #[Test]
     public function renderReturnsStringInNonExtbaseContext(string $template, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -217,10 +211,9 @@ final class TranslateViewHelperTest extends FunctionalTestCase
     /**
      * Analyzes that the frontend request can resolve the locale from the frontend request,
      * both LLL: prefix and extensionName + id combinations.
-     *
-     * @test
-     * @dataProvider fallbackChainInNonExtbaseContextDataProvider
      */
+    #[DataProvider('fallbackChainInNonExtbaseContextDataProvider')]
+    #[Test]
     public function renderInNonExtbaseContextHandlesLocaleFromFrontendRequest(string $template, string $expected): void
     {
         $request = new ServerRequest();
@@ -233,9 +226,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInNonExtbaseContextHandlesLocaleObjectAsLanguageKey(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -247,9 +238,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame('DE label', $templateView->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInNonExtbaseContextHandlesLocaleObjectAsLanguageKeyWithFallback(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -261,9 +250,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame('DE label', $templateView->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInNonExtbaseContextHandlesLocaleObjectAsLanguageKeyWithoutFallback(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -353,10 +340,8 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsStringInExtbaseContextDataProvider
-     */
+    #[DataProvider('renderReturnsStringInExtbaseContextDataProvider')]
+    #[Test]
     public function renderReturnsStringInExtbaseContext(string $template, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -372,9 +357,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInExtbaseContextHandlesLocaleObjectAsLanguageKey(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -391,9 +374,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame('DE label', $templateView->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInExtbaseContextHandlesLocaleObjectAsLanguageKeyWithFallback(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -410,9 +391,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame('DE label', $templateView->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInExtbaseContextHandlesLocaleObjectAsLanguageKeyWithoutFallback(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -429,9 +408,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame('DE_AT label', $templateView->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInDefaultLanguage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
@@ -458,9 +435,7 @@ EOT
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInLocalizedPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');

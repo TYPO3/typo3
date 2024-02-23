@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -37,9 +38,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_workspace.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyWorkspaceReturnsEmptyArray(): void
     {
         $service = new WorkspaceService();
@@ -48,9 +47,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertIsArray($result, 'Even the empty result from workspace 90 is supposed to be an array');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function versionsFromSpecificWorkspaceCanBeFound(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
@@ -66,9 +63,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertEquals(1, $result['pages'][0]['livepid'], 'Real pid wasn\'t resolved correctly');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function versionsCanBeFoundRecursive(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
@@ -82,9 +77,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function versionsCanBeFilteredToSpecificStage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
@@ -111,9 +104,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertEquals(106, $result['pages'][1]['uid'], 'First records is supposed to have the uid 106');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movedElementsCanBeFoundAtTheirDestination(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
@@ -130,9 +121,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertEquals(2, $result['tt_content'][0]['livepid'], 'Wrong live-pointer found for page 3 in workspace 91');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movedElementsCanBeFoundUsingTheirLiveUid(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
@@ -144,9 +133,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPagesWithVersionsInTableReturnsPagesWithVersionsInTable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
@@ -166,9 +153,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasPageRecordVersionsReturnsTrueForPageWithVersions(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
@@ -177,9 +162,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasPageRecordVersionsReturnsFalseForPageWithoutVersions(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');

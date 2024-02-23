@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -48,18 +50,14 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultCreatedConfigurationIsClean(): void
     {
         $subject = $this->get(SilentConfigurationUpgradeService::class);
         $subject->execute();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeObsoleteLocalConfigurationSettingsIfThereAreOldSettings(): void
     {
         $testConfig = [
@@ -83,9 +81,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeObsoleteLocalConfigurationSettingsKeepsUnaffectedSettings(): void
     {
         $testConfig = [
@@ -108,9 +104,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doNotGenerateEncryptionKeyIfExists(): void
     {
         $testConfig = [
@@ -133,9 +127,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateEncryptionKeyIfNotExists(): void
     {
         $configurationManager = $this->get(ConfigurationManager::class);
@@ -248,10 +240,8 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider transferHttpSettingsIfSetDataProvider
-     */
+    #[DataProvider('transferHttpSettingsIfSetDataProvider')]
+    #[Test]
     public function transferHttpSettingsIfSet(array $currentLocalConfiguration, array $newSettings, bool $localConfigurationNeedsUpdate): void
     {
         $testConfig = [
@@ -274,9 +264,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function disableImageMagickDetailSettingsIfImageMagickIsDisabled(): void
     {
         $testConfig = [
@@ -301,9 +289,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doNotDisableImageMagickDetailSettingsIfImageMagickIsEnabled(): void
     {
         $testConfig = [
@@ -328,9 +314,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setImageMagickDetailSettings(): void
     {
         $testConfig = [
@@ -355,9 +339,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doNotSetImageMagickDetailSettings(): void
     {
         $testConfig = [
@@ -411,10 +393,8 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider migratesGraphicsProcessorEffectsDataProvider
-     */
+    #[DataProvider('migratesGraphicsProcessorEffectsDataProvider')]
+    #[Test]
     public function migratesGraphicsProcessorEffects(string|int $currentValue, bool $expectedMigratedValue): void
     {
         $testConfig = [
@@ -439,9 +419,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateExistingLangDebug(): void
     {
         $testConfig = [
@@ -466,9 +444,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateCacheHashOptions(): void
     {
         $testConfig = [
@@ -502,9 +478,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateVersionNumberInFilename(): void
     {
         $testConfig = [
@@ -527,9 +501,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function versionNumberInFilenameSetToTrueStaysUntouched(): void
     {
         $testConfig = [
@@ -552,9 +524,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateSaltedPasswordsSettingsRemovesExtensionsConfigAndSetsNothingElseIfArgon2iIsAvailable(): void
     {
         $testConfig = [
@@ -580,9 +550,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2idAndArgon2iIsNotAvailable(): void
     {
         $argon2idBeMock = $this->createMock(Argon2idPasswordHash::class);
@@ -623,9 +591,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function migrateCachingFrameworkCachesMigratesData(): void
     {
         $testConfig = [

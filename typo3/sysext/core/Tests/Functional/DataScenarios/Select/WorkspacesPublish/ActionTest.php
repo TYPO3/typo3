@@ -17,24 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Select\WorkspacesPublish;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Select\AbstractActionWorkspacesTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addElementRelation(): void
     {
         parent::addElementRelation();
@@ -48,9 +45,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteElementRelation(): void
     {
         parent::deleteElementRelation();
@@ -67,9 +62,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeElementSorting(): void
     {
         parent::changeElementSorting();
@@ -83,9 +76,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeElementRelationSorting(): void
     {
         parent::changeElementRelationSorting();
@@ -99,9 +90,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndAddElementRelation(): void
     {
         parent::createContentAndAddElementRelation();
@@ -117,9 +106,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndCreateElementRelation(): void
     {
         parent::createContentAndCreateElementRelation();
@@ -138,9 +125,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyElementOfRelation(): void
     {
         parent::modifyElementOfRelation();
@@ -154,9 +139,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Testing #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
@@ -169,9 +152,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyBothSidesOfRelation(): void
     {
         parent::modifyBothSidesOfRelation();
@@ -190,9 +171,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
@@ -205,9 +184,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteElementOfRelation(): void
     {
         parent::deleteElementOfRelation();
@@ -221,9 +198,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
@@ -238,9 +213,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyElementOfRelation(): void
     {
         parent::copyElementOfRelation();
@@ -258,9 +231,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1 (copy 1)'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
@@ -274,9 +245,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeElementOfRelation(): void
     {
         // Create and publish translated page first
@@ -293,9 +262,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('[Translate to Dansk:] Element #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
@@ -309,9 +276,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
     {
         parent::localizeContentOfRelationWithLocalizeReferencesAtParentLocalization();

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Slug;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -76,9 +78,7 @@ final class SlugHelperTest extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
@@ -135,10 +135,8 @@ final class SlugHelperTest extends AbstractDataHandlerActionTestCase
         ];
     }
 
-    /**
-     * @dataProvider generateRespectsFallbackLanguageOfParentPageSlugDataProvider
-     * @test
-     */
+    #[DataProvider('generateRespectsFallbackLanguageOfParentPageSlugDataProvider')]
+    #[Test]
     public function generateRespectsFallbackLanguageOfParentPageSlug(string $expected, array $page): void
     {
         $slugHelper = GeneralUtility::makeInstance(

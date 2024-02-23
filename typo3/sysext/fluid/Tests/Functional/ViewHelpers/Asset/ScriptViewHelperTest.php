@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Asset;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\View\TemplateView;
@@ -37,10 +39,8 @@ final class ScriptViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sourceDataProvider
-     */
+    #[DataProvider('sourceDataProvider')]
+    #[Test]
     public function sourceStringIsNotHtmlEncodedBeforePassedToAssetCollector(string $src): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -53,9 +53,7 @@ final class ScriptViewHelperTest extends FunctionalTestCase
         self::assertSame([], $collectedJavaScripts['test']['attributes']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanAttributesAreProperlyConverted(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

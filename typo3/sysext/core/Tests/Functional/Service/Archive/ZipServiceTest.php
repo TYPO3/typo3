@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Service\Archive;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Exception\Archive\ExtractException;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,9 +34,7 @@ final class ZipServiceTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filesCanNotGetExtractedOutsideTargetDirectory(): void
     {
         $extensionDirectory = $this->instancePath . '/typo3conf/ext/malicious';
@@ -51,9 +50,7 @@ final class ZipServiceTest extends FunctionalTestCase
         self::assertFalse(is_link($extensionDirectory . '/passwd'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileContentIsExtractedAsExpected(): void
     {
         $extensionDirectory = $this->instancePath . '/typo3conf/ext/my_extension';
@@ -67,9 +64,7 @@ final class ZipServiceTest extends FunctionalTestCase
         self::assertFileExists($extensionDirectory . '/ext_emconf.php');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileContentIsExtractedAsExpectedAndSetsPermissions(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
@@ -89,9 +84,7 @@ final class ZipServiceTest extends FunctionalTestCase
         self::assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'], substr(sprintf('%o', $folderPerms), -4));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonExistentFileThrowsException(): void
     {
         $this->expectException(ExtractException::class);
@@ -104,9 +97,7 @@ final class ZipServiceTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonExistentDirectoryThrowsException(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -117,9 +108,7 @@ final class ZipServiceTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyDetectsValidArchive(): void
     {
         self::assertTrue(
@@ -127,9 +116,7 @@ final class ZipServiceTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyDetectsSuspiciousSequences(): void
     {
         $this->expectException(ExtractException::class);

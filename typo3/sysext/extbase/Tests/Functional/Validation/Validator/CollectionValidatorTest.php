@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -42,9 +43,7 @@ final class CollectionValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectionValidatorReturnsNoErrorsForANullValue(): void
     {
         $subject = $this->get(CollectionValidator::class);
@@ -52,9 +51,7 @@ final class CollectionValidatorTest extends FunctionalTestCase
         self::assertFalse($subject->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectionValidatorFailsForAValueNotBeingACollection(): void
     {
         $subject = $this->get(CollectionValidator::class);
@@ -62,9 +59,7 @@ final class CollectionValidatorTest extends FunctionalTestCase
         self::assertTrue($subject->validate(new \stdClass())->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectionValidatorValidatesEveryElementOfACollectionWithTheGivenElementValidator(): void
     {
         $mockValidatorResolver = $this->getAccessibleMock(
@@ -94,9 +89,7 @@ final class CollectionValidatorTest extends FunctionalTestCase
         self::assertCount(2, $result->getFlattenedErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping(): void
     {
         $A = new class () {
@@ -139,9 +132,7 @@ final class CollectionValidatorTest extends FunctionalTestCase
         self::assertEquals(1221560494, $result['b.0'][0]->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectionValidatorCallsCollectionElementValidatorWhenValidatingObjectStorages(): void
     {
         $entity = new Entity('Foo');

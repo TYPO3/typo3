@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Uri;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -48,9 +50,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionWithoutRequest(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -61,9 +61,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         $view->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendCoreContextCreatesNoUriWithoutRoute(): void
     {
         $request = new ServerRequest('http://localhost/typo3/');
@@ -75,9 +73,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         self::assertSame('', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendCoreContextCreatesUriWithRouteFromQueryString(): void
     {
         $request = new ServerRequest('http://localhost/typo3/');
@@ -90,9 +86,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendCoreContextCreatesUriWithRouteFromAdditionalParams(): void
     {
         $request = new ServerRequest('http://localhost/typo3/');
@@ -104,9 +98,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendCoreContextCreatesUriWithRouteFromRequest(): void
     {
         $request = new ServerRequest('http://localhost/typo3/');
@@ -119,9 +111,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendCoreContextAddsSection(): void
     {
         $request = new ServerRequest('http://localhost/typo3/');
@@ -134,9 +124,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42#mySection', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendCoreContextCreatesAbsoluteUri(): void
     {
         $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
@@ -150,9 +138,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         self::assertSame('http://localhost/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendExtbaseContextCreatesUriWithId(): void
     {
         $request = new ServerRequest('http://localhost/typo3/');
@@ -168,9 +154,7 @@ final class PageViewHelperTest extends FunctionalTestCase
         self::assertSame('/typo3/module/web/layout?token=dummyToken&amp;id=42', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendExtbaseContextCreatesAbsoluteUriWithId(): void
     {
         $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
@@ -228,10 +212,8 @@ final class PageViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
+    #[Test]
     public function renderInFrontendWithCoreContext(string $template, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
@@ -253,10 +235,8 @@ final class PageViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
+    #[Test]
     public function renderInFrontendWithExtbaseContext(string $template, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');

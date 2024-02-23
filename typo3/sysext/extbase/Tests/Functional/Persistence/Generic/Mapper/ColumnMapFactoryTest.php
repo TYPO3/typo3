@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMapFactory;
+use TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper\Fixtures\ColumnMapFactoryEntityFixture;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ColumnMapFactoryTest extends FunctionalTestCase
@@ -88,15 +91,13 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider createWithGroupTypeDataProvider
-     * @test
-     */
+    #[DataProvider('createWithGroupTypeDataProvider')]
+    #[Test]
     public function createWithGroupType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
     {
         self::assertEquals(
             $expectedColumnMap,
-            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class)
+            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class)
         );
     }
 
@@ -212,15 +213,13 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider createWithSelectTypeDataProvider
-     * @test
-     */
+    #[DataProvider('createWithSelectTypeDataProvider')]
+    #[Test]
     public function createWithSelectType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
     {
         self::assertEquals(
             $expectedColumnMap,
-            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class)
+            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class)
         );
     }
 
@@ -243,15 +242,13 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider createWithFolderTypeDataProvider
-     * @test
-     */
+    #[DataProvider('createWithFolderTypeDataProvider')]
+    #[Test]
     public function createWithFolderType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
     {
         self::assertEquals(
             $expectedColumnMap,
-            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class)
+            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class)
         );
     }
 
@@ -281,21 +278,17 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider createWithInlineTypeDataProvider
-     * @test
-     */
+    #[DataProvider('createWithInlineTypeDataProvider')]
+    #[Test]
     public function createWithInlineType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
     {
         self::assertEquals(
             $expectedColumnMap,
-            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class)
+            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class)
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingOneToOneRelationSetsRelationTableMatchFields(): void
     {
         $columnName = 'has_one';
@@ -311,7 +304,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class);
+        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class);
 
         self::assertSame(
             [
@@ -321,9 +314,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingOneToManyRelationSetsRelationTableMatchFields(): void
     {
         $columnName = 'has_many';
@@ -339,7 +330,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class);
+        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class);
 
         self::assertSame(
             [
@@ -349,9 +340,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnMapIsInitializedWithManyToManyRelationOfTypeSelect(): void
     {
         $columnName = 'has_and_belongs_to_many';
@@ -375,12 +364,10 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class));
+        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnMapIsInitializedWithOppositeManyToManyRelationOfTypeSelect(): void
     {
         $columnName = 'has_and_belongs_to_many';
@@ -403,12 +390,10 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class));
+        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnMapIsInitializedWithManyToManyRelationOfTypeInlineAndIntermediateTable(): void
     {
         $columnName = 'has_and_belongs_to_many';
@@ -431,7 +416,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class));
+        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class));
     }
 
     public static function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider(): array
@@ -444,10 +429,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider
-     */
+    #[DataProvider('columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider')]
+    #[Test]
     public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFields(string $type, ?string $expectedValue): void
     {
         $columnName = 'virtual';
@@ -459,7 +442,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class);
+        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class);
 
         self::assertSame($expectedValue, $columnMap->getDateTimeStorageFormat());
     }
@@ -494,10 +477,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tcaConfigurationsContainingTypeDataProvider
-     */
+    #[DataProvider('tcaConfigurationsContainingTypeDataProvider')]
+    #[Test]
     public function setTypeDetectsTypeProperly(string $type, TableColumnType $expectedType): void
     {
         $columnName = 'virtual';
@@ -508,7 +489,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, Fixtures\ColumnMapFactoryEntityFixture::class);
+        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class);
 
         self::assertSame($expectedType, $columnMap->getType());
     }

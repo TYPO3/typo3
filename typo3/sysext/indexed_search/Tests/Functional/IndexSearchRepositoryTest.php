@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -71,9 +72,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
         GeneralUtility::makeInstance(Context::class)->setAspect('frontend.user', new UserAspect(null, [0, -1]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doSearchReturnsLoremIpsumResults(): void
     {
         $searchRepository = $this->getSearchRepository();
@@ -83,9 +82,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
         self::assertStringContainsStringIgnoringCase('lorem', $searchResults['resultRows'][0]['item_description']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doSearchProperlyQuotesSearchWord(): void
     {
         $searchRepository = $this->getSearchRepository();
@@ -93,9 +90,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
         self::assertIsNotArray($searchResults['resultRows'] ?? false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doSearchReturnsLurimIpasomResultsWithMetaphoneSearch(): void
     {
         $searchRepository = $this->getSearchRepository(10);

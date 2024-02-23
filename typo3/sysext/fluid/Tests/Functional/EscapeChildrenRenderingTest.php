@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -114,10 +116,8 @@ final class EscapeChildrenRenderingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider viewHelperTemplateSourcesDataProvider
-     */
+    #[DataProvider('viewHelperTemplateSourcesDataProvider')]
+    #[Test]
     public function renderingTest(string $viewHelperTemplate, string $expectedOutput): void
     {
         $view = new TemplateView();

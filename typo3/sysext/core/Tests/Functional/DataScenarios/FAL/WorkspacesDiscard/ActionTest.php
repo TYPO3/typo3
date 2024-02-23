@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL\WorkspacesDiscard;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL\AbstractActionWorkspacesTestCase;
 
 /**
@@ -24,18 +25,14 @@ use TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL\AbstractActionWorkspacesTe
  */
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContent(): void
     {
         parent::modifyContent();
@@ -43,9 +40,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteContent(): void
     {
         parent::deleteContent();
@@ -53,9 +48,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContent(): void
     {
         parent::copyContent();
@@ -63,9 +56,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContent(): void
     {
         parent::localizeContent();
@@ -73,9 +64,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeContentSorting(): void
     {
         parent::changeContentSorting();
@@ -83,9 +72,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSorting.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentToDifferentPage(): void
     {
         $newRecordIds = parent::moveContentToDifferentPage();
@@ -93,9 +80,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
@@ -105,13 +90,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageNChangeSorting.csv');
     }
 
-    /**
-     * File references
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentWithFileReference(): void
     {
         parent::createContentWithFileReference();
@@ -119,9 +98,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReference.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentWithFileReference(): void
     {
         parent::modifyContentWithFileReference();
@@ -129,9 +106,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWFileReference.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentAndAddFileReference(): void
     {
         parent::modifyContentAndAddFileReference();
@@ -139,9 +114,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNAddFileReference.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentAndDeleteFileReference(): void
     {
         parent::modifyContentAndDeleteFileReference();
@@ -149,9 +122,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNDeleteFileReference.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentAndDeleteAllFileReference(): void
     {
         parent::modifyContentAndDeleteAllFileReference();
@@ -159,9 +130,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNDeleteAllFileReference.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentWithFileReferenceAndDeleteFileReference(): void
     {
         parent::createContentWithFileReferenceAndDeleteFileReference();

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
@@ -38,10 +40,8 @@ final class ExportPageTreeViewTest extends AbstractImportExportTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider printTreeSucceedsDataProvider
-     */
+    #[DataProvider('printTreeSucceedsDataProvider')]
+    #[Test]
     public function printTreeSucceeds(int $pid, int $levels, int $expectedTreeItemsCount): void
     {
         // @todo: This test needs an overhaul.

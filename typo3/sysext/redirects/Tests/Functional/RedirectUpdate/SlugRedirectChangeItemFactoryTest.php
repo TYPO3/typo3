@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\RedirectUpdate;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -30,9 +31,7 @@ final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfNoSiteConfigurationCanBeFound(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysFolderAsRootPage.csv');
@@ -41,9 +40,7 @@ final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
         self::assertNull($changeItem);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfSiteConfigurationFoundButAutoCreateRedirectsAndAutoUpdateSlugsOptionsDisabled(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysFolderAsRootPage.csv');
@@ -60,9 +57,7 @@ final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
         self::assertNull($changeItem);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsChangeItemIfSiteConfigurationFoundAndOnlyAutoCreateRedirectsEnabled(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysFolderAsRootPage.csv');
@@ -81,9 +76,7 @@ final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
         self::assertSame(1, $changeItem->getDefaultLanguagePageId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsChangeItemIfSiteConfigurationFoundAndOnlyAutoUpdateSlugsEnabled(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysFolderAsRootPage.csv');
@@ -102,9 +95,7 @@ final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
         self::assertSame(1, $changeItem->getDefaultLanguagePageId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function slugRedirectChangeItemCreatedEventIsTriggered(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysFolderAsRootPage.csv');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -36,9 +37,7 @@ final class SelectCheckBoxTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validMultipleChecked(): void
     {
         $newUserRecord = $this->createBackendUser([
@@ -50,9 +49,7 @@ final class SelectCheckBoxTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validNoneCheckedEmptyValuesAllowed(): void
     {
         $newUserRecord = $this->createBackendUser(['file_permissions' => '']);

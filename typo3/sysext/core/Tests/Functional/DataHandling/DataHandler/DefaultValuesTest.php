@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -42,9 +43,7 @@ final class DefaultValuesTest extends AbstractDataHandlerActionTestCase
         $this->backendUser->workspace = 0;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValuesFromTCAForNewRecordsIsRespected(): void
     {
         $GLOBALS['TCA']['pages']['columns']['keywords']['config']['default'] = 'a few,random,keywords';
@@ -73,9 +72,7 @@ final class DefaultValuesTest extends AbstractDataHandlerActionTestCase
         self::assertEquals($newContentRecord['header'], $GLOBALS['TCA']['tt_content']['columns']['header']['config']['default']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValuesFromGlobalTSconfigForNewRecordsIsRespected(): void
     {
         ExtensionManagementUtility::addPageTSConfig('
@@ -105,9 +102,7 @@ TCAdefaults.tt_content.header = global space');
         self::assertEquals('global space', $newContentRecord['header']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValuesFromPageSpecificTSconfigForNewRecordsIsRespected(): void
     {
         ExtensionManagementUtility::addPageTSConfig('
@@ -144,9 +139,7 @@ TCAdefaults.tt_content.header = local space
         self::assertEquals('local space', $newContentRecord['header']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValueForNullTextfieldsIsConsidered(): void
     {
         // New content element without bodytext

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
@@ -46,9 +48,7 @@ final class TypoScriptFrontendControllerTest extends FunctionalTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function headerAndFooterMarkersAreReplacedDuringIntProcessing(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
@@ -77,9 +77,7 @@ final class TypoScriptFrontendControllerTest extends FunctionalTestCase
         self::assertStringContainsString('footerDataFromUserInt', $body);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function jsIncludesWithUserIntIsRendered(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
@@ -119,9 +117,7 @@ final class TypoScriptFrontendControllerTest extends FunctionalTestCase
 alert(yes);', $body);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizationReturnsUnchangedStringIfNotLocallangLabel(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
@@ -140,9 +136,7 @@ alert(yes);', $body);
         self::assertStringContainsString('notprefixedWithLLL', $body);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizationReturnsLocalizedStringWithLocallangLabel(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
@@ -179,10 +173,8 @@ alert(yes);', $body);
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider mountPointParameterContainsOnlyValidMPValuesDataProvider
-     */
+    #[Test]
+    #[DataProvider('mountPointParameterContainsOnlyValidMPValuesDataProvider')]
     public function mountPointParameterContainsOnlyValidMPValues(string $inputMp, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
@@ -373,10 +365,8 @@ alert(yes);', $body);
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getFromCacheSetsConfigRootlineToLocalRootlineDataProvider
-     */
+    #[DataProvider('getFromCacheSetsConfigRootlineToLocalRootlineDataProvider')]
+    #[Test]
     public function getFromCacheSetsConfigRootlineToLocalRootline(int $pid, array $expectedRootLine, array $expectedConfigRootLine, bool $nocache): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
@@ -401,9 +391,7 @@ alert(yes);', $body);
         self::assertSame($expectedConfigRootLine, $GLOBALS['TSFE']->tmpl->rootLine);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applicationConsidersTrueConditionVerdict(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
@@ -421,9 +409,7 @@ alert(yes);', $body);
         self::assertStringContainsString('https-condition-on', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applicationConsidersFalseConditionVerdictToElseBranch(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');

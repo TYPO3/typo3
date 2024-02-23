@@ -54,7 +54,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     // PHPDocumentor 2 tags
                     'api', 'author', 'category', 'copyright', 'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal', 'license', 'link', 'method', 'package', 'param', 'property', 'property-read', 'property-write', 'return', 'see', 'since', 'source', 'subpackage', 'throws', 'todo', 'TODO', 'usedby', 'uses', 'var', 'version',
                     // PHPUnit tags
-                    'codeCoverageIgnore', 'codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd', 'test', 'dataProvider', 'group', 'skip', 'depends', 'expectedException', 'before', 'requires',
+                    'codeCoverageIgnore', 'codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd', 'dataProvider', 'group', 'skip', 'depends', 'expectedException', 'before', 'requires',
                     // codeception tags
                     'env',
                     // PHPCheckStyle

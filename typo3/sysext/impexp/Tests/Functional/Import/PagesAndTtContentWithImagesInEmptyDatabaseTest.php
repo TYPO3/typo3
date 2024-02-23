@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
@@ -24,9 +25,7 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImportExportTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithImagesOnCaseSensitiveFilesystems(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -49,9 +48,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithImagesOnCaseInsensitiveFilesystems(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -74,9 +71,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithImagesButWithoutStorageOnCaseSensitiveFilesystems(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -99,9 +94,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithImagesButWithoutStorageOnCaseInsensitiveFilesystems(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -124,9 +117,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithImagesWithSpacesInPath(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -147,9 +138,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/folder_with_spaces/typo3_image3.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithImagesButNotIncluded(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -169,9 +158,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithImageWithForcedUids(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -200,9 +187,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         self::assertSame($expectedErrors, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithImagesAndNewStorage(): void
     {
         GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin_invalid_path');
@@ -221,9 +206,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithMissingImageRemovesSysFileReferenceToo(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);

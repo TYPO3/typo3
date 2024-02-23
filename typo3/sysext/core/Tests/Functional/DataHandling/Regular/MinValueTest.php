@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -64,10 +66,8 @@ final class MinValueTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider valuesLowerThanMinResetToEmptyStringDataProvider
-     */
+    #[DataProvider('valuesLowerThanMinResetToEmptyStringDataProvider')]
+    #[Test]
     public function valuesLowerThanMinResetToEmptyString(string $string, string $expected): void
     {
         // Should work for type=input and type=text (except RTE).
@@ -82,9 +82,7 @@ final class MinValueTest extends FunctionalTestCase
         self::assertEquals($expected, $newRecord['tx_testdatahandler_text_minvalue']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function minDoesNotWorkForRTE(): void
     {
         $actionService = new ActionService();
@@ -96,9 +94,7 @@ final class MinValueTest extends FunctionalTestCase
         self::assertEquals('Not working', $newRecord['tx_testdatahandler_richttext_minvalue']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function minValueZeroIsIgnored(): void
     {
         $actionService = new ActionService();

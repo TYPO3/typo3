@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -36,9 +38,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListReturnsIngoingIdIfDepthIsZero(): void
     {
         $id = 1;
@@ -48,9 +48,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertEquals($id, $treeList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListReturnsIngoingIdIfIdIsZero(): void
     {
         $id = 0;
@@ -60,9 +58,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertEquals($id, $treeList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListReturnsPositiveIngoingIdIfIdIsNegative(): void
     {
         $id = -1;
@@ -72,9 +68,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertEquals(1, $treeList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListReturnsEmptyStringIfIdAndDepthAreZeroAndBeginDoesNotEqualZero(): void
     {
         $id = 0;
@@ -85,9 +79,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame('', $treeList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListReturnsIncomingIdIfNoSubPageRecordsOfThatIdExist(): void
     {
         $id = 1;
@@ -97,9 +89,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertEquals($id, $treeList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListRespectsPermClauses(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
@@ -136,10 +126,8 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dataForGetTreeListReturnsListOfIdsWithBeginSetToZero
-     */
+    #[DataProvider('dataForGetTreeListReturnsListOfIdsWithBeginSetToZero')]
+    #[Test]
     public function getTreeListReturnsListOfIdsWithBeginSetToZero(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
@@ -174,10 +162,8 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dataForGetTreeListReturnsListOfIdsWithBeginSetToMinusOne
-     */
+    #[DataProvider('dataForGetTreeListReturnsListOfIdsWithBeginSetToMinusOne')]
+    #[Test]
     public function getTreeListReturnsListOfIdsWithBeginSetToMinusOne(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
@@ -186,9 +172,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame($expectation, $treeList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListReturnsListOfPageIdsOfABranchedTreeWithBeginSetToZero(): void
     {
         $id = 1;
@@ -199,9 +183,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame('1,2,3,4,5', $treeList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListReturnsListOfPageIdsOfABranchedTreeWithBeginSetToOne(): void
     {
         $id = 1;
@@ -213,9 +195,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         self::assertSame('2,3,4,5', $treeList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeListReturnsListOfPageIdsOfABranchedTreeWithBeginSetToTwo(): void
     {
         $id = 1;
@@ -270,10 +250,8 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getQueryWithIdOrDateDataProvider
-     */
+    #[DataProvider('getQueryWithIdOrDateDataProvider')]
+    #[Test]
     public function getQueryWithIdOrDate(mixed $inputValue, mixed $inputValue1, string $expected, int $comparison = 64): void
     {
         $GLOBALS['TCA'] = [
@@ -338,10 +316,8 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         return $dataSet;
     }
 
-    /**
-     * @test
-     * @dataProvider arbitraryDataIsEscapedDataProvider
-     */
+    #[DataProvider('arbitraryDataIsEscapedDataProvider')]
+    #[Test]
     public function arbitraryDataIsEscaped(string $injector, array $settings): void
     {
         $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)

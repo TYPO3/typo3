@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Type\File\FileInfo;
@@ -35,10 +37,8 @@ final class ImageMagickFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider framesAreConsideredDataProvider
-     */
+    #[DataProvider('framesAreConsideredDataProvider')]
+    #[Test]
     public function framesAreConsidered(string $fileName, ?int $frame, string $expectation): void
     {
         $expectation = $this->substituteVariables($expectation);
@@ -65,10 +65,8 @@ final class ImageMagickFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resultIsEscapedDataProvider
-     */
+    #[DataProvider('resultIsEscapedDataProvider')]
+    #[Test]
     public function resultIsEscaped(string $fileName, ?int $frame, string $expectation): void
     {
         $expectation = $this->substituteVariables($expectation);
@@ -102,10 +100,8 @@ final class ImageMagickFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fileStatementIsResolvedDataProvider
-     */
+    #[DataProvider('fileStatementIsResolvedDataProvider')]
+    #[Test]
     public function fileStatementIsResolved(string $fileName, string $expectation): void
     {
         $expectation = $this->substituteVariables($expectation);
@@ -138,10 +134,8 @@ final class ImageMagickFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fileStatementIsResolvedForEnforcedMimeTypeDataProvider
-     */
+    #[DataProvider('fileStatementIsResolvedForEnforcedMimeTypeDataProvider')]
+    #[Test]
     public function fileStatementIsResolvedForEnforcedMimeType(string $fileName, string $expectation, string $mimeType): void
     {
         $this->simulateNextFileInfoInvocation($mimeType);
@@ -159,10 +153,8 @@ final class ImageMagickFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fileStatementIsResolvedForConfiguredMimeTypeDataProvider
-     */
+    #[DataProvider('fileStatementIsResolvedForConfiguredMimeTypeDataProvider')]
+    #[Test]
     public function fileStatementIsResolvedForConfiguredMimeType(string $fileName, string $expectation): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']['g3'] = 'image/g3fax';
@@ -188,10 +180,8 @@ final class ImageMagickFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fileStatementIsDeniedDataProvider
-     */
+    #[DataProvider('fileStatementIsDeniedDataProvider')]
+    #[Test]
     public function fileStatementIsDenied(string $fileName, ?string $mimeType = null): void
     {
         $this->expectException(Exception::class);
@@ -213,10 +203,8 @@ final class ImageMagickFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fileStatementIsDeniedForConfiguredMimeTypeDataProvider
-     */
+    #[DataProvider('fileStatementIsDeniedForConfiguredMimeTypeDataProvider')]
+    #[Test]
     public function fileStatementIsDeniedForConfiguredMimeType(string $fileName): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']['ps'] = 'image/x-see-no-evil';

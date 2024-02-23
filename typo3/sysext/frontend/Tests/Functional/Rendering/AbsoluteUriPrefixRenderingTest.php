@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -206,10 +208,8 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider urisAreRenderedUsingForceAbsoluteUrlsDataProvider
-     */
+    #[DataProvider('urisAreRenderedUsingForceAbsoluteUrlsDataProvider')]
+    #[Test]
     public function urisAreRenderedUsingAbsRefPrefix(string $useAbsoluteUrls, string $compressorAspect, array $expectations): void
     {
         $response = $this->executeFrontendSubRequest(

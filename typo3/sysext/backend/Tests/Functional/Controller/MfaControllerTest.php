@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\MfaController;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -77,9 +78,7 @@ final class MfaControllerTest extends FunctionalTestCase
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestThrowsExceptionOnInvalidActionTest(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -90,9 +89,7 @@ final class MfaControllerTest extends FunctionalTestCase
         $this->subject->handleRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestThrowsExceptionOnMissingProviderTest(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -103,9 +100,7 @@ final class MfaControllerTest extends FunctionalTestCase
         $this->subject->handleRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestThrowsExceptionOnInactiveProviderTest(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -121,9 +116,7 @@ final class MfaControllerTest extends FunctionalTestCase
         $this->subject->handleRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestReturnsAuthViewTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
@@ -151,9 +144,7 @@ final class MfaControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<input.*id="totp"/s', $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestReturnsLockedAuthViewTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
@@ -173,9 +164,7 @@ final class MfaControllerTest extends FunctionalTestCase
         self::assertStringContainsString('This provider is temporarily locked!', $response->getBody()->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestReturnsAlternativeProvidersInAuthViewTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
@@ -199,9 +188,7 @@ final class MfaControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<a.*title="Use Recovery codes"/s', $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestRedirectsToLoginOnInvalidRequestTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
@@ -222,9 +209,7 @@ final class MfaControllerTest extends FunctionalTestCase
         self::assertEquals('/typo3/login', parse_url($response->getHeaderLine('location'))['path']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestRedirectsToLoginOnLockedProviderRequestTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
@@ -245,9 +230,7 @@ final class MfaControllerTest extends FunctionalTestCase
         self::assertEquals('/typo3/login', parse_url($response->getHeaderLine('location'))['path']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestRedirectsToAuthViewOnUnsuccessfulAuthenticationTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
@@ -268,9 +251,7 @@ final class MfaControllerTest extends FunctionalTestCase
         self::assertEquals('/typo3/auth/mfa', parse_url($response->getHeaderLine('location'))['path']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestSetsSessionKeyOnSuccessfulAuthenticationTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
@@ -304,9 +285,7 @@ final class MfaControllerTest extends FunctionalTestCase
         self::assertEquals('/typo3/login', parse_url($response->getHeaderLine('location'))['path']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestRedirectsToLoginOnCancelTest(): void
     {
         $request = $this->request->withQueryParams(['action' => 'cancel']);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Routing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -27,9 +28,7 @@ final class UriBuilderTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildUriFromRouteResolvesAliasWhenLinking(): void
     {
         $subject = GeneralUtility::makeInstance(UriBuilder::class);
@@ -38,9 +37,7 @@ final class UriBuilderTest extends FunctionalTestCase
         self::assertEquals($routeFromAlias->getPath(), $route->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildUriFromRouteResolvesSubModule(): void
     {
         $subject = GeneralUtility::makeInstance(UriBuilder::class);

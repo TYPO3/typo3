@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Flexform;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
@@ -35,9 +36,7 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformationAppliesForRichTextFieldsWithoutSheets(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '<?xml version="1.0" encoding="UTF-8"?>
@@ -110,9 +109,7 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
         self::assertEquals($expected, $flexFormContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformationAppliesForRichTextFieldsWithSheets(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '<T3DataStructure>

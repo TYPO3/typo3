@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler\Fixtures\HookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -67,18 +68,14 @@ final class HookTest extends AbstractDataHandlerActionTestCase
         unset($this->hookFixture);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hooksAreExecutedForNewRecords(): void
     {
         $newTableIds = $this->actionService->createNewRecord(
@@ -105,9 +102,7 @@ final class HookTest extends AbstractDataHandlerActionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hooksAreExecutedForExistingRecords(): void
     {
         $this->actionService->modifyRecord(
@@ -133,9 +128,7 @@ final class HookTest extends AbstractDataHandlerActionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hooksAreExecutedForNewRelations(): void
     {
         $contentNewId = StringUtility::getUniqueId('NEW');
@@ -230,9 +223,7 @@ final class HookTest extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hooksAreExecutedForExistingRelations(): void
     {
         $this->actionService->modifyRecord(

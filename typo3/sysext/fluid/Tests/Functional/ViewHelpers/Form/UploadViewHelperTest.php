@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Error\Error;
@@ -29,9 +30,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class UploadViewHelperTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlySetsTagName(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -39,9 +38,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
         self::assertSame('<input type="file" name="" />', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlySetsTypeNameAttributes(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -49,9 +46,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
         self::assertSame('<input type="file" name="someName" />', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderSetsAttributeNameAsArrayIfMultipleIsGiven(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -59,9 +54,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
         self::assertSame('<input multiple="multiple" type="file" name="someName[]" />', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlySetsAcceptAttribute(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -69,9 +62,7 @@ final class UploadViewHelperTest extends FunctionalTestCase
         self::assertSame('<input accept=".jpg,.png" type="file" name="" />', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallsSetErrorClassAttribute(): void
     {
         // Create an extbase request that contains mapping results of the form object property we're working with.

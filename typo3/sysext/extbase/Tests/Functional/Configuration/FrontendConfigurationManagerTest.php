@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -29,9 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FrontendConfigurationManagerTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function beforeFlexFormConfigurationOverrideEventIsDispatched(): void
     {
         $typoScript = [
@@ -342,10 +342,8 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider overrideConfigurationFromFlexFormSettingsDataProvider
-     */
+    #[DataProvider('overrideConfigurationFromFlexFormSettingsDataProvider')]
+    #[Test]
     public function overrideConfigurationFromFlexFormIgnoresConfiguredEmptyFlexFormSettings(
         string $flexFormConfiguration,
         array $frameworkConfiguration,

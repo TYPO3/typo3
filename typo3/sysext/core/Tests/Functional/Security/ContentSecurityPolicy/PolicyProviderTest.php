@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -112,10 +114,8 @@ final class PolicyProviderTest extends FunctionalTestCase
         yield [Scope::backend(), null, true, 'https://website.fallback/typo3/@http-reporting?csp=report'];
     }
 
-    /**
-     * @test
-     * @dataProvider defaultReportingUriBaseIsResolvedDataProvider
-     */
+    #[DataProvider('defaultReportingUriBaseIsResolvedDataProvider')]
+    #[Test]
     public function defaultReportingUriBaseIsResolved(Scope $scope, ?string $languagePreset, bool $absolute, string $expectation): void
     {
         $request = $this->buildServerRequest($scope, $languagePreset);

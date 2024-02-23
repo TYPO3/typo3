@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -27,9 +28,7 @@ final class IndexerTest extends FunctionalTestCase
         'indexed_search',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function indexerIndexesLoremIpsumContent(): void
     {
         $indexer = new Indexer();
@@ -65,9 +64,7 @@ final class IndexerTest extends FunctionalTestCase
         self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/index_dataset.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function indexerDoesNotFailForWordsWithPhashCollision(): void
     {
         $indexer = new Indexer();
@@ -107,9 +104,7 @@ final class IndexerTest extends FunctionalTestCase
         self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/phash_collision.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function indexerBuildsCorrectWordIndexWhenIndexingWordsTwice(): void
     {
         $indexerConfig = [

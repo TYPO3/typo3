@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -73,9 +75,7 @@ final class ExportTest extends AbstractImportExportTestCase
         $this->exportMock = $this->getAccessibleMock(Export::class, ['setMetaData']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function creationAndDeletionOfTemporaryFolderSucceeds(): void
     {
         $temporaryFolderName = $this->exportMock->getOrCreateTemporaryFolderName();
@@ -89,9 +89,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertFalse(is_file($temporaryFileName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function creationAndDeletionOfDefaultImportExportFolderSucceeds(): void
     {
         $exportFolder = $this->exportMock->getOrCreateDefaultImportExportFolder();
@@ -105,9 +103,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertFalse(is_file(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl() . $exportFileName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewWithoutArgumentsReturnsBasicArray(): void
     {
         $this->exportMock->process();
@@ -120,9 +116,7 @@ final class ExportTest extends AbstractImportExportTestCase
         ], $previewData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForExportOfPageAndRecords(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
@@ -148,9 +142,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForExportOfPageAndRecordsWithSoftRefs(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
@@ -175,9 +167,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForExportOfTable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
@@ -201,9 +191,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForExportOfRecords(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
@@ -259,10 +247,9 @@ final class ExportTest extends AbstractImportExportTestCase
 
     /**
      * Temporary test until there is a complex functional test which tests addFiles() implicitly.
-     *
-     * @test
-     * @dataProvider addFilesSucceedsDataProvider
      */
+    #[DataProvider('addFilesSucceedsDataProvider')]
+    #[Test]
     public function addFilesSucceeds(array $dat, array $relations, array $expected): void
     {
         $exportMock = $this->getAccessibleMock(
@@ -279,9 +266,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertEquals($expected, $lines);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderSucceedsWithoutArguments(): void
     {
         $this->exportMock->process();
@@ -290,9 +275,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertXmlStringEqualsXmlFile(__DIR__ . '/Fixtures/XmlExports/empty.xml', $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveXmlToFileIsDefaultAndSucceeds(): void
     {
         $this->exportMock->setExportFileName('export');
@@ -306,9 +289,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertXmlFileEqualsXmlFile(__DIR__ . '/Fixtures/XmlExports/empty.xml', $filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveT3dToFileSucceeds(): void
     {
         $this->exportMock->setExportFileName('export');
@@ -327,9 +308,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveT3dCompressedToFileSucceeds(): void
     {
         if (!function_exists('gzcompress')) {
@@ -352,9 +331,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveToFileCleansUpTemporaryFolder(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
@@ -381,9 +358,7 @@ final class ExportTest extends AbstractImportExportTestCase
         self::assertEmpty($this->exportMock->_get('temporaryFolderName'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveToFileCleansUpFormerExportsOfSameName(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');

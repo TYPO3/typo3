@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -36,9 +37,7 @@ final class PagePermissionTest extends AbstractDataHandlerActionTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newPageReceivesDefaultPermissionSet(): void
     {
         $this->backendUser->user['uid'] = 13;
@@ -56,9 +55,7 @@ final class PagePermissionTest extends AbstractDataHandlerActionTestCase
         self::assertEquals(Permission::PAGE_SHOW, $record['perms_everybody']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newPageReceivesOverriddenPageTsPermissionSet(): void
     {
         $this->backendUser->user['uid'] = 13;
@@ -83,9 +80,7 @@ TCEMAIN.permissions.everybody = show,delete
         self::assertEquals(Permission::PAGE_SHOW + Permission::PAGE_DELETE, $record['perms_everybody']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newPageReceivesOverriddenPageTsPermissionSetFromParent()
     {
         $this->backendUser->user['uid'] = 13;

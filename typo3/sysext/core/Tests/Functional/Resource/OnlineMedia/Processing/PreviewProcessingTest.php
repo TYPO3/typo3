@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource\OnlineMedia\Processing;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -32,9 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PreviewProcessingTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function afterVideoPreviewFetchedEventIsTriggered(): void
     {
         $afterVideoPreviewFetchedEvent = null;

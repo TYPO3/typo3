@@ -21,6 +21,8 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\TextType;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -45,7 +47,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
     protected $schemaManager;
 
     /**
-     * @var \TYPO3\CMS\Core\Database\Schema\SchemaMigrator
+     * @var SchemaMigrator
      */
     protected $subject;
 
@@ -85,9 +87,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNewTable(): void
     {
         if ($this->schemaManager->tablesExist([$this->tableName])) {
@@ -105,9 +105,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertCount(6, $this->getTableDetails()->getColumns());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNewTableIfNotExists(): void
     {
         $statements = $this->readFixtureFile('ifNotExists');
@@ -121,9 +119,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->schemaManager->tablesExist(['another_test_table']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNewColumns(): void
     {
         $statements = $this->readFixtureFile('addColumnsToTable');
@@ -139,9 +135,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->getTableDetails()->hasColumn('description'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeExistingColumn(): void
     {
         $statements = $this->readFixtureFile('changeExistingColumn');
@@ -164,10 +158,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
      * table and throws "Cannot add a NOT NULL column with default value NULL". It's
      * currently unclear if core should handle that by changing the alter table
      * statement on the fly.
-     *
-     * @test
-     * @group not-sqlite
      */
+    #[Group('not-sqlite')]
+    #[Test]
     public function notNullWithoutDefaultValue(): void
     {
         $statements = $this->readFixtureFile('notNullWithoutDefaultValue');
@@ -181,9 +174,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->getTableDetails()->getColumn('aTestField')->getNotnull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultNullWithoutNotNull(): void
     {
         $statements = $this->readFixtureFile('defaultNullWithoutNotNull');
@@ -198,9 +189,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertNull($this->getTableDetails()->getColumn('aTestField')->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renameUnusedField(): void
     {
         $statements = $this->readFixtureFile('unusedColumn');
@@ -215,9 +204,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_hidden'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renameUnusedTable(): void
     {
         $statements = $this->readFixtureFile('unusedTable');
@@ -235,10 +222,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
     /**
      * Disabled on sqlite: It seems the platform is unable to drop columns for
      * currently unknown reasons.
-     *
-     * @test
-     * @group not-sqlite
      */
+    #[Group('not-sqlite')]
+    #[Test]
     public function dropUnusedField(): void
     {
         $connection = $this->connectionPool->getConnectionForTable($this->tableName);
@@ -262,9 +248,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertFalse($this->getTableDetails()->hasColumn('zzz_deleted_testfield'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dropUnusedTable(): void
     {
         $this->schemaManager->renameTable($this->tableName, 'zzz_deleted_' . $this->tableName);
@@ -282,11 +266,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertNotContains('zzz_deleted_' . $this->tableName, $this->schemaManager->listTableNames());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     * @group not-sqlite
-     */
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[Test]
     public function installPerformsOnlyAddAndCreateOperations(): void
     {
         $statements = $this->readFixtureFile('addCreateChange');
@@ -303,9 +285,8 @@ final class SchemaMigratorTest extends FunctionalTestCase
      * Disabled on sqlite: The platform seems to have issues with indexes
      * for currently unknown reasons. If that is sorted out, this test can
      * probably be enabled.
-     *
-     * @test
      */
+    #[Test]
     public function installDoesNotAddIndexOnChangedColumn(): void
     {
         $statements = $this->readFixtureFile('addIndexOnChangedColumn');
@@ -315,9 +296,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertFalse($this->getTableDetails()->hasIndex('title'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeExistingIndex(): void
     {
         // recreate the table with the indexes applied
@@ -355,11 +334,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertEquals($expectedColumnsOfChangedIndex, $indexesAfterChange[$parentIndex[0]]->getColumns());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     * @group not-sqlite
-     */
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[Test]
     public function installCanPerformChangeOperations(): void
     {
         $statements = $this->readFixtureFile('addCreateChange');
@@ -372,11 +349,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertInstanceOf(BigIntType::class, $this->getTableDetails()->getColumn('pid')->getType());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     * @group not-sqlite
-     */
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[Test]
     public function importStaticDataInsertsRecords(): void
     {
         $sqlCode = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', 'importStaticData.sql']));
@@ -387,9 +362,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertEquals(2, $connection->count('*', $this->tableName, []));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importStaticDataIgnoresTableDefinitions(): void
     {
         $sqlCode = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', 'importStaticData.sql']));
@@ -399,11 +372,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertNotContains('another_test_table', $this->schemaManager->listTableNames());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     * @group not-sqlite
-     */
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[Test]
     public function changeTableEngine(): void
     {
         $statements = $this->readFixtureFile('alterTableEngine');

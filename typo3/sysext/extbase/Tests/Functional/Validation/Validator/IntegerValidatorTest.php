@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -46,10 +48,8 @@ final class IntegerValidatorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validIntegers
-     */
+    #[DataProvider('validIntegers')]
+    #[Test]
     public function integerValidatorReturnsNoErrorsForAValidInteger(int|string $integer): void
     {
         $validator = new IntegerValidator();
@@ -69,10 +69,8 @@ final class IntegerValidatorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidIntegers
-     */
+    #[DataProvider('invalidIntegers')]
+    #[Test]
     public function integerValidatorReturnsErrorForAnInvalidInteger(float|string $invalidInteger): void
     {
         $validator = new IntegerValidator();
@@ -80,9 +78,7 @@ final class IntegerValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate($invalidInteger)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
         $validator = new IntegerValidator();

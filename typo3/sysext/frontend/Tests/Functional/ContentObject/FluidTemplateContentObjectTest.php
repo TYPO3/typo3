@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -44,9 +45,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderWorksWithNestedFluidTemplate(): void
     {
         $this->setUpFrontendRootPage(
@@ -59,9 +58,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('ABC', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderWorksWithNestedFluidTemplateWithLayouts(): void
     {
         $this->setUpFrontendRootPage(
@@ -76,9 +73,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('LayoutOverride', $responseBody);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stdWrapAppliesForTemplateRootPaths(): void
     {
         $this->setUpFrontendRootPage(
@@ -91,9 +86,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Foobar', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionFileIsUsedAsTemplate(): void
     {
         $this->setUpFrontendRootPage(
@@ -106,9 +99,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Foobar', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionTemplateIsUsedAsCObjTemplate(): void
     {
         $this->setUpFrontendRootPage(
@@ -121,9 +112,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('My fluid template', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionTemplateNameIsUsedAsHtmlFileInTemplateRootPaths(): void
     {
         $this->setUpFrontendRootPage(
@@ -136,9 +125,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Foobar', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stdWrapIsAppliedOnOptionTemplateName(): void
     {
         $this->setUpFrontendRootPage(
@@ -151,9 +138,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Foobar', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function layoutIsFoundInLayoutRootPath(): void
     {
         $this->setUpFrontendRootPage(
@@ -168,9 +153,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Alternative Template', $responseBody);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function layoutRootPathHasStdWrapSupport(): void
     {
         $this->setUpFrontendRootPage(
@@ -185,9 +168,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Alternative Template', $responseBody);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function layoutRootPathsHasStdWrapSupport(): void
     {
         $this->setUpFrontendRootPage(
@@ -202,9 +183,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Alternative Template', $responseBody);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fallbacksForLayoutRootPathsAreApplied(): void
     {
         $this->setUpFrontendRootPage(
@@ -219,9 +198,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Main Template', $responseBody);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fallbacksForLayoutRootPathAreAppendedToLayoutRootPath(): void
     {
         $this->setUpFrontendRootPage(
@@ -236,9 +213,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Main Template', $responseBody);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function partialsInPartialRootPathAreFound(): void
     {
         $this->setUpFrontendRootPage(
@@ -251,9 +226,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Template with Partial', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function partialRootPathHasStdWrapSupport(): void
     {
         $this->setUpFrontendRootPage(
@@ -266,9 +239,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Template with Partial', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function partialRootPathsHasStdWrapSupport(): void
     {
         $this->setUpFrontendRootPage(
@@ -281,9 +252,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Template with Partial', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fallbacksForPartialRootPathsAreApplied(): void
     {
         $this->setUpFrontendRootPage(
@@ -296,9 +265,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Template with Partial Override', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fallbacksForPartialRootPathAreAppendedToPartialRootPath(): void
     {
         $this->setUpFrontendRootPage(
@@ -311,9 +278,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('Template with Partial Override', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function formatOverridesDefaultHtmlSuffix(): void
     {
         $this->setUpFrontendRootPage(
@@ -326,9 +291,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('FoobarXML', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stdWrapIsAppliedOnOptionFormat(): void
     {
         $this->setUpFrontendRootPage(
@@ -341,9 +304,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('FoobarXML', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingsAreAssignedToTheView(): void
     {
         $this->setUpFrontendRootPage(
@@ -356,9 +317,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('I am coming from the settings', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionForReservedVariableNameData(): void
     {
         $this->setUpFrontendRootPage(
@@ -372,9 +331,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionForReservedVariableNameCurrent(): void
     {
         $this->setUpFrontendRootPage(
@@ -388,9 +345,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cObjectIsAppliedOnVariables(): void
     {
         $this->setUpFrontendRootPage(
@@ -403,9 +358,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('I am coming from the variables', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function contentObjectRendererDataIsAvailableInView(): void
     {
         $this->setUpFrontendRootPage(
@@ -418,9 +371,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('FluidTemplateContentObjectTest', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderAssignsContentObjectRendererCurrentValueToView(): void
     {
         $this->setUpFrontendRootPage(
@@ -433,9 +384,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('My current value', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stdWrapIsAppliedOnOverallFluidTemplate(): void
     {
         $this->setUpFrontendRootPage(
@@ -448,9 +397,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('1+1=2', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderFluidTemplateAssetsIntoPageRendererRendersAndAttachesAssets(): void
     {
         $this->setUpFrontendRootPage(

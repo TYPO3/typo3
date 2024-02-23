@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -47,27 +49,21 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pushModuleDataDoesNotRevealPlainSessionId(): void
     {
         $this->subject->pushModuleData(self::class, true);
         self::assertNotContains($this->sessionId, $this->subject->uc['moduleSessionID']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getModuleDataResolvesHashedSessionId(): void
     {
         $this->subject->pushModuleData(self::class, true);
         self::assertTrue($this->subject->getModuleData(self::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getModuleDataFallsBackToPlainSessionId(): void
     {
         $this->subject->uc['moduleData'][self::class] = true;
@@ -86,10 +82,8 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGivenDataProvider
-     */
+    #[DataProvider('getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGivenDataProvider')]
+    #[Test]
     public function getAuthInfoArrayReturnsCorrectPidConstraintForGivenCheckPidValue(
         int|null|string $checkPid_value,
         string $expectedPids

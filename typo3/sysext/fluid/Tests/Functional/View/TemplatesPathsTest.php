@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\View;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -140,13 +142,13 @@ final class TemplatesPathsTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @param string $overrideType
      * @param string $expectedTemplate
      * @param string $expectedPartial
      * @param string $expectedLayout
-     * @dataProvider differentOverrideScenariosDataProvider
      */
+    #[DataProvider('differentOverrideScenariosDataProvider')]
+    #[Test]
     public function baseRenderingWorksForCObject($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
         $requestArguments = [
@@ -163,13 +165,13 @@ final class TemplatesPathsTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @param string $overrideType
      * @param string $expectedTemplate
      * @param string $expectedPartial
      * @param string $expectedLayout
-     * @dataProvider differentOverrideScenariosDataProvider
      */
+    #[DataProvider('differentOverrideScenariosDataProvider')]
+    #[Test]
     public function baseRenderingWorksForControllerAsGlobalUsage($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
         $requestArguments = [
@@ -186,13 +188,13 @@ final class TemplatesPathsTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @param string $overrideType
      * @param string $expectedTemplate
      * @param string $expectedPartial
      * @param string $expectedLayout
-     * @dataProvider differentOverrideScenariosDataProvider
      */
+    #[DataProvider('differentOverrideScenariosDataProvider')]
+    #[Test]
     public function baseRenderingWorksForControllerAsPluginUsage($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
         $requestArguments = [
@@ -210,13 +212,13 @@ final class TemplatesPathsTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @param string $overrideType
      * @param string $expectedTemplate
      * @param string $expectedPartial
      * @param string $expectedLayout
-     * @dataProvider differentOverrideScenariosDataProvider
      */
+    #[DataProvider('differentOverrideScenariosDataProvider')]
+    #[Test]
     public function baseRenderingWorksForControllerAsPluginUsageWithPluginConfig($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
         $requestArguments = [
@@ -233,9 +235,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
         self::assertStringContainsString($expectedLayout, $content);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function baseRenderingWorksForControllerAsPluginUsageWithIncompleteConfig(): void
     {
         $requestArguments = [
@@ -252,9 +252,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
         self::assertStringContainsString('Default Partial', $content);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function baseRenderingWorksForControllerWithTwoPlugins(): void
     {
         $requestArguments = [

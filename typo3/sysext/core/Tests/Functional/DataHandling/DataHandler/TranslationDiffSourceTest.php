@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -35,9 +36,7 @@ final class TranslationDiffSourceTest extends AbstractDataHandlerActionTestCase
         $this->backendUser->workspace = 0;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transOrigDiffSourceFieldWrittenAfterTranslation(): void
     {
         $map = $this->actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);
@@ -51,9 +50,7 @@ final class TranslationDiffSourceTest extends AbstractDataHandlerActionTestCase
         self::assertEquals('DataHandlerTest', $transOrigDiffSourceField['title']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transOrigDiffSourceNotUpdatedAfterUndo(): void
     {
         $map = $this->actionService->localizeRecord('pages', self::PAGE_DATAHANDLER, 1);

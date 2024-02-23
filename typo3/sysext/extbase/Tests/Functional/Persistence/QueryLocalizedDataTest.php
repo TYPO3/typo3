@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -67,9 +69,8 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * Note that with feature flag disabled, you'll get same result (not translated record) for both calls ->findByUid(2)
      * and ->findByUid(11)
-     *
-     * @test
      */
+    #[Test]
     public function findByUidOverlayModeOnDefaultLanguage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
@@ -109,9 +110,8 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 
     /**
      * Test in default language, overlays disabled
-     *
-     * @test
      */
+    #[Test]
     public function findByUidNoOverlaysDefaultLanguage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
@@ -149,9 +149,8 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 
     /**
      * Test in language uid:1, overlays enabled
-     *
-     * @test
      */
+    #[Test]
     public function findByUidOverlayModeOnLanguage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
@@ -188,9 +187,8 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 
     /**
      * Test in language uid:1, overlays disabled
-     *
-     * @test
      */
+    #[Test]
     public function findByUidNoOverlaysLanguage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
@@ -232,9 +230,8 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
      * All with overlay mode enabled.
      *
      * The post with uid 2 is translated to language 1, and there has uid 11.
-     *
-     * @test
      */
+    #[Test]
     public function customFindByUidOverlayEnabled(): void
     {
         // we're in default lang and fetching by uid of the record in default language
@@ -308,9 +305,8 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
      * All with overlay mode disabled.
      *
      * The post with uid 2 is translated to language 1, and there has uid 11.
-     *
-     * @test
      */
+    #[Test]
     public function customFindByUidOverlayDisabled(): void
     {
         $query = $this->postRepository->createQuery();
@@ -790,10 +786,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
      * This test check posts returned by repository, when changing language and languageOverlayMode
      * It also sets limit, offset to validate there are no "gaps" in pagination
      * and sorting (on a posts property)
-     *
-     * @test
-     * @dataProvider queryFirst5PostsDataProvider
      */
+    #[DataProvider('queryFirst5PostsDataProvider')]
+    #[Test]
     public function queryFirst5Posts(int $languageUid, string $overlay, array $expected): void
     {
         $languageAspect = new LanguageAspect($languageUid, $languageUid, $overlay);
@@ -1003,10 +998,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
      * "Post 6" is not translated
      * "Post 5" is translated as "Post 5 - DA"
      * "Post DA only" has no translation parent
-     *
-     * @test
-     * @dataProvider queryPostsByPropertyDataProvider
      */
+    #[DataProvider('queryPostsByPropertyDataProvider')]
+    #[Test]
     public function queryPostsByProperty(int $languageUid, string $overlay, array $expected): void
     {
         $languageAspect = new LanguageAspect($languageUid, $languageUid, $overlay);
@@ -1084,10 +1078,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
      * The expected state is that when setRespectSysLanguage is false, then both: default language record,
      * and translated language record should be returned. Regardless of the language setting or the overlay mode.
      * Now we're getting same record twice in some cases.
-     *
-     * @test
-     * @dataProvider postsWithoutRespectingSysLanguageDataProvider
      */
+    #[DataProvider('postsWithoutRespectingSysLanguageDataProvider')]
+    #[Test]
     public function postsWithoutRespectingSysLanguage(int $languageUid, string $overlay, array $expected): void
     {
         $languageAspect = new LanguageAspect($languageUid, $languageUid, $overlay);

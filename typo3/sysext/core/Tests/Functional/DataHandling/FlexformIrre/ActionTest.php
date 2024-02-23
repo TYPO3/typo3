@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FlexformIrre;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
@@ -32,18 +33,14 @@ final class ActionTest extends AbstractDataHandlerActionTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');

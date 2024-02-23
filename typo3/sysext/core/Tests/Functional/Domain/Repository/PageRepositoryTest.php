@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -39,9 +41,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMenuSingleUidRoot(): void
     {
         $subject = new PageRepository();
@@ -52,9 +52,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertCount(3, $rows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMenuSingleUidSubpage(): void
     {
         $subject = new PageRepository();
@@ -64,9 +62,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertCount(2, $rows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMenuMultipleUid(): void
     {
         $subject = new PageRepository();
@@ -78,9 +74,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertCount(4, $rows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMenuPageOverlay(): void
     {
         $subject = new PageRepository(new Context([
@@ -95,9 +89,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertCount(4, $rows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMenuWithMountPoint(): void
     {
         $subject = new PageRepository();
@@ -108,9 +100,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertCount(2, $rows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMenuPageOverlayWithMountPoint(): void
     {
         $subject = new PageRepository(new Context([
@@ -124,9 +114,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertCount(2, $rows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPageOverlayById(): void
     {
         $subject = new PageRepository();
@@ -137,9 +125,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPageOverlayByIdWithoutTranslation(): void
     {
         $subject = new PageRepository();
@@ -148,9 +134,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertCount(0, $row);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPageOverlayByRow(): void
     {
         $subject = new PageRepository();
@@ -163,9 +147,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPageOverlayByRowWithoutTranslation(): void
     {
         $subject = new PageRepository();
@@ -176,9 +158,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals('Dummy 1-4', $row['title']);//original title
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPagesOverlayByIdSingle(): void
     {
         $subject = new PageRepository(new Context([
@@ -196,9 +176,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPagesOverlayByIdMultiple(): void
     {
         $subject = new PageRepository(new Context([
@@ -223,9 +201,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPagesOverlayByIdMultipleSomeNotOverlaid(): void
     {
         $subject = new PageRepository(new Context([
@@ -246,9 +222,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals('Attrappe 1-2-5', $row['title']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPagesOverlayByRowSingle(): void
     {
         $subject = new PageRepository();
@@ -270,9 +244,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(new Page($origRow), $row['_TRANSLATION_SOURCE']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function groupRestrictedPageCanBeOverlaid(): void
     {
         $subject = new PageRepository();
@@ -293,9 +265,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPagesOverlayByRowMultiple(): void
     {
         $subject = new PageRepository();
@@ -326,9 +296,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(new Page($orig2), $row['_TRANSLATION_SOURCE']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPagesOverlayByRowMultipleSomeNotOverlaid(): void
     {
         $subject = new PageRepository();
@@ -364,9 +332,8 @@ final class PageRepositoryTest extends FunctionalTestCase
 
     /**
      * Tests whether the getPage Hook is called correctly.
-     *
-     * @test
      */
+    #[Test]
     public function isGetPageHookCalled(): void
     {
         // Create a hook mock object
@@ -386,9 +353,7 @@ final class PageRepositoryTest extends FunctionalTestCase
     // Tests concerning mountpoints
     ////////////////////////////////
     ///
-    /**
-     * @test
-     */
+    #[Test]
     public function getMountPointInfoForDefaultLanguage(): void
     {
         $subject = new PageRepository();
@@ -396,9 +361,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals('1001-1003', $mountPointInfo['MPvar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMountPointInfoForTranslation(): void
     {
         $mpVar = '1001-1003';
@@ -415,10 +378,7 @@ final class PageRepositoryTest extends FunctionalTestCase
     ////////////////////////////////
     // Tests concerning workspaces
     ////////////////////////////////
-
-    /**
-     * @test
-     */
+    #[Test]
     public function previewShowsPagesFromLiveAndCurrentWorkspace(): void
     {
         // initialization
@@ -436,9 +396,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(VersionState::NEW_PLACEHOLDER, $pageRec['t3ver_state']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWorkspaceVersionReturnsTheCorrectMethod(): void
     {
         // initialization
@@ -460,10 +418,7 @@ final class PageRepositoryTest extends FunctionalTestCase
     ////////////////////////////////
     // Tests concerning versioning
     ////////////////////////////////
-
-    /**
-     * @test
-     */
+    #[Test]
     public function enableFieldsHidesVersionedRecordsAndPlaceholders(): void
     {
         $table = StringUtility::getUniqueId('aTable');
@@ -490,9 +445,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enableFieldsDoesNotHidePlaceholdersInPreview(): void
     {
         $table = StringUtility::getUniqueId('aTable');
@@ -521,9 +474,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview(): void
     {
         $table = StringUtility::getUniqueId('aTable');
@@ -567,9 +518,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertFalse(isset($row['_PAGES_OVERLAY_LANGUAGE']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPageIdsRecursiveTest(): void
     {
         // do not use cache_treelist
@@ -597,9 +546,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals([1000, 1001], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDescendantPageIdsRecursiveTest(): void
     {
         // do not use cache_treelist
@@ -630,9 +577,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals([2, 5, 6, 7, 3, 8, 9, 4, 10], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLanguageOverlayResolvesContentWithNullInValues(): void
     {
         $context = new Context();
@@ -665,10 +610,10 @@ final class PageRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @param array<string, int> $input
-     * @dataProvider invalidRowForVersionOLDataProvider
      */
+    #[DataProvider('invalidRowForVersionOLDataProvider')]
+    #[Test]
     public function versionOLForAnInvalidRowUnchangedRowData(array $input): void
     {
         $context = new Context();

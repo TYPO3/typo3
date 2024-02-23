@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\Canonical;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -135,10 +137,8 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider generateDataProvider
-     */
+    #[DataProvider('generateDataProvider')]
+    #[Test]
     public function generate(string $targetUri, string $expectedCanonicalUrl): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -152,9 +152,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterContentObjectRendererInitializedEventIsCalled(): void
     {
         $modifyUrlForCanonicalTagEvent = null;

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -28,9 +29,7 @@ final class HiddenViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlySetsTagNameAndDefaultAttributes(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

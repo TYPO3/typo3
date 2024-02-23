@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Session\Backend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotCreatedException;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
@@ -55,17 +56,13 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canValidateSessionBackend(): void
     {
         $this->subject->validateConfiguration();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sessionDataIsStoredProperly(): void
     {
         $record = $this->subject->set('randomSessionId', $this->testSessionRecord);
@@ -77,9 +74,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         self::assertSame($expected['ses_userid'], (int)$this->subject->get('randomSessionId')['ses_userid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anonymousSessionDataIsStoredProperly(): void
     {
         $record = $this->subject->set('randomSessionId', array_merge($this->testSessionRecord, ['ses_userid' => 0]));
@@ -91,9 +86,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         self::assertSame($expected['ses_userid'], (int)$this->subject->get('randomSessionId')['ses_userid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionOnNonExistingSessionId(): void
     {
         $this->expectException(SessionNotFoundException::class);
@@ -101,9 +94,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->get('IDoNotExist');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mergeSessionDataWithNewData(): void
     {
         $this->subject->set('randomSessionId', $this->testSessionRecord);
@@ -119,9 +110,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         self::assertSame($expectedMergedData['ses_userid'], (int)$fetchedRecord['ses_userid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existingSessionMustNotBeOverridden(): void
     {
         $this->expectException(SessionNotCreatedException::class);
@@ -133,9 +122,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->set('randomSessionId', $newData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cannotChangeSessionId(): void
     {
         $this->subject->set('randomSessionId', $this->testSessionRecord);
@@ -156,9 +143,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->get('newRandomSessionId');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sessionGetsDestroyed(): void
     {
         $this->subject->set('randomSessionId', $this->testSessionRecord);
@@ -172,9 +157,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->get('randomSessionId');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canLoadAllSessions(): void
     {
         $this->subject->set('randomSessionId', $this->testSessionRecord);
@@ -184,9 +167,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         self::assertCount(2, $this->subject->getAll());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCollectGarbage(): void
     {
         $GLOBALS['EXEC_TIME'] = 150;
@@ -233,9 +214,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->get('anonymousSession');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canPartiallyUpdateAfterGet(): void
     {
         $updatedRecord = array_merge(

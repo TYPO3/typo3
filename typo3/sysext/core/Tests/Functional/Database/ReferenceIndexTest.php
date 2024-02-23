@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -26,9 +27,7 @@ final class ReferenceIndexTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateIndexRemovesRecordsOfNotExistingWorkspaces(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexRemoveNonExistingWorkspaceImport.csv');

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -54,10 +56,8 @@ final class GetUniqueTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getUniqueDataProvider
-     */
+    #[DataProvider('getUniqueDataProvider')]
+    #[Test]
     public function getUnique(string $value, string $expected): void
     {
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);

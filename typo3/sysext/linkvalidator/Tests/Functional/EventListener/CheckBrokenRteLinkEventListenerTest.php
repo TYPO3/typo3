@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional\EventListener;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent;
 use TYPO3\CMS\Linkvalidator\EventListener\CheckBrokenRteLinkEventListener;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
@@ -34,10 +36,8 @@ final class CheckBrokenRteLinkEventListenerTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider checkPageLinkTestDataProvider
-     */
+    #[DataProvider('checkPageLinkTestDataProvider')]
+    #[Test]
     public function checkPageLinkTest(string $linkType, array $linkData, bool $isMarkedAsBroken): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');

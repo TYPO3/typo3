@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\Updates\SysLogSerializationUpdate;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -25,9 +26,7 @@ final class SysLogSerializationUpdateTest extends FunctionalTestCase
     protected string $baseDataSet = __DIR__ . '/Fixtures/SysLogSerializationBase.csv';
     protected string $resultDataSet = __DIR__ . '/Fixtures/SysLogSerializationFinished.csv';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sysLogEntriesAreUpdated(): void
     {
         $subject = new SysLogSerializationUpdate();

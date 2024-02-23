@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,9 +45,7 @@ final class Typo3tempFileServiceTest extends FunctionalTestCase
         unset($this->directoryName, $this->directoryPath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearAssetsFolderDetectsNonExistingFolder(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -58,9 +57,7 @@ final class Typo3tempFileServiceTest extends FunctionalTestCase
         $subject->clearAssetsFolder('/typo3temp/assets/' . $this->directoryName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearAssetsFolderClearsFolder(): void
     {
         GeneralUtility::mkdir_deep($this->directoryPath . '/a/b');

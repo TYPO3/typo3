@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
@@ -50,26 +53,20 @@ final class RepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findByRespectsSingleCriteriaDataProvider
-     */
+    #[DataProvider('findByRespectsSingleCriteriaDataProvider')]
+    #[Test]
     public function findByRespectsSingleCriteria(array $criteria, int $expectedCount): void
     {
         self::assertCount($expectedCount, $this->get(PostRepository::class)->findBy($criteria));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByRespectsMultipleCriteria(): void
     {
         self::assertCount(6, $this->get(PostRepository::class)->findBy(['blog' => 1, 'author' => 1]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByRespectsSingleOrderBy(): void
     {
         $posts = $this->get(PostRepository::class)->findBy(
@@ -90,9 +87,7 @@ final class RepositoryTest extends FunctionalTestCase
         ], $titles);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByRespectsMultipleOrderBy(): void
     {
         $posts = $this->get(PostRepository::class)->findBy(
@@ -165,9 +160,7 @@ final class RepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByRespectsLimit(): void
     {
         $posts = $this->get(PostRepository::class)->findBy(
@@ -195,9 +188,7 @@ final class RepositoryTest extends FunctionalTestCase
         ], $titles);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByRespectsOffset(): void
     {
         $posts = $this->get(PostRepository::class)->findBy(
@@ -238,10 +229,8 @@ final class RepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findOneByRespectsSingleCriteriaDataProvider
-     */
+    #[DataProvider('findOneByRespectsSingleCriteriaDataProvider')]
+    #[Test]
     public function findOneByRespectsSingleCriteria(array $criteria, int|null $expectedUid): void
     {
         /** @var Post|null $post */
@@ -249,19 +238,15 @@ final class RepositoryTest extends FunctionalTestCase
         self::assertSame($expectedUid, $post?->getUid());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     */
+    #[Group('not-postgres')]
+    #[Test]
     public function findOneByRespectsMultipleCriteria(): void
     {
         $post = $this->get(PostRepository::class)->findOneBy(['blog' => 1, 'author' => 1]);
         self::assertSame('Post4', $post?->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findOneByRespectsOrderBy(): void
     {
         $post = $this->get(PostRepository::class)->findOneBy(
@@ -271,9 +256,7 @@ final class RepositoryTest extends FunctionalTestCase
         self::assertSame('Post9', $post?->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countRespectsSingleCriteria(): void
     {
         self::assertSame(
@@ -284,9 +267,7 @@ final class RepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countRespectsMultipleCriteria(): void
     {
         self::assertSame(

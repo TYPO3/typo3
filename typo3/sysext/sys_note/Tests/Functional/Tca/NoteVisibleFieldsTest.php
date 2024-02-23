@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Tests\Functional\Tca;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -35,9 +36,7 @@ final class NoteVisibleFieldsTest extends FunctionalTestCase
         'message',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noteFormContainsExpectedFields(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Cache;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
@@ -30,9 +31,7 @@ final class CacheLifetimeCalculatorTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/fixtures.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFirstTimeValueForRecordReturnCorrectData(): void
     {
         $subject = new class ($this->get('cache.core'), $this->get(EventDispatcherInterface::class), $this->get(ConnectionPool::class)) extends CacheLifetimeCalculator {

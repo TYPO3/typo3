@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
@@ -50,9 +52,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepExistingItems(): void
     {
         $input = [
@@ -89,9 +89,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfAnItemIsNotAnArray(): void
     {
         $input = [
@@ -117,9 +115,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         (new TcaSelectItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataTranslatesItemLabels(): void
     {
         $input = [
@@ -157,9 +153,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsDividersIfItemGroupsAreDefined(): void
     {
         $input = [
@@ -231,9 +225,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsIconFromItem(): void
     {
         $input = [
@@ -269,9 +261,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsFileItemsWithConfiguredFileFolder(): void
     {
         $directory = Environment::getVarPath() . '/' . StringUtility::getUniqueId('test-') . '/';
@@ -325,9 +315,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsFileItemsWithOverwrittenFileFolder(): void
     {
         $directory = Environment::getVarPath() . '/' . StringUtility::getUniqueId('test-') . '/';
@@ -400,9 +388,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionForInvalidFileFolder(): void
     {
         $input = [
@@ -428,9 +414,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         (new TcaSelectItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsItemsByAddItemsFromPageTsConfig(): void
     {
         $input = [
@@ -484,9 +468,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsItemsByAddItemsWithGroupFromPageTsConfig(): void
     {
         $input = [
@@ -548,9 +530,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsItemsByAddItemsWithDuplicateValuesFromPageTsConfig(): void
     {
         $input = [
@@ -1010,10 +990,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addDataReplacesMarkersInForeignTableClauseDataProvider
-     */
+    #[DataProvider('addDataReplacesMarkersInForeignTableClauseDataProvider')]
+    #[Test]
     public function addDataReplacesMarkersInForeignTableClause(string $foreignTableWhere, array $expectedItems, array $inputOverride): void
     {
         $input = [
@@ -1063,9 +1041,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThrowsExceptionIfForeignTableIsNotDefinedInTca(): void
     {
         $input = [
@@ -1089,9 +1065,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         (new TcaSelectItems())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataForeignTableSplitsGroupOrderAndLimit(): void
     {
         $input = [
@@ -1147,9 +1121,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataForeignTableQueuesFlashMessageOnDatabaseError(): void
     {
         $input = [
@@ -1195,9 +1167,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertCount(1, $flashMessageQueue->getAllMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataForeignTableHandlesForeignTableRows(): void
     {
         $input = [
@@ -1241,9 +1211,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesItemsThatAreRestrictedByUserStorageAddedByForeignTable(): void
     {
         $input = [
@@ -1289,9 +1257,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataForeignTableResolvesIconFromSelicon(): void
     {
         $input = [
@@ -1343,9 +1309,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesItemsByKeepItemsPageTsConfig(): void
     {
         $input = [
@@ -1402,9 +1366,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesAllItemsByEmptyKeepItemsPageTsConfig(): void
     {
         $input = [
@@ -1453,9 +1415,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataEvaluatesKeepItemsBeforeAddItemsFromPageTsConfig(): void
     {
         $input = [
@@ -1530,9 +1490,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesItemsByRemoveItemsPageTsConfig(): void
     {
         $input = [
@@ -1589,9 +1547,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesItemsByZeroValueRemoveItemsPageTsConfig(): void
     {
         $input = [
@@ -1647,9 +1603,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesItemsAddedByAddItemsFromPageTsConfigByRemoveItemsPageTsConfig(): void
     {
         $input = [
@@ -1702,9 +1656,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataRemovesItemsByLanguageFieldUserRestriction(): void
     {
         $input = [
@@ -1790,9 +1742,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsAllPagesDoktypesForAdminUser(): void
     {
         $input = [
@@ -1832,9 +1782,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataKeepsAllowedPageTypesForNonAdminUser(): void
     {
         $input = [
@@ -1877,9 +1825,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataCallsItemsProcFunc(): void
     {
         $input = [
@@ -1945,9 +1891,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
      *
      * In the itemsProcFunc we will iterate over the items given from foreign_table and filter out every item that
      * does not have a uid of 2
-     *
-     * @test
      */
+    #[Test]
     public function addDataItemsProcFuncWillUseItemsFromForeignTable(): void
     {
         $input = [
@@ -2024,9 +1969,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
      * In the itemsProcFunc we will iterate over the items given from foreign_table and filter out every item that
      * does not have a uid lower than 3.
      * The pageTsConfig will remove the item with the uid=2 from the list so only one item with uid=1 will remain
-     *
-     * @test
      */
+    #[Test]
     public function addDataItemsProcFuncWillUseItemsFromForeignTableAndRemoveItemsByPageTsConfig(): void
     {
         $input = [
@@ -2112,9 +2056,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
      * In the itemsProcFunc we will iterate over the items given from foreign_table and filter out every item that
      * does not have the uid of 2.
      * The pageTsConfig will add an item with the uid=12 to the list so only one item with uid=1 will remain
-     *
-     * @test
      */
+    #[Test]
     public function addDataItemsProcFuncWillUseItemsFromForeignTableAndAddItemsByPageTsConfig(): void
     {
         $input = [
@@ -2203,9 +2146,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataItemsProcFuncReceivesParameters(): void
     {
         $input = [
@@ -2278,9 +2219,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertCount(0, $flashMessageQueue->getAllMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataItemsProcFuncEnqueuesFlashMessageOnException(): void
     {
         $input = [
@@ -2337,9 +2276,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertCount(1, $flashMessageQueue->getAllMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataTranslatesItemLabelsFromPageTsConfig(): void
     {
         $input = [
@@ -2387,9 +2324,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsIconsFromPageTsConfig(): void
     {
         $input = [
@@ -2437,9 +2372,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueSetsMmForeignRelationValues(): void
     {
         $input = [
@@ -2470,9 +2403,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame(['5', '6'], (new TcaSelectItems())->addData($input)['databaseRow']['mm_field']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueSetsForeignRelationValues(): void
     {
         $input = [
@@ -2500,9 +2431,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame(['1', '2', '3', '4'], (new TcaSelectItems())->addData($input)['databaseRow']['foreign_field']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueRemovesInvalidDynamicValues(): void
     {
         $input = [
@@ -2532,9 +2461,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertSame(['1', '2', 'foo'], (new TcaSelectItems())->addData($input)['databaseRow']['foreign_field']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueKeepsValuesFromStaticItems(): void
     {
         $input = [
@@ -2568,9 +2495,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueReturnsEmptyValueForSingleSelect(): void
     {
         $input = [
@@ -2598,9 +2523,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueTrimsEmptyValueForMultiValueSelect(): void
     {
         $input = [
@@ -2635,9 +2558,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueDoesNotCallRelationManagerForStaticOnlyItems(): void
     {
         $relationHandlerMock = $this->createMock(RelationHandler::class);
@@ -2672,9 +2593,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueAddsInvalidValuesToItemsForSingleSelects(): void
     {
         $relationHandlerMock = $this->createMock(RelationHandler::class);
@@ -2714,9 +2633,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueReturnsDuplicateValuesForMultipleSelect(): void
     {
         $input = [
@@ -2756,9 +2673,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSelectFieldValueReturnsUniqueValuesForMultipleSelect(): void
     {
         $input = [
@@ -2913,10 +2828,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider processSelectFieldSetsCorrectValuesForMmRelationsDataProvider
-     */
+    #[DataProvider('processSelectFieldSetsCorrectValuesForMmRelationsDataProvider')]
+    #[Test]
     public function processSelectFieldSetsCorrectValuesForMmRelations(array $input, array $relationHandlerUids): void
     {
         self::assertEquals($relationHandlerUids, (new TcaSelectItems())->addData($input)['databaseRow']['mm_field']);

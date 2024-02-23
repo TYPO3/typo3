@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -125,10 +127,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%2$d->%3$d');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedDataProvider
-     */
+    #[DataProvider('linkIsGeneratedDataProvider')]
+    #[Test]
     public function linkIsGenerated(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -187,10 +187,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedFromMountPointDataProvider
-     */
+    #[DataProvider('linkIsGeneratedFromMountPointDataProvider')]
+    #[Test]
     public function linkIsGeneratedFromMountPoint(string $hostPrefix, array $pageMount, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -250,10 +248,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%2$d->%3$d (lang:%4$d)');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedForLanguageDataProvider
-     */
+    #[DataProvider('linkIsGeneratedForLanguageDataProvider')]
+    #[Test]
     public function linkIsGeneratedForLanguageWithLanguageProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -304,10 +300,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedWithQueryParametersDataProvider
-     */
+    #[DataProvider('linkIsGeneratedWithQueryParametersDataProvider')]
+    #[Test]
     public function linkIsGeneratedWithQueryParameters(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -358,10 +352,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%2$d->%3$d (user:%4$d)');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedForRestrictedPageDataProvider
-     */
+    #[DataProvider('linkIsGeneratedForRestrictedPageDataProvider')]
+    #[Test]
     public function linkIsGeneratedForRestrictedPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $frontendUserId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -413,10 +405,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%2$d->%3$d (via: %4$d, user:%5$d)');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedForRestrictedPageUsingLoginPageDataProvider
-     */
+    #[DataProvider('linkIsGeneratedForRestrictedPageUsingLoginPageDataProvider')]
+    #[Test]
     public function linkIsGeneratedForRestrictedPageUsingLoginPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $loginPageId, int $frontendUserId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -462,10 +452,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%2$d->%3$d (language: %4$d)');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider
-     */
+    #[DataProvider('linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider')]
+    #[Test]
     public function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPages(string $hostPrefix, int $sourcePageId, int $targetPageId, int $languageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -510,10 +498,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%2$d->%3$d (resolve:%4$d, be_user:%5$d)');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedForPageVersionDataProvider
-     */
+    #[DataProvider('linkIsGeneratedForPageVersionDataProvider')]
+    #[Test]
     public function linkIsGeneratedForPageVersion(string $hostPrefix, int $sourcePageId, int $targetPageId, bool $resolveVersion, int $backendUserId, string $expectation): void
     {
         $workspaceId = 1;
@@ -699,10 +685,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider hierarchicalMenuIsGeneratedDataProvider
-     */
+    #[DataProvider('hierarchicalMenuIsGeneratedDataProvider')]
+    #[Test]
     public function hierarchicalMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -725,9 +709,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hierarchicalMenuDoesNotShowHiddenPagesAsSubMenu(): void
     {
         $expectation = [
@@ -847,10 +829,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider hierarchicalMenuSetsActiveStateProperlyDataProvider
-     */
+    #[DataProvider('hierarchicalMenuSetsActiveStateProperlyDataProvider')]
+    #[Test]
     public function hierarchicalMenuSetsActiveStateProperly(string $hostPrefix, int $sourcePageId, string $menuPageIds, array $expectation, int $languageId = 0): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -913,10 +893,9 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
 
     /**
      * Checks that excludeUidList checks against translated pages and default-language page IDs.
-     *
-     * @test
-     * @dataProvider hierarchicalMenuAlwaysResolvesToDefaultLanguageDataProvider
      */
+    #[DataProvider('hierarchicalMenuAlwaysResolvesToDefaultLanguageDataProvider')]
+    #[Test]
     public function hierarchicalMenuAlwaysResolvesToDefaultLanguage(int $languageId, string $excludedUidList, int $expectedMenuItems): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -1065,10 +1044,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider directoryMenuIsGeneratedDataProvider
-     */
+    #[DataProvider('directoryMenuIsGeneratedDataProvider')]
+    #[Test]
     public function directoryMenuIsGenerated(string $hostPrefix, int $sourcePageId, int $directoryMenuParentPage, int $backendUserId, int $workspaceId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -1154,10 +1131,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider directoryMenuToAccessRestrictedPagesIsGeneratedDataProvider
-     */
+    #[DataProvider('directoryMenuToAccessRestrictedPagesIsGeneratedDataProvider')]
+    #[Test]
     public function directoryMenuToAccessRestrictedPagesIsGenerated(string $hostPrefix, int $sourcePageId, int $directoryMenuParentPage, int $loginPageId, int $backendUserId, int $workspaceId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -1286,10 +1261,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider listMenuIsGeneratedDataProvider
-     */
+    #[DataProvider('listMenuIsGeneratedDataProvider')]
+    #[Test]
     public function listMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $menuPageIds, int $backendUserId, int $workspaceId, array $additionalMenuConfiguration, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -1364,10 +1337,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider languageMenuIsGeneratedDataProvider
-     */
+    #[DataProvider('languageMenuIsGeneratedDataProvider')]
+    #[Test]
     public function languageMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Localization;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -51,10 +53,8 @@ final class LanguageServiceTest extends FunctionalTestCase
     private const LANGUAGE_FILE_CORE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_common_override.xlf';
     private const LANGUAGE_FILE_CORE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_common_override.xlf';
 
-    /**
-     * @test
-     * @dataProvider splitLabelTestDataProvider
-     */
+    #[DataProvider('splitLabelTestDataProvider')]
+    #[Test]
     public function splitLabelTest(string $input, string $expected): void
     {
         $subject = $this->get(LanguageServiceFactory::class)->create('default');
@@ -130,10 +130,8 @@ final class LanguageServiceTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider ensureVariousLocalizationScenariosWorkDataProvider
-     */
+    #[DataProvider('ensureVariousLocalizationScenariosWorkDataProvider')]
+    #[Test]
     public function ensureVariousLocalizationScenariosWork(string $locale, array $expectedLabels): void
     {
         $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
@@ -167,10 +165,8 @@ final class LanguageServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ensureVariousLocalizationOverrideScenariosWorkDataProvider
-     */
+    #[DataProvider('ensureVariousLocalizationOverrideScenariosWorkDataProvider')]
+    #[Test]
     public function ensureVariousLocalizationOverrideScenariosWork(string $locale, array $expectedLabels): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE;
@@ -208,10 +204,8 @@ final class LanguageServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ensureVariousLocalizationOverrideScenariosForCoreExtensionWorkDataProvider
-     */
+    #[DataProvider('ensureVariousLocalizationOverrideScenariosForCoreExtensionWorkDataProvider')]
+    #[Test]
     public function ensureVariousLocalizationOverrideScenariosForCoreExtensionWork(string $locale, array $expectedLabels): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE;
@@ -240,10 +234,8 @@ final class LanguageServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ensureMultiLanguageTranslationInSameContextWorkDataProvider
-     */
+    #[DataProvider('ensureMultiLanguageTranslationInSameContextWorkDataProvider')]
+    #[Test]
     public function ensureMultiLanguageTranslationInSameContextWork(array $expectedLabelSet): void
     {
         foreach ($expectedLabelSet as $locale => $expectedLabels) {

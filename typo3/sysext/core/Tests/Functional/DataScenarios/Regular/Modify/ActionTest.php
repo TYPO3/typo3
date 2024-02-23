@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\Modify;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -28,19 +29,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  */
 final class ActionTest extends AbstractActionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     * See DataSet/createContentRecords.csv
-     */
+    #[Test]
     public function createContents(): void
     {
         parent::createContents();
@@ -52,10 +48,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/createContentForLanguageAll.csv
-     */
+    #[Test]
     public function createContentForLanguageAll(): void
     {
         // Create translated page first
@@ -71,10 +64,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Language set to all', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyContentRecord.csv
-     */
+    #[Test]
     public function modifyContent(): void
     {
         parent::modifyContent();
@@ -86,10 +76,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyTranslatedContent.csv
-     */
+    #[Test]
     public function modifyTranslatedContent(): void
     {
         // Create translated page first
@@ -103,10 +90,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing Translation #3'));
     }
 
-    /**
-     * @test
-     * See DataSet/deleteContentRecord.csv
-     */
+    #[Test]
     public function deleteContent(): void
     {
         parent::deleteContent();
@@ -120,10 +104,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/deleteLocalizedContentNDeleteContent.csv
-     */
+    #[Test]
     public function deleteLocalizedContentAndDeleteContent(): void
     {
         // Create translated page first
@@ -140,10 +121,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyContentRecord.csv
-     */
+    #[Test]
     public function copyContent(): void
     {
         parent::copyContent();
@@ -155,10 +133,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2 (copy 1)'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyContentToLanguage.csv
-     */
+    #[Test]
     public function copyContentToLanguage(): void
     {
         // Create translated page first
@@ -176,10 +151,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyContentToLanguageWSynchronization.csv
-     */
+    #[Test]
     public function copyContentToLanguageWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -197,10 +169,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyContentToLanguageWExclude.csv
-     */
+    #[Test]
     public function copyContentToLanguageWithLocalizationExclude(): void
     {
         // Create translated page first
@@ -218,10 +187,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', 'Regular Element #2 (copy 1)'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyContentToLanguageFromNonDefaultLanguage.csv
-     */
+    #[Test]
     public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
         // Create translated page first
@@ -240,10 +206,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyContentRecord.csv
-     */
+    #[Test]
     public function copyPasteContent(): void
     {
         parent::copyPasteContent();
@@ -255,10 +218,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentRecord.csv
-     */
+    #[Test]
     public function localizeContent(): void
     {
         // Create translated page first
@@ -273,10 +233,9 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     /**
-     * @test
-     * See DataSet/localizeContentWithEmptyTcaIntegrityColumns.csv
      * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
      */
+    #[Test]
     public function localizeContentWithEmptyTcaIntegrityColumns(): void
     {
         parent::localizeContentWithEmptyTcaIntegrityColumns();
@@ -288,10 +247,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentWSynchronization.csv
-     */
+    #[Test]
     public function localizeContentWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -305,10 +261,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentWSynchronizationHNull.csv
-     */
+    #[Test]
     public function localizeContentWithLanguageSynchronizationHavingNullValue(): void
     {
         // Create translated page first
@@ -322,10 +275,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentFromNonDefaultLanguage.csv
-     */
+    #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
         // Create translated page first
@@ -341,10 +291,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentFromNonDefaultLanguageWSynchronizationDefault.csv
-     */
+    #[Test]
     public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationDefault(): void
     {
         // Create translated page first
@@ -360,10 +307,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', 'Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentFromNonDefaultLanguageWSynchronizationSource.csv
-     */
+    #[Test]
     public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationSource(): void
     {
         // Create translated page first
@@ -379,18 +323,14 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', 'Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentFromNonDefaultLanguageWithAllContentElements(): void
     {
         parent::localizeContentFromNonDefaultLanguageWithAllContentElements();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguageWithAllContentElements.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentAfterMovedContent(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportFreeModeElements.csv');
@@ -398,10 +338,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
     }
 
-    /**
-     * @test
-     * See DataSet/createLocalizedContent.csv
-     */
+    #[Test]
     public function createLocalizedContent(): void
     {
         // Create translated page first
@@ -416,10 +353,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Localized Testing'));
     }
 
-    /**
-     * @test
-     * See DataSet/createLocalizedContentWSynchronization.csv
-     */
+    #[Test]
     public function createLocalizedContentWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -434,10 +368,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing'));
     }
 
-    /**
-     * @test
-     * See DataSet/createLocalizedContentWExclude.csv
-     */
+    #[Test]
     public function createLocalizedContentWithLocalizationExclude(): void
     {
         // Create translated page first
@@ -452,10 +383,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing', '[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/changeContentSorting.csv
-     */
+    #[Test]
     public function changeContentSorting(): void
     {
         parent::changeContentSorting();
@@ -467,10 +395,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/changeContentSortingAfterSelf.csv
-     */
+    #[Test]
     public function changeContentSortingAfterSelf(): void
     {
         parent::changeContentSortingAfterSelf();
@@ -482,10 +407,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/moveContentRecordToDifferentPage.csv
-     */
+    #[Test]
     public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();
@@ -501,10 +423,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/movePasteContentToDifferentPage.csv
-     */
+    #[Test]
     public function movePasteContentToDifferentPage(): void
     {
         parent::movePasteContentToDifferentPage();
@@ -520,10 +439,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/moveContentRecordToDifferentPageAndChangeSorting.csv
-     */
+    #[Test]
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
@@ -535,14 +451,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * Page records
-     */
-
-    /**
-     * @test
-     * See DataSet/createPageRecord.csv
-     */
+    #[Test]
     public function createPage(): void
     {
         parent::createPage();
@@ -554,9 +463,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPageAndSubPageAndSubPageContent(): void
     {
         parent::createPageAndSubPageAndSubPageContent();
@@ -568,10 +475,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1 #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/createPageRecordWithSlugOverrideConfiguration.csv
-     */
+    #[Test]
     public function createPageWithSlugOverrideConfiguration(): void
     {
         // set default configuration
@@ -600,10 +504,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageWithSlugOverrideConfiguration.csv');
     }
 
-    /**
-     * @test
-     * See DataSet/createPageNContentWDefaults.csv
-     */
+    #[Test]
     public function createPageAndContentWithTcaDefaults(): void
     {
         parent::createPageAndContentWithTcaDefaults();
@@ -629,10 +530,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyPage.csv
-     */
+    #[Test]
     public function modifyPage(): void
     {
         parent::modifyPage();
@@ -644,10 +542,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/deletePageRecord.csv
-     */
+    #[Test]
     public function deletePage(): void
     {
         parent::deletePage();
@@ -657,10 +552,7 @@ final class ActionTest extends AbstractActionTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     * See DataSet/copyPage.csv
-     */
+    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -677,10 +569,8 @@ final class ActionTest extends AbstractActionTestCase
      * Values in l10n_source field are remapped to ids of newly copied records
      * e.g. record 314 has l10n_source = 315 and record 313 has l10n_source = 314
      * also note that 314 is NOT a record in the default language
-     *
-     * @test
-     * See DataSet/copyPageFreeMode.csv
      */
+    #[Test]
     public function copyPageFreeMode(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportFreeModeElements.csv');
@@ -693,10 +583,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageRecord.csv
-     */
+    #[Test]
     public function localizePage(): void
     {
         parent::localizePage();
@@ -708,10 +595,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageAndUpdateRecordWithMinorChangesInFullRetrievedRecord.csv
-     */
+    #[Test]
     public function localizePageAndUpdateRecordWithMinorChangesInFullRetrievedRecord(): void
     {
         parent::localizePageAndUpdateRecordWithMinorChangesInFullRetrievedRecord();
@@ -723,10 +607,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeNCopyPage.csv
-     */
+    #[Test]
     public function localizeAndCopyPage(): void
     {
         parent::localizePage();
@@ -739,10 +620,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageWSynchronization.csv
-     */
+    #[Test]
     public function localizePageWithLanguageSynchronization(): void
     {
         parent::localizePageWithLanguageSynchronization();
@@ -754,10 +632,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeNCopyPageWSynchronization.csv
-     */
+    #[Test]
     public function localizeAndCopyPageWithLanguageSynchronization(): void
     {
         parent::localizePageWithLanguageSynchronization();
@@ -770,9 +645,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeAndModifyTranslationAndCopyPageWithLanguageSynchronization(): void
     {
         parent::localizePageWithLanguageSynchronization();
@@ -782,9 +655,7 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNModifyNCopyPageWSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageAndContentsAndDeletePageLocalization(): void
     {
         // Create localized page and localize content elements first
@@ -792,91 +663,70 @@ final class ActionTest extends AbstractActionTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAndContentsAndDeletePageLocalization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeNestedPagesAndContents(): void
     {
         parent::localizeNestedPagesAndContents();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNestedPagesAndContents.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageHiddenHideAtCopyFalse(): void
     {
         parent::localizePageHiddenHideAtCopyFalse();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyFalse.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageNotHiddenHideAtCopyFalse(): void
     {
         parent::localizePageNotHiddenHideAtCopyFalse();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyFalse.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyNotDisableHideAtCopyUnset.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyNotDisableHideAtCopyUnset.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
-    /**
-     * @test
-     * See DataSet/changePageSorting.csv
-     */
+    #[Test]
     public function changePageSorting(): void
     {
         parent::changePageSorting();
@@ -890,10 +740,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/changePageSortingAfterSelf.csv
-     */
+    #[Test]
     public function changePageSortingAfterSelf(): void
     {
         parent::changePageSortingAfterSelf();
@@ -907,10 +754,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/movePageRecordToDifferentPage.csv
-     */
+    #[Test]
     public function movePageToDifferentPage(): void
     {
         parent::movePageToDifferentPage();
@@ -924,28 +768,21 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageToDifferentPageTwice(): void
     {
         parent::movePageToDifferentPageTwice();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageLocalizedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedToDifferentPageTwice();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     * See DataSet/movePageRecordToDifferentPageAndChangeSorting.csv
-     */
+    #[Test]
     public function movePageToDifferentPageAndChangeSorting(): void
     {
         parent::movePageToDifferentPageAndChangeSorting();

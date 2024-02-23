@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Model\Renderable;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,9 +43,7 @@ final class AbstractRenderableTest extends FunctionalTestCase
         $this->subject = $this->buildAbstractRenderable();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOptionsResetsValidatorsIfDefined(): void
     {
         $this->subject->setOptions(['validators' => [

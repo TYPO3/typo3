@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -28,9 +29,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlySetsTagNameAndDefaultAttributes(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -42,9 +41,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<option value="ES">Spain</option>', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlyPreselectsAValidValue(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -55,9 +52,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<option value="KW" selected="selected">Koweït</option>', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlyUsesLocalizedNames(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -68,9 +63,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<option value="ES">Espagne</option>', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderShowsPrioritizedCountriesFirst(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -82,9 +75,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
 <option value="GB">United Kingdom</option><option value="US" selected="selected">United States</option><option value="CA">Canada</option><option value="AD">Andorra</option>', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersSortsByOptionLabel(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -95,9 +86,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<option value="DE">Germany</option><option value="GH">Ghana</option>', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rendersSortsByOptionLabelWithLocalizedOfficialName(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -108,9 +97,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<option value="BD">Volksrepublik Bangladesh</option><option value="CN">Volksrepublik China</option>', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderExcludesCountries(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -121,9 +108,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
         self::assertStringNotContainsString('<option value="CN">Volksrepublik China</option>', $result);
         self::assertStringNotContainsString('<option value="RU">', $result);
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOnlyListsWantedCountries(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

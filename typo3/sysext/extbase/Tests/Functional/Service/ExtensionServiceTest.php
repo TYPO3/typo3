@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -44,9 +45,7 @@ final class ExtensionServiceTest extends FunctionalTestCase
         $this->extensionService = new ExtensionService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPluginNameByActionDetectsPluginNameFromGlobalExtensionConfigurationArray(): void
     {
         $this->frontendConfigurationManager->method('getConfiguration')->with(self::anything())->willReturn([]);
@@ -59,9 +58,7 @@ final class ExtensionServiceTest extends FunctionalTestCase
         self::assertSame('Blogs', $pluginName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/tt_content_with_single_plugin.csv');
@@ -76,9 +73,7 @@ final class ExtensionServiceTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined(): void
     {
         $this->frontendConfigurationManager->method('getConfiguration')->with(self::anything())->willReturn(['view' => ['defaultPid' => 'auto']]);
@@ -90,9 +85,7 @@ final class ExtensionServiceTest extends FunctionalTestCase
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/tt_content_with_two_plugins.csv');

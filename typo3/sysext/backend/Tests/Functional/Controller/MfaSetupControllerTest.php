@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Controller\MfaSetupController;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -77,9 +78,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestThrowsExceptionWhenMfaWasAlreadyPassed(): void
     {
         $GLOBALS['BE_USER']->setAndSaveSessionData('mfa', true);
@@ -92,9 +91,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         $this->subject->handleRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestThrowsExceptionWhenInSwitchUserMode(): void
     {
         $GLOBALS['BE_USER']->setAndSaveSessionData('backuserid', 123);
@@ -107,9 +104,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         $this->subject->handleRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestThrowsExceptionWhenMfaNotRequired(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['requireMfa'] = 0;
@@ -122,9 +117,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         $this->subject->handleRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestThrowsExceptionWhenMfaAlreadyActivated(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]);
@@ -137,9 +130,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         $this->subject->handleRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestReturns404OnInvalidAction(): void
     {
         $request = $this->request->withQueryParams(['action' => 'unknown']);
@@ -149,9 +140,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestReturns404OnWrongHttpMethod(): void
     {
         $request = $this->request->withQueryParams(['action' => 'activate']);
@@ -161,9 +150,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestFallsBackToSelectionView(): void
     {
         $request = $this->request;
@@ -184,9 +171,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertDoesNotMatchRegularExpression('/<a.*class="list-group-item.*title="Set up Recovery codes".*>/s', $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestAddsRedirectParameters(): void
     {
         $queryParams = [
@@ -209,9 +194,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<a.*title="Cancel".*href="\/typo3\/setup\/mfa.*&amp;redirect=my_module&amp;redirectParams=some%3Dparam".*>/s', $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestReturnsSetupView(): void
     {
         $queryParams = [
@@ -236,9 +219,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<input.*id="totp"/s', $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestRedirectsToSetupOnMissingProvider(): void
     {
         $queryParams = [
@@ -259,9 +240,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestRedirectsToSetupOnInvalidProvider(): void
     {
         $queryParams = [
@@ -286,9 +265,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestActivatesRequestedProvider(): void
     {
         $queryParams = [
@@ -339,9 +316,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestRedirectsWithErrorOnActivationFailure(): void
     {
         $queryParams = [
@@ -373,9 +348,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestCancelsSetup(): void
     {
         $queryParams = [

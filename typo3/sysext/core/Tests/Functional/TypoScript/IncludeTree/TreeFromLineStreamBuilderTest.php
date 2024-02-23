@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\AtImportInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionElseInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
@@ -281,10 +283,8 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildTreeConditionDataProvider
-     */
+    #[DataProvider('buildTreeConditionDataProvider')]
+    #[Test]
     public function buildTreeCondition(IncludeInterface $tree, IncludeInterface $expectedTree): void
     {
         $this->get(TreeFromLineStreamBuilder::class)->buildTree($tree, 'setup', new LossyTokenizer());
@@ -772,10 +772,8 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildTreeAtImportDataProvider
-     */
+    #[DataProvider('buildTreeAtImportDataProvider')]
+    #[Test]
     public function buildTreeAtImport(LineStream $lineStream, IncludeInterface $expectedTree): void
     {
         $tree = (new FileInclude());
@@ -809,10 +807,8 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildTreeAtImportTsConfigDataProvider
-     */
+    #[DataProvider('buildTreeAtImportTsConfigDataProvider')]
+    #[Test]
     public function buildTreeAtImportTsConfig(LineStream $lineStream, IncludeInterface $expectedTree): void
     {
         $tree = (new FileInclude());
@@ -1410,10 +1406,8 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildTreeImportTyposcriptDataProvider
-     */
+    #[DataProvider('buildTreeImportTyposcriptDataProvider')]
+    #[Test]
     public function buildTreeImportTyposcript(LineStream $lineStream, IncludeInterface $expectedTree): void
     {
         $tree = (new FileInclude());
@@ -1423,9 +1417,7 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function atImportIncludesMagicTypoScriptRenderingForSimpleFile(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = [
@@ -1453,9 +1445,7 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function atImportIncludesMagicTypoScriptRenderingForSimpleFileWithoutDotTypoScriptEnding(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = [
@@ -1483,9 +1473,7 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function atImportIncludesMagicTypoScriptRenderingForDirectoryInclude(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = [
@@ -1529,9 +1517,7 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function atImportIncludesMagicTypoScriptRenderingForWildcardInclude(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = [
@@ -1564,9 +1550,7 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importTyposcriptIncludesMagicTypoScriptRenderingForSimpleFile(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = [

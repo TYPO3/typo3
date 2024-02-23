@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\EventListener;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -35,9 +36,7 @@ final class IncrementHitCountTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Redirects.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hitCountIsCorrectlyIncremented(): void
     {
         $matchedRecord = BackendUtility::getRecord('sys_redirect', 12);

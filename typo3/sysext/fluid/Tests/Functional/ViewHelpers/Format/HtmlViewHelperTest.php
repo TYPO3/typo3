@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -69,10 +71,8 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider contentIsRenderedDataProvider
-     */
+    #[DataProvider('contentIsRenderedDataProvider')]
+    #[Test]
     public function contentIsRendered(string $fluidTemplateSource, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
@@ -103,10 +103,8 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidInvocationIsDeterminedDataProvider
-     */
+    #[DataProvider('invalidInvocationIsDeterminedDataProvider')]
+    #[Test]
     public function invalidInvocationIsDetermined(string $fluidTemplateSource): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');

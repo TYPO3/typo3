@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerLinkGenerator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
@@ -89,10 +91,8 @@ final class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
         return self::staticRangeMapperDataProviderBuilder();
     }
 
-    /**
-     * @test
-     * @dataProvider staticRangeMapperIsAppliedDataProvider
-     */
+    #[DataProvider('staticRangeMapperIsAppliedDataProvider')]
+    #[Test]
     public function staticRangeMapperIsApplied(TestSet $testSet): void
     {
         $builder = Builder::create();
@@ -142,10 +142,8 @@ final class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
         return $testSets;
     }
 
-    /**
-     * @test
-     * @dataProvider pageTypeDecoratorIsAppliedDataProvider
-     */
+    #[DataProvider('pageTypeDecoratorIsAppliedDataProvider')]
+    #[Test]
     public function pageTypeDecoratorIsApplied(TestSet $testSet): void
     {
         parent::pageTypeDecoratorIsApplied($testSet);

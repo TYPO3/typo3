@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -28,9 +29,7 @@ final class PasswordViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlySetsTagName(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -40,9 +39,7 @@ final class PasswordViewHelperTest extends FunctionalTestCase
         self::assertSame('<input type="password" name="" value="" />', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlySetsTypeNameAndValueAttributes(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -52,9 +49,7 @@ final class PasswordViewHelperTest extends FunctionalTestCase
         self::assertSame('<input type="password" name="NameOfTextbox" value="Current value" />', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCorrectlySetsAutocompleteTagAttribute(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

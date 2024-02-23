@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
@@ -24,9 +25,7 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 final class PagesAndTtContentTest extends AbstractImportExportTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContent(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);

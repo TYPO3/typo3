@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
@@ -33,9 +34,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsDefaultsFromGlobals(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
@@ -44,9 +43,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromGlobals', $pageTsConfig->getPageTsConfigArray()['loadedFromGlobals']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';
@@ -56,9 +53,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsFromPagesTsconfigTestExtensionConfigurationFile(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);
@@ -66,9 +61,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTestExtensionConfigurationPageTsConfig', $pageTsConfig->getPageTsConfigArray()['loadedFromTestExtensionConfigurationPageTsConfig']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsFromPageRecordTsconfigField(): void
     {
         $rootLine = [
@@ -82,9 +75,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTsConfigField', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsFromWildcardAtImportWithTsconfigSuffix(): void
     {
         $rootLine = [
@@ -98,9 +89,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsFromWildcardAtImportWithTypoScriptSuffix(): void
     {
         $rootLine = [
@@ -114,9 +103,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsSingleFileWithOldImportSyntax(): void
     {
         $rootLine = [
@@ -131,9 +118,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsFromPageRecordTsconfigFieldOverridesByLowerLevel(): void
     {
         $rootLine = [
@@ -154,9 +139,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTsConfigField2Override', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField2']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigSubstitutesSettingsFromSite(): void
     {
         $rootLine = [
@@ -172,9 +155,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('aSiteSettingValue', $pageTsConfig->getPageTsConfigArray()['siteSetting']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsFromEvent(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);
@@ -182,9 +163,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromEvent', $pageTsConfig->getPageTsConfigArray()['loadedFromEvent']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsFromLegacyEvent(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);
@@ -192,9 +171,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromLegacyEvent', $pageTsConfig->getPageTsConfigArray()['loadedFromLegacyEvent']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigCanBeOverloadedWithUserTsConfig(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pageTsConfigTestFixture.csv');

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
@@ -42,9 +44,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addFileFailsIfFileDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -55,9 +55,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         $subject->addFile('/some/random/file', $folder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPublicUrlReturnsNullIfStorageIsNotOnline(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -98,10 +96,10 @@ final class ResourceStorageTest extends FunctionalTestCase
     }
 
     /**
-     * @test
-     * @dataProvider checkFolderPermissionsFilesystemPermissionsDataProvider
      * @param 'read'|'write' $action
      */
+    #[DataProvider('checkFolderPermissionsFilesystemPermissionsDataProvider')]
+    #[Test]
     public function checkFolderPermissionsRespectsFilesystemPermissions(string $action, array $permissionsFromDriver, bool $expectedResult): void
     {
         $localDriver = $this->getMockBuilder(LocalDriver::class)
@@ -125,9 +123,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         self::assertSame($expectedResult, $subject->checkFolderActionPermission($action, $mockedFolder));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkUserActionPermissionsAlwaysReturnsTrueIfNoUserPermissionsAreSet(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -135,9 +131,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         self::assertTrue($subject->checkUserActionPermission('read', 'folder'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkUserActionPermissionReturnsFalseIfPermissionIsSetToZero(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -170,10 +164,8 @@ final class ResourceStorageTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkUserActionPermission_arbitraryPermissionDataProvider
-     */
+    #[DataProvider('checkUserActionPermission_arbitraryPermissionDataProvider')]
+    #[Test]
     public function checkUserActionPermissionAcceptsArbitrarilyCasedArguments(array $permissions, string $action, string $type): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -182,9 +174,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         self::assertTrue($subject->checkUserActionPermission($action, $type));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userActionIsDisallowedIfPermissionIsSetToFalse(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -194,9 +184,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         self::assertFalse($subject->checkUserActionPermission('read', 'folder'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userActionIsDisallowedIfPermissionIsNotSet(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -206,9 +194,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         self::assertFalse($subject->checkUserActionPermission('write', 'folder'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function metaDataEditIsNotAllowedWhenWhenNoFileMountsAreSet(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -217,9 +203,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         self::assertFalse($subject->checkFileActionPermission('editMeta', new File(['identifier' => '/foo/bar.jpg'], $subject)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getEvaluatePermissionsWhenSetFalse(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -228,9 +212,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         self::assertFalse($subject->getEvaluatePermissions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getEvaluatePermissionsWhenSetTrue(): void
     {
         $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
@@ -239,9 +221,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         self::assertTrue($subject->getEvaluatePermissions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteFolderThrowsExceptionIfFolderIsNotEmptyAndRecursiveDeleteIsDisabled(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -255,9 +235,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         $subject->deleteFolder($folderMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renameFileWillCallRenameFileIfUnsanitizedAndNoChangeInTargetFilename(): void
     {
         $driverMock = $this->getMockBuilder(LocalDriver::class)

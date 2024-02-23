@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\MfaConfigurationController;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -67,9 +69,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         $this->normalizedParams = new NormalizedParams([], [], '', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestReturnsBadRequestForInvalidActionTest(): void
     {
         $queryParams = [
@@ -86,9 +86,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         self::assertEquals('Action not allowed', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestFallsBackToOverviewActionIfNoActionGivenTest(): void
     {
         $request = $this->request->withAttribute('normalizedParams', $this->normalizedParams);
@@ -100,9 +98,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         self::assertStringContainsString('Multi-factor Authentication Overview', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestShowsAllRegisteredProvidersTest(): void
     {
         $request = $this->request->withAttribute('normalizedParams', $this->normalizedParams);
@@ -118,9 +114,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestAddsInformationAboutMfaBeingRequiredAndRecommendedTest(): void
     {
         $request = $this->request->withAttribute('normalizedParams', $this->normalizedParams);
@@ -134,9 +128,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<div.*class="card card-size-fixed-small card-success".*id="totp-provider"/s', $responseContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestIndicatesDefaultProviderTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]);
@@ -151,9 +143,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<span.*title="Default provider">/s', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestRespectsReturnUrlTest(): void
     {
         $returnUrl = Environment::getPublicPath() . '/typo3/some/module?token=123';
@@ -174,10 +164,8 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         self::assertStringContainsString('href="' . $returnUrl . '" class="btn btn-sm btn-default " title="Go back"', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     * @dataProvider handleRequestRedirectsToOverviewOnActionProviderMismatchTestDataProvider
-     */
+    #[DataProvider('handleRequestRedirectsToOverviewOnActionProviderMismatchTestDataProvider')]
+    #[Test]
     public function handleRequestRedirectsToOverviewOnActionProviderMismatchTest(
         string $action,
         string $provider,
@@ -262,11 +250,8 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider handleRequestForwardsToCorrectActionTestDataProvider
-     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
-     */
+    #[DataProvider('handleRequestForwardsToCorrectActionTestDataProvider')]
+    #[Test]
     public function handleRequestForwardsToCorrectActionTest(
         string $action,
         string $provider,
@@ -364,10 +349,8 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider handleRequestAddsFormOnInteractionViewsTestTestDataProvider
-     */
+    #[DataProvider('handleRequestAddsFormOnInteractionViewsTestTestDataProvider')]
+    #[Test]
     public function handleRequestAddsFormOnInteractionViewsTest(
         string $action,
         bool $providerActive,

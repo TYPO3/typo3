@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
@@ -108,8 +109,8 @@ final class SlugServiceTest extends FunctionalTestCase
      * and all slugs of sub pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works for a partial tree.
-     * @test
      */
+    #[Test]
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirects(): void
     {
         $newPageSlug = '/test-new';
@@ -151,8 +152,8 @@ final class SlugServiceTest extends FunctionalTestCase
      * and all slugs of sub pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works for a complete tree inclusive the root page.
-     * @test
      */
+    #[Test]
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsForRootChange(): void
     {
         $newPageSlug = '/new-home';
@@ -200,8 +201,8 @@ final class SlugServiceTest extends FunctionalTestCase
      * and all slugs of sub pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works for a setup with a base in a sub-folder.
-     * @test
      */
+    #[Test]
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithSubFolderBase(): void
     {
         $newPageSlug = '/test-new';
@@ -243,8 +244,8 @@ final class SlugServiceTest extends FunctionalTestCase
      * and all slugs of sub-pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works for a setup with languages.
-     * @test
      */
+    #[Test]
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithLanguages(): void
     {
         $newPageSlug = '/test-new';
@@ -286,8 +287,8 @@ final class SlugServiceTest extends FunctionalTestCase
      * and all slugs of sub-pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works with languages and a base in a sub-folder.
-     * @test
      */
+    #[Test]
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithLanguagesInSubFolder(): void
     {
         $newPageSlug = '/test-new';
@@ -329,8 +330,8 @@ final class SlugServiceTest extends FunctionalTestCase
      * and all slugs of sub-pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works with languages and a base in a sub-folder.
-     * @test
      */
+    #[Test]
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithDefaultLanguageInSubFolder(): void
     {
         $newPageSlug = '/test-new';
@@ -373,8 +374,8 @@ final class SlugServiceTest extends FunctionalTestCase
      * and all slugs of sub-pages are renamed and redirects are created.
      *
      * We test here that rebuildSlugsForSlugChange works when changing a L>0 siteroot which has pid=0
-     * @test
      */
+    #[Test]
     public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithLanguagesForSiteroot(): void
     {
         $newPageSlug = '/test-new';
@@ -409,9 +410,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyAutoCreateRedirectRecordBeforePersistingIsTriggered(): void
     {
         $newPageSlug = '/test-new';
@@ -462,9 +461,7 @@ final class SlugServiceTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterAutoCreteRedirectHasBeenPersistedIsTriggered(): void
     {
         $newPageSlug = '/test-new';
@@ -506,9 +503,7 @@ final class SlugServiceTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sysFolderWithSubPagesDoesNotCreateAutoRedirectForSysFolderButUpdatesSubpagesIfReasonable(): void
     {
         $newPageSlug = '/test-new';
@@ -535,9 +530,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function spacerWithSubPagesDoesNotCreateAutoRedirectForSpacerButUpdatesSubpagesIfReasonable(): void
     {
         $newPageSlug = '/test-new';

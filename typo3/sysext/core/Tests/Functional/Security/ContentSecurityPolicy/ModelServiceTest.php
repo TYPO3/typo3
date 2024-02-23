@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashProxy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashValue;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ModelService;
@@ -57,18 +59,14 @@ final class ModelServiceTest extends FunctionalTestCase
         yield 'wss:' => ['wss:', SourceScheme::wss];
     }
 
-    /**
-     * @test
-     * @dataProvider enumSourceInterfaceIsBuiltFromStringDataProvider
-     */
+    #[DataProvider('enumSourceInterfaceIsBuiltFromStringDataProvider')]
+    #[Test]
     public function enumSourceInterfaceIsBuiltFromString(string $string, SourceInterface $expectation): void
     {
         self::assertSame($expectation, $this->subject->buildSourceFromString($string));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriValueIsBuiltFromString(): void
     {
         $uri = 'https://*.example.org/';
@@ -77,9 +75,7 @@ final class ModelServiceTest extends FunctionalTestCase
         self::assertSame($uri, (string)$source);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rawValueIsBuiltFromString(): void
     {
         $value = 'https:////slashes.example.org';
@@ -88,9 +84,7 @@ final class ModelServiceTest extends FunctionalTestCase
         self::assertSame($value, (string)$source);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashValueIsBuiltFromString(): void
     {
         $hash = hash('sha256', 'test', true);
@@ -101,9 +95,7 @@ final class ModelServiceTest extends FunctionalTestCase
         self::assertSame($hashB64, $source->value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function urlHashProxyIsBuiltFromString(): void
     {
         $url = 'https://example.org/file.js';
@@ -150,10 +142,8 @@ final class ModelServiceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildMutationFromArrayThrowsValueErrorDataProvider
-     */
+    #[DataProvider('buildMutationFromArrayThrowsValueErrorDataProvider')]
+    #[Test]
     public function buildMutationFromArrayThrowsValueError(array $array, string $expectedErrorMessage): void
     {
         $this->expectException(\ValueError::class);

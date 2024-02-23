@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -88,10 +90,8 @@ final class TextValidatorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isValidDataProvider
-     */
+    #[DataProvider('isValidDataProvider')]
+    #[Test]
     public function isValidHasNoError(bool $expectation, string $testString): void
     {
         $validator = new TextValidator();
@@ -99,9 +99,7 @@ final class TextValidatorTest extends FunctionalTestCase
         self::assertSame($expectation, $validator->validate($testString)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities(): void
     {
         $validator = new TextValidator();

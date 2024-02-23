@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Error;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Error\ErrorHandler;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -40,9 +41,7 @@ final class ErrorHandlerTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleErrorFetchesDeprecations(): void
     {
         trigger_error(
@@ -68,9 +67,8 @@ final class ErrorHandlerTest extends FunctionalTestCase
      * \TYPO3\CMS\Core\Error\ErrorHandler::handleError via call_user_func. This leads to
      * \TYPO3\CMS\Core\Error\ErrorHandler::handleError handling errors it was not registered for. Thus, there needs to
      * be a check if \TYPO3\CMS\Core\Error\ErrorHandler should handle the incoming error.
-     *
-     * @test
      */
+    #[Test]
     public function handleErrorOnlyHandlesRegisteredErrorLevels(): void
     {
         // Make sure the core error handler does not return due to error_reporting being 0

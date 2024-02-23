@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Security;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -25,9 +26,7 @@ final class IfAuthenticatedViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperRendersThenChildIfBeUserIsLoggedIn(): void
     {
         $GLOBALS['BE_USER'] = new \stdClass();
@@ -39,9 +38,7 @@ final class IfAuthenticatedViewHelperTest extends FunctionalTestCase
         self::assertEquals('then child', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperRendersElseChildIfBeUserIsNotLoggedIn(): void
     {
         $GLOBALS['BE_USER'] = new \stdClass();

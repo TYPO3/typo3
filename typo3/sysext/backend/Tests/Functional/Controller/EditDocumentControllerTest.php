@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -50,9 +51,7 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         $this->normalizedParams = new NormalizedParams([], [], '', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processedDataTakesOverDefaultValues(): void
     {
         $request = (new ServerRequest('https://www.example.com/', 'POST'))
@@ -82,9 +81,7 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         self::assertEquals(302, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processedDataDoesNotOverridePostWithDefaultValues(): void
     {
         $request = (new ServerRequest('https://www.example.com/', 'POST'))

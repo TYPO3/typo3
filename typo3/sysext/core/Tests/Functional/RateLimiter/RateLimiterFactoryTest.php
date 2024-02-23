@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\RateLimiter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\RateLimiter\RateLimit;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -57,10 +59,8 @@ final class RateLimiterFactoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider loginRateLimiterLimitsRequestsDataProvider
-     */
+    #[DataProvider('loginRateLimiterLimitsRequestsDataProvider')]
+    #[Test]
     public function loginRateLimiterReturnsExpectedResults(string $loginType, int $loginRateLimit, int $tokens, bool $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS'][$loginType]['loginRateLimit'] = $loginRateLimit;
@@ -81,9 +81,7 @@ final class RateLimiterFactoryTest extends FunctionalTestCase
         self::assertInstanceOf(RateLimit::class, $rateLimit);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loginRateLimiterRespectsIpExcludeList(): void
     {
         $loginType = 'BE';

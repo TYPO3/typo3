@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication\Mfa;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifest;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
@@ -71,9 +72,7 @@ final class MfaProviderRegistryTest extends FunctionalTestCase
         self::assertInstanceOf(MfaProviderManifest::class, $this->subject->getProvider('some-provider'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProviderThrowsExceptionOnInvalidIdentifierTest(): void
     {
         $this->expectExceptionCode(1610994735);
@@ -81,9 +80,7 @@ final class MfaProviderRegistryTest extends FunctionalTestCase
         $this->subject->getProvider('unknown-provider');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasActiveProvidersTest(): void
     {
         self::assertFalse($this->subject->hasActiveProviders($this->user));
@@ -91,9 +88,7 @@ final class MfaProviderRegistryTest extends FunctionalTestCase
         self::assertTrue($this->subject->hasActiveProviders($this->user));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getActiveProvidersTest(): void
     {
         self::assertCount(0, $this->subject->getActiveProviders($this->user));
@@ -111,9 +106,7 @@ final class MfaProviderRegistryTest extends FunctionalTestCase
         self::assertEquals('recovery-codes', array_key_last($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFirstAuthenticationAwareProviderTest(): void
     {
         self::assertNull($this->subject->getFirstAuthenticationAwareProvider($this->user));
@@ -136,9 +129,7 @@ final class MfaProviderRegistryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasLockedProvidersTest(): void
     {
         self::assertFalse($this->subject->hasLockedProviders($this->user));
@@ -146,9 +137,7 @@ final class MfaProviderRegistryTest extends FunctionalTestCase
         self::assertTrue($this->subject->hasLockedProviders($this->user));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLockedProvidersTest(): void
     {
         self::assertCount(0, $this->subject->getLockedProviders($this->user));
@@ -166,9 +155,7 @@ final class MfaProviderRegistryTest extends FunctionalTestCase
         self::assertEquals('recovery-codes', array_key_last($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allowedProvidersItemsProcFuncTest(): void
     {
         $parameters = [];

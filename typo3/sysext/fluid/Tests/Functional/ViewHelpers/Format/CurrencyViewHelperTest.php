@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -91,10 +93,8 @@ final class CurrencyViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderConvertsAValueDataProvider
-     */
+    #[DataProvider('renderConvertsAValueDataProvider')]
+    #[Test]
     public function renderConvertsAValue(string $src, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\PasswordPolicy;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
+use TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,9 +41,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passwordPolicyValidatorIsEnabledWhenPasswordPolicyIsConfigured(): void
     {
         $this->setDefaultPasswordPolicy();
@@ -56,9 +56,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         self::assertTrue($passwordPolicyValidator->isEnabled());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passwordPolicyValidatorIsDisabledWhenNoValidatorsInPasswordPolicy(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies'] = [];
@@ -73,9 +71,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         self::assertFalse($passwordPolicyValidator->isEnabled());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passwordPolicyValidatorIsDisabledForUnknownPasswordPolicyIdentifier(): void
     {
         $this->setDefaultPasswordPolicy();
@@ -90,9 +86,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         self::assertFalse($passwordPolicyValidator->isEnabled());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passwordPolicyValidatorReturnsExpectedAmountOfPasswordPolicyRequirements(): void
     {
         $this->setDefaultPasswordPolicy();
@@ -107,9 +101,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         self::assertCount(5, $passwordPolicyValidator->getRequirements());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passwordPolicyValidatorDoesNotAcceptPasswordNotCompliantToPolicy(): void
     {
         $this->setDefaultPasswordPolicy();
@@ -125,9 +117,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         self::assertCount(4, $passwordPolicyValidator->getValidationErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passwordPolicyValidatorHasExpectedAmountOfValidationErrorsForInvalidPassword(): void
     {
         $this->setDefaultPasswordPolicy();
@@ -148,7 +138,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies'] = [
             'default' => [
                 'validators' => [
-                    \TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator::class => [
+                    CorePasswordValidator::class => [
                         'options' => [
                             'minimumLength' => 8,
                             'upperCaseCharacterRequired' => true,

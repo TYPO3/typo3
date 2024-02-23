@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -33,9 +34,7 @@ final class StringValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringValidatorShouldValidateString(): void
     {
         $subject = new StringValidator();
@@ -43,9 +42,7 @@ final class StringValidatorTest extends FunctionalTestCase
         self::assertFalse($subject->validate('Hello World')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringValidatorShouldReturnErrorIfNumberIsGiven(): void
     {
         $subject = new StringValidator();
@@ -53,9 +50,7 @@ final class StringValidatorTest extends FunctionalTestCase
         self::assertTrue($subject->validate(42)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven(): void
     {
         $subject = new StringValidator();

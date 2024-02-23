@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Error\Error;
@@ -43,10 +45,8 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
+    #[Test]
     public function render(string $template, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -56,9 +56,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderIgnoresValueOfBoundPropertyIfCheckedIsSet(): void
     {
         $formObject = new \stdClass();
@@ -74,9 +72,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeBoolean(): void
     {
         $formObject = new \stdClass();
@@ -92,9 +88,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderAppendsSquareBracketsToNameAttributeIfBoundToAPropertyOfTypeArray(): void
     {
         $formObject = new \stdClass();
@@ -110,9 +104,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty][]" value="foo" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArray(): void
     {
         $formObject = new \stdClass();
@@ -128,9 +120,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty][]" value="foo" checked="checked" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArrayObject(): void
     {
         $formObject = new \ArrayObject(['someProperty' => true]);
@@ -145,9 +135,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="bar" checked="checked" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderSetsCheckedAttributeIfBoundPropertyIsNotNull(): void
     {
         $formObject = new \stdClass();
@@ -163,9 +151,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderDoesNotSetsCheckedAttributeIfBoundPropertyIsNull(): void
     {
         $formObject = new \stdClass();
@@ -181,9 +167,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallSetsErrorClassAttribute(): void
     {
         // Create an extbase request that contains mapping results of the form object property we're working with.
@@ -208,9 +192,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" class="myError" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallSetsStandardErrorClassAttributeIfNonIsSpecified(): void
     {
         // Create an extbase request that contains mapping results of the form object property we're working with.
@@ -235,9 +217,7 @@ final class CheckboxViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" class="f3-form-error" />', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallExtendsClassAttributeWithErrorClass(): void
     {
         // Create an extbase request that contains mapping results of the form object property we're working with.

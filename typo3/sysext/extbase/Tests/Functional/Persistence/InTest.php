@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
@@ -44,9 +45,7 @@ final class InTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConditionWorksWithArrayOfObjects(): void
     {
         $blog1 = $this->blogRepository->findByUid(1);
@@ -58,9 +57,7 @@ final class InTest extends FunctionalTestCase
         self::assertSame(11, $inQuery->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConditionWorksWithArrayOfObjectsOnSecondCall(): void
     {
         $blog1 = $this->blogRepository->findByUid(1);
@@ -77,9 +74,7 @@ final class InTest extends FunctionalTestCase
         self::assertSame(10, $newInQuery->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConditionWorksWithObjectStorage(): void
     {
         $blog1 = $this->blogRepository->findByUid(1);
@@ -94,9 +89,7 @@ final class InTest extends FunctionalTestCase
         self::assertSame(11, $inQuery->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConditionWorksWithObjectStorageOnSecondCall(): void
     {
         $blog1 = $this->blogRepository->findByUid(1);
@@ -118,9 +111,7 @@ final class InTest extends FunctionalTestCase
         self::assertSame(10, $newInQuery->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConditionWorksWithQueryResult(): void
     {
         $query = $this->blogRepository->createQuery();
@@ -133,9 +124,7 @@ final class InTest extends FunctionalTestCase
         self::assertSame(11, $inQuery->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConditionWorksWithQueryResultOnSecondCall(): void
     {
         $query = $this->blogRepository->createQuery();
@@ -153,9 +142,7 @@ final class InTest extends FunctionalTestCase
         self::assertSame(11, $newInQuery->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConditionWorksWithLazyObjectStorage(): void
     {
         $blog = $this->blogRepository->findByUid(1);
@@ -167,9 +154,7 @@ final class InTest extends FunctionalTestCase
         self::assertSame(10, $inQuery->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConditionWorksWithLazyObjectStorageOnSecondCall(): void
     {
         $blog = $this->blogRepository->findByUid(1);

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
@@ -40,9 +41,7 @@ final class ImportExportTest extends AbstractImportExportTestCase
         $this->exportMock = $this->getAccessibleMock(Export::class, ['setMetaData']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importExportPingPongSucceeds(): void
     {
         $recordTypesIncludeFields = include __DIR__ . '/Fixtures/IrreRecordsIncludeFields.php';

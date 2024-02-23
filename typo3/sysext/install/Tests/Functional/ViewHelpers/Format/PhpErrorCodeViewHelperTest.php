@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\ViewHelpers\Format;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -48,10 +50,8 @@ final class PhpErrorCodeViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider errorCodesDataProvider
-     */
+    #[DataProvider('errorCodesDataProvider')]
+    #[Test]
     public function renderPhpCodesCorrectly(int $errorCode, string $expected): void
     {
         // Happy little hack for VH tests in install tool: ViewHelperResolver

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
@@ -24,9 +25,7 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 final class ImagesWithStoragesTest extends AbstractImportExportTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function importMultipleImagesWithMultipleStorages(): void
     {
         GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin-1');
@@ -45,9 +44,7 @@ final class ImagesWithStoragesTest extends AbstractImportExportTestCase
         self::assertFileExists(Environment::getPublicPath() . '/fileadmin-3/user_upload/typo3_image2.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importImagesWithStaticAndFallbackStorages(): void
     {
         GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin_invalid_path');

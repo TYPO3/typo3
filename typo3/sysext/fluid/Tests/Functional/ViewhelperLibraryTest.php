@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -29,9 +30,8 @@ final class ViewhelperLibraryTest extends FunctionalTestCase
      * Fluid ViewHelper classes. These libraries usually don't use TYPO3's
      * dependency injection container and thus need to be supported separately
      * in TYPO3's ViewHelperResolver implementation.
-     *
-     * @test
      */
+    #[Test]
     public function viewhelperLibraryCanBeLoadedTest(): void
     {
         $view = new TemplateView();

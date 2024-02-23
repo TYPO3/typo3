@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Country;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CountryTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function countryLabelCanBeLocalized(): void
     {
         $languageServiceFactory = $this->get(LanguageServiceFactory::class);

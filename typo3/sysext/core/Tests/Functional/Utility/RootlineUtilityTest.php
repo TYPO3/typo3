@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Utility;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -65,9 +66,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForRootPageOnlyReturnsRootPageInformation(): void
     {
         $rootPageUid = 1000;
@@ -79,9 +78,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($rootPageUid, (int)$result[0]['uid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForRootPageAndWithMissingTableColumnsTcaReturnsEmptyArray(): void
     {
         $rootPageUid = 1000;
@@ -94,9 +91,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($rootPageUid, (int)$result[0]['uid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getForRootPageAndWithNonArrayTableColumnsTcaReturnsEmptyArray(): void
     {
         $rootPageUid = 1000;
@@ -109,9 +104,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($rootPageUid, (int)$result[0]['uid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveLivePagesAndSkipWorkspacedVersions(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
@@ -148,9 +141,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveWorkspaceOverlaysOfNewPageInWorkspace(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
@@ -180,9 +171,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveLiveRootLineForMovedPage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
@@ -227,9 +216,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveWorkspaceOverlaysOfMovedPage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
@@ -282,9 +269,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rootlineFailsForDeletedParentPageInWorkspace(): void
     {
         $this->expectException(PageNotFoundException::class);

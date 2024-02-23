@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\MetaTag;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
@@ -65,10 +67,8 @@ final class MetaTagTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ensureMetaDataAreCorrectDataProvider
-     */
+    #[DataProvider('ensureMetaDataAreCorrectDataProvider')]
+    #[Test]
     public function ensureMetaDataAreCorrect(int $pageId, array $expectedMetaTags): void
     {
         $this->setUpFrontendRootPage(1, ['typo3/sysext/seo/Tests/Functional/Fixtures/page' . $pageId . '.typoscript']);

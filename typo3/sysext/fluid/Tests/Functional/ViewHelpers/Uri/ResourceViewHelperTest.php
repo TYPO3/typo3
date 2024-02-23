@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Uri;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -28,9 +30,7 @@ final class ResourceViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderingFailsWithNonExtSyntaxWithoutExtensionNameWithPsr7Request()
     {
         $this->expectException(\RuntimeException::class);
@@ -41,9 +41,7 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderingFailsWhenExtensionNameNotSetInExtbaseRequest(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -71,10 +69,8 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderWithoutRequestDataProvider
-     */
+    #[DataProvider('renderWithoutRequestDataProvider')]
+    #[Test]
     public function render(string $template, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -106,10 +102,8 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderWithExtbaseRequestDataProvider
-     */
+    #[DataProvider('renderWithExtbaseRequestDataProvider')]
+    #[Test]
     public function renderWithExtbaseRequest(string $template, string $expected): void
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();

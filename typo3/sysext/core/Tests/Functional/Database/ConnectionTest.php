@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -34,7 +35,7 @@ final class ConnectionTest extends FunctionalTestCase
         $subject->install($creationStatements);
     }
 
-    /** @test */
+    #[Test]
     public function datetimeInstanceCanBePersistedToDatabaseWithoutSpecifyingType(): void
     {
         $value = new \DateTime('2023-11-23T11:49:00+01:00');
@@ -45,7 +46,7 @@ final class ConnectionTest extends FunctionalTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function datetimeInstanceCanBePersistedToDatabaseIfTypeIsExplicitlySpecified(): void
     {
         $value = new \DateTime('2023-11-23T11:49:00+01:00');
@@ -58,7 +59,7 @@ final class ConnectionTest extends FunctionalTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function datetimeImmutableInstanceCanBePersistedToDatabaseWithoutSpecifyingType(): void
     {
         $value = new \DateTimeImmutable('2023-11-23T11:49:00+01:00');
@@ -69,7 +70,7 @@ final class ConnectionTest extends FunctionalTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function datetimeImmutableInstanceCanBePersistedToDatabaseIfTypeIsExplicitlySpecified(): void
     {
         $value = new \DateTimeImmutable('2023-11-23T11:49:00+01:00');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\TestDi\Command\AliasTestCommand;
@@ -29,9 +30,7 @@ final class AsCommandAttributeTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_di',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function asCommandRegisteredToCommandRegistry(): void
     {
         $commandRegistry = $this->get(CommandRegistry::class);
@@ -43,9 +42,7 @@ final class AsCommandAttributeTest extends FunctionalTestCase
         self::assertInstanceOf(HiddenTestCommand::class, $commandRegistry->get('testdi:ascommand:hidden'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function asCommandHiddenAttributeIsRespected(): void
     {
         $commandRegistry = $this->get(CommandRegistry::class);
@@ -55,9 +52,7 @@ final class AsCommandAttributeTest extends FunctionalTestCase
         self::assertArrayNotHasKey('testdi:ascommand:hidden', $visibleList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function asCommandAliasAttributeIsRespected(): void
     {
         $commandRegistry = $this->get(CommandRegistry::class);
@@ -76,9 +71,7 @@ final class AsCommandAttributeTest extends FunctionalTestCase
         self::assertArrayNotHasKey('testdi:ascommand:alias-sub2', $visibleList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function asCommandSetsDescription(): void
     {
         $commandRegistry = $this->get(CommandRegistry::class);

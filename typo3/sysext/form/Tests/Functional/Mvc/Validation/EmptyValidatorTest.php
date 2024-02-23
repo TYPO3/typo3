@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -34,9 +35,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function EmptyValidatorReturnsFalseIfInputIsEmptyString(): void
     {
         $validator = new EmptyValidator();
@@ -45,9 +44,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function EmptyValidatorReturnsFalseIfInputIsNull(): void
     {
         $validator = new EmptyValidator();
@@ -56,9 +53,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function EmptyValidatorReturnsFalseIfInputIsEmptyArray(): void
     {
         $validator = new EmptyValidator();
@@ -67,9 +62,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function EmptyValidatorReturnsFalseIfInputIsZero(): void
     {
         $validator = new EmptyValidator();
@@ -78,9 +71,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function EmptyValidatorReturnsFalseIfInputIsZeroAsString(): void
     {
         $validator = new EmptyValidator();
@@ -89,9 +80,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function EmptyValidatorReturnsTrueIfInputIsNonEmptyString(): void
     {
         $validator = new EmptyValidator();
@@ -100,9 +89,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function EmptyValidatorReturnsTrueIfInputIsNonEmptyArray(): void
     {
         $validator = new EmptyValidator();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\Updates\BackendModulePermissionMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -30,9 +31,7 @@ final class BackendModulePermissionMigrationTest extends FunctionalTestCase
      */
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsUpdated(): void
     {
         $subject = new BackendModulePermissionMigration();

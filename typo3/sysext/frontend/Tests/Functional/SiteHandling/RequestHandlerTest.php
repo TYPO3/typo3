@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Cache\NonceValueSubstitution;
@@ -68,9 +69,7 @@ final class RequestHandlerTest extends AbstractTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test whether two subsequent requests have different nonce values
-     */
+    #[Test]
     public function nonceAttributesForAssetsAreUpdated(): void
     {
         $firstResponse = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/welcome'));
@@ -102,9 +101,7 @@ final class RequestHandlerTest extends AbstractTestCase
         // self::assertStringStartsWith('Cached page generated', $secondResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
     }
 
-    /**
-     * @test whether NonceValueSubstitution is invoked via permanent `INTincScript` instruction
-     */
+    #[Test]
     public function nonceValueSubstitutionIsInvoked(): void
     {
         $nonceValueSubstitutionMock = $this->createMock(NonceValueSubstitution::class);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Connection;
@@ -58,9 +60,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests adding object at the end of sorted 1:M relation (Blog:Posts)
-     *
-     * @test
      */
+    #[Test]
     public function attachPostToBlogAtTheEnd(): void
     {
         $newPostTitle = 'sdufhisdhuf';
@@ -75,9 +76,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests removing object from the end of sorted 1:M relation (Blog:Posts)
-     *
-     * @test
      */
+    #[Test]
     public function removeLastPostFromBlog(): void
     {
         $posts = $this->blog->getPosts();
@@ -91,9 +91,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests adding object in the middle of the sorted 1:M relation (Blog:Posts)
-     *
-     * @test
      */
+    #[Test]
     public function addPostToBlogInTheMiddle(): void
     {
         $newPost = new Post();
@@ -117,9 +116,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests removing object from the middle of sorted 1:M relation (Blog:Posts)
-     *
-     * @test
      */
+    #[Test]
     public function removeMiddlePostFromBlog(): void
     {
         $posts = clone $this->blog->getPosts();
@@ -136,9 +134,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests moving object from the end to the middle of the sorted 1:M relation (Blog:Posts)
-     *
-     * @test
      */
+    #[Test]
     public function movePostFromEndToTheMiddle(): void
     {
         $posts = clone $this->blog->getPosts();
@@ -164,9 +161,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests adding object at the end of sorted M:M relation (Post:Tag)
-     *
-     * @test
      */
+    #[Test]
     public function attachTagToPostAtTheEnd(): void
     {
         $newTagTitle = 'sdufhisdhuf';
@@ -181,9 +177,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests removing object from the end of sorted M:M relation (Post:Tag)
-     *
-     * @test
      */
+    #[Test]
     public function removeLastTagFromPost(): void
     {
         $postRepository = $this->get(PostRepository::class);
@@ -204,9 +199,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests adding object in the middle of sorted M:M relation (Post:Tag)
-     *
-     * @test
      */
+    #[Test]
     public function addTagToPostInTheMiddle(): void
     {
         $postRepository = $this->get(PostRepository::class);
@@ -233,9 +227,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests removing object from the middle of the sorted M:M relation (Post:Tag)
-     *
-     * @test
      */
+    #[Test]
     public function removeMiddleTagFromPost(): void
     {
         $postRepository = $this->get(PostRepository::class);
@@ -256,9 +249,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Tests moving object from the end to the middle of sorted M:M relation (Post:Tag)
-     *
-     * @test
      */
+    #[Test]
     public function moveTagFromEndToTheMiddle(): void
     {
         $postRepository = $this->get(PostRepository::class);
@@ -289,9 +281,7 @@ final class RelationTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/RelationTestResultMoveTagFromEndToTheMiddle.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mmRelationWithMatchFieldIsResolvedFromLocalSide(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
@@ -324,9 +314,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Test query matching respects MM_match_fields
-     *
-     * @test
      */
+    #[Test]
     public function mmRelationWithMatchFieldIsResolvedFromForeignSide(): void
     {
         $postRepository = $this->get(PostRepository::class);
@@ -337,9 +326,7 @@ final class RelationTest extends FunctionalTestCase
         self::assertCount(0, $posts);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mmRelationWithMatchFieldIsCreatedFromLocalSide(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
@@ -400,9 +387,8 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Test if adjusting existing mm relations do not relations with other objects
-     *
-     * @test
      */
+    #[Test]
     public function adjustingMmRelationWithTablesnameAndFieldnameFieldDoNotTouchOtherRelations(): void
     {
         $postRepository = $this->get(PostRepository::class);
@@ -532,9 +518,9 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses Relation::HAS_ONE relations.
-     * @test
-     * @dataProvider distinctDataProvider
      */
+    #[DataProvider('distinctDataProvider')]
+    #[Test]
     public function distinctPersonEntitiesAreFoundByPublisher(array $queryRequest): void
     {
         $query = $this->provideFindPostsByPublisherQuery(1);
@@ -550,9 +536,9 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses Relation::HAS_ONE relations.
-     * @test
-     * @dataProvider distinctDataProvider
      */
+    #[DataProvider('distinctDataProvider')]
+    #[Test]
     public function distinctPersonRecordsAreFoundByPublisher(array $queryRequest): void
     {
         $query = $this->provideFindPostsByPublisherQuery(1);
@@ -578,9 +564,9 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses Relation::HAS_MANY relations.
-     * @test
-     * @dataProvider distinctDataProvider
      */
+    #[DataProvider('distinctDataProvider')]
+    #[Test]
     public function distinctBlogEntitiesAreFoundByPostsSince(array $queryRequest): void
     {
         $query = $this->provideFindBlogsByPostsSinceQuery(
@@ -598,9 +584,9 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses Relation::HAS_MANY relations.
-     * @test
-     * @dataProvider distinctDataProvider
      */
+    #[DataProvider('distinctDataProvider')]
+    #[Test]
     public function distinctBlogRecordsAreFoundByPostsSince(array $queryRequest): void
     {
         $query = $this->provideFindBlogsByPostsSinceQuery(
@@ -625,9 +611,9 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses Relation::HAS_AND_BELONGS_TO_MANY relations.
-     * @test
-     * @dataProvider distinctDataProvider
      */
+    #[DataProvider('distinctDataProvider')]
+    #[Test]
     public function distinctPersonEntitiesAreFoundByTagNameAreFiltered(array $queryRequest): void
     {
         $query = $this->provideFindPersonsByTagNameQuery('SharedTag');
@@ -643,9 +629,9 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses Relation::HAS_AND_BELONGS_TO_MANY relations.
-     * @test
-     * @dataProvider distinctDataProvider
      */
+    #[DataProvider('distinctDataProvider')]
+    #[Test]
     public function distinctPersonRecordsAreFoundByTagNameAreFiltered(array $queryRequest): void
     {
         $query = $this->provideFindPersonsByTagNameQuery('SharedTag');
@@ -671,9 +657,9 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses Relation::HAS_ONE, Relation::HAS_AND_BELONGS_TO_MANY relations.
-     * @test
-     * @dataProvider distinctDataProvider
      */
+    #[DataProvider('distinctDataProvider')]
+    #[Test]
     public function distinctPostEntitiesAreFoundByAuthorTagNameAreFiltered(array $queryRequest): void
     {
         $query = $this->provideFindPostsByAuthorTagName('SharedTag');
@@ -689,9 +675,9 @@ final class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses Relation::HAS_ONE, Relation::HAS_AND_BELONGS_TO_MANY relations.
-     * @test
-     * @dataProvider distinctDataProvider
      */
+    #[DataProvider('distinctDataProvider')]
+    #[Test]
     public function distinctPostRecordsAreFoundByAuthorTagNameAreFiltered(array $queryRequest): void
     {
         $query = $this->provideFindPostsByAuthorTagName('SharedTag');

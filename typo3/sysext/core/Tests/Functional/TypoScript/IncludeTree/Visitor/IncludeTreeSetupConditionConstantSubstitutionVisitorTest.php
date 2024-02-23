@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree\Visitor;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\FileInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
@@ -109,10 +111,8 @@ final class IncludeTreeSetupConditionConstantSubstitutionVisitorTest extends Fun
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider visitDataProvider
-     */
+    #[DataProvider('visitDataProvider')]
+    #[Test]
     public function visit(array $flattenedConstants, IncludeInterface $node, IncludeInterface $expectedNode): void
     {
         $subject = new IncludeTreeSetupConditionConstantSubstitutionVisitor();

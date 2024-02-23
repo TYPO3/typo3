@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Tests\Functional\Repository;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Reactions\Repository\ReactionDemand;
 use TYPO3\CMS\Reactions\Repository\ReactionRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -55,10 +57,8 @@ final class ReactionsRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider demandProvider
-     * @test
-     */
+    #[DataProvider('demandProvider')]
+    #[Test]
     public function findByDemandWorks(ReactionDemand $demand, int $resultCount): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
@@ -66,9 +66,7 @@ final class ReactionsRepositoryTest extends FunctionalTestCase
         self::assertCount($resultCount, $results);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findAllWorks(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');
@@ -76,9 +74,7 @@ final class ReactionsRepositoryTest extends FunctionalTestCase
         self::assertCount(4, $results);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReactionRecordsWithoutDemand(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/ReactionsRepositoryTest_reactions.csv');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PageTsConfigFactoryTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigMatchesRequestHttpsCondition(): void
     {
         $request = (new ServerRequest('https://www.example.com/', null, 'php://input', [], ['HTTPS' => 'ON']));
@@ -49,9 +48,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('on', $pageTsConfig->getPageTsConfigArray()['isHttps']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigMatchesRequestHttpsElseCondition(): void
     {
         $request = new ServerRequest('http://www.example.com/');
@@ -71,9 +68,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('off', $pageTsConfig->getPageTsConfigArray()['isHttps']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigMatchesRequestHttpsConditionUsingSiteConstant(): void
     {
         $request = (new ServerRequest('https://www.example.com/', null, 'php://input', [], ['HTTPS' => 'ON']));

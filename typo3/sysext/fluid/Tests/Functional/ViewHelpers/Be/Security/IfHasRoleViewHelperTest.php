@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Security;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -41,9 +42,7 @@ final class IfHasRoleViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperRendersThenChildIfBeUserWithSpecifiedRoleIsLoggedIn(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -53,9 +52,7 @@ final class IfHasRoleViewHelperTest extends FunctionalTestCase
         self::assertEquals('then child', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperRendersElseChildIfBeUserWithSpecifiedRoleIsNotLoggedIn(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -65,9 +62,7 @@ final class IfHasRoleViewHelperTest extends FunctionalTestCase
         self::assertEquals('else child', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperRendersElseChildIfBeUserWithSpecifiedRoleIdIsNotLoggedIn(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

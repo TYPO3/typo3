@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\FileBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -37,9 +39,7 @@ final class FileBackendTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryThrowsExceptionOnNonWritableDirectory(): void
     {
         $this->expectException(Exception::class);
@@ -49,9 +49,7 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->setCache(new NullFrontend('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryAllowsAbsolutePathWithoutTrailingSlash(): void
     {
         $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
@@ -59,9 +57,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryAllowsAbsolutePathWithTrailingSlash(): void
     {
         $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
@@ -69,9 +65,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryAllowsRelativePathWithoutTrailingSlash(): void
     {
         $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
@@ -80,9 +74,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($path . '/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryAllowsRelativePathWithTrailingSlash(): void
     {
         $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
@@ -91,9 +83,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($path . '/tmp/foo/', $subject->_get('temporaryCacheDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryAllowsRelativeDottedPathWithoutTrailingSlash(): void
     {
         $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
@@ -102,9 +92,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($path . '/../tmp/foo/', $subject->_get('temporaryCacheDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryAllowsRelativeDottedPathWithTrailingSlash(): void
     {
         $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
@@ -113,9 +101,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($path . '/../tmp/foo/', $subject->_get('temporaryCacheDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithoutTrailingSlash(): void
     {
         $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
@@ -123,9 +109,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('/tmp/../foo/', $subject->_get('temporaryCacheDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithTrailingSlash(): void
     {
         $subject = $this->getAccessibleMock(FileBackend::class, null, [], '', false);
@@ -133,9 +117,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('/tmp/../foo/', $subject->_get('temporaryCacheDirectory'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheDirectoryReturnsTheCurrentCacheDirectory(): void
     {
         $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
@@ -144,9 +126,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($this->instancePath . '/Foo/cache/code/SomeCache/', $subject->getCacheDirectory());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aDedicatedCacheDirectoryIsUsedForCodeCaches(): void
     {
         $mockCache = $this->createMock(PhpFrontend::class);
@@ -157,9 +137,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($this->instancePath . '/Foo/cache/code/SomeCache/', $subject->getCacheDirectory());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfDataIsNotAString(): void
     {
         $this->expectException(InvalidDataException::class);
@@ -170,9 +148,7 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->set('some identifier', ['not a string']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setReallySavesToTheSpecifiedDirectory(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -189,9 +165,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($data, $retrievedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverwritesAnAlreadyExistingCacheEntryForTheSameIdentifier(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -210,9 +184,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($data2, $retrievedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAlsoSavesSpecifiedTags(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -229,9 +201,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('Tag1 Tag2', $retrievedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCacheDetectsAndLoadsAFrozenCache(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -250,9 +220,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($data, $subject->get($entryIdentifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsContentOfTheCorrectCacheFile(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -269,9 +237,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($data, $loadedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsFalseForExpiredEntries(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -283,9 +249,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertFalse($subject->get('ExpiredEntry'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDoesNotCheckIfAnEntryIsExpiredIfTheCacheIsFrozen(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -300,9 +264,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertFalse($subject->get('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsTrueIfAnEntryExists(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -317,9 +279,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has($entryIdentifier . 'Not'), 'has() did not return FALSE.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsFalseForExpiredEntries(): void
     {
         $subject = $this->getMockBuilder(FileBackend::class)->onlyMethods(['isCacheFileExpired'])->disableOriginalConstructor()->getMock();
@@ -331,9 +291,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertTrue($subject->has('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasDoesNotCheckIfAnEntryIsExpiredIfTheCacheIsFrozen(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -348,9 +306,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeReallyRemovesACacheEntry(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -385,10 +341,8 @@ final class FileBackendTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidEntryIdentifiers
-     */
+    #[DataProvider('invalidEntryIdentifiers')]
+    #[Test]
     public function setThrowsExceptionForInvalidIdentifier(string $identifier): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -401,10 +355,8 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->set($identifier, 'cache data', []);
     }
 
-    /**
-     * @test
-     * @dataProvider invalidEntryIdentifiers
-     */
+    #[DataProvider('invalidEntryIdentifiers')]
+    #[Test]
     public function getThrowsExceptionForInvalidIdentifier(string $identifier): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -417,10 +369,8 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->get($identifier);
     }
 
-    /**
-     * @test
-     * @dataProvider invalidEntryIdentifiers
-     */
+    #[DataProvider('invalidEntryIdentifiers')]
+    #[Test]
     public function hasThrowsExceptionForInvalidIdentifier(string $identifier): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -429,10 +379,8 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->has($identifier);
     }
 
-    /**
-     * @test
-     * @dataProvider invalidEntryIdentifiers
-     */
+    #[DataProvider('invalidEntryIdentifiers')]
+    #[Test]
     public function removeThrowsExceptionForInvalidIdentifier(string $identifier): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -445,10 +393,8 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->remove($identifier);
     }
 
-    /**
-     * @test
-     * @dataProvider invalidEntryIdentifiers
-     */
+    #[DataProvider('invalidEntryIdentifiers')]
+    #[Test]
     public function requireOnceThrowsExceptionForInvalidIdentifier(string $identifier): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -461,9 +407,7 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->requireOnce($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireOnceIncludesAndReturnsResultOfIncludedPhpFile(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -478,9 +422,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('foo', $loadedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireOnceDoesNotCheckExpiryTimeIfBackendIsFrozen(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -496,10 +438,8 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('foo', $loadedData);
     }
 
-    /**
-     * @test
-     * @dataProvider invalidEntryIdentifiers
-     */
+    #[DataProvider('invalidEntryIdentifiers')]
+    #[Test]
     public function requireThrowsExceptionForInvalidIdentifier(string $identifier): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -512,9 +452,7 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->require($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireIncludesAndReturnsResultOfIncludedPhpFile(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -529,9 +467,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('foo2', $loadedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireDoesNotCheckExpiryTimeIfBackendIsFrozen(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -547,9 +483,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('foo', $loadedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requireCanLoadSameEntryMultipleTimes(): void
     {
         $frontendMock = $this->getMockBuilder(AbstractFrontend::class)->disableOriginalConstructor()->getMock();
@@ -564,9 +498,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals('foo', $loadedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -584,9 +516,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertEquals($expectedEntry, array_pop($actualEntries));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagDoesNotReturnExpiredEntries(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -604,9 +534,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertContains('BackendFileTest3', $actualEntries);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushRemovesAllCacheEntries(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -624,9 +552,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertFileDoesNotExist($this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushCreatesCacheDirectoryAgain(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -638,9 +564,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertFileExists($this->instancePath . '/Foo/cache/data/UnitTestCache/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesCacheEntriesWithSpecifiedTag(): void
     {
         $subject = $this->getMockBuilder(FileBackend::class)->onlyMethods(['findIdentifiersByTag', 'remove'])->disableOriginalConstructor()->getMock();
@@ -662,9 +586,7 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->flushByTag('UnitTestTag%special');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageRemovesExpiredCacheEntries(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
@@ -686,9 +608,7 @@ final class FileBackendTest extends FunctionalTestCase
         self::assertFileDoesNotExist($this->instancePath . '/Foo/cache/data/UnitTestCache/BackendFileTest2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushUnfreezesTheCache(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);

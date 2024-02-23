@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Functional\EventListener;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -40,9 +41,7 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classesAreAppliedToPageItems(): void
     {
         $this->setWorkspaceId(91);

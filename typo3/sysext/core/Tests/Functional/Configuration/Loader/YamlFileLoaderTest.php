@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Configuration\Loader;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
@@ -28,9 +29,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Generic method to check if the load method returns an array from a YAML file
-     *
-     * @test
      */
+    #[Test]
     public function load(): void
     {
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/Berta.yaml';
@@ -48,9 +48,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for imports that they have been processed properly
-     *
-     * @test
      */
+    #[Test]
     public function loadWithAnImport(): void
     {
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithAnImport.yaml';
@@ -70,9 +69,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for multiple imports that they have been loaded in the right order
-     *
-     * @test
      */
+    #[Test]
     public function loadWithMultipleImports(): void
     {
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithMultipleImports.yaml';
@@ -93,9 +91,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for imports that they have been processed properly
-     *
-     * @test
      */
+    #[Test]
     public function loadWithImportAndRelativePaths(): void
     {
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithImportAndRelativeFiles.yaml';
@@ -115,9 +112,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for placeholders
-     *
-     * @test
      */
+    #[Test]
     public function loadWithPlaceholders(): void
     {
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithPlaceholders.yaml';
@@ -140,9 +136,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for nested placeholders
-     *
-     * @test
      */
+    #[Test]
     public function loadWithNestedPlaceholders(): void
     {
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithNestedPlaceholders.yaml';
@@ -166,9 +161,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for imports with env vars that they have been processed properly
-     *
-     * @test
      */
+    #[Test]
     public function loadWithImportAndEnvVars(): void
     {
         $loader = new YamlFileLoader();
@@ -191,9 +185,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for imports with placeholder values in the file name
-     *
-     * @test
      */
+    #[Test]
     public function loadWithImportAndPlaceholderInFileName(): void
     {
         $output = (new YamlFileLoader())->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/Placeholder/Berta.yaml');
@@ -210,9 +203,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for multiple imports via glob() call
-     *
-     * @test
      */
+    #[Test]
     public function loadWithGlobbedImports(): void
     {
         $output = (new YamlFileLoader())->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithGlobbedImports.yaml');
@@ -232,9 +224,8 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
     /**
      * Method checking for path traversal imports via glob() call
-     *
-     * @test
      */
+    #[Test]
     public function loadWithGlobbedImportsWithPathTraversalShouldFail(): void
     {
         $logger = new class () extends AbstractLogger {

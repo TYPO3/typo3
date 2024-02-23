@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -186,10 +188,8 @@ final class FilesContentObjectTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsFilesForFileReferencesDataProvider
-     */
+    #[DataProvider('renderReturnsFilesForFileReferencesDataProvider')]
+    #[Test]
     public function renderReturnsFilesForFileReferences(array $configuration, string $expected): void
     {
         self::assertSame($expected, $this->subject->render($configuration));
@@ -331,10 +331,8 @@ final class FilesContentObjectTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsFilesForFilesDataProvider
-     */
+    #[DataProvider('renderReturnsFilesForFilesDataProvider')]
+    #[Test]
     public function renderReturnsFilesForFiles(array $configuration, string $expected): void
     {
         self::assertSame($expected, $this->subject->render($configuration));
@@ -513,10 +511,8 @@ final class FilesContentObjectTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsFilesForCollectionsDataProvider
-     */
+    #[DataProvider('renderReturnsFilesForCollectionsDataProvider')]
+    #[Test]
     public function renderReturnsFilesForCollections(array $configuration, string $expected): void
     {
         self::assertSame($expected, $this->subject->render($configuration));
@@ -724,10 +720,8 @@ final class FilesContentObjectTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsFilesForFoldersDataProvider
-     */
+    #[DataProvider('renderReturnsFilesForFoldersDataProvider')]
+    #[Test]
     public function renderReturnsFilesForFolders(array $configuration, string $expected): void
     {
         self::assertSame($expected, $this->subject->render($configuration));
@@ -854,10 +848,8 @@ final class FilesContentObjectTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsFilesForReferencesAsArrayDataProvider
-     */
+    #[DataProvider('renderReturnsFilesForReferencesAsArrayDataProvider')]
+    #[Test]
     public function renderReturnsFilesForReferencesAsArray(array $configuration, array $data, string $table, string $expected): void
     {
         $this->subject->getContentObjectRenderer()->start($data, $table);

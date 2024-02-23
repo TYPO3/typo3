@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SysTemplateRepositoryTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function singleRootTemplate(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/singleRootTemplate.csv');
@@ -42,9 +41,7 @@ final class SysTemplateRepositoryTest extends FunctionalTestCase
         self::assertSame(1, $result[0]['uid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function twoPagesTwoTemplates(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplates.csv');
@@ -69,9 +66,7 @@ final class SysTemplateRepositoryTest extends FunctionalTestCase
         self::assertSame(2, $result[1]['uid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function twoTemplatesOnPagePrefersTheOneWithLowerSorting(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoTemplatesOnPage.csv');

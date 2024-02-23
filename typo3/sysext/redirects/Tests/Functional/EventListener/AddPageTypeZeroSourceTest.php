@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\EventListener;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
@@ -38,9 +39,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTypeSourceZeroReplacesPlainSlugReplacementSourceToAvoidDuplicates(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimpleSiteRoot.csv');
@@ -73,9 +72,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
         self::assertSame(0, $source->getPageType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTapeSourceZeroWithPageTypeSuffixRouteEnhancerIsAddedAsAdditionalSource(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimpleSiteRootWithPage.csv');
@@ -128,9 +125,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
         self::assertSame(0, $source->getPageType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customPageTypeSourceCanBeAdded(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimpleSiteRootWithPage.csv');

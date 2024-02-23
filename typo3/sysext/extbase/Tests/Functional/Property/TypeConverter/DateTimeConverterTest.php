@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
@@ -27,9 +28,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsAnErrorWhenConvertingIntegersToDateTime(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -44,9 +43,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsNullIfSourceIsAnEmptyString(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -57,9 +54,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertFalse($propertyMapper->getMessages()->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertDefaultDateFormatString(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -70,9 +65,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame(1575745622, $dateTime->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertCustomDateFormatString(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
@@ -94,9 +87,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame(1575746145, $dateTime->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertThrowsInvalidPropertyMappingConfigurationExceptionIfDateFormatIsNotAString(): void
     {
         $this->expectException(Exception::class);
@@ -119,9 +110,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertWithArraySourceWithStringDate(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -137,9 +126,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame(1575745622, $dateTime->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertWithArraySourceWithIntegerDate(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
@@ -163,9 +150,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame(1575745622, $dateTime->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertWithArraySourceWithDayMonthAndYearSet(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
@@ -191,9 +176,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame('2019-12-12', $dateTime->format('Y-m-d'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertWithArraySourceWithDayMonthYearAndDateFormatSet(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -212,9 +195,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame('2019-12-12', $dateTime->format('Y-m-d'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertWithArraySourceWithDayMonthYearHourMinuteAndSecondSet(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -237,9 +218,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame(1576163154, $dateTime->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertWithArraySourceWithDayMonthYearAndTimeZoneSetWithDateThatIncludesTimezone(): void
     {
         // Hint:
@@ -261,9 +240,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame(1575745622, $dateTime->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertWithArraySourceWithDayMonthYearAndTimeZoneSet(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
@@ -289,9 +266,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         self::assertSame(1575785222, $dateTime->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsErrorIfSourceIsAnArrayAndEitherDayMonthOrYearAreLowerThanOne(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -314,9 +289,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsTypeConverterExceptionIfSourceIsAnInvalidArraySource(): void
     {
         $this->expectException(Exception::class);
@@ -326,9 +299,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
         $this->get(PropertyMapper::class)->convert([], \DateTime::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsTypeConverterExceptionIfGivenDateTimeZoneIsInvalid(): void
     {
         $this->expectException(Exception::class);

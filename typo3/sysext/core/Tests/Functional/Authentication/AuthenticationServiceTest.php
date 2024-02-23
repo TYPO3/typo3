@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -40,9 +41,7 @@ final class AuthenticationServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/be_users.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUserReturnsOnlyNotDeletedRecords(): void
     {
         $this->subject->pObj = new BackendUserAuthentication();

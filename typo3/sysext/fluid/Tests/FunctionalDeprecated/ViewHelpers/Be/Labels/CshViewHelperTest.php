@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\FunctionalDeprecated\ViewHelpers\Be\Labels;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -73,10 +75,8 @@ final class CshViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isRenderedDataProvider
-     */
+    #[DataProvider('isRenderedDataProvider')]
+    #[Test]
     public function isRendered(string $source, array $variables, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

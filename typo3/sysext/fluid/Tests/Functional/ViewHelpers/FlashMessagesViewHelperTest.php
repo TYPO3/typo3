@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -30,9 +31,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class FlashMessagesViewHelperTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsEmptyStringIfNoFlashMessagesAreInQueue(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -44,9 +43,7 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
         self::assertEmpty((new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsEmptyStringFromSpecificEmptyQueue(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -54,9 +51,7 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
         self::assertEmpty((new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsRenderedFlashMessage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

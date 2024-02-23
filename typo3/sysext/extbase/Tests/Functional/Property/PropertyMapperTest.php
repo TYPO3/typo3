@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -48,9 +49,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertCreatesAPropertyMappingConfigurationIfNotGiven(): void
     {
         // This test just increases the test coverage
@@ -58,9 +57,7 @@ final class PropertyMapperTest extends FunctionalTestCase
             ->convert('string', 'string');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertReturnsNullIfDoMappingReturnsAnError(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -69,9 +66,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         self::assertNotEmpty($propertyMapper->getMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertThrowsATargetNotFoundException(): void
     {
         $this->expectException(TargetNotFoundException::class);
@@ -81,9 +76,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         $propertyMapper->convert(9999, Blog::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertThrowsAnExceptionIfNoTypeConverterCanBeFoundForTheConversionOfSimpleTypes(): void
     {
         $this->expectException(\Exception::class);
@@ -94,18 +87,14 @@ final class PropertyMapperTest extends FunctionalTestCase
         $propertyMapper->convert(9999, 'boolean');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertInternallyConvertsANullSourceToAnEmptyString(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
         self::assertSame('', $propertyMapper->convert(null, 'string'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertThrowsAnExceptionIfTargetTypeIsANonExistingClass(): void
     {
         $this->expectException(\Exception::class);
@@ -116,9 +105,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         $propertyMapper->convert(1, 'NonExistingClass');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertThrowsAnExceptionIfAtLeastTwoConvertersAreRegisteredThatHandleTheConversionToTheSameInterface(): void
     {
         $this->expectException(\Exception::class);
@@ -136,9 +123,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         $propertyMapper->convert(1, get_class($counter));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doMappingReturnsTheSourceIfItIsAlreadyTheDesiredTypeWithoutCallingAConverter(): void
     {
         $objectStorage = new ObjectStorage();
@@ -151,9 +136,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         self::assertSame($objectStorage, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findTypeConverterReturnsTheConverterFromThePropertyMappingConfiguration(): void
     {
         $class = new class () extends IntegerConverter {
@@ -175,9 +158,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         self::assertSame(1575648246, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function determineSourceTypeThrowsInvalidSourceExceptionForNonSupportedTypes(): void
     {
         $this->expectException(\Exception::class);
@@ -192,9 +173,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         $propertyMapper->convert($generator, 'string');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsNullIfNoTypeConvertersExistForTheSourceType(): void
     {
         $this->expectException(\Exception::class);
@@ -205,27 +184,21 @@ final class PropertyMapperTest extends FunctionalTestCase
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findFirstEligibleTypeConverterInObjectHierarchyFindsConverterFromStringToObject(): void
     {
         $result = $this->get(PropertyMapper::class)->convert('tigger', Cat::class);
         self::assertInstanceOf(Cat::class, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForParentClass(): void
     {
         $result = $this->get(PropertyMapper::class)->convert('fluffy', Dog::class);
         self::assertInstanceOf(Animal::class, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForInterfaces(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -234,9 +207,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         self::assertSame([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultPropertyMappingConfiguration(): void
     {
         $source = [
@@ -258,9 +229,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         self::assertSame('black', $result->getColor());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function skipPropertiesConfiguration(): void
     {
         $source = [
@@ -282,9 +251,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         self::assertNull($result->getColor());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allowAllPropertiesExceptConfiguration(): void
     {
         $this->expectException(\Exception::class);
@@ -306,9 +273,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allowAllPropertiesExceptWithSkipUnknownPropertiesConfiguration(): void
     {
         $source = [

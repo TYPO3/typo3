@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -40,9 +42,7 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
         $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataAddsTreeConfigurationForSelectTreeElement(): void
     {
         $input = [
@@ -130,9 +130,7 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaSelectTreeItems())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataHandsPageTsConfigSettingsOverToTableConfigurationTree(): void
     {
         $input = [
@@ -267,10 +265,8 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider addDataHandsSiteConfigurationOverToTableConfigurationTreeDataProvider
-     * @test
-     */
+    #[DataProvider('addDataHandsSiteConfigurationOverToTableConfigurationTreeDataProvider')]
+    #[Test]
     public function addDataHandsSiteConfigurationOverToTableConfigurationTree(string $inputStartingPoints, string $expectedStartingPoints, Site $site): void
     {
         $input = [

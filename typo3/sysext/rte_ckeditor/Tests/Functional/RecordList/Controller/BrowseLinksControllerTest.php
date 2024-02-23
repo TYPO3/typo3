@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\RteCKEditor\Tests\Functional\RecordList\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Controller\Event\ModifyAllowedItemsEvent;
 use TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent;
@@ -44,9 +45,7 @@ final class BrowseLinksControllerTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function linkEventsAreTriggered(): void
     {
         /** @var Container $container */

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Fluid\ViewHelpers\MediaViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -48,10 +50,8 @@ final class MediaViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsExpectedMarkupDataProvider
-     */
+    #[DataProvider('renderReturnsExpectedMarkupDataProvider')]
+    #[Test]
     public function renderReturnsExpectedMarkup(string $file, array $arguments, string $expected): void
     {
         $file = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($file);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Web;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ExtbaseModule;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -68,9 +69,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBuildsARequestInterfaceObject(): void
     {
         $extensionName = 'blog_example';
@@ -101,9 +100,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('html', $request->getFormat());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadDefaultValuesOverridesFormatIfConfigured(): void
     {
         $extensionName = 'blog_example';
@@ -135,9 +132,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('json', $request->getFormat());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildOverridesFormatIfSetInGetParameters(): void
     {
         $extensionName = 'blog_example';
@@ -169,9 +164,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('json', $request->getFormat());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadDefaultValuesThrowsExceptionIfExtensionNameIsNotProperlyConfigured(): void
     {
         $this->expectException(Exception::class);
@@ -183,9 +176,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $requestBuilder->build($mainRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadDefaultValuesThrowsExceptionIfPluginNameIsNotProperlyConfigured(): void
     {
         $this->expectException(Exception::class);
@@ -200,9 +191,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $requestBuilder->build($mainRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function untangleFilesArrayDetectsASingleUploadedFileInBackend(): void
     {
         $_FILES['dummy'] = [
@@ -257,9 +246,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame(98174, $request->getArgument('size'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function untangleFilesArrayDetectsMultipleUploadedFileInBackend(): void
     {
         $_FILES['dummy'] = [
@@ -339,9 +326,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertNotTrue(isset($argument['size']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveControllerClassNameThrowsInvalidControllerNameExceptionIfNonExistentControllerIsSetViaGetParameter(): void
     {
         $this->expectException(InvalidControllerNameException::class);
@@ -376,9 +361,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $requestBuilder->build($mainRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveControllerClassNameThrowsPageNotFoundException(): void
     {
         $this->expectException(PageNotFoundException::class);
@@ -412,9 +395,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $requestBuilder->build($mainRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveControllerClassNameThrowsAnExceptionIfTheDefaultControllerCannotBeDetermined(): void
     {
         $this->expectException(Exception::class);
@@ -436,9 +417,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $requestBuilder->build($mainRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveControllerClassNameReturnsDefaultControllerIfCallDefaultActionIfActionCantBeResolvedIsConfigured(): void
     {
         $extensionName = 'blog_example';
@@ -471,9 +450,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('Blog', $request->getControllerName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveControllerClassNameReturnsControllerDefinedViaParametersIfControllerIsConfigured(): void
     {
         $extensionName = 'blog_example';
@@ -506,9 +483,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('User', $request->getControllerName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveActionNameThrowsInvalidActionNameExceptionIfNonExistentActionIsSetViaGetParameter(): void
     {
         $this->expectException(InvalidActionNameException::class);
@@ -541,9 +516,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $requestBuilder->build($mainRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveActionNameThrowsPageNotFoundException(): void
     {
         $this->expectException(PageNotFoundException::class);
@@ -577,9 +550,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $requestBuilder->build($mainRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveActionNameReturnsDefaultActionIfCallDefaultActionIfActionCantBeResolvedIsConfigured(): void
     {
         $extensionName = 'blog_example';
@@ -612,9 +583,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('list', $request->getControllerActionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveActionNameReturnsActionDefinedViaParametersIfActionIsConfigured(): void
     {
         $extensionName = 'blog_example';
@@ -646,9 +615,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('show', $request->getControllerActionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveActionNameThrowsAnExceptionIfTheDefaultActionCannotBeDetermined(): void
     {
         $this->expectException(Exception::class);
@@ -680,9 +647,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $requestBuilder->build($mainRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveActionNameReturnsActionDefinedViaParametersOfServerRequest(): void
     {
         $mainRequest = $this->prepareServerRequest('https://example.com/');
@@ -717,9 +682,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('show', $request->getControllerActionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveActionNameReturnsActionDefinedViaPageArgumentOfServerRequest(): void
     {
         $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => ['action' => 'show']]);
@@ -758,9 +721,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('show', $request->getControllerActionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveActionNameReturnsActionDefinedViaParsedBodyOfServerRequest(): void
     {
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
@@ -795,9 +756,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('show', $request->getControllerActionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function silentlyIgnoreInvalidParameterAndUseDefaultAction(): void
     {
         $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => 'not_an_array']);
@@ -834,9 +793,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('list', $request->getControllerActionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function controllerActionParametersAreAddedToRequest(): void
     {
         $mainRequest = $this->prepareServerRequest('https://example.com/typo3/module/blog-example/Blog/show');

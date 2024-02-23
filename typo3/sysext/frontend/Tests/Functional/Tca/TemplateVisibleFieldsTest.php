@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Tca;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,9 +41,7 @@ final class TemplateVisibleFieldsTest extends FunctionalTestCase
         'endtime',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function templateFormContainsExpectedFields(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

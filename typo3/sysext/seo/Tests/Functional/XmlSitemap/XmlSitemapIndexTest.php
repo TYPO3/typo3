@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
@@ -40,9 +41,7 @@ final class XmlSitemapIndexTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfSiteMapIndexContainsPagesSitemap(): void
     {
         $this->writeSiteConfiguration(

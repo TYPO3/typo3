@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Validation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -63,10 +65,8 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider
-     */
+    #[DataProvider('forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider')]
+    #[Test]
     public function forwardedActionValidatesPreviouslyIgnoredArgument(array $blogPostArgument, array $trustedProperties, array $expectedErrorCodes): void
     {
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
@@ -113,9 +113,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         self::assertEquals('testFormAction', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validationResultsAreProvidedForTheSameObjectInDifferentArguments(): void
     {
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
@@ -176,9 +174,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         self::assertEquals('testFormAction', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsOfOriginalRequestRemainOnValidationErrors(): void
     {
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');

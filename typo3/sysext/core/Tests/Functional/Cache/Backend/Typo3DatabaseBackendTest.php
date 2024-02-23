@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
@@ -38,9 +39,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsPreviouslySetEntry(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -53,9 +52,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame('myData', $subject->get('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsPreviouslySetEntryWithNewContentIfSetWasCalledMultipleTimes(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -69,9 +66,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame('myNewData', $subject->get('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setInsertsDataWithTagsIntoCacheTable(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -89,9 +84,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame(1, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'myIdentifier', 'tag' => 'anotherTag']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setStoresCompressedContent(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -116,9 +109,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame('myCachedContent', gzuncompress($row['content']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsFalseIfNoCacheEntryExists(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -130,9 +121,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertFalse($subject->get('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsFalseForExpiredCacheEntry(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -157,9 +146,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertFalse($subject->get('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsNotExpiredCacheEntry(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -184,9 +171,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame('myCachedContent', $subject->get('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsUnzipsNotExpiredCacheEntry(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -213,9 +198,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame('myCachedContent', $subject->get('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsEmptyStringUnzipped(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -242,9 +225,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame('', $subject->get('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsFalseIfNoCacheEntryExists(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -256,9 +237,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsFalseForExpiredCacheEntry(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -283,9 +262,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsNotExpiredCacheEntry(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -310,9 +287,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertTrue($subject->has('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeReturnsFalseIfNoEntryHasBeenRemoved(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -324,9 +299,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertFalse($subject->remove('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeReturnsTrueIfAnEntryHasBeenRemoved(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -351,9 +324,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertTrue($subject->remove('myIdentifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeRemovesCorrectEntriesFromDatabase(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -399,9 +370,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'otherIdentifier']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagReturnsIdentifierTaggedWithGivenTag(): void
     {
         $subject = $this->getSubjectObject();
@@ -411,27 +380,21 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertEquals(['idB' => 'idB', 'idC' => 'idC'], $subject->findIdentifiersByTag('tagC'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagWorksWithEmptyCacheTables(): void
     {
         $subject = $this->getSubjectObject();
         $subject->flushByTag('tagB');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagsWorksWithEmptyCacheTables(): void
     {
         $subject = $this->getSubjectObject();
         $subject->flushByTags(['tagB']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesCorrectRowsFromDatabase(): void
     {
         $subject = $this->getSubjectObject();
@@ -447,9 +410,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagsRemovesCorrectRowsFromDatabase(): void
     {
         $subject = $this->getSubjectObject();
@@ -465,18 +426,14 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageWorksWithEmptyTable(): void
     {
         $subject = $this->getSubjectObject();
         $subject->collectGarbage();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageRemovesCacheEntryWithExpiredLifetime(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -498,9 +455,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame(1, $cacheTableConnection->count('*', 'cache_pages', ['identifier' => 'idB']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetime(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -522,9 +477,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame(2, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idB']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageRemovesOrphanedTagEntriesFromTagsTable(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -564,9 +517,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', ['identifier' => 'idC']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushLeavesCacheAndTagsTableEmpty(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Routing\Aspect;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
@@ -202,10 +204,8 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         return $dataSet;
     }
 
-    /**
-     * @test
-     * @dataProvider languageAwareRecordsAreResolvedDataProvider
-     */
+    #[DataProvider('languageAwareRecordsAreResolvedDataProvider')]
+    #[Test]
     public function languageAwareRecordsAreResolved(string $identifier, string $requestValue, string $language, ?string $expectation): void
     {
         $this->subject->setSiteLanguage(
@@ -275,10 +275,8 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider recordVisibilityDataProvider
-     */
+    #[DataProvider('recordVisibilityDataProvider')]
+    #[Test]
     public function recordVisibilityIsConsideredForResolving(Context $context, array $parameters, bool $expectation): void
     {
         $this->subject->setContext($context);
@@ -286,10 +284,8 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         self::assertSame($expectedResult, $this->subject->resolve($parameters['slug']));
     }
 
-    /**
-     * @test
-     * @dataProvider recordVisibilityDataProvider
-     */
+    #[DataProvider('recordVisibilityDataProvider')]
+    #[Test]
     public function recordVisibilityIsConsideredForGeneration(Context $context, array $parameters, bool $expectation): void
     {
         $this->subject->setContext($context);
@@ -297,9 +293,7 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         self::assertSame($expectedResult, $this->subject->generate($parameters['uid']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateWithUidOfExistingPageReturnsPageSlug(): void
     {
         $result = $this->subject->generate('3010');
@@ -307,9 +301,7 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         self::assertSame('30xx-slug-0', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateWithUidOfExistingPageSuffixedWithGarbageStringReturnsNull(): void
     {
         $result = $this->subject->generate('3010-i-am-garbage');

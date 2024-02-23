@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -85,10 +87,8 @@ final class SlugSiteWithoutRequiredCHashRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     */
+    #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
+    #[Test]
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHash(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -133,10 +133,8 @@ final class SlugSiteWithoutRequiredCHashRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithValidCacheHashDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithValidCacheHashDataProvider')]
+    #[Test]
     public function pageIsRenderedWithValidCacheHash($uri): void
     {
         $this->writeSiteConfiguration(

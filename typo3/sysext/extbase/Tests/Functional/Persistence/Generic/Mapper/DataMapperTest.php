@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -26,6 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper\Fixtures\HydrationFixtureEntity;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Comment;
@@ -55,9 +58,7 @@ final class DataMapperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateValuesAreStoredInUtcInIntegerDatabaseFields(): void
     {
         $example = new DateExample();
@@ -75,9 +76,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertEquals($example->getDatetimeInt()->getTimestamp(), $date->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateValuesAreStoredInUtcInTextDatabaseFields(): void
     {
         $example = new DateExample();
@@ -95,9 +94,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertEquals($example->getDatetimeText()->getTimestamp(), $date->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateValuesAreStoredInLocalTimeInDatetimeDatabaseFields(): void
     {
         $example = new DateExample();
@@ -115,9 +112,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertEquals($example->getDatetimeDatetime()->getTimestamp(), $date->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateTimeImmutableIntIsHandledAsDateTime(): void
     {
         $subject = new DateTimeImmutableExample();
@@ -135,9 +130,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertEquals($date, $subject->getDatetimeImmutableInt());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateTimeImmutableTextIsHandledAsDateTime(): void
     {
         $subject = new DateTimeImmutableExample();
@@ -155,9 +148,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertEquals($date, $subject->getDatetimeImmutableText());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateTimeImmutableDateTimeIsHandledAsDateTime(): void
     {
         $subject = new DateTimeImmutableExample();
@@ -175,9 +166,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertSame($date->getTimestamp(), $subject->getDatetimeImmutableDatetime()->getTimestamp());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapMapsArrayToObject(): void
     {
         $rows = [['uid' => 1234]];
@@ -189,9 +178,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertSame(1234, $mappedObjectArray[0]->getUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapMapsArrayToObjectFromPersistence(): void
     {
         $rows1 = [['uid' => 1234, 'title' => 'From persistence']];
@@ -206,9 +193,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertSame('From persistence', $mappedObjectArray[0]->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function thawPropertiesSetsPropertyValues(): void
     {
         $rows = [
@@ -242,9 +227,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertTrue($reflectionProperty->isInitialized($object));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function thawPropertiesThrowsExceptionOnUnknownPropertyType(): void
     {
         $rows = [
@@ -260,9 +243,7 @@ final class DataMapperTest extends FunctionalTestCase
         $dataMapper->map(Example::class, $rows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchRelatedEagerReturnsNullForEmptyRelationHasOne(): void
     {
         $rows = [
@@ -277,9 +258,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertNull($mappedObjectsArray[0]->getBlog());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchRelatedEagerReturnsEmptyArrayForEmptyRelationNotHasOne(): void
     {
         $rows = [
@@ -294,9 +273,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertCount(0, $mappedObjectsArray[0]->getPosts());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapObjectToClassPropertyReturnsExistingObjectWithoutCallingFetchRelated(): void
     {
         $blogRows = [
@@ -337,10 +314,8 @@ final class DataMapperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsDataProvider
-     */
+    #[DataProvider('mapDateTimeHandlesDifferentFieldEvaluationsDataProvider')]
+    #[Test]
     public function mapDateTimeHandlesDifferentFieldEvaluations(string|int|null $value, string|null $storageFormat, string|null $expectedValue): void
     {
         $GLOBALS['TCA']['tx_testdatamapper_domain_model_example']['columns']['initialized_date_time_property']['config']['dbType'] = $storageFormat;
@@ -372,10 +347,8 @@ final class DataMapperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider
-     */
+    #[DataProvider('mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider')]
+    #[Test]
     public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZone(string|int|null $value, ?string $storageFormat, ?string $expectedValue): void
     {
         $originalTimeZone = date_default_timezone_get();
@@ -403,9 +376,7 @@ final class DataMapperTest extends FunctionalTestCase
         date_default_timezone_set($originalTimeZone);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapDateTimeHandlesSubclassesOfDateTime(): void
     {
         $rows = [
@@ -420,9 +391,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertInstanceOf(CustomDateTime::class, $mappedObjectsArray[0]->getCustomDateTime());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPlainValueReturnsCorrectDateTimeFormat(): void
     {
         $dataMapper = $this->get(DataMapper::class);
@@ -455,10 +424,8 @@ final class DataMapperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getPlainValueReturnsExpectedValuesDataProvider
-     */
+    #[DataProvider('getPlainValueReturnsExpectedValuesDataProvider')]
+    #[Test]
     public function getPlainValueReturnsExpectedValues(string|int $expectedValue, mixed $input): void
     {
         $dataMapper = $this->get(DataMapper::class);
@@ -468,9 +435,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertSame($expectedValue, $plainValue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPlainValueCallsGetRealInstanceOnInputIfInputIsInstanceOfLazyLoadingProxy(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataMapperTestImport.csv');
@@ -488,9 +453,7 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertSame(1, $plainValue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchRelatedRespectsForeignDefaultSortByTCAConfiguration(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataMapperTestImport.csv');
@@ -510,9 +473,7 @@ final class DataMapperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createEmptyObjectThrowsInvalidClassExceptionIfClassNameDoesNotImplementDomainObjectInterface(): void
     {
         self::expectException(InvalidClassException::class);
@@ -523,9 +484,7 @@ final class DataMapperTest extends FunctionalTestCase
         $subjectReflection->getMethod('createEmptyObject')->invoke($subject, \stdClass::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createEmptyObjectInstantiatesWithoutCallingTheConstructorButCallsInitializeObject(): void
     {
         self::expectException(\RuntimeException::class);
@@ -533,6 +492,6 @@ final class DataMapperTest extends FunctionalTestCase
         self::expectExceptionCode(1680071491);
         $subject = $this->get(DataMapper::class);
         $subjectReflection = new \ReflectionObject($subject);
-        $subjectReflection->getMethod('createEmptyObject')->invoke($subject, Fixtures\HydrationFixtureEntity::class);
+        $subjectReflection->getMethod('createEmptyObject')->invoke($subject, HydrationFixtureEntity::class);
     }
 }

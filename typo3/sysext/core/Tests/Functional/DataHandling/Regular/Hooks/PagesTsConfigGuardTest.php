@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\Hooks;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -47,9 +48,7 @@ final class PagesTsConfigGuardTest extends FunctionalTestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pagesTsConfigIsConsideredForAdminUser(): void
     {
         $backendUser = $this->setUpBackendUser(1);
@@ -71,9 +70,7 @@ final class PagesTsConfigGuardTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/pagesTsConfigIsConsideredForAdminUser.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pagesTsConfigIsIgnoredForNonAdminUser(): void
     {
         $backendUser = $this->setUpBackendUser(9);

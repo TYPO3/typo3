@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\View;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -30,9 +31,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         'typo3/sysext/backend/Tests/Functional/View/Fixtures/Extensions/test_templates_c',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUsesTemplatePathsWithPackageGivenAsRouteOption()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']));
@@ -44,9 +43,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('Foo partial from extension test_templates_a', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUsesTemplatePathsWithPackageGivenAsArgument()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
@@ -58,9 +55,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('Foo partial from extension test_templates_a', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUsesOverrideTemplatePathsWithBasePackageNameFromRoute()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', ['packageName' => 'typo3tests/cms-test-templates-a']));
@@ -72,9 +67,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('Foo partial from extension test_templates_b', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUsesOverrideTemplatePathsWithMultiplePackagesGivenAsArgument()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
@@ -92,9 +85,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('Foo partial from extension test_templates_b', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUsesPrefersTemplateFromLastOverrideWithMultiplePackagesGivenAsArgument()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
@@ -112,9 +103,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('Foo partial from extension test_templates_a', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUsesFirstExistingFilesInChainBeginningFromLastOverrideWithMultiplePackagesGivenAsArgument()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
@@ -133,9 +122,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('Foo partial from extension test_templates_a', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAllowsOverridesUsingTsConfig()
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendViewFactoryTestPages.csv');
@@ -150,9 +137,7 @@ final class BackendViewFactoryTest extends FunctionalTestCase
         self::assertStringContainsString('Foo partial from extension test_templates_b', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAllowsOverridesUsingTsConfigUsesFirstExistingFilesInChain()
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendViewFactoryTestPagesWithFallback.csv');

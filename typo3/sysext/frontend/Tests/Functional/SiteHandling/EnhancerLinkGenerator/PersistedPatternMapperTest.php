@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerLinkGenerator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
@@ -97,10 +99,8 @@ final class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTest
         return static::persistedPatternMapperDataProviderBuilder();
     }
 
-    /**
-     * @test
-     * @dataProvider persistedPatternMapperDataProvider
-     */
+    #[DataProvider('persistedPatternMapperDataProvider')]
+    #[Test]
     public function persistedPatternMapperIsApplied(TestSet $testSet): void
     {
         $builder = Builder::create();
@@ -153,10 +153,8 @@ final class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTest
         return $testSets;
     }
 
-    /**
-     * @test
-     * @dataProvider pageTypeDecoratorIsAppliedDataProvider
-     */
+    #[DataProvider('pageTypeDecoratorIsAppliedDataProvider')]
+    #[Test]
     public function pageTypeDecoratorIsApplied(TestSet $testSet): void
     {
         parent::pageTypeDecoratorIsApplied($testSet);

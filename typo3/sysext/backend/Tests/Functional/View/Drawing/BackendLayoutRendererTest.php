@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\View\Drawing;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -81,9 +82,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
@@ -94,9 +93,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function oneRowBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
@@ -112,9 +109,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multipleRowsBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
@@ -133,9 +128,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function oneRowOneColBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
@@ -158,9 +151,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function oneRowMultipleColsBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
@@ -186,9 +177,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multipleRowsOneColBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
@@ -218,9 +207,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multipleRowsMultipleColsBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
@@ -256,9 +243,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noColPosBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [

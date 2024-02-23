@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\MfaInfoElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -42,9 +43,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $languageServiceMock;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsEmptyResultOnInvalidTableTest(): void
     {
         $result = $this->getFormElementResult([
@@ -54,9 +53,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertEmpty($result['html']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsElementWithMfaDisabledTest(): void
     {
         $result = $this->getFormElementResult([
@@ -81,9 +78,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertEmpty($result['javaScriptModules']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsElementWithoutInvalidProviderTest(): void
     {
         $result = $this->getFormElementResult([
@@ -108,9 +103,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertEmpty($result['javaScriptModules']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsElementWithMfaActiveTest(): void
     {
         $result = $this->getFormElementResult([
@@ -144,9 +137,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['javaScriptModules'][0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsElementWithMfaActiveAndLockedProvidersTest(): void
     {
         $result = $this->getFormElementResult([
@@ -180,9 +171,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['javaScriptModules'][0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsElementWithoutDeactivationButtonsOnMissingPermissionsTest(): void
     {
         // Make the target user a system maintainer. Since the current user (1)

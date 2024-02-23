@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Utility\File;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
@@ -37,9 +38,7 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function folderHasFilesInUseReturnsTrueIfItHasFilesInUse(): void
     {
         $storageRepository = $this->get(StorageRepository::class);
@@ -52,9 +51,7 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function folderHasFilesInUseReturnsFalseIfItHasNoFilesInUse(): void
     {
         $storageRepository = $this->get(StorageRepository::class);
@@ -67,9 +64,7 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function folderHasFilesInUseReturnsFalseIfItHasNoFiles(): void
     {
         $storageRepository = $this->get(StorageRepository::class);

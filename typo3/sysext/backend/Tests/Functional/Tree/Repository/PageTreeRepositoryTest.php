@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Tree\Repository;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Tree\Repository\Fixtures\Tree\NormalizeTreeTrait;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -224,10 +226,8 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider getTreeLevelsReturnsGroupedAndSortedPageTreeArrayDataProvider
-     * @test
-     */
+    #[DataProvider('getTreeLevelsReturnsGroupedAndSortedPageTreeArrayDataProvider')]
+    #[Test]
     public function getTreeLevelsReturnsGroupedAndSortedPageTreeArray(array $pageTree, int $depth, array $entryPointIds, array $expected): void
     {
         $pageTreeRepository = new PageTreeRepository();
@@ -308,10 +308,8 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fetchFilteredTreeDataProvider
-     */
+    #[DataProvider('fetchFilteredTreeDataProvider')]
+    #[Test]
     public function fetchFilteredTreeShowsResults(string $search, int $workspaceId, int $entryPoint, array $expectedResult): void
     {
         $pageTreeRepository = new PageTreeRepository($workspaceId);

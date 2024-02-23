@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -34,9 +36,7 @@ final class RegularExpressionValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function regularExpressionValidatorMatchesABasicExpressionCorrectly(): void
     {
         $options = ['regularExpression' => '/^simple[0-9]expression$/'];
@@ -46,9 +46,7 @@ final class RegularExpressionValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate('simple1expressions')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch(): void
     {
         $options = ['regularExpression' => '/^simple[0-9]expression$/'];
@@ -59,9 +57,7 @@ final class RegularExpressionValidatorTest extends FunctionalTestCase
         self::assertEquals([new Error('The given subject did not match the pattern.', 1221565130)], $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customErrorMessageIsRespected(): void
     {
         $options = [
@@ -94,10 +90,8 @@ final class RegularExpressionValidatorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider customErrorMessagesDataProvider
-     */
+    #[DataProvider('customErrorMessagesDataProvider')]
+    #[Test]
     public function translatableErrorMessageContainsDefaultValue(string $input, string $expected): void
     {
         $options = [

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Core;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -28,9 +29,7 @@ final class ClassAliasLoaderTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Cache/Core/Fixtures/Extensions/aliases_test',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aliasMapsFromExtensionsCanBeLoaded(): void
     {
         // @phpstan-ignore-next-line PHPStan does not know about class aliases.

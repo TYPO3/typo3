@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\File;
@@ -81,10 +83,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidArgumentsDataProvider
-     */
+    #[DataProvider('invalidArgumentsDataProvider')]
+    #[Test]
     public function renderThrowsExceptionOnInvalidArguments(string $template, int $expectedExceptionCode, string $message): void
     {
         $this->expectException(Exception::class);
@@ -132,10 +132,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidArgumentsWithContentObjectPresentDataProvider
-     */
+    #[DataProvider('invalidArgumentsWithContentObjectPresentDataProvider')]
+    #[Test]
     public function renderThrowsExceptionWithContentObjectPresentOnInvalidArguments(string $template, int $expectedExceptionCode, string $message): void
     {
         $this->expectException(Exception::class);
@@ -177,10 +175,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderReturnsExpectedMarkupDataProvider
-     */
+    #[DataProvider('renderReturnsExpectedMarkupDataProvider')]
+    #[Test]
     public function renderReturnsExpectedMarkup(string $template, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -188,9 +184,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         self::assertMatchesRegularExpression($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsCorrectAltAttribute(): void
     {
         $imageServiceMock = $this->createMock(ImageService::class);

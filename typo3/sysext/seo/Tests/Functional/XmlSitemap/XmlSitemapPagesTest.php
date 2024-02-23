@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 /**
  * Contains functional tests for the XmlSitemap Index
  */
@@ -32,9 +35,9 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
 
     /**
      * @param string $urlPattern
-     * @test
-     * @dataProvider pagesToCheckDataProvider
      */
+    #[DataProvider('pagesToCheckDataProvider')]
+    #[Test]
     public function checkIfPagesSiteMapContainsExpectedEntries($urlPattern): void
     {
         $response = $this->getResponse();
@@ -49,9 +52,7 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         self::assertMatchesRegularExpression($urlPattern, (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pagesSitemapDoesNotContainUrlWithCanonicalSet(): void
     {
         self::assertStringNotContainsString(
@@ -60,9 +61,7 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pagesSitemapDoesNotContainUrlWithNoIndexSet(): void
     {
         self::assertStringNotContainsString(
@@ -73,9 +72,8 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
 
     /**
      * Tests for exclusion depending on the l18n_cfg field
-     *
-     * @test
      */
+    #[Test]
     public function pagesSitemapInDefaultLanguageDoesNotContainSiteThatIsHiddenInDefaultLanguage(): void
     {
         self::assertStringNotContainsString(
@@ -86,9 +84,8 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
 
     /**
      * Tests for exclusion depending on the l18n_cfg field
-     *
-     * @test
      */
+    #[Test]
     public function pagesSitemapInAlternativeLanguageDoesNotContainSiteThatIsHiddenIfNotTranslated(): void
     {
         self::assertStringNotContainsString(
@@ -106,9 +103,7 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pagesSitemapContainsTranslatedPages(): void
     {
         self::assertEquals(
@@ -117,9 +112,7 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pagesSitemapDoesNotContainUntranslatedPages(): void
     {
         self::assertStringNotContainsString(
@@ -128,9 +121,7 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pagesSitemapRespectFallbackStrategy(): void
     {
         self::assertStringContainsString(
@@ -139,9 +130,7 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pagesSitemapDoesNotContainUrlsOfExcludedPages(): void
     {
         $this->setUpFrontendRootPage(

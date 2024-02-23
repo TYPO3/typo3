@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Functional\Tca;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,9 +36,7 @@ final class TaskGroupVisibleFieldsTest extends FunctionalTestCase
         'description',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function taskGroupFormContainsExpectedFields(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

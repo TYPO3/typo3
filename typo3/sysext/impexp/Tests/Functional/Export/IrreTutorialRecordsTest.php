@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -31,9 +32,7 @@ final class IrreTutorialRecordsTest extends AbstractImportExportTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributesimple',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportIrreRecords(): void
     {
         $recordTypesIncludeFields = include __DIR__ . '/../Fixtures/IrreRecordsIncludeFields.php';

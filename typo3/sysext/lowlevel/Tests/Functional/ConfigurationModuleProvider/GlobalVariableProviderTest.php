@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Tests\Functional\ConfigurationModuleProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class GlobalVariableProviderTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyBlindedConfigurationOptionsEventIsTriggered(): void
     {
         $modifyBlindedConfigurationOptionsEvent = null;

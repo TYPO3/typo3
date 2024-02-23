@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Icon\IconState;
@@ -29,9 +30,7 @@ final class IconViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallsIconFactoryWithDefaultSizeAndDefaultStateAndReturnsResult(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
@@ -47,9 +46,7 @@ final class IconViewHelperTest extends FunctionalTestCase
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallsIconFactoryWithGivenSizeAndReturnsResult(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
@@ -65,9 +62,7 @@ final class IconViewHelperTest extends FunctionalTestCase
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallsIconFactoryWithGivenStateAndReturnsResult(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
@@ -83,9 +78,7 @@ final class IconViewHelperTest extends FunctionalTestCase
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallsIconFactoryWithGivenOverlayAndReturnsResult(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
@@ -101,9 +94,7 @@ final class IconViewHelperTest extends FunctionalTestCase
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function titleIsPassedFromViewhelperToIconClass(): void
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);

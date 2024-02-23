@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Backend\RedisBackend;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -87,9 +88,7 @@ final class RedisBackendTest extends FunctionalTestCase
         return $redis;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNotAnInteger(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -98,9 +97,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $this->setUpSubject(['database' => 'foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNegative(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -109,9 +106,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $this->setUpSubject(['database' => -1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCompressionThrowsExceptionIfCompressionParameterIsNotOfTypeBoolean(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -120,9 +115,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $this->setUpSubject(['compression' => 'foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotInteger(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -131,9 +124,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $this->setUpSubject(['compressionLevel' => 'foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotBetweenMinusOneAndNine(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -142,9 +133,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $this->setUpSubject(['compressionLevel' => 11]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConnectionTimeoutThrowsExceptionIfConnectionTimeoutIsNotInteger(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -153,9 +142,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $this->setUpSubject(['connectionTimeout' => 'foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setConnectionTimeoutThrowsExceptionIfConnectionTimeoutIsNegative(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -164,9 +151,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $this->setUpSubject(['connectionTimeout' => -1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfIdentifierIsNotAString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -176,9 +161,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->set([], 'data');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfDataIsNotAString(): void
     {
         $this->expectException(InvalidDataException::class);
@@ -188,9 +171,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->set(StringUtility::getUniqueId('identifier'), []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfLifetimeIsNegative(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -200,9 +181,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->set(StringUtility::getUniqueId('identifier'), 'data', [], -42);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfLifetimeIsNotNullOrAnInteger(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -212,9 +191,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->set(StringUtility::getUniqueId('identifier'), 'data', [], []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setStoresEntriesInSelectedDatabase(): void
     {
         $redis = $this->setUpRedis();
@@ -230,9 +207,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesStringDataTypeForIdentifierToDataEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -242,9 +217,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame(\Redis::REDIS_STRING, $redis->type('identData:' . $identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesEntryWithDefaultLifeTime(): void
     {
         $subject = $this->setUpSubject();
@@ -257,9 +230,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($defaultLifetime, $lifetimeRegisteredInBackend);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesEntryWithSpecifiedLifeTime(): void
     {
         $subject = $this->setUpSubject();
@@ -271,9 +242,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($lifetime, $lifetimeRegisteredInBackend);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesEntryWithUnlimitedLifeTime(): void
     {
         $subject = $this->setUpSubject();
@@ -284,9 +253,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame(31536000, $lifetimeRegisteredInBackend);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverwritesExistingEntryWithNewData(): void
     {
         $subject = $this->setUpSubject();
@@ -299,9 +266,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($otherData, $fetchedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverwritesExistingEntryWithSpecifiedLifetime(): void
     {
         $subject = $this->setUpSubject();
@@ -315,9 +280,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($lifetime, $lifetimeRegisteredInBackend);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverwritesExistingEntryWithNewDefaultLifetime(): void
     {
         $subject = $this->setUpSubject();
@@ -333,9 +296,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($newDefaultLifetime, $lifetimeRegisteredInBackend);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverwritesExistingEntryWithNewUnlimitedLifetime(): void
     {
         $subject = $this->setUpSubject();
@@ -349,9 +310,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame(31536000, $lifetimeRegisteredInBackend);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesSetDataTypeForIdentifierToTagsSet(): void
     {
         $subject = $this->setUpSubject();
@@ -361,9 +320,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame(\Redis::REDIS_SET, $redis->type('identTags:' . $identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesSpecifiedTagsInIdentifierToTagsSet(): void
     {
         $subject = $this->setUpSubject();
@@ -376,9 +333,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($tags, $savedTags);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRemovesAllPreviouslySetTagsFromIdentifierToTagsSet(): void
     {
         $subject = $this->setUpSubject();
@@ -390,9 +345,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([], $redis->sMembers('identTags:' . $identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRemovesMultiplePreviouslySetTagsFromIdentifierToTagsSet(): void
     {
         $subject = $this->setUpSubject();
@@ -407,9 +360,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($secondTagSet, $actualTagSet);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesSetDataTypeForTagToIdentifiersSet(): void
     {
         $subject = $this->setUpSubject();
@@ -420,9 +371,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame(\Redis::REDIS_SET, $redis->type('tagIdents:' . $tag));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesIdentifierInTagToIdentifiersSetOfSpecifiedTag(): void
     {
         $subject = $this->setUpSubject();
@@ -434,9 +383,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([$identifier], $savedTagToIdentifiersMemberArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAppendsSecondIdentifierInTagToIdentifiersEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -453,9 +400,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([$firstIdentifier, $secondIdentifier], $savedTagToIdentifiersMemberArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRemovesIdentifierFromTagToIdentifiersEntryIfTagIsOmittedOnConsecutiveSet(): void
     {
         $subject = $this->setUpSubject();
@@ -468,9 +413,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([], $savedTagToIdentifiersMemberArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAddsIdentifierInTagToIdentifiersEntryIfTagIsAddedOnConsecutiveSet(): void
     {
         $subject = $this->setUpSubject();
@@ -483,9 +426,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([$identifier], $savedTagToIdentifiersMemberArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesCompressedDataWithEnabledCompression(): void
     {
         $subject = $this->setUpSubject([
@@ -503,9 +444,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertEquals($data, $uncompressedStoredData, 'Original and compressed data don\'t match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSavesPlaintextDataWithEnabledCompressionAndCompressionLevel0(): void
     {
         $subject = $this->setUpSubject([
@@ -519,9 +458,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertGreaterThan(0, substr_count($redis->get('identData:' . $identifier), $data), 'Plaintext data not found');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasThrowsExceptionIfIdentifierIsNotAString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -531,9 +468,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->has([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsFalseForNotExistingEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -541,9 +476,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsTrueForPreviouslySetEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -552,9 +485,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertTrue($subject->has($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getThrowsExceptionIfIdentifierIsNotAString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -564,9 +495,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->get([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsPreviouslyCompressedSetEntry(): void
     {
         $subject = $this->setUpSubject([
@@ -579,9 +508,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($data, $fetchedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsPreviouslySetEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -592,9 +519,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($data, $fetchedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeThrowsExceptionIfIdentifierIsNotAString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -604,18 +529,14 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->remove([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeReturnsFalseIfNoEntryWasDeleted(): void
     {
         $subject = $this->setUpSubject();
         self::assertFalse($subject->remove(StringUtility::getUniqueId('identifier')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeReturnsTrueIfAnEntryWasDeleted(): void
     {
         $subject = $this->setUpSubject();
@@ -624,9 +545,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertTrue($subject->remove($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDeletesEntryFromCache(): void
     {
         $subject = $this->setUpSubject();
@@ -636,9 +555,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDeletesIdentifierToTagEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -655,9 +572,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDeletesIdentifierFromTagToIdentifiersSet(): void
     {
         $subject = $this->setUpSubject();
@@ -670,9 +585,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([], $tagToIdentifiersMemberArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDeletesIdentifierFromTagToIdentifiersSetWithMultipleEntries(): void
     {
         $subject = $this->setUpSubject();
@@ -687,9 +600,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([$secondIdentifier], $tagToIdentifiersMemberArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagThrowsExceptionIfTagIsNotAString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -699,18 +610,14 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->findIdentifiersByTag([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagReturnsEmptyArrayForNotExistingTag(): void
     {
         $subject = $this->setUpSubject();
         self::assertSame([], $subject->findIdentifiersByTag('thisTag'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagReturnsAllIdentifiersTagedWithSpecifiedTag(): void
     {
         $subject = $this->setUpSubject();
@@ -729,9 +636,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushRemovesAllEntriesFromCache(): void
     {
         $subject = $this->setUpSubject();
@@ -742,9 +647,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([], $redis->keys('*'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagThrowsExceptionIfTagIsNotAString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -754,9 +657,7 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->flushByTag([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesEntriesTaggedWithSpecifiedTag(): void
     {
         $subject = $this->setUpSubject();
@@ -774,9 +675,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagsRemovesEntriesTaggedWithSpecifiedTags(): void
     {
         $subject = $this->setUpSubject();
@@ -796,9 +695,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesTemporarySet(): void
     {
         $subject = $this->setUpSubject();
@@ -810,9 +707,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([], $redis->keys('temp*'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesIdentifierToTagsSetOfEntryTaggedWithGivenTag(): void
     {
         $subject = $this->setUpSubject();
@@ -829,9 +724,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagDoesNotRemoveIdentifierToTagsSetOfUnrelatedEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -846,9 +739,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([$tagNotToRemove], $redis->sMembers('identTags:' . $identifierNotToBeRemoved));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesTagToIdentifiersSetOfGivenTag(): void
     {
         $subject = $this->setUpSubject();
@@ -865,9 +756,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesIdentifiersTaggedWithGivenTagFromTagToIdentifiersSets(): void
     {
         $subject = $this->setUpSubject();
@@ -880,9 +769,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame([$identifier . 'C'], $redis->sMembers('tagIdents:tag2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageDoesNotRemoveNotExpiredIdentifierToDataEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -900,9 +787,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageRemovesLeftOverIdentifierToTagsSet(): void
     {
         $subject = $this->setUpSubject();
@@ -930,9 +815,7 @@ final class RedisBackendTest extends FunctionalTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectGarbageRemovesExpiredIdentifierFromTagsToIdentifierSet(): void
     {
         $subject = $this->setUpSubject();

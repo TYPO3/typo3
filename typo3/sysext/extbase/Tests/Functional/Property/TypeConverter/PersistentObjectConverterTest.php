@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -41,9 +42,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function converterReturnsNullWithEmptyStringsOrIntegers(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -52,9 +51,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         self::assertNull($propertyMapper->convert('', BackendUser::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchObjectFromPersistenceThrowsInvalidSourceExceptionIfSourceIANonNumericString(): void
     {
         $this->expectException(Exception::class);
@@ -64,9 +61,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->get(PropertyMapper::class)->convert('foo', BackendUser::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchObjectFromPersistenceThrowsTargetNotFoundExceptionIfObjectIsNotToBeFoundInThePersistence(): void
     {
         $this->expectException(TargetNotFoundException::class);
@@ -76,9 +71,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->get(PropertyMapper::class)->convert(2, BackendUser::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsAnInteger(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -89,9 +82,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         self::assertSame(1, $backendUser->getUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsANumericString(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -102,9 +93,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         self::assertSame(1, $backendUser->getUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function converterBuildsEmptyObjectIfSourceIsAnEmptyArray(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -115,9 +104,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         self::assertNull($backendUser->getUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsAnArrayWithIdentityKey(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -128,9 +115,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         self::assertSame(1, $backendUser->getUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleArrayDataThrowsInvalidPropertyMappingConfigurationExceptionIfCreationOfObjectsIsNotAllowed(): void
     {
         $this->expectException(Exception::class);
@@ -151,9 +136,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function converterRespectsAndSetsProperties(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -165,9 +148,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         self::assertSame('johndoe', $backendUser->getUserName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyIsNonExistant(): void
     {
         $this->expectException(Exception::class);
@@ -177,9 +158,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->get(PropertyMapper::class)->convert(['nonExistant' => 'johndoe'], BackendUser::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsInvalidTargetExceptionIfSourceContainsANonSettableProperty(): void
     {
         $this->expectException(Exception::class);

@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 /**
  * Scenario prerequisites:
  *   Site configuration has localizations
@@ -92,10 +95,8 @@ final class ScenarioDTest extends AbstractLocalizedPagesTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolvablePagesDataProvider
-     */
+    #[DataProvider('resolvablePagesDataProvider')]
+    #[Test]
     public function resolvedPagesMatchScopes(string $url, array $scopes): void
     {
         $this->assertScopes($url, $scopes);
@@ -116,10 +117,8 @@ final class ScenarioDTest extends AbstractLocalizedPagesTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider pageNotFoundDataProvider
-     */
+    #[DataProvider('pageNotFoundDataProvider')]
+    #[Test]
     public function pageNotFound(string $url): void
     {
         $this->assertResponseStatusCode($url);
@@ -167,18 +166,14 @@ final class ScenarioDTest extends AbstractLocalizedPagesTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider menuDataProvider
-     */
+    #[DataProvider('menuDataProvider')]
+    #[Test]
     public function pageMenuIsRendered(string $url, array $expectedMenu): void
     {
         $this->assertMenu($url, $expectedMenu);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function languageMenuHasLanguageShortcutsWithLanguageSpecificUrls(): void
     {
         $expectedMenu = [

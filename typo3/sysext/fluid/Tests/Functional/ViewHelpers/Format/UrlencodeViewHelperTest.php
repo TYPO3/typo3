@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -47,10 +49,8 @@ final class UrlencodeViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
+    #[Test]
     public function render(string $template, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -61,9 +61,8 @@ final class UrlencodeViewHelperTest extends FunctionalTestCase
     /**
      * Ensures that objects are handled properly:
      * + class having __toString() method gets tags stripped off
-     *
-     * @test
      */
+    #[Test]
     public function renderEscapesObjectIfPossible(): void
     {
         $toStringClass = new class () {

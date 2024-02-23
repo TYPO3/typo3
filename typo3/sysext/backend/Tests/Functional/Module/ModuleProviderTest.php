@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Module;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
@@ -27,9 +28,7 @@ final class ModuleProviderTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function workspaceAccessIsInherited(): void
     {
         $parentModule = $this->get(ModuleFactory::class)->createModule(

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,9 +38,7 @@ final class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCa
         $this->backendUser->workspace = 0;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletePageCausesNoErrorsWithTranslatedSubpage(): void
     {
         $cmd = null;

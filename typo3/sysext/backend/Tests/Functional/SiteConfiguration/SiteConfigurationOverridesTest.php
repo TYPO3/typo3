@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\SiteConfiguration;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -41,9 +42,7 @@ final class SiteConfigurationOverridesTest extends FunctionalTestCase
         $this->subject = (new SiteTcaConfiguration())->getTca();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allOverridesLoaded(): void
     {
         $columnsConfiguration = $this->subject['site']['columns'];
@@ -52,9 +51,7 @@ final class SiteConfigurationOverridesTest extends FunctionalTestCase
         self::assertArrayHasKey('tx_b_a', $columnsConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideOnlyLoadedOnce(): void
     {
         $showitemConfiguration = $this->subject['site']['types']['0']['showitem'];
@@ -63,9 +60,7 @@ final class SiteConfigurationOverridesTest extends FunctionalTestCase
         self::assertSame(1, mb_substr_count($showitemConfiguration, 'tx_b_a'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finderUsesCorrectOrder(): void
     {
         $columnsConfiguration = $this->subject['site']['columns'];

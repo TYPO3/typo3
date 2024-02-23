@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\MultiSite;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,10 +44,7 @@ final class MultiSiteTest extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
     }
 
-    /**
-     * @test
-     * See DataSet/moveRootPageToDifferentPageTree.csv
-     */
+    #[Test]
     public function moveRootPageToDifferentPageTree(): void
     {
         // Warm up caches for the root line utility to identify side effects

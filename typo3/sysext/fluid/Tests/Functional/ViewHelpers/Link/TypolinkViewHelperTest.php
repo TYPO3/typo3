@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -138,10 +140,8 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
+    #[Test]
     public function render(string $template, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
@@ -209,10 +209,8 @@ EOT
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderWithAssignedParametersDataProvider
-     */
+    #[DataProvider('renderWithAssignedParametersDataProvider')]
+    #[Test]
     public function renderWithAssignedParameters(string $template, array $assigns, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

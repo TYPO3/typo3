@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -29,9 +31,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/label_test'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function implodeTypoScriptLabelArrayWorks(): void
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
@@ -59,17 +59,13 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translateForEmptyStringKeyReturnsNull(): void
     {
         self::assertNull(LocalizationUtility::translate('', 'extbase'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translateForEmptyStringKeyWithArgumentsReturnsNull(): void
     {
         self::assertNull(LocalizationUtility::translate('', 'extbase', ['argument']));
@@ -98,10 +94,8 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider translateDataProvider
-     * @test
-     */
+    #[DataProvider('translateDataProvider')]
+    #[Test]
     public function translateTestWithBackendUserLanguage(string $key, string $languageKey, string $expected, array $altLanguageKeys = [], array $arguments = null): void
     {
         // No TypoScript overrides
@@ -117,10 +111,8 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, alternativeLanguageKeys: $altLanguageKeys));
     }
 
-    /**
-     * @dataProvider translateDataProvider
-     * @test
-     */
+    #[DataProvider('translateDataProvider')]
+    #[Test]
     public function translateTestWithExplicitLanguageParameters(
         string $key,
         string $languageKey,
@@ -141,9 +133,8 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 
     /**
      * Tests whether labels from XLF are overwritten by TypoScript labels
-     *
-     * @test
      */
+    #[Test]
     public function loadTypoScriptLabels(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
@@ -181,9 +172,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         self::assertSame('key3.subkey2.subsubkey value from TypoScript', LocalizationUtility::translate('key3.subkey2.subsubkey', 'label_test', languageKey: 'da'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearLabelWithTypoScript(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
@@ -209,9 +198,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         self::assertSame('', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translateThrowsExceptionWithEmptyExtensionNameIfKeyIsNotPrefixedWithLLL(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -219,9 +206,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         LocalizationUtility::translate('foo/bar', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();

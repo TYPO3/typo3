@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PagesRepositoryTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function doesRootLineContainHiddenPagesReturnsCorrectResultWith(): void
     {
         $pageInfo = [
@@ -40,9 +39,7 @@ final class PagesRepositoryTest extends FunctionalTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesRootLineContainHiddenPagesReturnsCorrectResultWithout(): void
     {
         $pageInfo = [

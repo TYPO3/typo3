@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\HrefLang;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -70,10 +72,8 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
         });
     }
 
-    /**
-     * @test
-     * @dataProvider checkHrefLangOutputDataProvider
-     */
+    #[DataProvider('checkHrefLangOutputDataProvider')]
+    #[Test]
     public function checkHrefLangOutput(string $url, array $expectedTags, array $notExpectedTags): void
     {
         $this->setUpFrontendRootPage(

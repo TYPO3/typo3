@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Backend\Shortcut;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
@@ -53,10 +55,8 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @dataProvider shortcutExistsTestDataProvider
-     * @test
-     */
+    #[DataProvider('shortcutExistsTestDataProvider')]
+    #[Test]
     public function shortcutExistsTest(string $routeIdentifier, array $arguments, int $userid, bool $exists): void
     {
         $GLOBALS['BE_USER']->user['uid'] = $userid;
@@ -91,9 +91,7 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addShortcutTest(): void
     {
         foreach ($this->getShortcutsToAdd() as $shortcut) {
@@ -130,9 +128,8 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
 
     /**
      * This effectively also tests ShortcutRepository::initShortcuts()
-     *
-     * @test
      */
+    #[Test]
     public function getShortcutsByGroupTest(): void
     {
         $expected = [

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -33,9 +35,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataOnlyWorksForTypeCategory(): void
     {
         $input = [
@@ -63,9 +63,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaCategory())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataChecksForTargetRenderType(): void
     {
         $input = [
@@ -94,9 +92,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaCategory())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataInitializesDefaultFieldConfiguration(): void
     {
         $input = [
@@ -130,9 +126,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaCategory())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataOverridesDefaultFieldConfigurationByTSconfig(): void
     {
         $input = [
@@ -220,10 +214,8 @@ final class TcaCategoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider addDataOverridesDefaultFieldConfigurationBySiteConfigDataProvider
-     * @test
-     */
+    #[DataProvider('addDataOverridesDefaultFieldConfigurationBySiteConfigDataProvider')]
+    #[Test]
     public function addDataOverridesDefaultFieldConfigurationBySiteConfig(string $inputStartingPoints, string $expectedStartingPoints, Site $site): void
     {
         $input = [
@@ -264,9 +256,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaCategory())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataProcessesCategoryFieldValue(): void
     {
         $input = [
@@ -303,9 +293,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaCategory())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataThorwsExceptionForStaticItems(): void
     {
         $input = [
@@ -341,9 +329,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         (new TcaCategory())->addData($input);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataBuildsTreeForSingle(): void
     {
         $input = [
@@ -385,9 +371,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaCategory())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataBuildsTreeForCsv(): void
     {
         $input = [
@@ -455,9 +439,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         self::assertEquals($expected, (new TcaCategory())->addData($input));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addDataBuildsTreeForMM(): void
     {
         $input = [

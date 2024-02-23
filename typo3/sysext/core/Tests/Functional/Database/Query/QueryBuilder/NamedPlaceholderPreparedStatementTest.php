@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\QueryBuilder;
 
 use Doctrine\DBAL\ParameterType;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\NamedParameterNotSupportedForPreparedStatementException;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -32,9 +33,7 @@ final class NamedPlaceholderPreparedStatementTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/queryBuilder_preparedStatement.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsNamedParameterNotSupportedForPreparedStatementExceptionIfNamedPlacholderAreSetOnPrepare(): void
     {
         $this->expectExceptionObject(

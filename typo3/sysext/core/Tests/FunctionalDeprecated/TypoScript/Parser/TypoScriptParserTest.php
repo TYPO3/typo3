@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated\TypoScript\Parser;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -27,9 +28,8 @@ final class TypoScriptParserTest extends FunctionalTestCase
     /**
      * This tests triggers an error if the serialize(unserialize())) call
      * within TypoScriptParser is removed. See forge issue #76919
-     *
-     * @test
      */
+    #[Test]
     public function hasFlakyReferences(): void
     {
         $typoScript = implode(LF, [

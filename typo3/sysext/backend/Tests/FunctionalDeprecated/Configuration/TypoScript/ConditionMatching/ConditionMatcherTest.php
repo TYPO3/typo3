@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\FunctionalDeprecated\Configuration\TypoScript\ConditionMatching;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
+use Symfony\Component\ExpressionLanguage\Node\BinaryNode;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -45,9 +48,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether usergroup comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function usergroupConditionMatchesSingleGroupId(): void
     {
         $subject = $this->getConditionMatcher();
@@ -58,9 +60,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether usergroup comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function usergroupConditionMatchesMultipleUserGroupId(): void
     {
         $subject = $this->getConditionMatcher();
@@ -70,9 +71,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether checking for a user group matches.
-     *
-     * @test
      */
+    #[Test]
     public function userGroupInOperatorConditionMatchesGroupId(): void
     {
         $subject = $this->getConditionMatcher();
@@ -81,9 +81,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether user comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function loginUserConditionMatchesAnyLoggedInUser(): void
     {
         $subject = $this->getConditionMatcher();
@@ -93,9 +92,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether user comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function loginUserConditionMatchesSingleLoggedInUser(): void
     {
         $subject = $this->getConditionMatcher();
@@ -106,9 +104,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether user comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function loginUserConditionDoesNotMatchSingleLoggedInUser(): void
     {
         $subject = $this->getConditionMatcher();
@@ -119,9 +116,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether user comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function loginUserConditionMatchesMultipleLoggedInUsers(): void
     {
         $subject = $this->getConditionMatcher();
@@ -131,9 +127,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether checking for an admin user matches
-     *
-     * @test
      */
+    #[Test]
     public function adminUserConditionMatchesAdminUser(): void
     {
         $subject = $this->getConditionMatcher();
@@ -144,9 +139,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether checking for workspace id matches current workspace id
-     *
-     * @test
      */
+    #[Test]
     public function workspaceIdConditionMatchesCurrentWorkspaceId(): void
     {
         $this->setUpWorkspaceAspect(0);
@@ -159,9 +153,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether checking if workspace is live matches
-     *
-     * @test
      */
+    #[Test]
     public function workspaceIsLiveMatchesCorrectWorkspaceState(): void
     {
         $this->setUpWorkspaceAspect(1);
@@ -175,9 +168,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether checking if workspace is offline matches
-     *
-     * @test
      */
+    #[Test]
     public function workspaceIsOfflineMatchesCorrectWorkspaceState(): void
     {
         $this->setUpWorkspaceAspect(1);
@@ -191,9 +183,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether treeLevel comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function treeLevelConditionMatchesSingleValue(): void
     {
         $subject = $this->getConditionMatcher(2);
@@ -202,9 +193,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether treeLevel comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function treeLevelConditionMatchesMultipleValues(): void
     {
         $subject = $this->getConditionMatcher(2);
@@ -213,9 +203,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether treeLevel comparison matches.
-     *
-     * @test
      */
+    #[Test]
     public function treeLevelConditionDoesNotMatchFaultyValue(): void
     {
         $subject = $this->getConditionMatcher();
@@ -224,9 +213,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether a page Id is found in the previous rootline entries.
-     *
-     * @test
      */
+    #[Test]
     public function PIDupinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
         $subject = $this->getConditionMatcher(3);
@@ -249,9 +237,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether a page id is not found in the previous rootline entries.
-     *
-     * @test
      */
+    #[Test]
     public function PIDupinRootlineConditionDoesNotMatchLastPageIdInRootline(): void
     {
         $subject = $this->getConditionMatcher(3);
@@ -260,9 +247,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether a page Id is found in the previous rootline entries.
-     *
-     * @test
      */
+    #[Test]
     public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
         $subject = $this->getConditionMatcher(3);
@@ -271,9 +257,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether a page Id is found in all rootline entries.
-     *
-     * @test
      */
+    #[Test]
     public function PIDinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
         $subject = $this->getConditionMatcher(3);
@@ -282,9 +267,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether a page Id is found in all rootline entries.
-     *
-     * @test
      */
+    #[Test]
     public function PIDinRootlineConditionMatchesLastPageIdInRootline(): void
     {
         $subject = $this->getConditionMatcher(3);
@@ -293,9 +277,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether a page Id is found in all rootline entries.
-     *
-     * @test
      */
+    #[Test]
     public function PIDinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
         $subject = $this->getConditionMatcher(3);
@@ -305,9 +288,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
     /**
      * Tests whether the compatibility version can be evaluated.
      * (e.g. 7.9 is compatible to 7.0 but not to 15.0)
-     *
-     * @test
      */
+    #[Test]
     public function compatVersionConditionMatchesOlderRelease(): void
     {
         $subject = $this->getConditionMatcher();
@@ -319,9 +301,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
     /**
      * Tests whether the compatibility version can be evaluated.
      * (e.g. 7.9 is compatible to 7.0 but not to 15.0)
-     *
-     * @test
      */
+    #[Test]
     public function compatVersionConditionMatchesSameRelease(): void
     {
         $typo3Version = new Typo3Version();
@@ -334,9 +315,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
     /**
      * Tests whether the compatibility version can be evaluated.
      * (e.g. 7.9 is compatible to 7.0 but not to 15.0)
-     *
-     * @test
      */
+    #[Test]
     public function compatVersionConditionDoesNotMatchNewerRelease(): void
     {
         $subject = $this->getConditionMatcher();
@@ -347,9 +327,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
 
     /**
      * Tests whether the generic fetching of variables works with the namespace 'ENV'.
-     *
-     * @test
      */
+    #[Test]
     public function genericGetVariablesSucceedsWithNamespaceENV(): void
     {
         $testKey = StringUtility::getUniqueId('test');
@@ -358,9 +337,7 @@ final class ConditionMatcherTest extends FunctionalTestCase
         self::assertTrue($subject->match('[getenv("' . $testKey . '") == "testValue"]'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usingTSFEInATestInBeContextIsAlwaysFalse(): void
     {
         $subject = $this->getConditionMatcher();
@@ -423,10 +400,8 @@ final class ConditionMatcherTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider determinePageIdFindIdFromQueryParametersDataProvider
-     */
+    #[DataProvider('determinePageIdFindIdFromQueryParametersDataProvider')]
+    #[Test]
     public function determinePageIdFindIdFromQueryParameters($queryParameters, $resultPageId): void
     {
         $_GET = $queryParameters;
@@ -458,7 +433,7 @@ final class ConditionMatcherTest extends FunctionalTestCase
         // Symfony 7 dropped the `inArray` method with 7.0.0 from the BinaryNode, so we can use it as a check here for
         // the version and avoid to deal with composer version information here.
         return method_exists(
-            \Symfony\Component\ExpressionLanguage\Node\BinaryNode::class,
+            BinaryNode::class,
             'inArray'
         ) === false;
     }

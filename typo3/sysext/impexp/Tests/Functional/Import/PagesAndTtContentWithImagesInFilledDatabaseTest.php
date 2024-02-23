@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
@@ -32,9 +33,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithDifferentImageToExistingData(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
@@ -60,9 +59,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         self::assertFileEquals(__DIR__ . '/../Fixtures/FileAssertions/typo3_image2_01.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePagesAndRelatedTtContentWithDifferentImageToExistingData(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
@@ -97,9 +94,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         self::assertFileEquals(__DIR__ . '/../Fixtures/FileAssertions/typo3_image2_01.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePagesAndRelatedTtContentWithDifferentImageToExistingDataAndPagesAsNew(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
@@ -138,9 +133,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         self::assertFileEquals(__DIR__ . '/../Fixtures/FileAssertions/typo3_image2_01.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePagesAndRelatedTtContentKeepsRelationsBetweenImportedPagesAndRecords(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
@@ -174,9 +167,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithSameImageToExistingData(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
@@ -220,9 +211,8 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
      * Note the internal handler mixes up insert orders resulting in former tt_content:1
      * ending up as tt_content:3 and 2/3 ending up as 2/1 uid-wise ... making this issue
      * even harder to grasp.
-     *
-     * @test
      */
+    #[Test]
     public function importPagesAndTtContentWithRemappingNewSysFileEntries(): void
     {
         // Have a single sys_file entry with uid 1
@@ -247,9 +237,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndTtContentWithRemappingNewSysFileEntries.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importImageIntoSystemAndMatchingThePathOfTheSecondStorage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
@@ -265,9 +253,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentKeepsRelationBetweenImportedFlexFormsAndPages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
@@ -313,9 +299,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         self::assertEquals(1, $originalUidIsNotActualUid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentKeepsRelationBetweenImportedFlexFormSoftReferenceAndRelatedRecord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
@@ -340,9 +324,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentCanKeepOriginalFlexFormSoftReference(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
@@ -368,9 +350,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentCanEditFlexFormSoftReference(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');

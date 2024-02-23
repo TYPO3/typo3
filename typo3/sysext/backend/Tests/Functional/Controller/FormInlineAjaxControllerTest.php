@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -67,9 +68,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         $this->subject = new FormInlineAjaxController();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createActionWithNewParentReturnsResponseForInlineChildData(): void
     {
         $parsedBody = [
@@ -89,9 +88,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         self::assertNotEmpty($jsonArray['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createActionWithExistingParentReturnsResponseForInlineChildData(): void
     {
         $parsedBody = [
@@ -111,9 +108,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         self::assertNotEmpty($jsonArray['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createActionWithExistingLocalizedParentReturnsResponseWithLocalizedChildData(): void
     {
         $parsedBody = [
@@ -133,9 +128,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<option value="1"[^>]* selected="selected">Dansk<\/option>/', $jsonArray['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createActionWithExistingLocalizedParentAndNotLocalizableChildReturnsResponseWithChildData(): void
     {
         unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['languageField']);

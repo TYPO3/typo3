@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -74,9 +75,7 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContent(): void
     {
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
@@ -96,9 +95,7 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContentWithComplexConfiguration(): void
     {
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);

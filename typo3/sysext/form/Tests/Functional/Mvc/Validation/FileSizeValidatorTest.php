@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -37,9 +38,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function FileSizeValidatorThrowsExceptionIfMinimumOptionIsInvalid(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -50,9 +49,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
         $validator->validate(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function FileSizeValidatorThrowsExceptionIfMaximumOptionIsInvalid(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -63,9 +60,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
         $validator->validate(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToSmall(): void
     {
         $options = ['minimum' => '1M', 'maximum' => '10M'];
@@ -76,9 +71,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate($file)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToBig(): void
     {
         $options = ['minimum' => '1M', 'maximum' => '1M'];
@@ -89,9 +82,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate($file)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function FileSizeValidatorHasNoErrorsIfInputIsEmptyString(): void
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
@@ -100,9 +91,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function FileSizeValidatorHasErrorsIfInputIsNoFileResource(): void
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];

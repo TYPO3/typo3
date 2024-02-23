@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\WorkspacesPublishAll;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular\AbstractActionWorkspacesTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -24,19 +25,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     * See DataSet/createContentRecords.csv
-     */
+    #[Test]
     public function createContents(): void
     {
         parent::createContents();
@@ -49,9 +45,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndCopyContent(): void
     {
         parent::createContentAndCopyContent();
@@ -64,10 +58,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #1 (copy 1)'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyContentRecord.csv
-     */
+    #[Test]
     public function modifyContent(): void
     {
         parent::modifyContent();
@@ -80,9 +71,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hideContent(): void
     {
         parent::hideContent();
@@ -98,9 +87,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hideContentAndMoveToDifferentPage(): void
     {
         parent::hideContent();
@@ -126,9 +113,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteContent(): void
     {
         parent::deleteContent();
@@ -143,9 +128,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteLocalizedContentAndDeleteContent(): void
     {
         // Create translated page first
@@ -162,9 +145,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContent(): void
     {
         parent::copyContent();
@@ -177,9 +158,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2 (copy 1)'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContentToLanguage(): void
     {
         // Create translated page first
@@ -198,9 +177,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3', '[Translate to Dansk:] Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
         // Create translated page first
@@ -219,9 +196,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContent(): void
     {
         // Create translated page first
@@ -236,9 +211,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentAfterMovedContent(): void
     {
         parent::localizeContentAfterMovedContent();
@@ -246,9 +219,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentAfterMovedInLiveContent(): void
     {
         parent::localizeContentAfterMovedInLiveContent();
@@ -256,9 +227,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedInLiveContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
         // Create translated page first
@@ -273,9 +242,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeContentSorting(): void
     {
         parent::changeContentSorting();
@@ -288,9 +255,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeContentSortingAfterSelf(): void
     {
         parent::changeContentSortingAfterSelf();
@@ -303,9 +268,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();
@@ -322,9 +285,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
@@ -337,9 +298,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentToDifferentPageAndHide(): void
     {
         parent::moveContentToDifferentPageAndHide();
@@ -355,9 +314,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveLocalizedContentToDifferentPage(): void
     {
         parent::moveLocalizedContentToDifferentPage();
@@ -397,13 +354,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
     }
 
-    /**
-     * Page records
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function createPage(): void
     {
         parent::createPage();
@@ -416,9 +367,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPageAndSubPageAndSubPageContent(): void
     {
         parent::createPageAndSubPageAndSubPageContent();
@@ -431,9 +380,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1 #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyPage(): void
     {
         parent::modifyPage();
@@ -446,9 +393,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletePage(): void
     {
         parent::deletePage();
@@ -461,9 +406,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteContentAndPage(): void
     {
         parent::deleteContentAndPage();
@@ -476,9 +419,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageAndContentsAndDeletePageLocalization(): void
     {
         // Create localized page and localize content elements first
@@ -493,9 +434,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeNestedPagesAndContents(): void
     {
         parent::localizeNestedPagesAndContents();
@@ -503,9 +442,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNestedPagesAndContents.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -518,9 +455,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPageFreeMode(): void
     {
         parent::copyPageFreeMode();
@@ -535,9 +470,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #10'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePage(): void
     {
         parent::localizePage();
@@ -550,9 +483,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageHiddenHideAtCopyFalse(): void
     {
         parent::localizePageHiddenHideAtCopyFalse();
@@ -560,9 +491,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyFalse.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageNotHiddenHideAtCopyFalse(): void
     {
         parent::localizePageNotHiddenHideAtCopyFalse();
@@ -570,9 +499,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyFalse.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
@@ -580,9 +507,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
@@ -590,9 +515,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopyUnset.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
@@ -600,9 +523,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
@@ -610,9 +531,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
@@ -620,9 +539,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
@@ -630,11 +547,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
-    /**
-     * @test
-     * This test creates a page on pid=88 (unlike other tests) and moves the new draft page on that exact level, in order to only modify the "sorting"
-     * and not the "pid" setting.
-     */
+    #[Test]
     public function createPageAndChangePageSorting(): void
     {
         parent::createPageAndChangePageSorting();
@@ -642,10 +555,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndChangePageSorting.csv');
     }
 
-    /**
-     * @test
-     * This change creates a page on pid=89 and moves the page one level up (= we check the pid value of both placeholder + versioned record).
-     */
+    #[Test]
     public function createPageAndMoveCreatedPage(): void
     {
         parent::createPageAndMoveCreatedPage();
@@ -653,9 +563,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndMoveCreatedPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changePageSorting(): void
     {
         parent::changePageSorting();
@@ -670,9 +578,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changePageSortingAfterSelf(): void
     {
         parent::changePageSortingAfterSelf();
@@ -687,9 +593,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageToDifferentPage(): void
     {
         parent::movePageToDifferentPage();
@@ -704,9 +608,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageToDifferentPageTwice(): void
     {
         parent::movePageToDifferentPageTwice();
@@ -714,9 +616,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageLocalizedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedToDifferentPageTwice();
@@ -724,9 +624,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageLocalizedInLiveToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveToDifferentPageTwice();
@@ -734,9 +632,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
@@ -744,9 +640,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
@@ -754,9 +648,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function movePageToDifferentPageAndChangeSorting(): void
     {
         parent::movePageToDifferentPageAndChangeSorting();
@@ -777,10 +669,10 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @test
      * @see https://forge.typo3.org/issues/33104
      * @see https://forge.typo3.org/issues/55573
      */
+    #[Test]
     public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {
         parent::movePageToDifferentPageAndCreatePageAfterMovedPage();
@@ -794,9 +686,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Testing #1', 'DataHandlerTest'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndCopyDraftPage(): void
     {
         parent::createContentAndCopyDraftPage();
@@ -812,9 +702,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPageAndCopyDraftParentPage(): void
     {
         parent::createPageAndCopyDraftParentPage();
@@ -822,9 +710,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndCopyDraftParentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNestedPagesAndCopyDraftParentPage(): void
     {
         parent::createNestedPagesAndCopyDraftParentPage();
@@ -832,9 +718,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createNestedPagesAndCopyDraftParentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndLocalize(): void
     {
         parent::createContentAndLocalize();
@@ -850,9 +734,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeContentSortingAndCopyDraftPage(): void
     {
         parent::changeContentSortingAndCopyDraftPage();
@@ -860,9 +742,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingAndCopyDraftPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPlaceholdersAndDeleteDraftParentPage(): void
     {
         parent::createPlaceholdersAndDeleteDraftParentPage();
@@ -870,9 +750,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPlaceholdersAndDeleteDraftParentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPlaceholdersAndDeleteLiveParentPage(): void
     {
         parent::createPlaceholdersAndDeleteLiveParentPage();

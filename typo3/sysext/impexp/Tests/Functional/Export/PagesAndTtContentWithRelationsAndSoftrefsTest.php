@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -63,9 +64,7 @@ final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImport
         ]
     ;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContentWithFlexFormRelation(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
@@ -107,9 +106,7 @@ final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImport
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContentWithSoftrefs(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
@@ -152,9 +149,7 @@ final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImport
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContentWithFlexFormSoftrefs(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');

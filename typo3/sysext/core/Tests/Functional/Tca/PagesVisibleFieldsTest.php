@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Tca;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -226,10 +228,8 @@ final class PagesVisibleFieldsTest extends FunctionalTestCase
         return $pageTypes;
     }
 
-    /**
-     * @test
-     * @dataProvider pagesFormContainsExpectedFieldsDataProvider
-     */
+    #[DataProvider('pagesFormContainsExpectedFieldsDataProvider')]
+    #[Test]
     public function pagesFormContainsExpectedFields(int $doktype, array $expectedFields, array $hiddenFields): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

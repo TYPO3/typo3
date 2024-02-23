@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\QueryBuilder;
 
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Statement;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -36,9 +38,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/queryBuilder_preparedStatement.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeInstantiated(): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -48,9 +48,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function preparedStatementWithPositionPlaceholderAndBindValueWorks(): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -90,9 +88,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         self::assertSame(22, (int)($rows2[1]['uid'] ?? 0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function preparedStatementWithPositionPlaceholderAndBindValueWithWileLoopWorks(): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -139,9 +135,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         self::assertSame(22, (int)($rows2[1]['uid'] ?? 0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function preparedStatementWithoutRetrievingFullResultSetAndWithoutFreeingPriorResultSetWorks(): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -176,9 +170,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         self::assertSame(21, (int)($result2->fetchAssociative()['uid'] ?? 0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function preparedStatementWorksIfRetrievedThroughRuntimeCacheAndPriorResultSetNotFreedAfterIncompleteDataRetrieval(): void
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
@@ -236,10 +228,8 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidParameterTypesForPreparedStatements
-     */
+    #[DataProvider('invalidParameterTypesForPreparedStatements')]
+    #[Test]
     public function preparedStatementThrowsExceptionForInvalidParameterType(int $arrayParameterType, string $arrayParameterName, array $arrayValues): void
     {
         // expected exception

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\File;
@@ -69,9 +70,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionOnMissingFile(): void
     {
         $this->expectException(Exception::class);
@@ -82,9 +81,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTagsForPublicFileTest(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -107,9 +104,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTagsForNonPublicFileTest(): void
     {
         // Set storage to non-public
@@ -137,9 +132,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTagsForPublicFileReferenceTest(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -162,9 +155,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTagsForNonPublicFileReferenceTest(): void
     {
         // Set storage to non-public
@@ -192,9 +183,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTagsForPublicProcessedFileTest(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -217,9 +206,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTagsForNonPublicProcessedFileTest(): void
     {
         // Set storage to non-public

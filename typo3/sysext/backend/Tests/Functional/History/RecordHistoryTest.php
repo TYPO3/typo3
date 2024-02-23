@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\History;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -42,10 +44,8 @@ final class RecordHistoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findEventsForCorrelationWorksAsExpectedDataProvider
-     */
+    #[DataProvider('findEventsForCorrelationWorksAsExpectedDataProvider')]
+    #[Test]
     public function findEventsForCorrelationWorksAsExpected(string $correlationId, int $amountOfEntries): void
     {
         self::assertCount($amountOfEntries, $this->subject->findEventsForCorrelation($correlationId));

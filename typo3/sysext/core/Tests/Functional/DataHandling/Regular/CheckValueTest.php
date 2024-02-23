@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
@@ -35,9 +36,7 @@ final class CheckValueTest extends AbstractDataHandlerActionTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function radioButtonValueMustBeDefinedInTcaItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('predefined value');
@@ -45,9 +44,7 @@ final class CheckValueTest extends AbstractDataHandlerActionTestCase
         self::assertEquals('predefined value', $record['tx_testdatahandler_radio']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function radioButtonValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('processed value');
@@ -55,9 +52,7 @@ final class CheckValueTest extends AbstractDataHandlerActionTestCase
         self::assertEquals('processed value', $record['tx_testdatahandler_radio']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function radioButtonValueIsNotSavedIfNotDefinedInTcaItemsOrProcessingItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('some other value');

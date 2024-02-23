@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataResolving;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
@@ -121,10 +123,8 @@ final class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sortingDataProvider
-     */
+    #[DataProvider('sortingDataProvider')]
+    #[Test]
     public function processSortingReturnsExpectedSequenceOfUids(array $input, array $expected, array $sortings): void
     {
         $subject = new PlainDataResolver('pages', [], $sortings);

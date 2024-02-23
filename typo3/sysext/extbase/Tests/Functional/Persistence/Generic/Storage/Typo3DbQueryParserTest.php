@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Storage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -44,9 +46,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertQueryToDoctrineQueryBuilderDoesNotAddAndWhereWithEmptyConstraint(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -66,9 +66,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertCount(4, $compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertQueryToDoctrineQueryBuilderThrowsExceptionOnNotImplementedConstraint(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -91,9 +89,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertQueryToDoctrineQueryBuilderAddsSimpleAndWhere(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -116,9 +112,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringContainsString('uid', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertQueryToDoctrineQueryBuilderAddsNotConstraint(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -141,9 +135,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/NOT\(.*uid/', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertQueryToDoctrineQueryBuilderAddsAndConstraint(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -170,9 +162,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/title.* AND .*description/', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertQueryToDoctrineQueryBuilderAddsOrConstraint(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -199,9 +189,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/title.* OR .*description/', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function languageStatementWorksForDefaultLanguage(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -220,9 +208,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/sys_language_uid. IN \(0, -1\)/', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function languageStatementWorksForNonDefaultLanguage(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -249,9 +235,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/sys_language_uid. IN \(1, -1\)/', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function languageStatementWorksInBackendContext(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -274,9 +258,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/sys_language_uid. IN \(1, -1\)/', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionWithoutDeleteStatementReturned(): void
     {
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['delete'] = null;
@@ -301,9 +283,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionTakesDeleteStatementIntoAccountIfNecessary(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -331,9 +311,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addGetLanguageStatementWorksInBackendContextWithSubselectionTakesDeleteStatementIntoAccountIfNecessary(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -358,9 +336,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orderStatementGenerationWorks(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -387,9 +363,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/title. DESC/', $orderBy[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orderStatementGenerationThrowsExceptionOnUnsupportedOrder(): void
     {
         $this->expectException(UnsupportedOrderException::class);
@@ -416,9 +390,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orderStatementGenerationWorksWithMultipleOrderings(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -448,9 +420,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/description. ASC/', $orderBy[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expressionIsOmittedForIgnoreEnableFieldsAreAndDoNotIncludeDeletedInBackendContext(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -473,9 +443,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expressionIsGeneratedForIgnoreEnableFieldsAndDoNotIncludeDeletedInBackendContext(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -498,9 +466,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expressionIsGeneratedForDoNotIgnoreEnableFieldsAndIncludeDeletedInBackendContext(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -522,9 +488,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expressionIsGeneratedForDoNotIgnoreEnableFieldsAndDoNotIncludeDeletedInBackendContext(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -546,9 +510,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expressionIsOmittedForIgnoreEnableFieldsAreAndDoNotIncludeDeletedInFrontendContext(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -573,9 +535,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expressionIsGeneratedForIgnoreEnableFieldsAndDoNotIncludeDeletedInFrontendContext(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -600,9 +560,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expressionIsGeneratedForIgnoreOnlyFeGroupAndDoNotIncludeDeletedInFrontendContext(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -629,9 +587,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expressionIsGeneratedForDoNotIgnoreEnableFieldsAndDoNotIncludeDeletedInFrontendContext(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -657,9 +613,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringContainsString('deleted', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectEnableFieldsSettingGeneratesCorrectStatementWithOnlyEndTimeInFrontendContext(): void
     {
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['enablecolumns']['endtime'] = 'endtime_column';
@@ -685,9 +639,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/endtime_column. = 0\) OR \(.*endtime_column. > 1451779200/', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectEnableFieldsSettingGeneratesCorrectStatementWithOnlyEndTimeInBackendContext(): void
     {
         // simulate time for backend enable fields
@@ -712,9 +664,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/endtime_column. = 0\) OR \(.*endtime_column. > 1451779200/', (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function visibilityConstraintStatementGenerationThrowsExceptionIfTheQuerySettingsAreInconsistent(): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -772,10 +722,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addPageIdStatementSetsPidToZeroIfTableDeclaresRootLevelDataProvider
-     */
+    #[DataProvider('addPageIdStatementSetsPidToZeroIfTableDeclaresRootLevelDataProvider')]
+    #[Test]
     public function addPageIdStatementSetsPidToZeroIfTableDeclaresRootLevel(int $rootLevel, string $expectedSql, array $storagePageIds): void
     {
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl'] = [
@@ -801,9 +749,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertMatchesRegularExpression($expectedSql, (string)$compositeExpression);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tcaWithoutCtrlCreatesAValidSQLStatement(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())

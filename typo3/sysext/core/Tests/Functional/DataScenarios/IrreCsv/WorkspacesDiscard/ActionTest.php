@@ -17,22 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreCsv\WorkspacesDiscard;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreCsv\AbstractActionWorkspacesTestCase;
 
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createParentContent(): void
     {
         parent::createParentContent();
@@ -40,9 +37,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentContent(): void
     {
         parent::modifyParentContent();
@@ -50,9 +45,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteParentContent(): void
     {
         parent::deleteParentContent();
@@ -60,9 +53,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyParentContent(): void
     {
         parent::copyParentContent();
@@ -70,9 +61,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
@@ -80,9 +69,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDifferentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
@@ -92,9 +79,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentWAllChildren.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeParentContentSorting(): void
     {
         parent::changeParentContentSorting();
@@ -102,9 +87,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeParentContentSorting.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveParentContentToDifferentPage(): void
     {
         parent::moveParentContentToDifferentPage();
@@ -112,9 +95,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveParentContentToDifferentPageTwice(): void
     {
         parent::moveParentContentToDifferentPageTwice();
@@ -122,9 +103,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
@@ -134,13 +113,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPageNChangeSorting.csv');
     }
 
-    /**
-     * Page records
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyPage(): void
     {
         parent::modifyPage();
@@ -148,9 +121,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletePage(): void
     {
         parent::deletePage();
@@ -158,9 +129,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -170,9 +139,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPageWithHotelBeforeParentContent(): void
     {
         parent::copyPageWithHotelBeforeParentContent();
@@ -182,13 +149,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageWHotelBeforeParentContent.csv');
     }
 
-    /**
-     * IRRE Child Records
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();
@@ -196,9 +157,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContentNHotelNOfferChildren.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
@@ -207,9 +166,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createNCopyParentContentNHotelNOfferChildren.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         // Create translated page first
@@ -220,19 +177,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createNLocalizeParentContentNHotelNOfferChildren.csv');
     }
 
-    /**
-     * @test
-     * No pair tests in Modify, Publish, PublishAll
-     */
+    #[Test]
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent(): void
     {
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createNLocParentNHotelNOfferChildrenNDiscardLocParent.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyOnlyHotelChild(): void
     {
         parent::modifyOnlyHotelChild();
@@ -240,9 +192,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyOnlyHotelChild.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndChangeHotelChildrenSorting(): void
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
@@ -250,9 +200,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNChangeHotelChildrenSorting.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentWithHotelChild(): void
     {
         parent::modifyParentWithHotelChild();
@@ -261,9 +209,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNHotelChild.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndAddHotelChild(): void
     {
         parent::modifyParentAndAddHotelChild();
@@ -271,9 +217,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNAddHotelChild.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndDeleteHotelChild(): void
     {
         parent::modifyParentAndDeleteHotelChild();
@@ -281,9 +225,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNDeleteHotelChild.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();

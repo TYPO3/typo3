@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -50,9 +52,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionWithoutARequest(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -63,9 +63,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $view->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInFrontendCoreContextThrowsExceptionWithIncompleteArguments(): void
     {
         $request = new ServerRequest();
@@ -79,9 +77,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $view->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderInBackendCoreContextThrowsExceptionWithIncompleteArguments(): void
     {
         $request = new ServerRequest('http://localhost/typo3/');
@@ -138,10 +134,8 @@ final class ActionViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider
-     */
+    #[DataProvider('renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider')]
+    #[Test]
     public function renderInFrontendWithCoreContextAndAllNecessaryExtbaseArguments(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
@@ -250,10 +244,8 @@ final class ActionViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderInFrontendWithExtbaseContextDataProvider
-     */
+    #[DataProvider('renderInFrontendWithExtbaseContextDataProvider')]
+    #[Test]
     public function renderInFrontendWithExtbaseContext(string $template, string $expected, array $frontendTypoScriptSetupArray = [], array $tsfeConfigArray = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');

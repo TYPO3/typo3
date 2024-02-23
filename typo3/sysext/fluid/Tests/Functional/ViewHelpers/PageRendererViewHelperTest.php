@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -59,10 +61,8 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
+    #[Test]
     public function render(string $template, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -76,9 +76,7 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $pageRenderer->renderResponse()->getBody()->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderResolvesLabelWithExtbaseRequest(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

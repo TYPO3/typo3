@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerLinkGenerator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
@@ -105,10 +107,8 @@ final class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
         return self::staticValueMapperDataProviderBuilder();
     }
 
-    /**
-     * @test
-     * @dataProvider staticValueMapperIsAppliedDataProvider
-     */
+    #[DataProvider('staticValueMapperIsAppliedDataProvider')]
+    #[Test]
     public function staticValueMapperIsApplied(TestSet $testSet): void
     {
         $builder = Builder::create();
@@ -161,10 +161,8 @@ final class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
         return $testSets;
     }
 
-    /**
-     * @test
-     * @dataProvider pageTypeDecoratorIsAppliedDataProvider
-     */
+    #[DataProvider('pageTypeDecoratorIsAppliedDataProvider')]
+    #[Test]
     public function pageTypeDecoratorIsApplied(TestSet $testSet): void
     {
         parent::pageTypeDecoratorIsApplied($testSet);

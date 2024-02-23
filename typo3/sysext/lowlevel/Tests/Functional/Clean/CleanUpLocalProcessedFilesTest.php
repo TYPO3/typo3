@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Tests\Functional\Clean;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -90,9 +91,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function databaseRecordForMissingFileIsDeleted(): void
     {
         $this->commandTester->execute(['--force' => true]);
@@ -100,9 +99,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/Modify/oneDeleted.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileForMissingReferenceIsDeleted(): void
     {
         $this->commandTester->execute(['--force' => true]);
@@ -114,9 +111,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         self::assertFileExists(GeneralUtility::getFileAbsFileName('fileadmin/image.png'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dryRunReallyDoesNothing(): void
     {
         $this->commandTester->execute(
@@ -134,9 +129,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         self::assertFileExists(GeneralUtility::getFileAbsFileName('fileadmin/image.png'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function confirmDeleteYes(): void
     {
         $this->commandTester->setInputs(['yes']);
@@ -153,9 +146,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         self::assertStringContainsString('Deleted 4 processed files', $output);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function confirmDeleteNo(): void
     {
         $this->commandTester->setInputs(['no']);

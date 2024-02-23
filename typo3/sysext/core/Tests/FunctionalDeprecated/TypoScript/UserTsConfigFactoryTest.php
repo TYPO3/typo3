@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -26,9 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class UserTsConfigFactoryTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigMatchesRequestHttpsCondition(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
@@ -45,9 +44,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('on', $userTsConfig->getUserTsConfigArray()['isHttps']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigMatchesRequestHttpsElseCondition(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Updates\RowUpdater;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
@@ -47,9 +48,7 @@ final class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
         $this->subject->_set('rowUpdater', [WorkspaceNewPlaceholderRemovalMigration::class]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function workspaceRecordsUpdatedWithIrreCsv(): void
     {
         // Data set inspired by workspaces IRRE/CSV/Modify/DataSet/copyPage.csv
@@ -58,9 +57,7 @@ final class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalIrreCsvResult.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function workspaceRecordsUpdatedWithIrreForeignField(): void
     {
         // Data set inspired by workspaces IRRE/ForeignField/Modify/DataSet/copyPage.csv
@@ -69,9 +66,7 @@ final class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalIrreForeignFieldResult.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function workspaceRecordsUpdatedWithManyToMany(): void
     {
         // Data set inspired by workspaces ManyToMany/Modify/DataSet/copyPage.csv

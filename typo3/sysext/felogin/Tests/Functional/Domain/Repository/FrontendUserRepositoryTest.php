@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -42,17 +43,13 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_users.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTable(): void
     {
         self::assertSame('fe_users', $this->repository->getTable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findUserByUsernameOrEmailOnPages(): void
     {
         self::assertNull($this->repository->findUserByUsernameOrEmailOnPages(''));
@@ -67,18 +64,14 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         self::assertSame(1, $userByEmail['uid'] ?? 0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existsUserWithHash(): void
     {
         self::assertFalse($this->repository->existsUserWithHash('non-existent-hash'));
         self::assertTrue($this->repository->existsUserWithHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findOneByForgotPasswordHash(): void
     {
         self::assertNull($this->repository->findOneByForgotPasswordHash(''));
@@ -86,18 +79,14 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         self::assertIsArray($this->repository->findOneByForgotPasswordHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findRedirectIdPageByUserId(): void
     {
         self::assertNull($this->repository->findRedirectIdPageByUserId(99));
         self::assertSame(10, $this->repository->findRedirectIdPageByUserId(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateForgotHashForUserByUid(): void
     {
         $uid = 1;
@@ -121,9 +110,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         self::assertSame($newPasswordHash, $query->executeQuery()->fetchOne());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePasswordAndInvalidateHash(): void
     {
         $this->repository->updatePasswordAndInvalidateHash('cf8edd6fa435b4a9fcbb953f81bd84f2', 'new-password');

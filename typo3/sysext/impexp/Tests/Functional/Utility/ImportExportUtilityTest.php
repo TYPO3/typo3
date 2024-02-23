@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
@@ -38,10 +40,8 @@ final class ImportExportUtilityTest extends AbstractImportExportTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider importFailsDataProvider
-     */
+    #[DataProvider('importFailsDataProvider')]
+    #[Test]
     public function importFails(string $filePath): void
     {
         $this->expectException(\ErrorException::class);
@@ -55,9 +55,7 @@ final class ImportExportUtilityTest extends AbstractImportExportTestCase
         $importUtilityMock->importT3DFile($filePath, 0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importSucceeds(): void
     {
         $filePath = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml';

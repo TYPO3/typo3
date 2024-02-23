@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Package;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -93,9 +94,8 @@ final class PackageStatesTest extends FunctionalTestCase
      * The "sorting constraints" are a combination of static prioritized packages, the
      * corresponding dependencies from `ext_emconf.php` and finally as a fall-back,
      * an alphabetic order - which just ensures that the sequence stays the same.
-     *
-     * @test
      */
+    #[Test]
     public function activePackagesAreOrderedByPrioritizedPackageKeysOrPackageDependenciesOrAlphabetically(): void
     {
         $packageManager = $this->get(PackageManager::class);

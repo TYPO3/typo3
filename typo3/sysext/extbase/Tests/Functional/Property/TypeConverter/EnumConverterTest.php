@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\IntegerBackedEnum;
 use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\StringBackedEnum;
@@ -27,10 +29,8 @@ final class EnumConverterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     * @dataProvider convertEnumDataProvider
-     */
+    #[DataProvider('convertEnumDataProvider')]
+    #[Test]
     public function convertEnum(string $enumClass, float|int|string $input, ?object $expected): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);

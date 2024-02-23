@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Menus;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -60,10 +62,8 @@ final class ActionMenuItemViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isRenderedDataProvider
-     */
+    #[DataProvider('isRenderedDataProvider')]
+    #[Test]
     public function isRendered(string $source, array $variables, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

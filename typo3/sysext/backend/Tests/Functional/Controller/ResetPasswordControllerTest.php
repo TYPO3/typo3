@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Controller\ResetPasswordController;
@@ -83,9 +84,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsPropagateResponseExceptionOnLoggedInUser(): void
     {
         $backendUser = new BackendUserAuthentication();
@@ -98,9 +97,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
         $this->subject->forgetPasswordFormAction($this->request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customStylingIsApplied(): void
     {
         $request = $this->request;
@@ -110,9 +107,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/\.btn-login { background-color: #abcdef; }.*\.card-login \.card-footer { border-color: #abcdef; }/s', $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryArgumentsAreKept(): void
     {
         $queryParams = [
@@ -131,9 +126,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $this->subject->passwordResetAction($request)->getBody()->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initiatePasswordResetPreventsTimeBasedInformationDisclosure(): void
     {
         $start = microtime(true);
@@ -143,9 +136,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
         self::assertGreaterThan(0.2, microtime(true) - $start);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initiatePasswordResetValidatesGivenEmailAddress(): void
     {
         $request = $this->request->withParsedBody(['email' => 'email..email@example.com']);
@@ -156,9 +147,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetPasswordFormUrlContainsQueryParameters(): void
     {
         $queryParams = [

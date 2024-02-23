@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -62,9 +63,7 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-multilingual.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportMultilingualPagesAndRelatedTtContent(): void
     {
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
@@ -83,9 +82,7 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportSingleLanguagePageAndRelatedTtContent(): void
     {
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
@@ -113,9 +110,7 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportOnlySingleLanguagePageAndRelatedTtContent(): void
     {
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);

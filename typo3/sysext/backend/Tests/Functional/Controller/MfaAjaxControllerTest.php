@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Controller\MfaAjaxController;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
@@ -43,10 +45,8 @@ final class MfaAjaxControllerTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
     }
 
-    /**
-     * @test
-     * @dataProvider handleRequestHandlesInvalidRequestTestDataProvider
-     */
+    #[DataProvider('handleRequestHandlesInvalidRequestTestDataProvider')]
+    #[Test]
     public function handleRequestHandlesInvalidRequestTest(array $parsedBody): void
     {
         $response = $this->parseResponse($this->subject->handleRequest($this->request->withParsedBody($parsedBody)));
@@ -64,9 +64,7 @@ final class MfaAjaxControllerTest extends FunctionalTestCase
         yield 'Invalid table' => [['action' => 'deactivate', 'userId' => 5, 'tableName' => 'some_table']];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleRequestReturnsInvalidRequestOnInsufficientPermissionsTest(): void
     {
         // Make the target user a system maintainer. Since the current user (1)
@@ -87,10 +85,8 @@ final class MfaAjaxControllerTest extends FunctionalTestCase
         self::assertEquals('Your are not allowed to perform this action', $response['message']);
     }
 
-    /**
-     * @test
-     * @dataProvider handleRequestHandlesDeactivationRequestTestDataProvider
-     */
+    #[DataProvider('handleRequestHandlesDeactivationRequestTestDataProvider')]
+    #[Test]
     public function handleRequestHandlesDeactivationRequestTest(
         array $parsedBody,
         bool $success,

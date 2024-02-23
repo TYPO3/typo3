@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\ApcuBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -49,9 +51,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfNoFrontEndHasBeenSet(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -62,9 +62,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         $backend->set($identifier, $data);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToSetAndCheckExistenceInCache(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -86,10 +84,8 @@ final class ApcuBackendTest extends FunctionalTestCase
         yield [ ['foo', 'bar'] ];
     }
 
-    /**
-     * @test
-     * @dataProvider itIsPossibleToSetAndGetEntryDataProvider
-     */
+    #[DataProvider('itIsPossibleToSetAndGetEntryDataProvider')]
+    #[Test]
     public function itIsPossibleToSetAndGetEntry(mixed $data): void
     {
         $backend = new ApcuBackend('Testing');
@@ -99,9 +95,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertSame($data, $backend->get($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToSetAndGetObject(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -114,9 +108,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertEquals($object, $fetchedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToRemoveEntryFromCache(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -128,9 +120,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertFalse($backend->has($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToOverwriteAnEntryInTheCache(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -144,9 +134,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertEquals($otherData, $fetchedData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagFindsSetEntries(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -160,9 +148,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertEquals($identifier, $retrieved[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRemovesTagsFromPreviousSet(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -175,9 +161,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertEquals([], $retrieved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsFalseIfTheEntryDoesNotExist(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -186,9 +170,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertFalse($backend->has($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeReturnsFalseIfTheEntryDoesntExist(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -197,9 +179,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertFalse($backend->remove($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesCacheEntriesWithSpecifiedTag(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -214,9 +194,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertTrue($backend->has('BackendAPCUTest3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagsRemovesCacheEntriesWithSpecifiedTags(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -231,9 +209,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertTrue($backend->has('BackendAPCUTest3'), 'BackendAPCTest3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushRemovesAllCacheEntries(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -248,9 +224,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertFalse($backend->has('BackendAPCUTest3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushRemovesOnlyOwnEntries(): void
     {
         $thisCache = $this->createMock(FrontendInterface::class);
@@ -271,9 +245,8 @@ final class ApcuBackendTest extends FunctionalTestCase
 
     /**
      * Check if we can store ~5 MB of data
-     *
-     * @test
      */
+    #[Test]
     public function largeDataIsStored(): void
     {
         $backend = new ApcuBackend('Testing');
@@ -285,9 +258,7 @@ final class ApcuBackendTest extends FunctionalTestCase
         self::assertEquals($backend->get($identifier), $data);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTagsOnlyOnceToIdentifier(): void
     {
         $identifier = StringUtility::getUniqueId('MyIdentifier');

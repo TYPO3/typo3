@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -32,9 +33,7 @@ final class ObjectConverterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertToObject(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -58,9 +57,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         self::assertSame('John Doe', $object->_getProperty('name'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertToObjectViaTypeInArray(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
@@ -84,9 +81,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         self::assertSame('John Doe', $object->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyReturnsTypeDefinedByPropertyMappingConfiguration(): void
     {
         $class = new class () {
@@ -114,9 +109,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         self::assertSame('foo', $result->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyReturnsTypeDefinedByConstructorArgument(): void
     {
         $class = new class ('') {
@@ -144,9 +137,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         self::assertSame('foo', $result->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function collectionTypesAreConsideredInMapping(): void
     {
         $class = new class () {
@@ -189,9 +180,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         self::assertSame('Lion', $result->getCollection()->current()->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyReturnsTypeDefinedBySetter(): void
     {
         $class = new class () {
@@ -219,9 +208,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         self::assertSame('foo', $result->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyIsNotAccessible(): void
     {
         $class = new class () {};
@@ -244,9 +231,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromNonExistingConstructorArgument(): void
     {
         $class = new class () {
@@ -271,9 +256,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromExistingConstructorArgument(): void
     {
         $class = new class () {
@@ -298,9 +281,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertySetterDoesNotDefineAType(): void
     {
         $this->expectException(Exception::class);
@@ -322,9 +303,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsInvalidTargetExceptionIfPropertiesCannotBeSet(): void
     {
         $this->expectException(Exception::class);
@@ -354,9 +333,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildObjectUsesDefaultValueOfOptionalConstructorArguments(): void
     {
         $class = new class ('', '') {
@@ -378,9 +355,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         self::assertSame('red', $result->color);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildObjectThrowsInvalidTargetExceptionIfMandatoryConstructorArgumentIsMissing(): void
     {
         $this->expectException(Exception::class);
@@ -403,9 +378,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetTypeForSourceThrowsInvalidPropertyMappingConfigurationExceptionIfTargetTypeOverridingIsNotAllowed(): void
     {
         $this->expectException(Exception::class);
@@ -420,9 +393,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetTypeForSourceThrowsInvalidDataTypeExceptionIfOverriddenTargetTypeIsNotASubtypeOfOriginalTargetType(): void
     {
         $this->expectException(Exception::class);
@@ -446,9 +417,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertWithRegisteredSubclassReturnsInstanceOfRegisteredSubclass(): void
     {
         // XCLASS the animal class

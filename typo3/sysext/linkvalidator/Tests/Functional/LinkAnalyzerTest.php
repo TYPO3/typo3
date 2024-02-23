@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -81,10 +83,8 @@ final class LinkAnalyzerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findAllBrokenLinksDataProvider
-     */
+    #[DataProvider('findAllBrokenLinksDataProvider')]
+    #[Test]
     public function getLinkStatisticsFindAllBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [
@@ -133,10 +133,8 @@ final class LinkAnalyzerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findFindOnlyFileBrokenLinksDataProvider
-     */
+    #[DataProvider('findFindOnlyFileBrokenLinksDataProvider')]
+    #[Test]
     public function getLinkStatisticsFindOnlyFileBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [
@@ -185,10 +183,8 @@ final class LinkAnalyzerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findFindOnlyPageBrokenLinksDataProvider
-     */
+    #[DataProvider('findFindOnlyPageBrokenLinksDataProvider')]
+    #[Test]
     public function getLinkStatisticsFindOnlyPageBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [
@@ -237,10 +233,8 @@ final class LinkAnalyzerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider findFindOnlyExternalBrokenLinksDataProvider
-     */
+    #[DataProvider('findFindOnlyExternalBrokenLinksDataProvider')]
+    #[Test]
     public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytext(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [
@@ -277,10 +271,8 @@ final class LinkAnalyzerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getLinkStatisticsFindOnlyExternalBrokenLinksInBodytextWithHugeListOfPageIdsDataProvider
-     */
+    #[DataProvider('getLinkStatisticsFindOnlyExternalBrokenLinksInBodytextWithHugeListOfPageIdsDataProvider')]
+    #[Test]
     public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytextWithHugeListOfPageIds(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [

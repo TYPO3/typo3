@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Html;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Html\DefaultSanitizerBuilder;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
@@ -160,10 +162,8 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isSanitizedDataProvider
-     */
+    #[DataProvider('isSanitizedDataProvider')]
+    #[Test]
     public function isSanitized(string $payload, string $expectation): void
     {
         $factory = new SanitizerBuilderFactory();
@@ -172,9 +172,7 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
         self::assertSame($expectation, $sanitizer->sanitize($payload));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function behaviorIsCachedInMemory(): void
     {
         $default = new DefaultSanitizerBuilder();
@@ -204,9 +202,7 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function incidentIsLogged(): void
     {
         $trace = bin2hex(random_bytes(8));

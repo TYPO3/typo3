@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
@@ -35,9 +36,7 @@ final class CheckValueTestForCheckboxesTest extends AbstractDataHandlerActionTes
         $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkBoxValueMustBeDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
@@ -51,9 +50,7 @@ final class CheckValueTestForCheckboxesTest extends AbstractDataHandlerActionTes
         self::assertEquals(1, $record['tx_testdatahandler_checkbox']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkBoxValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault

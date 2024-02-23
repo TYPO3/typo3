@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashProxy;
@@ -41,9 +43,7 @@ final class PolicyTest extends FunctionalTestCase
         $this->nonce = new ConsumableNonce();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashProxyIsCompiled(): void
     {
         // ```
@@ -58,9 +58,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("script-src 'sha256-dawsv3oUbEz6NVoOxXFAu0k7W3I/PS6NucUIAmvoIng='", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashValueIsCompiled(): void
     {
         $hash = hash('sha256', 'test', true);
@@ -69,18 +67,14 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("script-src 'sha256-$hashB64'", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorSetsdefaultDirective(): void
     {
         $policy = (new Policy(SourceKeyword::self));
         self::assertSame("default-src 'self'", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultDirectiveIsModified(): void
     {
         $policy = (new Policy(SourceKeyword::self))
@@ -88,9 +82,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("default-src 'none'", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultDirectiveConsidersVeto(): void
     {
         $policy = (new Policy(SourceKeyword::self))
@@ -98,9 +90,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("default-src 'none'", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newDirectiveExtendsDefault(): void
     {
         $policy = (new Policy(SourceKeyword::self))
@@ -108,9 +98,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("default-src 'self'; script-src 'self' 'unsafe-inline'", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonAncestorDirectiveDoesNotExtendDefault(): void
     {
         $policy = (new Policy(SourceKeyword::self))
@@ -160,19 +148,15 @@ final class PolicyTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ancestorInheritanceIsAppliedFromMutationsDataProvider
-     */
+    #[DataProvider('ancestorInheritanceIsAppliedFromMutationsDataProvider')]
+    #[Test]
     public function ancestorInheritanceIsAppliedFromMutations(MutationCollection $mutations, string $expectation): void
     {
         $policy = (new Policy())->mutate($mutations);
         self::assertSame($expectation, $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newDirectiveDoesNotExtendDefault(): void
     {
         $policy = (new Policy(SourceKeyword::self))
@@ -180,9 +164,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("default-src 'self'; script-src 'unsafe-inline'", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function directiveIsReduced(): void
     {
         $policy = (new Policy())
@@ -191,18 +173,14 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("script-src 'unsafe-inline'", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sourceSchemeIsCompiled(): void
     {
         $policy = (new Policy(SourceKeyword::self, SourceScheme::blob));
         self::assertSame("default-src 'self' blob:", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonceProxyIsCompiled(): void
     {
         $policy = (new Policy(SourceKeyword::self, SourceKeyword::nonceProxy));
@@ -211,9 +189,8 @@ final class PolicyTest extends FunctionalTestCase
 
     /**
      * `strict-dynamic` is only allowed for `script-src*` and implicitly adds a `nonce-proxy`.
-     *
-     * @test
      */
+    #[Test]
     public function strictDynamicIsApplied(): void
     {
         $policy = (new Policy(SourceKeyword::self, SourceKeyword::strictDynamic))
@@ -225,9 +202,7 @@ final class PolicyTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function directiveIsRemoved(): void
     {
         $policy = (new Policy(SourceKeyword::self))
@@ -235,9 +210,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame('', $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function superfluousDirectivesArePurged(): void
     {
         $policy = (new Policy(SourceKeyword::self, SourceScheme::data))
@@ -245,9 +218,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("default-src 'self' data:", $policy->compile($this->nonce));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function backendPolicyIsCompiled(): void
     {
         $policy = (new Policy())
@@ -266,9 +237,7 @@ final class PolicyTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containedDirectiveSourcesAreDetermined(): void
     {
         $policy = (new Policy())
@@ -280,9 +249,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertFalse($policy->containsDirective(Directive::ConnectSrc, SourceScheme::https));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function coveredDirectiveSourcesAreDetermined(): void
     {
         $policy = (new Policy())
@@ -294,9 +261,7 @@ final class PolicyTest extends FunctionalTestCase
         self::assertFalse($policy->coversDirective(Directive::ConnectSrc, SourceScheme::https));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containedPolicyIsDetermined(): void
     {
         $policy = (new Policy())

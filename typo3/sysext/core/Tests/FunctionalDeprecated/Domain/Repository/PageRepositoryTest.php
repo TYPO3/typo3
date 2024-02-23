@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -33,9 +34,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initSetsPublicPropertyCorrectlyForWorkspacePreview(): void
     {
         $workspaceId = 2;
@@ -56,9 +55,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertSame($expectedSQL, $subject->where_hid_del);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initSetsEnableFieldsCorrectlyForLive(): void
     {
         $subject = new PageRepository(new Context([

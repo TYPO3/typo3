@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -37,9 +38,7 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContentWithImages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
@@ -57,9 +56,7 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContentWithImagesFromCorruptSysFileRecord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_corrupt.csv');
@@ -82,9 +79,7 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContentWithImagesButNotIncluded(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
@@ -104,9 +99,7 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . '/' . 'da9acdf1e105784a57bbffec9520969578287797');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportPagesAndRelatedTtContentWithImagesButNotIncludedAndInvalidHash(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_invalid_hash.csv');
