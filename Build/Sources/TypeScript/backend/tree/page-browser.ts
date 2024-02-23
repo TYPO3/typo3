@@ -250,9 +250,8 @@ export class PageBrowser extends LitElement {
   };
 
   private unsetTemporaryMountPoint() {
-    this.mountPointPath = null;
     Persistent.unset('pageTree_temporaryMountPoint').then(() => {
-      this.tree.refreshTree();
+      this.mountPointPath = null;
     });
   }
 
@@ -283,7 +282,6 @@ export class PageBrowser extends LitElement {
           this.tree.updateVisibleNodes();
         } else {
           this.mountPointPath = response.mountPointPath;
-          this.tree.refreshOrFilterTree();
         }
       })
       .catch((error) => {
