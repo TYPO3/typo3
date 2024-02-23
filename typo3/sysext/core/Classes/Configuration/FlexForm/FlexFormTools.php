@@ -1079,7 +1079,7 @@ class FlexFormTools
                         );
                     }
                     $fieldConfig['TCEforms']['config']['maxitems'] = 1;
-                } elseif ($fieldConfig['TCEforms']['config']['relationship'] === 'oneToMany') {
+                } else {
                     // In case maxitems is not set or set to 0, set the default value "99999"
                     if (!($fieldConfig['TCEforms']['config']['maxitems'] ?? false)) {
                         $fieldConfig['TCEforms']['config']['maxitems'] = 99999;
