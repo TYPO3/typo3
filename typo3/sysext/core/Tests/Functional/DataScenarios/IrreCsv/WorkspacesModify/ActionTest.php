@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreCsv\WorkspacesModify;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreCsv\AbstractActionWorkspacesTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -28,18 +29,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createParentContent(): void
     {
         parent::createParentContent();
@@ -54,9 +51,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentContent(): void
     {
         parent::modifyParentContent();
@@ -74,9 +69,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteParentContent(): void
     {
         parent::deleteParentContent();
@@ -91,9 +84,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyParentContent(): void
     {
         parent::copyParentContent();
@@ -109,9 +100,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
@@ -127,9 +116,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
@@ -147,9 +134,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeParentContentSorting(): void
     {
         parent::changeParentContentSorting();
@@ -168,9 +153,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveParentContentToDifferentPage(): void
     {
         parent::moveParentContentToDifferentPage();
@@ -188,18 +171,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveParentContentToDifferentPageTwice(): void
     {
         parent::moveParentContentToDifferentPageTwice();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPageTwice.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
@@ -220,13 +199,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * Page records
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyPage(): void
     {
         parent::modifyPage();
@@ -244,9 +217,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletePage(): void
     {
         parent::deletePage();
@@ -259,9 +230,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -275,9 +244,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2', 'Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPageWithHotelBeforeParentContent(): void
     {
         parent::copyPageWithHotelBeforeParentContent();
@@ -292,14 +259,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2', 'Hotel #1'));
     }
 
-    /**
-     * IRRE Child Records
-     */
-
-    /**
-     * @test
-     * Publish, PublishAll and Discard currently not implemented - they make little sense
-     */
+    #[Test]
     public function changeHotelSortingWithOfferNotWorkspaceAware(): void
     {
         parent::changeHotelSortingWithOfferNotWorkspaceAware();
@@ -323,9 +283,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #2.1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();
@@ -343,9 +301,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
@@ -369,9 +325,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         // Create translated page first
@@ -394,9 +348,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Offer)->setField('title')->setValues('[Translate to Dansk:] Offer #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyOnlyHotelChild(): void
     {
         parent::modifyOnlyHotelChild();
@@ -412,9 +364,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndChangeHotelChildrenSorting(): void
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
@@ -430,9 +380,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #2', 'Hotel #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentWithHotelChild(): void
     {
         parent::modifyParentWithHotelChild();
@@ -448,9 +396,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndAddHotelChild(): void
     {
         parent::modifyParentAndAddHotelChild();
@@ -466,9 +412,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyParentAndDeleteHotelChild(): void
     {
         parent::modifyParentAndDeleteHotelChild();
@@ -487,9 +431,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();

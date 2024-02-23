@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -42,9 +43,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageLayoutResolvedForBackendLayoutOnRootPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ContentObjectRendererGetDataPageLayout/backendLayoutOnRootPage.csv');
@@ -58,9 +57,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
         self::assertStringContainsString('pagets__default', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageLayoutNotResolvedForBackendLayoutNextLevelOnRootPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ContentObjectRendererGetDataPageLayout/backendLayoutNextLevelOnRootPage.csv');
@@ -74,9 +71,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
         self::assertStringNotContainsString('pagets__default', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageLayoutResolvedForBackendLayoutNextLevelInheritedOnSubpageLevel1(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ContentObjectRendererGetDataPageLayout/backendLayoutAndNextLevelOnRootPage.csv');
@@ -90,9 +85,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
         self::assertStringContainsString('pagets__inherit', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageLayoutResolvedForBackendLayoutNextLevelInheritedOnSubpageLevel2(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ContentObjectRendererGetDataPageLayout/backendLayoutAndNextLevelOnRootPageSubOverride1.csv');
@@ -106,9 +99,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
         self::assertStringContainsString('pagets__inherit', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageLayoutResolvedForBackendLayoutOnSubpageLevel3(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ContentObjectRendererGetDataPageLayout/backendLayoutAndNextLevelOnRootPageSubOverride2.csv');
@@ -122,9 +113,7 @@ final class ContentObjectRendererGetDataPageLayoutTest extends FunctionalTestCas
         self::assertStringContainsString('pagets__bar', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageLayoutResolvedForBackendLayoutNextLevelOverrideOnSubpageLevel3(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ContentObjectRendererGetDataPageLayout/backendLayoutAndNextLevelOnRootPageSubOverride3.csv');

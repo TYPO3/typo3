@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Asset;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -37,10 +39,8 @@ final class CssViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sourceDataProvider
-     */
+    #[DataProvider('sourceDataProvider')]
+    #[Test]
     public function sourceStringIsNotHtmlEncodedBeforePassedToAssetCollector(string $href): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -53,9 +53,7 @@ final class CssViewHelperTest extends FunctionalTestCase
         self::assertSame([], $collectedStyleSheets['test']['attributes']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanAttributesAreProperlyConverted(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -122,10 +120,8 @@ final class CssViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider childNodeRenderingIsCorrectDataProvider
-     */
+    #[DataProvider('childNodeRenderingIsCorrectDataProvider')]
+    #[Test]
     public function childNodeRenderingIsCorrect(string $value, string $source, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

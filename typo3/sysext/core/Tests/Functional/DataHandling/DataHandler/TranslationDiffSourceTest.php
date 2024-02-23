@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -54,9 +55,7 @@ final class TranslationDiffSourceTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transOrigDiffSourceFieldWrittenAfterTranslation(): void
     {
         $actionService = new ActionService();
@@ -70,9 +69,7 @@ final class TranslationDiffSourceTest extends FunctionalTestCase
         self::assertEquals('DataHandlerTest', $transOrigDiffSourceField['title']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transOrigDiffSourceNotUpdatedAfterUndo(): void
     {
         $actionService = new ActionService();

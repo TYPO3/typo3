@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\JavaScriptRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -25,9 +26,8 @@ final class JavaScriptRendererTest extends FunctionalTestCase
 {
     /**
      * Ensures closing comment block cannot be injected.
-     *
-     * @test
      */
+    #[Test]
     public function textContentIsEncoded(): void
     {
         $subject = JavaScriptRenderer::create('anything.js');

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -213,10 +215,8 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s;');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedDataProvider
-     */
+    #[DataProvider('linkIsGeneratedDataProvider')]
+    #[Test]
     public function linkIsGenerated(string $parameter, string $expectation): void
     {
         $response = $this->invokeTypoLink($parameter);
@@ -308,10 +308,8 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ATagParamsAreAddedInOrderDataProvider
-     */
+    #[DataProvider('ATagParamsAreAddedInOrderDataProvider')]
+    #[Test]
     public function ATagParamsAreAddedInOrder(array $instructions, string $globalATagParams, string $linkText, string $expectation): void
     {
         $sourcePageId = 1100;
@@ -464,20 +462,16 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s;');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsEncodedDataProvider
-     */
+    #[DataProvider('linkIsEncodedDataProvider')]
+    #[Test]
     public function linkIsEncodedPerDefault(string $parameter, string $expectation): void
     {
         $response = $this->invokeTypoLink($parameter);
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsEncodedDataProvider
-     */
+    #[DataProvider('linkIsEncodedDataProvider')]
+    #[Test]
     public function linkIsEncodedHavingParseFunc(string $parameter, string $expectation): void
     {
         $response = $this->invokeTypoLink($parameter, $this->createParseFuncInstruction([
@@ -552,10 +546,8 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider linkToPageIsProcessedDataProvider
-     */
+    #[DataProvider('linkToPageIsProcessedDataProvider')]
+    #[Test]
     public function linkToPageIsProcessed(string $parameter, string $expectation, bool $parseFuncEnabled): void
     {
         $instructions = [];
@@ -620,10 +612,8 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider linkWithoutAnchorIsGeneratedDataProvider
-     */
+    #[DataProvider('linkWithoutAnchorIsGeneratedDataProvider')]
+    #[Test]
     public function linkWithoutAnchorIsGenerated(array $instructions, string $linkText, string $expectation): void
     {
         $sourcePageId = 1100;

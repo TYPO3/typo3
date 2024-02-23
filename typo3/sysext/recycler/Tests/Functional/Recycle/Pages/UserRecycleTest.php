@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase;
 
@@ -33,9 +34,7 @@ final class UserRecycleTest extends AbstractRecycleTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveDeletedPagesNoRecursion(): void
     {
         $deletedPages = $this->getDeletedPages(1, 0);
@@ -46,9 +45,7 @@ final class UserRecycleTest extends AbstractRecycleTestCase
         self::assertSame(3, (int)$deletedPages['pages'][0]['uid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveDeletedPagesOneLevelRecursion(): void
     {
         $deletedPages = $this->getDeletedPages(1, 1);
@@ -59,18 +56,14 @@ final class UserRecycleTest extends AbstractRecycleTestCase
         self::assertSame(3, (int)$deletedPages['pages'][0]['uid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canNotRetrieveDeletedPagesOutsideWebmount(): void
     {
         $deletedPages = $this->getDeletedPages(6, 0);
         self::assertCount(0, $deletedPages);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canNotRetrieveDeletedWithNoAccess(): void
     {
         $deletedPages = $this->getDeletedPages(7, 0);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
@@ -64,10 +66,8 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider sitemapEntriesToCheck
-     */
+    #[DataProvider('sitemapEntriesToCheck')]
+    #[Test]
     public function checkIfSiteMapIndexContainsSysCategoryLinks(string $sitemap, string $host, array $expectedEntries, array $notExpectedEntries): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -156,9 +156,7 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfSiteMapIndexContainsCustomChangeFreqAndPriorityValues(): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -183,10 +181,8 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
         self::assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
     }
 
-    /**
-     * @test
-     * @dataProvider additionalWhereTypoScriptConfigurationsToCheck
-     */
+    #[DataProvider('additionalWhereTypoScriptConfigurationsToCheck')]
+    #[Test]
     public function checkSiteMapWithDifferentTypoScriptConfigs(string $sitemap, array $expectedEntries, array $notExpectedEntries): void
     {
         $response = $this->executeFrontendSubRequest(

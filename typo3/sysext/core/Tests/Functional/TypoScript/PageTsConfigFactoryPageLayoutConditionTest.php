@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -45,9 +46,7 @@ final class PageTsConfigFactoryPageLayoutConditionTest extends FunctionalTestCas
         $this->setUpBackendUser(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function treePageLayoutConditionMetForBackendLayoutOnRootPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTsConfigFactoryPageLayoutCondition/backendLayoutOnRootPage.csv');
@@ -59,9 +58,7 @@ final class PageTsConfigFactoryPageLayoutConditionTest extends FunctionalTestCas
         self::assertStringContainsString('Default Layout', $pageTsConfigArray['layout'] ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function treePageLayoutConditionNotMetForBackendLayoutNextLevelOnRootPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTsConfigFactoryPageLayoutCondition/backendLayoutNextLevelOnRootPage.csv');
@@ -73,9 +70,7 @@ final class PageTsConfigFactoryPageLayoutConditionTest extends FunctionalTestCas
         self::assertStringNotContainsString('Default Layout', $pageTsConfigArray['layout'] ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function treePageLayoutConditionMetForBackendLayoutNextLevelInheritedOnSubpageLevel1(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTsConfigFactoryPageLayoutCondition/backendLayoutAndNextLevelOnRootPage.csv');
@@ -87,9 +82,7 @@ final class PageTsConfigFactoryPageLayoutConditionTest extends FunctionalTestCas
         self::assertStringContainsString('Inherited Layout', $pageTsConfigArray['layout'] ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function treePageLayoutConditionMetForBackendLayoutNextLevelInheritedOnSubpageLevel2(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTsConfigFactoryPageLayoutCondition/backendLayoutAndNextLevelOnRootPageSubOverride1.csv');
@@ -101,9 +94,7 @@ final class PageTsConfigFactoryPageLayoutConditionTest extends FunctionalTestCas
         self::assertStringContainsString('Inherited Layout', $pageTsConfigArray['layout'] ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function treePageLayoutConditionMetForBackendLayoutOnSubpageLevel3(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTsConfigFactoryPageLayoutCondition/backendLayoutAndNextLevelOnRootPageSubOverride2.csv');
@@ -115,9 +106,7 @@ final class PageTsConfigFactoryPageLayoutConditionTest extends FunctionalTestCas
         self::assertStringContainsString('Extra Layout', $pageTsConfigArray['layout'] ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function treePageLayoutConditionMetForBackendLayoutNextLevelOverrideOnSubpageLevel3(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTsConfigFactoryPageLayoutCondition/backendLayoutAndNextLevelOnRootPageSubOverride3.csv');

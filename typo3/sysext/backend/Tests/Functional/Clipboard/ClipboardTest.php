@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Clipboard;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -142,10 +144,8 @@ final class ClipboardTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider localizationsAreResolvedDataProvider
-     * @test
-     */
+    #[DataProvider('localizationsAreResolvedDataProvider')]
+    #[Test]
     public function localizationsAreResolved(
         int $pageId,
         int $workspaceId,

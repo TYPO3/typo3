@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
@@ -39,18 +40,14 @@ final class IsDirtyTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectFetchedFromDbIsNotDirty(): void
     {
         $blog = $this->get(BlogRepository::class)->findByUid(3);
         self::assertFalse($blog->_isDirty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lazyLoadingProxyReplacedByRealInstanceIsNotDirty(): void
     {
         $blog = $this->get(BlogRepository::class)->findByUid(3);
@@ -61,9 +58,7 @@ final class IsDirtyTest extends FunctionalTestCase
         self::assertFalse($blog->_isDirty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lazyLoadingProxyReplacedByWrongInstanceIsDirty(): void
     {
         $blog = $this->get(BlogRepository::class)->findByUid(3);
@@ -72,9 +67,7 @@ final class IsDirtyTest extends FunctionalTestCase
         self::assertTrue($blog->_isDirty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function realInstanceReplacedByLazyLoadingProxyIsNotDirty(): void
     {
         $blog = $this->get(BlogRepository::class)->findByUid(3);
@@ -88,9 +81,7 @@ final class IsDirtyTest extends FunctionalTestCase
         self::assertFalse($blog->_isDirty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lazyLoadingProxyByWrongLazyLoadingProxyIsDirtyAndUpdated(): void
     {
         $blogRepository = $this->get(BlogRepository::class);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FlexformIrre;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -34,9 +35,7 @@ final class ActionTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');

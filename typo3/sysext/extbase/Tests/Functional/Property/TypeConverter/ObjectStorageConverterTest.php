@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
@@ -27,9 +28,7 @@ final class ObjectStorageConverterTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertReturnsObjectStorage(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
@@ -54,9 +53,7 @@ final class ObjectStorageConverterTest extends FunctionalTestCase
         self::assertSame('black', $cat->getColor());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedReturnsEmptyArrayIfSourceIsAString(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();

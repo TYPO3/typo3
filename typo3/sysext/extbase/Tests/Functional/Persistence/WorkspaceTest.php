@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -112,10 +114,8 @@ final class WorkspaceTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider contextDataProvider
-     */
+    #[DataProvider('contextDataProvider')]
+    #[Test]
     public function countReturnsCorrectNumberOfBlogs(string $context): void
     {
         if ($context === 'FE') {
@@ -132,10 +132,8 @@ final class WorkspaceTest extends FunctionalTestCase
         self::assertSame(6, $query->execute()->count());
     }
 
-    /**
-     * @test
-     * @dataProvider contextDataProvider
-     */
+    #[DataProvider('contextDataProvider')]
+    #[Test]
     public function fetchingHiddenBlogInWorkspace(string $context): void
     {
         // Set up Context for Workspace=1
@@ -180,10 +178,8 @@ final class WorkspaceTest extends FunctionalTestCase
         ], $foundItems);
     }
 
-    /**
-     * @test
-     * @dataProvider contextDataProvider
-     */
+    #[DataProvider('contextDataProvider')]
+    #[Test]
     public function fetchingAllBlogsReturnsCorrectNumberOfBlogs(string $context): void
     {
         if ($context === 'FE') {
@@ -209,10 +205,8 @@ final class WorkspaceTest extends FunctionalTestCase
         self::assertSame('WorkspaceOverlay Blog6Enabled', $lastBlog->getTitle());
     }
 
-    /**
-     * @test
-     * @dataProvider contextDataProvider
-     */
+    #[DataProvider('contextDataProvider')]
+    #[Test]
     public function fetchingBlogReturnsOverlaidWorkspaceVersionForRelations(string $context): void
     {
         if ($context === 'FE') {
@@ -234,9 +228,7 @@ final class WorkspaceTest extends FunctionalTestCase
         self::assertSame('WorkspaceOverlay Post3', $posts[2]->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchingBlogReturnsManyToManyRelationsInLiveWorkspace(): void
     {
         // Simulate LIVE workspace -> 3 relations
@@ -251,9 +243,7 @@ final class WorkspaceTest extends FunctionalTestCase
         self::assertCount(3, $blog->getCategories());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchingBlogReturnsOverlaidWorkspaceVersionForManyToManyRelations(): void
     {
         $this->setupSubjectInFrontend();

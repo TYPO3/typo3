@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Uri;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -38,9 +39,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
             ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsValidLinkInExplicitFormat(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -53,9 +52,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('edit[a_table][17]=new', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsValidLinkForRoot(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -68,9 +65,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('edit[a_table][0]=new', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsValidLinkInInlineFormat(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -83,9 +78,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('edit[b_table][17]=new', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsValidLinkWithReturnUrl(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -98,9 +91,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('returnUrl=foo/bar', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsValidLinkWitPosition(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -113,9 +104,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('edit[c_table][-11]=new', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsValidLinkWithDefaultValue(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -129,9 +118,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('defVals[c_table][c_field]=c_value', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsValidLinkWithDefaultValues(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -145,9 +132,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString('defVals[c_table][c_field]=c_value&defVals[c_table][c_field2]=c_value2', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionForUidAndPid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -160,9 +145,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionForInvalidUidArgument(): void
     {
         $this->expectException(\InvalidArgumentException::class);

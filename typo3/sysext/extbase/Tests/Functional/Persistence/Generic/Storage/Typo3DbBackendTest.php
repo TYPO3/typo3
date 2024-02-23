@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Storage;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -40,9 +41,7 @@ final class Typo3DbBackendTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectly(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbBackendTestImport.csv');
@@ -52,9 +51,7 @@ final class Typo3DbBackendTest extends FunctionalTestCase
         self::assertSame(10, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getObjectDataByQueryChangesUidIfInPreview(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbBackendTestImport.csv');

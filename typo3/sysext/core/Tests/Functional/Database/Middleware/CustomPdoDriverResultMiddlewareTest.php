@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Middleware;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Middleware\CustomPdoDriverResultMiddleware;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -32,10 +34,8 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getValidDrivers
-     */
+    #[DataProvider('getValidDrivers')]
+    #[Test]
     public function driverMiddlewareIsRegisteredForValidDrivers(string $driver): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
@@ -54,10 +54,8 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
         self::assertArrayHasKey('typo3/core/custom-pdo-driver-result-middleware', $driverMiddlewares);
     }
 
-    /**
-     * @test
-     * @dataProvider getValidDrivers
-     */
+    #[DataProvider('getValidDrivers')]
+    #[Test]
     public function driverMiddlewareIsDiscardedIfDisabled(string $driver): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
@@ -86,10 +84,8 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getInvalidDrivers
-     */
+    #[DataProvider('getInvalidDrivers')]
+    #[Test]
     public function driverMiddlewareIsDiscardedForInvalidDrivers(string $driver): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];

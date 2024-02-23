@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -42,18 +43,14 @@ final class CountTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function simpleCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
         self::assertSame($this->numberOfRecordsInFixture, $query->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -62,9 +59,7 @@ final class CountTest extends FunctionalTestCase
         self::assertSame($this->numberOfRecordsInFixture - 6, $query->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exceedingOffsetCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -73,9 +68,7 @@ final class CountTest extends FunctionalTestCase
         self::assertSame(0, $query->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function limitCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -83,9 +76,7 @@ final class CountTest extends FunctionalTestCase
         self::assertSame(4, $query->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function limitAndOffsetCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -95,9 +86,7 @@ final class CountTest extends FunctionalTestCase
         self::assertSame(3, $query->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inConstraintCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -109,9 +98,8 @@ final class CountTest extends FunctionalTestCase
 
     /**
      * Test if count works with subproperties in subselects.
-     *
-     * @test
      */
+    #[Test]
     public function subpropertyJoinCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -123,9 +111,8 @@ final class CountTest extends FunctionalTestCase
 
     /**
      * Test if count works with subproperties in subselects that use the same table as the repository.
-     *
-     * @test
      */
+    #[Test]
     public function subpropertyJoinSameTableCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -137,9 +124,8 @@ final class CountTest extends FunctionalTestCase
 
     /**
      * Test if count works with subproperties in multiple left join.
-     *
-     * @test
      */
+    #[Test]
     public function subpropertyInMultipleLeftJoinCountTest(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -155,9 +141,7 @@ final class CountTest extends FunctionalTestCase
         self::assertSame(10, $result->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryWithAndConditionsToTheSameTableReturnExpectedCount(): void
     {
         $personRepository = $this->get(PersonRepository::class);
@@ -171,9 +155,7 @@ final class CountTest extends FunctionalTestCase
         self::assertSame(1, $query->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryWithOrConditionsToTheSameTableReturnExpectedCount(): void
     {
         $personRepository = $this->get(PersonRepository::class);

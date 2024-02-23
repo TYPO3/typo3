@@ -17,31 +17,26 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\FlexSectionContainer\Modify;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\FlexSectionContainer\AbstractActionTestCase;
 
 final class ActionTest extends AbstractActionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteSection(): void
     {
         parent::deleteSection();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteSection.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeSorting(): void
     {
         parent::changeSorting();

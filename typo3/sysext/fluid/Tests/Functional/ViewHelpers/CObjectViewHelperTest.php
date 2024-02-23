@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -51,9 +52,7 @@ final class CObjectViewHelperTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperAcceptsDataParameter(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
@@ -75,9 +74,7 @@ EOT
         self::assertStringContainsString('foo', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperAcceptsChildrenClosureAsData(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
@@ -99,9 +96,7 @@ EOT
         self::assertStringContainsString('foo', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionIfTypoScriptObjectPathDoesNotExist(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
@@ -122,9 +117,7 @@ EOT
         $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionIfNestedTypoScriptObjectPathDoesNotExist(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [

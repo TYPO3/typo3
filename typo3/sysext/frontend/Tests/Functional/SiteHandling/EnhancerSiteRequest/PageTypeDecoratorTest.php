@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerSiteRequest;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,10 +58,8 @@ final class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTestCase
         return $testSets;
     }
 
-    /**
-     * @test
-     * @dataProvider pageTypeDecoratorIsAppliedDataProvider
-     */
+    #[DataProvider('pageTypeDecoratorIsAppliedDataProvider')]
+    #[Test]
     public function pageTypeDecoratorIsApplied(TestSet $testSet): void
     {
         parent::pageTypeDecoratorIsApplied($testSet);
@@ -92,10 +92,8 @@ final class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTestCase
         return $testSets;
     }
 
-    /**
-     * @test
-     * @dataProvider pageTypeDecoratorIndexCanBePartOfSlugDataProvider
-     */
+    #[DataProvider('pageTypeDecoratorIndexCanBePartOfSlugDataProvider')]
+    #[Test]
     public function pageTypeDecoratorIndexCanBePartOfSlug(TestSet $testSet): void
     {
         $builder = Builder::create();
@@ -131,9 +129,7 @@ final class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTestCase
         self::assertEquals($expectation, $pageArguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unmappedPageTypeDecoratorIsAddedAsRegularQueryParam(): void
     {
         $this->mergeSiteConfiguration('archive-acme-com', [

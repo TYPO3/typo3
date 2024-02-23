@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Extbase\Domain\Model\File;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FileConverterTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function convertReturnsFileObject(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();

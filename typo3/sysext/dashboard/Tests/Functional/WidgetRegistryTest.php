@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
@@ -108,18 +110,14 @@ final class WidgetRegistryTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initiallyZeroWidgetAreRegistered(): void
     {
         $subject = new WidgetRegistry($this->getContainer());
         self::assertCount(0, $subject->getAllWidgets());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllWidgetsReturnsAllRegisteredWidgets(): void
     {
         $this->registerWidgets();
@@ -156,10 +154,8 @@ final class WidgetRegistryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider expectedAmountOfWidgetsForUserDataProvider
-     */
+    #[DataProvider('expectedAmountOfWidgetsForUserDataProvider')]
+    #[Test]
     public function returnsExpectedAmountOfWidgetsForUser(
         int $userId,
         int $countGroup1,
@@ -174,9 +170,7 @@ final class WidgetRegistryTest extends FunctionalTestCase
         self::assertCount($countTotal, $this->subject->getAvailableWidgets());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addWidgetsInItemsProcFunc(): void
     {
         $this->registerWidgets();

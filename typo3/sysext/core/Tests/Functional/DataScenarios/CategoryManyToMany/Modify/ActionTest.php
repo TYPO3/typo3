@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\CategoryManyToMany\Modify;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\CategoryManyToMany\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint;
@@ -26,19 +27,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 final class ActionTest extends AbstractActionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     * See DataSet/addCategoryRelation.csv
-     */
+    #[Test]
     public function addCategoryRelation(): void
     {
         parent::addCategoryRelation();
@@ -55,10 +51,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/addCategoryRelations.csv
-     */
+    #[Test]
     public function addCategoryRelations(): void
     {
         parent::addCategoryRelations();
@@ -75,10 +68,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/addCategoryRelationToExisting.csv
-     */
+    #[Test]
     public function addCategoryRelationToExisting(): void
     {
         parent::addCategoryRelationToExisting();
@@ -95,10 +85,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/addCategoryRelationsToExisting.csv
-     */
+    #[Test]
     public function addCategoryRelationsToExisting(): void
     {
         parent::addCategoryRelationsToExisting();
@@ -115,10 +102,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/createAndAddCategoryRelation.csv
-     */
+    #[Test]
     public function createAndAddCategoryRelation(): void
     {
         parent::createAndAddCategoryRelation();
@@ -148,10 +132,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/createAndReplaceCategoryRelation.csv
-     */
+    #[Test]
     public function createAndReplaceCategoryRelation(): void
     {
         parent::createAndReplaceCategoryRelation();
@@ -174,10 +155,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/addAndDeleteCategoryRelationsOnExisting.csv
-     */
+    #[Test]
     public function addAndDeleteCategoryRelationsOnExisting(): void
     {
         parent::addAndDeleteCategoryRelationsOnExisting();
@@ -194,10 +172,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/modifyReferencingContentElement.csv
-     */
+    #[Test]
     public function modifyReferencingContentElement(): void
     {
         parent::modifyReferencingContentElement();
@@ -213,10 +188,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/modifyContentOfRelatedCategory.csv
-     */
+    #[Test]
     public function modifyContentOfRelatedCategory(): void
     {
         parent::modifyContentOfRelatedCategory();
@@ -233,10 +205,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/deleteCategoryRelation.csv
-     */
+    #[Test]
     public function moveContentAndCategoryRelationToDifferentPage(): void
     {
         parent::moveContentAndCategoryRelationToDifferentPage();
@@ -253,10 +222,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/changeContentAndCategorySorting.csv
-     */
+    #[Test]
     public function changeContentAndCategorySorting(): void
     {
         parent::changeContentAndCategorySorting();
@@ -273,10 +239,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/deleteCategoryRelation.csv
-     */
+    #[Test]
     public function deleteCategoryRelation(): void
     {
         parent::deleteCategoryRelation();
@@ -300,10 +263,7 @@ final class ActionTest extends AbstractActionTestCase
         );
     }
 
-    /**
-     * @test
-     * See DataSet/deleteCategoryRelations.csv
-     */
+    #[Test]
     public function deleteCategoryRelations(): void
     {
         parent::deleteCategoryRelations();

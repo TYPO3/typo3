@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -56,9 +57,7 @@ final class PagePermissionTest extends FunctionalTestCase
         $this->actionService = new ActionService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newPageReceivesDefaultPermissionSet(): void
     {
         $this->backendUser->user['uid'] = 13;
@@ -72,9 +71,7 @@ final class PagePermissionTest extends FunctionalTestCase
         self::assertEquals(Permission::PAGE_SHOW, $record['perms_everybody']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newPageReceivesOverriddenPageTsPermissionSet(): void
     {
         $this->backendUser->user['uid'] = 13;
@@ -88,9 +85,7 @@ final class PagePermissionTest extends FunctionalTestCase
         self::assertEquals(Permission::PAGE_SHOW + Permission::PAGE_DELETE, $record['perms_everybody']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newPageReceivesOverriddenPageTsPermissionSetFromParent()
     {
         $this->backendUser->user['uid'] = 13;

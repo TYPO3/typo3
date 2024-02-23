@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\MetaDataHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
@@ -54,10 +56,8 @@ final class PluginsTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ensurePageSetupIsOkDataProvider
-     */
+    #[DataProvider('ensurePageSetupIsOkDataProvider')]
+    #[Test]
     public function ensurePageSetupIsOk(int $pageId, bool $expectPluginOutput): void
     {
         $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);
@@ -90,10 +90,9 @@ final class PluginsTest extends AbstractTestCase
     /**
      * This test ensures that the meta data and title of the page are the same
      * even if the pages is delivered cached or uncached.
-     *
-     * @test
-     * @dataProvider ensureMetaDataAreCorrectDataProvider
      */
+    #[DataProvider('ensureMetaDataAreCorrectDataProvider')]
+    #[Test]
     public function ensureMetaDataAreCorrect(int $pageId, string $expectedTitle, string $expectedMetaOgTitle): void
     {
         $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Extensions/test_meta/Configuration/TypoScript/page' . $pageId . '.typoscript']);

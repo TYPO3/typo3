@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Request;
 
+use GuzzleHttp\Psr7\Query;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -42,7 +45,7 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
                 'method' => 'POST',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => [],
-                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+                'body' => Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
@@ -61,12 +64,12 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
-            'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+            'body' => Query::build(['param1' => 'value1']),
             'expectedJsonKeyValues' => [
                 'method' => 'PATCH',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => [],
-                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+                'body' => Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
@@ -85,12 +88,12 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
-            'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+            'body' => Query::build(['param1' => 'value1']),
             'expectedJsonKeyValues' => [
                 'method' => 'PUT',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => [],
-                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+                'body' => Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
@@ -109,12 +112,12 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
-            'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+            'body' => Query::build(['param1' => 'value1']),
             'expectedJsonKeyValues' => [
                 'method' => 'DELETE',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => [],
-                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+                'body' => Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
@@ -138,7 +141,7 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
                 'method' => 'POST',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => ['queryParam1' => 'queryValue1'],
-                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+                'body' => Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
@@ -157,12 +160,12 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
-            'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+            'body' => Query::build(['param1' => 'value1']),
             'expectedJsonKeyValues' => [
                 'method' => 'PATCH',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => ['queryParam1' => 'queryValue1'],
-                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+                'body' => Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
@@ -181,12 +184,12 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
-            'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+            'body' => Query::build(['param1' => 'value1']),
             'expectedJsonKeyValues' => [
                 'method' => 'PUT',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => ['queryParam1' => 'queryValue1'],
-                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+                'body' => Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
@@ -205,12 +208,12 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
-            'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+            'body' => Query::build(['param1' => 'value1']),
             'expectedJsonKeyValues' => [
                 'method' => 'DELETE',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => ['queryParam1' => 'queryValue1'],
-                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
+                'body' => Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
@@ -286,10 +289,9 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
     /**
      * Verify testing-framework request details are properly received
      * in the application by adding an extension with a middleware.
-     *
-     * @test
-     * @dataProvider ensureRequestMappingWorksDataProvider
      */
+    #[DataProvider('ensureRequestMappingWorksDataProvider')]
+    #[Test]
     public function ensureRequestMappingWorks(
         string $uri,
         string $method,

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
+use PHPUnit\Framework\Attributes\Test;
+
 /**
  * Contains functional tests for the XmlSitemap Index with
  * $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] = true
@@ -41,9 +43,8 @@ final class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitema
      * Page marked as "Hide page if no translation for current language exists".
      * With "hidePagesIfNotTranslatedByDefault" enabled we expect to see the page
      * because it does NOT exist in the requested language (DE).
-     *
-     * @test
      */
+    #[Test]
     public function pagesSitemapInAlternativeLanguageDoesContainSiteThatIsHiddenIfNotTranslated(): void
     {
         self::assertStringContainsString(
@@ -54,9 +55,8 @@ final class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitema
 
     /**
      * Behavior is not changed with "hidePagesIfNotTranslatedByDefault"
-     *
-     * @test
      */
+    #[Test]
     public function pagesSitemapContainsTranslatedPages(): void
     {
         self::assertEquals(
@@ -67,9 +67,8 @@ final class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitema
 
     /**
      * Behavior is not changed with "hidePagesIfNotTranslatedByDefault"
-     *
-     * @test
      */
+    #[Test]
     public function pagesSitemapDoesNotContainUntranslatedPages(): void
     {
         self::assertStringNotContainsString(
@@ -81,9 +80,8 @@ final class XmlSitemapPagesWithHideIfNotTranslatedTest extends AbstractXmlSitema
     /**
      * Fallback strategy for pages is butchered by
      * "hidePagesIfNotTranslatedByDefault" completely.
-     *
-     * @test
      */
+    #[Test]
     public function pagesSitemapDoesNotCareAboutFallbackStrategy(): void
     {
         self::assertStringNotContainsString(

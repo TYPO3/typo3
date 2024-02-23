@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Redirects\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -40,9 +41,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchedRedirectEmitsWebhookMessage(): void
     {
         $payloadSourceUrl = null;

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -98,10 +100,8 @@ final class TrimViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderConvertsAValueDataProvider
-     */
+    #[DataProvider('renderConvertsAValueDataProvider')]
+    #[Test]
     public function renderTrimAValue(string $src, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -109,9 +109,7 @@ final class TrimViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperThrowsExceptionIfIncorrectModeIsGiven(): void
     {
         $this->expectException(Exception::class);

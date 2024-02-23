@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Middleware;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -42,9 +43,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notFoundFromHiddenPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -55,9 +54,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('The requested page does not exist!', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function okFromHiddenPageWithBackendUser(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -71,9 +68,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notAccessibleFromLoginRestrictedPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -84,9 +79,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('ID was not an accessible page', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function okFromLoginRestrictedPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -100,9 +93,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notAccessibleFromLoginRestrictedGroupOnePage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -113,9 +104,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('ID was not an accessible page', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notAccessibleFromLoginRestrictedGroupOnePageWithGroupTwo(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -128,9 +117,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('ID was not an accessible page', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function okFromLoginRestrictedGroupOnePageWithGroupOne(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -144,9 +131,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notFoundFromSpacerPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -157,9 +142,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('The requested page does not exist!', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notFoundFromSysFolderPage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -170,9 +153,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('The requested page does not exist!', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notFoundFromShortcutTargetDoesNotExist(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -183,9 +164,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('ID was not an accessible page', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectFoundFromValidShortcutTarget(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -196,9 +175,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertEquals(307, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function okFromDirectlyRequestedId(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
@@ -210,9 +187,7 @@ final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
         self::assertStringContainsString('testing-typoScriptFrontendInitialization', (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notFoundFromDirectlyRequestedIdOfDifferentDomain(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');

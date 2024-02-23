@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Functional\Hook;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -60,9 +61,7 @@ final class DataHandlerHookTest extends FunctionalTestCase
         GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletingSysWorkspaceDeletesWorkspaceRecords(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecords.csv');
@@ -88,9 +87,7 @@ final class DataHandlerHookTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecordsResult.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagEventIsTriggered(): void
     {
         $afterRecordPublishedEvent = null;

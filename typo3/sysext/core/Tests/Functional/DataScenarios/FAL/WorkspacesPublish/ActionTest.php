@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL\WorkspacesPublish;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL\AbstractActionWorkspacesTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -27,18 +28,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContent(): void
     {
         parent::modifyContent();
@@ -54,9 +51,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteContent(): void
     {
         parent::deleteContent();
@@ -71,9 +66,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContent(): void
     {
         parent::copyContent();
@@ -89,9 +82,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContent(): void
     {
         parent::localizeContent();
@@ -109,9 +100,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('[Translate to Dansk:] This is Kasper', '[Translate to Dansk:] Taken at T3BOARD')->setStrict(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeContentSorting(): void
     {
         parent::changeContentSorting();
@@ -130,9 +119,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();
@@ -155,9 +142,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
@@ -180,13 +165,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(true));
     }
 
-    /**
-     * File references
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentWithFileReference(): void
     {
         parent::createContentWithFileReference();
@@ -202,9 +181,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Image #1')->setStrict(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentWithFileReference(): void
     {
         parent::modifyContentWithFileReference();
@@ -220,9 +197,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'Image #1')->setStrict(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentAndAddFileReference(): void
     {
         parent::modifyContentAndAddFileReference();
@@ -236,9 +211,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper', 'Image #3')->setStrict(true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentAndDeleteFileReference(): void
     {
         parent::modifyContentAndDeleteFileReference();
@@ -255,9 +228,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentAndDeleteAllFileReference(): void
     {
         parent::modifyContentAndDeleteAllFileReference();
@@ -271,9 +242,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentWithFileReferenceAndDeleteFileReference(): void
     {
         parent::createContentWithFileReferenceAndDeleteFileReference();

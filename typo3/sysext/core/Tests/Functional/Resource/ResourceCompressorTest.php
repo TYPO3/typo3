@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,9 +35,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeCreatesTargetDirectory(): void
     {
         $subject = $this->getAccessibleMock(ResourceCompressor::class, null);
@@ -43,9 +43,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
         self::assertFileExists($this->instancePath . '/typo3temp/assets/compressed');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeCreatesHtaccessFileIfSet(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = true;
@@ -55,9 +53,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
         self::assertStringEqualsFile($htaccessPath, $subject->_get('htaccessTemplate'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeDoesNotCreateHtaccessFileIfSetToFalse(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = false;
@@ -67,9 +63,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
         self::assertFileDoesNotExist($htaccessPath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function concatenateCssFiles(): void
     {
         $files = [
@@ -122,10 +116,9 @@ final class ResourceCompressorTest extends FunctionalTestCase
 
     /**
      * Tests optimizing a CSS asset group.
-     *
-     * @test
-     * @dataProvider compressCssFileContentDataProvider
      */
+    #[DataProvider('compressCssFileContentDataProvider')]
+    #[Test]
     public function compressCssFileContent(string $cssFile, string $expected): void
     {
         $cssContent = file_get_contents($cssFile);
@@ -158,10 +151,8 @@ final class ResourceCompressorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getFilenamesFromMainDirInFrontendContextDataProvider
-     */
+    #[DataProvider('getFilenamesFromMainDirInFrontendContextDataProvider')]
+    #[Test]
     public function getFilenamesFromMainDirInFrontendContext(string $filename, string $expected): void
     {
         // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something

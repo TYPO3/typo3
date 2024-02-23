@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -25,9 +26,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderUsesValueAsSourceIfSpecified(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -35,9 +34,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         self::assertEquals('Some string', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderUsesChildnodesAsSourceIfSpecified(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -45,9 +42,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         self::assertEquals('Some string', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters(): void
     {
         $source = 'This is a sample text without special characters. <> &©"\'';
@@ -56,9 +51,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         self::assertEquals($source, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderDecodesSimpleString(): void
     {
         $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
@@ -68,9 +61,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRespectsKeepQuoteArgument(): void
     {
         $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
@@ -80,9 +71,7 @@ final class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRespectsEncodingArgument(): void
     {
         $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';

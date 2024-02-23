@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form\Select;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -28,9 +30,7 @@ final class OptionViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionTagNameIsSet(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -40,9 +40,7 @@ final class OptionViewHelperTest extends FunctionalTestCase
         self::assertSame('<option selected="selected" value="" />', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function childrenContentIsUsedAsValueAndLabelByDefault(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -52,9 +50,7 @@ final class OptionViewHelperTest extends FunctionalTestCase
         self::assertSame('<option value="Option Label">Option Label</option>', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueCanBeOverwrittenByArgument(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -64,9 +60,7 @@ final class OptionViewHelperTest extends FunctionalTestCase
         self::assertSame('<option value="value">Option Label</option>', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectedIsAddedToSelectedOptionForNoSelectionOverride(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -103,10 +97,8 @@ final class OptionViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider selectedIsAddedToSelectedOptionForProvidedValueDataProvider
-     */
+    #[DataProvider('selectedIsAddedToSelectedOptionForProvidedValueDataProvider')]
+    #[Test]
     public function selectedIsAddedToSelectedOptionForProvidedValue($value, $selected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -122,9 +114,7 @@ final class OptionViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectedIsNotAddedToUnselectedOptionForNoSelectionOverride(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -156,10 +146,8 @@ final class OptionViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider selectedIsNotAddedToSelectedOptionForProvidedValueDataProvider
-     */
+    #[DataProvider('selectedIsNotAddedToSelectedOptionForProvidedValueDataProvider')]
+    #[Test]
     public function selectedIsNotAddedToSelectedOptionForProvidedValue($value, $selected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -175,9 +163,7 @@ final class OptionViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectedIsNotAddedToOptionForExplicitOverride(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -188,9 +174,7 @@ final class OptionViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectedIsAddedToOptionForExplicitOverride(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

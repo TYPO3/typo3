@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignField\Modify;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignField\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -27,19 +28,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 final class ActionTest extends AbstractActionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     * See DataSet/createParentContentRecord.csv
-     */
+    #[Test]
     public function createParentContent(): void
     {
         parent::createParentContent();
@@ -51,10 +47,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyParentContentRecord.csv
-     */
+    #[Test]
     public function modifyParentContent(): void
     {
         parent::modifyParentContent();
@@ -69,10 +62,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/deleteParentContentRecord.csv
-     */
+    #[Test]
     public function deleteParentContent(): void
     {
         parent::deleteParentContent();
@@ -84,10 +74,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyParentContentRecord.csv
-     */
+    #[Test]
     public function copyParentContent(): void
     {
         parent::copyParentContent();
@@ -100,10 +87,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyParentContentToDifferentPage.csv
-     */
+    #[Test]
     public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
@@ -116,10 +100,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyParentContentToLanguageWAllChildren.csv
-     */
+    #[Test]
     public function copyParentContentToLanguageWithAllChildren(): void
     {
         // Create translated page first
@@ -145,10 +126,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeParentContentWAllChildren.csv
-     */
+    #[Test]
     public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
@@ -163,10 +141,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeParentContentSynchronization.csv
-     */
+    #[Test]
     public function localizeParentContentWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -181,10 +156,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeParentContentChainLanguageSynchronizationSource.csv
-     */
+    #[Test]
     public function localizeParentContentChainLanguageSynchronizationSource(): void
     {
         // Create translated page first
@@ -200,10 +172,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Hotel #1', '[Translate to Deutsch:] [Translate to Dansk:] Hotel #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/Modify/localizeParentContentNCreateNestedChildrenWLanguageSynchronization.csv
-     */
+    #[Test]
     public function localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -218,10 +187,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1', '[Translate to Dansk:] New Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeParentContentSynchronization.csv
-     */
+    #[Test]
     public function localizeParentContentAndSetInvalidChildReferenceWithLanguageSynchronization(): void
     {
         // Create translated page first
@@ -237,10 +203,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeParentContentSynchronization.csv
-     */
+    #[Test]
     public function localizeParentContentAndSetInvalidChildReferenceWithLateLanguageSynchronization(): void
     {
         // Create translated page first
@@ -256,10 +219,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/changeParentContentRecordSorting.csv
-     */
+    #[Test]
     public function changeParentContentSorting(): void
     {
         parent::changeParentContentSorting();
@@ -275,10 +235,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/moveParentContentRecordToDifferentPage.csv
-     */
+    #[Test]
     public function moveParentContentToDifferentPage(): void
     {
         parent::moveParentContentToDifferentPage();
@@ -293,10 +250,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/moveParentContentRecordToDifferentPageAndChangeSorting.csv
-     */
+    #[Test]
     public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
@@ -314,14 +268,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * Page records
-     */
-
-    /**
-     * @test
-     * See DataSet/modifyPageRecord.csv
-     */
+    #[Test]
     public function modifyPage(): void
     {
         parent::modifyPage();
@@ -333,10 +280,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/deletePageRecord.csv
-     */
+    #[Test]
     public function deletePage(): void
     {
         parent::deletePage();
@@ -346,10 +290,7 @@ final class ActionTest extends AbstractActionTestCase
         self::assertEquals(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     * See DataSet/copyPageRecord.csv
-     */
+    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -361,10 +302,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2', 'Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyPageWHotelBeforeParentContent.csv
-     */
+    #[Test]
     public function copyPageWithHotelBeforeParentContent(): void
     {
         parent::copyPageWithHotelBeforeParentContent();
@@ -376,14 +314,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2', 'Hotel #1'));
     }
 
-    /**
-     * IRRE Child Records
-     */
-
-    /**
-     * @test
-     * See DataSet/createParentContentRecordWithHotelAndOfferChildRecords.csv
-     */
+    #[Test]
     public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();
@@ -398,10 +329,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/createAndCopyParentContentRecordWithHotelAndOfferChildRecords.csv
-     */
+    #[Test]
     public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
@@ -420,10 +348,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Offer)->setField('title')->setValues('Offer #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords.csv
-     */
+    #[Test]
     public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         // Create translated page first
@@ -443,9 +368,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Offer)->setField('title')->setValues('[Translate to Dansk:] Offer #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration(): void
     {
         // Create translated page first
@@ -465,10 +388,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Offer)->setField('title')->setValues('[Translate to Dansk:] Offer #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyOnlyHotelChildRecord.csv
-     */
+    #[Test]
     public function modifyOnlyHotelChild(): void
     {
         parent::modifyOnlyHotelChild();
@@ -481,10 +401,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyParentRecordAndChangeHotelChildRecordsSorting.csv
-     */
+    #[Test]
     public function modifyParentAndChangeHotelChildrenSorting(): void
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
@@ -497,10 +414,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #2', 'Hotel #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyParentRecordWithHotelChildRecord.csv
-     */
+    #[Test]
     public function modifyParentWithHotelChild(): void
     {
         parent::modifyParentWithHotelChild();
@@ -513,10 +427,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyParentRecordAndAddHotelChildRecord.csv
-     */
+    #[Test]
     public function modifyParentAndAddHotelChild(): void
     {
         parent::modifyParentAndAddHotelChild();
@@ -529,10 +440,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyParentRecordAndDeleteHotelChildRecord.csv
-     */
+    #[Test]
     public function modifyParentAndDeleteHotelChild(): void
     {
         parent::modifyParentAndDeleteHotelChild();
@@ -548,10 +456,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageWExclude.csv
-     */
+    #[Test]
     public function localizePageWithLocalizationExclude(): void
     {
         parent::localizePageWithLocalizationExclude();
@@ -564,10 +469,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageTwiceWExclude.csv
-     */
+    #[Test]
     public function localizePageTwiceWithLocalizationExclude(): void
     {
         parent::localizePageTwiceWithLocalizationExclude();
@@ -580,10 +482,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageNAddHotelChildWExclude.csv
-     */
+    #[Test]
     public function localizePageAndAddHotelChildWithLocalizationExclude(): void
     {
         parent::localizePageAndAddHotelChildWithLocalizationExclude();
@@ -596,10 +495,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0', 'Hotel #007'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageWSynchronization.csv
-     */
+    #[Test]
     public function localizePageWithLanguageSynchronization(): void
     {
         parent::localizePageWithLanguageSynchronization();
@@ -612,10 +508,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #0'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageNAddHotelChildWSynchronization.csv
-     */
+    #[Test]
     public function localizePageAndAddHotelChildWithLanguageSynchronization(): void
     {
         parent::localizePageAndAddHotelChildWithLanguageSynchronization();
@@ -628,10 +521,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #0', '[Translate to Dansk:] Hotel #007'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageNAddMonoglotHotelChildWSynchronization.csv
-     */
+    #[Test]
     public function localizePageAndAddMonoglotHotelChildWithLanguageSynchronization(): void
     {
         parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
@@ -644,10 +534,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0', 'Hotel #007'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeNCopyPageWSynchronization.csv
-     */
+    #[Test]
     public function localizeAndCopyPageWithLanguageSynchronization(): void
     {
         parent::localizeAndCopyPageWithLanguageSynchronization();
@@ -663,10 +550,8 @@ final class ActionTest extends AbstractActionTestCase
     /**
      * Checks for a page having an IRRE record. The page is then localized and
      * an IRRE record is then added to the localized page
-     *
-     * @test
-     * See DataSet/localizePageWithSynchronizationAndCustomLocalizedHotel.csv
      */
+    #[Test]
     public function localizePageWithSynchronizationAndCustomLocalizedHotel(): void
     {
         parent::localizePageWithSynchronizationAndCustomLocalizedHotel();
@@ -679,10 +564,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #0'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizePageAddMonoglotHotelChildNCopyPageWSynchronization.csv
-     */
+    #[Test]
     public function localizePageAddMonoglotHotelChildAndCopyPageWithLanguageSynchronization(): void
     {
         parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
@@ -696,9 +578,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0', 'Hotel #007'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inlineLocalizeSynchronizeLocalizeMissing(): void
     {
         parent::inlineLocalizeSynchronizeLocalizeMissing();

@@ -15,7 +15,6 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-use PhpParser\Comment\Doc;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -189,18 +188,16 @@ class FunctionalTestCaseVisitor extends NodeVisitorAbstract
     /**
      * @var array[] An array of arrays with test method names and optionally a data provider name
      */
-    private $tests = [];
+    private array $tests = [];
 
     /**
      * @var string Fully qualified test class name
      */
-    private $fqcn;
+    private string $fqcn;
 
     /**
      * Create a list of '@test' annotated methods in a test case
      * file and see if single tests use data providers.
-     *
-     * @param Node $node
      */
     public function enterNode(Node $node): void
     {
@@ -211,27 +208,27 @@ class FunctionalTestCaseVisitor extends NodeVisitorAbstract
             $this->fqcn = (string)$node->namespacedName;
         }
 
-        if ($node instanceof Node\Stmt\ClassMethod
-            && ($docComment = $node->getDocComment()) instanceof Doc
-        ) {
-            preg_match_all(
-                '/\s*\s@(?<annotations>[^\s.].*)\n/',
-                $docComment->getText(),
-                $matches
-            );
-            foreach ($matches['annotations'] as $possibleTest) {
-                if ($possibleTest === 'test') {
-                    // Found a test
-                    $test = [
-                        'methodName' => $node->name->name,
-                    ];
-                    foreach ($matches['annotations'] as $possibleDataProvider) {
-                        // See if this test has a data provider attached
-                        if (str_starts_with($possibleDataProvider, 'dataProvider')) {
-                            $test['dataProvider'] = trim(ltrim($possibleDataProvider, 'dataProvider'));
+        if ($node instanceof Node\Stmt\ClassMethod) {
+            foreach ($node->getAttrGroups() as $possibleTestAttributeGroup) {
+                foreach ($possibleTestAttributeGroup->attrs as $possibleTestAttribute) {
+                    // See if that method has the phpunit Test attribute attached.
+                    $name = $possibleTestAttribute->name->toCodeString();
+                    if ($name === '\\PHPUnit\\Framework\\Attributes\\Test') {
+                        $test = [
+                            'methodName' => $node->name->name,
+                        ];
+                        foreach ($node->getAttrGroups() as $possibleDataProviderAttributeGroup) {
+                            foreach ($possibleDataProviderAttributeGroup->attrs as $possibleDataProviderAttribute) {
+                                // See if that method has the phpunit DataProvider attribute attached, too.
+                                $name = $possibleDataProviderAttribute->name->toCodeString();
+                                if ($name === '\\PHPUnit\\Framework\\Attributes\\DataProvider') {
+                                    $dataProviderMethodName = $possibleDataProviderAttribute->args[0]->value->value;
+                                    $test['dataProvider'] = $dataProviderMethodName;
+                                }
+                            }
                         }
+                        $this->tests[] = $test;
                     }
-                    $this->tests[] = $test;
                 }
             }
         }
@@ -239,8 +236,6 @@ class FunctionalTestCaseVisitor extends NodeVisitorAbstract
 
     /**
      * Return array of found tests and their data providers
-     *
-     * @return array
      */
     public function getTests(): array
     {
@@ -249,8 +244,6 @@ class FunctionalTestCaseVisitor extends NodeVisitorAbstract
 
     /**
      * Return Fully qualified class test name
-     *
-     * @return string
      */
     public function getFqcn(): string
     {

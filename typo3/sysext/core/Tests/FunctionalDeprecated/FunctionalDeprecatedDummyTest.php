@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class FunctionalDeprecatedDummyTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function dummyTest(): void
     {
         self::assertTrue(true);

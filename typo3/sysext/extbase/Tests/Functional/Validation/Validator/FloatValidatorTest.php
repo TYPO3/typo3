@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -45,10 +47,8 @@ final class FloatValidatorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validFloats
-     */
+    #[DataProvider('validFloats')]
+    #[Test]
     public function floatValidatorReturnsNoErrorsForAValidFloat(float|string $float): void
     {
         $validator = new FloatValidator();
@@ -65,10 +65,8 @@ final class FloatValidatorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidFloats
-     */
+    #[DataProvider('invalidFloats')]
+    #[Test]
     public function floatValidatorReturnsErrorForAnInvalidFloat(int|string $float): void
     {
         $validator = new FloatValidator();

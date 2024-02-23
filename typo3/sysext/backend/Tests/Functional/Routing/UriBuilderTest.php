@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Routing;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -30,9 +31,7 @@ final class UriBuilderTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildUriFromRouteResolvesAliasWhenLinking(): void
     {
         $subject = GeneralUtility::makeInstance(UriBuilder::class);
@@ -41,9 +40,7 @@ final class UriBuilderTest extends FunctionalTestCase
         self::assertEquals($routeFromAlias->getPath(), $route->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildUriFromRouteResolvesSubModule(): void
     {
         $subject = GeneralUtility::makeInstance(UriBuilder::class);
@@ -51,9 +48,7 @@ final class UriBuilderTest extends FunctionalTestCase
         self::assertStringEndsWith('/module/site/configuration/edit', $uri->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildUriFromRequestCanLinkToValidRoute(): void
     {
         $subject = GeneralUtility::makeInstance(UriBuilder::class);
@@ -65,9 +60,7 @@ final class UriBuilderTest extends FunctionalTestCase
         self::assertStringEndsWith('/module/site/configuration/edit', $uri->getPath());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildUriFromRequestWithInvalidRouteThrowsException(): void
     {
         self::expectException(RouteNotFoundException::class);
@@ -81,9 +74,7 @@ final class UriBuilderTest extends FunctionalTestCase
         $subject->buildUriFromRequest($request, ['foo' => 'bar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildUriFromRequestWithoutRouteThrowsException(): void
     {
         self::expectException(RouteNotFoundException::class);

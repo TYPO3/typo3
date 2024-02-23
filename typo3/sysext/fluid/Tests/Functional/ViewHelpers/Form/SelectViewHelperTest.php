@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,9 +36,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class SelectViewHelperTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function selectCorrectlySetsTagName(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -47,9 +46,7 @@ final class SelectViewHelperTest extends FunctionalTestCase
         self::assertSame('<select name=""></select>', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectCreatesExpectedOptions(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -60,9 +57,7 @@ final class SelectViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectShouldSetTheRequiredAttribute(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -73,9 +68,7 @@ final class SelectViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectCreatesExpectedOptionsWithArraysAndOptionValueFieldAndOptionLabelFieldSet(): void
     {
         $options = [
@@ -110,9 +103,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectThrowsExceptionIfEitherOptionValueFieldIsNotSet(): void
     {
         $options = [
@@ -145,9 +136,7 @@ EOT;
         $view->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectThrowsExceptionIfEitherOptionLabelFieldIsNotSet(): void
     {
         $options = [
@@ -180,9 +169,7 @@ EOT;
         $view->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectCreatesExpectedOptionsWithStdClassesAndOptionValueFieldAndOptionLabelFieldSet(): void
     {
         $obj1 = new \stdClass();
@@ -217,9 +204,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectCreatesExpectedOptionsWithArrayObjectsAndOptionValueFieldAndOptionLabelFieldSet(): void
     {
         $options = new \ArrayObject([
@@ -254,9 +239,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function OrderOfOptionsIsNotAlteredByDefault(): void
     {
         $options = [
@@ -279,9 +262,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionsAreSortedByLabelIfSortByOptionLabelIsSet(): void
     {
         $options = [
@@ -304,9 +285,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multipleSelectCreatesExpectedOptions(): void
     {
         $options = [
@@ -331,9 +310,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multipleSelectWithoutOptionsCreatesExpectedOptions(): void
     {
         $value = ['value3', 'value1'];
@@ -347,9 +324,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectOnDomainObjectsCreatesExpectedOptions(): void
     {
         $user_is = new UserDomainClass(1, 'Ingmar', 'Schlecht');
@@ -376,9 +351,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multipleSelectOnDomainObjectsCreatesExpectedOptions(): void
     {
         $user_is = new UserDomainClass(1, 'Ingmar', 'Schlecht');
@@ -405,9 +378,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multipleSelectOnDomainObjectsCreatesExpectedOptionsWithoutOptionValueField(): void
     {
         $user_is = new UserDomainClass(1, 'Ingmar', 'Schlecht');
@@ -448,9 +419,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUuidForValueAndLabel(): void
     {
         $user_is = new UserDomainClass(1, 'Ingmar', 'Schlecht');
@@ -477,9 +446,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable(): void
     {
         $user_is = new UserDomainClassToString(1, 'Ingmar', 'Schlecht');
@@ -506,9 +473,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectOnDomainObjectsThrowsExceptionIfNoValueCanBeFound(): void
     {
         $user_is = new UserDomainClass(1, 'Ingmar', 'Schlecht');
@@ -535,9 +500,7 @@ EOT;
         $view->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCallsSetErrorClassAttribute(): void
     {
         // Create an extbase request that contains mapping results of the form object property we're working with.
@@ -563,9 +526,7 @@ EOT;
         self::assertStringContainsString('<select name="myFieldPrefix[myObjectName][someProperty]" class="myError"></select>', $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allOptionsAreSelectedIfSelectAllIsTrue(): void
     {
         $options = [
@@ -588,9 +549,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectAllHasNoEffectIfValueIsSet(): void
     {
         $options = [
@@ -614,9 +573,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionsContainPrependedItemWithEmptyValueIfPrependOptionLabelIsSet(): void
     {
         $options = [
@@ -641,9 +598,7 @@ EOT;
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionsContainPrependedItemWithCorrectValueIfPrependOptionLabelAndPrependOptionValueAreSet(): void
     {
         $options = [

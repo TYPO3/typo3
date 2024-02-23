@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -41,9 +42,7 @@ final class QueryParserTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForOrQuery(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -61,9 +60,8 @@ final class QueryParserTest extends FunctionalTestCase
 
     /**
      * Test Relation::HAS_AND_BELONGS_TO_MANY
-     *
-     * @test
      */
+    #[Test]
     public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -75,9 +73,8 @@ final class QueryParserTest extends FunctionalTestCase
 
     /**
      * Test Relation::HAS_MANY
-     *
-     * @test
      */
+    #[Test]
     public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {
         $query = $this->get(AdministratorRepository::class)->createQuery();
@@ -89,9 +86,8 @@ final class QueryParserTest extends FunctionalTestCase
 
     /**
      * Test Relation::HAS_ONE, ColumnMap::Relation::HAS_AND_BELONGS_TO_MANY
-     *
-     * @test
      */
+    #[Test]
     public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -102,9 +98,7 @@ final class QueryParserTest extends FunctionalTestCase
         self::assertCount(12, $query->execute()->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orReturnsExpectedResult(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -117,9 +111,7 @@ final class QueryParserTest extends FunctionalTestCase
         self::assertCount(2, $query->execute()->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForAndQuery(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -133,18 +125,14 @@ final class QueryParserTest extends FunctionalTestCase
         self::assertCount(1, $query->execute()->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryWithFindInSetReturnsExpectedResult(): void
     {
         $query = $this->get(AdministratorRepository::class)->createQuery();
         self::assertCount(2, $query->matching($query->contains('usergroup', 1))->execute());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryForPostWithCategoriesReturnsPostWithCategories(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -152,9 +140,7 @@ final class QueryParserTest extends FunctionalTestCase
         self::assertCount(3, $post->getCategories());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryForBlogsAndPostsWithNoPostsShowsBlogRecord(): void
     {
         $query = $this->get(BlogRepository::class)->createQuery();
@@ -166,9 +152,7 @@ final class QueryParserTest extends FunctionalTestCase
         self::assertSame(7, $blog->getUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function queryForPersonSalutationEnum(): void
     {
         $query = $this->get(PersonRepository::class)->createQuery();

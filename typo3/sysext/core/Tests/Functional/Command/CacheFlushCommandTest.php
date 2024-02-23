@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
@@ -38,9 +39,7 @@ final class CacheFlushCommandTest extends AbstractCommandTestCase
         ],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cachesCanBeFlushed(): void
     {
         $containerBuilder = $this->get(ContainerBuilder::class);
@@ -71,9 +70,7 @@ final class CacheFlushCommandTest extends AbstractCommandTestCase
         self::assertGreaterThan(0, filemtime($diCacheFile));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function diCachesCanBeFlushed(): void
     {
         $containerBuilder = $this->get(ContainerBuilder::class);
@@ -90,9 +87,7 @@ final class CacheFlushCommandTest extends AbstractCommandTestCase
         self::assertFileDoesNotExist($diCacheFile);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function systemCachesCanBeFlushed(): void
     {
         $containerBuilder = $this->get(ContainerBuilder::class);
@@ -125,9 +120,7 @@ final class CacheFlushCommandTest extends AbstractCommandTestCase
         self::assertGreaterThan(0, filemtime($diCacheFile));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageCachesCanBeFlushed(): void
     {
         $containerBuilder = $this->get(ContainerBuilder::class);

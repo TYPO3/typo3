@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Controller\BackendController;
 use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
@@ -44,9 +45,7 @@ final class BackendControllerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function backendPageRenderEventIsTriggered(): void
     {
         /** @var Container $container */
@@ -78,9 +77,7 @@ final class BackendControllerTest extends FunctionalTestCase
         self::assertInstanceOf(AfterBackendPageRenderEvent::class, $state['after-backend-page-render-listener']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flashMessageIsDispatchedForForcedRedirect(): void
     {
         // Set workspace to disable the site configuration module

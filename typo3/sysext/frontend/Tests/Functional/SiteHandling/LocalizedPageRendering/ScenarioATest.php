@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 /**
  * Language container test definition
  *
@@ -81,10 +84,8 @@ final class ScenarioATest extends AbstractLocalizedPagesTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolvablePagesDataProvider
-     */
+    #[DataProvider('resolvablePagesDataProvider')]
+    #[Test]
     public function resolvedPagesMatchScopes(string $url, array $scopes): void
     {
         $this->assertScopes($url, $scopes);
@@ -114,10 +115,8 @@ final class ScenarioATest extends AbstractLocalizedPagesTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider menuDataProvider
-     */
+    #[DataProvider('menuDataProvider')]
+    #[Test]
     public function pageMenuIsRendered(string $url, array $expectedMenu): void
     {
         $this->assertMenu($url, $expectedMenu);

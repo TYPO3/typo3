@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\Updates\PagesRecyclerDoktypeMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -25,9 +26,7 @@ final class PagesRecyclerDoktypeMigrationTest extends FunctionalTestCase
     protected string $baseDataSet = __DIR__ . '/Fixtures/PagesRecyclerBase.csv';
     protected string $resultDataSet = __DIR__ . '/Fixtures/PagesRecyclerMigrated.csv';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recyclerPagesUpdated(): void
     {
         $subject = new PagesRecyclerDoktypeMigration();

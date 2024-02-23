@@ -17,15 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Module;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ModuleDataTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValuesAreOverwritten(): void
     {
         $defaultValues = [
@@ -53,9 +53,7 @@ final class ModuleDataTest extends FunctionalTestCase
         self::assertEquals('anotherPropertyValue', $moduleData->toArray()['anotherProperty']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moduleDataAreCreatedFromModule(): void
     {
         $defaultValues = [
@@ -86,9 +84,7 @@ final class ModuleDataTest extends FunctionalTestCase
         self::assertEquals('anotherPropertyValue', $moduleData->toArray()['anotherProperty']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cleanModuleDataPropertyThrowsExceptionOnInvalidProperty(): void
     {
         $moduleData = new ModuleData(
@@ -107,9 +103,7 @@ final class ModuleDataTest extends FunctionalTestCase
         $moduleData->clean('invalidProperty', ['allowedValue']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cleanModuleDataPropertyThrowsExceptionOnEmptyAllowedList(): void
     {
         $moduleData = new ModuleData(
@@ -147,10 +141,8 @@ final class ModuleDataTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cleanModuleDataPropertyDataProvider
-     */
+    #[DataProvider('cleanModuleDataPropertyDataProvider')]
+    #[Test]
     public function cleanModuleDataProperty(array $allowedValues, bool $cleaned, string $cleanedValue): void
     {
         $moduleData = new ModuleData(
@@ -217,10 +209,8 @@ final class ModuleDataTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cleanUpModuleDataPropertiesDataProvider
-     */
+    #[DataProvider('cleanUpModuleDataPropertiesDataProvider')]
+    #[Test]
     public function cleanUpModuleDataProperties(
         array $allowedData,
         bool $useKeys,

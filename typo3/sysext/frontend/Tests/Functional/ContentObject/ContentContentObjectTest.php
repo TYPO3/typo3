@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -29,9 +30,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ContentContentObjectTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyRecordsAfterFetchingContentEventIsCalled(): void
     {
         $records = [['uid' => 2004, 'title' => 'my content']];

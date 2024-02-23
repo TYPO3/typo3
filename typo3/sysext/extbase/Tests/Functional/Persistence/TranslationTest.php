@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -61,9 +63,8 @@ final class TranslationTest extends FunctionalTestCase
 
     /**
      * Tests if repository returns correct number of posts in the default language
-     *
-     * @test
      */
+    #[Test]
     public function countReturnsCorrectNumberOfPosts(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -77,9 +78,8 @@ final class TranslationTest extends FunctionalTestCase
 
     /**
      * Test for fetching records with disabled overlay
-     *
-     * @test
      */
+    #[Test]
     public function countReturnsCorrectNumberOfPostsInEnglishLanguage(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -91,9 +91,7 @@ final class TranslationTest extends FunctionalTestCase
         self::assertSame(2, $postCount);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countReturnsCorrectNumberOfPostsInGreekLanguage(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -105,9 +103,7 @@ final class TranslationTest extends FunctionalTestCase
         self::assertSame(2, $postCount);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchingPostsReturnsEnglishPostsWithFallback(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -123,9 +119,7 @@ final class TranslationTest extends FunctionalTestCase
         self::assertSame('B EN:Post1', $posts[1]->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchingPostsByInClauseReturnsDefaultPostsWithFallback(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -142,9 +136,8 @@ final class TranslationTest extends FunctionalTestCase
 
     /**
      * This tests shows overlays in action
-     *
-     * @test
      */
+    #[Test]
     public function fetchingPostsReturnsGreekPostsWithFallback(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -162,9 +155,8 @@ final class TranslationTest extends FunctionalTestCase
 
     /**
      * This tests shows overlay 'hideNonTranslated' in action
-     *
-     * @test
      */
+    #[Test]
     public function fetchingPostsReturnsGreekPostsWithHideNonTranslated(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -194,10 +186,8 @@ final class TranslationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider fetchingTranslatedPostByUidDataProvider
-     * @test
-     */
+    #[DataProvider('fetchingTranslatedPostByUidDataProvider')]
+    #[Test]
     public function fetchingTranslatedPostByInClauseWithStrictLanguageSettings(array $input, array $expectedTitles): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -217,10 +207,8 @@ final class TranslationTest extends FunctionalTestCase
         // self::assertEqualsCanonicalizing($expectedTitles, array_map(static fn(Post $post): string => $post->getTitle(), $posts));
     }
 
-    /**
-     * @dataProvider fetchingTranslatedPostByUidDataProvider
-     * @test
-     */
+    #[DataProvider('fetchingTranslatedPostByUidDataProvider')]
+    #[Test]
     public function fetchingTranslatedPostByEqualsUidClauseWithStrictLanguageSettings(array $input, array $expectedTitles): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -244,9 +232,7 @@ final class TranslationTest extends FunctionalTestCase
         // self::assertEqualsCanonicalizing($expectedTitles, array_map(static fn(Post $post): string => $post->getTitle(), $posts));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orderingByTitleRespectsEnglishTitles(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -265,9 +251,8 @@ final class TranslationTest extends FunctionalTestCase
     /**
      * This test shows that ordering by blog title works
      * however the default language blog title is used
-     *
-     * @test
      */
+    #[Test]
     public function orderingByBlogTitle(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -290,9 +275,8 @@ final class TranslationTest extends FunctionalTestCase
      * This test checks whether setIgnoreEnableFields(true) affects the query
      * It's expected that when ignoring enable fields, the hidden record is also returned.
      * This is related to https://forge.typo3.org/issues/68672
-     *
-     * @test
      */
+    #[Test]
     public function fetchingHiddenPostsWithIgnoreEnableField(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -312,9 +296,8 @@ final class TranslationTest extends FunctionalTestCase
     /**
      * This test checks whether setIgnoreEnableFields(true) affects translated record too.
      * It's expected that when ignoring enable fields, the hidden translated record is shown.
-     *
-     * @test
      */
+    #[Test]
     public function fetchingHiddenPostsReturnsHiddenOverlay(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -339,9 +322,8 @@ final class TranslationTest extends FunctionalTestCase
      * This is related to https://forge.typo3.org/issues/68672
      *
      * This tests documents current, buggy behaviour!
-     *
-     * @test
      */
+    #[Test]
     public function fetchingHiddenPostsReturnsHiddenOverlayOverlayEnabled(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -365,9 +347,8 @@ final class TranslationTest extends FunctionalTestCase
 
     /**
      * Test checking if we can query db records by translated fields
-     *
-     * @test
      */
+    #[Test]
     public function fetchingTranslatedPostByTitle(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -386,9 +367,8 @@ final class TranslationTest extends FunctionalTestCase
     /**
      * Test checking if we can query db records by value of the child object
      * Note that only child objects from language 0 are taken into account
-     *
-     * @test
      */
+    #[Test]
     public function fetchingTranslatedPostByBlogTitle(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -405,9 +385,7 @@ final class TranslationTest extends FunctionalTestCase
         self::assertSame('GR:Post11', $posts[1]->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchingPostByTagName(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();
@@ -423,9 +401,7 @@ final class TranslationTest extends FunctionalTestCase
         self::assertSame('Post1', $posts[0]->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fetchingTranslatedPostByTagName(): void
     {
         $query = $this->get(PostRepository::class)->createQuery();

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -52,9 +54,7 @@ final class PageRendererTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageRendererRendersInsertsMainContentStringsInOutput(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
@@ -192,10 +192,8 @@ final class PageRendererTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider pageRendererRendersFooterValuesDataProvider
-     */
+    #[DataProvider('pageRendererRendersFooterValuesDataProvider')]
+    #[Test]
     public function pageRendererRendersFooterValues(int $requestType): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
@@ -279,9 +277,7 @@ final class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedInlineSettingsReturnValue, $renderedString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageRendererRendersNomoduleJavascript(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
@@ -363,9 +359,7 @@ final class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedJsFooter, $renderedString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageRendererRendersDataAttributeInScriptTags(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
@@ -423,9 +417,7 @@ final class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedJsFooter, $renderedString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageRendererRendersDataAttributeInCssTags(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))

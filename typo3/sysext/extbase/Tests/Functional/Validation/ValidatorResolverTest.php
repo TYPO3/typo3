@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
@@ -38,9 +39,7 @@ final class ValidatorResolverTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_validators',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createValidatorSetsOptionsAndDependenciesAreInjected(): void
     {
         $subject = $this->get(ValidatorResolver::class);
@@ -51,9 +50,7 @@ final class ValidatorResolverTest extends FunctionalTestCase
         self::assertInstanceOf(IconFactory::class, $validator->iconFactory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAnnotationsInTheClassToTheReturnedConjunction(): void
     {
         $subject = $this->getAccessibleMock(

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\PasswordPolicy\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
@@ -40,9 +41,7 @@ final class NotCurrentPasswordValidatorTest extends FunctionalTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorReturnsFalseIfPasswordIsEqualToCurrentPasswordForBackendUser(): void
     {
         $knownPasswordHash = GeneralUtility::makeInstance(PasswordHashFactory::class)
@@ -55,9 +54,7 @@ final class NotCurrentPasswordValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('password', $contextData));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExpectedExceptionIfNoUnsupportedLoginMode(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -68,9 +65,7 @@ final class NotCurrentPasswordValidatorTest extends FunctionalTestCase
         $validator->validate('password', $contextData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorReturnsFalseIfPasswordIsEqualToCurrentPasswordForFrontendUser(): void
     {
         $knownPasswordHash = GeneralUtility::makeInstance(PasswordHashFactory::class)

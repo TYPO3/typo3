@@ -17,22 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany\WorkspacesDiscard;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany\AbstractActionWorkspacesTestCase;
 
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addCategoryRelation(): void
     {
         parent::addCategoryRelation();
@@ -40,9 +37,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteCategoryRelation(): void
     {
         parent::deleteCategoryRelation();
@@ -50,9 +45,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeCategoryRelationSorting(): void
     {
         parent::changeCategoryRelationSorting();
@@ -60,9 +53,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeCategoryRelationSorting.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndAddRelation(): void
     {
         parent::createContentAndAddRelation();
@@ -70,9 +61,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNAddRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createCategoryAndAddRelation(): void
     {
         parent::createCategoryAndAddRelation();
@@ -80,9 +69,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNAddRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndCreateRelation(): void
     {
         parent::createContentAndCreateRelation();
@@ -93,9 +80,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createCategoryAndCreateRelation(): void
     {
         parent::createCategoryAndCreateRelation();
@@ -106,9 +91,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNCreateRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentWithCategoryAndAddRelation(): void
     {
         parent::createContentWithCategoryAndAddRelation();
@@ -119,9 +102,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWCategoryNAddRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createCategoryWithContentAndAddRelation(): void
     {
         parent::createCategoryWithContentAndAddRelation();
@@ -132,9 +113,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryWContentNAddRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyCategoryOfRelation(): void
     {
         parent::modifyCategoryOfRelation();
@@ -142,9 +121,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyCategoryOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
@@ -152,9 +129,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyBothsOfRelation(): void
     {
         parent::modifyBothsOfRelation();
@@ -165,9 +140,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothsOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
@@ -175,9 +148,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteCategoryOfRelation(): void
     {
         parent::deleteCategoryOfRelation();
@@ -185,9 +156,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
@@ -195,9 +164,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContentToLanguageOfRelation(): void
     {
         parent::copyContentToLanguageOfRelation();
@@ -205,9 +172,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyCategoryOfRelation(): void
     {
         parent::copyCategoryOfRelation();
@@ -216,9 +181,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @test
      * @todo: this is a faulty test, because the category should be discarded
      */
+    #[Test]
     public function copyCategoryToLanguageOfRelation(): void
     {
         parent::copyCategoryToLanguageOfRelation();
@@ -226,9 +191,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryToLanguageOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
@@ -236,9 +199,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelationWithLanguageSynchronization(): void
     {
         parent::localizeContentOfRelationWithLanguageSynchronization();
@@ -246,9 +207,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelationWithLanguageExclude(): void
     {
         parent::localizeContentOfRelationWithLanguageExclude();
@@ -256,11 +215,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWExclude.csv');
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv
-     * Note: The added category still exists, even if we discard the localized content
-     */
+    #[Test]
     public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         parent::localizeContentOfRelationAndAddCategoryWithLanguageSynchronization();
@@ -270,11 +225,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv');
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv
-     * Note: The added category still exists, even if we discard the localized content
-     */
+    #[Test]
     public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         parent::localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization();
@@ -285,9 +236,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeCategoryOfRelation(): void
     {
         // Create translated page first
@@ -297,9 +246,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeCategoryOfRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
@@ -307,9 +254,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentOfRelationToDifferentPage.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();

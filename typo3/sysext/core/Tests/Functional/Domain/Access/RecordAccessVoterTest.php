@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Domain\Access;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -99,10 +101,8 @@ final class RecordAccessVoterTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider accessGrantedTestDataProvider
-     */
+    #[DataProvider('accessGrantedTestDataProvider')]
+    #[Test]
     public function accessGrantedTest(string $table, array $record, bool $access): void
     {
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
@@ -111,9 +111,7 @@ final class RecordAccessVoterTest extends FunctionalTestCase
         self::assertEquals($access, $this->subject->accessGranted($table, $record, $context));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function accessGrantedRespectsVisibilityAspect(): void
     {
         // Page is available even if the "disabled" flag is set
@@ -170,10 +168,8 @@ final class RecordAccessVoterTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider groupAccessGrantedTestDataProvider
-     */
+    #[DataProvider('groupAccessGrantedTestDataProvider')]
+    #[Test]
     public function groupAccessGrantedTest(string $table, array $record, bool $access): void
     {
         $context = new Context();
@@ -181,9 +177,7 @@ final class RecordAccessVoterTest extends FunctionalTestCase
         self::assertEquals($access, $this->subject->groupAccessGranted($table, $record, $context));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function accessGrantedForPageInRootLineReturnsTrueForDisabledExtendToSubpages(): void
     {
         self::assertTrue($this->subject->accessGrantedForPageInRootLine(['uid ' => 1, 'hidden' => 1], new Context()));

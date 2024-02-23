@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler\Fixtures\HookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -127,9 +128,7 @@ final class HookTest extends FunctionalTestCase
         return true;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hooksAreExecutedForNewRecords(): void
     {
         $hookFixture = GeneralUtility::makeInstance(HookFixture::class);
@@ -157,9 +156,7 @@ final class HookTest extends FunctionalTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hooksAreExecutedForExistingRecords(): void
     {
         $hookFixture = GeneralUtility::makeInstance(HookFixture::class);
@@ -187,9 +184,7 @@ final class HookTest extends FunctionalTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hooksAreExecutedForNewRelations(): void
     {
         $contentNewId = StringUtility::getUniqueId('NEW');
@@ -289,9 +284,7 @@ final class HookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hooksAreExecutedForExistingRelations(): void
     {
         $hookFixture = GeneralUtility::makeInstance(HookFixture::class);

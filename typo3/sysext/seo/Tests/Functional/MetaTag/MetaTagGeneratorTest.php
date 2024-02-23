@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\MetaTag;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\File;
@@ -140,9 +142,9 @@ final class MetaTagGeneratorTest extends FunctionalTestCase
     /**
      * @param array{width: int, height: int} $imageDimension
      * @param array{width: int, height: int} $expectedDimension
-     * @test
-     * @dataProvider socialImageIsProcessedDataProvider
      */
+    #[DataProvider('socialImageIsProcessedDataProvider')]
+    #[Test]
     public function socialImageIsProcessed(bool $hasCrop, array $imageDimension, array $expectedDimension, string $expectedClassName): void
     {
         $fileName = sprintf('test_%dx%d.png', $imageDimension['width'], $imageDimension['height']);

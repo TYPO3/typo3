@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\ParentChildTranslation\Domain\Repository\MainRepository;
@@ -32,9 +33,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/parentChildTranslationExampleData.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeChildrenOfAllLanguageElementToDefaultLanguage(): void
     {
         $query = $this->get(MainRepository::class)->createQuery();
@@ -59,9 +58,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizesChildrenOfAllLanguageElementToTranslation(): void
     {
         $query = $this->get(MainRepository::class)->createQuery();

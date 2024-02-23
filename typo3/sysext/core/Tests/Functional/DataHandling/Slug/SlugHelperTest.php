@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Slug;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -106,10 +108,8 @@ final class SlugHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider generateRespectsFallbackLanguageOfParentPageSlugDataProvider
-     * @test
-     */
+    #[DataProvider('generateRespectsFallbackLanguageOfParentPageSlugDataProvider')]
+    #[Test]
     public function generateRespectsFallbackLanguageOfParentPageSlug(string $expected, array $page): void
     {
         $slugHelper = GeneralUtility::makeInstance(

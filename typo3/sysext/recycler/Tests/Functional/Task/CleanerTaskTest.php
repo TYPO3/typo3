@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recycler\Tests\Functional\Task;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Recycler\Task\CleanerTask;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -24,9 +25,7 @@ final class CleanerTaskTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['recycler', 'scheduler'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function taskRemovesDeletedPages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Fixtures/pages.csv');
@@ -37,9 +36,7 @@ final class CleanerTaskTest extends FunctionalTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function taskRemovesOnlyPagesLongerDeletedThanPeriod(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Fixtures/pages.csv');
@@ -59,9 +56,7 @@ final class CleanerTaskTest extends FunctionalTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function taskFailsOnError(): void
     {
         $subject = new CleanerTask();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Messaging;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -24,9 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlashMessageQueueTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllMessagesContainsEnqueuedMessage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -37,9 +36,7 @@ final class FlashMessageQueueTest extends FunctionalTestCase
         self::assertEquals([$flashMessage], $flashMessageQueue->getAllMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function messagesCanBeFilteredBySeverity(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -61,9 +58,7 @@ final class FlashMessageQueueTest extends FunctionalTestCase
         self::assertEquals($messages[0], $flashMessage);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllMessagesAndFlushContainsEnqueuedMessage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -74,9 +69,7 @@ final class FlashMessageQueueTest extends FunctionalTestCase
         self::assertEquals([$flashMessage], $flashMessageQueue->getAllMessagesAndFlush());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllMessagesAndFlushClearsSessionStack(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -88,9 +81,7 @@ final class FlashMessageQueueTest extends FunctionalTestCase
         self::assertEquals([], $flashMessageQueue->getAllMessagesAndFlush());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMessagesAndFlushCanFilterBySeverity(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -115,9 +106,7 @@ final class FlashMessageQueueTest extends FunctionalTestCase
         self::assertEquals([$messages[1]], array_values($flashMessageQueue->getAllMessages()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllMessagesReturnsSessionFlashMessageAndTransientFlashMessage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -131,9 +120,7 @@ final class FlashMessageQueueTest extends FunctionalTestCase
         self::assertCount(2, $flashMessageQueue->getAllMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearClearsTheQueue(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -145,9 +132,7 @@ final class FlashMessageQueueTest extends FunctionalTestCase
         self::assertCount(0, $flashMessageQueue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayOnlyRespectsTransientFlashMessages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -27,9 +28,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsDefaultsFromGlobals(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
@@ -38,9 +37,7 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromGlobals', $pageTsConfig->getPageTsConfigArray()['loadedFromGlobals']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';

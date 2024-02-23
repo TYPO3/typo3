@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -49,9 +50,7 @@ final class CategoryCollectionTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/categoryRelations.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkIfFromArrayMethodSetCorrectProperties(): void
     {
         $subject = new CategoryCollection('tx_test_test');
@@ -63,27 +62,21 @@ final class CategoryCollectionTest extends FunctionalTestCase
         self::assertEquals($this->collectionRecord['table_name'], $subject->getItemTableName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateDummyCollection(): void
     {
         $collection = CategoryCollection::create($this->collectionRecord);
         self::assertInstanceOf(CategoryCollection::class, $collection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateDummyCollectionAndFillItems(): void
     {
         $collection = CategoryCollection::create($this->collectionRecord, true);
         self::assertInstanceOf(CategoryCollection::class, $collection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCollectedRecordsReturnsEmptyRecordSet(): void
     {
         $subject = new CategoryCollection('tx_test_test');
@@ -93,25 +86,19 @@ final class CategoryCollectionTest extends FunctionalTestCase
         self::assertEmpty($records);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isStorageTableNameEqualsToSysCategory(): void
     {
         self::assertEquals('sys_category', CategoryCollection::getStorageTableName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isStorageItemsFieldEqualsToItems(): void
     {
         self::assertEquals('items', CategoryCollection::getStorageItemsField());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canLoadADummyCollectionFromDatabase(): void
     {
         $collection = CategoryCollection::load(1, true, 'tx_test_test');
@@ -141,9 +128,7 @@ final class CategoryCollectionTest extends FunctionalTestCase
         self::assertEquals(6, $collection->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canLoadADummyCollectionFromDatabaseAndAddRecord(): void
     {
         $collection = CategoryCollection::load(1, true, 'tx_test_test');
@@ -159,9 +144,7 @@ final class CategoryCollectionTest extends FunctionalTestCase
         self::assertEquals(6, $collection->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canLoadADummyCollectionWithoutContentFromDatabase(): void
     {
         $collection = CategoryCollection::load(1, false, 'tx_test_test');
@@ -169,9 +152,7 @@ final class CategoryCollectionTest extends FunctionalTestCase
         self::assertEquals(0, $collection->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canLoadADummyCollectionFromDatabaseAfterRemoveOneRelation(): void
     {
         // Remove one relation

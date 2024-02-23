@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -42,9 +43,7 @@ final class ActionControllerTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeActionMethodArgumentsRegistersArgumentsFoundInTheSignatureOfTheCurrentActionMethod(): void
     {
         $subject = $this->get(TestController::class);
@@ -65,9 +64,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertNull($subject->arguments['objectArgument']->getDefaultValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeActionMethodArgumentsRegistersOptionalArgumentsAsSuch(): void
     {
         $subject = $this->get(TestController::class);
@@ -88,9 +85,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertSame('foo', $subject->arguments['arg3']->getDefaultValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeActionMethodArgumentsThrowsExceptionIfDataTypeWasNotSpecified(): void
     {
         $this->expectException(InvalidArgumentTypeException::class);
@@ -101,9 +96,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $subject->initializeActionMethodArguments();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processRequestThrowsAnExceptionIfTheActionDefinedInTheRequestDoesNotExist(): void
     {
         $this->expectException(NoSuchActionException::class);
@@ -117,9 +110,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $subject->processRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processRequestSetsActionMethodName(): void
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -132,9 +123,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertSame('quxAction', $subject->actionMethodName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customValidatorsAreProperlyResolved(): void
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -158,9 +147,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertInstanceOf(CustomValidator::class, $validators->current());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extbaseValidatorsAreProperlyResolved(): void
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -185,9 +172,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertInstanceOf(NotEmptyValidator::class, $validators->current());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveViewRespectsDefaultViewObjectName(): void
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -209,9 +194,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertInstanceOf(JsonView::class, $view);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setViewConfigurationConfiguresViewWithArray(): void
     {
         $configurationManagerMock = $this->createMock(ConfigurationManager::class);
@@ -235,9 +218,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $subject->setViewConfiguration($viewMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setViewConfigurationDoesNotCallSettersWithEmptyArray(): void
     {
         $configurationManagerMock = $this->createMock(ConfigurationManager::class);
@@ -261,9 +242,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $subject->setViewConfiguration($viewMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderAssetsForRequestAssignsHeaderDataFromViewIntoPageRenderer(): void
     {
         $viewMock = $this->createMock(FluidTemplateView::class);
@@ -283,9 +262,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $subject->renderAssetsForRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderAssetsForRequestAssignsFooterDataFromViewIntoPageRenderer(): void
     {
         $viewMock = $this->createMock(FluidTemplateView::class);
@@ -305,9 +282,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $subject->renderAssetsForRequest($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addFlashMessageAddsFlashMessageToFlashMessageQueue(): void
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());

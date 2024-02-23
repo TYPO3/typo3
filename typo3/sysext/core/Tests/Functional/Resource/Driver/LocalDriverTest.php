@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource\Driver;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
@@ -59,9 +61,7 @@ final class LocalDriverTest extends FunctionalTestCase
         return $subject;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function calculatedBasePathRelativeIsSane(): void
     {
         // This would cause problems if you fill "/fileadmin/" into the base path field of a sys_file_storage record and select "relative" as path type
@@ -74,9 +74,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertStringNotContainsString('//', $basePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function calculatedBasePathAbsoluteIsSane(): void
     {
         // This test checks if "/../" are properly filtered out (i.e. from "Base path" field of sys_file_storage)
@@ -147,10 +145,8 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUrisDataProvider
-     */
+    #[DataProvider('publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUrisDataProvider')]
+    #[Test]
     public function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUris(string $basePath, string $baseUri, string $fileName, bool $expectedIsPublic, ?string $expectedPublicUrl): void
     {
         $projectPath = $this->baseDirectory . '/app';
@@ -182,9 +178,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertSame($expectedPublicUrl, $subject->getPublicUrl($fileName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFolderRecursiveSanitizesFilename(): void
     {
         $driverConfiguration = [
@@ -201,9 +195,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileExists($this->baseDirectory . '/sanitized/sanitized');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function determineBaseUrlUrlEncodesUriParts(): void
     {
         $subject = $this->getAccessibleMock(LocalDriver::class, ['hasCapability'], [], '', false);
@@ -219,27 +211,21 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals(rawurlencode('un encö') . '/' . rawurlencode('ded %path') . '/', $baseUri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultFolderReturnsFolderForUserUploadPath(): void
     {
         $subject = $this->getDefaultInitializedSubject();
         self::assertEquals('/user_upload/', $subject->getDefaultFolder());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultLevelFolderFolderIsCreatedIfItDoesntExist(): void
     {
         $subject = $this->getDefaultInitializedSubject();
         self::assertFileExists($this->baseDirectory . '/' . $subject->getDefaultFolder());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFolderInFolderReturnsCorrectFolderObject(): void
     {
         mkdir($this->baseDirectory . '/someDir');
@@ -248,9 +234,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/someDir/someSubdir/', $subject->getFolderInFolder('someSubdir', '/someDir/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFolderCreatesFolderOnDisk(): void
     {
         mkdir($this->baseDirectory . '/some');
@@ -260,9 +244,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileExists($this->baseDirectory . '/some/folder/path');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFolderReturnsFolderObject(): void
     {
         mkdir($this->baseDirectory . '/some');
@@ -286,10 +268,8 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider createFolderSanitizesFolderNameBeforeCreationDataProvider
-     */
+    #[DataProvider('createFolderSanitizesFolderNameBeforeCreationDataProvider')]
+    #[Test]
     public function createFolderSanitizesFolderNameBeforeCreation(string $newFolderName, string $expectedFolderName): void
     {
         mkdir($this->baseDirectory . '/some');
@@ -299,9 +279,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileExists($this->baseDirectory . '/some/folder/' . $expectedFolderName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function basePathIsNormalizedWithTrailingSlash(): void
     {
         $driverConfiguration = [
@@ -312,9 +290,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/', substr($subject->_call('getAbsoluteBasePath'), -1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noSecondSlashIsAddedIfBasePathAlreadyHasTrailingSlash(): void
     {
         $driverConfiguration = [
@@ -371,10 +347,8 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getSpecificFileInformationDataProvider
-     */
+    #[DataProvider('getSpecificFileInformationDataProvider')]
+    #[Test]
     public function getSpecificFileInformationReturnsRequestedFileInformation(string|int $expectedValue, string $property): void
     {
         copy(__DIR__ . '/Fixtures/Dummy.html', $this->baseDirectory . '/Dummy.html');
@@ -386,9 +360,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertSame($expectedValue, $subject->getSpecificFileInformation($this->baseDirectory . '/Dummy.html', '/', $property));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAbsolutePathReturnsCorrectPath(): void
     {
         mkdir($this->baseDirectory . '/someFolder');
@@ -401,9 +373,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals($this->baseDirectory . '/someFolder/file1.ext', $subject->_call('getAbsolutePath', '/someFolder/file1.ext'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addFileMovesFileToCorrectLocation(): void
     {
         mkdir($this->baseDirectory . '/targetFolder');
@@ -414,9 +384,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileExists($this->baseDirectory . '/targetFolder/file');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addFileUsesFilenameIfGiven(): void
     {
         mkdir($this->baseDirectory . '/targetFolder');
@@ -427,9 +395,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileExists($this->baseDirectory . '/targetFolder/targetFile');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addFileFailsIfFileIsInDriverStorage(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -441,9 +407,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->addFile($this->baseDirectory . '/targetFolder/file', '/targetFolder/', 'file');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addFileReturnsFileIdentifier(): void
     {
         mkdir($this->baseDirectory . '/targetFolder');
@@ -454,9 +418,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/targetFolder/file', $fileIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existenceChecksWorkForFilesAndFolders(): void
     {
         mkdir($this->baseDirectory . '/folder');
@@ -468,9 +430,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFalse($subject->folderExists('/nonexistingFolder/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existenceChecksInFolderWorkForFilesAndFolders(): void
     {
         mkdir($this->baseDirectory . '/subfolder');
@@ -483,9 +443,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFalse($subject->folderExistsInFolder('nonexistingFolder', '/subfolder/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPublicUrlReturnsCorrectUriForConfiguredBaseUri(): void
     {
         $baseUri = 'https://example.org/foobar/' . StringUtility::getUniqueId('uri_');
@@ -509,10 +467,8 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getPublicUrlReturnsValidUrlContainingSpecialCharactersDataProvider
-     */
+    #[DataProvider('getPublicUrlReturnsValidUrlContainingSpecialCharactersDataProvider')]
+    #[Test]
     public function getPublicUrlReturnsValidUrlContainingSpecialCharacters(string $fileIdentifier): void
     {
         $baseUri = 'https://example.org/foobar/' . StringUtility::getUniqueId('uri_');
@@ -526,9 +482,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertTrue(GeneralUtility::isValidUrl($publicUrl));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileContentsCanBeWrittenAndRead(): void
     {
         $fileContents = 'asdf';
@@ -540,9 +494,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals($newFileContents, $subject->getFileContents('/file.ext'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFileContentsReturnsNumberOfBytesWrittenToFile(): void
     {
         $fileContents = 'asdf';
@@ -553,9 +505,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals(strlen($newFileContents), $bytesWritten);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newFilesCanBeCreated(): void
     {
         $subject = $this->getDefaultInitializedSubject();
@@ -564,9 +514,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertTrue($subject->fileExists('/testfile.txt'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createdFilesAreEmpty(): void
     {
         $subject = $this->getDefaultInitializedSubject();
@@ -576,9 +524,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals(0, strlen($fileData));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFileFixesPermissionsOnCreatedFile(): void
     {
         if (Environment::isWindows()) {
@@ -593,9 +539,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals((int)$testPattern, (int)(decoct(fileperms($this->baseDirectory . '/someDir/testfile.txt') & 0777)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileReturnsCorrectIdentifier(): void
     {
         copy(__DIR__ . '/Fixtures/Dummy.html', $this->baseDirectory . '/Dummy.html');
@@ -607,9 +551,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/LocalDriverFilenameFilter.php', $fileInfo['identifier']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileThrowsExceptionIfFileDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -618,9 +560,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->getFileInfoByIdentifier('/some/file/at/a/random/path');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFilesInFolderReturnsEmptyArrayForEmptyDirectory(): void
     {
         $subject = $this->getDefaultInitializedSubject();
@@ -628,9 +568,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEmpty($fileList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileListReturnsAllFilesInDirectory(): void
     {
         mkdir($this->baseDirectory . '/aDir');
@@ -641,9 +579,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals(['/file1', '/file2'], array_keys($fileList));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileListReturnsAllFilesInSubdirectoryIfRecursiveParameterIsSet(): void
     {
         mkdir($this->baseDirectory . '/aDir');
@@ -657,9 +593,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals(['/file1', '/file2', '/aDir/file3', '/aDir/subDir/file4'], array_keys($fileList));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileListFailsIfDirectoryDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -669,9 +603,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->getFilesInFolder('somedir/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileInFolderCallsConfiguredCallbackFunctionWithGivenItemName(): void
     {
         file_put_contents($this->baseDirectory . '/file2', 'fdsa');
@@ -702,9 +634,7 @@ final class LocalDriverTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileListFiltersItemsWithGivenFilterMethods(): void
     {
         file_put_contents($this->baseDirectory . '/fileA', 'asdfg');
@@ -720,9 +650,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertNotContains('/fileA', array_keys($fileList));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFolderListReturnsAllDirectoriesInDirectory(): void
     {
         mkdir($this->baseDirectory . '/dir1');
@@ -733,9 +661,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals(['/dir1/', '/dir2/'], array_keys($fileList));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFolderListReturnsHiddenFoldersByDefault(): void
     {
         mkdir($this->baseDirectory . '/.someHiddenDir');
@@ -748,9 +674,8 @@ final class LocalDriverTest extends FunctionalTestCase
 
     /**
      * Checks if the folder names '.' and '..' are ignored when listing subdirectories
-     *
-     * @test
      */
+    #[Test]
     public function getFolderListLeavesOutNavigationalEntries(): void
     {
         $subject = $this->getDefaultInitializedSubject();
@@ -758,9 +683,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEmpty($fileList);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFolderListFiltersItemsWithGivenFilterMethods(): void
     {
         mkdir($this->baseDirectory . '/folderA');
@@ -776,9 +699,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertNotContains('/folderA/', array_values($folderList));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFolderListFailsIfDirectoryDoesNotExist(): void
     {
         file_put_contents($this->baseDirectory . 'somefile', '');
@@ -788,9 +709,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->getFoldersInFolder('somedir/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashReturnsCorrectHashes(): void
     {
         $expectedMd5Hash = '8c67dbaf0ba22f2e7fbc26413b86051b';
@@ -801,9 +720,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals($expectedMd5Hash, $subject->hash('/hashFile', 'md5'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashingWithUnsupportedAlgorithmFails(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -813,9 +730,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->hash('/hashFile', StringUtility::getUniqueId('uri_'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileForLocalProcessingCreatesCopyOfFileByDefault(): void
     {
         mkdir($this->baseDirectory . '/someDir');
@@ -829,9 +744,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->getFileForLocalProcessing('/someDir/someFile');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileForLocalProcessingReturnsOriginalFilepathForReadonlyAccess(): void
     {
         mkdir($this->baseDirectory . '/someDir');
@@ -841,9 +754,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals($filePath, $this->baseDirectory . '/someDir/someFile');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filesCanBeCopiedToATemporaryPath(): void
     {
         mkdir($this->baseDirectory . '/someDir');
@@ -858,9 +769,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('asdfgh', file_get_contents($filePath));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function permissionsAreCorrectlyRetrievedForAllowedFile(): void
     {
         file_put_contents($this->baseDirectory . '/someFile', '');
@@ -869,9 +778,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals(['r' => true, 'w' => true], $subject->getPermissions('/someFile'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function permissionsAreCorrectlyRetrievedForAllowedFolder(): void
     {
         mkdir($this->baseDirectory . '/someFolder');
@@ -880,9 +787,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals(['r' => true, 'w' => true], $subject->getPermissions('/someFolder'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isWithinRecognizesFilesWithinFolderAndInOtherFolders(): void
     {
         $subject = $this->getDefaultInitializedSubject();
@@ -891,9 +796,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFalse($subject->isWithin('/someFolder/', '/someFolderWithALongName/test.jpg'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isWithinAcceptsFileAndFolderObjectsAsContent(): void
     {
         $subject = $this->getDefaultInitializedSubject();
@@ -901,9 +804,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertTrue($subject->isWithin('/someFolder/', '/someFolder/subfolder/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filesCanBeCopiedWithinStorage(): void
     {
         $fileContents = StringUtility::getUniqueId('content_');
@@ -914,9 +815,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileEquals($this->baseDirectory . '/someFile', $this->baseDirectory . '/targetFolder/someFile');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filesCanBeMovedWithinStorage(): void
     {
         $fileContents = StringUtility::getUniqueId('content_');
@@ -929,9 +828,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/targetFolder/file', $newIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileMetadataIsChangedAfterMovingFile(): void
     {
         $fileContents = StringUtility::getUniqueId('content_');
@@ -943,9 +840,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals($newIdentifier, $fileMetadata['identifier']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renamingFilesChangesFilenameOnDiskInRootFolder(): void
     {
         file_put_contents($this->baseDirectory . '/file', '');
@@ -958,9 +853,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/newFile', $newIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renamingFilesChangesFilenameOnDiskInSubFolder(): void
     {
         mkdir($this->baseDirectory . '/targetFolder');
@@ -974,9 +867,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/targetFolder/newFile', $newIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renamingFilesFailsIfTargetFileExists(): void
     {
         $this->expectException(ExistingTargetFileNameException::class);
@@ -988,9 +879,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->renameFile('/targetFolder/file', 'newFile');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renamingFoldersChangesFolderNameOnDiskInRootFolder(): void
     {
         mkdir($this->baseDirectory . '/someFolder');
@@ -1003,9 +892,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/newFolder/', $mapping['/someFolder/']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renamingFoldersChangesFolderNameOnDiskInSubFolder(): void
     {
         mkdir($this->baseDirectory . '/subFolder');
@@ -1019,9 +906,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/subFolder/newFolder/', $mapping['/subFolder/someFolder/']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renameFolderReturnsCorrectMappingInformationForAllFiles(): void
     {
         mkdir($this->baseDirectory . '/sourceFolder');
@@ -1037,9 +922,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/newFolder/subFolder/', $mappingInformation['/sourceFolder/subFolder/']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renameFolderRevertsRenamingIfFilenameMapCannotBeCreated(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -1060,9 +943,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileExists($this->baseDirectory . '/sourceFolder/file');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFolderEmptyReturnsTrueForEmptyFolder(): LocalDriver
     {
         mkdir($this->baseDirectory . '/emptyFolder');
@@ -1071,9 +952,7 @@ final class LocalDriverTest extends FunctionalTestCase
         return $subject;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFolderEmptyReturnsFalseIfFolderHasFile(): void
     {
         mkdir($this->baseDirectory . '/folderWithFile');
@@ -1082,9 +961,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFalse($subject->isFolderEmpty('/folderWithFile/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFolderEmptyReturnsFalseIfFolderHasSubfolder(): void
     {
         mkdir($this->baseDirectory . '/folderWithSubFolder');
@@ -1093,9 +970,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFalse($subject->isFolderEmpty('/folderWithSubFolder/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function foldersCanBeMovedWithinStorage(): void
     {
         $fileContents = StringUtility::getUniqueId('content_');
@@ -1109,9 +984,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileDoesNotExist($this->baseDirectory . '/sourceFolder');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveFolderWithinStorageReturnsCorrectMappingInformationForAllFiles(): void
     {
         mkdir($this->baseDirectory . '/targetFolder');
@@ -1126,9 +999,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals('/targetFolder/sourceFolder/subFolder/', $mappingInformation['/sourceFolder/subFolder/']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function folderCanBeRenamedWhenMoving(): void
     {
         mkdir($this->baseDirectory . '/sourceFolder');
@@ -1139,9 +1010,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertFileExists($this->baseDirectory . '/targetFolder/newFolder/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyFolderWithinStorageCopiesSingleFileToNewFolderName(): void
     {
         mkdir($this->baseDirectory . '/sourceFolder');
@@ -1152,9 +1021,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertTrue(is_file($this->baseDirectory . '/targetFolder/newFolderName/file'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyFolderWithinStorageCopiesSingleSubFolderToNewFolderName(): void
     {
         mkdir($this->baseDirectory . '/sourceFolder');
@@ -1165,9 +1032,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertDirectoryExists($this->baseDirectory . '/targetFolder/newFolderName/subFolder');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyFolderWithinStorageCopiesFileInSingleSubFolderToNewFolderName(): void
     {
         mkdir($this->baseDirectory . '/sourceFolder');
@@ -1227,10 +1092,8 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeFileNameUTF8FilesystemDataProvider
-     */
+    #[DataProvider('sanitizeFileNameUTF8FilesystemDataProvider')]
+    #[Test]
     public function sanitizeFileNameUTF8Filesystem(string $fileName, string $expectedResult): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
@@ -1341,10 +1204,8 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sanitizeFileNameNonUTF8FilesystemDataProvider
-     */
+    #[DataProvider('sanitizeFileNameNonUTF8FilesystemDataProvider')]
+    #[Test]
     public function sanitizeFileNameNonUTF8Filesystem(string $fileName, string $charset, string $expectedResult): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 0;
@@ -1352,9 +1213,7 @@ final class LocalDriverTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $subject->sanitizeFileName($fileName, $charset));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeFileNameThrowsExceptionOnInvalidFileName(): void
     {
         $this->expectException(InvalidFileNameException::class);
@@ -1364,9 +1223,7 @@ final class LocalDriverTest extends FunctionalTestCase
         $subject->sanitizeFileName('');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfClosure(): void
     {
         $this->expectException(\Exception::class);

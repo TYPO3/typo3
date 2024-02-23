@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Slug;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -95,10 +97,8 @@ final class SlugHelperUniqueWithLanguageTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider buildSlugForUniqueRespectsLanguageDataProvider
-     */
+    #[DataProvider('buildSlugForUniqueRespectsLanguageDataProvider')]
+    #[Test]
     public function buildSlugForUniqueRespectsLanguage(string $expectedSlug, array $recordData): void
     {
         $subject = GeneralUtility::makeInstance(

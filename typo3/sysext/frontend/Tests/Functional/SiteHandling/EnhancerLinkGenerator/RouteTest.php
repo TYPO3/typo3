@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerLinkGenerator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\ApplicableConjunction;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
@@ -113,10 +115,8 @@ final class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider routeDefaultsForSingleParameterAreConsideredDataProvider
-     */
+    #[DataProvider('routeDefaultsForSingleParameterAreConsideredDataProvider')]
+    #[Test]
     public function routeDefaultsForSingleParameterAreConsidered(TestSet $testSet): void
     {
         $this->assertGeneratedUriEquals($testSet);
@@ -207,10 +207,8 @@ final class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider routeDefaultsForMultipleParametersAreConsideredDataProvider
-     */
+    #[DataProvider('routeDefaultsForMultipleParametersAreConsideredDataProvider')]
+    #[Test]
     public function routeDefaultsForMultipleParametersAreConsidered(TestSet $testSet): void
     {
         $this->assertGeneratedUriEquals($testSet);
@@ -285,10 +283,8 @@ final class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider routeRequirementsHavingAspectsAreConsideredDataProvider
-     */
+    #[DataProvider('routeRequirementsHavingAspectsAreConsideredDataProvider')]
+    #[Test]
     public function routeRequirementsHavingAspectsAreConsidered(TestSet $testSet): void
     {
         $this->assertGeneratedUriEquals($testSet);
@@ -451,10 +447,8 @@ final class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider nestedRouteArgumentsAreConsideredDataProvider
-     */
+    #[DataProvider('nestedRouteArgumentsAreConsideredDataProvider')]
+    #[Test]
     public function nestedRouteArgumentsAreConsidered(TestSet $testSet): void
     {
         $this->assertGeneratedUriEquals($testSet);

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\FluidStyledContent\Tests\Functional\Rendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -120,10 +122,8 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider
-     */
+    #[DataProvider('defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider')]
+    #[Test]
     public function defaultParseFuncRteAvoidCrossSiteScripting(string $payload, string $expectation): void
     {
         $instructions = [
@@ -200,10 +200,8 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider htmlViewHelperAvoidsCrossSiteScriptingDataProvider
-     */
+    #[DataProvider('htmlViewHelperAvoidsCrossSiteScriptingDataProvider')]
+    #[Test]
     public function htmlViewHelperAvoidsCrossSiteScripting(string $type, string $payload, string $expectation): void
     {
         $instructions = [
@@ -252,10 +250,9 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
 
     /**
      * Uses a custom parseFunc that does not have `parseFunc.htmlSanitize` defined (which is deprecated).
-     *
-     * @test
-     * @dataProvider customParseFuncAvoidsCrossSiteScriptingDataProvider
      */
+    #[DataProvider('customParseFuncAvoidsCrossSiteScriptingDataProvider')]
+    #[Test]
     public function customParseFuncAvoidCrossSiteScripting(string $payload, string $expectation): void
     {
         $instructions = [

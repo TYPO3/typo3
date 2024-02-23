@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\UpgradeAnalysis;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -91,10 +93,8 @@ final class DocumentationFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidDirProvider
-     */
+    #[DataProvider('invalidDirProvider')]
+    #[Test]
     public function findDocumentationFilesThrowsExceptionIfPathIsNotInGivenChangelogDir(string $path): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -114,10 +114,8 @@ final class DocumentationFileTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidFilesProvider
-     */
+    #[DataProvider('invalidFilesProvider')]
+    #[Test]
     public function getListEntryThrowsExceptionForFilesNotBelongToChangelogDir(string $path): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -126,9 +124,7 @@ final class DocumentationFileTest extends FunctionalTestCase
         $subject->getListEntry($path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findDocumentationFilesReturnsArrayOfFilesForTheLastThreeMajorVersions(): void
     {
         $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
@@ -141,9 +137,7 @@ final class DocumentationFileTest extends FunctionalTestCase
         self::assertEquals($expected, $subject->findDocumentationDirectories(Environment::getPublicPath() . '/Changelog'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findDocumentsRespectsFilesWithSameIssueNumber(): void
     {
         $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
@@ -151,9 +145,7 @@ final class DocumentationFileTest extends FunctionalTestCase
         self::assertCount(2, $subject->findDocumentationFiles(Environment::getPublicPath() . '/Changelog/' . $currentVersion . '.0'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractingTagsProvidesTagsAsDesired(): void
     {
         $expected = [

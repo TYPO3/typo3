@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\Database\Fixtures\DriverMiddlewares\DropForConnectionNamedSecondTestDriverMiddleware;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ConnectionPoolTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getOrderedConnectionDriverMiddlewareConfigurationDiscardsUnsuitableMiddlewaresImplementingUsableForConnectionInterface(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];

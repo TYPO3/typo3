@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reactions\Reaction\CreateRecordReaction;
 use TYPO3\CMS\Reactions\ReactionRegistry;
@@ -37,9 +38,7 @@ final class ReactionRegistryTest extends FunctionalTestCase
         $this->subject = new ReactionRegistry($reactions);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAvailableReactionTypes(): void
     {
         $types = iterator_to_array($this->subject->getAvailableReactionTypes()->getIterator());
@@ -47,9 +46,7 @@ final class ReactionRegistryTest extends FunctionalTestCase
         self::assertCount(1, $types);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReactionByType(): void
     {
         self::assertInstanceOf(CreateRecordReaction::class, $this->subject->getReactionByType(CreateRecordReaction::getType()));

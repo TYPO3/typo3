@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -54,9 +55,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsGetTranslatedFromDefaultLanguage(): void
     {
         $backendUser = $this->setUpBackendUser(1);
@@ -73,9 +72,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/TranslatedFromDefault.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsGetTranslatedFromDifferentTranslation(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
@@ -93,9 +90,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/TranslatedFromTranslation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsGetCopiedFromDefaultLanguage(): void
     {
         $backendUser = $this->setUpBackendUser(1);
@@ -112,9 +107,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/CopiedFromDefault.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsGetCopiedFromAnotherLanguage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
@@ -141,9 +134,8 @@ final class LocalizationControllerTest extends FunctionalTestCase
      *   "[Translate to Dansk:] Test content 1", which is the previous record in the colpos.
      *
      * For detail about the sorting algorithm when translating records, see DataHandler->getPreviousLocalizedRecordUid
-     *
-     * @test
      */
+    #[Test]
     public function copyingNewContentFromLanguageIntoExistingLocalizationHasSameOrdering(): void
     {
         $backendUser = $this->setUpBackendUser(1);
@@ -185,9 +177,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/CreatedElementOrdering.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultLanguageIsFoundAsOriginLanguage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
@@ -216,9 +206,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $usedLanguages = (string)$subject->getUsedLanguagesInPage($request)->getBody();
         self::assertThat($usedLanguages, self::stringContains('"uid":0'));
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function deletedDefaultLanguageItemIsHandledAsIfNoRecordsExistAndReturnsAllOriginLanguages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-default-language-deleted-element.csv');
@@ -234,9 +222,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         self::assertThat($usedLanguages, self::stringContains('"uid":0'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForDeletedRecords(): void
     {
         // Delete record 2 within workspace 1
@@ -276,9 +262,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         self::assertEquals($expectedRecords, $localizeSummary);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordLocalizeSummaryRespectsWorkspaceEncapsulationForMovedRecords(): void
     {
         // Move record 2 to page 2 within workspace 1

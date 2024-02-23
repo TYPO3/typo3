@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\MultiSite;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -57,9 +58,7 @@ final class MultiSiteTest extends FunctionalTestCase
         $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveRootPageToDifferentPageTree(): void
     {
         $backendUser = $this->setUpBackendUser(1);

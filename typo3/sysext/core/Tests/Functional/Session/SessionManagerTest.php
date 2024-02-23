@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Session;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -67,9 +68,7 @@ final class SessionManagerTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearAllSessionsByUserIdDestroyAllSessionsForBackend(): void
     {
         $backendSessionBackend = $this->subject->getSessionBackend('BE');
@@ -82,9 +81,7 @@ final class SessionManagerTest extends FunctionalTestCase
         self::assertSame(2, (int)$allActiveSessions[0]['ses_userid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearAllSessionsByUserIdDestroyAllSessionsForFrontend(): void
     {
         $frontendSessionBackend = $this->subject->getSessionBackend('FE');

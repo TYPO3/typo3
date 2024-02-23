@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -26,9 +27,7 @@ final class BeforeLoadedUserTsConfigEventTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tsconfig_event',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function globalUserTsconfigIsAddedByEvent(): void
     {
         $subject = $this->get(UserTsConfigFactory::class);

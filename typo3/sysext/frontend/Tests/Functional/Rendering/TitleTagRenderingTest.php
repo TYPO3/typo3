@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -235,10 +237,8 @@ final class TitleTagRenderingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider titleTagDataProvider
-     */
+    #[DataProvider('titleTagDataProvider')]
+    #[Test]
     public function checkIfCorrectTitleTagIsRendered(array $pageConfig, array $expectations): void
     {
         $response = $this->executeFrontendSubRequest(

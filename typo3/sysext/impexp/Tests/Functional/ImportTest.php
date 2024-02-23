@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Impexp\Exception\LoadingFileFailedException;
 use TYPO3\CMS\Impexp\Import;
@@ -35,10 +37,8 @@ final class ImportTest extends AbstractImportExportTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider loadingFileFromWithinTypo3BaseFolderSucceedsProvider
-     */
+    #[DataProvider('loadingFileFromWithinTypo3BaseFolderSucceedsProvider')]
+    #[Test]
     public function loadingFileFromWithinTypo3BaseFolderSucceeds(string $filePath): void
     {
         $filePath = str_replace('%EnvironmentPublicPath%', Environment::getPublicPath(), $filePath);
@@ -60,10 +60,8 @@ final class ImportTest extends AbstractImportExportTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider loadingFileFailsProvider
-     */
+    #[DataProvider('loadingFileFailsProvider')]
+    #[Test]
     public function loadingFileFails(string $filePath): void
     {
         $this->expectException(LoadingFileFailedException::class);
@@ -74,9 +72,7 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertEmpty($importMock->_get('dat'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForImportOfPageAndRecords(): void
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecords.php';
@@ -95,9 +91,7 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForImportOfPageAndRecordsByUpdate(): void
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdate.php';
@@ -118,9 +112,7 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForImportOfPageAndRecordsWithDiffView(): void
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithDiff.php';
@@ -142,9 +134,7 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForImportOfPageAndRecordsByUpdateWithDiffView(): void
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdateWithDiff.php';
@@ -167,9 +157,7 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderPreviewForImportOfPageAndRecordsWithSoftRefs(): void
     {
         $renderPreviewImport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithSoftRefs.php';
@@ -221,10 +209,9 @@ final class ImportTest extends AbstractImportExportTestCase
 
     /**
      * Temporary test until there is a complex functional test which tests addFiles() implicitly.
-     *
-     * @test
-     * @dataProvider addFilesSucceedsDataProvider
      */
+    #[DataProvider('addFilesSucceedsDataProvider')]
+    #[Test]
     public function addFilesSucceeds(array $dat, array $relations, string $tokenID, array $expected): void
     {
         $importMock = $this->getAccessibleMock(
@@ -241,9 +228,7 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertEquals($expected, $lines);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadXmlSucceeds(): void
     {
         $importMock = $this->getAccessibleMock(Import::class, null);
@@ -252,9 +237,7 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadT3dSucceeds(): void
     {
         $importMock = $this->getAccessibleMock(Import::class, null);
@@ -263,9 +246,7 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadT3dFails(): void
     {
         $this->expectException(LoadingFileFailedException::class);
@@ -275,9 +256,7 @@ final class ImportTest extends AbstractImportExportTestCase
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty-with-wrong-checksum.t3d');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadT3dCompressedSucceeds(): void
     {
         if (!function_exists('gzuncompress')) {

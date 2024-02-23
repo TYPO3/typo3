@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Authentication;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
@@ -48,9 +49,7 @@ final class PasswordResetTest extends FunctionalTestCase
         };
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotEnabledWorks(): void
     {
         $mailerMock = $this->createStub(MailerInterface::class);
@@ -62,9 +61,7 @@ final class PasswordResetTest extends FunctionalTestCase
         self::assertFalse($subject->isEnabled());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotEnabledWithNoUsers(): void
     {
         $mailerMock = $this->createStub(MailerInterface::class);
@@ -77,9 +74,7 @@ final class PasswordResetTest extends FunctionalTestCase
         self::assertFalse($subject->isEnabled());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isEnabledExcludesAdministrators(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_only_admins.csv');
@@ -96,9 +91,7 @@ final class PasswordResetTest extends FunctionalTestCase
         self::assertTrue($subject->isEnabled());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isEnabledForUserTest(): void
     {
         $mailerMock = $this->createStub(MailerInterface::class);
@@ -127,9 +120,7 @@ final class PasswordResetTest extends FunctionalTestCase
         self::assertTrue($subject->isEnabledForUser(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noEmailIsFound(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
@@ -147,9 +138,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $subject->initiateReset($request, $context, $emailAddress);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ambiguousEmailIsTriggeredForMultipleValidUsers(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
@@ -167,9 +156,7 @@ final class PasswordResetTest extends FunctionalTestCase
         self::assertEquals($emailAddress, $this->logger->records[0]['context']['email']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passwordResetEmailIsTriggeredForValidUser(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
@@ -192,9 +179,7 @@ final class PasswordResetTest extends FunctionalTestCase
         self::assertEquals($username, $this->logger->records[0]['context']['username']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidTokenCannotResetPassword(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');

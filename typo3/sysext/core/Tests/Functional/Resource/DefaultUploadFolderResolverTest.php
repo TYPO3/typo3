@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
@@ -40,9 +41,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveWithUserAndPageConfigTest(): void
     {
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/page_upload/');
@@ -56,9 +55,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveWithUserConfigTest(): void
     {
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/admin_upload/');
@@ -72,9 +69,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveWithoutConfigTest(): void
     {
         $backendUser = $this->setUpBackendUser(2);
@@ -87,9 +82,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultUploadFolderForUserTest(): void
     {
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/admin_upload/');
@@ -100,9 +93,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         self::assertEquals('1:/admin_upload/', $subject->getDefaultUploadFolderForUser($backendUser)->getCombinedIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultUploadFolderForUserWithoutConfigTest(): void
     {
         $backendUser = $this->setUpBackendUser(2);
@@ -112,9 +103,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         self::assertNull($subject->getDefaultUploadFolderForUser($backendUser));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultUploadFolderForUserWithoutExistingFolderTest(): void
     {
         $backendUser = $this->setUpBackendUser(1);
@@ -124,9 +113,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         self::assertNull($subject->getDefaultUploadFolderForUser($backendUser));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultUploadFolderForPageTest(): void
     {
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/page_upload/');
@@ -136,9 +123,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         self::assertEquals('1:/page_upload/', $subject->getDefaultUploadFolderForPage(1)->getCombinedIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultUploadFolderForPageWithoutExistingFolderTest(): void
     {
         $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
@@ -146,9 +131,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         self::assertNull($subject->getDefaultUploadFolderForPage(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterDefaultUploadFolderWasResolvedEventIsDispatched(): void
     {
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/admin_upload/');
@@ -172,9 +155,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         self::assertEquals($result, $afterDefaultUploadFolderWasResolvedEvent->getUploadFolder());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterDefaultUploadFolderWasResolvedEventChangedResult(): void
     {
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/admin_upload/');

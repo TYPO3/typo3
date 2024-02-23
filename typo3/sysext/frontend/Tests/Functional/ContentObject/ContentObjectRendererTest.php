@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
@@ -196,10 +198,9 @@ final class ContentObjectRendererTest extends FunctionalTestCase
 
     /**
      * Check if sanitizeSelectPart works as expected
-     *
-     * @dataProvider getQueryDataProvider
-     * @test
      */
+    #[DataProvider('getQueryDataProvider')]
+    #[Test]
     public function getQuery(string $table, array $conf, array $expected): void
     {
         $GLOBALS['TCA'] = [
@@ -243,9 +244,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typolinkLinkResultIsInstanceOfLinkResultInterface(): void
     {
         $subject = new ContentObjectRenderer();
@@ -254,9 +253,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         self::assertInstanceOf(LinkResultInterface::class, $linkResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typoLinkReturnsOnlyLinkTextIfNoLinkResolvingIsPossible(): void
     {
         $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
@@ -269,9 +266,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         self::assertSame('foo', $subject->typoLink('foo', ['parameter' => 'foo']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typoLinkLogsErrorIfNoLinkResolvingIsPossible(): void
     {
         $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
@@ -560,10 +555,8 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider typolinkReturnsCorrectLinksDataProvider
-     */
+    #[DataProvider('typolinkReturnsCorrectLinksDataProvider')]
+    #[Test]
     public function typolinkReturnsCorrectLinksAndUrls(string $linkText, array $configuration, string $expectedResult): void
     {
         $subject = new ContentObjectRenderer();
@@ -667,10 +660,8 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider typolinkReturnsCorrectLinkForSpamEncryptedEmailsDataProvider
-     */
+    #[DataProvider('typolinkReturnsCorrectLinkForSpamEncryptedEmailsDataProvider')]
+    #[Test]
     public function typolinkReturnsCorrectLinkForSpamEncryptedEmails(array $tsfeConfig, string $linkText, string $parameter, string $expected): void
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
@@ -800,10 +791,8 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider
-     */
+    #[DataProvider('typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider')]
+    #[Test]
     public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefix(string $linkText, array $configuration, string $absRefPrefix, string $expectedResult): void
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
@@ -883,10 +872,8 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider typoLinkProperlyEncodesLinkResultDataProvider
-     * @test
-     */
+    #[DataProvider('typoLinkProperlyEncodesLinkResultDataProvider')]
+    #[Test]
     public function typoLinkProperlyEncodesLinkResult(string $linkText, array $configuration, string $expectedResult): void
     {
         $subject = new ContentObjectRenderer();
@@ -894,9 +881,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchWhereWithTooShortSearchWordWillReturnValidWhereStatement(): void
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
@@ -909,9 +894,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function libParseFuncProperlyKeepsTagsUnescaped(): void
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
@@ -1016,10 +999,8 @@ And another one';
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider checkIfReturnsExpectedValuesDataProvider
-     */
+    #[DataProvider('checkIfReturnsExpectedValuesDataProvider')]
+    #[Test]
     public function checkIfReturnsExpectedValues(array $configuration, bool $expected): void
     {
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
@@ -1193,10 +1174,8 @@ And another one';
         ];
     }
 
-    /**
-     * @dataProvider imageLinkWrapWrapsTheContentAsConfiguredDataProvider
-     * @test
-     */
+    #[DataProvider('imageLinkWrapWrapsTheContentAsConfiguredDataProvider')]
+    #[Test]
     public function imageLinkWrapWrapsTheContentAsConfigured(string $content, array $configuration, array $expected, array $expectedParams = []): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/FileReferences.csv');
@@ -1235,9 +1214,7 @@ And another one';
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getImgResourceRespectsFileReferenceObjectCropData(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/FileReferences.csv');
@@ -1258,9 +1235,7 @@ And another one';
         self::assertEquals($expectedHeight, $result->getHeight());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterContentObjectRendererInitializedEventIsCalled(): void
     {
         $afterContentObjectRendererInitializedEvent = null;
@@ -1298,9 +1273,7 @@ And another one';
         self::assertEquals('foo current val', $modifiedContentObjectRenderer->getCurrentVal());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterGetDataResolvedEventIsCalled(): void
     {
         $afterGetDataResolvedEvent = null;
@@ -1329,9 +1302,7 @@ And another one';
         self::assertEquals('modified-result', $afterGetDataResolvedEvent->getResult());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterImageResourceResolvedEventIsCalled(): void
     {
         $afterImageResourceResolvedEvent = null;
@@ -1360,9 +1331,7 @@ And another one';
         self::assertEquals('modified-public-url', $afterImageResourceResolvedEvent->getImageResource()->getPublicUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enhanceStdWrapEventIsCalled(): void
     {
         $wrap = '<h1>|</h1>';

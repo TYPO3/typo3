@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\StringType;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,9 +34,7 @@ final class SysFileMountIdentifierMigrationTest extends FunctionalTestCase
     protected string $baseDataSet = __DIR__ . '/Fixtures/FilemountsBase.csv';
     protected string $resultDataSet = __DIR__ . '/Fixtures/FilemountsMigrated.csv';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sysFileMountRecordsUpdated(): void
     {
         $subject = new SysFileMountIdentifierMigration();

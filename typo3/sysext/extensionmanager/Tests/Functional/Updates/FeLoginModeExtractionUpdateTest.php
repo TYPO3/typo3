@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Updates;
 
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\IntegerType;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,19 +29,15 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function columnDoesNotExistTest(): void
     {
         // "updateNecessary" will return FALSE since the "fe_login_mode" column is no longer defined by TYPO3
         self::assertFalse((new FeLoginModeExtractionUpdate($this->get(ConnectionPool::class)))->updateNecessary());
     }
 
-    /**
-     * @test
-     * @dataProvider functionalityUsedTestDataProvider
-     */
+    #[DataProvider('functionalityUsedTestDataProvider')]
+    #[Test]
     public function functionalityUsedTest(string $csvDataSet, bool $updateNecessary): void
     {
         $schemaManager = GeneralUtility::makeInstance(ConnectionPool::class)

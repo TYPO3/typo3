@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Imaging;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -69,10 +71,8 @@ final class GifBuilderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fileExtensionDataProvider
-     */
+    #[DataProvider('fileExtensionDataProvider')]
+    #[Test]
     public function buildSimpleGifBuilderImageInComposerMode(string $fileExtension): void
     {
         $this->simulateCliRequestInComposerMode();
@@ -91,9 +91,7 @@ final class GifBuilderTest extends FunctionalTestCase
         self::assertEquals($fileExtension, $imageResource->getExtension());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildImageInCommandLineInterfaceAndComposerMode(): void
     {
         $this->simulateCliRequestInComposerMode();
@@ -123,9 +121,7 @@ final class GifBuilderTest extends FunctionalTestCase
         self::assertStringStartsWith('<img src="typo3temp/assets/images/csm_kasper-skarhoj-gifbuilder_', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getImageResourceInCommandLineInterfaceAndComposerMode(): void
     {
         $this->simulateCliRequestInComposerMode();
@@ -155,9 +151,7 @@ final class GifBuilderTest extends FunctionalTestCase
         self::assertStringStartsWith('typo3temp/assets/images/csm_kasper-skarhoj-gifbuilder-imageresource_', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildImageWithMaskInCommandLineInterfaceAndComposerMode(): void
     {
         $this->simulateCliRequestInComposerMode();
@@ -214,9 +208,8 @@ final class GifBuilderTest extends FunctionalTestCase
 
     /**
      * Check hashes of Images overlayed with other images are idempotent
-     *
-     * @test
      */
+    #[Test]
     public function overlayImagesHasStableHash(): void
     {
         $this->setupFullTestEnvironment();

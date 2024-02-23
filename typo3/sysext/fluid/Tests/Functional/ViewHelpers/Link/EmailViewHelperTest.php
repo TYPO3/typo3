@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -32,9 +34,7 @@ final class EmailViewHelperTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCreatesProperMarkupInBackend(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -42,9 +42,7 @@ final class EmailViewHelperTest extends FunctionalTestCase
         self::assertEquals('<a href="mailto:foo@example.com">send mail</a>', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCreatesProperMarkupInBackendWithEmptyChild(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -102,10 +100,8 @@ final class EmailViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider renderEncodesEmailInFrontendDataProvider
-     */
+    #[DataProvider('renderEncodesEmailInFrontendDataProvider')]
+    #[Test]
     public function renderEncodesEmailInFrontend(string $template, array $typoScript, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');

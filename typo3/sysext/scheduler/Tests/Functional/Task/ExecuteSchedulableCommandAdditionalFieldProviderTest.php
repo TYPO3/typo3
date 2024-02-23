@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Functional\Task;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -30,9 +31,7 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends Functio
 {
     protected array $coreExtensionsToLoad = ['scheduler'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsAndOptionsWithSameNameAreAdded(): void
     {
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

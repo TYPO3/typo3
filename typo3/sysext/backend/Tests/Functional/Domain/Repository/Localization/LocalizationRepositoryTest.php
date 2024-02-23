@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Domain\Repository\Localization;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -93,10 +95,8 @@ final class LocalizationRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider fetchOriginLanguageDataProvider
-     * @test
-     */
+    #[DataProvider('fetchOriginLanguageDataProvider')]
+    #[Test]
     public function fetchOriginLanguage(int $pageId, int $localizedLanguage, array $expectedResult): void
     {
         $result = $this->subject->fetchOriginLanguage($pageId, $localizedLanguage);
@@ -144,10 +144,8 @@ final class LocalizationRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider getLocalizedRecordCountDataProvider
-     * @test
-     */
+    #[DataProvider('getLocalizedRecordCountDataProvider')]
+    #[Test]
     public function getLocalizedRecordCount(int $pageId, int $localizedLanguage, int $expectedResult): void
     {
         $result = $this->subject->getLocalizedRecordCount($pageId, $localizedLanguage);
@@ -200,11 +198,8 @@ final class LocalizationRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider getRecordsToCopyDatabaseResultDataProvider
-     * @test
-     * @throws \Doctrine\DBAL\Driver\Exception
-     */
+    #[DataProvider('getRecordsToCopyDatabaseResultDataProvider')]
+    #[Test]
     public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, array $expectedResult): void
     {
         $result = $this->subject->getRecordsToCopyDatabaseResult($pageId, $destLanguageId, $languageId, 'uid');

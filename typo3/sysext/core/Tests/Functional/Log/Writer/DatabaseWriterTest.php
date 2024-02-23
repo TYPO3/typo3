@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Log\Writer;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
@@ -25,9 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DatabaseWriterTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function writeLogInsertsLogRecordWithGivenProperties(): void
     {
         $logRecordData = [

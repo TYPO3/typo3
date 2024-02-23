@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -33,9 +34,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addingValidatorsToAJunctionValidatorWorks(): void
     {
         $conjunctionValidator = new ConjunctionValidator();
@@ -45,9 +44,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         self::assertTrue($conjunctionValidator->getValidators()->contains($mockValidator));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allValidatorsInTheConjunctionAreCalledEvenIfOneReturnsError(): void
     {
         $validatorConjunction = new ConjunctionValidator();
@@ -72,9 +69,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction->validate('some subject');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorConjunctionReturnsNoErrorsIfAllJunctionedValidatorsReturnNoErrors(): void
     {
         $validatorConjunction = new ConjunctionValidator();
@@ -92,9 +87,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         self::assertFalse($validatorConjunction->validate('some subject')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorConjunctionReturnsErrorsIfOneValidatorReturnsErrors(): void
     {
         $validatorConjunction = new ConjunctionValidator();
@@ -109,9 +102,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         self::assertTrue($validatorConjunction->validate('some subject')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removingAValidatorOfTheValidatorConjunctionWorks(): void
     {
         $validatorConjunction = new ConjunctionValidator();
@@ -129,9 +120,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         self::assertTrue($validatorConjunction->getValidators()->contains($validator2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removingANotExistingValidatorIndexThrowsException(): void
     {
         $this->expectException(NoSuchValidatorException::class);
@@ -144,9 +133,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction->removeValidator($validator);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countReturnsTheNumberOfValidatorsContainedInTheConjunction(): void
     {
         $validatorConjunction = new ConjunctionValidator();

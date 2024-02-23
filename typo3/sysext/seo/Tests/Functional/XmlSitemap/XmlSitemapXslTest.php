@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
@@ -44,10 +46,8 @@ final class XmlSitemapXslTest extends AbstractTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages-sitemap.csv');
     }
 
-    /**
-     * @test
-     * @dataProvider getXslFilePathsDataProvider
-     */
+    #[DataProvider('getXslFilePathsDataProvider')]
+    #[Test]
     public function checkIfDefaultSitemapReturnsDefaultXsl(array $typoscriptSetupFiles, string $sitemap, string $xslFilePath): void
     {
         $this->setUpFrontendRootPage(

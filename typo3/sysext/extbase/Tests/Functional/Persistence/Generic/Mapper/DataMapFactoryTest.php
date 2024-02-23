@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
@@ -40,9 +41,7 @@ final class DataMapFactoryTest extends FunctionalTestCase
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classSettingsAreResolved(): void
     {
         $dataMap = $this->dataMapFactory->buildDataMap(Administrator::class);
@@ -52,9 +51,7 @@ final class DataMapFactoryTest extends FunctionalTestCase
         self::assertEquals('fe_users', $dataMap->getTableName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function columnMapPropertiesAreResolved(): void
     {
         $dataMap = $this->dataMapFactory->buildDataMap(TtContent::class);

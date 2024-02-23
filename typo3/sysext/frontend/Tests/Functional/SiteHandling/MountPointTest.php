@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -346,10 +348,8 @@ final class MountPointTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider hierarchicalMenuIsGeneratedDataProvider
-     */
+    #[DataProvider('hierarchicalMenuIsGeneratedDataProvider')]
+    #[Test]
     public function hierarchicalMenuIsGenerated(string $accessedUrl, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -401,10 +401,8 @@ final class MountPointTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider requestsResolvePageIdAndMountPointParameterDataProvider
-     */
+    #[DataProvider('requestsResolvePageIdAndMountPointParameterDataProvider')]
+    #[Test]
     public function requestsResolvePageIdAndMountPointParameter(string $uri, int $rootPageId, int $expectedPageId, ?string $expectedMountPointParameter): void
     {
         $this->setUpFrontendRootPage(
@@ -445,10 +443,9 @@ final class MountPointTest extends AbstractTestCase
      * This test checks for "mount_pid_ol=0", whereas mount_pid_ol=1 should trigger a redirect currently.
      * @todo: revisit the "mount_pid_ol=1" redirect, there is some truth to it, but still would
      * remove the context, which does not make sense. Should be revisited. See test above as well.
-     *
-     * @dataProvider mountPointPagesShowContentAsConfiguredDataProvider
-     * @test
      */
+    #[DataProvider('mountPointPagesShowContentAsConfiguredDataProvider')]
+    #[Test]
     public function mountPointPagesShowContentAsConfigured(string $uri, string $expected): void
     {
         $this->setUpFrontendRootPage(

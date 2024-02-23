@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
@@ -28,9 +29,7 @@ final class TypoScriptStringFactoryTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseFromStringWithIncludesParsesImport(): void
     {
         $expected = new RootNode();
@@ -45,9 +44,7 @@ final class TypoScriptStringFactoryTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseFromStringParsesSimpleString(): void
     {
         $expected = new RootNode();

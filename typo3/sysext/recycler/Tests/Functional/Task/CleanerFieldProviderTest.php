@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recycler\Tests\Functional\Task;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Recycler\Task\CleanerFieldProvider;
@@ -40,10 +42,8 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateAdditionalFieldsLogsPeriodErrorDataProvider
-     */
+    #[DataProvider('validateAdditionalFieldsLogsPeriodErrorDataProvider')]
+    #[Test]
     public function validateAdditionalFieldsLogsPeriodError(mixed $period): void
     {
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
@@ -66,10 +66,8 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateAdditionalFieldsDataProvider
-     */
+    #[DataProvider('validateAdditionalFieldsDataProvider')]
+    #[Test]
     public function validateAdditionalFieldsLogsTableError(mixed $table): void
     {
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
@@ -82,9 +80,7 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
         self::assertFalse($this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->isEmpty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAdditionalFieldsIsTrueIfValid(): void
     {
         $submittedData = [
@@ -96,9 +92,7 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
         self::assertTrue($subject->validateAdditionalFields($submittedData, $this->get(SchedulerModuleController::class)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveAdditionalFieldsSavesFields(): void
     {
         $submittedData = [

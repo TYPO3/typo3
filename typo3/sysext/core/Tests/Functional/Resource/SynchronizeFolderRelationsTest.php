@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -45,9 +46,7 @@ final class SynchronizeFolderRelationsTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function synchronizeFilemountsAfterRenameTest(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/FilemountsBase.csv');
@@ -69,9 +68,7 @@ final class SynchronizeFolderRelationsTest extends FunctionalTestCase
         self::assertStringContainsString('6 Filemount records', $flashMessage->getMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function synchronizeFileCollectionsAfterRenameTest(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/FileCollectionBase.csv');

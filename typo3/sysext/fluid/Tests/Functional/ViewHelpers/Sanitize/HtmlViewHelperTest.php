@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Sanitize;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\Log\DummyWriter;
@@ -56,10 +58,8 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         return DefaultSanitizerBuilderTest::isSanitizedDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider isSanitizedDataProvider
-     */
+    #[DataProvider('isSanitizedDataProvider')]
+    #[Test]
     public function isSanitizedUsingNodeInstruction(string $payload, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -67,10 +67,8 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         self::assertSame($expectation, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     * @dataProvider isSanitizedDataProvider
-     */
+    #[DataProvider('isSanitizedDataProvider')]
+    #[Test]
     public function isSanitizedUsingInlineInstruction(string $payload, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -80,9 +78,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         self::assertSame($expectation, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function incidentIsLogged(): void
     {
         $templatePath = __DIR__ . '/Fixtures/Template.html';

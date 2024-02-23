@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional\Repository;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
@@ -147,10 +149,8 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getLinkCountsForPagesAndLinktypesReturnsCorrectCountForUserDataProvider
-     */
+    #[DataProvider('getLinkCountsForPagesAndLinktypesReturnsCorrectCountForUserDataProvider')]
+    #[Test]
     public function getLinkCountsForPagesAndLinktypesReturnsCorrectCountForUser(
         array $beuser,
         string $inputFile,
@@ -242,10 +242,8 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAllBrokenLinksForPagesReturnsCorrectCountForUserDataProvider
-     */
+    #[DataProvider('getAllBrokenLinksForPagesReturnsCorrectCountForUserDataProvider')]
+    #[Test]
     public function getAllBrokenLinksForPagesReturnsCorrectCountForUser(
         array $beuser,
         string $inputFile,
@@ -513,10 +511,8 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAllBrokenLinksForPagesReturnsCorrectValuesForUserDataProvider
-     */
+    #[DataProvider('getAllBrokenLinksForPagesReturnsCorrectValuesForUserDataProvider')]
+    #[Test]
     public function getAllBrokenLinksForPagesReturnsCorrectValuesForUser(
         array $beuser,
         string $inputFile,
@@ -643,10 +639,8 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAllBrokenLinksForPagesRespectsGivenLanguagesDataProvider
-     */
+    #[DataProvider('getAllBrokenLinksForPagesRespectsGivenLanguagesDataProvider')]
+    #[Test]
     public function getAllBrokenLinksForPagesRespectsGivenLanguages(
         array $beuser,
         string $inputFile,

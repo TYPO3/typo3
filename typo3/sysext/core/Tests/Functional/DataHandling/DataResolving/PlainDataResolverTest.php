@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataResolving;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -111,10 +113,8 @@ final class PlainDataResolverTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sortingDataProvider
-     */
+    #[DataProvider('sortingDataProvider')]
+    #[Test]
     public function processSortingReturnsExpectedSequenceOfUids(array $input, array $expected, array $sortings): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Pages.csv');

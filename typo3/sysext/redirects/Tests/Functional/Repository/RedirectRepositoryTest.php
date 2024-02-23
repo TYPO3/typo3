@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Repository;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Repository\Demand;
@@ -89,10 +91,8 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider demandProvider
-     * @test
-     */
+    #[DataProvider('demandProvider')]
+    #[Test]
     public function removeByDemandWorks(Demand $demand, int $redirectBeforeCleanup, int $redirectAfterCleanup): void
     {
         self::assertSame(0, $this->getRedirectCount());
@@ -155,10 +155,8 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider countRedirectsByDemandCountsCorrectlyDataProvider
-     * @test
-     */
+    #[DataProvider('countRedirectsByDemandCountsCorrectlyDataProvider')]
+    #[Test]
     public function countRedirectsByDemandCountsCorrectly(Demand $demand, int $expectedCount): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectRepositoryTest_redirects.csv');

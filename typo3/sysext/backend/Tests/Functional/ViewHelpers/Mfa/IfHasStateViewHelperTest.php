@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Mfa;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -38,9 +39,7 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
         $this->view->assign('provider', $this->get(MfaProviderRegistry::class)->getProvider('totp'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsInactive(): void
     {
         $GLOBALS['BE_USER'] = $this->getBackendUser();
@@ -51,9 +50,7 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
         self::assertStringNotContainsString('isLocked', $result);
         self::assertStringNotContainsString('isUnlocked', $result);
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsActive(): void
     {
         $GLOBALS['BE_USER'] = $this->getBackendUser(true);
@@ -64,9 +61,7 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
         self::assertStringNotContainsString('isLocked', $result);
         self::assertStringContainsString('isUnlocked', $result);
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsLocked(): void
     {
         $GLOBALS['BE_USER'] = $this->getBackendUser(true, true);

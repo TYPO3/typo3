@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
@@ -32,9 +33,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_users.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findUserByUsernameOrEmailOnPages(): void
     {
         $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
@@ -48,9 +47,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         self::assertSame(1, $userByEmail['uid'] ?? 0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function existsUserWithHash(): void
     {
         $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
@@ -58,9 +55,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         self::assertTrue($subject->existsUserWithHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findOneByForgotPasswordHash(): void
     {
         $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
@@ -69,9 +64,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         self::assertIsArray($subject->findOneByForgotPasswordHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findRedirectIdPageByUserId(): void
     {
         $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
@@ -79,9 +72,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         self::assertSame(10, $subject->findRedirectIdPageByUserId(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateForgotHashForUserByUid(): void
     {
         $uid = 1;
@@ -98,9 +89,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
         self::assertSame($newPasswordHash, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePasswordAndInvalidateHash(): void
     {
         $subject = new FrontendUserRepository(new Context(), new ConnectionPool());

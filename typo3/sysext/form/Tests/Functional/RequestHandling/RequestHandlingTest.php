@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\RequestHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Mailer\SentMessage;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -232,10 +234,8 @@ final class RequestHandlingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider theCachingBehavesTheSameForAllFormIntegrationVariantsDataProvider
-     */
+    #[DataProvider('theCachingBehavesTheSameForAllFormIntegrationVariantsDataProvider')]
+    #[Test]
     public function theCachingBehavesTheSameForAllFormIntegrationVariants(string $formIdentifier, string $formNamePrefix): void
     {
         $uri = static::ROOT_PAGE_BASE_URI . '/form';
@@ -372,10 +372,8 @@ final class RequestHandlingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider formRendersUncachedIfTheActionTargetIsCalledViaHttpGetDataProvider
-     */
+    #[DataProvider('formRendersUncachedIfTheActionTargetIsCalledViaHttpGetDataProvider')]
+    #[Test]
     public function formRendersUncachedIfTheActionTargetIsCalledViaHttpGet(string $formIdentifier): void
     {
         $uri = static::ROOT_PAGE_BASE_URI . '/form';
@@ -471,10 +469,8 @@ final class RequestHandlingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider theHoneypotElementChangesWithEveryCallOfTheFirstFormStepDataProvider
-     */
+    #[DataProvider('theHoneypotElementChangesWithEveryCallOfTheFirstFormStepDataProvider')]
+    #[Test]
     public function theHoneypotElementChangesWithEveryCallOfTheFirstFormStep(string $formIdentifier): void
     {
         $uri = static::ROOT_PAGE_BASE_URI . '/form';

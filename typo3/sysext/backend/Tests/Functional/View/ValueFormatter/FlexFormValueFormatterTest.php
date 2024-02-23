@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\View\ValueFormatter;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -31,9 +32,7 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flexFormDataWillBeDisplayedHumanReadable(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config'] = $this->getFieldTcaConfig();
@@ -52,9 +51,7 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
         self::assertSame($expectedOutput, $actualOutput);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullResultsInEmptyString(): void
     {
         $flexFormValueFormatter = new FlexFormValueFormatter();
@@ -69,9 +66,7 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
         self::assertSame('', $actualOutput);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyStringResultsInEmptyString(): void
     {
         $flexFormValueFormatter = new FlexFormValueFormatter();

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 
 /**
@@ -81,10 +83,8 @@ final class CliCommandTest extends AbstractCommandTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider commandTestDataProvider
-     */
+    #[DataProvider('commandTestDataProvider')]
+    #[Test]
     public function cliCommand(string $command, array $args, int $expectedExitCode): void
     {
         $result = $this->executeConsoleCommand($command, ...$args);

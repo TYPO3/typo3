@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -34,9 +35,7 @@ final class CountValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMaximum(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
@@ -49,9 +48,7 @@ final class CountValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimum(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];
@@ -64,9 +61,7 @@ final class CountValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimumAndMaximum(): void
     {
         $options = ['minimum' => 2, 'maximum' => 2];
@@ -79,9 +74,7 @@ final class CountValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function CountValidatorReturnsTrueIfInputCountHasMoreItemsAsMaximumValue(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
@@ -95,9 +88,7 @@ final class CountValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function CountValidatorReturnsTrueIfInputCountHasLessItemsAsMinimumValue(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];

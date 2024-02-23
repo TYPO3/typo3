@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerSiteRequest;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\ApplicableConjunction;
@@ -119,10 +121,8 @@ final class RouteTest extends AbstractEnhancerSiteRequestTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider routeDefaultsAreConsideredDataProvider
-     */
+    #[DataProvider('routeDefaultsAreConsideredDataProvider')]
+    #[Test]
     public function routeDefaultsAreConsidered(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
@@ -197,10 +197,8 @@ final class RouteTest extends AbstractEnhancerSiteRequestTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider routeRequirementsHavingAspectsAreConsideredDataProvider
-     */
+    #[DataProvider('routeRequirementsHavingAspectsAreConsideredDataProvider')]
+    #[Test]
     public function routeRequirementsHavingAspectsAreConsidered(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
@@ -301,10 +299,8 @@ final class RouteTest extends AbstractEnhancerSiteRequestTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider routeRequirementsAreConsideredDataProvider
-     */
+    #[DataProvider('routeRequirementsAreConsideredDataProvider')]
+    #[Test]
     public function routeRequirementsAreConsidered(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
@@ -449,10 +445,8 @@ final class RouteTest extends AbstractEnhancerSiteRequestTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider routeIdentifiersAreResolvedDataProvider
-     */
+    #[DataProvider('routeIdentifiersAreResolvedDataProvider')]
+    #[Test]
     public function routeIdentifiersAreResolved(string $namespace, string $argumentName, string $queryPath, string $failureReason = null): void
     {
         $query = [];
@@ -650,10 +644,8 @@ final class RouteTest extends AbstractEnhancerSiteRequestTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider nestedRouteArgumentsAreConsideredDataProvider
-     */
+    #[DataProvider('nestedRouteArgumentsAreConsideredDataProvider')]
+    #[Test]
     public function nestedRouteArgumentsAreConsidered(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);

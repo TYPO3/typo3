@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -52,9 +53,7 @@ final class EnableFieldsTest extends FunctionalTestCase
         $this->setUpFrontendRootPage(1, ['EXT:extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protectedRecordsNotFoundIfNoUserLoggedIn(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
@@ -63,9 +62,7 @@ final class EnableFieldsTest extends FunctionalTestCase
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function onlyReturnProtectedRecordsForTheFirstUserGroup(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
@@ -74,9 +71,7 @@ final class EnableFieldsTest extends FunctionalTestCase
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function onlyReturnProtectedRecordsForTheSecondUserGroup(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
@@ -85,9 +80,7 @@ final class EnableFieldsTest extends FunctionalTestCase
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function onlyOwnProtectedRecordsWithQueryCacheInvolvedAreReturned(): void
     {
         // first request to fill the query cache

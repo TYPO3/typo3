@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -50,9 +51,7 @@ final class AddTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addSimpleObjectTest(): void
     {
         $newBlogTitle = 'aDi1oogh';
@@ -78,9 +77,7 @@ final class AddTest extends FunctionalTestCase
         self::assertEquals(1, $newBlogCount);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addObjectSetsDefaultLanguageTest(): void
     {
         $newBlogTitle = 'aDi1oogh';
@@ -106,9 +103,7 @@ final class AddTest extends FunctionalTestCase
         self::assertEquals(0, $newBlogRecord['sys_language_uid']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addObjectSetsDefinedLanguageTest(): void
     {
         $newBlogTitle = 'aDi1oogh';
@@ -135,9 +130,7 @@ final class AddTest extends FunctionalTestCase
         self::assertEquals(-1, $newBlogRecord['sys_language_uid']);
     }
 
-    /**
-    * @test
-    */
+    #[Test]
     public function addObjectSetsNullAsNullForSimpleTypes(): void
     {
         $newBlogTitle = 'aDi1oogh';
@@ -170,9 +163,7 @@ final class AddTest extends FunctionalTestCase
         self::assertNull($newBlogRecord['subtitle'] ?? null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addObjectPersistsEnumProperty(): void
     {
         $person = new Person();

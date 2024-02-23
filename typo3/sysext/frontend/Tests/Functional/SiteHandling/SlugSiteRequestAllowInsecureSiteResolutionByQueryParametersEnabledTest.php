@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -89,10 +91,8 @@ final class SlugSiteRequestAllowInsecureSiteResolutionByQueryParametersEnabledTe
         yield 'invalid cross-site request *not* denied' => ['https://website.local/?id=3000&L=0', 200];
     }
 
-    /**
-     * @test
-     * @dataProvider siteWithPageIdRequestsAreCorrectlyHandledDataProvider
-     */
+    #[DataProvider('siteWithPageIdRequestsAreCorrectlyHandledDataProvider')]
+    #[Test]
     public function siteWithPageIdRequestsAreCorrectlyHandled(string $uri, int $expectation): void
     {
         $this->writeSiteConfiguration(

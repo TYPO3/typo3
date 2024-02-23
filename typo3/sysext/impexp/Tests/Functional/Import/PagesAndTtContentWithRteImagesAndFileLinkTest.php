@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
@@ -28,9 +29,7 @@ final class PagesAndTtContentWithRteImagesAndFileLinkTest extends AbstractImport
         '/fileadmin/_processed_',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importPagesAndRelatedTtContentWithRteImagesAndFileLink(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);

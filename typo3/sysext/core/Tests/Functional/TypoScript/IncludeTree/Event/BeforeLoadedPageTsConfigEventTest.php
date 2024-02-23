@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -27,9 +28,7 @@ final class BeforeLoadedPageTsConfigEventTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tsconfig_event',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function globalPageTsconfigIsAddedByEvent(): void
     {
         $subject = $this->get(PageTsConfigFactory::class);

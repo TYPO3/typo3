@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -46,9 +47,7 @@ final class ManagementControllerTest extends FunctionalTestCase
         $this->normalizedParams = new NormalizedParams([], [], '', '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyRedirectManagementControllerViewDataEventIsTriggered(): void
     {
         $request = (new ServerRequest('https://www.example.com/', 'GET'))

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -66,9 +67,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function singleRootTemplate(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/singleRootTemplate.csv');
@@ -87,9 +86,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function singleRootTemplateLoadsFromGlobals(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/singleRootTemplate.csv');
@@ -110,9 +107,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function singleRootTemplateLoadConstantFromSite(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/singleRootTemplate.csv');
@@ -137,9 +132,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('testValueFromSite', $ast->getChildByName('testConstantFromSite')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function twoPagesTwoTemplates(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplates.csv');
@@ -164,9 +157,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function twoPagesTwoTemplatesWithoutClearForConstantsStillLoadsFromGlobals(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesNoClearForConstants.csv');
@@ -193,9 +184,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('globalsConstantValue', $ast->getChildByName('globalsConstant')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function twoPagesTwoTemplatesWithoutClearForSetupStillLoadsFromGlobals(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesNoClearForSetup.csv');
@@ -222,9 +211,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('globalsValue', $ast->getChildByName('globalsKey')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function twoPagesTwoTemplatesBothClear(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesBothClear.csv');
@@ -249,9 +236,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function twoTemplatesOnPagePrefersTheOneWithLowerSorting(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoTemplatesOnPage.csv');
@@ -271,9 +256,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertNull($ast->getChildByName('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function basedOnSimple(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/basedOnSimple.csv');
@@ -293,9 +276,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('loadedByBasedOn', $ast->getChildByName('bar')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function basedOnAfterIncludeStatic(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/basedOnAfterIncludeStatic.csv');
@@ -315,9 +296,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         self::assertSame('loadedByBasedOn', $ast->getChildByName('bar')->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function basedOnBeforeIncludeStatic(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/basedOnBeforeIncludeStatic.csv');

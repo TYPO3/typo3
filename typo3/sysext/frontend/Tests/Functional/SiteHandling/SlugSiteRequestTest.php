@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -83,10 +85,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider requestsAreRedirectedWithoutHavingDefaultSiteLanguageDataProvider
-     */
+    #[DataProvider('requestsAreRedirectedWithoutHavingDefaultSiteLanguageDataProvider')]
+    #[Test]
     public function requestsAreRedirectedWithoutHavingDefaultSiteLanguage(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -118,10 +118,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider shortcutsAreRedirectedDataProvider
-     */
+    #[DataProvider('shortcutsAreRedirectedDataProvider')]
+    #[Test]
     public function shortcutsAreRedirectedToDefaultSiteLanguage(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -142,10 +140,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
-    /**
-     * @test
-     * @dataProvider shortcutsAreRedirectedDataProvider
-     */
+    #[DataProvider('shortcutsAreRedirectedDataProvider')]
+    #[Test]
     public function shortcutsAreRedirectedAndRenderFirstSubPage(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -191,10 +187,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider shortcutsAreRedirectedDataProviderWithChineseCharacterInBase
-     */
+    #[DataProvider('shortcutsAreRedirectedDataProviderWithChineseCharacterInBase')]
+    #[Test]
     public function shortcutsAreRedirectedToDefaultSiteLanguageWithChineseCharacterInBase(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -217,10 +211,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
-    /**
-     * @test
-     * @dataProvider shortcutsAreRedirectedDataProviderWithChineseCharacterInBase
-     */
+    #[DataProvider('shortcutsAreRedirectedDataProviderWithChineseCharacterInBase')]
+    #[Test]
     public function shortcutsAreRedirectedAndRenderFirstSubPageWithChineseCharacterInBase(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -253,9 +245,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidSiteResultsInNotFoundResponse(): void
     {
         $this->writeSiteConfiguration(
@@ -284,10 +274,9 @@ final class SlugSiteRequestTest extends AbstractTestCase
      * For variants, please see `SlugSiteRequestAllowInsecureSiteResolutionByQueryParametersEnabledTest`
      * and `SlugSiteRequestAllowInsecureSiteResolutionByQueryParametersDisabledTest` which had to be placed
      * in separate test class files, due to hard limitations of the TYPO3 Testing Framework.
-     *
-     * @test
-     * @dataProvider siteWithPageIdRequestsAreCorrectlyHandledDataProvider
      */
+    #[DataProvider('siteWithPageIdRequestsAreCorrectlyHandledDataProvider')]
+    #[Test]
     public function siteWithPageIdRequestsAreCorrectlyHandled(string $uri, int $expectation): void
     {
         $this->writeSiteConfiguration(
@@ -303,9 +292,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame($expectation, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidSlugOutsideSiteLanguageResultsInNotFoundResponse(): void
     {
         $this->writeSiteConfiguration(
@@ -330,9 +317,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidSlugInsideSiteLanguageResultsInNotFoundResponse(): void
     {
         $this->writeSiteConfiguration(
@@ -357,9 +342,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unconfiguredTypeNumResultsIn500Error(): void
     {
         $this->writeSiteConfiguration(
@@ -409,10 +392,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithPathsDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithPathsDataProvider')]
+    #[Test]
     public function pageIsRenderedWithPaths(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -463,10 +444,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider')]
+    #[Test]
     public function pageIsRenderedWithPathsAndChineseDefaultLanguage(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -520,10 +499,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithDomainsDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithDomainsDataProvider')]
+    #[Test]
     public function pageIsRenderedWithDomains(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -552,9 +529,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageWithTrailingSlashSlugIsRenderedIfRequestedWithSlash(): void
     {
         $uri = 'https://website.us/features/frontend-editing/';
@@ -575,9 +550,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageWithTrailingSlashSlugIsRenderedIfRequestedWithoutSlash(): void
     {
         $uri = 'https://website.us/features/frontend-editing';
@@ -598,9 +571,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageWithoutTrailingSlashSlugIsRenderedIfRequestedWithSlash(): void
     {
         $uri = 'https://website.us/features/';
@@ -621,9 +592,7 @@ final class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame('EN: Features', $responseStructure->getScopePath('page/title'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageWithoutTrailingSlashSlugIsRenderedIfRequestedWithoutSlash(): void
     {
         $uri = 'https://website.us/features';
@@ -668,10 +637,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageIsRenderedDataProvider
-     */
+    #[DataProvider('restrictedPageIsRenderedDataProvider')]
+    #[Test]
     public function restrictedPageIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -706,10 +673,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderIsRenderedDataProvider
-     */
+    #[DataProvider('restrictedPageWithParentSysFolderIsRenderedDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -755,10 +720,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithoutHavingErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -784,10 +747,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingFluidErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -819,10 +780,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -851,10 +810,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -898,10 +855,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithoutHavingErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -927,10 +882,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingFluidErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -962,10 +915,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -994,10 +945,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     */
+    #[DataProvider('restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -1038,10 +987,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
     }
 
-    /**
-     * @test
-     * @dataProvider hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider
-     */
+    #[DataProvider('hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider')]
+    #[Test]
     public function hiddenPageSends404ResponseRegardlessOfVisitorGroup(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
@@ -1088,10 +1035,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     */
+    #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
+    #[Test]
     public function pageRequestNotFoundInvalidCacheHashWithoutHavingErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -1103,10 +1048,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         self::assertSame(404, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     */
+    #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
+    #[Test]
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingFluidErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -1131,10 +1074,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     */
+    #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
+    #[Test]
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -1156,10 +1097,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     */
+    #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
+    #[Test]
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPhpErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
@@ -1208,10 +1147,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedWithValidCacheHashDataProvider
-     */
+    #[DataProvider('pageIsRenderedWithValidCacheHashDataProvider')]
+    #[Test]
     public function pageIsRenderedWithValidCacheHash($uri): void
     {
         $this->writeSiteConfiguration(
@@ -1249,10 +1186,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider crossSiteShortcutsAreRedirectedDataProvider
-     */
+    #[DataProvider('crossSiteShortcutsAreRedirectedDataProvider')]
+    #[Test]
     public function crossSiteShortcutsAreRedirected(string $uri, int $expectedStatusCode, array $expectedHeaders): void
     {
         $this->writeSiteConfiguration(
@@ -1323,10 +1258,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider pageIsRenderedForVersionedPageDataProvider
-     */
+    #[DataProvider('pageIsRenderedForVersionedPageDataProvider')]
+    #[Test]
     public function pageIsRenderedForVersionedPage(string $url, ?string $expectedPageTitle, ?string $expectedPageId, int $workspaceId, int $backendUserId, int $expectedStatusCode): void
     {
         $this->writeSiteConfiguration(
@@ -1896,9 +1829,9 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
     /**
      * @link https://forge.typo3.org/issues/96010
-     * @test
-     * @dataProvider defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExistsDataProvider
      */
+    #[DataProvider('defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExistsDataProvider')]
+    #[Test]
     public function defaultLanguagePageNotResolvedForSiteLanguageBaseIfLanguagePageExists(string $uri, array $recordUpdates, array $fallbackIdentifiers, string $fallbackType, int $expectedStatusCode, ?string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -2727,9 +2660,9 @@ final class SlugSiteRequestTest extends AbstractTestCase
 
     /**
      * @link https://forge.typo3.org/issues/88715
-     * @test
-     * @dataProvider defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExistsDataProvider
      */
+    #[DataProvider('defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExistsDataProvider')]
+    #[Test]
     public function defaultLanguagePageNotResolvedForSiteLanguageBaseWithNonDefaultLanguageShorterUriIfLanguagePageExists(string $uri, array $recordUpdates, array $fallbackIdentifiers, string $fallbackType, int $expectedStatusCode, ?string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
@@ -2794,10 +2727,8 @@ final class SlugSiteRequestTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getUrisWithInvalidLegacyQueryParameters
-     */
+    #[DataProvider('getUrisWithInvalidLegacyQueryParameters')]
+    #[Test]
     public function requestWithInvalidLegacyQueryParametersDisplayPageNotFoundPage(UriInterface $uri): void
     {
         $this->writeSiteConfiguration(

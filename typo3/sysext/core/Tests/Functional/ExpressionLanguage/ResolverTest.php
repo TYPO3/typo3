@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\ExpressionLanguage;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ResolverTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function evaluateWithTyposcriptAndTsfeEvaluatesCorrectly(): void
     {
         // @todo: This will raise a deprecation log level entry later, when TSFE->id is
@@ -43,9 +42,7 @@ final class ResolverTest extends FunctionalTestCase
         self::assertTrue($resolver->evaluate('getTSFE()?.id == 123'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function evaluateWithTyposcriptWithoutTsfeEvaluatesCorrectly(): void
     {
         $resolver = new Resolver('typoscript', []);

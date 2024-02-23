@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree\Visitor;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\FileInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
@@ -126,10 +128,8 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider visitDataProvider
-     */
+    #[DataProvider('visitDataProvider')]
+    #[Test]
     public function visit(IncludeInterface $node, array $expectedErrors): void
     {
         $subject = new IncludeTreeSyntaxScannerVisitor();
@@ -137,9 +137,7 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
         self::assertEquals($expectedErrors, $this->removeLineFromErrors($subject->getErrors()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function visitFindsEmptyImports()
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/IncludeTreeSyntaxScannerVisitor/RootTemplate.csv');

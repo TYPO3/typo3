@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\AST;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -34,9 +35,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_ast_function_event',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notModifiedValueKeepsNullValue(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize('foo := doesNotExistFunction()');
@@ -46,9 +45,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notModifiedValueKeepsNullValueCommentAware(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize('foo := doesNotExistFunction()');
@@ -58,9 +55,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notModifiedValueKeepsOriginalValue(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(
@@ -73,9 +68,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notModifiedValueKeepsOriginalValueCommentAware(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(
@@ -88,9 +81,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifiedValueUpdatesOriginalValue(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(
@@ -103,9 +94,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         self::assertEquals($ast, unserialize(serialize($ast)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifiedValueUpdatesOriginalValueCommentAware(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(

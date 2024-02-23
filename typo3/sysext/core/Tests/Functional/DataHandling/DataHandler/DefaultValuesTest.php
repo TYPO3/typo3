@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -59,9 +60,7 @@ final class DefaultValuesTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValuesFromTCAForNewRecordsIsRespected(): void
     {
         $GLOBALS['TCA']['pages']['columns']['subtitle']['config']['default'] = 'tca default subtitle';
@@ -93,9 +92,7 @@ final class DefaultValuesTest extends FunctionalTestCase
         self::assertEquals('tca default bodytext', $newContentRecord['bodytext']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValuesFromGlobalTSconfigForNewRecordsIsRespected(): void
     {
         // TCAdefaults from ext:test_defaulttsconfig/Configuration/page.tsconfig kick in here
@@ -124,9 +121,7 @@ final class DefaultValuesTest extends FunctionalTestCase
         self::assertEquals('global space', $newContentRecord['header']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValuesFromPageSpecificTSconfigForNewRecordsIsRespected(): void
     {
         // TCAdefaults from ext:test_defaulttsconfig/Configuration/page.tsconfig kick in here,
@@ -163,9 +158,7 @@ final class DefaultValuesTest extends FunctionalTestCase
         self::assertEquals('local space', $newContentRecord['header']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValueForNullTextfieldsIsConsidered(): void
     {
         // New content element without bodytext

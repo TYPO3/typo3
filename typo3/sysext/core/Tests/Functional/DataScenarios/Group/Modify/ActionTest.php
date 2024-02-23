@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Group\Modify;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\Group\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -27,19 +28,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 final class ActionTest extends AbstractActionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     * See DataSet/addElementRelation.csv
-     */
+    #[Test]
     public function addElementRelation(): void
     {
         parent::addElementRelation();
@@ -52,10 +48,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     * See DataSet/deleteElementRelation.csv
-     */
+    #[Test]
     public function deleteElementRelation(): void
     {
         parent::deleteElementRelation();
@@ -71,10 +64,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     * See DataSet/changeElementSorting.csv
-     */
+    #[Test]
     public function changeElementSorting(): void
     {
         parent::changeElementSorting();
@@ -87,10 +77,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/changeElementRelationSorting.csv
-     */
+    #[Test]
     public function changeElementRelationSorting(): void
     {
         parent::changeElementRelationSorting();
@@ -103,10 +90,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/createContentNAddRelation.csv
-     */
+    #[Test]
     public function createContentAndAddElementRelation(): void
     {
         parent::createContentAndAddElementRelation();
@@ -121,9 +105,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndCreateElementRelation(): void
     {
         parent::createContentAndCreateElementRelation();
@@ -138,10 +120,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyElementOfRelation.csv
-     */
+    #[Test]
     public function modifyElementOfRelation(): void
     {
         parent::modifyElementOfRelation();
@@ -154,10 +133,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Testing #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyContentOfRelation.csv
-     */
+    #[Test]
     public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
@@ -169,10 +145,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/modifyBothSidesOfRelation.csv
-     */
+    #[Test]
     public function modifyBothSidesOfRelation(): void
     {
         parent::modifyBothSidesOfRelation();
@@ -187,10 +160,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/deleteContentOfRelation.csv
-     */
+    #[Test]
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
@@ -202,10 +172,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/deleteElementOfRelation.csv
-     */
+    #[Test]
     public function deleteElementOfRelation(): void
     {
         parent::deleteElementOfRelation();
@@ -218,10 +185,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyContentOfRelation.csv
-     */
+    #[Test]
     public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
@@ -235,10 +199,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyElementOfRelation.csv
-     */
+    #[Test]
     public function copyElementOfRelation(): void
     {
         parent::copyElementOfRelation();
@@ -255,10 +216,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1 (copy 1)'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyContentToLanguageOfRelation.csv
-     */
+    #[Test]
     public function copyContentToLanguageOfRelation(): void
     {
         // Create translated page first
@@ -286,10 +244,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/copyElementToLanguageOfRelation.csv
-     */
+    #[Test]
     public function copyElementToLanguageOfRelation(): void
     {
         parent::copyElementToLanguageOfRelation();
@@ -304,10 +259,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentOfRelation.csv
-     */
+    #[Test]
     public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
@@ -320,10 +272,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentOfRelationWSynchronization.csv
-     */
+    #[Test]
     public function localizeContentOfRelationWithLanguageSynchronization(): void
     {
         parent::localizeContentOfRelationWithLanguageSynchronization();
@@ -336,19 +285,14 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
     {
         parent::localizeContentOfRelationWithLocalizeReferencesAtParentLocalization();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWLocalizeReferencesAtParentLocalization.csv');
     }
 
-    /**
-     * @test
-     * See DataSet/localizeContentChainOfRelationWSynchronizationSource.csv
-     */
+    #[Test]
     public function localizeContentChainOfRelationWithLanguageSynchronizationSource(): void
     {
         parent::localizeContentChainOfRelationWithLanguageSynchronizationSource();
@@ -361,10 +305,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
 
-    /**
-     * @test
-     * See DataSet/localizeElementOfRelation.csv
-     */
+    #[Test]
     public function localizeElementOfRelation(): void
     {
         // Create translated page first
@@ -379,10 +320,7 @@ final class ActionTest extends AbstractActionTestCase
             ->setTable(self::TABLE_Element)->setField('title')->setValues('[Translate to Dansk:] Element #1', 'Element #2'));
     }
 
-    /**
-     * @test
-     * See DataSet/moveContentOfRelationToDifferentPage.csv
-     */
+    #[Test]
     public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
@@ -82,9 +84,7 @@ final class TreeControllerTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllEntryPointPageTrees(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees');
@@ -197,9 +197,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllEntryPointPageTreesWithRootPageAsMountPoint(): void
     {
         $this->backendUser->setWebMounts([0, 7000]);
@@ -311,9 +309,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllEntryPointPageTreesWithSearch(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 0, 'Groups');
@@ -356,9 +352,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSubtreeForAccessiblePage(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
@@ -389,9 +383,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSubtreeForNonAccessiblePage(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 1510);
@@ -403,9 +395,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSubtreeForPageOutsideMountPoint(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 7000);
@@ -417,9 +407,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllEntryPointPageTreesWithMountPointPreservesOrdering(): void
     {
         $this->backendUser->setWebmounts([1210, 1100]);
@@ -451,9 +439,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllEntryPointPageTreesInWorkspace(): void
     {
         $this->setWorkspace(1);
@@ -633,10 +619,8 @@ final class TreeControllerTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider getAllEntryPointPageTreesInWorkspaceWithSearchDataProvider
-     */
+    #[DataProvider('getAllEntryPointPageTreesInWorkspaceWithSearchDataProvider')]
+    #[Test]
     public function getAllEntryPointPageTreesInWorkspaceWithSearch(string $search, array $expectedChildren): void
     {
         $this->setWorkspace(1);
@@ -668,9 +652,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSubtreeForAccessiblePageInWorkspace(): void
     {
         $this->setWorkspace(1);
@@ -707,9 +689,7 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pageTreeItemsModificationEventIsTriggered(): void
     {
         $afterPageTreeItemsPreparedEvent = null;

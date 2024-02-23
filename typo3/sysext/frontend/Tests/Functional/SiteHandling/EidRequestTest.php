@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -301,10 +303,8 @@ final class EidRequestTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider ensureEidRequestsWorkDataProvider
-     */
+    #[DataProvider('ensureEidRequestsWorkDataProvider')]
+    #[Test]
     public function ensureEidRequestsWork(
         string $uri,
         int $expectedStatusCode,
@@ -334,10 +334,8 @@ final class EidRequestTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider ensureEidRequestsWorkDataProvider
-     */
+    #[DataProvider('ensureEidRequestsWorkDataProvider')]
+    #[Test]
     public function ensureEidRequestsWorkWithDotPhpPageTypeSuffixRoutingConfiguration(
         string $uri,
         int $expectedStatusCode,

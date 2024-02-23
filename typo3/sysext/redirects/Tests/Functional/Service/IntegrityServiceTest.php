@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -56,9 +57,8 @@ final class IntegrityServiceTest extends FunctionalTestCase
      * page WITHOUT language component (e.g.  /en, /de etc.).
      *
      * The integrity service should NOT detect this as a conflict.
-     *
-     * @test
      */
+    #[Test]
     public function sourcePathWithMatchingSlugInLocalizedPageIsNotReportedAsConflict(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/IntegrityServiceTest_sourcePathWithMatchingSlugInLocalizedPageIsNotReportedAsConflict.csv');
@@ -67,9 +67,7 @@ final class IntegrityServiceTest extends FunctionalTestCase
         $this->assertExpectedPathsFromGenerator([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function conflictingRedirectsAreFoundForDefinedSiteOnly(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimplePages.csv');
@@ -117,9 +115,7 @@ final class IntegrityServiceTest extends FunctionalTestCase
         $this->assertExpectedPathsFromGenerator($expectedConflicts, $this->subject->findConflictingRedirects('simple-page'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function conflictingRedirectsAreFoundForLocalizedPages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LocalizedPages.csv');
@@ -158,9 +154,7 @@ final class IntegrityServiceTest extends FunctionalTestCase
         $this->assertExpectedPathsFromGenerator($expectedConflicts, $conflicts);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function conflictingRedirectsAreFoundForAllSites(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimplePages.csv');

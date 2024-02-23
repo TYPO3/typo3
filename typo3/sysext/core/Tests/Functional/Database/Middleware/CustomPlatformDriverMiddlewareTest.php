@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Middleware;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Middleware\CustomPlatformDriverMiddleware;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CustomPlatformDriverMiddlewareTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function driverMiddlewareIsRegistered(): void
     {
         $testConnectionPool = new class () extends ConnectionPool {
@@ -41,9 +40,7 @@ final class CustomPlatformDriverMiddlewareTest extends FunctionalTestCase
         self::assertArrayHasKey('typo3/core/custom-platform-driver-middleware', $driverMiddlewares);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function driverMiddlewareIsDiscardedIfDisabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];

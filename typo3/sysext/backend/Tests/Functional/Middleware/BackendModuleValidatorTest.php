@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Middleware;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -69,9 +70,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         };
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moduleIsAddedToRequest(): void
     {
         $module = $this->get(ModuleFactory::class)->createModule(
@@ -92,9 +91,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         self::assertEquals('web_layout', $response->getHeaderLine('X-Module-identifier'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moduleDataIsAddedToRequest(): void
     {
         $module = $this->get(ModuleFactory::class)->createModule(
@@ -125,9 +122,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         self::assertEquals('1', $response->getHeader('X-ModuleData-reverse')[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidModuleIsHandledWithRedirect(): void
     {
         $module = $this->get(ModuleFactory::class)->createModule(
@@ -150,9 +145,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flashMessageIsDispatchedForForcedRedirect(): void
     {
         $module = $this->get(ModuleFactory::class)->createModule(
@@ -177,9 +170,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         self::assertEquals(ContextualFeedbackSeverity::INFO, $flashMessage->getSeverity());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidModuleThrowsException(): void
     {
         $GLOBALS['BE_USER']->user['admin'] = 0;
@@ -202,9 +193,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noPageAccessThrowsException(): void
     {
         $module = $this->get(ModuleFactory::class)->createModule(
@@ -226,9 +215,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectsToMainForSecFetchDestHeader(): void
     {
         $module = $this->get(ModuleFactory::class)->createModule(

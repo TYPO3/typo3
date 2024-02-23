@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -34,25 +35,19 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull(): void
     {
         self::assertFalse((new StringLengthValidator())->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString(): void
     {
         self::assertFalse((new StringLengthValidator())->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsNoErrorForAStringShorterThanMaxLengthAndLongerThanMinLength(): void
     {
         $validator = new StringLengthValidator();
@@ -60,9 +55,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('this is a very simple string')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsErrorForAStringShorterThanThanMinLength(): void
     {
         $validator = new StringLengthValidator();
@@ -70,9 +63,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate('this is a very short string')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsErrorsForAStringLongerThanThanMaxLength(): void
     {
         $validator = new StringLengthValidator();
@@ -80,9 +71,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate('this is a very short string')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsNoErrorsForAStringLongerThanThanMinLengthAndMaxLengthNotSpecified(): void
     {
         $validator = new StringLengthValidator();
@@ -90,9 +79,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('this is a very short string')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsNoErrorsForAStringShorterThanThanMaxLengthAndMinLengthNotSpecified(): void
     {
         $validator = new StringLengthValidator();
@@ -100,9 +87,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('this is a very short string')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsNoErrorsForAStringLengthEqualToMaxLengthAndMinLengthNotSpecified(): void
     {
         $validator = new StringLengthValidator();
@@ -110,9 +95,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsNoErrorForAStringLengthEqualToMinLengthAndMaxLengthNotSpecified(): void
     {
         $validator = new StringLengthValidator();
@@ -120,9 +103,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsNoErrorIfMinLengthAndMaxLengthAreEqualAndTheGivenStringMatchesThisValue(): void
     {
         $validator = new StringLengthValidator();
@@ -130,9 +111,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsNoErrorsIfTheStringLengthIsEqualToMaxLength(): void
     {
         $validator = new StringLengthValidator();
@@ -140,9 +119,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorReturnsNoErrorIfTheStringLengthIsEqualToMinLength(): void
     {
         $validator = new StringLengthValidator();
@@ -150,9 +127,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorThrowsAnExceptionIfMinLengthIsGreaterThanMaxLength(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -162,9 +137,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         $validator->validate('1234567890');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorInsertsAnErrorObjectIfValidationFails(): void
     {
         $validator = new StringLengthValidator();
@@ -172,9 +145,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertCount(1, $validator->validate('this is a very short string')->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringLengthValidatorCanHandleAnObjectWithAToStringMethod(): void
     {
         $validator = new StringLengthValidator();
@@ -188,9 +159,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($object)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsErrorsIfTheGivenObjectCanNotBeConvertedToAString(): void
     {
         $validator = new StringLengthValidator();
@@ -205,9 +174,7 @@ final class StringLengthValidatorTest extends FunctionalTestCase
         self::assertSame(1238110957, $error->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateRegardsMultibyteStringsCorrectly(): void
     {
         $validator = new StringLengthValidator();

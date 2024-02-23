@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Domain\Repository;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserGroupRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -25,9 +26,7 @@ final class FrontendUserGroupRepositoryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['felogin'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findRedirectPageIdByGroupId(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_groups.csv');

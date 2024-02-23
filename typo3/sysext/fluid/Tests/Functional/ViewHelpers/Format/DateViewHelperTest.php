@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -44,9 +46,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperFormatsDateCorrectly(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -54,9 +54,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertSame('1980-12-13', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperRespectsCustomFormat(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -64,9 +62,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertSame('01.02.1980', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperAcceptsStrftimeFormat(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -74,9 +70,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertSame('1980-02-01', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperReturnsEmptyStringIfChildrenIsEmpty(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -84,9 +78,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertSame('', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperReturnsCurrentDateIfEmptyStringIsGiven(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -94,9 +86,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertSame(date('Y-m-d', $GLOBALS['EXEC_TIME']), (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperUsesDefaultIfNoSystemFormatIsAvailable(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = '';
@@ -105,9 +95,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertSame('2014-02-08', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperUsesSystemFormat(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'l, j. M y';
@@ -118,8 +106,8 @@ final class DateViewHelperTest extends FunctionalTestCase
 
     /**
      * No deprecation notice using PHP 8.1+ should be thrown when format is null
-     * @test
      */
+    #[Test]
     public function viewHelperUsesSystemFormatWhenFormatWithNullValueIsGiven(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'l, j. M y';
@@ -128,9 +116,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertSame('Thursday, 17. Feb 22', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperThrowsExceptionWithOriginalMessageIfDateStringCantBeParsed(): void
     {
         $this->expectException(Exception::class);
@@ -140,9 +126,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         (new TemplateView($context))->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewHelperUsesChildNodesWithTimestamp(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -150,9 +134,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertEquals('2013-02-03', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateArgumentHasPriorityOverChildNodes(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -160,9 +142,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertEquals('1980-12-12', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function relativeDateCalculationWorksWithoutBase(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -170,9 +150,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertEquals(date('Y'), (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function baseArgumentIsConsideredForRelativeDate(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -180,9 +158,7 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertEquals('2016', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function baseArgumentDoesNotAffectAbsoluteTime(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -204,10 +180,8 @@ final class DateViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider
-     */
+    #[DataProvider('viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider')]
+    #[Test]
     public function viewHelperRespectsDefaultTimezoneForIntegerTimestamp(string $timezone, string $expected): void
     {
         date_default_timezone_set($timezone);
@@ -243,10 +217,8 @@ final class DateViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider viewHelperRespectsDefaultTimezoneForStringTimestampDataProvider
-     */
+    #[DataProvider('viewHelperRespectsDefaultTimezoneForStringTimestampDataProvider')]
+    #[Test]
     public function viewHelperRespectsDefaultTimezoneForStringTimestamp(string $timeZone, string $date, string $expected): void
     {
         date_default_timezone_set($timeZone);
@@ -273,10 +245,8 @@ final class DateViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider viewHelperUsesIcuBasedPatternDataProvider
-     */
+    #[DataProvider('viewHelperUsesIcuBasedPatternDataProvider')]
+    #[Test]
     public function viewHelperUsesIcuBasedPattern(string $expected, string|int $pattern, ?string $locale = null): void
     {
         $date = '03/Oct/2000:14:55:36 +0400';

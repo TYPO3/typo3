@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\EventListener;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
@@ -33,9 +34,7 @@ final class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function plainSlugReplacementSourceIsAdded(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimpleSiteRoot.csv');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -35,9 +36,7 @@ final class NumberValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberValidatorReturnsTrueForASimpleInteger(): void
     {
         $subject = new NumberValidator();
@@ -45,9 +44,7 @@ final class NumberValidatorTest extends FunctionalTestCase
         self::assertFalse($subject->validate(1029437)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberValidatorReturnsFalseForAString(): void
     {
         $subject = new NumberValidator();

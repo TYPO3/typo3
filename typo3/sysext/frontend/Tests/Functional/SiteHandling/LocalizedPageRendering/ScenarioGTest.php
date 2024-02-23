@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\LocalizedPageRendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 /**
  * Scenario prerequisites:
  *   Site configuration has localizations
@@ -67,10 +70,8 @@ final class ScenarioGTest extends AbstractLocalizedPagesTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider menuDataProvider
-     */
+    #[DataProvider('menuDataProvider')]
+    #[Test]
     public function pageMenuIsRendered(string $url, array $expectedMenu): void
     {
         $this->assertMenu($url, $expectedMenu);

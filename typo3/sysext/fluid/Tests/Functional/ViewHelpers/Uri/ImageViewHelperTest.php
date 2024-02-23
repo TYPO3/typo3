@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Uri;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
@@ -80,10 +82,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidArgumentsDataProvider
-     */
+    #[DataProvider('invalidArgumentsDataProvider')]
+    #[Test]
     public function renderThrowsExceptionOnInvalidArguments(string $template, int $expectedExceptionCode, string $message): void
     {
         $this->expectException(Exception::class);
@@ -131,10 +131,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidArgumentsWithContentObjectPresentDataProvider
-     */
+    #[DataProvider('invalidArgumentsWithContentObjectPresentDataProvider')]
+    #[Test]
     public function renderThrowsExceptionWithContentObjectPresentOnInvalidArguments(string $template, int $expectedExceptionCode, string $message): void
     {
         $this->expectException(Exception::class);
@@ -250,10 +248,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider basicScalingCroppingDataProvider
-     */
+    #[DataProvider('basicScalingCroppingDataProvider')]
+    #[Test]
     public function basicScalingCropping(string $template, string $expected, int $expectedWidth, int $expectedHeight): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -309,10 +305,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider cropVariantDataProvider
-     */
+    #[DataProvider('cropVariantDataProvider')]
+    #[Test]
     public function cropVariant(string $template, string $expected, int $expectedWidth, int $expectedHeight): void
     {
         // Based on 400x300 dimensions
@@ -335,9 +329,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedHeight, $height, 'height of generated image does not match expected height');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileExtensionArgument(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -348,9 +340,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function absoluteArgument(): void
     {
         GeneralUtility::setIndpEnv('TYPO3_REQUEST_DIR', 'https://typo3-testing.local/');

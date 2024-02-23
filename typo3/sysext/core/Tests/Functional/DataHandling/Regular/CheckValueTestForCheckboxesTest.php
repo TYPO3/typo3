@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -40,9 +41,7 @@ final class CheckValueTestForCheckboxesTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkBoxValueMustBeDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
@@ -55,9 +54,7 @@ final class CheckValueTestForCheckboxesTest extends FunctionalTestCase
         self::assertEquals(1, $record['tx_testdatahandler_checkbox']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkBoxValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication\Mfa\Provider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
@@ -60,9 +61,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         $this->subject = $this->get(MfaProviderRegistry::class)->getProvider('recovery-codes');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canProcessTest(): void
     {
         self::assertFalse($this->subject->canProcess(new ServerRequest('https://example.com', 'POST')));
@@ -74,9 +73,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isActiveTest(): void
     {
         self::assertFalse($this->subject->isActive(MfaProviderPropertyManager::create($this->subject, $this->user)));
@@ -86,9 +83,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->isActive(MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isLockedTest(): void
     {
         self::assertFalse($this->subject->isLocked(MfaProviderPropertyManager::create($this->subject, $this->user)));
@@ -102,9 +97,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->isLocked(MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyTest(): void
     {
         $code = '12345678';
@@ -132,9 +125,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function activateTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -152,9 +143,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->activate($request->withParsedBody($parsedBody), $propertyManager));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deactivateTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -168,9 +157,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->deactivate($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unlockTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -186,9 +173,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertEquals('Your recovery codes were automatically updated!', $message->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -205,9 +190,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertEquals('Recovery codes successfully regenerated', $message->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setupFailsIfNoOtherMfaProviderIsActive(): void
     {
         $this->expectException(PropagateResponseException::class);
@@ -218,9 +201,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setupReturnsHtmlWithRecoveryCodes(): void
     {
         $this->setupUser();
@@ -232,9 +213,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertStringContainsString('<textarea type="text" id="recoveryCodes"', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function editViewTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -256,9 +235,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<input.*id="regenerateCodes"/s', $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authViewTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));

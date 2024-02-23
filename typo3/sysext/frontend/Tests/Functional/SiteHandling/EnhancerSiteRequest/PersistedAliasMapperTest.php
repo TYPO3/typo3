@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerSiteRequest;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\ApplicableConjunction;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
@@ -82,10 +84,8 @@ final class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTestCase
         return self::persistedAliasMapperDataProviderBuilder();
     }
 
-    /**
-     * @test
-     * @dataProvider persistedAliasMapperIsAppliedDataProvider
-     */
+    #[DataProvider('persistedAliasMapperIsAppliedDataProvider')]
+    #[Test]
     public function persistedAliasMapperIsApplied(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
@@ -135,10 +135,8 @@ final class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTestCase
             ->getTargetsForDataProvider();
     }
 
-    /**
-     * @test
-     * @dataProvider fallbackValueIsResolvedDataProvider
-     */
+    #[DataProvider('fallbackValueIsResolvedDataProvider')]
+    #[Test]
     public function fallbackValueIsResolved(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
@@ -159,10 +157,8 @@ final class PersistedAliasMapperTest extends AbstractEnhancerSiteRequestTestCase
         return $testSets;
     }
 
-    /**
-     * @test
-     * @dataProvider pageTypeDecoratorIsAppliedDataProvider
-     */
+    #[DataProvider('pageTypeDecoratorIsAppliedDataProvider')]
+    #[Test]
     public function pageTypeDecoratorIsApplied(TestSet $testSet): void
     {
         parent::pageTypeDecoratorIsApplied($testSet);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -33,9 +34,7 @@ final class EmailAddressValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAddressValidatorReturnsNoErrorsForAValidEmailAddress(): void
     {
         $subject = new EmailAddressValidator();
@@ -43,9 +42,7 @@ final class EmailAddressValidatorTest extends FunctionalTestCase
         self::assertFalse($subject->validate('valid.email@example.com')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress(): void
     {
         $subject = new EmailAddressValidator();
@@ -53,9 +50,7 @@ final class EmailAddressValidatorTest extends FunctionalTestCase
         self::assertTrue($subject->validate('@typo3.org')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailAddressValidatorReturnsFalseForNonStringAddress(): void
     {
         $subject = new EmailAddressValidator();
@@ -63,9 +58,7 @@ final class EmailAddressValidatorTest extends FunctionalTestCase
         self::assertTrue($subject->validate(123)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailValidatorCreatesTheCorrectErrorForAnInvalidEmailAddress(): void
     {
         $subject = new EmailAddressValidator();

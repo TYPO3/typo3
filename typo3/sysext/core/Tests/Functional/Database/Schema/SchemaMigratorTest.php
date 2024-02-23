@@ -23,6 +23,8 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaDiff;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
@@ -76,9 +78,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         return $this->schemaManager->introspectTable('a_test_table');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNewTable(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -91,9 +91,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertCount(6, $this->getTableDetails()->getColumns());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createNewTableIfNotExists(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -106,9 +104,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->schemaManager->tablesExist(['another_test_table']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addNewColumns(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -124,9 +120,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->getTableDetails()->hasColumn('description'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeExistingColumn(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -143,9 +137,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertEquals('Title', $this->getTableDetails()->getColumn('title')->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notNullWithoutDefaultValue(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -159,9 +151,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->getTableDetails()->getColumn('aTestField')->getNotnull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultNullWithoutNotNull(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -176,9 +166,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertNull($this->getTableDetails()->getColumn('aTestField')->getDefault());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renameUnusedField(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -193,9 +181,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_hidden'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renameUnusedTable(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -210,9 +196,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertContains('zzz_deleted_a_test_table', $this->schemaManager->listTableNames());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dropUnusedField(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -257,9 +241,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertFalse($this->getTableDetails()->hasColumn('zzz_deleted_testfield'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dropUnusedTable(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -277,11 +259,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertNotContains('zzz_deleted_a_test_table', $this->schemaManager->listTableNames());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     * @group not-sqlite
-     */
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[Test]
     public function installPerformsOnlyAddAndCreateOperations(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -295,9 +275,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertNotInstanceOf(BigIntType::class, $this->getTableDetails()->getColumn('pid')->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function installDoesNotAddIndexOnChangedColumn(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -308,9 +286,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertFalse($this->getTableDetails()->hasIndex('title'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeExistingIndex(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -339,11 +315,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertEquals($expectedColumnsOfChangedIndex, $indexesAfterChange[$parentIndex[0]]->getColumns());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     * @group not-sqlite
-     */
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[Test]
     public function installCanPerformChangeOperations(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -357,10 +331,8 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertInstanceOf(BigIntType::class, $this->getTableDetails()->getColumn('pid')->getType());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     */
+    #[Group('not-postgres')]
+    #[Test]
     public function importStaticDataInsertsRecords(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -372,9 +344,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertEquals(2, $connection->count('*', 'a_test_table', []));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importStaticDataIgnoresTableDefinitions(): void
     {
         $subject = $this->get(SchemaMigrator::class);
@@ -384,11 +354,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertNotContains('another_test_table', $this->schemaManager->listTableNames());
     }
 
-    /**
-     * @test
-     * @group not-postgres
-     * @group not-sqlite
-     */
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[Test]
     public function changeTableEngine(): void
     {
         $subject = $this->get(SchemaMigrator::class);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication\Mfa\Provider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
@@ -43,9 +44,7 @@ final class TotpProviderTest extends FunctionalTestCase
         $this->subject = $this->get(MfaProviderRegistry::class)->getProvider('totp');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canProcessTest(): void
     {
         self::assertFalse($this->subject->canProcess(new ServerRequest('https://example.com', 'POST')));
@@ -57,9 +56,7 @@ final class TotpProviderTest extends FunctionalTestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isActiveTest(): void
     {
         // No provider entry exists
@@ -78,9 +75,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->isActive(MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isLockedTest(): void
     {
         // No provider entry exists
@@ -95,9 +90,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->isLocked(MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -143,9 +136,7 @@ final class TotpProviderTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function activateTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -168,9 +159,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertEquals('KRMVATZTJFZUC53FONXW2ZJB', $propertyManager->getProperty('secret'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deactivateTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -187,9 +176,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->deactivate($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unlockTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -210,9 +197,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->unlock($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -234,9 +219,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertTrue($this->subject->update($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setupViewTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -249,9 +232,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<typo3-mfa-totp-url-info-button.*url="otpauth:\/\//s', $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function editViewTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
@@ -264,9 +245,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<td>.*Last used.*<td>.*18-03-21/s', $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authViewTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));

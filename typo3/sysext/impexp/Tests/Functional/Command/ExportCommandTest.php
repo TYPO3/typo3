@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Command;
 
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Tester\CommandTester;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Impexp\Command\ExportCommand;
@@ -25,9 +26,7 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 final class ExportCommandTest extends AbstractImportExportTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function exportCommandRequiresNoArguments(): void
     {
         $exportMock = $this->getAccessibleMock(Export::class, ['setMetaData']);
@@ -37,9 +36,7 @@ final class ExportCommandTest extends AbstractImportExportTestCase
         self::assertEquals(0, $tester->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportCommandSavesExportWithGivenFileName(): void
     {
         $fileName = 'empty_export';
@@ -56,9 +53,7 @@ final class ExportCommandTest extends AbstractImportExportTestCase
         self::assertXmlFileEqualsXmlFile(__DIR__ . '/../Fixtures/XmlExports/empty.xml', $filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportCommandPassesArgumentsToExportObject(): void
     {
         $input = [

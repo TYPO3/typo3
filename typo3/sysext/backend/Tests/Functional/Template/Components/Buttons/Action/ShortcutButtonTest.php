@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Template\Components\Buttons\Action;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -28,9 +30,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
 {
     private const FIXTURES_PATH_PATTERN = __DIR__ . '/../../../Fixtures/%s.html';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isButtonValid(): void
     {
         self::assertFalse((new ShortcutButton())->isValid());
@@ -39,9 +39,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
         self::assertTrue((new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->isValid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buttonIsNotRenderedForUserWithInsufficientPermissions(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users_no_bookmarks.csv');
@@ -52,10 +50,8 @@ final class ShortcutButtonTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @dataProvider rendersCorrectMarkupDataProvider
-     * @test
-     */
+    #[DataProvider('rendersCorrectMarkupDataProvider')]
+    #[Test]
     public function rendersCorrectMarkup(ShortcutButton $button, string $expectedMarkupFile): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users.csv');

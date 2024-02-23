@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filemetadata\Tests\Functional\Tca;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\FileType;
@@ -27,10 +29,8 @@ final class FileMetadataVisibleFieldsTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['filemetadata'];
 
-    /**
-     * @test
-     * @dataProvider metadataFieldsDataDataProvider
-     */
+    #[DataProvider('metadataFieldsDataDataProvider')]
+    #[Test]
     public function fileMetadataFormContainsExpectedFields(FileType $filetype, array $fields): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

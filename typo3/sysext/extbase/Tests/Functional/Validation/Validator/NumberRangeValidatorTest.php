@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -33,9 +34,7 @@ final class NumberRangeValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
@@ -44,9 +43,7 @@ final class NumberRangeValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate(10.5)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberRangeValidatorReturnsErrorForANumberOutOfRange(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
@@ -55,9 +52,7 @@ final class NumberRangeValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate(1000.1)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberRangeValidatorReturnsNoErrorForANumberInReversedRange(): void
     {
         $options = ['minimum' => 1000, 'maximum' => 0];
@@ -66,9 +61,7 @@ final class NumberRangeValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate(100)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberRangeValidatorReturnsErrorForAString(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Localization;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector;
@@ -35,9 +36,7 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($user);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateAvailableSiteLanguagesTest(): void
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
@@ -92,9 +91,7 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
         self::assertSame($expectedItems, $fieldInformation['items']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function populateAvailableSiteLanguagesWithoutSiteTest(): void
     {
         $expectedItems = [

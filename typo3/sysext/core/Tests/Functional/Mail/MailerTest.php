@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Mail;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Mailer\Envelope;
@@ -32,9 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MailerTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function mailerEventsAreTriggered(): void
     {
         $afterMailerInitializedEvent = null;

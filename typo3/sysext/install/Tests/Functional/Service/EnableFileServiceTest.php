@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -40,9 +41,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFirstInstallFilePathsFindsValidFiles(): void
     {
         $publicPath = Environment::getPublicPath();
@@ -61,9 +60,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertEquals([], array_diff($expected, $subject->_call('getFirstInstallFilePaths')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFirstInstallFilePathsReturnsEmptyArrayWithOnlyInvalidFiles(): void
     {
         $publicPath = Environment::getPublicPath();
@@ -77,9 +74,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertEquals([], array_diff([], $subject->_call('getFirstInstallFilePaths')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeFirstInstallFileRemovesValidFiles(): void
     {
         $publicPath = Environment::getPublicPath();
@@ -96,9 +91,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertEquals(array_values($expected), array_values(scandir($publicPath)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeFirstInstallFileRemovesNoFileIfThereAreNoValidFiles(): void
     {
         $publicPath = Environment::getPublicPath();
@@ -114,9 +107,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
         self::assertEquals(array_values($expected), array_values(scandir($publicPath)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeInstallToolEnableFileRemovesAllAvailableFiles(): void
     {
         $defaultLocation = Environment::getVarPath() . '/transient/' . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;

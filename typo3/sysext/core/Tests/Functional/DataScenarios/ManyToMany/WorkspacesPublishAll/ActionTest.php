@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany\WorkspacesPublishAll;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany\AbstractActionWorkspacesTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -27,18 +28,14 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addCategoryRelation(): void
     {
         parent::addCategoryRelation();
@@ -52,9 +49,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category A.A'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteCategoryRelation(): void
     {
         parent::deleteCategoryRelation();
@@ -71,9 +66,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C', 'Category A.A'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function changeCategoryRelationSorting(): void
     {
         parent::changeCategoryRelationSorting();
@@ -87,9 +80,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndAddRelation(): void
     {
         parent::createContentAndAddRelation();
@@ -105,9 +96,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createCategoryAndAddRelation(): void
     {
         parent::createCategoryAndAddRelation();
@@ -123,9 +112,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentAndCreateRelation(): void
     {
         parent::createContentAndCreateRelation();
@@ -141,9 +128,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createCategoryAndCreateRelation(): void
     {
         parent::createCategoryAndCreateRelation();
@@ -151,9 +136,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNCreateRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createContentWithCategoryAndAddRelation(): void
     {
         parent::createContentWithCategoryAndAddRelation();
@@ -161,9 +144,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWCategoryNAddRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createCategoryWithContentAndAddRelation(): void
     {
         parent::createCategoryWithContentAndAddRelation();
@@ -171,9 +152,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryWContentNAddRelation.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyCategoryOfRelation(): void
     {
         parent::modifyCategoryOfRelation();
@@ -187,9 +166,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
@@ -202,9 +179,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modifyBothsOfRelation(): void
     {
         parent::modifyBothsOfRelation();
@@ -220,9 +195,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
@@ -235,9 +208,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteCategoryOfRelation(): void
     {
         parent::deleteCategoryOfRelation();
@@ -251,9 +222,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
@@ -267,9 +236,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyContentToLanguageOfRelation(): void
     {
         parent::copyContentToLanguageOfRelation();
@@ -283,9 +250,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyCategoryOfRelation(): void
     {
         parent::copyCategoryOfRelation();
@@ -299,9 +264,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category A (copy 1)'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyCategoryToLanguageOfRelation(): void
     {
         parent::copyCategoryToLanguageOfRelation();
@@ -317,9 +280,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         // ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', '[Translate to Dansk:] Category A'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
@@ -333,9 +294,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelationWithLanguageSynchronization(): void
     {
         parent::localizeContentOfRelationWithLanguageSynchronization();
@@ -349,9 +308,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelationWithLanguageExclude(): void
     {
         parent::localizeContentOfRelationWithLanguageExclude();
@@ -365,9 +322,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         parent::localizeContentOfRelationAndAddCategoryWithLanguageSynchronization();
@@ -381,9 +336,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         parent::localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization();
@@ -398,9 +351,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizeCategoryOfRelation(): void
     {
         // Create translated page first
@@ -416,9 +367,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('[Translate to Dansk:] Category A', 'Category B'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
@@ -432,9 +381,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();

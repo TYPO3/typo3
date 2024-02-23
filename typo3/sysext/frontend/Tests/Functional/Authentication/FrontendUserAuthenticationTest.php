@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\Authentication;
 
 use GuzzleHttp\Cookie\SetCookie;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -49,9 +50,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
         $this->setUpFrontendRootPage(self::ROOT_PAGE_ID, ['EXT:frontend/Tests/Functional/Fixtures/TypoScript/page.typoscript']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function feSessionsAreNotStoredForAnonymousSessions(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
@@ -60,9 +59,7 @@ final class FrontendUserAuthenticationTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/fe_sessions_empty.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateNewAndExistingSessionWithValidRequestToken(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/fe_users.csv');

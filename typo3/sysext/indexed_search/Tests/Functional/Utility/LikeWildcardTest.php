@@ -20,6 +20,8 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
@@ -27,10 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LikeWildcardTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     * @dataProvider getLikeQueryPartDataProvider
-     */
+    #[DataProvider('getLikeQueryPartDataProvider')]
+    #[Test]
     public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, LikeWildcard $subject, string $expected): void
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);

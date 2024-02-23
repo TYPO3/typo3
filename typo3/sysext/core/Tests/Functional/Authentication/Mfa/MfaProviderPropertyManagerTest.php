@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication\Mfa;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -41,9 +42,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         $this->user->setBeUserByUid(4);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createTest(): void
     {
         $propertyManager = $this->createPropertyManager('totp');
@@ -52,18 +51,14 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         self::assertEquals($this->user, $propertyManager->getUser());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasProviderEntryTest(): void
     {
         self::assertFalse($this->createPropertyManager('recovery-codes')->hasProviderEntry());
         self::assertTrue($this->createPropertyManager('totp')->hasProviderEntry());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasPropertyTest(): void
     {
         $propertyManager = $this->createPropertyManager('totp');
@@ -71,9 +66,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         self::assertTrue($propertyManager->hasProperty('active'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyTest(): void
     {
         $propertyManager = $this->createPropertyManager('totp');
@@ -83,9 +76,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         self::assertEquals('KRMVATZTJFZUC53FONXW2ZJB', $propertyManager->getProperty('secret'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertiesTest(): void
     {
         $propertyManager = $this->createPropertyManager('recovery-codes');
@@ -102,9 +93,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatePropertiesTest(): void
     {
         $propertyManager = $this->createPropertyManager('totp');
@@ -141,9 +130,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createProviderEntryThrowsExceptionOnAlreadyExistingEntryTest(): void
     {
         $this->expectExceptionCode(1612781782);
@@ -151,9 +138,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         $this->createPropertyManager('totp')->createProviderEntry(['key' => 'value']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createProviderEntryTest(): void
     {
         $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
@@ -193,9 +178,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteProviderEntryTest(): void
     {
         $propertyManager = $this->createPropertyManager('totp');

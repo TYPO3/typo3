@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -132,10 +134,8 @@ final class LinkGeneratorFreeModeTest extends AbstractTestCase
         return self::keysFromTemplate($instructions, '%2$d->%3$d (lang:%4$d)');
     }
 
-    /**
-     * @test
-     * @dataProvider linkIsGeneratedForLanguageDataProvider
-     */
+    #[DataProvider('linkIsGeneratedForLanguageDataProvider')]
+    #[Test]
     public function linkIsGeneratedForLanguageWithLanguageProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
@@ -176,10 +176,8 @@ final class LinkGeneratorFreeModeTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider languageMenuIsGeneratedDataProvider
-     */
+    #[DataProvider('languageMenuIsGeneratedDataProvider')]
+    #[Test]
     public function languageMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(

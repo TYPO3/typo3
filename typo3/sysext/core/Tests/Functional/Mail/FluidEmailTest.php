@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Mail;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -28,9 +29,7 @@ final class FluidEmailTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_fluid_email',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingFormatWithTextOnlyGeneratesTextEmail(): void
     {
         $subject = new FluidEmail();
@@ -47,9 +46,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertNotEmpty($subject->getTextBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingFormatWithHtmlOnlyGeneratesHtmlEmail(): void
     {
         $subject = new FluidEmail();
@@ -66,9 +63,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertEmpty($subject->getTextBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingFormatWithTextAndHtmlGeneratesTwoBodies(): void
     {
         $subject = new FluidEmail();
@@ -85,9 +80,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertNotEmpty($subject->getTextBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingNoFormatGeneratesTwoBodies(): void
     {
         $subject = new FluidEmail();
@@ -103,9 +96,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertNotEmpty($subject->getTextBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forcingHtmlBodyGenerationWorks(): void
     {
         $subject = new FluidEmail();
@@ -133,9 +124,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forcingTextBodyGenerationWorks(): void
     {
         $subject = new FluidEmail();
@@ -164,9 +153,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('Plain content from Functional test', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewAssignValuesResetsGeneratedHtmlBody(): void
     {
         $subject = new FluidEmail();
@@ -199,9 +186,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('Reassigned Plain content ', $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewAssignValuesResetsGeneratedTextBody(): void
     {
         $subject = new FluidEmail();
@@ -236,9 +221,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('Reassigned Plain content ', $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewAssignMultiValuesResetsGeneratedHtmlBody(): void
     {
         $subject = new FluidEmail();
@@ -274,9 +257,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('Reassigned Plain content ', $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewAssignMultiValuesResetsGeneratedTextBody(): void
     {
         $subject = new FluidEmail();
@@ -308,9 +289,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('Reassigned Plain content ', $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bodiesAreNotRecreatedOnMultipleEnsureValidityCalls(): void
     {
         $subject = new class () extends FluidEmail {
@@ -336,9 +315,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertEquals(2, $subject->countRenderContentCalled);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bodiesAreRecreatedOnMultipleEnsureValidityCallsWithAssignUsedInBetween(): void
     {
         $subject = new class () extends FluidEmail {
@@ -374,9 +351,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('Reassigned plain content from Functional test', $resultHtml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bodiesAreRecreatedOnMultipleEnsureValidityCallsWithAssignMultipleUsedInBetween(): void
     {
         $subject = new class () extends FluidEmail {
@@ -412,9 +387,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('Reassigned plain content from Functional test', $resultHtml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bodiesAreNotRecreatedOnMultipleEnsureValidityCallsWithSetSubjectInBetween(): void
     {
         $subject = new class () extends FluidEmail {
@@ -448,9 +421,7 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertEquals('Overridden subject', $subject->getSubject());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bodiesAreNotRecreatedOnMultipleEnsureValidityCallsWithAssignedValuesButManualSetTextAndHtml(): void
     {
         $subject = new class () extends FluidEmail {

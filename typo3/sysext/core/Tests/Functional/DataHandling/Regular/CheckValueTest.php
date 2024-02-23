@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -51,27 +52,21 @@ final class CheckValueTest extends FunctionalTestCase
         return BackendUtility::getRecord('tt_content', $recordUid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function radioButtonValueMustBeDefinedInTcaItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('predefined value');
         self::assertEquals('predefined value', $record['tx_testdatahandler_radio']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function radioButtonValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('processed value');
         self::assertEquals('processed value', $record['tx_testdatahandler_radio']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function radioButtonValueIsNotSavedIfNotDefinedInTcaItemsOrProcessingItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('some other value');

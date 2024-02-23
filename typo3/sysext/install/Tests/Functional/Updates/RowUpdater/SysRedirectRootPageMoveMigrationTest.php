@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Updates\RowUpdater;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,9 +57,7 @@ final class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function siteRootPageChildrenRecordsAreMovedToSiteRootPage(): void
     {
         // Data set inspired by workspaces IRRE/CSV/Modify/DataSet/copyPage.csv
@@ -69,9 +68,7 @@ final class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/SysRedirectsRootPageMoveMigrationSiteRootChildrenResult.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function siteRootPageChildrenRecordsWithDisabledRedirectsAreMovedToSiteRootPage(): void
     {
         // Data set inspired by workspaces IRRE/CSV/Modify/DataSet/copyPage.csv
@@ -82,9 +79,7 @@ final class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/SysRedirectsRootPageMoveMigrationSiteRootChildrenWithDisabledRedirectResult.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function siteRootPageChildrenRecordsWithDeletedRedirectsAreMovedToSiteRootPage(): void
     {
         // Data set inspired by workspaces IRRE/CSV/Modify/DataSet/copyPage.csv
@@ -95,9 +90,7 @@ final class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/SysRedirectsRootPageMoveMigrationSiteRootChildrenWithDeletedRedirectResult.csv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subPageRecordsAreMovedToPidZeroIfNoSiteConfig(): void
     {
         // Data set inspired by workspaces IRRE/CSV/Modify/DataSet/copyPage.csv

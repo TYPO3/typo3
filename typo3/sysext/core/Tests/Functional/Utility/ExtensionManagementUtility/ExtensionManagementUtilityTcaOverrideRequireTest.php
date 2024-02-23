@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\Utility\ExtensionManagementUtility;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ExtensionManagementUtilityTcaOverrideRequireTest extends FunctionalTestCase
@@ -24,10 +25,7 @@ final class ExtensionManagementUtilityTcaOverrideRequireTest extends FunctionalT
         'typo3/sysext/core/Tests/Functional/Utility/ExtensionManagementUtility/Fixtures/Extensions/test_tcaoverride_b',
     ];
 
-    /**
-     * @test
-     * Regression test for https://forge.typo3.org/issues/96929
-     */
+    #[Test]
     public function extensionManagementUtilityBuildBaseTcaFromSingleFiles(): void
     {
         // This is a dummy assertion to test a general behaviour. If this test fails, this means that

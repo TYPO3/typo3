@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerSiteRequest;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
@@ -80,10 +82,8 @@ final class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTestCa
         return self::persistedPatternMapperDataProviderBuilder();
     }
 
-    /**
-     * @test
-     * @dataProvider persistedPatternMapperIsAppliedDataProvider
-     */
+    #[DataProvider('persistedPatternMapperIsAppliedDataProvider')]
+    #[Test]
     public function persistedPatternMapperIsApplied(TestSet $testSet): void
     {
         $this->assertPageArgumentsEquals($testSet);
@@ -104,10 +104,8 @@ final class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTestCa
         return $testSets;
     }
 
-    /**
-     * @test
-     * @dataProvider pageTypeDecoratorIsAppliedDataProvider
-     */
+    #[DataProvider('pageTypeDecoratorIsAppliedDataProvider')]
+    #[Test]
     public function pageTypeDecoratorIsApplied(TestSet $testSet): void
     {
         parent::pageTypeDecoratorIsApplied($testSet);

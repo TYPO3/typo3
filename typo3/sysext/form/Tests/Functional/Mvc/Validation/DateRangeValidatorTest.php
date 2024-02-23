@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -35,9 +36,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateOptionsThrowsExceptionIfMinimumOptionIsInvalid(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -48,9 +47,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         $validator->validate(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateOptionsThrowsExceptionIfMaximumOptionIsInvalid(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -61,9 +58,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         $validator->validate(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function DateRangeValidatorReturnsTrueIfInputIsNoDateTime(): void
     {
         $options = ['minimum' => '2018-03-17', 'maximum' => '2018-03-17'];
@@ -72,9 +67,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate(true)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function DateRangeValidatorReturnsTrueIfInputIsLowerThanMinimumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
@@ -84,9 +77,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function DateRangeValidatorReturnsFalseIfInputIsEqualsMinimumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
@@ -96,9 +87,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function DateRangeValidatorReturnsFalseIfInputIsGreaterThanMinimumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');
@@ -108,9 +97,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function DateRangeValidatorReturnsFalseIfInputIsLowerThanMaximumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
@@ -120,9 +107,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function DateRangeValidatorReturnsFalseIfInputIsEqualsMaximumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
@@ -132,9 +117,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function DateRangeValidatorReturnsTrueIfInputIsGreaterThanMaximumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Package\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -36,9 +37,7 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_package_initialization',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettersReturnInitializedObjects(): void
     {
         $extensionKey = 'my_ext';
@@ -65,9 +64,7 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         $event->getStorageEntry(__CLASS__);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setterOverwritesResult(): void
     {
         $extensionKey = 'my_ext';
@@ -100,9 +97,7 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         self::assertFalse($event->hasStorageEntry(__CLASS__));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function coreListenersAddStorageEntries(): void
     {
         /** @var PackageInitializationEvent $event */
@@ -132,9 +127,7 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         self::assertTrue($importRequirementsResult['siteInitialisationDirectoryExists']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function customListenersAreCalled(): void
     {
         $packageInitializationEvent = null;

@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy\Reporting;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ReportRepositoryTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function findAllSummarizedReturnsAllSummaries(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_http_report.csv');

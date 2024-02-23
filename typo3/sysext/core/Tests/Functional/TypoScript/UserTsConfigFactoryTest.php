@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -29,9 +30,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_usertsconfigfactory',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigLoadsDefaultFromExtensionConfigurationUserTsconfig(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
@@ -41,9 +40,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTestExtensionConfigurationUserTsConfig', $userTsConfig->getUserTsConfigArray()['loadedFromTestExtensionConfigurationUserTsConfig']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigLoadsDefaultFromBackendUserTsConfigField(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
@@ -53,9 +50,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromUser', $userTsConfig->getUserTsConfigArray()['loadedFromUser']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigLoadsDefaultFromBackendUserGroupTsConfigField(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
@@ -65,9 +60,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromUserGroup', $userTsConfig->getUserTsConfigArray()['loadedFromUserGroup']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigLoadsDefaultFromBackendUserGroupTsConfigFieldAndGroupOverride(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
@@ -77,9 +70,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromUserGroupOverride', $userTsConfig->getUserTsConfigArray()['loadedFromUserGroup']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigLoadsFromWildcardAtImportWithTsconfigSuffix(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');
@@ -89,9 +80,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigLoadsFromWildcardAtImportWithTypoScriptSuffix(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixture.csv');

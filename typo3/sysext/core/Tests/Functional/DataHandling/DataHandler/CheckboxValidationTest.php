@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -65,9 +66,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUserAuthentication);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validMaximumRecordsCheckedPermitsPersisting(): void
     {
         $actionService = new ActionService();
@@ -80,9 +79,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
         self::assertEquals(1, $newContentRecord['tx_testdatahandler_checkbox_with_eval']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function violationOfMaximumRecordsCheckedResetsValueToZero(): void
     {
         $actionService = new ActionService();
@@ -98,9 +95,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
         self::assertEquals(0, $newContentRecord['tx_testdatahandler_checkbox_with_eval']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validMaximumRecordsCheckedInPidPermitsPersisting(): void
     {
         $actionService = new ActionService();
@@ -113,9 +108,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
         self::assertEquals(1, $newContentRecord['tx_testdatahandler_checkbox_with_eval']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function violationOfMaximumRecordsCheckedInPidResetsValueToZero(): void
     {
         $actionService = new ActionService();
@@ -131,9 +124,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
         self::assertEquals(0, $newContentRecord['tx_testdatahandler_checkbox_with_eval']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function violationOfMaximumRecordsCheckedInWorkspaceResetsValueToZero(): void
     {
         $actionService = new ActionService();
@@ -148,9 +139,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
         self::assertEquals(0, $newContentRecord['tx_testdatahandler_checkbox_with_eval']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function violationOfMaximumRecordsCheckedInPidInWorkspaceResetsValueToZero(): void
     {
         $actionService = new ActionService();

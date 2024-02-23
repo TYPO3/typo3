@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Frontend;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -59,11 +61,8 @@ final class VariableFrontendTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider insertSerializedArrayIntoLobAndRetrieveItDataProvider
-     *
-     * @test
-     */
+    #[DataProvider('insertSerializedArrayIntoLobAndRetrieveItDataProvider')]
+    #[Test]
     public function insertSerializedArrayIntoLobAndRetrieveIt(
         array $expected,
         string $identifier,

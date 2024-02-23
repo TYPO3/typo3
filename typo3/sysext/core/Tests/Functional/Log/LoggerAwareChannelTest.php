@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Log;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\LogRecord;
@@ -58,9 +59,7 @@ final class LoggerAwareChannelTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classLevelChannelAttributeIsRead(): void
     {
         $container = $this->getContainer();
@@ -72,9 +71,7 @@ final class LoggerAwareChannelTest extends FunctionalTestCase
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorChannelAttributeIsRead(): void
     {
         $container = $this->getContainer();

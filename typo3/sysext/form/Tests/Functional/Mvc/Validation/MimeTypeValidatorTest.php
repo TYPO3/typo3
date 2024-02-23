@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -53,9 +55,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsString(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -66,9 +66,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
         $validator->validate(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsEmptyArray(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -79,9 +77,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
         $validator->validate(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function MimeTypeValidatorReturnsTrueIfFileResourceIsNotAllowedMimeType(): void
     {
         $options = ['allowedMimeTypes' => ['image/jpeg']];
@@ -92,9 +88,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate($file)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function MimeTypeValidatorReturnsFalseIfInputIsEmptyString(): void
     {
         $options = ['allowedMimeTypes' => ['fake']];
@@ -103,9 +97,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function MimeTypeValidatorReturnsTrueIfInputIsNoFileResource(): void
     {
         $options = ['allowedMimeTypes' => ['fake']];
@@ -126,10 +118,8 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fileExtensionMatchesMimeTypesDataProvider
-     */
+    #[DataProvider('fileExtensionMatchesMimeTypesDataProvider')]
+    #[Test]
     public function fileExtensionMatchesMimeTypes(string $fileName, string $fileMimeType, array $allowedMimeTypes, bool $isValid): void
     {
         $options = ['allowedMimeTypes' => $allowedMimeTypes];
@@ -200,9 +190,9 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
      * @param array<string, int|string> $uploadData
      * @param List<string> $allowedMimeTypes
      * @param List<int> $expectedErrorCodes
-     * @test
-     * @dataProvider validateHandlesMimeTypesOfFilesDataProvider
      */
+    #[DataProvider('validateHandlesMimeTypesOfFilesDataProvider')]
+    #[Test]
     public function validateHandlesMimeTypesOfFiles(array $uploadData, array $allowedMimeTypes, array $expectedErrorCodes = []): void
     {
         $uploadData['tmp_name'] = $this->instancePath . '/tmp/' . $uploadData['tmp_name'];

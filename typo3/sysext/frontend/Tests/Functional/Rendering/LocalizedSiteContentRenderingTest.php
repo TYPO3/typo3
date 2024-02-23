@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -171,9 +173,8 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
     /**
      * For the default language all combination of language settings should give the same result,
      * regardless of Language fallback settings, if the default language is requested then no language settings apply.
-     *
-     * @test
      */
+    #[Test]
     public function onlyEnglishContentIsRenderedForDefaultLanguage(): void
     {
         $this->writeSiteConfiguration(
@@ -323,9 +324,9 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
     /**
      * Page is translated to Dutch, so changing fallbackChain does not matter currently.
      * Page title is always [DA]Page, the content language is always "1"
-     * @test
-     * @dataProvider dutchDataProvider
      */
+    #[DataProvider('dutchDataProvider')]
+    #[Test]
     public function renderingOfDutchLanguage(array $languageConfiguration, array $visibleRecords, string $fallbackType, string $fallbackChain, string $overlayType): void
     {
         $this->writeSiteConfiguration(
@@ -652,11 +653,11 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
     /**
      * Page uid 89 is NOT translated to german
      *
-     * @test
-     * @dataProvider contentOnNonTranslatedPageDataProvider
      *
      * @param int $statusCode 200 or 404
      */
+    #[DataProvider('contentOnNonTranslatedPageDataProvider')]
+    #[Test]
     public function contentOnNonTranslatedPageGerman(array $languageConfiguration, array $visibleRecords, string $pageTitle, int $languageId, int $contentLanguageId, string $fallbackType, string $fallbackChain, string $overlayMode, int $statusCode = 200): void
     {
         $this->writeSiteConfiguration(
@@ -820,10 +821,9 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
 
     /**
      * Page uid 89 is translated to Polish, but not all CE are translated
-     *
-     * @test
-     * @dataProvider contentOnPartiallyTranslatedPageDataProvider
      */
+    #[DataProvider('contentOnPartiallyTranslatedPageDataProvider')]
+    #[Test]
     public function contentOnPartiallyTranslatedPage(array $languageConfiguration, array $visibleHeaders, string $fallbackType, string $fallbackChain, string $overlayType): void
     {
         $this->writeSiteConfiguration(

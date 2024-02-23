@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Webhooks\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -79,9 +80,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
         };
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requestIsSentOutForMessagesWithAGivenType(): void
     {
         $numberOfRequestsFired = 0;
@@ -98,9 +97,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
         self::assertEquals(1, $numberOfRequestsFired);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function oneMessageWithMultipleRequestsIsTriggeredAndDispatched(): void
     {
         self::markTestSkipped('Fails with phpunit 10 for unknown reasons. Probably broken since ever?');
@@ -131,9 +128,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
         self::assertEquals(2, $numberOfRequestsFired);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function messageWithoutConfiguredTypesDoesNotSendARequest(): void
     {
         // Just empty the table for the request, other ways are possible to do this

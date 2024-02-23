@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -32,7 +34,7 @@ use TYPO3Tests\BlogExample\Controller\BlogController;
 final class ControllerArgumentsMappingTest extends FunctionalTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Request
+     * @var Request
      */
     protected $request;
 
@@ -89,10 +91,8 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider actionGetsBlogFromUidArgumentDataProvider
-     */
+    #[DataProvider('actionGetsBlogFromUidArgumentDataProvider')]
+    #[Test]
     public function actionGetsBlogFromUidArgument(int $language, int $blogUid, string $expectedTitle): void
     {
         $context = GeneralUtility::makeInstance(Context::class);

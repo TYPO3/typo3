@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Runtime;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -45,9 +46,7 @@ final class FormRuntimeTest extends FunctionalTestCase
         $this->request = $this->buildExtbaseRequest();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionIfFormDefinitionReturnsNoRendererClassName(): void
     {
         $formDefinition = $this->buildFormDefinition();
@@ -60,9 +59,7 @@ final class FormRuntimeTest extends FunctionalTestCase
         $formRuntime->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderThrowsExceptionIfRendererClassNameInstanceDoesNotImplementRendererInterface(): void
     {
         $formDefinition = $this->buildFormDefinition();

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Flexform;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -36,9 +37,7 @@ final class ActionTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformationAppliesForRichTextFieldsWithoutSheets(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '<?xml version="1.0" encoding="UTF-8"?>
@@ -111,9 +110,7 @@ final class ActionTest extends FunctionalTestCase
         self::assertEquals($expected, $flexFormContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transformationAppliesForRichTextFieldsWithSheets(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '<T3DataStructure>

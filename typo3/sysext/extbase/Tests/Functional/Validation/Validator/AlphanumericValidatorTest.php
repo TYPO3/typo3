@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -33,9 +34,7 @@ final class AlphanumericValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericString(): void
     {
         $subject = new AlphanumericValidator();
@@ -43,9 +42,7 @@ final class AlphanumericValidatorTest extends FunctionalTestCase
         self::assertFalse($subject->validate('12ssDF34daweidf')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorReturnsErrorsForAStringWithSpecialCharacters(): void
     {
         $subject = new AlphanumericValidator();
@@ -53,9 +50,7 @@ final class AlphanumericValidatorTest extends FunctionalTestCase
         self::assertTrue($subject->validate('adsf%&/$jklsfdö')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
         $subject = new AlphanumericValidator();
@@ -63,9 +58,7 @@ final class AlphanumericValidatorTest extends FunctionalTestCase
         self::assertCount(1, $subject->validate('adsf%&/$jklsfdö')->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericUnicodeString(): void
     {
         $subject = new AlphanumericValidator();

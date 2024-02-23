@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Tca;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class AfterTcaCompilationEventTest extends FunctionalTestCase
@@ -25,9 +26,7 @@ final class AfterTcaCompilationEventTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tca_event',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addedTcaOverridesAnythingElse(): void
     {
         self::assertSame('Vegetable', $GLOBALS['TCA']['fruit']['ctrl']['title']);

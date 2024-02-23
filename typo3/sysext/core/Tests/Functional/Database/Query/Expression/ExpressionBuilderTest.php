@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Expression;
 
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -27,9 +29,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Database/Fixtures/Extensions/test_expressionbuilder',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSetsWithColumn(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -98,9 +98,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSets(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -135,9 +133,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSetsWithInts(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -172,9 +168,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSetsIfValueContainsLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -209,9 +203,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSetsIfValueContainsBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -246,9 +238,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSetsIfValueContainsClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -283,9 +273,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -320,9 +308,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -357,9 +343,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function inSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -394,14 +378,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * notInSet tests, as they reverse the tests from above, only the count() logic is used to avoid too many
-     * result arrays to be defined.
-     */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSetsWithColumn(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -532,9 +509,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSets(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -558,9 +533,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals(4, $queryBuilder->executeQuery()->fetchOne());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSetsWithInts(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -574,9 +547,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSetsIfValueContainsLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -590,9 +561,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSetsIfValueContainsBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -606,9 +575,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSetsIfValueContainsClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -622,9 +589,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -638,9 +603,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -654,9 +617,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
@@ -741,12 +702,12 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         ];
     }
 
+    #[DataProvider('likeReturnsExpectedDataSetsDataProvider')]
+    #[Test]
     /**
-     * @test
-     * @dataProvider likeReturnsExpectedDataSetsDataProvider
      * Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
      *       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
-     *       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
+     *       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt')]
      */
     public function likeReturnsExpectedDataSets(string $searchWord, array $expectedRows, array $excludePlatforms): void
     {
@@ -843,10 +804,8 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider likeWithWildcardValueCanBeMatchedDataProvider
-     */
+    #[DataProvider('likeWithWildcardValueCanBeMatchedDataProvider')]
+    #[Test]
     public function likeWithWildcardValueCanBeMatched(string $searchWord, array $expectedRows, array $excludePlatforms): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderLikeAndNotLike.csv');
@@ -908,10 +867,8 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider notLikeWithWildcardValueCanBeMatchedDataProvider
-     */
+    #[DataProvider('notLikeWithWildcardValueCanBeMatchedDataProvider')]
+    #[Test]
     public function notLikeWithWildcardValueCanBeMatched(string $searchWord, array $expectedRows, array $excludePlatforms): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderLikeAndNotLike.csv');
@@ -938,12 +895,12 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertSame($expectedRows, $rows);
     }
 
+    #[DataProvider('notLikeReturnsExpectedDataSetsDataProvider')]
+    #[Test]
     /**
-     * @test
-     * @dataProvider notLikeReturnsExpectedDataSetsDataProvider
      * Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
      *       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
-     *       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
+     *       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt')]
      */
     public function notLikeReturnsExpectedDataSets(string $searchWord, array $expectedRows, array $excludePlatforms): void
     {
@@ -972,9 +929,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         self::assertSame($expectedRows, $rows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ensureThatExpectedQuoteCharUsedInUnquoteIsValid(): void
     {
         $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);

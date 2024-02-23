@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
@@ -24,25 +25,19 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RegistryTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsNullIfEntryIsNotInDatabase(): void
     {
         self::assertNull((new Registry())->get('myExtension', 'myKey'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsDefaultValueIfEntryIsNotInDatabase(): void
     {
         self::assertSame('myDefault', (new Registry())->get('myExtension', 'myKey', 'myDefault'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsEntryFromDatabase(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_registry')
@@ -60,9 +55,7 @@ final class RegistryTest extends FunctionalTestCase
         self::assertSame('myValue', (new Registry())->get('myExtension', 'myKey'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setInsertsEntryInDatabase(): void
     {
         (new Registry())->set('myExtension', 'myKey', 'myValue');
@@ -76,9 +69,7 @@ final class RegistryTest extends FunctionalTestCase
         self::assertSame('myValue', unserialize($valueInDatabase['entry_value']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOverridesExistingEntryInDatabase(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_registry')
@@ -104,9 +95,7 @@ final class RegistryTest extends FunctionalTestCase
         self::assertSame('myNewValue', unserialize($valueInDatabase['entry_value']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeDeletesEntryInDatabaseButLeavesOthers(): void
     {
         $connection = (new ConnectionPool())->getConnectionForTable('sys_registry');
@@ -130,9 +119,7 @@ final class RegistryTest extends FunctionalTestCase
         self::assertSame(1, $connection->count('*', 'sys_registry', ['entry_namespace' => 'ns2', 'entry_key' => 'k1']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeAllByNamespaceDeletesEntryInDatabaseAndLeavesOthers(): void
     {
         $connection = (new ConnectionPool())->getConnectionForTable('sys_registry');
@@ -156,9 +143,7 @@ final class RegistryTest extends FunctionalTestCase
         self::assertSame(1, $connection->count('*', 'sys_registry', ['entry_namespace' => 'ns2', 'entry_key' => 'k1']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canGetSetEntry(): void
     {
         $registry = new Registry();
@@ -166,9 +151,7 @@ final class RegistryTest extends FunctionalTestCase
         self::assertSame('value1', $registry->get('ns1', 'key1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsNewValueIfValueHasBeenSetMultipleTimes(): void
     {
         $registry = new Registry();
@@ -177,9 +160,7 @@ final class RegistryTest extends FunctionalTestCase
         self::assertSame('value2', $registry->get('ns1', 'key1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canNotGetRemovedEntry(): void
     {
         $registry = new Registry();
@@ -188,9 +169,7 @@ final class RegistryTest extends FunctionalTestCase
         self::assertNull($registry->get('ns1', 'key1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canNotGetRemovedAllByNamespaceEntry(): void
     {
         $registry = new Registry();

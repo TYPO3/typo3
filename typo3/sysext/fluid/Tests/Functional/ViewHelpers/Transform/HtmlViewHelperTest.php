@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Transform;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -104,10 +106,8 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isTransformedDataProvider
-     */
+    #[DataProvider('isTransformedDataProvider')]
+    #[Test]
     public function isTransformed(string $payload, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -141,10 +141,8 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isTransformedWithSelectorDataProvider
-     */
+    #[DataProvider('isTransformedWithSelectorDataProvider')]
+    #[Test]
     public function isTransformedWithSelector(string $selector, string $payload, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -188,10 +186,8 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isTransformedWithOnFailureDataProvider
-     */
+    #[DataProvider('isTransformedWithOnFailureDataProvider')]
+    #[Test]
     public function isTransformedWithOnFailure(?string $onFailure, string $payload, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();

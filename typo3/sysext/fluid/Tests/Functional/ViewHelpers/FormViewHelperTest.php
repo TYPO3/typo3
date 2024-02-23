@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -67,10 +69,8 @@ final class FormViewHelperTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isRenderedDataProvider
-     */
+    #[DataProvider('isRenderedDataProvider')]
+    #[Test]
     public function isRendered(string $source, array $variables, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -88,9 +88,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertSame($expectation, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
@@ -106,9 +104,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFormActionUriRespectsOverriddenArgument(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -120,9 +116,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nameArgumentIsUsedFormHiddenIdentityName(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
@@ -138,9 +132,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectNameArgumentOverrulesNameArgument(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
@@ -156,9 +148,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderWrapsHiddenFieldsWithDivForXhtmlCompatibilityWithRewrittenPropertyMapper(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
@@ -174,9 +164,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderWrapsHiddenFieldsWithDivAndAnAdditionalClassForXhtmlCompatibilityWithRewrittenPropertyMapper(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
@@ -192,9 +180,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields(): void
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
@@ -226,9 +212,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, $view->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields111(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');

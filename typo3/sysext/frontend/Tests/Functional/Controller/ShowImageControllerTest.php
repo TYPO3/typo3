@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
 use Masterminds\HTML5;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -84,10 +86,10 @@ final class ShowImageControllerTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @param array<string, int|string> $queryParams
-     * @dataProvider contentIsGeneratedForLocalFilesDataProvider
      */
+    #[DataProvider('contentIsGeneratedForLocalFilesDataProvider')]
+    #[Test]
     public function contentIsGeneratedForLocalFiles(int $fileId, array $queryParams): void
     {
         $storageDriver = 'Local';

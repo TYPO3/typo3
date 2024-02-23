@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Utility;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -49,9 +51,7 @@ final class BackendUtilityTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function givenPageIdCanBeExpanded(): void
     {
         $this->backendUser->groupData['webmounts'] = '1';
@@ -67,9 +67,7 @@ final class BackendUtilityTest extends FunctionalTestCase
         self::assertSame($expectedSiteHash, $actualSiteHash);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function otherBranchesCanBeClosedWhenOpeningPage(): void
     {
         $this->backendUser->groupData['webmounts'] = '1';
@@ -89,9 +87,7 @@ final class BackendUtilityTest extends FunctionalTestCase
         self::assertSame($expectedSiteHash, $actualSiteHash);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessedValueForLanguage(): void
     {
         $this->writeSiteConfiguration(
@@ -131,9 +127,7 @@ final class BackendUtilityTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRecordTitleForUidLabel(): void
     {
         $GLOBALS['TCA']['tt_content']['ctrl']['label'] = 'uid';
@@ -213,10 +207,8 @@ final class BackendUtilityTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider enableFieldsStatementIsCorrectDataProvider
-     */
+    #[DataProvider('enableFieldsStatementIsCorrectDataProvider')]
+    #[Test]
     public function enableFieldsStatementIsCorrect(array $enableColumns, bool $inverted, string $expectation): void
     {
         $platform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->getDatabasePlatform();

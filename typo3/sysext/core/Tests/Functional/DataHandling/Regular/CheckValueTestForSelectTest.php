@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -40,9 +41,7 @@ final class CheckValueTestForSelectTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectValueMustBeDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
@@ -55,9 +54,7 @@ final class CheckValueTestForSelectTest extends FunctionalTestCase
         self::assertEquals('predefined value', $record['tx_testdatahandler_select_dynamic']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function selectValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault

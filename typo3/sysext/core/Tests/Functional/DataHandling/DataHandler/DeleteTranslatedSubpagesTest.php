@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,9 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class DeleteTranslatedSubpagesTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function deletePageCausesNoErrorsWithTranslatedSubpage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/TranslatedSubpages.csv');

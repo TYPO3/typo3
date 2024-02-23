@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Install\Updates\BackendGroupsExplicitAllowDenyMigration;
@@ -32,9 +33,7 @@ final class IndexedSearchCTypeMigrationTest extends FunctionalTestCase
     protected string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/IndexedSearchMigrated.csv';
     protected string $partiallyMigrationResultDataSet = __DIR__ . '/Fixtures/IndexedSearchPartiallyMigrated.csv';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function contentElementsAndBackendUserGroupsUpdated(): void
     {
         $registryMock = $this->createMock(Registry::class);
@@ -56,9 +55,7 @@ final class IndexedSearchCTypeMigrationTest extends FunctionalTestCase
         $this->assertCSVDataSet($this->fullMigrationResultDataSet);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function backendUserGroupsNotUpdated(): void
     {
         $registryMock = $this->createMock(Registry::class);

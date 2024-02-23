@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -120,9 +122,8 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
     /**
      * For the default language all combination of language settings should give the same result,
      * regardless of TypoScript settings, if the requested language is "0" then no TypoScript settings apply.
-     *
-     * @test
      */
+    #[Test]
     public function onlyEnglishContentIsRenderedForDefaultLanguage(): void
     {
         $this->writeSiteConfiguration(
@@ -255,10 +256,8 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider danishDataProvider
-     */
+    #[DataProvider('danishDataProvider')]
+    #[Test]
     public function renderingOfDanishLanguage(string $fallbackType, array $visibleRecords): void
     {
         $this->writeSiteConfiguration(
@@ -477,11 +476,11 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
     /**
      * Page uid 89 is NOT translated to german
      *
-     * @test
-     * @dataProvider contentOnNonTranslatedPageDataProvider
      *
      * @param int $statusCode '200' or '404'
      */
+    #[DataProvider('contentOnNonTranslatedPageDataProvider')]
+    #[Test]
     public function contentOnNonTranslatedPageGerman(string $fallbackType, array $fallbackChain, array $visibleRecords, int $statusCode = 200): void
     {
         $this->writeSiteConfiguration(
@@ -597,10 +596,9 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
 
     /**
      * Page uid 89 is translated to to Polish, but not all CE are translated
-     *
-     * @test
-     * @dataProvider contentOnPartiallyTranslatedPageDataProvider
      */
+    #[DataProvider('contentOnPartiallyTranslatedPageDataProvider')]
+    #[Test]
     public function contentOnPartiallyTranslatedPage(string $fallbackType, array $fallbackChain, array $visibleHeaders): void
     {
         $this->writeSiteConfiguration(

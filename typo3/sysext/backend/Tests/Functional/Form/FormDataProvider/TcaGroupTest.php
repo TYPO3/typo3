@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -37,9 +38,8 @@ final class TcaGroupTest extends FunctionalTestCase
 
     /**
      * This test checks if TcaGroup respects deleted elements
-     *
-     * @test
      */
+    #[Test]
     public function respectsDeletedElements()
     {
         $aFieldConfig = [
@@ -71,9 +71,8 @@ final class TcaGroupTest extends FunctionalTestCase
 
     /**
      * This test checks if TcaGroup respects deleted elements in a workspace
-     *
-     * @test
      */
+    #[Test]
     public function respectsDeletedElementsInWorkspace()
     {
         $aFieldConfig = [

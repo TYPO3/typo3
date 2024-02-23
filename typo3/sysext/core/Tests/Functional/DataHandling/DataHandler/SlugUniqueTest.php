@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -59,10 +61,8 @@ final class SlugUniqueTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @dataProvider getEvalSettingDataProvider
-     * @test
-     */
+    #[DataProvider('getEvalSettingDataProvider')]
+    #[Test]
     public function differentUniqueEvalSettingsDeDuplicateSlug(string $uniqueSetting): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueBase.csv');
@@ -84,10 +84,8 @@ final class SlugUniqueTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueResult.csv');
     }
 
-    /**
-     * @dataProvider getEvalSettingDataProvider
-     * @test
-     */
+    #[DataProvider('getEvalSettingDataProvider')]
+    #[Test]
     public function currentRecordIsExcludedWhenDeDuplicateSlug(string $uniqueSetting): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueWithDeduplicatedSlugBase.csv');
@@ -108,10 +106,8 @@ final class SlugUniqueTest extends FunctionalTestCase
         $this->assertCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueResult.csv');
     }
 
-    /**
-     * @dataProvider getEvalSettingDataProvider
-     * @test
-     */
+    #[DataProvider('getEvalSettingDataProvider')]
+    #[Test]
     public function differentUniqueEvalSettingsDeDuplicateSlugWhenCreatingNewRecords(string $uniqueSetting): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueBase.csv');

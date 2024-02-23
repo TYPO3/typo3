@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource\Security;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -47,10 +49,8 @@ final class SvgSanitizerTest extends FunctionalTestCase
         return $data;
     }
 
-    /**
-     * @test
-     * @dataProvider svgContentIsSanitizedDataProvider
-     */
+    #[DataProvider('svgContentIsSanitizedDataProvider')]
+    #[Test]
     public function svgContentIsSanitized(string $filePath, string $sanitizedFilePath): void
     {
         $sanitizer = new SvgSanitizer();

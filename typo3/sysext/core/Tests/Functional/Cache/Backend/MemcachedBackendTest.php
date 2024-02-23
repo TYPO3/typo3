@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -61,9 +62,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         return $subject;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setThrowsExceptionIfNoFrontEndHasBeenSet(): void
     {
         $subject = $this->initializeSubject();
@@ -74,9 +73,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         $subject->set(StringUtility::getUniqueId('MyIdentifier'), 'some data');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured(): void
     {
         $subject = new MemcachedBackend('Testing');
@@ -85,9 +82,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         $subject->initializeObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToSetAndCheckExistenceInCache(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -101,9 +96,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertTrue($subject->has($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToSetAndGetEntry(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -118,9 +111,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertEquals($data, $subject->get($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReturnsPreviouslySetDataWithVariousTypes(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -147,9 +138,8 @@ final class MemcachedBackendTest extends FunctionalTestCase
 
     /**
      * Check if we can store ~5 MB of data.
-     *
-     * @test
      */
+    #[Test]
     public function largeDataIsStored(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -164,9 +154,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertEquals($subject->get('tooLargeData'), $data);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToRemoveEntryFromCache(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -182,9 +170,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToOverwriteAnEntryInTheCache(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -201,9 +187,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertEquals($otherData, $subject->get($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -221,9 +205,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertEquals($identifier, $retrieved[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRemovesTagsFromPreviousSet(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -239,9 +221,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertEquals([], $subject->findIdentifiersByTag('UnitTestTag%tagX'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasReturnsFalseIfTheEntryDoesntExist(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -254,9 +234,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeReturnsFalseIfTheEntryDoesntExist(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -269,9 +247,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertFalse($subject->remove($identifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagRemovesCacheEntriesWithSpecifiedTag(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -290,9 +266,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertTrue($subject->has('BackendMemcacheTest3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushByTagsRemovesCacheEntriesWithSpecifiedTags(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -311,9 +285,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertTrue($subject->has('BackendMemcacheTest3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushRemovesAllCacheEntries(): void
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
@@ -332,9 +304,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
         self::assertFalse($subject->has('BackendMemcacheTest3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flushRemovesOnlyOwnEntries(): void
     {
         $thisFrontendMock = $this->createMock(FrontendInterface::class);

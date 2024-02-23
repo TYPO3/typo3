@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\RecordList;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\RecordList\DownloadRecordList;
@@ -37,9 +38,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function downloadReturnsAListOfAllBackendUsers(): void
     {
         $recordList = $this->get(DatabaseRecordList::class);
@@ -74,9 +73,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
         ], $this->prepareRecordsForDbCompatAssertions($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function downloadReturnsAListOfSubpages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages_download_record_list.csv');
@@ -165,9 +162,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
         ], $this->prepareRecordsForDbCompatAssertions($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function downloadReturnsRawValues(): void
     {
         $recordList = $this->get(DatabaseRecordList::class);

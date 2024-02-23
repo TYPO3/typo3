@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\FunctionalDeprecated\TypoScript;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -26,9 +27,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_usertsconfigfactory',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigLoadsDefaultFromGlobals(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
@@ -39,9 +38,7 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         self::assertSame('loadedFromGlobals', $userTsConfig->getUserTsConfigArray()['loadedFromGlobals']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';

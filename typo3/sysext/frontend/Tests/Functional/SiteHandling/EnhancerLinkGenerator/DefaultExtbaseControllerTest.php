@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerLinkGenerator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 final class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
@@ -51,10 +53,9 @@ final class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTe
 
     /**
      * Tests whether ExtbasePluginEnhancer applies `defaultController` values correctly but keeps additional Query Parameters.
-     *
-     * @test
-     * @dataProvider defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArgumentsDataProvider
      */
+    #[DataProvider('defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArgumentsDataProvider')]
+    #[Test]
     public function defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArguments(string $additionalParameters, string $expectation): void
     {
         $targetLanguageId = 0;
@@ -128,10 +129,9 @@ final class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTe
 
     /**
      * Tests whether ExtbasePluginEnhancer applies `defaultController` values correctly.
-     *
-     * @test
-     * @dataProvider defaultExtbaseControllerActionNamesAreAppliedDataProvider
      */
+    #[DataProvider('defaultExtbaseControllerActionNamesAreAppliedDataProvider')]
+    #[Test]
     public function defaultExtbaseControllerActionNamesAreApplied(string $additionalParameters, string $expectation): void
     {
         $targetLanguageId = 0;

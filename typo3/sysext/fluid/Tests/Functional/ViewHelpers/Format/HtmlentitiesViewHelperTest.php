@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -25,9 +26,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderUsesValueAsSourceIfSpecified(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -35,9 +34,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
         self::assertEquals('Some string', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderUsesChildnodesAsSourceIfSpecified(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
@@ -45,9 +42,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
         self::assertEquals('Some string', (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters(): void
     {
         $source = 'This is a sample text without special characters.';
@@ -56,9 +51,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
         self::assertEquals($source, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderEncodesSimpleString(): void
     {
         $source = 'Some special characters: &©"\'';
@@ -68,9 +61,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRespectsKeepQuoteArgument(): void
     {
         $source = 'Some special characters: &©"\'';
@@ -80,9 +71,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRespectsEncodingArgument(): void
     {
         $source = mb_convert_encoding('Some special characters: &©"\'', 'ISO-8859-1', 'UTF-8');
@@ -92,9 +81,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderConvertsAlreadyConvertedEntitiesByDefault(): void
     {
         $source = 'already &quot;encoded&quot;';
@@ -104,9 +91,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderDoesNotConvertAlreadyConvertedEntitiesIfDoubleQuoteIsFalse(): void
     {
         $source = 'already &quot;encoded&quot;';
@@ -116,9 +101,7 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderEscapesObjectIfPossible(): void
     {
         $toStringClass = new class () {

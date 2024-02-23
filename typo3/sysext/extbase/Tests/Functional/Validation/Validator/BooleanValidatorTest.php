@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -33,9 +34,7 @@ final class BooleanValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanValidatorReturnsNoErrorForAFalseStringExpectation(): void
     {
         $options = ['is' => 'false'];
@@ -44,9 +43,7 @@ final class BooleanValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate(false)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanValidatorReturnsNoErrorForATrueStringExpectation(): void
     {
         $options = ['is' => 'true'];
@@ -55,9 +52,7 @@ final class BooleanValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate(true)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanValidatorReturnsNoErrorForATrueExpectation(): void
     {
         $options = ['is' => true];
@@ -66,9 +61,7 @@ final class BooleanValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate(true)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanValidatorReturnsNoErrorForAFalseExpectation(): void
     {
         $options = ['is' => false];
@@ -77,9 +70,7 @@ final class BooleanValidatorTest extends FunctionalTestCase
         self::assertFalse($validator->validate(false)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanValidatorReturnsErrorForTrueWhenFalseExpected(): void
     {
         $options = ['is' => false];
@@ -88,9 +79,7 @@ final class BooleanValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate(true)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanValidatorReturnsErrorForFalseWhenTrueExpected(): void
     {
         $options = ['is' => true];
@@ -99,9 +88,7 @@ final class BooleanValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate(false)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanValidatorReturnsErrorForAString(): void
     {
         $options = ['is' => true];
@@ -110,9 +97,7 @@ final class BooleanValidatorTest extends FunctionalTestCase
         self::assertTrue($validator->validate('a string')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanValidatorReturnsTrueIfNoParameterIsGiven(): void
     {
         $options = [];

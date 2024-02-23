@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -232,11 +234,9 @@ final class SecurityTest extends FunctionalTestCase
      * This test does not define any additional configuration, scope is to test
      * the factory-default configuration of TYPO3 when editing content via backend
      * user interface.
-     *
-     *
-     * @test
-     * @dataProvider crossSiteScriptingDataProvider
      */
+    #[DataProvider('crossSiteScriptingDataProvider')]
+    #[Test]
     public function markupIsSanitizedForContentBodytextWithHtmlSanitizerEnabled(string $input, array $expectations): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = true;
@@ -260,11 +260,9 @@ final class SecurityTest extends FunctionalTestCase
      * This test does not define any additional configuration, scope is to test
      * the factory-default configuration of TYPO3 when editing content via backend
      * user interface.
-     *
-     *
-     * @test
-     * @dataProvider crossSiteScriptingDataProvider
      */
+    #[DataProvider('crossSiteScriptingDataProvider')]
+    #[Test]
     public function markupIsSanitizedForContentBodytextWithHtmlSanitizerDisabled(string $input, array $expectations): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;

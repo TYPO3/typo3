@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
@@ -95,10 +97,8 @@ final class StorageRepositoryTest extends FunctionalTestCase
         yield ['{public}/files/nested/images/img.png', '6:/images/img.png'];
     }
 
-    /**
-     * @test
-     * @dataProvider bestStorageIsResolvedDataProvider
-     */
+    #[DataProvider('bestStorageIsResolvedDataProvider')]
+    #[Test]
     public function bestStorageIsResolved(string $sourceIdentifier, string $expectedCombinedIdentifier): void
     {
         $subject = GeneralUtility::makeInstance(StorageRepository::class);
@@ -137,9 +137,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNestedProcessingFolderTest(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -211,10 +209,8 @@ final class StorageRepositoryTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isWithinFileMountBoundariesDataProvider
-     */
+    #[DataProvider('isWithinFileMountBoundariesDataProvider')]
+    #[Test]
     public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts(string $targetDirectory, string $fileMountFolder, bool $isFileMountReadOnly, bool $checkWriteAccess, bool $expectedResult): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -235,9 +231,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertSame($expectedResult, $subject->isWithinFileMountBoundaries($file, $checkWriteAccess));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProcessingRootFolderTest(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -248,9 +242,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertInstanceOf(Folder::class, $processingFolder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRoleReturnsDefaultForRegularFolders(): void
     {
         $folderIdentifier = StringUtility::getUniqueId();
@@ -263,9 +255,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertSame(FolderInterface::ROLE_DEFAULT, $role);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function replaceFileFailsIfLocalFileDoesNotExist(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -280,9 +270,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $subject->replaceFile($file, Environment::getPublicPath() . '/' . StringUtility::getUniqueId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFolderThrowsExceptionIfParentFolderDoesNotExist(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -294,9 +282,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $subject->createFolder('newFolder', new Folder($subject, '/foo/', 'foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteFileMovesFileToRecyclerFolderIfAvailable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -312,9 +298,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/bar.txt');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -451,10 +435,10 @@ final class StorageRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @test
-     * @dataProvider searchFilesFindsFilesInFolderDataProvider
      * @param string[] $expectedIdentifiers
      */
+    #[DataProvider('searchFilesFindsFilesInFolderDataProvider')]
+    #[Test]
     public function searchFilesFindsFilesInFolder(string $searchTerm, ?string $searchFolder, bool $recursive, array $filters, array $expectedIdentifiers): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
@@ -488,9 +472,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertSame($expectedFiles, iterator_to_array($result));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyFolderThrowsErrorWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
         $conflictMode = DuplicationBehavior::CANCEL;
@@ -506,9 +488,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $subject->copyFolder($folderToCopy, $targetParentFolder, null, $conflictMode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyFolderGeneratesNewFolderNameWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
     {
         $conflictMode = DuplicationBehavior::RENAME;
@@ -524,9 +504,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertInstanceOf(Folder::class, $newFolder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyFileThrowsErrorWhenFileWithSameNameAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
     {
         $conflictMode = DuplicationBehavior::CANCEL;
@@ -544,9 +522,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $subject->copyFile($fileToCopy, $targetParentFolder, null, $conflictMode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyFileGeneratesNewFileNameWhenFileAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
     {
         $conflictMode = DuplicationBehavior::RENAME;
@@ -564,9 +540,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertInstanceOf(File::class, $newFile);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyFileCopiesMetadata(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
