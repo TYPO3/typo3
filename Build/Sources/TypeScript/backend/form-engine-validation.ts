@@ -25,6 +25,7 @@ import Severity from '@typo3/backend/severity';
 import { selector } from '@typo3/core/literals';
 
 type CustomEvaluationCallback = (value: string) => string;
+type FormEngineInputParams = { field: string, evalList?: string, is_in?: string };
 
 export default (function() {
 
@@ -111,12 +112,7 @@ export default (function() {
 
     const config = $mainField.data('config');
     if (typeof config !== 'undefined') {
-      const evalList = FormEngineValidation.trimExplode(',', config.evalList);
-      let value = $field.val();
-
-      for (let i = 0; i < evalList.length; i++) {
-        value = FormEngineValidation.formatValue(evalList[i], value, config);
-      }
+      const value = FormEngineValidation.formatByEvals(config, $field.val());
       if (value.length) {
         $humanReadableField.val(value);
       }
@@ -139,6 +135,16 @@ export default (function() {
     if (!customEvaluations.has(name)) {
       customEvaluations.set(name, handler);
     }
+  };
+
+  FormEngineValidation.formatByEvals = function(config: FormEngineInputParams, value: string): string {
+    if (config.evalList !== undefined) {
+      const evalList = FormEngineValidation.trimExplode(',', config.evalList);
+      for (const evalInstruction of evalList) {
+        value = FormEngineValidation.formatValue(evalInstruction, value, config);
+      }
+    }
+    return value;
   };
 
   /**
@@ -223,17 +229,9 @@ export default (function() {
 
     const config = $mainField.data('config');
     if (typeof config !== 'undefined') {
-      const evalList = FormEngineValidation.trimExplode(',', config.evalList);
-      let newValue = $humanReadableField.val();
+      const newValue = FormEngineValidation.processByEvals(config, $humanReadableField.val());
+      const formattedValue = FormEngineValidation.formatByEvals(config, newValue);
 
-      for (let i = 0; i < evalList.length; i++) {
-        newValue = FormEngineValidation.processValue(evalList[i], newValue, config);
-      }
-
-      let formattedValue = newValue;
-      for (let i = 0; i < evalList.length; i++) {
-        formattedValue = FormEngineValidation.formatValue(evalList[i], formattedValue, config);
-      }
       if ($mainField.prop('disabled') && $mainField.data('enableOnModification')) {
         $mainField.prop('disabled', false);
       }
@@ -413,6 +411,16 @@ export default (function() {
     return returnValue;
   };
 
+  FormEngineValidation.processByEvals = function(config: FormEngineInputParams, value: string): string {
+    if (config.evalList !== undefined) {
+      const evalList = FormEngineValidation.trimExplode(',', config.evalList);
+      for (const evalInstruction of evalList) {
+        value = FormEngineValidation.processValue(evalInstruction, value, config);
+      }
+    }
+    return value;
+  };
+
   /**
    * Process a value by given command and config
    *
@@ -421,7 +429,7 @@ export default (function() {
    * @param {Array} config
    * @returns {String}
    */
-  FormEngineValidation.processValue = function(command: string, value: string, config: {is_in: string}): string {
+  FormEngineValidation.processValue = function(command: string, value: string, config: FormEngineInputParams): string {
     let newString = '';
     let theValue = '';
     let a = 0;

@@ -133,6 +133,24 @@ class InputTextElement extends AbstractFormElement
             $evalList[] = 'null';
         }
 
+        $formEngineInputParams = [
+            'field' => $itemName,
+        ];
+        // The `is_in` constraint requires two parameters to work: the "eval" setting and a configuration of the
+        // actually allowed characters
+        if (in_array('is_in', $evalList, true)) {
+            if (($config['is_in'] ?? '') !== '') {
+                $formEngineInputParams['is_in'] = $config['is_in'];
+            } else {
+                $evalList = array_diff($evalList, ['is_in']);
+            }
+        } else {
+            unset($config['is_in']);
+        }
+        if ($evalList !== []) {
+            $formEngineInputParams['evalList'] = implode(',', $evalList);
+        }
+
         $attributes = [
             'value' => '',
             'id' => $fieldId,
@@ -143,11 +161,7 @@ class InputTextElement extends AbstractFormElement
                 'hasDefaultValue',
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-formengine-input-params' => (string)json_encode([
-                'field' => $itemName,
-                'evalList' => implode(',', $evalList),
-                'is_in' => trim($config['is_in'] ?? ''),
-            ], JSON_THROW_ON_ERROR),
+            'data-formengine-input-params' => (string)json_encode($formEngineInputParams, JSON_THROW_ON_ERROR),
             'data-formengine-input-name' => $itemName,
         ];
 
