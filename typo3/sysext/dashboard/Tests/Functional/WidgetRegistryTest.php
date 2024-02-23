@@ -38,7 +38,7 @@ final class WidgetRegistryTest extends FunctionalTestCase
     protected function registerWidgets(): void
     {
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
 
         $this->subject = new WidgetRegistry($container);
 

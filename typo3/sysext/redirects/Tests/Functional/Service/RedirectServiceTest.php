@@ -892,7 +892,7 @@ final class RedirectServiceTest extends FunctionalTestCase
 
         $dispatchedEvents = [];
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'before-redirect-match-domain-event-is-triggered',
             static function (BeforeRedirectMatchDomainEvent $event) use (

@@ -96,7 +96,7 @@ final class DataHandlerHookTest extends FunctionalTestCase
         $afterRecordPublishedEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-record-published-event',
             static function (AfterRecordPublishedEvent $event) use (&$afterRecordPublishedEvent) {

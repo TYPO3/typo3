@@ -61,7 +61,7 @@ final class PhpErrorCodeViewHelperTest extends FunctionalTestCase
         // of ext:install VH's in container. To circumvent this conflict, we for now
         // instantiate our VH SuT and container->set() it to force service resolving.
         $viewHelperInstance = new PhpErrorCodeViewHelper();
-        $this->getContainer()->set(PhpErrorCodeViewHelper::class, $viewHelperInstance);
+        $this->get('service_container')->set(PhpErrorCodeViewHelper::class, $viewHelperInstance);
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');

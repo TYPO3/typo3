@@ -73,9 +73,9 @@ final class CollectionValidatorTest extends FunctionalTestCase
             [$this->get(ReflectionService::class)]
         );
         /** @var ContainerBuilder $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(ValidatorResolver::class, $mockValidatorResolver);
-        $subject = $this->get(CollectionValidator::class);
+        $subject = $container->get(CollectionValidator::class);
         $subject->setOptions(['elementValidator' => 'EmailAddress']);
         $emailAddressValidator = new EmailAddressValidator();
         $emailAddressValidator->setOptions([]);

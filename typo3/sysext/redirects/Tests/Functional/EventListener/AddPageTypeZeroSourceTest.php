@@ -154,7 +154,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
         $siteLanguage = $site->getDefaultLanguage();
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'add-custom-page-type-source',
             static function (SlugRedirectChangeItemCreatedEvent $event) {

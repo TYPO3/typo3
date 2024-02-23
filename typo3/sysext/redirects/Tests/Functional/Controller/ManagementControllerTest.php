@@ -61,7 +61,7 @@ final class ManagementControllerTest extends FunctionalTestCase
         $setHosts = ['*', 'example.com'];
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'modify-redirect-management-controller-view-data-event',
             static function (ModifyRedirectManagementControllerViewDataEvent $event) use (

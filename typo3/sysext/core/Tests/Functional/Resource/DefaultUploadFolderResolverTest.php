@@ -157,7 +157,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-default-upload-folder-was-resolved-listener',
             static function (AfterDefaultUploadFolderWasResolvedEvent $event) use (&$afterDefaultUploadFolderWasResolvedEvent) {
@@ -183,7 +183,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-default-upload-folder-was-resolved-listener',
             static function (AfterDefaultUploadFolderWasResolvedEvent $event) {

@@ -50,7 +50,7 @@ final class BackendControllerTest extends FunctionalTestCase
     public function backendPageRenderEventIsTriggered(): void
     {
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
 
         $state = [
             'after-backend-page-render-listener' => null,

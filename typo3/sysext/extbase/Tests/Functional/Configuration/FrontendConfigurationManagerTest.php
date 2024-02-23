@@ -61,7 +61,7 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set('foo-flexform-listener', static function (BeforeFlexFormConfigurationOverrideEvent $event) {
             $event->setFlexFormConfiguration([
                 'settings' => [

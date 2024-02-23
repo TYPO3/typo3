@@ -42,7 +42,7 @@ final class MailerTest extends FunctionalTestCase
         $afterMailerSentMessageEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-mailer-initialized-listener',
             static function (AfterMailerInitializationEvent $event) use (&$afterMailerInitializedEvent) {

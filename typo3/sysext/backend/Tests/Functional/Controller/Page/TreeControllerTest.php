@@ -719,7 +719,7 @@ final class TreeControllerTest extends FunctionalTestCase
         $afterPageTreeItemsPreparedEvent = null;
 
         /** @var Container $container */
-        $container = $this->getContainer();
+        $container = $this->get('service_container');
         $container->set(
             'after-page-tree-items-prepared-listener',
             static function (AfterPageTreeItemsPreparedEvent $event) use (&$afterPageTreeItemsPreparedEvent) {

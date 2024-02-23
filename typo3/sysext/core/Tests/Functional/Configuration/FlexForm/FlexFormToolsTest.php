@@ -101,8 +101,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
 
         /** @var Container $container */
-        $container = $this->getContainer();
-
+        $container = $this->get('service_container');
         $container->set(
             'noop',
             static function (BeforeFlexFormDataStructureIdentifierInitializedEvent $event) {
@@ -127,8 +126,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $subject = new FlexFormTools();
 
         /** @var Container $container */
-        $container = $this->getContainer();
-
+        $container = $this->get('service_container');
         $container->set(
             'identifier-one',
             static function (BeforeFlexFormDataStructureIdentifierInitializedEvent $event) {
@@ -156,8 +154,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $subject = new FlexFormTools();
 
         /** @var Container $container */
-        $container = $this->getContainer();
-
+        $container = $this->get('service_container');
         $container->set(
             'modifier-one',
             static function (AfterFlexFormDataStructureIdentifierInitializedEvent $event) {
@@ -1134,8 +1131,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     public function parseDataStructureByIdentifierParsesDataStructureReturnedByEvent(): void
     {
         /** @var Container $container */
-        $container = $this->getContainer();
-
+        $container = $this->get('service_container');
         $container->set(
             'string',
             static function (BeforeFlexFormDataStructureParsedEvent $event) {
@@ -1463,8 +1459,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
 
         /** @var Container $container */
-        $container = $this->getContainer();
-
+        $container = $this->get('service_container');
         $container->set(
             'mock',
             static function (AfterFlexFormDataStructureParsedEvent $event) {
