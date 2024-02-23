@@ -384,6 +384,15 @@
 			<trans-unit id="workingTable.stages" resname="workingTable.stages">
 				<source>Stages</source>
 			</trans-unit>
+			<trans-unit id="status.has_changes" resname="status.has_changes">
+				<source>Record was changed in this workspace</source>
+			</trans-unit>
+			<trans-unit id="status.contains_changes" resname="status.contains_changes">
+				<source>Record contains version records</source>
+			</trans-unit>
+			<trans-unit id="status.is_new" resname="status.is_new">
+				<source>Record was created in this workspace</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

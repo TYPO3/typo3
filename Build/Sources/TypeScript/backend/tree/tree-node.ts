@@ -25,6 +25,15 @@ export enum TreeNodePositionEnum {
   AFTER = 'after'
 }
 
+
+export interface TreeNodeStatusInformation {
+  label: string,
+  icon: string,
+  severity: number,
+  overlayIcon: string,
+  priority: number
+}
+
 /**
  * Represents a single node in the tree that is rendered.
  */
@@ -48,6 +57,7 @@ export interface TreeNodeInterface {
   deletable: boolean,
   icon: string,
   overlayIcon: string,
+  statusInformation: Array<TreeNodeStatusInformation>,
 
   // Calculated Internal
   __treeIdentifier: string,

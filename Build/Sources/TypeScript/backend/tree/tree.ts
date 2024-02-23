@@ -15,7 +15,8 @@ import { html, LitElement, TemplateResult, nothing } from 'lit';
 import { property, state, query } from 'lit/decorators';
 import { repeat } from 'lit/directives/repeat';
 import { styleMap } from 'lit/directives/style-map';
-import { TreeNodeInterface, TreeNodeCommandEnum, TreeNodePositionEnum } from './tree-node';
+import { ifDefined } from 'lit/directives/if-defined';
+import { TreeNodeInterface, TreeNodeCommandEnum, TreeNodePositionEnum, TreeNodeStatusInformation } from './tree-node';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '../notification';
 import { KeyTypesEnum as KeyTypes } from '../enum/key-types';
@@ -24,6 +25,7 @@ import '@typo3/backend/element/icon-element';
 import ClientStorage from '@typo3/backend/storage/client';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
+import Severity from '@typo3/backend/severity';
 
 interface TreeNodeStatus {
   expanded: boolean
@@ -610,6 +612,7 @@ export class Tree extends LitElement {
             ${this.createNodeGuides(node)}
             ${this.createNodeLoader(node) || this.createNodeToggle(node) || nothing}
             ${this.createNodeContent(node)}
+            ${this.createNodeStatusInformation(node)}
             ${this.createNodeDeleteDropZone(node)}
           </div>
         `)}
@@ -1011,6 +1014,30 @@ export class Tree extends LitElement {
       </div>`;
   }
 
+  protected createNodeStatusInformation(node: TreeNodeInterface): TemplateResult
+  {
+    const statusInformation = this.getNodeStatusInformation(node);
+    if (statusInformation.length === 0) {
+      return html`${nothing}`;
+    }
+
+    const firstInformation = statusInformation[0];
+    const severityClass = Severity.getCssClass(firstInformation.severity);
+    const iconIdentifier = firstInformation.icon !== '' ? firstInformation.icon : 'actions-dot';
+    const overlayIconIdentifier = firstInformation.overlayIcon !== '' ? firstInformation.overlayIcon : undefined;
+
+    return html`
+      <span class="node-information">
+        <typo3-backend-icon
+          class="text-${severityClass}"
+          identifier=${iconIdentifier}
+          overlay=${ifDefined(overlayIconIdentifier)}
+          size="small"
+          ></typo3-backend-icon>
+      </span>
+    `;
+  }
+
   protected createNodeDeleteDropZone(node: TreeNodeInterface): TemplateResult
   {
     return this.draggingNode === node && node.deletable
@@ -1142,6 +1169,21 @@ export class Tree extends LitElement {
     return classList;
   }
 
+  protected getNodeStatusInformation(node: TreeNodeInterface): TreeNodeStatusInformation[] {
+    if (node.statusInformation.length === 0) {
+      return [];
+    }
+
+    const statusInformation = node.statusInformation.sort((a, b) => {
+      if (a.severity !== b.severity) {
+        return b.severity - a.severity;
+      }
+      return b.priority - a.priority;
+    });
+
+    return statusInformation;
+  }
+
   protected getNodeDepth(node: TreeNodeInterface): number {
     return node.depth;
   }
@@ -1225,7 +1267,13 @@ export class Tree extends LitElement {
   }
 
   protected getNodeTitle(node: TreeNodeInterface): string {
-    return node.tooltip ? node.tooltip : 'uid=' + node.identifier + ' ' + node.name;
+    let baseNodeTitle = node.tooltip ? node.tooltip : 'uid=' + node.identifier + ' ' + node.name;
+    const statusInformation = this.getNodeStatusInformation(node);
+    if (statusInformation.length) {
+      baseNodeTitle += '; ' + statusInformation.map(node => node.label).join('; ');
+    }
+
+    return baseNodeTitle;
   }
 
   /**

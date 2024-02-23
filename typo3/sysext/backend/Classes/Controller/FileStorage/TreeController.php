@@ -162,6 +162,7 @@ class TreeController
                 loaded: (bool)($item['loaded'] ?? false),
                 icon: $item['icon'],
                 overlayIcon: $item['overlayIcon'],
+                statusInformation: (array)($item['statusInformation'] ?? []),
             ),
             pathIdentifier: (string)($item['pathIdentifier'] ?? ''),
             storage: (int)($item['storage'] ?? 0),

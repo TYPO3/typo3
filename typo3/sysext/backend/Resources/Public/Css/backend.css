@@ -3374,6 +3374,7 @@ to{opacity:1;transform:translate3d(0,0,0)}
 .node-note{margin-top:-.65em;font-size:10px;opacity:.65}
 .node-edit{display:flex;flex-grow:1;width:100%;padding:0;padding-inline-start:calc(.25rem - 1px);border:1px solid var(--tree-node-border-color);color:var(--typo3-component-color);background:var(--typo3-component-bg);outline:0}
 .node-highlight-text{color:var(--typo3-component-match-highlight-color);background-color:var(--typo3-component-match-highlight-bg)}
+.node-information{display:flex;gap:.15rem;padding-inline-start:.25rem;opacity:.75}
 .node-action{display:none;cursor:pointer}
 .node:hover .node-action{display:flex}
 .node-dropzone-delete{position:absolute;display:flex;justify-content:center;align-items:center;inset-inline-end:0;inset-block-start:0;height:100%;padding:0 .5rem;color:var(--tree-drag-dropzone-delete-color);background-color:var(--tree-drag-dropzone-delete-bg);gap:.25rem;z-index:1}

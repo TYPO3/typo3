@@ -210,6 +210,7 @@ class FormSelectTreeAjaxController
                     loaded: true,
                     icon: (string)($item['icon'] ?? ''),
                     overlayIcon: (string)($item['overlayIcon'] ?? ''),
+                    statusInformation: (array)($item['statusInformation'] ?? []),
                 ),
                 checked: (bool)($item['checked'] ?? false),
                 selectable: (bool)($item['selectable'] ?? false),

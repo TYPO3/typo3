@@ -634,6 +634,7 @@ class TreeController
                         deletable: (bool)($item['deletable'] ?? false),
                         icon: (string)($item['icon'] ?? ''),
                         overlayIcon: (string)($item['overlayIcon'] ?? ''),
+                        statusInformation: (array)($item['statusInformation'] ?? []),
                     ),
                     // PageTreeItem
                     doktype: (int)($item['doktype'] ?? ''),

@@ -17,11 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Dto\Tree;
 
+use TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation;
+
 /**
  * @internal
  */
 final readonly class TreeItem implements \JsonSerializable
 {
+    /**
+     * @param StatusInformation[] $statusInformation
+     **/
     public function __construct(
         public string $identifier,
         public string $parentIdentifier,
@@ -37,6 +42,7 @@ final readonly class TreeItem implements \JsonSerializable
         public string $icon,
         public string $overlayIcon,
         public string $note = '',
+        public array $statusInformation = [],
         public bool $editable = false,
         public bool $deletable = false,
     ) {}

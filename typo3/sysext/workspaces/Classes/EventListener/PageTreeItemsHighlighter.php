@@ -18,8 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\EventListener;
 
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
+use TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -56,19 +59,34 @@ final class PageTreeItemsHighlighter
                     || VersionState::tryFrom($page['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER
                 )
             ) {
-                $item['class'] = 'ver-element ver-versions';
+                $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.has_changes');
+                if (VersionState::tryFrom($page['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
+                    $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.is_new');
+                }
+                $item['statusInformation'][] = new StatusInformation(
+                    label: $label,
+                    severity: ContextualFeedbackSeverity::WARNING,
+                );
             } elseif (
                 $this->workspaceService->hasPageRecordVersions(
                     $workspaceId,
                     (int)(($page['t3ver_oid'] ?? 0) ?: ($page['uid'] ?? 0))
                 )
             ) {
-                $item['class'] = 'ver-versions';
+                $item['statusInformation'][] = new StatusInformation(
+                    label: $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.contains_changes'),
+                    severity: ContextualFeedbackSeverity::WARNING,
+                );
             }
         }
         unset($item);
 
         $event->setItems($items);
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 
     protected function getBackendUser(): BackendUserAuthentication
