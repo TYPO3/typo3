@@ -2044,18 +2044,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Getter for the cookie name
-     *
-     * @static
-     * @return string returns the configured cookie name
+     * Returns the configured cookie name
      */
-    public static function getCookieName()
+    public static function getCookieName(): string
     {
-        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
-        if (empty($configuredCookieName)) {
-            $configuredCookieName = 'be_typo_user';
-        }
-        return $configuredCookieName;
+        $configuredCookieName = trim((string)($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName'] ?? ''));
+        return $configuredCookieName !== '' ? $configuredCookieName : 'be_typo_user';
     }
 
     /**
