@@ -163,16 +163,11 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Returns the configured cookie name
-     *
-     * @return string
      */
-    public static function getCookieName()
+    public static function getCookieName(): string
     {
-        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName']);
-        if (empty($configuredCookieName)) {
-            $configuredCookieName = 'fe_typo_user';
-        }
-        return $configuredCookieName;
+        $configuredCookieName = trim((string)($GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName'] ?? ''));
+        return $configuredCookieName !== '' ? $configuredCookieName : 'fe_typo_user';
     }
 
     /**
