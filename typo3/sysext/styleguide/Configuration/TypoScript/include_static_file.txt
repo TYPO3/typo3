@@ -1,0 +1,5 @@
+EXT:fluid_styled_content/Configuration/TypoScript,
+EXT:form/Configuration/TypoScript,
+EXT:indexed_search/Configuration/TypoScript,
+EXT:felogin/Configuration/TypoScript,
+EXT:seo/Configuration/TypoScript/XmlSitemap,

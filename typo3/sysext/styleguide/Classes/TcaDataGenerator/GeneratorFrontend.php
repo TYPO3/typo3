@@ -84,7 +84,7 @@ final class GeneratorFrontend extends AbstractGenerator
                     'title' => 'root styleguide frontend demo',
                     'root' => 1,
                     'clear' => 3,
-                    'include_static_file' => 'EXT:styleguide/Configuration/TypoScript,EXT:seo/Configuration/TypoScript/XmlSitemap',
+                    'include_static_file' => 'EXT:styleguide/Configuration/TypoScript',
                     'constants' => '',
                     'config' => '',
                     'pid' => $newIdOfEntryPage,
