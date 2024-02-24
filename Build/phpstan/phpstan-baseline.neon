@@ -2161,7 +2161,7 @@ parameters:
 			path: ../../typo3/sysext/lowlevel/Classes/Integrity/DatabaseIntegrityCheck.php
 
 		-
-			message: "#^Offset 1 does not exist on array\\<0, TYPO3\\\\CMS\\\\Redirects\\\\Event\\\\BeforeRedirectMatchDomainEvent\\>\\.$#"
+			message: "#^Offset 1 does not exist on non\\-empty\\-array\\<0, TYPO3\\\\CMS\\\\Redirects\\\\Event\\\\BeforeRedirectMatchDomainEvent\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
 
