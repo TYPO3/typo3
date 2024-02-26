@@ -8741,25 +8741,24 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "a62002048ea07bbfc6464a71bf792a2455b8d43a"
+                "reference": "712bc8f65a87de96411397e19fdea4802e920851"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a62002048ea07bbfc6464a71bf792a2455b8d43a",
-                "reference": "a62002048ea07bbfc6464a71bf792a2455b8d43a",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/712bc8f65a87de96411397e19fdea4802e920851",
+                "reference": "712bc8f65a87de96411397e19fdea4802e920851",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^2.5.0",
                 "php": "^8.1",
-                "phpunit/phpunit": "^10.1",
+                "phpunit/phpunit": "^10.1 || ^11.0",
                 "psr/container": "^1.1.0 || ^2.0.0",
                 "typo3/cms-backend": "12.*.*@dev || 13.*.*@dev",
                 "typo3/cms-core": "12.*.*@dev || 13.*.*@dev",
                 "typo3/cms-extbase": "12.*.*@dev || 13.*.*@dev",
                 "typo3/cms-fluid": "12.*.*@dev || 13.*.*@dev",
-                "typo3/cms-frontend": "12.*.*@dev || 13.*.*@dev",
-                "typo3/cms-install": "12.*.*@dev || 13.*.*@dev"
+                "typo3/cms-frontend": "12.*.*@dev || 13.*.*@dev"
             },
             "replace": {
                 "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "*"
@@ -8807,7 +8806,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2024-01-29T15:09:23+00:00"
+            "time": "2024-02-26T11:12:59+00:00"
         }
     ],
     "aliases": [],
