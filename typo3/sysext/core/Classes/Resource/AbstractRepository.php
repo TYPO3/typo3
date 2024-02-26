@@ -164,7 +164,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
     /**
      * Creates an object managed by this repository.
      *
-     * @abstract
      * @return object
      * @phpstan-return T
      */

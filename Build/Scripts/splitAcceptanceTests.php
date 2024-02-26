@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -15,7 +16,6 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-use PhpParser\Comment\Doc;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -188,12 +188,12 @@ class AcceptanceTestCaseVisitor extends NodeVisitorAbstract
     /**
      * @var array[] An array of arrays with test method names and optionally a data provider name
      */
-    private $tests = [];
+    private array $tests = [];
 
     /**
      * @var string Fully qualified test class name
      */
-    private $fqcn;
+    private string $fqcn;
 
     /**
      * Create a list of '@test' annotated methods in a test case
@@ -215,24 +215,20 @@ class AcceptanceTestCaseVisitor extends NodeVisitorAbstract
             $node instanceof \PhpParser\Node\Stmt\ClassMethod
             // The method is public
             && $node->isPublic()
-            // The methods does not start with an "_" (eg. _before())
+            // The method does not start with an "_" (eg. _before())
             && $node->name->name[0] !== '_'
         ) {
             // Found a test
             $test = [
                 'methodName' => $node->name->name,
             ];
-            $docComment = $node->getDocComment();
-            if ($docComment instanceof Doc) {
-                preg_match_all(
-                    '/\s*\s@(?<annotations>[^\s.].*)\n/',
-                    $docComment->getText(),
-                    $matches
-                );
-                foreach ($matches['annotations'] as $possibleDataProvider) {
-                    // See if this test has a data provider attached
-                    if (str_starts_with($possibleDataProvider, 'dataProvider')) {
-                        $test['dataProvider'] = trim(ltrim($possibleDataProvider, 'dataProvider'));
+            foreach ($node->getAttrGroups() as $possibleDataProviderAttributeGroup) {
+                foreach ($possibleDataProviderAttributeGroup->attrs as $possibleDataProviderAttribute) {
+                    // See if that method has the codeception DataProvider attribute attached, too.
+                    $name = $possibleDataProviderAttribute->name->toCodeString();
+                    if ($name === '\\Codeception\\Attribute\\DataProvider') {
+                        $dataProviderMethodName = $possibleDataProviderAttribute->args[0]->value->value;
+                        $test['dataProvider'] = $dataProviderMethodName;
                     }
                 }
             }
@@ -242,8 +238,6 @@ class AcceptanceTestCaseVisitor extends NodeVisitorAbstract
 
     /**
      * Return array of found tests and their data providers
-     *
-     * @return array
      */
     public function getTests(): array
     {
@@ -252,8 +246,6 @@ class AcceptanceTestCaseVisitor extends NodeVisitorAbstract
 
     /**
      * Return Fully qualified class test name
-     *
-     * @return string
      */
     public function getFqcn(): string
     {

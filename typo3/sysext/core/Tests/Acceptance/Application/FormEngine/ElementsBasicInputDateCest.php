@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -72,9 +73,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         ];
     }
 
-    /**
-     * @dataProvider dbTypeDateEvalDateDataProvider
-     */
+    #[DataProvider('dbTypeDateEvalDateDataProvider')]
     public function dbTypeDateEvalDate(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
@@ -110,9 +109,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         ];
     }
 
-    /**
-     * @dataProvider dbTypeDateEvalDatetimeDataProvider
-     */
+    #[DataProvider('dbTypeDateEvalDatetimeDataProvider')]
     public function dbTypeDateEvalDatetime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
@@ -132,9 +129,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         ];
     }
 
-    /**
-     * @dataProvider dbTypeDateEvalTimeDataProvider
-     */
+    #[DataProvider('dbTypeDateEvalTimeDataProvider')]
     public function dbTypeDateEvalTime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
@@ -170,9 +165,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         ];
     }
 
-    /**
-     * @dataProvider dbTypeDateEvalTimeDataProvider_DbTypeDateTime
-     */
+    #[DataProvider('dbTypeDateEvalTimeDataProvider_DbTypeDateTime')]
     public function checkThatValidationWorks_EvalDateTime_DbTypeDateTime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);

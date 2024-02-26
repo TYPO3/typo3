@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Redirect;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
@@ -89,9 +90,7 @@ final class RedirectModuleCest
         ];
     }
 
-    /**
-     * @dataProvider possibleRedirectStatusCodes
-     */
+    #[DataProvider('possibleRedirectStatusCodes')]
     public function seeStatusCodesWhenCreatingNewRedirect(ApplicationTester $I, Example $example): void
     {
         $I->amGoingTo('Create a redirect and see the different status codes');

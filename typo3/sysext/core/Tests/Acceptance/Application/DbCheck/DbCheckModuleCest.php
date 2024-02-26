@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\DbCheck;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
@@ -71,9 +72,7 @@ final class DbCheckModuleCest
         ];
     }
 
-    /**
-     * @dataProvider recordStatisticsDataProvider
-     */
+    #[DataProvider('recordStatisticsDataProvider')]
     public function seeRecordStatistics(ApplicationTester $I, Example $testData): void
     {
         $this->goToPageAndSeeHeadline($I, 'Record Statistics', 'Records Statistics');

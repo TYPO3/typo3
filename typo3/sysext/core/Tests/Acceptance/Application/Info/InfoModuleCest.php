@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Info;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -43,9 +44,7 @@ final class InfoModuleCest
         ];
     }
 
-    /**
-     * @dataProvider infoMenuDataProvider
-     */
+    #[DataProvider('infoMenuDataProvider')]
     public function seeInfoSubModules(ApplicationTester $I, Example $exampleData): void
     {
         $I->amGoingTo('select ' . $exampleData['option'] . ' in dropdown');
