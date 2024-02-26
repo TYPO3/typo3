@@ -728,7 +728,7 @@ class FileList
             if ($numFiles === 1) {
                 return $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:file'));
             }
-                return $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:files'));
+            return $numFiles . ' ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:files'));
         }
 
         return '';
