@@ -18,6 +18,7 @@ import ContextMenuActions from './context-menu-actions';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { selector } from '@typo3/core/literals';
+import '@typo3/backend/element/spinner-element';
 
 interface MousePosition {
   X: number;
@@ -123,6 +124,7 @@ class ContextMenu {
     originalEvent: PointerEvent = null
   ): void {
     this.hideAll();
+    this.initializeContextMenuContainer();
 
     this.record = { table: table, uid: uid };
     const focusableSource = eventSource.matches('a, button, [tabindex]:not([tabindex="-1"])')
@@ -155,48 +157,49 @@ class ContextMenu {
    * Manipulates the DOM to add the divs needed for context menu at the bottom of the <body>-tag
    */
   private initializeContextMenuContainer(): void {
-    if (document.querySelector('#contentMenu0') === null) {
-      const contextMenu1 = document.createElement('div');
-      contextMenu1.classList.add('context-menu');
-      contextMenu1.id = 'contentMenu0';
-      contextMenu1.style.display = 'none';
-      document.querySelector('body').append(contextMenu1);
+    if (document.querySelector('#contentMenu0') !== null) {
+      return;
+    }
+    const contextMenu1 = document.createElement('div');
+    contextMenu1.classList.add('context-menu');
+    contextMenu1.id = 'contentMenu0';
+    contextMenu1.style.display = 'none';
+    document.querySelector('body').append(contextMenu1);
 
-      const contextMenu2 = document.createElement('div');
-      contextMenu2.classList.add('context-menu');
-      contextMenu2.id = 'contentMenu1';
-      contextMenu2.style.display = 'none';
-      contextMenu2.dataset.parent = '#contentMenu0'
-      document.querySelector('body').append(contextMenu2);
+    const contextMenu2 = document.createElement('div');
+    contextMenu2.classList.add('context-menu');
+    contextMenu2.id = 'contentMenu1';
+    contextMenu2.style.display = 'none';
+    contextMenu2.dataset.parent = '#contentMenu0'
+    document.querySelector('body').append(contextMenu2);
 
-      document.querySelectorAll('.context-menu').forEach((contextMenu: Element): void => {
-        // Explicitly update cursor position if element is entered to avoid timing issues
-        new RegularEvent('mouseenter', (event: MouseEvent): void => {
-          this.storeMousePosition(event);
-        }).bindTo(contextMenu);
+    document.querySelectorAll('.context-menu').forEach((contextMenu: Element): void => {
+      // Explicitly update cursor position if element is entered to avoid timing issues
+      new RegularEvent('mouseenter', (event: MouseEvent): void => {
+        this.storeMousePosition(event);
+      }).bindTo(contextMenu);
 
-        new DebounceEvent('mouseleave', (event: MouseEvent) => {
-          const target: HTMLElement = event.target as HTMLElement;
-          const childMenu: HTMLElement | null = document.querySelector(selector`[data-parent="#${target.id}"]`);
+      new DebounceEvent('mouseleave', (event: MouseEvent) => {
+        const target: HTMLElement = event.target as HTMLElement;
+        const childMenu: HTMLElement | null = document.querySelector(selector`[data-parent="#${target.id}"]`);
 
-          const hideThisMenu =
-            !ContextMenu.within(target, this.mousePos.X, this.mousePos.Y) // cursor it outside triggered context menu
-            && (childMenu === null || childMenu.offsetParent === null); // child menu, if any, is not visible
+        const hideThisMenu =
+          !ContextMenu.within(target, this.mousePos.X, this.mousePos.Y) // cursor it outside triggered context menu
+          && (childMenu === null || childMenu.offsetParent === null); // child menu, if any, is not visible
 
-          if (hideThisMenu) {
-            this.hide(target);
+        if (hideThisMenu) {
+          this.hide(target);
 
-            // close parent menu (if any) if cursor is outside its boundaries
-            let parent: HTMLElement | null;
-            if (typeof target.dataset.parent !== 'undefined' && (parent = document.querySelector(target.dataset.parent)) !== null) {
-              if (!ContextMenu.within(parent, this.mousePos.X, this.mousePos.Y)) {
-                this.hide(document.querySelector(target.dataset.parent));
-              }
+          // close parent menu (if any), if cursor is outside its boundaries
+          let parent: HTMLElement | null;
+          if (typeof target.dataset.parent !== 'undefined' && (parent = document.querySelector(target.dataset.parent)) !== null) {
+            if (!ContextMenu.within(parent, this.mousePos.X, this.mousePos.Y)) {
+              this.hide(document.querySelector(target.dataset.parent));
             }
           }
-        }, 500).bindTo(contextMenu);
-      });
-    }
+        }
+      }, 500).bindTo(contextMenu);
+    });
   }
 
   private handleTriggerEvent(event: PointerEvent): void
@@ -268,15 +271,34 @@ class ContextMenu {
    * Make the AJAX request
    *
    * @param {string} parameters Parameters sent to the server
+   * @param {MousePosition} position
    */
   private fetch(parameters: string, position: MousePosition): void {
+    const stubMenu = this.renderStubMenu(0, position);
     const url = TYPO3.settings.ajaxUrls.contextmenu;
     (new AjaxRequest(url)).withQueryArguments(parameters).get().then(async (response: AjaxResponse): Promise<void> => {
       const data: MenuItems = await response.resolve();
       if (typeof response !== 'undefined' && Object.keys(response).length > 0) {
-        this.populateData(data, 0, position);
+        this.populateData(data, 0);
       }
+    }).catch((): void => {
+      this.hide(stubMenu);
     });
+  }
+
+  private renderStubMenu(level: number, position: MousePosition): HTMLElement|null {
+    const contentMenuCurrent = document.querySelector('#contentMenu' + level) as HTMLElement;
+    if (contentMenuCurrent !== null) {
+      contentMenuCurrent.replaceChildren(document.createRange().createContextualFragment('<typo3-backend-spinner size="medium"></typo3-backend-spinner>'));
+      contentMenuCurrent.style.display = null;
+      position ??= this.getPosition(contentMenuCurrent);
+      const coordinates = this.toPixel(position);
+
+      contentMenuCurrent.style.top = coordinates.top;
+      contentMenuCurrent.style.insetInlineStart = coordinates.start;
+    }
+
+    return contentMenuCurrent;
   }
 
   /**
@@ -285,11 +307,8 @@ class ContextMenu {
    *
    * @param {MenuItems} items The data that will be put in the menu
    * @param {number} level The depth of the context menu
-   * @param {MousPosition}
    */
-  private populateData(items: MenuItems, level: number, position: MousePosition): void {
-    this.initializeContextMenuContainer();
-
+  private populateData(items: MenuItems, level: number): void {
     const contentMenuCurrent = document.querySelector('#contentMenu' + level) as HTMLElement;
     const contentMenuParent = document.querySelector('#contentMenu' + (level - 1)) as HTMLElement;
     if (contentMenuCurrent !== null && contentMenuParent?.offsetParent !== null) {
@@ -303,11 +322,6 @@ class ContextMenu {
       contentMenuCurrent.innerHTML = '';
       contentMenuCurrent.appendChild(menuGroup);
       contentMenuCurrent.style.display = null;
-      position ??= this.getPosition(contentMenuCurrent);
-      const coordinates = this.toPixel(position);
-
-      contentMenuCurrent.style.top = coordinates.top;
-      contentMenuCurrent.style.insetInlineStart = coordinates.start;
       (contentMenuCurrent.querySelector('.context-menu-item[tabindex="-1"]') as HTMLElement).focus();
       this.initializeEvents(contentMenuCurrent, level);
     }

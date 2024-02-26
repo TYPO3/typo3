@@ -571,6 +571,7 @@ export class SvgTree extends LitElement {
       })
       .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
         evt.preventDefault();
+        evt.stopImmediatePropagation();
         this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-context', { detail: { node: node, originalEvent: evt } }));
       });
   }
@@ -890,6 +891,7 @@ export class SvgTree extends LitElement {
       .on('mouseout', (evt: MouseEvent, node: TreeNode) => this.onMouseOutOfNode(node))
       .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
         evt.preventDefault();
+        evt.stopImmediatePropagation();
         this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-context', { detail: { node: node, originalEvent: evt } }));
       });
 

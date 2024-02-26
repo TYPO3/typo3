@@ -71,6 +71,8 @@ class FileListActions {
   constructor() {
     new RegularEvent('contextmenu', (event: Event, target: HTMLElement): void => {
       event.preventDefault();
+      event.stopImmediatePropagation();
+
       const detail: FileListActionDetail = this.getActionDetail(event, target);
       switch (detail.action) {
         case 'primary':
