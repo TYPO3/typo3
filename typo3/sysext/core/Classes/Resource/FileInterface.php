@@ -96,8 +96,12 @@ interface FileInterface extends ResourceInterface
     /**
      * Replace the current file contents with the given string.
      *
-     * @TODO : Consider to remove this function from the interface, as its
-     * @TODO : At the same time, it could be considered whether to make the whole
+     * @todo: Consider to remove this function from the interface, as its
+     *        implementation in FileInUse could cause unforseen side-effects by setting
+     *        contents on the original file instead of just on the Usage of the file.
+     * @todo: At the same time, it could be considered whether to make the whole
+     *        interface a read-only FileInterface, so that all file management and
+     *        modification functions are removed...
      * @return $this
      */
     public function setContents(string $contents): self;
