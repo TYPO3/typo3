@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -88,9 +89,7 @@ final class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
         ];
     }
 
-    /**
-     * @dataProvider simpleEvalInputFieldsDataProvider
-     */
+    #[DataProvider('simpleEvalInputFieldsDataProvider')]
     public function simpleEvalInputFields(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);

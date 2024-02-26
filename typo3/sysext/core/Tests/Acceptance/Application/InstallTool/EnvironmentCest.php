@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
@@ -45,9 +46,7 @@ final class EnvironmentCest extends AbstractCest
         ];
     }
 
-    /**
-     * @dataProvider cardsDataProvider
-     */
+    #[DataProvider('cardsDataProvider')]
     public function seeCardsAndModals(ApplicationTester $I, ModalDialog $modalDialog, Example $testData): void
     {
         $I->see($testData['title']);

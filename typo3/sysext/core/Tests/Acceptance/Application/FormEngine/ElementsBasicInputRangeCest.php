@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -101,9 +102,7 @@ final class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
         ];
     }
 
-    /**
-     * @dataProvider simpleRangeAndMd5FieldsDataProvider
-     */
+    #[DataProvider('simpleRangeAndMd5FieldsDataProvider')]
     public function simpleRangeAndMd5Fields(ApplicationTester $I, Example $testData): void
     {
         $I->click($testData['tab']);

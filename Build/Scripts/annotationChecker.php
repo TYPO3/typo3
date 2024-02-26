@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -47,16 +48,12 @@ class NodeVisitor extends NodeVisitorAbstract
                 $negativeLookaheadMatches = [
                     // Annotation tags
                     'Annotation', 'Attribute', 'Attributes', 'Required', 'Target',
-                    // Widely used tags (but not existent in phpdoc)
-                    'fix', 'fixme', 'override',
                     // PHPDocumentor 1 tags
-                    'abstract', 'code', 'deprec', 'endcode', 'exception', 'final', 'ingroup', 'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar', 'staticVar', 'throw',
+                    'private', 'static', 'staticvar', 'staticVar',
                     // PHPDocumentor 2 tags
-                    'api', 'author', 'category', 'copyright', 'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal', 'license', 'link', 'method', 'package', 'param', 'property', 'property-read', 'property-write', 'return', 'see', 'since', 'source', 'subpackage', 'throws', 'todo', 'TODO', 'usedby', 'uses', 'var', 'version',
-                    // PHPUnit tags
-                    'codeCoverageIgnore', 'codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd', 'dataProvider', 'group', 'skip', 'depends', 'expectedException', 'before', 'requires',
-                    // codeception tags
-                    'env',
+                    'author', 'category', 'copyright', 'deprecated', 'example', 'internal', 'license', 'link', 'param', 'property', 'return', 'see', 'since', 'throws', 'todo', 'TODO', 'var', 'version',
+                    // PHPUnit & codeception tags
+                    'depends', 'requires', 'env',
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
                     // Extbase related

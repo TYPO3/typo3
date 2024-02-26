@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
@@ -142,9 +143,7 @@ final class ElementsEmptyElementsCest extends AbstractElementsBasicCest
         ];
     }
 
-    /**
-     * @dataProvider simpleRadioFieldsDataProvider
-     */
+    #[DataProvider('simpleRadioFieldsDataProvider')]
     public function simpleRadioFields(ApplicationTester $I, Example $testData): void
     {
         $this->runRadioFieldTest($I, $testData);

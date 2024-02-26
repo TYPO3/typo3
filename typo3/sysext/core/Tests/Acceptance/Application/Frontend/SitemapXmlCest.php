@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Frontend;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
@@ -72,9 +73,7 @@ final class SitemapXmlCest
         ];
     }
 
-    /**
-     * @dataProvider sitemapDataProvider
-     */
+    #[DataProvider('sitemapDataProvider')]
     public function seeSitemapXml(ApplicationTester $I, Example $testData): void
     {
         $I->see('TYPO3 XML Sitemap');

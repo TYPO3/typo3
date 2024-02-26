@@ -26,7 +26,6 @@ interface FileLinkHookInterface
      * Finds alternative previewImage for given File.
      *
      * @return File
-     * @abstract
      */
     public function getPreviewImage(File $file);
 }
