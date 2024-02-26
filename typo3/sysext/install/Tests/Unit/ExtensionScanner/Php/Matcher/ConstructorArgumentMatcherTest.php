@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -78,7 +79,7 @@ final class ConstructorArgumentMatcherTest extends TestCase
     #[Test]
     public function hitsFromFixtureAreFound(array $configuration, array $expectation): void
     {
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/ConstructorArgumentMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 

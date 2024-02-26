@@ -45,7 +45,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
      * Called by PhpParser.
      * Test for "::function($1, $2, $3)" (strong match)
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         // Match static method call
         if (!$this->isFileIgnored($node)
@@ -103,5 +103,6 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
                 }
             }
         }
+        return null;
     }
 }

@@ -42,7 +42,7 @@ class ClassNameMatcher extends AbstractCoreMatcher
      *
      * @param Node $node Given node to test
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
@@ -58,5 +58,6 @@ class ClassNameMatcher extends AbstractCoreMatcher
                 ];
             }
         }
+        return null;
     }
 }

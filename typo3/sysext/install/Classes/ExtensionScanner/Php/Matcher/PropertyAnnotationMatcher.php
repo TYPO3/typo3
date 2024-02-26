@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Comment\Doc;
 use PhpParser\Node;
+use PhpParser\Node\PropertyItem;
 use PhpParser\Node\Stmt\Property;
-use PhpParser\Node\Stmt\PropertyProperty;
 
 /**
  * Find usages of property annotations
@@ -43,15 +43,15 @@ class PropertyAnnotationMatcher extends AbstractCoreMatcher
      * Called by PhpParser.
      * Test for property annotations (strong match)
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         if ($node instanceof Property
-            && ($property = reset($node->props)) instanceof PropertyProperty
+            && ($property = reset($node->props)) instanceof PropertyItem
             && ($docComment = $node->getDocComment()) instanceof Doc
             && !$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
         ) {
-            /** @var PropertyProperty $property */
+            /** @var PropertyItem $property */
             $isPossibleMatch = false;
             $match = [
                 'restFiles' => [],
@@ -85,5 +85,6 @@ class PropertyAnnotationMatcher extends AbstractCoreMatcher
                 $this->matches[] = $match;
             }
         }
+        return null;
     }
 }

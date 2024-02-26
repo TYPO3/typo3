@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyAnnotationMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -29,7 +30,7 @@ final class PropertyAnnotationMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixtureAreFound(): void
     {
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/PropertyAnnotationMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 

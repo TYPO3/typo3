@@ -43,7 +43,7 @@ class ClassConstantMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
@@ -59,5 +59,6 @@ class ClassConstantMatcher extends AbstractCoreMatcher
                 'indicator' => 'strong',
             ];
         }
+        return null;
     }
 }

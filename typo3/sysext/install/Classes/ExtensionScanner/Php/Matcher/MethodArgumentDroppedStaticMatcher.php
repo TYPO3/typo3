@@ -45,7 +45,7 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
      * Called by PhpParser.
      * Test for "->deprecated()" (weak match)
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         // Match static method call
         if (!$this->isFileIgnored($node)
@@ -98,5 +98,6 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
                 }
             }
         }
+        return null;
     }
 }

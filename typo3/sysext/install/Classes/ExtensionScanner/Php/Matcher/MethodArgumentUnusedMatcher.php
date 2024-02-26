@@ -46,7 +46,7 @@ class MethodArgumentUnusedMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         // Match method call (not static)
         if (!$this->isFileIgnored($node)
@@ -85,5 +85,6 @@ class MethodArgumentUnusedMatcher extends AbstractCoreMatcher
                 $this->matches[] = $match;
             }
         }
+        return null;
     }
 }

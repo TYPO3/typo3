@@ -50,10 +50,8 @@ class CodeStatistics extends NodeVisitorAbstract
 
     /**
      * Called by PhpParser during traversal.
-     *
-     * @param Node $node Incoming node
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         $startLineOfNode = $node->getAttribute('startLine');
         if ($startLineOfNode !== $this->currentLineNumber) {
@@ -84,6 +82,7 @@ class CodeStatistics extends NodeVisitorAbstract
                 }
             }
         }
+        return null;
     }
 
     /**

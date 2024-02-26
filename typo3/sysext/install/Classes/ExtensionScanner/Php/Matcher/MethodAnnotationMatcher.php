@@ -42,7 +42,7 @@ class MethodAnnotationMatcher extends AbstractCoreMatcher
      * Called by PhpParser.
      * Test for method annotations (strong match)
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         if ($node instanceof ClassMethod
             && ($docComment = $node->getDocComment()) instanceof Doc
@@ -82,5 +82,6 @@ class MethodAnnotationMatcher extends AbstractCoreMatcher
                 $this->matches[] = $match;
             }
         }
+        return null;
     }
 }

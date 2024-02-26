@@ -53,7 +53,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
      * Test for "foo\bar::deprecated()" (strong match)
      * Test for "::deprecated()" (weak match)
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         // Static call, not method call
         if (!$this->isFileIgnored($node)
@@ -101,5 +101,6 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
                 }
             }
         }
+        return null;
     }
 }

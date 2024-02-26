@@ -49,13 +49,11 @@ class InterfaceMethodChangedMatcher extends AbstractCoreMatcher
      * Called by PhpParser.
      * Test for "public function like($arg1, $arg2, $arg3) {}" (weak match)
      * Test for "->like($arg1, $arg2, $arg3); (weak match)
-     *
-     * @return void|null
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
-            return;
+            return null;
         }
 
         // Match method name of a class, must be public, wouldn't make sense as interface if protected/private
@@ -100,5 +98,6 @@ class InterfaceMethodChangedMatcher extends AbstractCoreMatcher
                 ];
             }
         }
+        return null;
     }
 }

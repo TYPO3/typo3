@@ -43,7 +43,7 @@ class FunctionCallMatcher extends AbstractCoreMatcher
      * Called by PhpParser.
      * Test for "removedFunction()" (strong match)
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         // Match method call (not static)
         if (!$this->isFileIgnored($node)
@@ -70,5 +70,6 @@ class FunctionCallMatcher extends AbstractCoreMatcher
                 ];
             }
         }
+        return null;
     }
 }

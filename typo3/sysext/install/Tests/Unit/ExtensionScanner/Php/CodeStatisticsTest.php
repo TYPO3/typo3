@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php;
 
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -28,7 +29,7 @@ final class CodeStatisticsTest extends UnitTestCase
     #[Test]
     public function enterNodeSumsStatistics(): void
     {
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/CodeStatisticsFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 

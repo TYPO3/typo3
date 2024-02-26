@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Controller;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Finder\Finder;
@@ -738,7 +739,7 @@ class UpgradeController extends AbstractController
             );
         }
 
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         // Parse PHP file to AST and traverse tree calling visitors
         $statements = $parser->parse(file_get_contents($absoluteFilePath));
 

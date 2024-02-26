@@ -6,6 +6,7 @@ use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -25,7 +26,7 @@ class NodeVisitor extends NodeVisitorAbstract
     }
 }
 
-$parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+$parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
 
 $finder = new Symfony\Component\Finder\Finder();
 $finder->files()

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentRequiredMatcher;
@@ -30,7 +31,7 @@ final class MethodArgumentRequiredMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixtureAreFound(): void
     {
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/MethodArgumentRequiredMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 
@@ -216,7 +217,7 @@ final class MethodArgumentRequiredMatcherTest extends UnitTestCase
     #[Test]
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $statements = $parser->parse($phpCode);
 
         $subject = new MethodArgumentRequiredMatcher($configuration);

@@ -24,6 +24,7 @@ use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
@@ -38,7 +39,7 @@ final class GeneratorClassesResolverTest extends UnitTestCase
 <?php
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Does\\Not\\Exist');
 EOC;
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $statements = $parser->parse($phpCode);
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new GeneratorClassesResolver());
@@ -48,7 +49,7 @@ EOC;
         self::assertInstanceOf(StaticCall::class, $node);
         self::assertInstanceOf(ClassConstFetch::class, $argValue);
         self::assertInstanceOf(FullyQualified::class, $argValue->class);
-        self::assertEquals(['TYPO3', 'CMS', 'Does', 'Not', 'Exist'], $argValue->class->parts);
+        self::assertEquals(['TYPO3', 'CMS', 'Does', 'Not', 'Exist'], $argValue->class->getParts());
         self::assertInstanceOf(New_::class, $node->getAttribute(AbstractCoreMatcher::NODE_RESOLVED_AS));
     }
 
@@ -59,7 +60,7 @@ EOC;
 <?php
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Does\\Not\\' . $foo);
 EOC;
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $statements = $parser->parse($phpCode);
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new GeneratorClassesResolver());

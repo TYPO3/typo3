@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -20,6 +21,7 @@ use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use Symfony\Component\Finder\Finder;
 
 if (PHP_SAPI !== 'cli') {
@@ -42,7 +44,7 @@ class CheckNamespaceIntegrity
             'typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/PropertyExistsStaticMatcherFixture.php',
         ];
         $ignoreNamespaceParts = ['Classes'];
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $files = $this->createFinder();
         $invalidNamespaces = [];
         foreach ($files as $file) {

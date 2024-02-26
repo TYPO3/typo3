@@ -41,7 +41,7 @@ class PropertyExistsStaticMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
@@ -59,5 +59,6 @@ class PropertyExistsStaticMatcher extends AbstractCoreMatcher
             ];
             $this->matches[] = $match;
         }
+        return null;
     }
 }

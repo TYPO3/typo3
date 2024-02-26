@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodCallMatcher;
@@ -30,7 +31,7 @@ final class MethodCallMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixtureAreFound(): void
     {
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/MethodCallMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 
@@ -81,7 +82,7 @@ class foo
 }
 EOC;
 
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $statements = $parser->parse($phpCode);
 
         $traverser = new NodeTraverser();
@@ -304,7 +305,7 @@ EOC;
     #[Test]
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $statements = $parser->parse($phpCode);
 
         $subject = new MethodCallMatcher($configuration);

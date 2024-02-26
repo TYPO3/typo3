@@ -42,7 +42,7 @@ class PropertyPublicMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         // Match property access (not static)
         if (!$this->isFileIgnored($node)
@@ -63,5 +63,6 @@ class PropertyPublicMatcher extends AbstractCoreMatcher
             }
             $this->matches[] = $match;
         }
+        return null;
     }
 }

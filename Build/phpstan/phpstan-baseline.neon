@@ -1961,59 +1961,9 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\CodeStatistics\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/CodeStatistics.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\ArrayDimensionMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ArrayDimensionMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\ArrayGlobalMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ArrayGlobalMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\ClassConstantMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ClassConstantMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\ClassNameMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ClassNameMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\ConstantMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstantMatcher.php
-
-		-
-			message: "#^Property PhpParser\\\\Node\\\\Expr\\\\New_\\:\\:\\$class \\(PhpParser\\\\Node\\\\Expr\\|PhpParser\\\\Node\\\\Name\\|PhpParser\\\\Node\\\\Stmt\\\\Class_\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstructorArgumentMatcher.php
-
-		-
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstructorArgumentMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\FunctionCallMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/FunctionCallMatcher.php
-
-		-
-			message: "#^Property PhpParser\\\\Node\\\\Expr\\\\MethodCall\\:\\:\\$args \\(array\\<PhpParser\\\\Node\\\\Arg\\|PhpParser\\\\Node\\\\VariadicPlaceholder\\>\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
-
-		-
-			message: "#^Property PhpParser\\\\Node\\\\Stmt\\\\ClassMethod\\:\\:\\$params \\(array\\<PhpParser\\\\Node\\\\Param\\>\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
 
 		-
 			message: "#^Right side of && is always true\\.$#"
@@ -2021,69 +1971,9 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodAnnotationMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodAnnotationMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodArgumentDroppedMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentDroppedMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodArgumentDroppedStaticMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentDroppedStaticMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodArgumentRequiredMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentRequiredMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodArgumentRequiredStaticMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentRequiredStaticMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodArgumentUnusedMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentUnusedMatcher.php
-
-		-
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentUnusedMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodCallMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodCallMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\MethodCallStaticMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodCallStaticMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\PropertyAnnotationMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/PropertyAnnotationMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\PropertyExistsStaticMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/PropertyExistsStaticMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\PropertyProtectedMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/PropertyProtectedMatcher.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\ExtensionScanner\\\\Php\\\\Matcher\\\\PropertyPublicMatcher\\:\\:enterNode\\(\\) should return int\\|PhpParser\\\\Node\\|null but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/PropertyPublicMatcher.php
 
 		-
 			message: "#^Offset string on array\\{\\} on left side of \\?\\? does not exist\\.$#"

@@ -44,7 +44,7 @@ class ArrayDimensionMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
@@ -64,6 +64,7 @@ class ArrayDimensionMatcher extends AbstractCoreMatcher
             }
             $this->matches[] = $match;
         }
+        return null;
     }
 
     /**

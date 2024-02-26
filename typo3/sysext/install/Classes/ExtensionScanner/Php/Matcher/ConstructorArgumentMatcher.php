@@ -59,10 +59,8 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
     /**
      * Called by PhpParser.
      * Test for "->deprecated()" (weak match)
-     *
-     * @return void|null
      */
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): null
     {
         if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
             return null;
@@ -88,6 +86,7 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
         $this->handleDroppedArguments($node, $resolvedNode);
         $this->handleCalledArguments($node, $resolvedNode);
         $this->handleUnusedArguments($node, $resolvedNode);
+        return null;
     }
 
     /**
