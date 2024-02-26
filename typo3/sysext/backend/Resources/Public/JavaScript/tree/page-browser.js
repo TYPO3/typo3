@@ -28,7 +28,7 @@ var __decorate=function(e,t,n,o){var r,i=arguments.length,s=i<3?t:null===o?o=Obj
             ${this.renderMountPoint()}
             <typo3-backend-component-page-browser-tree id="typo3-pagetree-tree" class="tree-wrapper" .setup=${e} @tree:initialized=${()=>{this.tree.addEventListener("typo3:tree:node-selected",this.loadRecordsOfPage),this.tree.addEventListener("typo3:tree:nodes-prepared",this.selectActivePageInTree);this.querySelector("typo3-backend-tree-toolbar").tree=this.tree}}></typo3-backend-component-page-browser-tree>
           </div>
-        `))}unsetTemporaryMountPoint(){this.mountPointPath=null,Persistent.unset("pageTree_temporaryMountPoint").then((()=>{this.tree.loadData()}))}renderMountPoint(){return null===this.mountPointPath?nothing:html`
+        `))}unsetTemporaryMountPoint(){Persistent.unset("pageTree_temporaryMountPoint").then((()=>{this.mountPointPath=null}))}renderMountPoint(){return null===this.mountPointPath?nothing:html`
       <div class="node-mount-point">
         <div class="node-mount-point__icon"><typo3-backend-icon identifier="actions-info-circle" size="small"></typo3-backend-icon></div>
         <div class="node-mount-point__text">${this.mountPointPath}</div>
@@ -36,4 +36,4 @@ var __decorate=function(e,t,n,o){var r,i=arguments.length,s=i<3?t:null===o?o=Obj
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
         </div>
       </div>
-    `}setTemporaryMountPoint(e){new AjaxRequest(this.configuration.setTemporaryMountPointUrl).post("pid="+e,{headers:{"Content-Type":"application/x-www-form-urlencoded","X-Requested-With":"XMLHttpRequest"}}).then((e=>e.resolve())).then((e=>{e&&e.hasErrors?(this.tree.errorNotification(e.message),this.tree.loadData()):(this.mountPointPath=e.mountPointPath,this.tree.refreshOrFilterTree())})).catch((e=>{this.tree.errorNotification(e),this.tree.loadData()}))}};__decorate([property({type:String})],PageBrowser.prototype,"mountPointPath",void 0),__decorate([query(".tree-wrapper")],PageBrowser.prototype,"tree",void 0),PageBrowser=__decorate([customElement("typo3-backend-component-page-browser")],PageBrowser);export{PageBrowser};
+    `}setTemporaryMountPoint(e){new AjaxRequest(this.configuration.setTemporaryMountPointUrl).post("pid="+e,{headers:{"Content-Type":"application/x-www-form-urlencoded","X-Requested-With":"XMLHttpRequest"}}).then((e=>e.resolve())).then((e=>{e&&e.hasErrors?(this.tree.errorNotification(e.message),this.tree.loadData()):this.mountPointPath=e.mountPointPath})).catch((e=>{this.tree.errorNotification(e),this.tree.loadData()}))}};__decorate([property({type:String})],PageBrowser.prototype,"mountPointPath",void 0),__decorate([query(".tree-wrapper")],PageBrowser.prototype,"tree",void 0),PageBrowser=__decorate([customElement("typo3-backend-component-page-browser")],PageBrowser);export{PageBrowser};

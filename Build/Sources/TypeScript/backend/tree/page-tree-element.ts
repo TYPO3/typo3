@@ -386,9 +386,8 @@ export class PageTreeNavigationComponent extends LitElement {
   };
 
   private unsetTemporaryMountPoint() {
-    this.mountPointPath = null;
     Persistent.unset('pageTree_temporaryMountPoint').then(() => {
-      this.tree.loadData();
+      this.mountPointPath = null;
     });
   }
 
@@ -419,7 +418,6 @@ export class PageTreeNavigationComponent extends LitElement {
           this.tree.loadData();
         } else {
           this.mountPointPath = response.mountPointPath;
-          this.tree.refreshOrFilterTree();
         }
       })
       .catch((error) => {
