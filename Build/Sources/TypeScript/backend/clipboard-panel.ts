@@ -71,7 +71,7 @@ export class ClipboardPanel extends LitElement {
     return html`
       <div class="panel panel-default">
         <div class="panel-loader">
-          <typo3-backend-spinner size="small" variant="dark"></typo3-backend-spinner>
+          <typo3-backend-spinner size="small"></typo3-backend-spinner>
         </div>
       </div>
     `;

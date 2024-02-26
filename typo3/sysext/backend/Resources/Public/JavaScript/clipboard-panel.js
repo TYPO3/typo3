@@ -13,7 +13,7 @@
 var ClipboardPanel_1,CopyMode,__decorate=function(t,e,o,a){var i,n=arguments.length,l=n<3?e:null===a?a=Object.getOwnPropertyDescriptor(e,o):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(t,e,o,a);else for(var r=t.length-1;r>=0;r--)(i=t[r])&&(l=(n<3?i(l):n>3?i(e,o,l):i(e,o))||l);return n>3&&l&&Object.defineProperty(e,o,l),l};import{html,LitElement,nothing}from"lit";import{customElement,property}from"lit/decorators.js";import{until}from"lit/directives/until.js";import{unsafeHTML}from"lit/directives/unsafe-html.js";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import Notification from"@typo3/backend/notification.js";import"@typo3/backend/element/spinner-element.js";import"@typo3/backend/element/icon-element.js";!function(t){t.cut="cut",t.copy="copy"}(CopyMode||(CopyMode={}));let ClipboardPanel=ClipboardPanel_1=class extends LitElement{constructor(){super(...arguments),this.returnUrl="",this.table=""}static renderLoader(){return html`
       <div class="panel panel-default">
         <div class="panel-loader">
-          <typo3-backend-spinner size="small" variant="dark"></typo3-backend-spinner>
+          <typo3-backend-spinner size="small"></typo3-backend-spinner>
         </div>
       </div>
     `}createRenderRoot(){return this}render(){return html`

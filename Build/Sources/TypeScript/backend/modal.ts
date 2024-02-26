@@ -217,7 +217,7 @@ export class ModalElement extends LitElement {
             this.templateResultContent = html`<p><strong>Oops, received a ${response.response.status} response from </strong> <span class="text-break">${this.content}</span>.</p>`;
           }
         });
-      return html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`;
+      return html`<div class="modal-loading"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`;
     }
 
     return this.templateResultContent as TemplateResult;

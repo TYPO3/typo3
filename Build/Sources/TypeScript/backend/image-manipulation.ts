@@ -232,7 +232,7 @@ class ImageManipulation {
           text: buttonSaveText,
         },
       ],
-      content: html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`,
+      content: html`<div class="modal-loading"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`,
       size: Modal.sizes.full,
       style: Modal.styles.dark,
       title: modalTitle,

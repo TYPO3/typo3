@@ -83,7 +83,7 @@ class Router {
           type: Modal.types.default,
           title: modalTitle,
           size: modalSize,
-          content: html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`,
+          content: html`<div class="modal-loading"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`,
           additionalCssClasses: ['install-tool-modal'],
           staticBackdrop: true,
           callback: (currentModal: ModalElement): void => {
