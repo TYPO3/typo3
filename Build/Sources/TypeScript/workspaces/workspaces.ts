@@ -31,7 +31,7 @@ export default class Workspaces {
 
     const modal = Modal.advanced({
       title: TYPO3.lang.actionSendToStage,
-      content: html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`,
+      content: html`<div class="modal-loading"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`,
       severity: SeverityEnum.info,
       buttons: [
         {
