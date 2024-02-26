@@ -116,7 +116,7 @@ class HtmlWorker
                     unset($linkResultAttrValues['href']);
                 }
                 foreach ($linkResultAttrValues as $name => $value) {
-                    $element->setAttribute($name, $value);
+                    $element->setAttribute($name, (string)$value);
                 }
             }
         }
