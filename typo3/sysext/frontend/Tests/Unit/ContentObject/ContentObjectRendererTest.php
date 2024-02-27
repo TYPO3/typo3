@@ -21,8 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
-use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
@@ -1511,46 +1509,54 @@ final class ContentObjectRendererTest extends UnitTestCase
         self::assertSame('someTitle', $this->subject->getData('db:tt_content:106:title'));
     }
 
-    public static function getDataWithTypeDbDataProvider(): array
+    public static function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersDataProvider(): array
     {
         return [
             'identifier with missing table, uid and column' => [
                 'identifier' => 'db',
-                'expectsMethodCall' => self::never(),
             ],
             'identifier with empty table, missing uid and column' => [
                 'identifier' => 'db:',
-                'expectsMethodCall' => self::never(),
             ],
             'identifier with missing table and column' => [
                 'identifier' => 'db:tt_content',
-                'expectsMethodCall' => self::never(),
             ],
             'identifier with empty table and missing uid and column' => [
                 'identifier' => 'db:tt_content:',
-                'expectsMethodCall' => self::never(),
-            ],
-            'identifier with empty uid and missing column' => [
-                'identifier' => 'db:tt_content:106',
-                'expectsMethodCall' => self::once(),
-            ],
-            'identifier with empty uid and column' => [
-                'identifier' => 'db:tt_content:106:',
-                'expectsMethodCall' => self::once(),
-            ],
-            'identifier with empty uid and not existing column' => [
-                'identifier' => 'db:tt_content:106:not_existing_column',
-                'expectsMethodCall' => self::once(),
             ],
         ];
     }
 
-    /**
-     * Checks if getData() works with type "db"
-     */
-    #[DataProvider('getDataWithTypeDbDataProvider')]
+    #[DataProvider('getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersDataProvider')]
     #[Test]
-    public function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiers(string $identifier, InvocationOrder $expectsMethodCall): void
+    public function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiers(string $identifier): void
+    {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $this->subject->setRequest($request);
+        self::assertSame('', $this->subject->getData($identifier));
+    }
+
+    public static function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersCallsPageRepositoryOnceDataProvider(): array
+    {
+        return [
+            'identifier with empty uid and missing column' => [
+                'identifier' => 'db:tt_content:106',
+            ],
+            'identifier with empty uid and column' => [
+                'identifier' => 'db:tt_content:106:',
+            ],
+            'identifier with empty uid and not existing column' => [
+                'identifier' => 'db:tt_content:106:not_existing_column',
+            ],
+        ];
+    }
+
+    #[DataProvider('getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersCallsPageRepositoryOnceDataProvider')]
+    #[Test]
+    public function getDataWithTypeDbReturnsEmptyStringOnInvalidIdentifiersCallsPageRepositoryOnce(string $identifier): void
     {
         $pageInformation = new PageInformation();
         $pageInformation->setPageRecord([]);
@@ -1559,16 +1565,11 @@ final class ContentObjectRendererTest extends UnitTestCase
         $this->subject->setRequest($request);
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
         $pageRepository = $this->createMock(PageRepository::class);
-        if ($expectsMethodCall instanceof InvokedCount && !$expectsMethodCall->isNever()) {
-            GeneralUtility::addInstance(PageRepository::class, $pageRepository);
-        }
-        $pageRepository->expects($expectsMethodCall)->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        GeneralUtility::addInstance(PageRepository::class, $pageRepository);
+        $pageRepository->expects(self::once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
         self::assertSame('', $this->subject->getData($identifier));
     }
 
-    /**
-     * Checks if getData() works with type "lll"
-     */
     #[Test]
     public function getDataWithTypeLll(): void
     {
