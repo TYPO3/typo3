@@ -45,7 +45,7 @@ mod.linkvalidator {
   actionAfterEditRecord = recheck
   mail {
     fromname = LinkValidator
-    fromemail = linkvalidator@example.com
+    fromemail =
     replytoname =
     replytoemail =
     subject = TYPO3 LinkValidator report
