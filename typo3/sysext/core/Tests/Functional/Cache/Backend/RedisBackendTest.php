@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Backend\RedisBackend;
@@ -25,15 +26,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case for the cache to redis backend
- *
- * Warning:
- * These functional tests use and flush redis database numbers 0 and 1 on the
- * redis host specified by environment variable typo3RedisHost
- *
- * @requires extension redis
- */
+#[RequiresPhpExtension('redis')]
 final class RedisBackendTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
@@ -49,9 +42,6 @@ final class RedisBackendTest extends FunctionalTestCase
         parent::setUp();
     }
 
-    /**
-     * Sets up the redis cache backend used for testing
-     */
     protected function setUpSubject(array $backendOptions = []): RedisBackend
     {
         // We know this env is set, otherwise setUp() would skip the tests
@@ -72,17 +62,13 @@ final class RedisBackendTest extends FunctionalTestCase
         return $subject;
     }
 
-    /**
-     * Sets up a test-internal redis connection to check implementation details
-     */
-    protected function setUpRedis(): \Redis
+    private function setUpRedis(): \Redis
     {
         // We know this env is set, otherwise setUp() would skip the tests
         $redisHost = getenv('typo3TestingRedisHost');
         // If typo3TestingRedisPort env is set, use it, otherwise fall back to standard port
         $env = getenv('typo3TestingRedisPort');
         $redisPort = is_string($env) ? (int)$env : 6379;
-
         $redis = new \Redis();
         $redis->connect($redisHost, $redisPort);
         return $redis;
@@ -93,7 +79,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279763057);
-
         $this->setUpSubject(['database' => 'foo']);
     }
 
@@ -102,7 +87,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279763534);
-
         $this->setUpSubject(['database' => -1]);
     }
 
@@ -111,7 +95,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1289679153);
-
         $this->setUpSubject(['compression' => 'foo']);
     }
 
@@ -120,7 +103,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1289679154);
-
         $this->setUpSubject(['compressionLevel' => 'foo']);
     }
 
@@ -129,7 +111,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1289679155);
-
         $this->setUpSubject(['compressionLevel' => 11]);
     }
 
@@ -138,7 +119,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1487849315);
-
         $this->setUpSubject(['connectionTimeout' => 'foo']);
     }
 
@@ -147,7 +127,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1487849326);
-
         $this->setUpSubject(['connectionTimeout' => -1]);
     }
 
@@ -156,7 +135,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1377006651);
-
         $subject = $this->setUpSubject();
         $subject->set([], 'data');
     }
@@ -166,7 +144,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(InvalidDataException::class);
         $this->expectExceptionCode(1279469941);
-
         $subject = $this->setUpSubject();
         $subject->set(StringUtility::getUniqueId('identifier'), []);
     }
@@ -176,7 +153,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279487573);
-
         $subject = $this->setUpSubject();
         $subject->set(StringUtility::getUniqueId('identifier'), 'data', [], -42);
     }
@@ -186,7 +162,6 @@ final class RedisBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279488008);
-
         $subject = $this->setUpSubject();
         $subject->set(StringUtility::getUniqueId('identifier'), 'data', [], []);
     }

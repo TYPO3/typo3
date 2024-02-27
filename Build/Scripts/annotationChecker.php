@@ -29,9 +29,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 class NodeVisitor extends NodeVisitorAbstract
 {
-    /**
-     * @var array
-     */
     public array $matches = [];
 
     public function enterNode(Node $node)
@@ -54,7 +51,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     // PHPDocumentor 2 tags
                     'author', 'category', 'copyright', 'deprecated', 'example', 'internal', 'license', 'link', 'param', 'property', 'return', 'see', 'since', 'throws', 'todo', 'TODO', 'var', 'version',
                     // PHPUnit & codeception tags
-                    'depends', 'requires', 'env',
+                    'depends', 'env',
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
                     // Extbase related

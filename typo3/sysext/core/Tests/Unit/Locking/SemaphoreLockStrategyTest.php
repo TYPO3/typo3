@@ -17,17 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
+use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @requires function sem_get
- */
 final class SemaphoreLockStrategyTest extends UnitTestCase
 {
     #[Test]
+    #[RequiresFunction('sem_get')]
     public function acquireGetsSemaphore(): void
     {
         $lock = new SemaphoreLockStrategy('99999');
@@ -46,7 +45,6 @@ final class SemaphoreLockStrategyTest extends UnitTestCase
     public function setPriority(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority'] = 10;
-
         self::assertEquals(10, SemaphoreLockStrategy::getPriority());
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority']);
     }
