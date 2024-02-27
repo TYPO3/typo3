@@ -283,10 +283,7 @@ final class FileBackendTest extends FunctionalTestCase
     public function hasReturnsFalseForExpiredEntries(): void
     {
         $subject = $this->getMockBuilder(FileBackend::class)->onlyMethods(['isCacheFileExpired'])->disableOriginalConstructor()->getMock();
-        $subject->expects(self::exactly(2))->method('isCacheFileExpired')->will(self::onConsecutiveCalls(
-            true,
-            false
-        ));
+        $subject->expects(self::exactly(2))->method('isCacheFileExpired')->willReturn(true, false);
         self::assertFalse($subject->has('foo'));
         self::assertTrue($subject->has('bar'));
     }

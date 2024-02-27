@@ -190,7 +190,7 @@ final class MetaDataAspectTest extends UnitTestCase
             ->onlyMethods(['loadFromRepository'])
             ->getMock();
 
-        $metaDataAspectMock->method('loadFromRepository')->will(self::onConsecutiveCalls([], $metaData, $updatedMetadata));
+        $metaDataAspectMock->method('loadFromRepository')->willReturn([], $metaData, $updatedMetadata);
         $metaDataAspectMock->add($metaData)->save();
         $metaDataAspectMock->add(['testproperty' => 'testvalue'])->save();
 

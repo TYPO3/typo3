@@ -174,10 +174,7 @@ final class ResourceCompressorTest extends UnitTestCase
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
         $subject->expects(self::exactly(2))
             ->method('createMergedCssFile')
-            ->will(self::onConsecutiveCalls(
-                self::returnValue('merged_' . $allFileName),
-                self::returnValue('merged_' . $screenFileName1)
-            ));
+            ->willReturn(self::returnValue('merged_' . $allFileName), self::returnValue('merged_' . $screenFileName1));
 
         $result = $subject->concatenateCssFiles($testFileFixture);
 

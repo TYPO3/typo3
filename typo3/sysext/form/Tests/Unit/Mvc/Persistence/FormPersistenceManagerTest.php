@@ -395,11 +395,7 @@ final class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager
             ->expects(self::exactly(3))
             ->method('exists')
-            ->will(self::onConsecutiveCalls(
-                self::returnValue(true),
-                self::returnValue(true),
-                self::returnValue(false)
-            ));
+            ->willReturn(true, true, false);
 
         $input = 'example';
         $expected = '-1:/user_uploads/example_2.form.yaml';
@@ -415,9 +411,7 @@ final class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager
             ->expects(self::exactly(101))
             ->method('exists')
-            ->will(self::onConsecutiveCalls(
-                ...$this->returnTrue100Times()
-            ));
+            ->willReturn(...$this->returnTrue100Times());
 
         $input = 'example';
         $expected = '#^-1:/user_uploads/example_([0-9]{10}).form.yaml$#';
@@ -432,8 +426,8 @@ final class FormPersistenceManagerTest extends UnitTestCase
     private function returnTrue100Times(): array
     {
         $returnValues = [];
-        $returnValues = array_pad($returnValues, 100, self::returnValue(true));
-        $returnValues[] = self::returnValue(false);
+        $returnValues = array_pad($returnValues, 100, true);
+        $returnValues[] = false;
         return $returnValues;
     }
 
@@ -461,9 +455,7 @@ final class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager
                 ->expects(self::exactly(101))
                 ->method('checkForDuplicateIdentifier')
-                ->will(self::onConsecutiveCalls(
-                    ...$this->returnTrue100Times()
-                ));
+                ->willReturn(...$this->returnTrue100Times());
 
         $input = 'example';
         $expected = '#^example_([0-9]{10})$#';
