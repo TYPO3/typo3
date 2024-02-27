@@ -160,7 +160,7 @@ final class FileWriterTest extends UnitTestCase
     public function aSecondLogWriterToTheSameFileDoesNotOpenTheFileTwice(): void
     {
         $firstWriter = $this->getMockBuilder(FileWriter::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->getMock();
         $secondWriter = $this->getMockBuilder(FileWriter::class)
             ->onlyMethods(['createLogFile'])

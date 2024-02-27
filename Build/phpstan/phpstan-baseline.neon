@@ -1176,24 +1176,9 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/MvcPropertyMappingConfigurationServiceTest.php
 
 		-
-			message: "#^Property class@anonymous/extbase/Tests/Unit/Mvc/View/JsonViewTest\\.php\\:108\\:\\:\\$prohibited is unused\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/View/JsonViewTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$object of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Backend\\:\\:getIdentifierByObject\\(\\) expects object, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/BackendTest.php
-
-		-
-			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:expects\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryFactoryTest.php
-
-		-
-			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:method\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryFactoryTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\PersistenceManagerInterface\\:\\:expects\\(\\)\\.$#"

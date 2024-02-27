@@ -91,7 +91,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         $GLOBALS['BE_USER']->initializeUserSessionManager($userSessionManager);
 
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
 

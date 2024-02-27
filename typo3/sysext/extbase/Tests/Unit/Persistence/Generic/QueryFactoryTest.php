@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,36 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class QueryFactoryTest extends UnitTestCase
 {
-    protected string $className = 'Vendor\\Ext\\Domain\\Model\\ClubMate';
-    protected QueryFactory $queryFactory;
-    protected ContainerInterface $container;
-    protected DataMapFactory&MockObject $dataMapFactory;
-    protected DataMap&MockObject $dataMap;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->container = $this->createMock(ContainerInterface::class);
-
-        $this->dataMap = $this->getMockBuilder(DataMap::class)
-            ->onlyMethods(['getIsStatic', 'getRootLevel'])
-            ->setConstructorArgs(['Vendor\\Ext\\Domain\\Model\\ClubMate', 'tx_ext_domain_model_clubmate'])
-            ->getMock();
-
-        $this->dataMapFactory = $this->getMockBuilder(DataMapFactory::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['buildDataMap'])
-            ->addMethods(['convertClassNameToTableName'])
-            ->getMock();
-        $this->dataMapFactory->method('buildDataMap')->willReturn($this->dataMap);
-
-        $this->queryFactory = new QueryFactory(
-            $this->createMock(ConfigurationManagerInterface::class),
-            $this->dataMapFactory,
-            $this->container
-        );
-    }
+    private string $className = 'Vendor\\Ext\\Domain\\Model\\ClubMate';
 
     public static function getStaticAndRootLevelAndExpectedResult(): array
     {
@@ -75,30 +45,34 @@ final class QueryFactoryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param bool $static
-     * @param bool $rootLevel
-     * @param bool $expectedResult
-     */
     #[DataProvider('getStaticAndRootLevelAndExpectedResult')]
     #[Test]
-    public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue($static, $rootLevel, $expectedResult): void
+    public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue(bool $static, bool $rootLevel, bool $expectedResult): void
     {
-        $this->dataMap->method('getIsStatic')->willReturn($static);
-        $this->dataMap->method('getRootLevel')->willReturn($rootLevel);
-
+        $container = $this->createMock(ContainerInterface::class);
+        $dataMap = $this->getMockBuilder(DataMap::class)
+            ->onlyMethods(['getIsStatic', 'getRootLevel'])
+            ->setConstructorArgs(['Vendor\\Ext\\Domain\\Model\\ClubMate', 'tx_ext_domain_model_clubmate'])
+            ->getMock();
+        $dataMapFactoryMock = $this->createMock(DataMapFactory::class);
+        $dataMapFactoryMock->method('buildDataMap')->willReturn($dataMap);
+        $queryFactory = new QueryFactory(
+            $this->createMock(ConfigurationManagerInterface::class),
+            $dataMapFactoryMock,
+            $container
+        );
+        $dataMap->method('getIsStatic')->willReturn($static);
+        $dataMap->method('getRootLevel')->willReturn($rootLevel);
         $query = $this->createMock(QueryInterface::class);
         $querySettings = new Typo3QuerySettings(
             new Context(),
             $this->createMock(ConfigurationManagerInterface::class)
         );
         GeneralUtility::addInstance(QuerySettingsInterface::class, $querySettings);
-        $this->container->method('has')->willReturn(true);
-        $this->container->expects(self::once())->method('get')->with(QueryInterface::class)->willReturn($query);
-
+        $container->method('has')->willReturn(true);
+        $container->expects(self::once())->method('get')->with(QueryInterface::class)->willReturn($query);
         $query->expects(self::once())->method('setQuerySettings')->with($querySettings);
-        $this->queryFactory->create($this->className);
-
+        $queryFactory->create($this->className);
         self::assertSame(
             $expectedResult,
             $querySettings->getRespectStoragePage()

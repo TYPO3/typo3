@@ -171,7 +171,6 @@ final class MetaDataAspectTest extends UnitTestCase
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
             ->onlyMethods(['createMetaDataRecord', 'getTableFields'])
-            ->addMethods(['loadFromRepository'])
             ->setConstructorArgs([$eventDispatcherMock])
             ->getMock();
 

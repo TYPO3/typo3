@@ -2762,10 +2762,7 @@ final class GeneralUtilityTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967686);
-
-        $instance = $this->getMockBuilder(SingletonInterface::class)
-            ->addMethods(['foo'])
-            ->getMock();
+        $instance = $this->getMockBuilder(SingletonInterface::class)->getMock();
         $singletonClassName = get_class($this->createMock(SingletonInterface::class));
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
     }
@@ -2852,10 +2849,7 @@ final class GeneralUtilityTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967686);
-
-        $instance = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['bar'])
-            ->getMock();
+        $instance = $this->getMockBuilder(\stdClass::class)->getMock();
         $singletonClassName = get_class($this->createMock(\stdClass::class));
         GeneralUtility::addInstance($singletonClassName, $instance);
     }

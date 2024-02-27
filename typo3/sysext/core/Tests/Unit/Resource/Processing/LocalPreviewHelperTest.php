@@ -66,7 +66,7 @@ final class LocalPreviewHelperTest extends UnitTestCase
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
             ->disableOriginalConstructor()
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->getMock();
 
         $task = $this->createMock(TaskInterface::class);

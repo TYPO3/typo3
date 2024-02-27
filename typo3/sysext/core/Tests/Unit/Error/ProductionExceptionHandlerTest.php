@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
+use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Error\ProductionExceptionHandler;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,9 +33,6 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
     protected ProductionExceptionHandler&MockObject $subject;
 
-    /**
-     * Sets up this test case.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -79,10 +77,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $title = '<b>b</b><script>alert(1);</script>';
-        $exception = $this->getMockBuilder(\Exception::class)
-            ->addMethods(['getTitle'])
-            ->setConstructorArgs(['some message'])
-            ->getMock();
+        $exception = $this->createMock(StatusException::class);
         $exception->method('getTitle')->willReturn($title);
         ob_start();
         $this->subject->echoExceptionWeb($exception);
@@ -92,11 +87,6 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         self::assertStringNotContainsString($title, $output);
     }
 
-    /**
-     * Data provider with allowed contexts.
-     *
-     * @return string[][]
-     */
     public static function exampleUrlsForTokenAnonymization(): array
     {
         return [

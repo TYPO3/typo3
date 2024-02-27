@@ -46,7 +46,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
             ],
         ];
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->selectedBackends = [AbstractBackend::class];
@@ -72,7 +72,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
             ],
         ];
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
-            ->addMethods(['dummy'])
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->selectedBackends = [NullBackend::class];

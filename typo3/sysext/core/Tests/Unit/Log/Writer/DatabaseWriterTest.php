@@ -28,10 +28,7 @@ final class DatabaseWriterTest extends UnitTestCase
     public function getTableReturnsPreviouslySetTable(): void
     {
         $logTable = StringUtility::getUniqueId('logtable_');
-        $subject = $this->getMockBuilder(DatabaseWriter::class)
-            ->addMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $subject = new DatabaseWriter();
         $subject->setLogTable($logTable);
         self::assertSame($logTable, $subject->getLogTable());
     }

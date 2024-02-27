@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
-use TYPO3\CMS\Core\Package\Exception;
-use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
-use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackagePathException;
@@ -37,9 +34,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the default package manager
- */
 final class PackageManagerTest extends UnitTestCase
 {
     protected PackageManager&MockObject&AccessibleObjectInterface $packageManager;
@@ -56,15 +50,8 @@ final class PackageManagerTest extends UnitTestCase
         $this->testRoot = Environment::getVarPath() . '/tests/PackageManager/';
         $this->testFilesToDelete[] = $this->testRoot;
 
-        $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->onlyMethods(['has', 'set', 'getBackend'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockCacheBackend = $this->getMockBuilder(SimpleFileBackend::class)
-            ->onlyMethods(['has', 'set', 'getCacheDirectory'])
-            ->addMethods(['getBackend'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockCache = $this->createMock(PhpFrontend::class);
+        $mockCacheBackend = $this->createMock(SimpleFileBackend::class);
         $mockCache->method('has')->willReturn(false);
         $mockCache->method('set')->willReturn(true);
         $mockCache->method('getBackend')->willReturn($mockCacheBackend);
@@ -108,9 +95,6 @@ final class PackageManagerTest extends UnitTestCase
         return $package;
     }
 
-    /**
-     * @throws UnknownPackageException
-     */
     #[Test]
     public function getPackageReturnsTheSpecifiedPackage(): void
     {
@@ -120,9 +104,6 @@ final class PackageManagerTest extends UnitTestCase
         self::assertInstanceOf(Package::class, $package, 'The result of getPackage() was no valid package object.');
     }
 
-    /**
-     * @throws UnknownPackageException
-     */
     #[Test]
     public function getPackageThrowsExceptionOnUnknownPackage(): void
     {
@@ -207,16 +188,11 @@ final class PackageManagerTest extends UnitTestCase
     #[Test]
     public function extractPackageKeyFromPackagePathFindsPackageKey(): void
     {
-        $package = $this->createPackage('typo3/my-package');
-
+        $this->createPackage('typo3/my-package');
         $resolvedPackage = $this->packageManager->extractPackageKeyFromPackagePath('EXT:typo3/my-package/path/to/file');
-
         self::assertSame('typo3/my-package', $resolvedPackage);
     }
 
-    /**
-     * @throws UnknownPackagePathException
-     */
     #[Test]
     public function extractPackageKeyFromPackagePathThrowsExceptionOnNonPackagePaths(): void
     {
@@ -226,9 +202,6 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->extractPackageKeyFromPackagePath($this->testRoot . 'Packages/Application/InvalidPackage/');
     }
 
-    /**
-     * @throws UnknownPackageException
-     */
     #[Test]
     public function extractPackageKeyFromPackagePathThrowsExceptionOnInvalidPackagePaths(): void
     {
@@ -277,10 +250,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertEquals($expectedPackageStatesConfiguration, $actualPackageStatesConfiguration['packages']);
     }
 
-    /**
-     * Data Provider returning valid package keys and the corresponding path
-     */
-    public static function packageKeysAndPaths(): array
+    public static function createPackageCreatesPackageFolderAndReturnsPackageDataProvider(): array
     {
         return [
             ['TYPO3.YetAnotherTestPackage', 'Packages/Application/TYPO3.YetAnotherTestPackage/'],
@@ -288,7 +258,7 @@ final class PackageManagerTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('packageKeysAndPaths')]
+    #[DataProvider('createPackageCreatesPackageFolderAndReturnsPackageDataProvider')]
     #[Test]
     public function createPackageCreatesPackageFolderAndReturnsPackage($packageKey, $expectedPackagePath): void
     {
@@ -301,32 +271,18 @@ final class PackageManagerTest extends UnitTestCase
         self::assertTrue($this->packageManager->isPackageAvailable($packageKey));
     }
 
-    /**
-     * @throws ProtectedPackageKeyException
-     * @throws UnknownPackageException
-     * @throws PackageStatesFileNotWritableException
-     */
     #[Test]
     public function activatePackageAndDeactivatePackageActivateAndDeactivateTheGivenPackage(): void
     {
         $packageKey = 'Acme.YetAnotherTestPackage';
-
         $this->createPackage($packageKey);
-
         $this->packageManager->method('sortActivePackagesByDependencies')->willReturn([]);
-
         $this->packageManager->deactivatePackage($packageKey);
         self::assertFalse($this->packageManager->isPackageActive($packageKey));
-
         $this->packageManager->activatePackage($packageKey);
         self::assertTrue($this->packageManager->isPackageActive($packageKey));
     }
 
-    /**
-     * @throws PackageStatesFileNotWritableException
-     * @throws ProtectedPackageKeyException
-     * @throws UnknownPackageException
-     */
     #[Test]
     public function deactivatePackageThrowsAnExceptionIfPackageIsProtected(): void
     {
@@ -339,11 +295,6 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->deactivatePackage('Acme.YetAnotherTestPackage');
     }
 
-    /**
-     * @throws ProtectedPackageKeyException
-     * @throws UnknownPackageException
-     * @throws Exception
-     */
     #[Test]
     public function deletePackageThrowsErrorIfPackageIsNotAvailable(): void
     {
@@ -354,12 +305,6 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->deletePackage('PrettyUnlikelyThatThisPackageExists');
     }
 
-    /**
-     * @throws InvalidPackageStateException
-     * @throws ProtectedPackageKeyException
-     * @throws UnknownPackageException
-     * @throws Exception
-     */
     #[Test]
     public function deletePackageThrowsAnExceptionIfPackageIsProtected(): void
     {
@@ -371,12 +316,6 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->deletePackage('Acme.YetAnotherTestPackage');
     }
 
-    /**
-     * @throws InvalidPackageStateException
-     * @throws ProtectedPackageKeyException
-     * @throws UnknownPackageException
-     * @throws Exception
-     */
     #[Test]
     public function deletePackageRemovesPackageFromAvailableAndActivePackagesAndDeletesThePackageDirectory(): void
     {

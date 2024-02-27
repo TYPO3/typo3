@@ -29,9 +29,7 @@ final class DebuggerUtilityTest extends UnitTestCase
     #[Test]
     public function debuggerRewindsInstancesOfIterator(): void
     {
-        $objectStorage = $this->getMockBuilder(ObjectStorage::class)
-            ->addMethods(['dummy'])
-            ->getMock();
+        $objectStorage = $this->getMockBuilder(ObjectStorage::class)->onlyMethods([])->getMock();
         for ($i = 0; $i < 5; $i++) {
             $obj = new \stdClass();
             $obj->property = $i;

@@ -29,58 +29,25 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 final class RenderingContextTest extends UnitTestCase
 {
-    /**
-     * Parsing state
-     *
-     * @var RenderingContext
-     */
-    protected $renderingContext;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->addMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
     #[Test]
     public function templateVariableContainerCanBeReadCorrectly(): void
     {
         $templateVariableContainer = $this->createMock(StandardVariableProvider::class);
-        $this->renderingContext->setVariableProvider($templateVariableContainer);
-        self::assertSame($this->renderingContext->getVariableProvider(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
+        $subject = $this->getMockBuilder(RenderingContext::class)->onlyMethods([])->disableOriginalConstructor()->getMock();
+        $subject->setVariableProvider($templateVariableContainer);
+        self::assertSame($subject->getVariableProvider(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
     }
 
     #[Test]
     public function viewHelperVariableContainerCanBeReadCorrectly(): void
     {
         $viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
-        $this->renderingContext->setViewHelperVariableContainer($viewHelperVariableContainer);
-        self::assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
+        $subject = $this->getMockBuilder(RenderingContext::class)->onlyMethods([])->disableOriginalConstructor()->getMock();
+        $subject->setViewHelperVariableContainer($viewHelperVariableContainer);
+        self::assertSame($viewHelperVariableContainer, $subject->getViewHelperVariableContainer());
     }
 
-    /**
-     * @param string $input
-     * @param string $expected
-     */
-    #[DataProvider('getControllerActionTestValues')]
-    #[Test]
-    public function setControllerActionProcessesInputCorrectly($input, $expected): void
-    {
-        $subject = $this->getMockBuilder(RenderingContext::class)
-            ->addMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = new Request($serverRequest);
-        $subject->setRequest($request);
-        $subject->setControllerAction($input);
-        self::assertSame(lcfirst($expected), $subject->getControllerAction());
-    }
-
-    public static function getControllerActionTestValues(): array
+    public static function setControllerActionProcessesInputCorrectlyDataProvider(): array
     {
         return [
             ['default', 'default'],
@@ -90,5 +57,17 @@ final class RenderingContextTest extends UnitTestCase
             ['Sub/Default.html', 'Sub/Default'],
             ['Sub/Default.sub.html', 'Sub/Default'],
         ];
+    }
+
+    #[DataProvider('setControllerActionProcessesInputCorrectlyDataProvider')]
+    #[Test]
+    public function setControllerActionProcessesInputCorrectly(string $input, string $expected): void
+    {
+        $subject = $this->getMockBuilder(RenderingContext::class)->onlyMethods([])->disableOriginalConstructor()->getMock();
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $subject->setRequest($request);
+        $subject->setControllerAction($input);
+        self::assertSame(lcfirst($expected), $subject->getControllerAction());
     }
 }

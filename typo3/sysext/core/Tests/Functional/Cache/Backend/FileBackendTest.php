@@ -44,7 +44,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1303669848);
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory('http://localhost/');
         $subject->setCache(new NullFrontend('foo'));
     }
@@ -120,7 +120,7 @@ final class FileBackendTest extends FunctionalTestCase
     #[Test]
     public function getCacheDirectoryReturnsTheCurrentCacheDirectory(): void
     {
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache(new NullFrontend('SomeCache'));
         self::assertEquals($this->instancePath . '/Foo/cache/code/SomeCache/', $subject->getCacheDirectory());
@@ -131,7 +131,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(PhpFrontend::class);
         $mockCache->method('getIdentifier')->willReturn('SomeCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         self::assertEquals($this->instancePath . '/Foo/cache/code/SomeCache/', $subject->getCacheDirectory());
@@ -142,7 +142,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $this->expectException(InvalidDataException::class);
         $this->expectExceptionCode(1204481674);
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache(new NullFrontend('SomeCache'));
         $subject->set('some identifier', ['not a string']);
@@ -156,7 +156,7 @@ final class FileBackendTest extends FunctionalTestCase
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendFileTest';
         $pathAndFilename = $this->instancePath . '/Foo/cache/data/UnitTestCache/' . $entryIdentifier;
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data);
@@ -173,7 +173,7 @@ final class FileBackendTest extends FunctionalTestCase
         $data1 = 'some data' . microtime();
         $data2 = 'some data' . microtime();
         $entryIdentifier = 'BackendFileRemoveBeforeSetTest';
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data1, [], 500);
@@ -191,7 +191,7 @@ final class FileBackendTest extends FunctionalTestCase
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendFileRemoveBeforeSetTest';
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data, ['Tag1', 'Tag2']);
@@ -208,12 +208,12 @@ final class FileBackendTest extends FunctionalTestCase
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendFileTest';
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data, ['Tag1', 'Tag2']);
         $subject->freeze();
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         self::assertTrue($subject->isFrozen());
@@ -225,7 +225,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['setTag'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $entryIdentifier = 'BackendFileTest';
@@ -269,7 +269,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $entryIdentifier = 'BackendFileTest';
@@ -311,7 +311,7 @@ final class FileBackendTest extends FunctionalTestCase
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendFileTest';
         $pathAndFilename = $this->instancePath . '/Foo/cache/data/UnitTestCache/' . $entryIdentifier;
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data);
@@ -346,7 +346,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1282073032);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->setConstructorArgs(['test'])->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($identifier, 'cache data', []);
@@ -360,7 +360,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1282073033);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->get($identifier);
@@ -372,7 +372,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1282073034);
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->has($identifier);
     }
 
@@ -384,7 +384,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1334756960);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->remove($identifier);
@@ -398,7 +398,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1282073036);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->requireOnce($identifier);
@@ -409,7 +409,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $entryIdentifier = 'SomePhpEntry';
@@ -443,7 +443,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1532528246);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->require($identifier);
@@ -454,7 +454,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $entryIdentifier = 'SomePhpEntry2';
@@ -500,7 +500,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $data = 'some data' . microtime();
@@ -518,7 +518,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $data = 'some data';
@@ -536,7 +536,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $data = 'some data';
@@ -554,7 +554,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->flush();
@@ -610,7 +610,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = $this->getMockBuilder(FileBackend::class)->addMethods(['dummy'])->disableOriginalConstructor()->getMock();
+        $subject = new FileBackend('');
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->freeze();

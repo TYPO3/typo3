@@ -101,17 +101,11 @@ final class BackendTest extends UnitTestCase
     {
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $session = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getIdentifierByObject'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $session = $this->createMock(Session::class);
         $object = new \stdClass();
-
         $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
-
         $backend = $this->getAccessibleMock(Backend::class, null, [$configurationManager], '', false);
         $backend->_set('session', $session);
-
         self::assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
     }
 
@@ -120,23 +114,13 @@ final class BackendTest extends UnitTestCase
     {
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $proxy = $this->getMockBuilder(LazyLoadingProxy::class)
-            ->onlyMethods(['_loadRealInstance'])
-            ->disableOriginalConstructor()
-            ->disableProxyingToOriginalMethods()
-            ->getMock();
-        $session = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getIdentifierByObject'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $proxy = $this->createMock(LazyLoadingProxy::class);
+        $session = $this->createMock(Session::class);
         $object = new \stdClass();
-
         $proxy->expects(self::once())->method('_loadRealInstance')->willReturn($object);
         $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
-
         $backend = $this->getAccessibleMock(Backend::class, null, [$configurationManager], '', false);
         $backend->_set('session', $session);
-
         self::assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);
     }
 }

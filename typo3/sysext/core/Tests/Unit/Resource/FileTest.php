@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
@@ -29,17 +30,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the file class of the TYPO3 FAL
- */
 final class FileTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var ResourceStorage
-     */
-    protected $storageMock;
+    protected ResourceStorage&MockObject $storageMock;
 
     protected function setUp(): void
     {
@@ -72,9 +67,6 @@ final class FileTest extends UnitTestCase
         }
     }
 
-    /**
-     * Tests if a file is seen as indexed if the record has a uid
-     */
     #[Test]
     public function fileIndexStatusIsTrueIfUidIsSet(): void
     {
@@ -141,7 +133,7 @@ final class FileTest extends UnitTestCase
             'storage' => 'first',
         ];
         $subject = $this->getMockBuilder(File::class)
-            ->addMethods(['loadStorage'])
+            ->onlyMethods([])
             ->setConstructorArgs([$fileProperties, $this->storageMock])
             ->getMock();
         $mockedNewStorage = $this->createMock(ResourceStorage::class);

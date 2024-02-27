@@ -67,7 +67,7 @@ final class ImageContentObjectTest extends UnitTestCase
         ]);
         $this->subject->setRequest(new ServerRequest());
         $this->subject->setContentObjectRenderer($contentObjectRenderer);
-        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
         $this->subject->_set('pageRenderer', $pageRenderer);
     }
 
@@ -366,7 +366,7 @@ final class ImageContentObjectTest extends UnitTestCase
         $cObj->start([], 'tt_content');
 
         $file = 'testImageName';
-        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
         $pageRenderer->setLanguage(new Locale());
         $pageRenderer->setDocType(DocType::createFromConfigurationKey($doctype));
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);

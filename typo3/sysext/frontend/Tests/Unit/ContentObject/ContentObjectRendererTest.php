@@ -3199,7 +3199,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     #[Test]
     public function stdWrap_br(string $expected, string $input, ?string $doctype): void
     {
-        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
         $pageRenderer->setLanguage(new Locale());
         $pageRenderer->setDocType(DocType::createFromConfigurationKey($doctype));
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);

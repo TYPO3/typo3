@@ -27,33 +27,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the JSON view
- */
 final class JsonViewTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var JsonView
-     */
-    protected $view;
-
-    /**
-     * Sets up this test case
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->view = $this->getMockBuilder(JsonView::class)
-            ->addMethods(['loadConfigurationFromYamlFile'])
-            ->getMock();
-    }
-
-    /**
-     * data provider for testTransformValue()
-     */
-    public static function jsonViewTestData(): array
+    public static function transformValueDataProvider(): array
     {
         $output = [];
 
@@ -106,9 +84,9 @@ final class JsonViewTest extends UnitTestCase
 
         $properties = ['foo' => 'bar', 'prohibited' => 'xxx'];
         $nestedObject = new class ($properties) {
-            private $properties;
-            private $prohibited;
-            public function __construct($properties)
+            private array $properties;
+            private string $prohibited = 'foo';
+            public function __construct(array $properties)
             {
                 $this->properties = $properties;
             }
@@ -122,9 +100,14 @@ final class JsonViewTest extends UnitTestCase
                 return 'path';
             }
 
-            public function getProperties()
+            public function getProperties(): array
             {
                 return $this->properties;
+            }
+
+            public function getProhibited(): string
+            {
+                return $this->prohibited;
             }
         };
         $object = $nestedObject;
@@ -169,13 +152,9 @@ final class JsonViewTest extends UnitTestCase
         return $output;
     }
 
-    /**
-     * @param object|array $object
-     * @param array|string $expected
-     */
-    #[DataProvider('jsonViewTestData')]
+    #[DataProvider('transformValueDataProvider')]
     #[Test]
-    public function transformValue($object, array $configuration, $expected, string $description): void
+    public function transformValue(object|array $object, array $configuration, array|string $expected, string $description): void
     {
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
 
@@ -185,10 +164,8 @@ final class JsonViewTest extends UnitTestCase
 
         self::assertSame($expected, $actual, $description);
     }
-    /**
-     * data provider for testRecursive()
-     */
-    public static function jsonViewTestDataRecursive(): array
+
+    public static function recursiveDataProvider(): array
     {
         $object = new class ('foo') {
             private $value1 = '';
@@ -341,13 +318,9 @@ final class JsonViewTest extends UnitTestCase
         return $output;
     }
 
-    /**
-     * @param object|array $object
-     * @param array|string $expected
-     */
-    #[DataProvider('jsonViewTestDataRecursive')]
+    #[DataProvider('recursiveDataProvider')]
     #[Test]
-    public function recursive($object, array $configuration, $expected, string $variableToRender, string $description): void
+    public function recursive(object|array $object, array $configuration, object|array $expected, string $variableToRender, string $description): void
     {
         GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
 
@@ -360,10 +333,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertSame($expected, $actual, $description);
     }
 
-    /**
-     * data provider for testTransformValueWithObjectIdentifierExposure()
-     */
-    public static function objectIdentifierExposureTestData(): array
+    public static function transformValueWithObjectIdentifierExposureDataProvider(): array
     {
         $output = [];
 
@@ -389,7 +359,7 @@ final class JsonViewTest extends UnitTestCase
         return $output;
     }
 
-    #[DataProvider('objectIdentifierExposureTestData')]
+    #[DataProvider('transformValueWithObjectIdentifierExposureDataProvider')]
     #[Test]
     public function transformValueWithObjectIdentifierExposure(
         object $object,
@@ -412,10 +382,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertSame($expected, $actual, $description);
     }
 
-    /**
-     * A data provider
-     */
-    public static function exposeClassNameSettingsAndResults(): array
+    public static function viewExposesClassNameFullyIfConfiguredSoDataProvider(): array
     {
         $className = StringUtility::getUniqueId('DummyClass');
         $namespace = 'TYPO3\CMS\Extbase\Tests\Unit\Mvc\View\\' . $className;
@@ -441,7 +408,7 @@ final class JsonViewTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('exposeClassNameSettingsAndResults')]
+    #[DataProvider('viewExposesClassNameFullyIfConfiguredSoDataProvider')]
     #[Test]
     public function viewExposesClassNameFullyIfConfiguredSo(
         ?int $exposeClassNameSetting,
@@ -476,10 +443,11 @@ final class JsonViewTest extends UnitTestCase
     {
         $object = new \stdClass();
         $object->foo = 'Foo';
-        $this->view->assign('value', $object);
+        $subject = new JsonView();
+        $subject->assign('value', $object);
 
         $expectedResult = '{"foo":"Foo"}';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -487,10 +455,11 @@ final class JsonViewTest extends UnitTestCase
     public function renderReturnsJsonRepresentationOfAssignedArray(): void
     {
         $array = ['foo' => 'Foo', 'bar' => 'Bar'];
-        $this->view->assign('value', $array);
+        $subject = new JsonView();
+        $subject->assign('value', $array);
 
         $expectedResult = '{"foo":"Foo","bar":"Bar"}';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -498,10 +467,11 @@ final class JsonViewTest extends UnitTestCase
     public function renderReturnsJsonRepresentationOfAssignedSimpleValue(): void
     {
         $value = 'Foo';
-        $this->view->assign('value', $value);
+        $subject = new JsonView();
+        $subject->assign('value', $value);
 
         $expectedResult = '"Foo"';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -509,17 +479,15 @@ final class JsonViewTest extends UnitTestCase
     public function renderKeepsUtf8CharactersUnescaped(): void
     {
         $value = 'Gürkchen';
-        $this->view->assign('value', $value);
+        $subject = new JsonView();
+        $subject->assign('value', $value);
 
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
 
         $expectedResult = '"' . $value . '"';
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @return string[][]
-     */
     public static function escapeCharacterDataProvider(): array
     {
         return [
@@ -532,9 +500,10 @@ final class JsonViewTest extends UnitTestCase
     #[Test]
     public function renderEscapesEscapeCharacters(string $character): void
     {
-        $this->view->assign('value', $character);
+        $subject = new JsonView();
+        $subject->assign('value', $character);
 
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
 
         $expectedResult = '"\\' . $character . '"';
         self::assertSame($expectedResult, $actualResult);
@@ -544,22 +513,24 @@ final class JsonViewTest extends UnitTestCase
     public function renderReturnsNullIfNameOfAssignedVariableIsNotEqualToValue(): void
     {
         $value = 'Foo';
-        $this->view->assign('foo', $value);
+        $subject = new JsonView();
+        $subject->assign('foo', $value);
 
         $expectedResult = 'null';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
     #[Test]
     public function renderOnlyRendersVariableWithTheNameValue(): void
     {
-        $this->view
+        $subject = new JsonView();
+        $subject
             ->assign('value', 'Value')
             ->assign('someOtherVariable', 'Foo');
 
         $expectedResult = '"Value"';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -567,25 +538,27 @@ final class JsonViewTest extends UnitTestCase
     public function setVariablesToRenderOverridesValueToRender(): void
     {
         $value = 'Foo';
-        $this->view->assign('foo', $value);
-        $this->view->setVariablesToRender(['foo']);
+        $subject = new JsonView();
+        $subject->assign('foo', $value);
+        $subject->setVariablesToRender(['foo']);
 
         $expectedResult = '"Foo"';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
     #[Test]
     public function renderRendersMultipleValuesIfTheyAreSpecifiedAsVariablesToRender(): void
     {
-        $this->view
+        $subject = new JsonView();
+        $subject
             ->assign('value', 'Value1')
             ->assign('secondValue', 'Value2')
             ->assign('someOtherVariable', 'Value3');
-        $this->view->setVariablesToRender(['value', 'secondValue']);
+        $subject->setVariablesToRender(['value', 'secondValue']);
 
         $expectedResult = '{"value":"Value1","secondValue":"Value2"}';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -596,14 +569,15 @@ final class JsonViewTest extends UnitTestCase
         $object = new \stdClass();
         $object->foo = 'Foo';
 
-        $this->view
+        $subject = new JsonView();
+        $subject
             ->assign('array', $array)
             ->assign('object', $object)
             ->assign('someOtherVariable', 'Value3');
-        $this->view->setVariablesToRender(['array', 'object']);
+        $subject->setVariablesToRender(['array', 'object']);
 
         $expectedResult = '{"array":{"foo":{"bar":"Baz"}},"object":{"foo":"Foo"}}';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -612,8 +586,9 @@ final class JsonViewTest extends UnitTestCase
     {
         $array = [['name' => 'Foo', 'secret' => true], ['name' => 'Bar', 'secret' => true]];
 
-        $this->view->assign('value', $array);
-        $this->view->setConfiguration([
+        $subject = new JsonView();
+        $subject->assign('value', $array);
+        $subject->setConfiguration([
             'value' => [
                 '_descendAll' => [
                     '_only' => ['name'],
@@ -622,7 +597,7 @@ final class JsonViewTest extends UnitTestCase
         ]);
 
         $expectedResult = '[{"name":"Foo"},{"name":"Bar"}]';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -636,8 +611,9 @@ final class JsonViewTest extends UnitTestCase
             ],
         ];
 
-        $this->view->assign('value', $array);
-        $this->view->setConfiguration([
+        $subject = new JsonView();
+        $subject->assign('value', $array);
+        $subject->setConfiguration([
             'value' => [
                 'items' => [
                     // note: this exclude is just here, and should have no effect as the items have numeric keys
@@ -647,7 +623,7 @@ final class JsonViewTest extends UnitTestCase
         ]);
 
         $expectedResult = '{"items":[{"name":"Foo"},{"name":"Bar"}]}';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -656,8 +632,9 @@ final class JsonViewTest extends UnitTestCase
     {
         $array = [['name' => 'Foo', 'secret' => true], ['name' => 'Bar', 'secret' => true]];
 
-        $this->view->assign('value', $array);
-        $this->view->setConfiguration([
+        $subject = new JsonView();
+        $subject->assign('value', $array);
+        $subject->setConfiguration([
             'value' => [
                 '_descendAll' => [
                     '_descendAll' => [],
@@ -666,7 +643,7 @@ final class JsonViewTest extends UnitTestCase
         ]);
 
         $expectedResult = '[{"name":"Foo","secret":true},{"name":"Bar","secret":true}]';
-        $actualResult = $this->view->render();
+        $actualResult = $subject->render();
         self::assertSame($expectedResult, $actualResult);
     }
 }

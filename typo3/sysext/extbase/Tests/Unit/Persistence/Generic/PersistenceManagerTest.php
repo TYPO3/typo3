@@ -29,6 +29,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity2;
+use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Fixtures\TearDownableBackendInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PersistenceManagerTest extends UnitTestCase
@@ -339,18 +340,13 @@ final class PersistenceManagerTest extends UnitTestCase
     #[Test]
     public function tearDownWithBackendSupportingTearDownDelegatesCallToBackend(): void
     {
-        $mockBackend = $this->getMockBuilder(BackendInterface::class)
-            ->onlyMethods(get_class_methods(BackendInterface::class))
-            ->addMethods(['tearDown'])
-            ->getMock();
+        $mockBackend = $this->createMock(TearDownableBackendInterface::class);
         $mockBackend->expects(self::once())->method('tearDown');
-
         $persistenceManager = new PersistenceManager(
             $this->createMock(QueryFactoryInterface::class),
             $mockBackend,
             $this->createMock(Session::class)
         );
-
         $persistenceManager->tearDown();
     }
 
