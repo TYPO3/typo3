@@ -16,7 +16,7 @@ import { property, state, query } from 'lit/decorators';
 import { repeat } from 'lit/directives/repeat';
 import { styleMap } from 'lit/directives/style-map';
 import { ifDefined } from 'lit/directives/if-defined';
-import { TreeNodeInterface, TreeNodeCommandEnum, TreeNodePositionEnum, TreeNodeStatusInformation } from './tree-node';
+import { TreeNodeInterface, TreeNodeCommandEnum, TreeNodePositionEnum, TreeNodeStatusInformation, TreeNodeLabel } from './tree-node';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '../notification';
 import { KeyTypesEnum as KeyTypes } from '../enum/key-types';
@@ -617,6 +617,7 @@ export class Tree extends LitElement {
             @focusout="${() => { if (this.focusedNode === node) { this.focusedNode = null; } }}"
             @contextmenu="${(event: MouseEvent) => { event.preventDefault(); event.stopPropagation(); this.dispatchEvent(new CustomEvent('typo3:tree:node-context', { detail: { node: node } })); }}"
           >
+            ${this.createNodeLabel(node)}
             ${this.createNodeGuides(node)}
             ${this.createNodeLoader(node) || this.createNodeToggle(node) || nothing}
             ${this.createNodeContent(node)}
@@ -914,6 +915,21 @@ export class Tree extends LitElement {
   //
   // Node Rendering
   //
+  protected createNodeLabel(node: TreeNodeInterface): TemplateResult
+  {
+    const labels = this.getNodeLabels(node);
+    if (labels.length === 0) {
+      return html`${nothing}`;
+    }
+
+    const label = labels[0];
+    const styles = { backgroundColor: label.color };
+
+    return html`
+      <span class="node-label" style=${styleMap(styles)}></span>
+    `;
+  }
+
   protected createNodeGuides(node: TreeNodeInterface): TemplateResult
   {
     const guides = node.__treeParents.map((treeIdentifier) => {
@@ -1016,7 +1032,7 @@ export class Tree extends LitElement {
     }
 
     return html`
-      <div class="node-label">
+      <div class="node-contentlabel">
       <div class="node-name" .innerHTML="${label}"></div>
       ${node.note ? html`<div class="node-note">${node.note}</div>` : nothing }
       </div>`;
@@ -1177,6 +1193,24 @@ export class Tree extends LitElement {
     return classList;
   }
 
+  protected getNodeLabels(node: TreeNodeInterface): TreeNodeLabel[] {
+    let labels = node.labels;
+    if (labels.length > 0) {
+      labels = labels.sort((a, b) => {
+        return b.priority - a.priority;
+      });
+
+      return labels;
+    }
+
+    const parentNode = this.getParentNode(node);
+    if (parentNode === null) {
+      return [];
+    }
+
+    return this.getNodeLabels(parentNode);
+  }
+
   protected getNodeStatusInformation(node: TreeNodeInterface): TreeNodeStatusInformation[] {
     if (node.statusInformation.length === 0) {
       return [];
@@ -1276,9 +1310,15 @@ export class Tree extends LitElement {
 
   protected getNodeTitle(node: TreeNodeInterface): string {
     let baseNodeTitle = node.tooltip ? node.tooltip : 'uid=' + node.identifier + ' ' + node.name;
+
+    const labels = this.getNodeLabels(node);
+    if (labels.length) {
+      baseNodeTitle += '; ' + labels.map(label => label.label).join('; ');
+    }
+
     const statusInformation = this.getNodeStatusInformation(node);
     if (statusInformation.length) {
-      baseNodeTitle += '; ' + statusInformation.map(node => node.label).join('; ');
+      baseNodeTitle += '; ' + statusInformation.map(information => information.label).join('; ');
     }
 
     return baseNodeTitle;

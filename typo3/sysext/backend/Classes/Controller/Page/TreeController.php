@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
+use TYPO3\CMS\Backend\Dto\Tree\Label\Label;
 use TYPO3\CMS\Backend\Dto\Tree\PageTreeItem;
 use TYPO3\CMS\Backend\Dto\Tree\TreeItem;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -79,6 +80,21 @@ class TreeController
      * @var array
      */
     protected $hiddenRecords = [];
+
+    /**
+     * An array of background colors for a branch in the tree, set via userTS.
+     *
+     * @var array
+     * @deprecated will be removed in TYPO3 v14.0, please use labels instead
+     */
+    protected $backgroundColors = [];
+
+    /**
+     * An array of labels for a branch in the tree, set via userTS.
+     *
+     * @var array
+     */
+    protected array $labels = [];
 
     /**
      * Contains the state of all items that are expanded.
@@ -147,6 +163,8 @@ class TreeController
             (string)($userTsConfig['options.']['hideRecords.']['pages'] ?? ''),
             true
         );
+        $this->backgroundColors = $userTsConfig['options.']['pageTree.']['backgroundColor.'] ?? [];
+        $this->labels = $userTsConfig['options.']['pageTree.']['label.'] ?? [];
         $this->addIdAsPrefix = (bool)($userTsConfig['options.']['pageTree.']['showPageIdWithTitle'] ?? false);
         $this->addDomainName = (bool)($userTsConfig['options.']['pageTree.']['showDomainNameWithTitle'] ?? false);
         $this->useNavTitle = (bool)($userTsConfig['options.']['pageTree.']['showNavTitle'] ?? false);
@@ -368,6 +386,21 @@ class TreeController
             $prefix = '[' . $pageId . '] ';
         }
 
+        $labels = [];
+        if (!empty($this->backgroundColors[$pageId])) {
+            $labels[] = new Label(
+                label: $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.color') . ': ' . $this->backgroundColors[$pageId],
+                color: $this->backgroundColors[$pageId] ?? '#ff0000',
+                priority: -1,
+            );
+        }
+        if (!empty($this->labels[$pageId . '.']) && isset($this->labels[$pageId . '.']['label']) && trim($this->labels[$pageId . '.']['label']) !== '') {
+            $labels[] = new Label(
+                label: (string)($this->labels[$pageId . '.']['label']),
+                color: (string)($this->labels[$pageId . '.']['color'] ?? '#ff8700'),
+            );
+        }
+
         $editable = false;
         if ($pageId !== 0) {
             $editable = $this->userHasAccessToModifyPagesAndToDefaultLanguage && $backendUser->doesUserHaveAccess($page, Permission::PAGE_EDIT);
@@ -389,6 +422,7 @@ class TreeController
             'expanded' => $expanded,
             'editable' => $editable,
             'deletable' => $backendUser->doesUserHaveAccess($page, Permission::PAGE_DELETE),
+            'labels' => $labels,
 
             // _page is only for use in events so they do not need to fetch those
             // records again. The property will be removed from the final payload.
@@ -635,6 +669,7 @@ class TreeController
                         icon: (string)($item['icon'] ?? ''),
                         overlayIcon: (string)($item['overlayIcon'] ?? ''),
                         statusInformation: (array)($item['statusInformation'] ?? []),
+                        labels: (array)($item['labels'] ?? []),
                     ),
                     // PageTreeItem
                     doktype: (int)($item['doktype'] ?? ''),

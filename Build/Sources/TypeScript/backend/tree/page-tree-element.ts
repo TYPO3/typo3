@@ -574,6 +574,7 @@ class PageTreeToolbar extends TreeToolbar {
       type: 'PageTreeItem',
       doktype: item.nodeType,
       statusInformation: [],
+      labels: [],
     };
     this.tree.draggingNode = newNode;
     this.tree.nodeDragMode = TreeNodeCommandEnum.NEW;

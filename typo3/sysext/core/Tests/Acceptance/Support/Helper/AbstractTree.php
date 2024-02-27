@@ -27,7 +27,7 @@ abstract class AbstractTree
     // Selectors
     public static $treeSelector = '';
     public static $treeItemSelector = '.nodes-list > [role="treeitem"]';
-    public static $treeItemAnchorSelector = '.node-label';
+    public static $treeItemAnchorSelector = '.node-contentlabel';
 
     /**
      * @var \AcceptanceTester

@@ -33,6 +33,9 @@
 			<trans-unit id="labels.lockedRecordUser_content" resname="labels.lockedRecordUser_content">
 				<source>The %s '%s' began to edit content on this page %s ago.</source>
 			</trans-unit>
+			<trans-unit id="labels.color" resname="labels.color">
+				<source>Color</source>
+			</trans-unit>
 			<trans-unit id="labels.user" resname="labels.user">
 				<source>User</source>
 			</trans-unit>

@@ -34,6 +34,12 @@ export interface TreeNodeStatusInformation {
   priority: number
 }
 
+export interface TreeNodeLabel {
+  label: string,
+  color: string,
+  priority: number,
+}
+
 /**
  * Represents a single node in the tree that is rendered.
  */
@@ -58,6 +64,7 @@ export interface TreeNodeInterface {
   icon: string,
   overlayIcon: string,
   statusInformation: Array<TreeNodeStatusInformation>,
+  labels: Array<TreeNodeLabel>,
 
   // Calculated Internal
   __treeIdentifier: string,

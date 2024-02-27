@@ -168,6 +168,17 @@
     }
 }
 
+.node-label {
+    position: absolute;
+    border-radius: .25rem;
+    top: 4px;
+    inset-inline-start: 4px;
+    bottom: 4px;
+    width: .25rem;
+    user-select: none;
+    pointer-events: none;
+}
+
 .node-treelines {
     display: flex;
     flex-shrink: 0;
@@ -270,7 +281,7 @@
     overflow: hidden;
 }
 
-.node-label {
+.node-contentlabel {
     display: flex;
     flex-grow: 1;
     flex-wrap: wrap;

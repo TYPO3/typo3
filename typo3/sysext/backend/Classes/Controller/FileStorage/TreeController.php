@@ -163,6 +163,7 @@ class TreeController
                 icon: $item['icon'],
                 overlayIcon: $item['overlayIcon'],
                 statusInformation: (array)($item['statusInformation'] ?? []),
+                labels: (array)($item['labels'] ?? []),
             ),
             pathIdentifier: (string)($item['pathIdentifier'] ?? ''),
             storage: (int)($item['storage'] ?? 0),

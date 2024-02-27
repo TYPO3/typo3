@@ -1,0 +1,54 @@
+.. include:: /Includes.rst.txt
+
+.. _deprecation-103211-1709038752:
+
+=========================================================
+Deprecation: #103211 - Deprecate pageTree.backgroundColor
+=========================================================
+
+See :issue:`103211`
+
+Description
+===========
+
+The user TSconfig option :tsconfig:`options.pageTree.backgroundColor`
+has been deprecated and will be removed in TYPO3 v14 due to its
+lack of accessibility. It is being replaced with a new label
+system for tree nodes.
+
+
+Impact
+======
+
+During v13, :tsconfig:`options.pageTree.backgroundColor` will be
+migrated to the new label system. Since the use case is unknown,
+the generated label will be "Color: <value>". This information
+will be displayed on all affected nodes.
+
+
+Affected installations
+======================
+
+All installations that use the user TSconfig option
+:tsconfig:`options.pageTree.backgroundColor` are affected.
+
+
+Migration
+=========
+
+Before:
+
+..  code-block:: tsconfig
+
+    options.pageTree.backgroundColor.<pageid> = #ff8700
+
+After:
+
+..  code-block:: tsconfig
+
+    options.pageTree.label.<pageid> {
+        label = Campaign A
+        color = #ff8700
+    }
+
+.. index:: Backend, JavaScript, TSconfig, NotScanned, ext:backend

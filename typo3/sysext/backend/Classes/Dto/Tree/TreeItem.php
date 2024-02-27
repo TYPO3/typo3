@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Dto\Tree;
 
+use TYPO3\CMS\Backend\Dto\Tree\Label\Label;
 use TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation;
 
 /**
@@ -26,6 +27,7 @@ final readonly class TreeItem implements \JsonSerializable
 {
     /**
      * @param StatusInformation[] $statusInformation
+     * @param Label[] $labels
      **/
     public function __construct(
         public string $identifier,
@@ -43,6 +45,7 @@ final readonly class TreeItem implements \JsonSerializable
         public string $overlayIcon,
         public string $note = '',
         public array $statusInformation = [],
+        public array $labels = [],
         public bool $editable = false,
         public bool $deletable = false,
     ) {}

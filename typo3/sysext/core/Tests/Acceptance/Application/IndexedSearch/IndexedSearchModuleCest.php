@@ -33,7 +33,7 @@ final class IndexedSearchModuleCest
     {
         $I->click('[data-modulemenu-identifier="web_IndexedSearchIsearch"]');
         // click on PID=0
-        $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-label');
+        $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel');
         $I->switchToContentFrame();
         $I->seeElement('.t3-js-jumpMenuBox');
         $I->selectOption('.t3-js-jumpMenuBox', 'General statistics');
