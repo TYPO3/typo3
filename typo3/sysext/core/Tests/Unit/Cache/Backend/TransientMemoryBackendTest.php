@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the TransientMemory cache backend
- */
 final class TransientMemoryBackendTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
@@ -35,7 +32,6 @@ final class TransientMemoryBackendTest extends UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1238244992);
-
         $backend = new TransientMemoryBackend('Testing');
         $data = 'Some data';
         $identifier = 'MyIdentifier';

@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures;
 
-/**
- * Fixture to test cache manager details
- */
 class BackendInitializeObjectFixture extends BackendFixture
 {
     public function initializeObject(): void

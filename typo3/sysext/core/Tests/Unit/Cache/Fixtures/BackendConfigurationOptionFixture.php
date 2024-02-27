@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures;
 
-/**
- * Backend fixture for CacheManager test getCacheCreatesBackendWithGivenConfiguration()
- */
 class BackendConfigurationOptionFixture extends BackendFixture
 {
     /**

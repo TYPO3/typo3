@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
-/**
-* Fixture implementing frontend
-*/
 class FrontendFixture implements FrontendInterface
 {
     protected string $identifier;

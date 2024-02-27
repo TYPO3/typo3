@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
-/**
- * Backend fixture to test cache manager.
- */
 class BackendFixture implements BackendInterface
 {
     public function setCache(FrontendInterface $cache): void {}

@@ -37,7 +37,6 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $frontend = new NullFrontend('test');
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontend);
-
         self::assertEquals('cache_test', $subject->getCacheTable());
     }
 
@@ -63,67 +62,65 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
     #[Test]
     public function setThrowsExceptionIfDataIsNotAString(): void
     {
+        $this->expectException(InvalidDataException::class);
+        $this->expectExceptionCode(1236518298);
         $frontend = new NullFrontend('test');
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontend);
-
-        $this->expectException(InvalidDataException::class);
-        $this->expectExceptionCode(1236518298);
-
         $subject->set('identifier', ['iAmAnArray']);
     }
 
     #[Test]
     public function getThrowsExceptionIfFrontendWasNotSet(): void
     {
-        $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
+        $subject = new Typo3DatabaseBackend('Testing');
         $subject->get('identifier');
     }
 
     #[Test]
     public function hasThrowsExceptionIfFrontendWasNotSet(): void
     {
-        $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
+        $subject = new Typo3DatabaseBackend('Testing');
         $subject->has('identifier');
     }
 
     #[Test]
     public function removeThrowsExceptionIfFrontendWasNotSet(): void
     {
-        $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
+        $subject = new Typo3DatabaseBackend('Testing');
         $subject->remove('identifier');
     }
 
     #[Test]
     public function collectGarbageThrowsExceptionIfFrontendWasNotSet(): void
     {
-        $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
+        $subject = new Typo3DatabaseBackend('Testing');
         $subject->collectGarbage();
     }
 
     #[Test]
     public function findIdentifiersByTagThrowsExceptionIfFrontendWasNotSet(): void
     {
-        $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
+        $subject = new Typo3DatabaseBackend('Testing');
         $subject->findIdentifiersByTag('identifier');
     }
 
     #[Test]
     public function flushThrowsExceptionIfFrontendWasNotSet(): void
     {
-        $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
+        $subject = new Typo3DatabaseBackend('Testing');
         $subject->flush();
     }
 
@@ -210,18 +207,18 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
     #[Test]
     public function flushByTagThrowsExceptionIfFrontendWasNotSet(): void
     {
-        $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
+        $subject = new Typo3DatabaseBackend('Testing');
         $subject->flushByTag('Tag');
     }
 
     #[Test]
     public function flushByTagsThrowsExceptionIfFrontendWasNotSet(): void
     {
-        $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1236518288);
+        $subject = new Typo3DatabaseBackend('Testing');
         $subject->flushByTags([]);
     }
 }
