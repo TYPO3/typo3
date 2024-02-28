@@ -322,13 +322,13 @@ export class Tree extends LitElement {
     }]).pop();
 
     if (parentNode) {
-      if (target.hasChildren && !target.expanded) {
-        await this.showChildren(target);
+      if (parentNode.hasChildren && !parentNode.expanded) {
+        await this.showChildren(parentNode);
       }
 
-      if (!target.hasChildren) {
-        target.hasChildren = true;
-        target.expanded = true;
+      if (!parentNode.hasChildren) {
+        parentNode.hasChildren = true;
+        parentNode.expanded = true;
       }
     }
 
@@ -342,9 +342,17 @@ export class Tree extends LitElement {
 
   public async removeNode(node: TreeNodeInterface) {
     const index = this.nodes.indexOf(node);
+    const parentNode = this.getParentNode(node);
     if (index > -1) {
       this.nodes.splice(index, 1);
     }
+    this.requestUpdate();
+    this.updateComplete.then(() => {
+      if (parentNode.expanded && parentNode.hasChildren && this.getNodeChildren(parentNode).length === 0) {
+        parentNode.hasChildren = false;
+        parentNode.expanded = false;
+      }
+    });
   }
 
   public filter(searchTerm?: string|null): void {
