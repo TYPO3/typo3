@@ -4,8 +4,10 @@
 ,2,1,32,"Main Area",0,0,0
 ,20,2,64,"Main Area Sub 1",0,0,0
 ,21,2,128,"Main Area Sub 2",0,0,0
+,22,2,256,"Main Area Sub 3 (called 30,32)",0,0,0
 ,30,21,64,"Sub Area 1",0,0,0
 ,31,21,128,"Sub Area 2",0,0,0
+,32,21,256,"Sub Area 3",0,0,0
 ,3,0,512,"Home 2",0,0,0
 ,1003,2,512,"Main Area Sub 1 Modified",1,20,0
 ,1004,2,512,"Main Area Sub 1 Modified in WS2",2,20,0
