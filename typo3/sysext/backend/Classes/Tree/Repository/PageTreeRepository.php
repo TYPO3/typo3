@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -544,21 +545,32 @@ class PageTreeRepository
             );
 
         $searchParts = $expressionBuilder->or();
-        if (is_numeric($searchFilter) && $searchFilter > 0) {
+
+        // Extract true integers from search string
+        $searchUids = [];
+        $searchPhrases = GeneralUtility::trimExplode(',', $searchFilter, true);
+        foreach ($searchPhrases as $searchPhrase) {
+            if (MathUtility::canBeInterpretedAsInteger($searchPhrase) && $searchPhrase > 0) {
+                $searchUids[] = (int)$searchPhrase;
+            }
+        }
+        $searchUids = array_unique($searchUids);
+
+        if (!empty($searchUids)) {
             // Ensure that the LIVE id is also found
             if ($this->currentWorkspace > 0) {
                 $uidFilter = $expressionBuilder->or(
                     $expressionBuilder->and(
-                        $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT)),
+                        $expressionBuilder->in('uid', $queryBuilder->createNamedParameter($searchUids, Connection::PARAM_INT_ARRAY)),
                         $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                     ),
                     $expressionBuilder->and(
-                        $expressionBuilder->eq('t3ver_oid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT)),
+                        $expressionBuilder->in('t3ver_oid', $queryBuilder->createNamedParameter($searchUids, Connection::PARAM_INT_ARRAY)),
                         $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->currentWorkspace, Connection::PARAM_INT)),
                     )
                 );
             } else {
-                $uidFilter = $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT));
+                $uidFilter = $expressionBuilder->in('uid', $queryBuilder->createNamedParameter($searchUids, Connection::PARAM_INT_ARRAY));
             }
             $searchParts = $searchParts->with($uidFilter);
         }

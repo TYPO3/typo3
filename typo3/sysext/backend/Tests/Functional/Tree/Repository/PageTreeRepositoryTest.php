@@ -73,7 +73,17 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
                                         'title' => 'Sub Area 2',
                                         '_children' => [],
                                     ],
+                                    [
+                                        'uid' => 32,
+                                        'title' => 'Sub Area 3',
+                                        '_children' => [],
+                                    ],
                                 ],
+                            ],
+                            [
+                                'uid' => 22,
+                                'title' => 'Main Area Sub 3 (called 30,32)',
+                                '_children' => [],
                             ],
                         ],
                     ],
@@ -106,6 +116,11 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
                             [
                                 'uid' => 21,
                                 'title' => 'Main Area Sub 2',
+                                '_children' => [],
+                            ],
+                            [
+                                'uid' => 22,
+                                'title' => 'Main Area Sub 3 (called 30,32)',
                                 '_children' => [],
                             ],
                         ],
@@ -151,7 +166,17 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
                                         'title' => 'Sub Area 2',
                                         '_children' => [],
                                     ],
+                                    [
+                                        'uid' => 32,
+                                        'title' => 'Sub Area 3',
+                                        '_children' => [],
+                                    ],
                                 ],
+                            ],
+                            [
+                                'uid' => 22,
+                                'title' => 'Main Area Sub 3 (called 30,32)',
+                                '_children' => [],
                             ],
                         ],
                     ],
@@ -201,7 +226,17 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
                                         'title' => 'Sub Area 2',
                                         '_children' => [],
                                     ],
+                                    [
+                                        'uid' => 32,
+                                        'title' => 'Sub Area 3',
+                                        '_children' => [],
+                                    ],
                                 ],
+                            ],
+                            [
+                                'uid' => 22,
+                                'title' => 'Main Area Sub 3 (called 30,32)',
+                                '_children' => [],
                             ],
                         ],
                     ],
@@ -217,6 +252,11 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
                             [
                                 'uid' => 31,
                                 'title' => 'Sub Area 2',
+                                '_children' => [],
+                            ],
+                            [
+                                'uid' => 32,
+                                'title' => 'Sub Area 3',
                                 '_children' => [],
                             ],
                         ],
@@ -285,6 +325,11 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
                                     ],
                                 ],
                             ],
+                            [
+                                'uid' => 22,
+                                'title' => 'Main Area Sub 3 (called 30,32)',
+                                '_children' => [],
+                            ],
                         ],
                     ],
                 ],
@@ -304,6 +349,188 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
                         '_children' => [],
                     ],
                 ],
+            ],
+        ];
+        yield 'Two finds by comma separated UIDs' => [
+            '30,31',
+            0,
+            1,
+            [
+                'uid' => 1,
+                'title' => 'Home',
+                '_children' => [
+                    [
+                        'uid' => 2,
+                        'title' => 'Main Area',
+                        '_children' => [
+                            [
+                                'uid' => 21,
+                                'title' => 'Main Area Sub 2',
+                                '_children' => [
+                                    [
+                                        'uid' => 30,
+                                        'title' => 'Sub Area 1',
+                                        '_children' => [],
+                                    ],
+                                    [
+                                        'uid' => 31,
+                                        'title' => 'Sub Area 2',
+                                        '_children' => [],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Three finds by comma separated UIDs' => [
+            '30,32',
+            0,
+            1,
+            [
+                'uid' => 1,
+                'title' => 'Home',
+                '_children' => [
+                    [
+                        'uid' => 2,
+                        'title' => 'Main Area',
+                        '_children' => [
+                            [
+                                'uid' => 21,
+                                'title' => 'Main Area Sub 2',
+                                '_children' => [
+                                    [
+                                        'uid' => 30,
+                                        'title' => 'Sub Area 1',
+                                        '_children' => [],
+                                    ],
+                                    [
+                                        'uid' => 32,
+                                        'title' => 'Sub Area 3',
+                                        '_children' => [],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'uid' => 22,
+                                'title' => 'Main Area Sub 3 (called 30,32)',
+                                '_children' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Two finds by comma separated UIDs and a string' => [
+            '30,string,31',
+            0,
+            1,
+            [
+                'uid' => 1,
+                'title' => 'Home',
+                '_children' => [
+                    [
+                        'uid' => 2,
+                        'title' => 'Main Area',
+                        '_children' => [
+                            [
+                                'uid' => 21,
+                                'title' => 'Main Area Sub 2',
+                                '_children' => [
+                                    [
+                                        'uid' => 30,
+                                        'title' => 'Sub Area 1',
+                                        '_children' => [],
+                                    ],
+                                    [
+                                        'uid' => 31,
+                                        'title' => 'Sub Area 2',
+                                        '_children' => [],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'One find by comma separated negative and positive UIDs' => [
+            '-30,31',
+            0,
+            1,
+            [
+                'uid' => 1,
+                'title' => 'Home',
+                '_children' => [
+                    [
+                        'uid' => 2,
+                        'title' => 'Main Area',
+                        '_children' => [
+                            [
+                                'uid' => 21,
+                                'title' => 'Main Area Sub 2',
+                                '_children' => [
+                                    [
+                                        'uid' => 31,
+                                        'title' => 'Sub Area 2',
+                                        '_children' => [],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'No finds by arbitrary string' => [
+            bin2hex(random_bytes(20)),
+            0,
+            0,
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' => [],
+            ],
+        ];
+        yield 'No finds by string starting with int' => [
+            '30isAnInteger',
+            0,
+            0,
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' => [],
+            ],
+        ];
+        yield 'No finds by string ending with int' => [
+            'AnIntegerIs30',
+            0,
+            0,
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' => [],
+            ],
+        ];
+        yield 'No finds by float' => [
+            '30.0',
+            0,
+            0,
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' => [],
+            ],
+        ];
+        yield 'No finds by exponential format' => [
+            '2e+1', // that's a 20
+            0,
+            0,
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' => [],
             ],
         ];
     }
