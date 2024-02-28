@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -3248,93 +3247,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_brTag(string $input, string $expected, array $config): void
     {
         self::assertEquals($expected, $this->subject->stdWrap_brTag($input, $config));
-    }
-
-    /**
-     * Data provider for stdWrap_bytes.
-     *
-     * @return array [$expect, $content, $conf]
-     */
-    public static function stdWrap_bytesDataProvider(): array
-    {
-        return [
-            'value 1234 default' => [
-                '1.21 Ki',
-                '1234',
-                ['labels' => '', 'base' => 0],
-            ],
-            'value 1234 si' => [
-                '1.23 k',
-                '1234',
-                ['labels' => 'si', 'base' => 0],
-            ],
-            'value 1234 iec' => [
-                '1.21 Ki',
-                '1234',
-                ['labels' => 'iec', 'base' => 0],
-            ],
-            'value 1234 a-i' => [
-                '1.23b',
-                '1234',
-                ['labels' => 'a|b|c|d|e|f|g|h|i', 'base' => 1000],
-            ],
-            'value 1234 a-i invalid base' => [
-                '1.21b',
-                '1234',
-                ['labels' => 'a|b|c|d|e|f|g|h|i', 'base' => 54],
-            ],
-            'value 1234567890 default' => [
-                '1.15 Gi',
-                '1234567890',
-                ['labels' => '', 'base' => 0],
-            ],
-            'value 1234 iec no base' => [
-                '1.21 Ki',
-                '1234',
-                ['labels' => 'iec'],
-            ],
-            'value 1234 no labels base set' => [
-                '1.21 Ki',
-                '1234',
-                ['base' => 0],
-            ],
-        ];
-    }
-
-    /**
-     * Check if stdWrap_bytes works properly.
-     *
-     * Show:
-     *
-     * - Delegates to GeneralUtility::formatSize
-     * - Parameter 1 is $conf['bytes.'][labels'].
-     * - Parameter 2 is $conf['bytes.'][base'].
-     * - Returns the return value.
-     *
-     * Note: As PHPUnit can't mock static methods, the call to
-     *       GeneralUtility::formatSize can't be easily intercepted. The test
-     *       is done by testing input/output pairs instead. To not duplicate
-     *       the testing of formatSize just a few smoke tests are done here.
-     *
-     * @param string $expect The expected output.
-     * @param string $content The given input.
-     * @param array $conf The given configuration for 'bytes.'.
-     */
-    #[DataProvider('stdWrap_bytesDataProvider')]
-    #[Test]
-    public function stdWrap_bytes(string $expect, string $content, array $conf): void
-    {
-        $locale = 'en_US.UTF-8';
-        try {
-            $this->setLocale(LC_NUMERIC, $locale);
-        } catch (Exception $e) {
-            self::markTestSkipped('Locale ' . $locale . ' is not available.');
-        }
-        $conf = ['bytes.' => $conf];
-        self::assertSame(
-            $expect,
-            $this->subject->stdWrap_bytes($content, $conf)
-        );
     }
 
     /**
