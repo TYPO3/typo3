@@ -257,7 +257,7 @@ class FolderElement extends AbstractFormElement
         $html[] = '</div>';
 
         $resultArray['html'] =
-            '<typo3-formengine-element-folder recordFieldId="' . htmlspecialchars($fieldId) . '">
+            '<typo3-formengine-element-folder class="formengine-field-item" recordFieldId="' . htmlspecialchars($fieldId) . '">
                 ' . implode(LF, $html) . '
             </typo3-formengine-element-folder>';
 
