@@ -327,7 +327,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
      */
     #[DataProvider('dutchDataProvider')]
     #[Test]
-    public function renderingOfDutchLanguage(array $languageConfiguration, array $visibleRecords, string $fallbackType, string $fallbackChain, string $overlayType): void
+    public function renderingOfDutchLanguage(array $languageConfiguration, array $visibleRecords, string $fallbackType, string $fallbackChain, string $overlayMode): void
     {
         $this->writeSiteConfiguration(
             'test',
@@ -380,7 +380,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
         self::assertEquals(1, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
         self::assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
         self::assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
-        self::assertEquals($overlayType, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
+        self::assertEquals($overlayMode, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
     }
 
     public static function contentOnNonTranslatedPageDataProvider(): array
@@ -412,7 +412,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 ],
                 'pageTitle' => 'Default language Page',
                 'languageId' => 2,
-                'contentId' => 0,
+                'contentLanguageId' => 0,
                 'fallbackType' => 'free',
                 'fallbackChain' => '0,pageNotFound',
                 'overlayMode' => 'off',
@@ -438,7 +438,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 ],
                 'pageTitle' => 'Default language Page',
                 'languageId' => 2,
-                'contentId' => 0,
+                'contentLanguageId' => 0,
                 'fallbackType' => 'free',
                 'fallbackChain' => '0,pageNotFound',
                 'overlayMode' => 'off',
@@ -468,7 +468,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 ],
                 'pageTitle' => '[DA]Page',
                 'languageId' => 2,
-                'contentId' => 1,
+                'contentLanguageId' => 1,
                 'fallbackType' => 'free',
                 'fallbackChain' => '1,0,pageNotFound',
                 'overlayMode' => 'off',
@@ -480,7 +480,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 'visibleRecords' => [],
                 'pageTitle' => '',
                 'languageId' => 2,
-                'contentId' => 2,
+                'contentLanguageId' => 2,
                 'fallbackType' => 'free',
                 'fallbackChain' => 'pageNotFound',
                 'overlayMode' => 'off',
@@ -507,7 +507,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 ],
                 'pageTitle' => 'Default language Page',
                 'languageId' => 2,
-                'contentId' => 0,
+                'contentLanguageId' => 0,
                 'fallbackType' => 'fallback',
                 'fallbackChain' => '0,pageNotFound',
                 'overlayMode' => 'mixed',
@@ -534,7 +534,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 ],
                 'pageTitle' => 'Default language Page',
                 'languageId' => 2,
-                'contentId' => 0,
+                'contentLanguageId' => 0,
                 'fallbackType' => 'fallback',
                 'fallbackChain' => '0,pageNotFound',
                 'overlayMode' => 'mixed',
@@ -562,7 +562,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 ],
                 'pageTitle' => '[DA]Page',
                 'languageId' => 2,
-                'contentId' => 1,
+                'contentLanguageId' => 1,
                 'fallbackType' => 'fallback',
                 'fallbackChain' => '1,0,pageNotFound',
                 'overlayMode' => 'mixed',
@@ -575,7 +575,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 'visibleRecords' => [],
                 'pageTitle' => '',
                 'languageId' => 2,
-                'contentId' => 0,
+                'contentLanguageId' => 0,
                 'fallbackType' => 'fallback',
                 'fallbackChain' => 'pageNotFound',
                 'overlayMode' => 'mixed',
@@ -602,7 +602,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 ],
                 'pageTitle' => 'Default language Page',
                 'languageId' => 2,
-                'contentId' => 0,
+                'contentLanguageId' => 0,
                 'fallbackType' => 'strict',
                 'fallbackChain' => '0,pageNotFound',
                 'overlayMode' => 'includeFloating',
@@ -628,7 +628,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 ],
                 'pageTitle' => '[DA]Page',
                 'languageId' => 2,
-                'contentId' => 1,
+                'contentLanguageId' => 1,
                 'fallbackType' => 'strict',
                 'fallbackChain' => '1,0,pageNotFound',
                 'overlayMode' => 'includeFloating',
@@ -641,7 +641,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 'visibleRecords' => [],
                 'pageTitle' => '',
                 'languageId' => 2,
-                'contentId' => 1,
+                'contentLanguageId' => 1,
                 'fallbackType' => 'strict',
                 'fallbackChain' => 'pageNotFound',
                 'overlayMode' => 'includeFloating',
@@ -824,7 +824,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
      */
     #[DataProvider('contentOnPartiallyTranslatedPageDataProvider')]
     #[Test]
-    public function contentOnPartiallyTranslatedPage(array $languageConfiguration, array $visibleHeaders, string $fallbackType, string $fallbackChain, string $overlayType): void
+    public function contentOnPartiallyTranslatedPage(array $languageConfiguration, array $visibleRecordHeaders, string $fallbackType, string $fallbackChain, string $overlayMode): void
     {
         $this->writeSiteConfiguration(
             'test',
@@ -850,14 +850,14 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
             (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)
             ->setField('header')
-            ->setValues(...$visibleHeaders)
+            ->setValues(...$visibleRecordHeaders)
         );
         self::assertThat(
             $responseSections,
             (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)
             ->setField('header')
-            ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
+            ->setValues(...$this->getNonVisibleHeaders($visibleRecordHeaders))
         );
 
         self::assertEquals('[PL]Page', $responseStructure->getScopePath('page/title'));
@@ -865,6 +865,6 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
         self::assertEquals(3, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
         self::assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
         self::assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
-        self::assertEquals($overlayType, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
+        self::assertEquals($overlayMode, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
     }
 }

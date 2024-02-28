@@ -52,7 +52,7 @@ final class PhpErrorCodeViewHelperTest extends FunctionalTestCase
 
     #[DataProvider('errorCodesDataProvider')]
     #[Test]
-    public function renderPhpCodesCorrectly(int $errorCode, string $expected): void
+    public function renderPhpCodesCorrectly(int $errorCode, string $expectedString): void
     {
         // Happy little hack for VH tests in install tool: ViewHelperResolver
         // createViewHelperInstanceFromClassName() has an early check for
@@ -66,6 +66,6 @@ final class PhpErrorCodeViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<install:format.phpErrorCode phpErrorCode="' . $errorCode . '" />');
-        self::assertSame($expected, (new TemplateView($context))->render());
+        self::assertSame($expectedString, (new TemplateView($context))->render());
     }
 }

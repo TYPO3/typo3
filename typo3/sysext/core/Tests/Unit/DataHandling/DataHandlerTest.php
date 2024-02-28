@@ -285,14 +285,14 @@ final class DataHandlerTest extends UnitTestCase
 
     #[DataProvider('numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectlyDataProvider')]
     #[Test]
-    public function numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectly(string $value, string $expectedReturnValue): void
+    public function numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectly(string $input, string $expected): void
     {
         $tcaFieldConf = [
             'type' => 'number',
             'format' => 'decimal',
         ];
-        $returnValue = $this->subject->_call('checkValueForNumber', $value, $tcaFieldConf);
-        self::assertSame($expectedReturnValue, $returnValue['value']);
+        $returnValue = $this->subject->_call('checkValueForNumber', $input, $tcaFieldConf);
+        self::assertSame($expected, $returnValue['value']);
     }
 
     /**

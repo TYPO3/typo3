@@ -87,9 +87,9 @@ final class DocumentationFileTest extends FunctionalTestCase
     public static function invalidDirProvider(): array
     {
         return [
-            ['root' => '/'],
-            ['etc' => '/etc'],
-            ['etc/passwd' => '/etc/passwd'],
+            'root' => ['/'],
+            'etc' => ['/etc'],
+            'etc/passwd' => ['/etc/passwd'],
         ];
     }
 
@@ -109,8 +109,8 @@ final class DocumentationFileTest extends FunctionalTestCase
     public static function invalidFilesProvider(): array
     {
         return [
-            ['/etc/passwd' => '/etc/passwd'],
-            ['root' => '/'],
+            '/etc/passwd' => ['/etc/passwd'],
+            'root' => ['/'],
         ];
     }
 

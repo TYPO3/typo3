@@ -26,63 +26,63 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
     {
         return [
             'Simple url matches' => [
-                'https://foo-bar.baz',
                 'content' => 'https://foo-bar.baz',
-                'elements' => [
+                'expectedContent' => 'https://foo-bar.baz',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'https://foo-bar.baz',
                     ],
                 ],
             ],
             'Valid characters by RFC 3986 match' => [
-                'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
                 'content' => 'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
-                'elements' => [
+                'expectedContent' => 'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
                     ],
                 ],
             ],
             'URLs in content match' => [
-                'Lorem ipsum https://foo-bar.baz dolor sit',
                 'content' => 'Lorem ipsum https://foo-bar.baz dolor sit',
-                'elements' => [
+                'expectedContent' => 'Lorem ipsum https://foo-bar.baz dolor sit',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'https://foo-bar.baz',
                     ],
                 ],
             ],
             'FTP URLs match' => [
-                'ftp://foo-bar.baz',
                 'content' => 'ftp://foo-bar.baz',
-                'elements' => [
+                'expectedContent' => 'ftp://foo-bar.baz',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'ftp://foo-bar.baz',
                     ],
                 ],
             ],
             'Full URLs match' => [
-                'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
                 'content' => 'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
-                'elements' => [
+                'expectedContent' => 'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
                     ],
                 ],
             ],
             'URL encoded URLs match' => [
-                'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
                 'content' => 'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
-                'elements' => [
+                'expectedContent' => 'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
                     ],
                 ],
             ],
             'No space character after the last URL matches' => [
-                '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
                 'content' => '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
-                'elements' => [
+                'expectedContent' => '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'https://foo.bar.baz/abc/def/ghi/.',
                     ],
@@ -90,14 +90,14 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
             ],
             // The two cases below are handled by typolink_tag
             'URLs in anchor tag attributes do NOT match' => [
-                '<a href="https://foo-bar.baz">some link</a>',
-                'content' => '',
-                'elements' => [],
+                'content' => '<a href="https://foo-bar.baz">some link</a>',
+                'expectedContent' => '',
+                'expectedElements' => [],
             ],
             'URLs in link tag attributes do NOT match' => [
-                '<link href="https://foo-bar.baz/style.css" rel="stylesheet">',
-                'content' => '',
-                'elements' => [],
+                'content' => '<link href="https://foo-bar.baz/style.css" rel="stylesheet">',
+                'expectedContent' => '',
+                'expectedElements' => [],
             ],
         ];
     }

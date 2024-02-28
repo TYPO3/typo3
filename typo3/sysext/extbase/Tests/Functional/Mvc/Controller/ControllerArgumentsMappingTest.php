@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -33,20 +32,8 @@ use TYPO3Tests\BlogExample\Controller\BlogController;
 
 final class ControllerArgumentsMappingTest extends FunctionalTestCase
 {
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
-     * @var ResponseInterface
-     */
-    protected $response;
-
-    /**
-     * @var BlogController
-     */
-    protected $controller;
+    private Request $request;
+    private BlogController $controller;
 
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
@@ -81,12 +68,12 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
             [
                 'language' => 0,
                 'blogUid' => 1,
-                'blogTitle' => 'Blog 1',
+                'expectedTitle' => 'Blog 1',
             ],
             [
                 'language' => 1,
                 'blogUid' => 1,
-                'blogTitle' => 'Blog 1 DA',
+                'expectedTitle' => 'Blog 1 DA',
             ],
         ];
     }

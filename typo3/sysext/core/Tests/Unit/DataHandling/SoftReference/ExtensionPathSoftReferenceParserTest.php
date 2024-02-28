@@ -28,12 +28,12 @@ final class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferencePa
             'Simple EXT: path has a match' => [
                 'text' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
                 'content' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
-                'elements' => [
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
                     ],
                 ],
-                'hasMatched' => true,
+                'expectedHasMatched' => true,
             ],
             'Multiple EXT: paths have matches' => [
                 'text' => '
@@ -48,7 +48,7 @@ final class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferencePa
                     @import "EXT:foobar/Configuration/TypoScript/setup2.typoscript"
                     # some comment
                 ',
-                'elements' => [
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'EXT:foobar/Configuration/TypoScript/setup1.typoscript',
                     ],
@@ -56,24 +56,24 @@ final class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferencePa
                         'matchString' => 'EXT:foobar/Configuration/TypoScript/setup2.typoscript',
                     ],
                 ],
-                'hasMatched' => true,
+                'expectedHasMatched' => true,
             ],
             'No matches returns null' => [
                 'text' => '/foobar/Configuration/TypoScript/setup.typoscript',
                 'content' => '',
-                'elements' => [],
-                'hasMatched' => false,
+                'expectedElements' => [],
+                'expectedHasMatched' => false,
             ],
         ];
     }
 
     #[DataProvider('extensionPathSoftReferenceParserDataProvider')]
     #[Test]
-    public function extensionPathSoftReferenceParserTest(string $content, string $expectedContent, array $expectedElements, bool $expectedHasMatched): void
+    public function extensionPathSoftReferenceParserTest(string $text, string $content, array $expectedElements, bool $expectedHasMatched): void
     {
         $subject = $this->getParserByKey('ext_fileref');
-        $result = $subject->parse('sys_template', 'include_static_file', 1, $content);
-        self::assertSame($expectedContent, $result->getContent());
+        $result = $subject->parse('sys_template', 'include_static_file', 1, $text);
+        self::assertSame($content, $result->getContent());
         self::assertSame($expectedElements, $result->getMatchedElements());
         self::assertSame($expectedHasMatched, $result->hasMatched());
     }

@@ -121,27 +121,27 @@ final class ScenarioCTest extends AbstractLocalizedPagesTestCase
         return [
             [
                 'url' => 'https://acme.com/en/hello',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'EN: Welcome', 'link' => '/en/hello'],
                     ['title' => 'EN: About us', 'link' => '/en/about-us'],
                 ],
             ],
             [
                 'url' => 'https://acme.com/de/willkommen',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'DE: Willkommen', 'link' => '/de/willkommen'],
                 ],
             ],
             [
                 'url' => 'https://acme.com/en/about-us',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'EN: Welcome', 'link' => '/en/hello'],
                     ['title' => 'EN: About us', 'link' => '/en/about-us'],
                 ],
             ],
             [
                 'url' => 'https://acme.com/de-ch/ueber-uns',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'DE-CH: Über uns', 'link' => '/de-ch/ueber-uns'],
                 ],
             ],

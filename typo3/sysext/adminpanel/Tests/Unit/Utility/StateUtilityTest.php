@@ -84,16 +84,20 @@ final class StateUtilityTest extends UnitTestCase
                 [],
             ],
             'all modules disabled' => [
-                'admPanel.' => [
-                    'enable.' => [
-                        'all' => 0,
+                [
+                    'admPanel.' => [
+                        'enable.' => [
+                            'all' => 0,
+                        ],
                     ],
                 ],
             ],
             'single module configured, disabled' => [
-                'admPanel.' => [
-                    'enable.' => [
-                        'preview' => 0,
+                [
+                    'admPanel.' => [
+                        'enable.' => [
+                            'preview' => 0,
+                        ],
                     ],
                 ],
             ],

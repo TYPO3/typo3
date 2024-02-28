@@ -61,7 +61,7 @@ final class ScenarioGTest extends AbstractLocalizedPagesTestCase
         return [
             [
                 'url' => 'https://acme.com/de-ch/willkommen',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'DE-CH: Willkommen', 'link' => '/de-ch/willkommen'],
                     ['title' => 'DE: Über uns', 'link' => '/de-ch/ueber-uns'],
                     ['title' => 'DE: Abkürzung zu Über uns', 'link' => '/de-ch/ueber-uns'],

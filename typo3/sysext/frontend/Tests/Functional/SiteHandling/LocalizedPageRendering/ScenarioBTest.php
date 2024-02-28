@@ -117,14 +117,14 @@ final class ScenarioBTest extends AbstractLocalizedPagesTestCase
         return [
             [
                 'url' => 'https://acme.com/en/hello',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'EN: Welcome', 'link' => '/en/hello'],
                     ['title' => 'EN: About us', 'link' => '/en/about-us'],
                 ],
             ],
             [
                 'url' => 'https://acme.com/de-ch/hello',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'EN: Welcome', 'link' => '/de-ch/hello'],
                     ['title' => 'DE-CH: Über uns', 'link' => '/de-ch/about-us'],
                 ],

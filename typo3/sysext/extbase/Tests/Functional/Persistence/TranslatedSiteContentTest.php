@@ -599,7 +599,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
      */
     #[DataProvider('contentOnPartiallyTranslatedPageDataProvider')]
     #[Test]
-    public function contentOnPartiallyTranslatedPage(string $fallbackType, array $fallbackChain, array $visibleHeaders): void
+    public function contentOnPartiallyTranslatedPage(string $fallbackType, array $fallbackChain, array $visibleRecordHeaders): void
     {
         $this->writeSiteConfiguration(
             'test',
@@ -624,14 +624,14 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             (new HasRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
-                ->setValues(...$visibleHeaders)
+                ->setValues(...$visibleRecordHeaders)
         );
         self::assertThat(
             $responseSections,
             (new DoesNotHaveRecordConstraint())
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
-                ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
+                ->setValues(...$this->getNonVisibleHeaders($visibleRecordHeaders))
         );
     }
 }

@@ -229,7 +229,7 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'method' => 'GET',
             'queryParams' => [],
             'parsedBody' => null,
-            [],
+            'headers' => [],
             'body' => null,
             'expectedJsonKeyValues' => [
                 'method' => 'GET',
@@ -248,7 +248,7 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'method' => 'GET',
             'queryParams' => ['queryParam1' => 'value1'],
             'parsedBody' => null,
-            [],
+            'headers' => [],
             'body' => null,
             'expectedJsonKeyValues' => [
                 'method' => 'GET',
@@ -267,7 +267,7 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
             'method' => 'GET',
             'queryParams' => ['queryParam1' => 'value1'],
             'parsedBody' => null,
-            [],
+            'headers' => [],
             'body' => null,
             'expectedJsonKeyValues' => [
                 'method' => 'GET',

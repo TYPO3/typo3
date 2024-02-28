@@ -114,7 +114,7 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
                     ],
                 ],
             ],
-            [
+            'expected' => [
                 'booleanField' => '1',
             ],
         ];
@@ -349,15 +349,15 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
     #[DataProvider('overrideConfigurationFromFlexFormSettingsDataProvider')]
     #[Test]
     public function overrideConfigurationFromFlexFormIgnoresConfiguredEmptyFlexFormSettings(
-        string $flexFormConfiguration,
-        array $frameworkConfiguration,
+        string $flexForm,
+        array $typoScript,
         array $expected
     ): void {
         $contentObject = new ContentObjectRenderer();
-        $contentObject->data = ['pi_flexform' => $flexFormConfiguration];
+        $contentObject->data = ['pi_flexform' => $flexForm];
         $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
-        $frontendTypoScript->setSetupArray($frameworkConfiguration);
+        $frontendTypoScript->setSetupArray($typoScript);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $frontendConfigurationManager = $this->get(FrontendConfigurationManager::class);
         $frontendConfigurationManager->setRequest($request);

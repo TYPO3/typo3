@@ -1226,35 +1226,35 @@ final class SlugSiteRequestTest extends AbstractTestCase
     {
         yield 'Live page with logged-in user' => [
             'url' => 'https://website.local/en-en/welcome',
-            'pageTitle' => 'EN: Welcome',
-            'Online Page ID' => '1100',
-            'Workspace ID' => 0,
-            'Backend User ID' => 1,
-            'statusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome',
+            'expectedPageId' => '1100',
+            'workspaceId' => 0,
+            'backendUserId' => 1,
+            'expectedStatusCode' => 200,
         ];
         yield 'Live page with logged-in user accessed even though versioned page slug was changed' => [
             'url' => 'https://website.local/en-en/welcome',
-            'pageTitle' => 'EN: Welcome to ACME Inc',
-            'Online Page ID' => '1100',
-            'Workspace ID' => 1,
-            'Backend User ID' => 1,
-            'statusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome to ACME Inc',
+            'expectedPageId' => '1100',
+            'workspaceId' => 1,
+            'backendUserId' => 1,
+            'expectedStatusCode' => 200,
         ];
         yield 'Versioned page with logged-in user and modified slug' => [
             'url' => 'https://website.local/en-en/welcome-modified',
-            'pageTitle' => 'EN: Welcome to ACME Inc',
-            'Online Page ID' => '1100',
-            'Workspace ID' => 1,
-            'Backend User ID' => 1,
-            'statusCode' => 200,
+            'expectedPageTitle' => 'EN: Welcome to ACME Inc',
+            'expectedPageId' => '1100',
+            'workspaceId' => 1,
+            'backendUserId' => 1,
+            'expectedStatusCode' => 200,
         ];
         yield 'Versioned page without logged-in user renders 404' => [
             'url' => 'https://website.local/en-en/welcome-modified',
-            'pageTitle' => null,
-            'Online Page ID' => null,
-            'Workspace ID' => 1,
-            'Backend User ID' => 0,
-            'statusCode' => 404,
+            'expectedPageTitle' => null,
+            'expectedPageId' => null,
+            'workspaceId' => 1,
+            'backendUserId' => 0,
+            'expectedStatusCode' => 404,
         ];
     }
 

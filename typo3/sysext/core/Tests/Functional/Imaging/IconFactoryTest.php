@@ -33,15 +33,15 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class IconFactoryTest extends FunctionalTestCase
 {
-    protected IconFactory $subject;
-    protected string $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
-    protected string $registeredIconIdentifier = 'actions-close';
-    protected string $registeredSpinningIconIdentifier = 'spinning-icon';
+    private IconFactory $subject;
+    private string $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
+    private string $registeredIconIdentifier = 'actions-close';
+    private string $registeredSpinningIconIdentifier = 'spinning-icon';
 
     /**
      * Simulate a tt_content record
      */
-    protected array $mockRecord = [
+    private array $mockRecord = [
         'header' => 'dummy content header',
         'uid' => '1',
         'pid' => '1',
@@ -71,10 +71,22 @@ final class IconFactoryTest extends FunctionalTestCase
     public static function differentSizesDataProvider(): array
     {
         return [
-            ['size ' . IconSize::DEFAULT->name => ['input' => IconSize::DEFAULT, 'expected' => IconSize::DEFAULT->value]],
-            ['size ' . IconSize::SMALL->name => ['input' => IconSize::SMALL, 'expected' => IconSize::SMALL->value]],
-            ['size ' . IconSize::MEDIUM->name => ['input' => IconSize::MEDIUM, 'expected' => IconSize::MEDIUM->value]],
-            ['size ' . IconSize::LARGE->name => ['input' => IconSize::LARGE, 'expected' => IconSize::LARGE->value]],
+            'size ' . IconSize::DEFAULT->name => [
+                'size' => IconSize::DEFAULT,
+                'expected' => IconSize::DEFAULT->value,
+            ],
+            'size ' . IconSize::SMALL->name => [
+                'size' => IconSize::SMALL,
+                'expected' => IconSize::SMALL->value,
+            ],
+            'size ' . IconSize::MEDIUM->name => [
+                'size' => IconSize::MEDIUM,
+                'expected' => IconSize::MEDIUM->value,
+            ],
+            'size ' . IconSize::LARGE->name => [
+                'size' => IconSize::LARGE,
+                'expected' => IconSize::LARGE->value,
+            ],
         ];
     }
 
@@ -98,21 +110,21 @@ final class IconFactoryTest extends FunctionalTestCase
 
     #[DataProvider('differentSizesDataProvider')]
     #[Test]
-    public function getIconByIdentifierAndSizeReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed($size): void
+    public function getIconByIdentifierAndSizeReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed(IconSize $size, string $expected): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-close" data-identifier="actions-close" aria-hidden="true">',
-            $this->subject->getIcon($this->registeredIconIdentifier, $size['input'])->render()
+            '<span class="t3js-icon icon icon-size-' . $expected . ' icon-state-default icon-actions-close" data-identifier="actions-close" aria-hidden="true">',
+            $this->subject->getIcon($this->registeredIconIdentifier, $size)->render()
         );
     }
 
     #[DataProvider('differentSizesDataProvider')]
     #[Test]
-    public function getIconByIdentifierAndSizeAndWithOverlayReturnsIconWithCorrectOverlayMarkupIfRegisteredIconIdentifierIsUsed($size): void
+    public function getIconByIdentifierAndSizeAndWithOverlayReturnsIconWithCorrectOverlayMarkupIfRegisteredIconIdentifierIsUsed(IconSize $size, string $expected): void
     {
         self::assertStringContainsString(
             '<span class="icon-overlay icon-overlay-readonly">',
-            $this->subject->getIcon($this->registeredIconIdentifier, $size['input'], 'overlay-readonly')->render()
+            $this->subject->getIcon($this->registeredIconIdentifier, $size, 'overlay-readonly')->render()
         );
     }
 
@@ -127,11 +139,11 @@ final class IconFactoryTest extends FunctionalTestCase
 
     #[DataProvider('differentSizesDataProvider')]
     #[Test]
-    public function getIconByIdentifierAndSizeReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(array $size): void
+    public function getIconByIdentifierAndSizeReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(IconSize $size, string $expected): void
     {
         self::assertStringContainsString(
-            '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found" data-identifier="default-not-found" aria-hidden="true">',
-            $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'])->render()
+            '<span class="t3js-icon icon icon-size-' . $expected . ' icon-state-default icon-default-not-found" data-identifier="default-not-found" aria-hidden="true">',
+            $this->subject->getIcon($this->notRegisteredIconIdentifier, $size)->render()
         );
     }
 
@@ -155,11 +167,11 @@ final class IconFactoryTest extends FunctionalTestCase
 
     #[DataProvider('differentSizesDataProvider')]
     #[Test]
-    public function getIconByIdentifierAndSizeAndOverlayReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(array $size): void
+    public function getIconByIdentifierAndSizeAndOverlayReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(IconSize $size, string $expected): void
     {
         self::assertStringContainsString(
             '<span class="icon-overlay icon-overlay-readonly">',
-            $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'], 'overlay-readonly')->render()
+            $this->subject->getIcon($this->notRegisteredIconIdentifier, $size, 'overlay-readonly')->render()
         );
     }
 
