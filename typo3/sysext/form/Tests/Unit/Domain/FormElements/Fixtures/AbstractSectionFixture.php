@@ -17,21 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements\Fixtures;
 
-use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractSection;
 
-/**
- * Testing subclass of the abstract class.
- */
-class TestingSection extends AbstractSection
-{
-    public function __construct(private readonly FormDefinition $rootForm)
-    {
-        parent::__construct('testing_section', '');
-    }
-
-    public function getRootForm(): FormDefinition
-    {
-        return $this->rootForm;
-    }
-}
+final class AbstractSectionFixture extends AbstractSection {}

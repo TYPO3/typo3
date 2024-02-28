@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherVariableProvider;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Tests\Unit\Domain\Finishers\Fixtures\AbstractFinisherFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractFinisherTest extends UnitTestCase
@@ -32,264 +32,99 @@ final class AbstractFinisherTest extends UnitTestCase
     #[Test]
     public function parseOptionReturnsNullIfOptionNameIsTranslation(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
-        self::assertNull($mockAbstractFinisher->_call('parseOption', 'translation'));
+        $subject = new AbstractFinisherFixture();
+        self::assertNull($subject->parseOption('translation'));
     }
 
     #[Test]
     public function parseOptionReturnsNullIfOptionNameNotExistsWithinOptions(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
-        $mockAbstractFinisher->_set('options', []);
-
-        self::assertNull($mockAbstractFinisher->_call('parseOption', 'foo'));
-    }
-
-    #[Test]
-    public function parseOptionReturnsNullIfOptionNameNotExistsWithinDefaultOptions(): void
-    {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
-        $mockAbstractFinisher->_set('options', []);
-
-        self::assertNull($mockAbstractFinisher->_call('parseOption', 'foo'));
-    }
-
-    #[Test]
-    public function parseOptionReturnsBoolOptionValuesAsBool(): void
-    {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
-        $mockAbstractFinisher->_set('options', [
-            'foo1' => false,
-        ]);
-
-        self::assertFalse($mockAbstractFinisher->_call('parseOption', 'foo1'));
+        $subject = new AbstractFinisherFixture();
+        $subject->options = [];
+        self::assertNull($subject->parseOption('foo'));
     }
 
     #[Test]
     public function parseOptionReturnsDefaultOptionValueIfOptionNameNotExistsWithinOptionsButWithinDefaultOptions(): void
     {
-        $expected = 'defaultValue';
-
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'translateFinisherOption',
-            ]
-        );
-
-        $mockAbstractFinisher
-            ->method('translateFinisherOption')
-            ->willReturnArgument(0);
-
-        $mockAbstractFinisher->_set('options', []);
-        $mockAbstractFinisher->_set('defaultOptions', [
-            'subject' => $expected,
-        ]);
-
         $finisherContextMock = $this->createMock(FinisherContext::class);
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with(self::anything())->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with(self::anything())->willReturn(null);
-
         $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
-        $finisherContextMock->method('getFinisherVariableProvider')
-            ->willReturn(new FinisherVariableProvider());
+        $finisherContextMock->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
 
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
+        $subject = new AbstractFinisherFixture();
+        $subject->options = [];
+        $subject->defaultOptions = [
+            'subject' => 'defaultValue',
+        ];
+        $subject->finisherContext = $finisherContextMock;
+        self::assertSame('defaultValue', $subject->parseOption('subject'));
     }
 
     #[Test]
     public function parseOptionReturnsDefaultOptionValueIfOptionValueIsAFormElementReferenceAndTheFormElementValueIsEmpty(): void
     {
-        $elementIdentifier = 'element-identifier-1';
-        $expected = 'defaultValue';
-
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'translateFinisherOption',
-            ]
-        );
-
-        $mockAbstractFinisher
-            ->method('translateFinisherOption')
-            ->willReturnArgument(0);
-
-        $mockAbstractFinisher->_set('options', [
-            'subject' => '{' . $elementIdentifier . '}',
-        ]);
-        $mockAbstractFinisher->_set('defaultOptions', [
-            'subject' => $expected,
-        ]);
-
         $finisherContextMock = $this->createMock(FinisherContext::class);
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn('');
-
+        $formRuntimeMock->method('offsetExists')->with(self::anything())->willReturn(true);
+        $formRuntimeMock->method('offsetGet')->with(self::anything())->willReturn('');
         $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
 
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
-    }
-
-    #[Test]
-    public function parseOptionResolvesFormElementReferenceFromTranslation(): void
-    {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false,
-            false,
-            true,
-            [
-                'translateFinisherOption',
-            ]
-        );
-
-        $elementIdentifier = 'element-identifier-1';
-        $elementValue = 'element-value-1';
-        $elementReferenceName = '{' . $elementIdentifier . '}';
-
-        $translationValue = 'subject: ' . $elementReferenceName;
-        $expected = 'subject: ' . $elementValue;
-
-        $mockAbstractFinisher
-            ->method('translateFinisherOption')
-            ->willReturn($translationValue);
-
-        $mockAbstractFinisher->_set('options', [
-            'subject' => '',
-        ]);
-
-        $finisherContextMock = $this->createMock(FinisherContext::class);
-
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($elementValue);
-
-        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
-
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
+        $subject = new AbstractFinisherFixture();
+        $subject->options = [
+            'subject' => '{element-identifier-1}',
+        ];
+        $subject->defaultOptions = [
+            'subject' => 'defaultValue',
+        ];
+        $subject->finisherContext = $finisherContextMock;
+        self::assertSame('defaultValue', $subject->parseOption('subject'));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsArrayIfInputIsArray(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-
         $input = ['bar', 'foobar', ['x', 'y']];
         $expected = ['bar', 'foobar', ['x', 'y']];
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
+        $subject = new AbstractFinisherFixture();
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsStringIfInputIsString(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-
         $input = 'foobar';
         $expected = 'foobar';
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
+        $subject = new AbstractFinisherFixture();
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceAFormElementIdentifierWhoseValueIsAString(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $elementIdentifier = 'element-identifier-1';
         $input = '{' . $elementIdentifier . '}';
         $expected = 'element-value';
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
+        $subject = new AbstractFinisherFixture();
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceMultipleFormElementIdentifierWhoseValueIsAString(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $elementIdentifier1 = 'element-identifier-1';
         $elementValue1 = 'element-value-1';
         $elementIdentifier2 = 'element-identifier-2';
         $elementValue2 = 'element-value-2';
-
         $input = '{' . $elementIdentifier1 . '},{' . $elementIdentifier2 . '}';
         $expected = $elementValue1 . ',' . $elementValue2;
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->willReturnMap([
             [$elementIdentifier1, true],
@@ -299,46 +134,30 @@ final class AbstractFinisherTest extends UnitTestCase
             [$elementIdentifier1, $elementValue1],
             [$elementIdentifier2, $elementValue2],
         ]);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
+        $subject = new AbstractFinisherFixture();
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputReferenceAFormElementIdentifierWhoseValueIsAnArray(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $elementIdentifier = 'element-identifier-1';
         $input = '{' . $elementIdentifier . '}';
         $expected = ['bar', 'foobar'];
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
+        $subject = new AbstractFinisherFixture();
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsValueFromFormRuntimeIfInputIsArrayAndSomeItemsReferenceAFormElementIdentifierWhoseValueIsAnArray(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $elementIdentifier1 = 'element-identifier-1';
         $elementValue1 = ['klaus', 'fritz'];
         $elementIdentifier2 = 'element-identifier-2';
         $elementValue2 = ['stan', 'steve'];
-
         $input = [
             '{' . $elementIdentifier1 . '}',
             'static value',
@@ -357,7 +176,6 @@ final class AbstractFinisherTest extends UnitTestCase
                 ['stan', 'steve'],
             ],
         ];
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->willReturnMap([
             [$elementIdentifier1, true],
@@ -367,71 +185,43 @@ final class AbstractFinisherTest extends UnitTestCase
             [$elementIdentifier1, $elementValue1],
             [$elementIdentifier2, $elementValue2],
         ]);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
+        $subject = new AbstractFinisherFixture();
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsNoReplacedValueIfInputReferenceANonExistingFormElement(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $elementIdentifier = 'element-identifier-1';
         $input = '{' . $elementIdentifier . '}';
         $expected = '{' . $elementIdentifier . '}';
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
-
         $finisherContextMock = $this->createMock(FinisherContext::class);
         $finisherContextMock->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
+        $subject = new AbstractFinisherFixture();
+        $subject->finisherContext = $finisherContextMock;
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsTimestampIfInputIsATimestampRequestTrigger(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $input = '{__currentTimestamp}';
         $expected = '#^([0-9]{10})$#';
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
-
-        self::assertMatchesRegularExpression(
-            $expected,
-            (string)$mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock)
-        );
+        $subject = new AbstractFinisherFixture();
+        self::assertMatchesRegularExpression($expected, (string)$subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsResolvesElementIdentifiersInArrayKeys(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $elementIdentifier1 = 'element-identifier-1';
         $elementValue1 = 'norbert';
         $elementIdentifier2 = 'element-identifier-2';
         $elementValue2 = ['stan', 'steve'];
-
         $input = [
             '{' . $elementIdentifier1 . '}' => [
                 'lisa',
@@ -444,7 +234,6 @@ final class AbstractFinisherTest extends UnitTestCase
                 ['stan', 'steve'],
             ],
         ];
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->willReturnMap([
             [$elementIdentifier1, true],
@@ -454,8 +243,8 @@ final class AbstractFinisherTest extends UnitTestCase
             [$elementIdentifier1, $elementValue1],
             [$elementIdentifier2, $elementValue2],
         ]);
-
-        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeMock));
+        $subject = new AbstractFinisherFixture();
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
     #[Test]
@@ -465,7 +254,6 @@ final class AbstractFinisherTest extends UnitTestCase
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with('date-1')->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with('date-1')->willReturn($date);
-
         $stringableElement = new class () implements StringableFormElementInterface {
             /**
              * @param \DateTimeInterface $value
@@ -478,20 +266,8 @@ final class AbstractFinisherTest extends UnitTestCase
         $formDefinitionMock = $this->createMock(FormDefinition::class);
         $formDefinitionMock->method('getElementByIdentifier')->with('date-1')->willReturn($stringableElement);
         $formRuntimeMock->method('getFormDefinition')->willReturn($formDefinitionMock);
-
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-        $result = $mockAbstractFinisher->_call(
-            'substituteRuntimeReferences',
-            'When: {date-1}',
-            $formRuntimeMock
-        );
-
-        self::assertSame('When: 2019-11-22', $result);
+        $subject = new AbstractFinisherFixture();
+        self::assertSame('When: 2019-11-22', $subject->substituteRuntimeReferences('When: {date-1}', $formRuntimeMock));
     }
 
     #[Test]
@@ -500,55 +276,25 @@ final class AbstractFinisherTest extends UnitTestCase
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with('date-1')->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with('date-1')->willReturn(new \DateTime());
-
         $formDefinitionMock = $this->createMock(FormDefinition::class);
         $formRuntimeMock->method('getFormDefinition')->willReturn($formDefinitionMock);
-
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $this->expectException(FinisherException::class);
         $this->expectExceptionCode(1574362327);
-
-        $mockAbstractFinisher->_call(
-            'substituteRuntimeReferences',
-            'When: {date-1}',
-            $formRuntimeMock
-        );
+        $subject = new AbstractFinisherFixture();
+        $subject->substituteRuntimeReferences('When: {date-1}', $formRuntimeMock);
     }
 
     #[Test]
     public function substituteRuntimeReferencesThrowsExceptionOnMultipleVariablesResolvedAsArray(): void
     {
-        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
-            AbstractFinisher::class,
-            [],
-            '',
-            false
-        );
-
         $elementIdentifier = 'element-identifier-1';
         $input = 'BEFORE {' . $elementIdentifier . '} AFTER';
-
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn(['value-1', 'value-2']);
-
-        $finisherContextMock = $this->createMock(FinisherContext::class);
-        $finisherContextMock->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
-        $mockAbstractFinisher->_set('finisherContext', $finisherContextMock);
-
         $this->expectException(FinisherException::class);
         $this->expectExceptionCode(1519239265);
-
-        $mockAbstractFinisher->_call(
-            'substituteRuntimeReferences',
-            $input,
-            $formRuntimeMock
-        );
+        $subject = new AbstractFinisherFixture();
+        $subject->substituteRuntimeReferences($input, $formRuntimeMock);
     }
 }

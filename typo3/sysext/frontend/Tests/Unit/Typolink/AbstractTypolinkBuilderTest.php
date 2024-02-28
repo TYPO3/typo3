@@ -19,11 +19,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -31,46 +29,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
+use TYPO3\CMS\Frontend\Tests\Unit\Typolink\Fixtures\AbstractTypolinkBuilderFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractTypolinkBuilderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-
     protected bool $backupEnvironment = true;
-
-    protected TypoScriptFrontendController&MockObject $frontendControllerMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createMockedLoggerAndLogManager();
-        $this->frontendControllerMock = $this
-            ->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    //////////////////////
-    // Utility functions
-    //////////////////////
-    /**
-     * Avoid logging to the file system (file writer is currently the only configured writer)
-     */
-    protected function createMockedLoggerAndLogManager(): void
-    {
         $logManagerMock = $this->getMockBuilder(LogManager::class)->getMock();
         $loggerMock = $this->getMockBuilder(LoggerInterface::class)->getMock();
-        $logManagerMock
-            ->method('getLogger')
-            ->willReturn($loggerMock);
+        $logManagerMock->method('getLogger')->willReturn($loggerMock);
         GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
     }
 
-    /**
-     * @return array The test data for forceAbsoluteUrlReturnsAbsoluteUrl
-     */
     public static function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider(): array
     {
         return [
@@ -164,28 +139,13 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string $expected The expected URL
-     * @param string $url The URL to parse and manipulate
-     * @param array $configuration The configuration array
-     */
     #[DataProvider('forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider')]
     #[Test]
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl(string $expected, string $url, array $configuration): void
     {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getPublicPath() . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $this->frontendControllerMock->absRefPrefix = '';
-        $cObj = new ContentObjectRenderer($this->frontendControllerMock, new Container());
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $frontendControllerMock->absRefPrefix = '';
+        $cObj = new ContentObjectRenderer($frontendControllerMock, new Container());
         // Force hostname
         $serverRequest = new ServerRequest(
             'http://localhost/index.php',
@@ -195,31 +155,15 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
             ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']
         );
         $cObj->setRequest($serverRequest);
-        $subject = $this->getAccessibleMock(
-            AbstractTypolinkBuilder::class,
-            ['build'],
-            [$cObj, $this->frontendControllerMock]
-        );
-
-        self::assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
+        $subject = new AbstractTypolinkBuilderFixture($cObj, $frontendControllerMock);
+        self::assertEquals($expected, $subject->forceAbsoluteUrl($url, $configuration));
     }
 
     #[Test]
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder(): void
     {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getPublicPath() . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $cObj = new ContentObjectRenderer($this->frontendControllerMock, new Container());
-
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $cObj = new ContentObjectRenderer($frontendControllerMock, new Container());
         // Force hostname
         $serverRequest = new ServerRequest(
             'http://localhost/subfolder/index.php',
@@ -229,26 +173,15 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
             ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/subfolder/index.php']
         );
         $cObj->setRequest($serverRequest);
-        $subject = $this->getAccessibleMock(
-            AbstractTypolinkBuilder::class,
-            ['build'],
-            [$cObj, $this->frontendControllerMock]
-        );
-
+        $subject = new AbstractTypolinkBuilderFixture($cObj, $frontendControllerMock);
         $expected = 'http://localhost/subfolder/fileadmin/my.pdf';
         $url = 'fileadmin/my.pdf';
         $configuration = [
             'forceAbsoluteUrl' => '1',
         ];
-
-        self::assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
+        self::assertEquals($expected, $subject->forceAbsoluteUrl($url, $configuration));
     }
 
-    /**
-     * Data provider for resolveTargetAttribute
-     *
-     * @return array [[$expected, $conf, $name],]
-     */
     public static function resolveTargetAttributeDataProvider(): array
     {
         $targetName = StringUtility::getUniqueId('name_');
@@ -256,23 +189,23 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         return [
             'Take target from $conf, if $conf[$targetName] is set.' =>
                 [
-                    $target,
-                    [$targetName => $target], // $targetName is set
-                    $targetName,
+                    'expected' => $target,
+                    'conf' => [$targetName => $target], // $targetName is set
+                    'name' => $targetName,
                 ],
             ' If all hopes fail, an empty string is returned. ' =>
                 [
-                    '',
-                    [],
-                    $targetName,
+                    'expected' => '',
+                    'conf' => [],
+                    'name' => $targetName,
                 ],
             'It finally applies stdWrap' =>
                 [
-                    'wrap_target',
-                    [$targetName . '.' =>
+                    'expected' => 'wrap_target',
+                    'conf' => [$targetName . '.' =>
                         [ 'ifEmpty' => 'wrap_target' ],
                     ],
-                    $targetName,
+                    'name' => $targetName,
                 ],
         ];
     }
@@ -284,7 +217,8 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         array $conf,
         string $name,
     ): void {
-        $cObj = new ContentObjectRenderer($this->frontendControllerMock, new Container());
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
+        $cObj = new ContentObjectRenderer($frontendControllerMock, new Container());
         $serverRequest = new ServerRequest(
             'http://localhost/subfolder/index.php',
             'GET',
@@ -296,12 +230,7 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         $container = new Container();
         $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
         GeneralUtility::setContainer($container);
-        $subject = $this->getAccessibleMockForAbstractClass(AbstractTypolinkBuilder::class, [$cObj, $this->frontendControllerMock]);
-        $actual = $subject->_call(
-            'resolveTargetAttribute',
-            $conf,
-            $name,
-        );
-        self::assertEquals($expected, $actual);
+        $subject = new AbstractTypolinkBuilderFixture($cObj, $frontendControllerMock);
+        self::assertEquals($expected, $subject->resolveTargetAttribute($conf, $name));
     }
 }

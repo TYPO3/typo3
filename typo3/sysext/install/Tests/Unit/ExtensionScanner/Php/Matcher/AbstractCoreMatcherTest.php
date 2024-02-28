@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
+use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\AbstractCoreMatcherFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractCoreMatcherTest extends UnitTestCase
@@ -26,7 +26,7 @@ final class AbstractCoreMatcherTest extends UnitTestCase
     #[Test]
     public function validateMatcherDefinitionsRunsFineWithProperDefinition(): void
     {
-        $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
+        $subject = new AbstractCoreMatcherFixture();
         $configuration = [
             'foo/bar->baz' => [
                 'requiredArg1' => 42,
@@ -35,14 +35,14 @@ final class AbstractCoreMatcherTest extends UnitTestCase
                 ],
             ],
         ];
-        $matcher->_set('matcherDefinitions', $configuration);
-        $matcher->_call('validateMatcherDefinitions', ['requiredArg1']);
+        $subject->matcherDefinitions = $configuration;
+        $subject->validateMatcherDefinitions(['requiredArg1']);
     }
 
     #[Test]
     public function validateMatcherDefinitionsThrowsIfRequiredArgIsNotInConfig(): void
     {
-        $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
+        $subject = new AbstractCoreMatcherFixture();
         $configuration = [
             'foo/bar->baz' => [
                 'someNotRequiredConfig' => '',
@@ -51,31 +51,31 @@ final class AbstractCoreMatcherTest extends UnitTestCase
                 ],
             ],
         ];
-        $matcher->_set('matcherDefinitions', $configuration);
+        $subject->matcherDefinitions = $configuration;
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1500492001);
-        $matcher->_call('validateMatcherDefinitions', ['requiredArg1']);
+        $subject->validateMatcherDefinitions(['requiredArg1']);
     }
 
     #[Test]
     public function validateMatcherDefinitionsThrowsWithMissingRestFiles(): void
     {
-        $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
+        $subject = new AbstractCoreMatcherFixture();
         $configuration = [
             'foo/bar->baz' => [
                 'restFiles' => [],
             ],
         ];
-        $matcher->_set('matcherDefinitions', $configuration);
+        $subject->matcherDefinitions = $configuration;
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1500496068);
-        $matcher->_call('validateMatcherDefinitions', []);
+        $subject->validateMatcherDefinitions([]);
     }
 
     #[Test]
     public function validateMatcherDefinitionsThrowsWithEmptySingleRestFile(): void
     {
-        $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
+        $subject = new AbstractCoreMatcherFixture();
         $configuration = [
             'foo/bar->baz' => [
                 'restFiles' => [
@@ -84,24 +84,24 @@ final class AbstractCoreMatcherTest extends UnitTestCase
                 ],
             ],
         ];
-        $matcher->_set('matcherDefinitions', $configuration);
+        $subject->matcherDefinitions = $configuration;
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1500735983);
-        $matcher->_call('validateMatcherDefinitions', []);
+        $subject->validateMatcherDefinitions([]);
     }
 
     #[Test]
     public function initializeMethodNameArrayThrowsWithInvalidKeys(): void
     {
-        $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
+        $subject = new AbstractCoreMatcherFixture();
         $configuration = [
             'no\method\given' => [
                 'restFiles' => [],
             ],
         ];
-        $matcher->_set('matcherDefinitions', $configuration);
+        $subject->matcherDefinitions = $configuration;
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500557309);
-        $matcher->_call('initializeFlatMatcherDefinitions');
+        $subject->initializeFlatMatcherDefinitions();
     }
 }
