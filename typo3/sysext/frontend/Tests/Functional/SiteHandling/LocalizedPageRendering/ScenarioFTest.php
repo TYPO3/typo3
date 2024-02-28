@@ -132,7 +132,7 @@ final class ScenarioFTest extends AbstractLocalizedPagesTestCase
         return [
             [
                 'url' => 'https://acme.com/de/ueber-uns',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'DE: Willkommen', 'link' => '/de/willkommen'],
                     ['title' => 'DE: Über uns', 'link' => '/de/ueber-uns'],
                     ['title' => 'DE: Produkte', 'link' => '/de/produkte'],
@@ -140,7 +140,7 @@ final class ScenarioFTest extends AbstractLocalizedPagesTestCase
             ],
             [
                 'url' => 'https://acme.com/de/produkte',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'DE: Willkommen', 'link' => '/de/willkommen'],
                     ['title' => 'DE: Über uns', 'link' => '/de/ueber-uns'],
                     ['title' => 'DE: Produkte', 'link' => '/de/produkte'],
@@ -148,7 +148,7 @@ final class ScenarioFTest extends AbstractLocalizedPagesTestCase
             ],
             [
                 'url' => 'https://acme.com/de-ch/produkte',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'DE-CH: Produkte', 'link' => '/de-ch/produkte'],
                     // FIXME: Page "EN: Shortcut to welcome" must to be rendered in menu, needs a refactored menu generation
                     ['title' => 'EN: Shortcut to welcome', 'link' => '/de-ch/willkommen'],

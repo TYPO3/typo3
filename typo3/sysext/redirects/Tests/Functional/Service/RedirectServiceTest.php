@@ -920,7 +920,7 @@ final class RedirectServiceTest extends FunctionalTestCase
     {
         // Regression test for https://forge.typo3.org/issues/101191
         yield '#1 Non-query argument regex redirect not respecting get arguments before query-argument regex does not match before query-argument regex' => [
-            'dataSet' => __DIR__ . '/Fixtures/RegExp/case1.csv',
+            'importDataSet' => __DIR__ . '/Fixtures/RegExp/case1.csv',
             'url' => 'https://acme.com/foo/lightbar.html?type=101',
             'statusCode' => 301,
             'redirectUid' => 2,
@@ -928,7 +928,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         ];
 
         yield '#2 Non-query argument regex redirect respecting get arguments before query-argument regex does not match before query-argument regex' => [
-            'dataSet' => __DIR__ . '/Fixtures/RegExp/case2.csv',
+            'importDataSet' => __DIR__ . '/Fixtures/RegExp/case2.csv',
             'url' => 'https://acme.com/foo/lightbar.html?type=101',
             'statusCode' => 301,
             'redirectUid' => 2,
@@ -940,7 +940,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         // this case. For example missing trailing `$` or leaving the `respect_query_parameters` option unchecked would
         // mitigate this.
         yield '#3 To open non-query argument regex redirect respecting get arguments before query-argument regex proceeds query-argument regex' => [
-            'dataSet' => __DIR__ . '/Fixtures/RegExp/case3.csv',
+            'importDataSet' => __DIR__ . '/Fixtures/RegExp/case3.csv',
             'url' => 'https://acme.com/foo/lightbar.html?type=101',
             'statusCode' => 301,
             'redirectUid' => 1,

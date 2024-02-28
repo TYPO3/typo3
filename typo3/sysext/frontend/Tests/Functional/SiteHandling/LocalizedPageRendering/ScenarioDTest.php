@@ -129,7 +129,7 @@ final class ScenarioDTest extends AbstractLocalizedPagesTestCase
         return [
             [
                 'url' => 'https://acme.com/en/hello',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'EN: Welcome', 'link' => '/en/hello'],
                     ['title' => 'EN: About us', 'link' => '/en/about-us'],
                     ['title' => 'EN: Products', 'link' => '/en/products'],
@@ -139,7 +139,7 @@ final class ScenarioDTest extends AbstractLocalizedPagesTestCase
             ],
             [
                 'url' => 'https://acme.com/en/about-us',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'EN: Welcome', 'link' => '/en/hello'],
                     ['title' => 'EN: About us', 'link' => '/en/about-us'],
                     ['title' => 'EN: Products', 'link' => '/en/products'],
@@ -149,14 +149,14 @@ final class ScenarioDTest extends AbstractLocalizedPagesTestCase
             ],
             [
                 'url' => 'https://acme.com/de/ueber-uns',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'DE: Über uns', 'link' => '/de/ueber-uns'],
                     ['title' => 'DE: Unternehmen', 'link' => '/de/ueber-uns'],
                 ],
             ],
             [
                 'url' => 'https://acme.com/de-ch/ueber-uns',
-                'menu' => [
+                'expectedMenu' => [
                     ['title' => 'DE-CH: Über uns', 'link' => '/de-ch/ueber-uns'],
                     ['title' => 'DE-CH: Produkte', 'link' => '/de-ch/produkte'],
                     ['title' => 'EN: Shortcut to welcome', 'link' => ''],

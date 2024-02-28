@@ -24,6 +24,35 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class XliffParserTest extends UnitTestCase
 {
+    public static function canParseXliffDataProvider(): \Generator
+    {
+        yield 'Can handle default' => [
+            'languageKey' => 'default',
+            'expectedLabels' => [
+                'label1' => 'This is label #1',
+                'label2' => 'This is label #2',
+                'label3' => 'This is label #3',
+            ],
+            'requireApprovedLocalizations' => false,
+        ];
+        yield 'Can handle translation with approved only' => [
+            'languageKey' => 'fr',
+            'expectedLabels' => [
+                'label2' => 'Ceci est le libellé no. 2 [approved]',
+            ],
+            'requireApprovedLocalizations' => true,
+        ];
+        yield 'Can handle translation with non approved' => [
+            'languageKey' => 'fr',
+            'expectedLabels' => [
+                'label1' => 'Ceci est le libellé no. 1',
+                'label2' => 'Ceci est le libellé no. 2 [approved]',
+                'label3' => 'Ceci est le libellé no. 3 [not approved]',
+            ],
+            'requireApprovedLocalizations' => false,
+        ];
+    }
+
     #[DataProvider('canParseXliffDataProvider')]
     #[Test]
     public function canParseXliff(string $languageKey, array $expectedLabels, bool $requireApprovedLocalizations): void
@@ -34,34 +63,5 @@ final class XliffParserTest extends UnitTestCase
         foreach ($expectedLabels as $key => $expectedLabel) {
             self::assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
         }
-    }
-
-    public static function canParseXliffDataProvider(): \Generator
-    {
-        yield 'Can handle default' => [
-            'languageKey' => 'default',
-            'expectedLabels' => [
-                'label1' => 'This is label #1',
-                'label2' => 'This is label #2',
-                'label3' => 'This is label #3',
-            ],
-            false,
-        ];
-        yield 'Can handle translation with approved only' => [
-            'languageKey' => 'fr',
-            'expectedLabels' => [
-                'label2' => 'Ceci est le libellé no. 2 [approved]',
-            ],
-            true,
-        ];
-        yield 'Can handle translation with non approved' => [
-            'languageKey' => 'fr',
-            'expectedLabels' => [
-                'label1' => 'Ceci est le libellé no. 1',
-                'label2' => 'Ceci est le libellé no. 2 [approved]',
-                'label3' => 'Ceci est le libellé no. 3 [not approved]',
-            ],
-            false,
-        ];
     }
 }

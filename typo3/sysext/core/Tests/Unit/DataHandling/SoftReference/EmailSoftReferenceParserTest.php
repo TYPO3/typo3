@@ -26,19 +26,19 @@ final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
     {
         return [
             'Simple email address found' => [
-                'foo@bar.baz',
                 'content' => 'foo@bar.baz',
-                'elements' => [
+                'expectedContent' => 'foo@bar.baz',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'foo@bar.baz',
                     ],
                 ],
-                'hasMatched' => true,
+                'expectedHasMatched' => true,
             ],
             'Multiple email addresses found' => [
-                'This is my first email: foo@bar.baz and this is my second email: foo-_2@bar.baz',
                 'content' => 'This is my first email: foo@bar.baz and this is my second email: foo-_2@bar.baz',
-                'elements' => [
+                'expectedContent' => 'This is my first email: foo@bar.baz and this is my second email: foo-_2@bar.baz',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'foo@bar.baz',
                     ],
@@ -46,10 +46,10 @@ final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                         'matchString' => 'foo-_2@bar.baz',
                     ],
                 ],
-                'hasMatched' => true,
+                'expectedHasMatched' => true,
             ],
             'Invalid emails are ignored' => [
-                'abc-@mail.com
+                'content' => 'abc-@mail.com
                  abc..def@mail.com
                  .abc@mail.com
                  abc#def@mail.com
@@ -57,14 +57,14 @@ final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                  abc.def@mail#archive.com
                  abc.def@mail
                  abc.def@mail..com',
-                'content' => '',
-                'elements' => [],
-                'hasMatched' => false,
+                'expectedContent' => '',
+                'expectedElements' => [],
+                'expectedHasMatched' => false,
             ],
             'E-Mails in html match' => [
-                '<a href="mailto:foo@bar.de">foo@bar.baz</a>',
                 'content' => '<a href="mailto:foo@bar.de">foo@bar.baz</a>',
-                'elements' => [
+                'expectedContent' => '<a href="mailto:foo@bar.de">foo@bar.baz</a>',
+                'expectedElements' => [
                     2 => [
                         'matchString' => 'foo@bar.de',
                     ],
@@ -72,7 +72,7 @@ final class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                         'matchString' => 'foo@bar.baz',
                     ],
                 ],
-                'hasMatched' => true,
+                'expectedHasMatched' => true,
             ],
         ];
     }

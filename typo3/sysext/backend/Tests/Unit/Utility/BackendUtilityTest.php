@@ -37,12 +37,6 @@ final class BackendUtilityTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    ///////////////////////////////////////
-    // Tests concerning calcAge
-    ///////////////////////////////////////
-    /**
-     * Data provider for calcAge function
-     */
     public static function calcAgeDataProvider(): array
     {
         return [
@@ -124,12 +118,6 @@ final class BackendUtilityTest extends UnitTestCase
         self::assertSame($expectedLabel, BackendUtility::calcAge($seconds));
     }
 
-    ///////////////////////////////////////
-    // Tests concerning getProcessedValue
-    ///////////////////////////////////////
-    /**
-     * @see https://forge.typo3.org/issues/20994
-     */
     #[Test]
     public function getProcessedValueForZeroStringIsZero(): void
     {
@@ -144,9 +132,7 @@ final class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-
         self::assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
     }
 
@@ -587,12 +573,9 @@ final class BackendUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param bool|int $input
-     */
     #[DataProvider('inputTypeDateDisplayOptions')]
     #[Test]
-    public function getProcessedValueHandlesAgeDisplayCorrectly($input, string $expected): void
+    public function getProcessedValueHandlesAgeDisplayCorrectly(bool|int $input, string $expected): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock->method('sL')->willReturn(' min| hrs| days| yrs| min| hour| day| year');
@@ -907,7 +890,7 @@ final class BackendUtilityTest extends UnitTestCase
             'no field found' => [
                 'pageId' => 123,
                 'table' => 'tt_content',
-                'col' => 'menu_type',
+                'column' => 'menu_type',
                 'key' => '10',
                 'tca' => [
                     'columns' => [
@@ -927,7 +910,7 @@ final class BackendUtilityTest extends UnitTestCase
             'no tsconfig set' => [
                 'pageId' => 123,
                 'table' => 'tt_content',
-                'col' => 'menu_type',
+                'column' => 'menu_type',
                 'key' => '1',
                 'tca' => [
                     'columns' => [

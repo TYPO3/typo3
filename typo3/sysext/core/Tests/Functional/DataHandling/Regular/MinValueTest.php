@@ -68,13 +68,13 @@ final class MinValueTest extends FunctionalTestCase
 
     #[DataProvider('valuesLowerThanMinResetToEmptyStringDataProvider')]
     #[Test]
-    public function valuesLowerThanMinResetToEmptyString(string $string, string $expected): void
+    public function valuesLowerThanMinResetToEmptyString(string $value, string $expected): void
     {
         // Should work for type=input and type=text (except RTE).
         $actionService = new ActionService();
         $map = $actionService->createNewRecord('tt_content', 1, [
-            'tx_testdatahandler_input_minvalue' => $string,
-            'tx_testdatahandler_text_minvalue' => $string,
+            'tx_testdatahandler_input_minvalue' => $value,
+            'tx_testdatahandler_text_minvalue' => $value,
         ]);
         $newRecordId = reset($map['tt_content']);
         $newRecord = BackendUtility::getRecord('tt_content', $newRecordId);

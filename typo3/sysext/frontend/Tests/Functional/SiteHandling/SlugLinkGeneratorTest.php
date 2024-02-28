@@ -858,35 +858,35 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
     public static function hierarchicalMenuAlwaysResolvesToDefaultLanguageDataProvider(): array
     {
         return [
-            'no banned IDs in default language' => [
-                'language' => 0,
-                'banned IDs' => '',
-                'expected menu items' => 13,
+            'no banned IDs in default languageId' => [
+                'languageId' => 0,
+                'excludedUidList' => '',
+                'expectedMenuItems' => 13,
             ],
             'no banned IDs in FR' => [
-                'language' => 1,
-                'banned IDs' => '',
-                'expected menu items' => 13,
+                'languageId' => 1,
+                'excludedUidList' => '',
+                'expectedMenuItems' => 13,
             ],
-            'banned IDs in default language' => [
-                'language' => 0,
-                'banned IDs' => '1100,1200,1300,1400,403,404',
-                'expected menu items' => 7,
+            'banned IDs in default languageId' => [
+                'languageId' => 0,
+                'excludedUidList' => '1100,1200,1300,1400,403,404',
+                'expectedMenuItems' => 7,
             ],
-            'banned IDs in FR language' => [
-                'language' => 1,
-                'banned IDs' => '1100,1200,1300,1400,403,404',
-                'expected menu items' => 7,
+            'banned IDs in FR languageId' => [
+                'languageId' => 1,
+                'excludedUidList' => '1100,1200,1300,1400,403,404',
+                'expectedMenuItems' => 7,
             ],
-            'banned translated IDs in default language' => [
-                'language' => 0,
-                'banned IDs' => '1101,1200,1300,1400,403,404',
-                'expected menu items' => 8,
+            'banned translated IDs in default languageId' => [
+                'languageId' => 0,
+                'excludedUidList' => '1101,1200,1300,1400,403,404',
+                'expectedMenuItems' => 8,
             ],
-            'banned translated IDs in FR language' => [
-                'language' => 1,
-                'banned IDs' => '1101,1200,1300,1400,403,404',
-                'expected menu items' => 7,
+            'banned translated IDs in FR languageId' => [
+                'languageId' => 1,
+                'excludedUidList' => '1101,1200,1300,1400,403,404',
+                'expectedMenuItems' => 7,
             ],
         ];
     }

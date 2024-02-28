@@ -1411,10 +1411,10 @@ final class TcaMigrationTest extends UnitTestCase
 
     #[DataProvider('requiredFlagIsMigratedDataProvider')]
     #[Test]
-    public function requiredFlagIsMigrated(array $input, array $expected): void
+    public function requiredFlagIsMigrated(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($tca));
     }
 
     public static function evalNullMigratedToNullableOptionDataProvider(): iterable
@@ -1528,15 +1528,15 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     /**
-     * @param array<string, mixed> $input
+     * @param array<string, mixed> $tca
      * @param array<string, mixed> $expected
      */
     #[DataProvider('evalNullMigratedToNullableOptionDataProvider')]
     #[Test]
-    public function evalNullMigratedToNullableOption(array $input, array $expected): void
+    public function evalNullMigratedToNullableOption(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($tca));
     }
 
     public static function evalEmailMigratedToTypeDataProvider(): iterable
@@ -2747,10 +2747,10 @@ final class TcaMigrationTest extends UnitTestCase
 
     #[DataProvider('selectIndividualAllowDenyMigratedToNewPositionDataProvider')]
     #[Test]
-    public function selectIndividualAllowDenyMigratedToNewPosition(array $input, array $expected): void
+    public function selectIndividualAllowDenyMigratedToNewPosition(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($tca));
     }
 
     public static function renderTypeColorpickerToTypeColorDataProvider(): iterable

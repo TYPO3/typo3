@@ -349,15 +349,15 @@ final class LocalDriverTest extends FunctionalTestCase
 
     #[DataProvider('getSpecificFileInformationDataProvider')]
     #[Test]
-    public function getSpecificFileInformationReturnsRequestedFileInformation(string|int $expectedValue, string $property): void
+    public function getSpecificFileInformationReturnsRequestedFileInformation(string|int $expectedValue, string $propertyName): void
     {
         copy(__DIR__ . '/Fixtures/Dummy.html', $this->baseDirectory . '/Dummy.html');
-        if (in_array($property, ['mtime', 'ctime', 'atime'])) {
+        if (in_array($propertyName, ['mtime', 'ctime', 'atime'])) {
             $expectedValue = filemtime($this->baseDirectory . '/Dummy.html');
         }
         $subject = $this->getDefaultInitializedSubject();
         $subject->setStorageUid(5);
-        self::assertSame($expectedValue, $subject->getSpecificFileInformation($this->baseDirectory . '/Dummy.html', '/', $property));
+        self::assertSame($expectedValue, $subject->getSpecificFileInformation($this->baseDirectory . '/Dummy.html', '/', $propertyName));
     }
 
     #[Test]

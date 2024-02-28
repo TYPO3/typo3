@@ -30,12 +30,12 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
     {
         return [
             'link to page' => [
-                [
+                'softrefConfiguration' => [
                     'content' => '<p><a href="t3://page?uid=42">Click here</a></p>',
                     'elementKey' => 1,
                     'matchString' => '<a href="t3://page?uid=42">',
                 ],
-                [
+                'expectedElement' => [
                     'subst' => [
                         'type' => 'db',
                         'recordRef' => 'pages:42',
@@ -44,12 +44,12 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                 ],
             ],
             'link to page with properties' => [
-                [
+                'softrefConfiguration' => [
                     'content' => '<p><a class="link-page" href="t3://page?uid=42" target="_top" title="Foo">Click here</a></p>',
                     'elementKey' => 1,
                     'matchString' => '<a class="link-page" href="t3://page?uid=42" target="_top" title="Foo">',
                 ],
-                [
+                'expectedElement' => [
                     'subst' => [
                         'type' => 'db',
                         'recordRef' => 'pages:42',
@@ -58,12 +58,12 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                 ],
             ],
             'link to external URL without scheme' => [
-                [
+                'softrefConfiguration' => [
                     'content' => '<p><a class="link-page" href="www.example.com" target="_top" title="Foo">Click here</a></p>',
                     'elementKey' => 1,
                     'matchString' => '<a class="link-page" href="www.example.com" target="_top" title="Foo">',
                 ],
-                [
+                'expectedElement' => [
                     'subst' => [
                         'type' => 'external',
                         'tokenValue' => 'http://www.example.com',
@@ -71,12 +71,12 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                 ],
             ],
             'link to external URL with scheme' => [
-                'typolink_tag' => [
+                'softrefConfiguration' => [
                     'content' => '<p><a class="link-page" href="https://www.example.com" target="_top" title="Foo">Click here</a></p>',
                     'elementKey' => 1,
                     'matchString' => '<a class="link-page" href="https://www.example.com" target="_top" title="Foo">',
                 ],
-                [
+                'expectedElement' => [
                     'subst' => [
                         'type' => 'external',
                         'tokenValue' => 'https://www.example.com',
@@ -84,12 +84,12 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                 ],
             ],
             'link to email' => [
-                [
+                'softrefConfiguration' => [
                     'content' => '<p><a href="mailto:test@example.com">Click here</a></p>',
                     'elementKey' => 1,
                     'matchString' => '<a href="mailto:test@example.com">',
                 ],
-                [
+                'expectedElement' => [
                     'subst' => [
                         'type' => 'string',
                         'tokenValue' => 'test@example.com',
@@ -97,12 +97,12 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                 ],
             ],
             'link to email without schema' => [
-                [
+                'softrefConfiguration' => [
                     'content' => '<p><a href="test@example.com">Click here</a></p>',
                     'elementKey' => 1,
                     'matchString' => '<a href="test@example.com">',
                 ],
-                [
+                'expectedElement' => [
                     'subst' => [
                         'type' => 'string',
                         'tokenValue' => 'test@example.com',
@@ -110,12 +110,12 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                 ],
             ],
             'link to phone number' => [
-                [
+                'softrefConfiguration' => [
                     'content' => '<p><a href="tel:0123456789">Click here</a></p>',
                     'elementKey' => 1,
                     'matchString' => '<a href="tel:0123456789">',
                 ],
-                [
+                'expectedElement' => [
                     'subst' => [
                         'type' => 'string',
                         'tokenValue' => '0123456789',
@@ -123,12 +123,12 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                 ],
             ],
             'link with invalid content' => [
-                [
+                'softrefConfiguration' => [
                     'content' => '<p><a href="Email: hans@example.com">Click here</a></p>',
                     'elementKey' => 1,
                     'matchString' => '<a href="Email: hans@example.com">',
                 ],
-                [
+                'expectedElement' => [
                     'subst' => [
                         'type' => 'string',
                         'tokenValue' => '',

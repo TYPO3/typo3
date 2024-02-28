@@ -381,13 +381,13 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
     #[DataProvider('checkboxConfigurationDataProvider')]
     #[Test]
-    public function addDataKeepExistingItems(array $input, array $expectedResult): void
+    public function addDataKeepExistingItems(array $input, array $expected): void
     {
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
-        self::assertSame($expectedResult, (new TcaCheckboxItems())->addData($input));
+        self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
     }
 
     #[Test]

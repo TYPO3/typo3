@@ -557,7 +557,7 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
      */
     #[DataProvider('contentOnPartiallyTranslatedPageDataProvider')]
     #[Test]
-    public function contentOnPartiallyTranslatedPage(string $fallbackType, array $fallbackChain, array $visibleHeaders): void
+    public function contentOnPartiallyTranslatedPage(string $fallbackType, array $fallbackChain, array $visibleRecordHeaders): void
     {
         $this->writeSiteConfiguration(
             'test',
@@ -582,14 +582,14 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             $this->getRequestSectionHasRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
-                ->setValues(...$visibleHeaders)
+                ->setValues(...$visibleRecordHeaders)
         );
         self::assertThat(
             $responseSections,
             $this->getRequestSectionDoesNotHaveRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
-                ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
+                ->setValues(...$this->getNonVisibleHeaders($visibleRecordHeaders))
         );
     }
 

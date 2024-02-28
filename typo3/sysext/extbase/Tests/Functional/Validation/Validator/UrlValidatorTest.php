@@ -111,10 +111,10 @@ final class UrlValidatorTest extends FunctionalTestCase
 
     #[DataProvider('urlDataProvider')]
     #[Test]
-    public function urlValidatorDetectsUrlsCorrectly($value, $expected): void
+    public function urlValidatorDetectsUrlsCorrectly($value, $isValid): void
     {
         $validator = new UrlValidator();
         $validator->setOptions([]);
-        self::assertSame($expected, !$validator->validate($value)->hasErrors());
+        self::assertSame($isValid, !$validator->validate($value)->hasErrors());
     }
 }

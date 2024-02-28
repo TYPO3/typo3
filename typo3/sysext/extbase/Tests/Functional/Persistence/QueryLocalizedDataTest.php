@@ -475,17 +475,17 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         ];
         return [
             [
-                'language' => 0,
+                'languageUid' => 0,
                 'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => $lang0Expected,
             ],
             [
-                'language' => 0,
+                'languageUid' => 0,
                 'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => $lang0Expected,
             ],
             [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => [
                     [
@@ -594,7 +594,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 ],
             ],
             'only fetch records with l10n_parent and try overlays' => [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_ON,
                 // here we have only 4 items instead of 5 as post "Post DA only" uid:15 has no language 0 parent,
                 // so with overlay enabled it's not shown
@@ -680,7 +680,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 ],
             ],
             [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => [
                     [
@@ -846,22 +846,22 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 
         return [
             [
-                'language' => 0,
+                'languageUid' => 0,
                 'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => $lang0Expected,
             ],
             [
-                'language' => 0,
+                'languageUid' => 0,
                 'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
                 'expected' => $lang0Expected,
             ],
             [
-                'language' => 0,
+                'languageUid' => 0,
                 'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => $lang0Expected,
             ],
             [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_MIXED,
                 'expected' => [
                     [
@@ -897,7 +897,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 ],
             ],
             [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_ON,
                 'expected' => [
                     [
@@ -918,7 +918,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 ],
             ],
             [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
                 'expected' => [
                     [
@@ -954,7 +954,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 ],
             ],
             [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => [
                     [
@@ -1038,17 +1038,17 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         ];
         return [
             'default with overlays' => [
-                'language' => 0,
+                'languageUid' => 0,
                 'overlay' => LanguageAspect::OVERLAYS_ON,
                 'expected' => $allLanguages,
             ],
             'default without overlays, show all languages' => [
-                'language' => 0,
+                'languageUid' => 0,
                 'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => $allLanguages,
             ],
             'DA with overlays, shows translated records twice (which is a bug)' => [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_ON,
                 'expected' => [
                     [
@@ -1064,7 +1064,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 ],
             ],
             'DA without overlays, queries DA language directly' => [
-                'language' => 1,
+                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_OFF,
                 'expected' => $allLanguages,
             ],

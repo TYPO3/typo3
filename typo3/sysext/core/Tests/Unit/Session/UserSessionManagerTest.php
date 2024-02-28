@@ -40,17 +40,17 @@ final class UserSessionManagerTest extends UnitTestCase
             [
                 'sessionLifetime' => 120,
                 'gracePeriod' => 120,
-                'shouldBeMarkedAsExpired' => true,
+                'expectedResult' => true,
             ],
             [
                 'sessionLifetime' => 120,
                 'gracePeriod' => 60,
-                'shouldBeMarkedAsExpired' => false,
+                'expectedResult' => false,
             ],
             [
                 'sessionLifetime' => 120,
                 'gracePeriod' => 240,
-                'shouldBeMarkedAsExpired' => true,
+                'expectedResult' => true,
             ],
         ];
     }
