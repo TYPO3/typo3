@@ -47,7 +47,7 @@ final class CompareUserCest
 
         // first user can be edited
         $usernameFirstCompare = $I->grabTextFrom('#tx_beuser_compare > thead > tr > th:nth-child(2) > div > div > span');
-        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(2) a[title="edit"]');
+        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(2) a[title="Edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');
@@ -59,7 +59,7 @@ final class CompareUserCest
 
         // second user can be edited
         $usernameFirstCompare = $I->grabTextFrom('#tx_beuser_compare > thead > tr > th:nth-child(3) > div > div > span');
-        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(3) a[title="edit"]');
+        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(3) a[title="Edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');

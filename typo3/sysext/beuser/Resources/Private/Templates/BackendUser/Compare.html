@@ -24,7 +24,7 @@
                                     <f:link.action action="removeFromCompareList" arguments="{uid: compareData.user.uid, redirectToCompare:1}" class="btn btn-default">
                                         <core:icon identifier="actions-minus" size="small"/>
                                     </f:link.action>
-                                    <backend:link.editRecord class="btn btn-default" table="be_users" uid="{compareData.user.uid}" title="edit">
+                                    <backend:link.editRecord class="btn btn-default" table="be_users" uid="{compareData.user.uid}" title="{f:translate(key:'edit')}">
                                         <core:icon identifier="actions-open" />
                                     </backend:link.editRecord>
                                 </div>

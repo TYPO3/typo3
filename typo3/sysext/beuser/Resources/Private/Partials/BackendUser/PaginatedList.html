@@ -11,6 +11,7 @@
         <thead>
         <tr>
             <th colspan="2"><f:translate key="userName" /> / <f:translate key="realName" /></th>
+            <th><f:translate key="backendUserGroup" /></th>
             <th><f:translate key="lastLogin" /></th>
             <th class="col-control"></th>
         </tr>
@@ -30,7 +31,7 @@
                         </a>
                     </td>
                     <td class="col-title">
-                        <backend:link.editRecord table="be_users" uid="{backendUser.uid}" title="edit">
+                        <backend:link.editRecord table="be_users" uid="{backendUser.uid}" title="{f:translate(key:'edit')}">
                             <b>{backendUser.userName}</b>
                         </backend:link.editRecord>
                         <f:if condition="{onlineBackendUsers.{backendUser.uid}}">
@@ -39,10 +40,15 @@
                         <beuser:mfaStatus userUid="{backendUser.uid}"/>
                         <br>
                         <f:if condition="{backendUser.realName}">
-                            <backend:link.editRecord table="be_users" uid="{backendUser.uid}" title="edit">
+                            <backend:link.editRecord table="be_users" uid="{backendUser.uid}" title="{f:translate(key:'edit')}">
                                 {backendUser.realName}
                             </backend:link.editRecord>
                         </f:if>
+                    </td>
+                    <td class="nowrap-disabled">
+                        <f:for each="{backendUser.backendUserGroups}" as="backendUserGroup" iteration="backendUserGroupIterator">
+                            <backend:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" title="{f:translate(key:'edit')}" class="nowrap">{backendUserGroup.title}</backend:link.editRecord><f:if condition="!{backendUserGroupIterator.isLast}">,</f:if>
+                        </f:for>
                     </td>
                     <td class="col-datetime">
                         <f:if condition="{backendUser.lastLoginDateAndTime}">

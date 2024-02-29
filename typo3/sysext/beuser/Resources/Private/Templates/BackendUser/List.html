@@ -29,7 +29,7 @@
                                 </a>
                             </td>
                             <td class="col-title">
-                                <backend:link.editRecord table="be_users" uid="{compareUser.uid}" title="edit">
+                                <backend:link.editRecord table="be_users" uid="{compareUser.uid}" title="{f:translate(key:'edit')}">
                                     <b>{compareUser.username}</b>
                                 </backend:link.editRecord>
                                 <f:if condition="{onlineBackendUsers.{compareUser.uid}}">
@@ -37,7 +37,7 @@
                                 </f:if>
                                 <br>
                                 <f:if condition="{compareUser.realName}">
-                                    <backend:link.editRecord table="be_users" uid="{compareUser.uid}" title="edit">
+                                    <backend:link.editRecord table="be_users" uid="{compareUser.uid}" title="{f:translate(key:'edit')}">
                                         {compareUser.realName}
                                     </backend:link.editRecord>
                                 </f:if>
