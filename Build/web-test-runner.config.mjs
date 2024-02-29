@@ -106,8 +106,6 @@ export default {
             'interactjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/interact.js',
             'jquery': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.js',
             'jquery/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/',
-            'jquery/autocomplete.js': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.autocomplete.js',
-            'jquery-ui/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui/',
             '@lit/reactive-element': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/reactive-element.js',
             '@lit/reactive-element/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/',
             '@lit/task': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/task/index.js',
