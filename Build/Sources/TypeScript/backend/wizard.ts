@@ -43,12 +43,18 @@ interface Slide {
 /**
  * Module: @typo3/backend/wizard
  * @exports @typo3/backend/wizard
+ * @deprecated will be removed in TYPO3 14.0
  */
 class Wizard {
   private setup: WizardSetup;
   private readonly originalSetup: WizardSetup;
 
   constructor() {
+    console.warn(
+      'The module `@typo3/backend/wizard.js` has been marked as deprecated and will be removed in TYPO3 v14.0. '
+      + 'Consider migrating to `@typo3/backend/multi-step-wizard.js`.'
+    );
+
     this.setup = {
       slides: [],
       settings: {},
