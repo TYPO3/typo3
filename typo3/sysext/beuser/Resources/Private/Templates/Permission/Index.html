@@ -5,10 +5,9 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:layout name="Module" />
-<f:section name="Content">
 
+<f:section name="Content">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/beuser/permissions.js'
@@ -192,7 +191,6 @@
         <core:icon identifier="status-status-permission-granted" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Granted" /><br>
         <core:icon identifier="status-status-permission-denied" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Denied" />
     </p>
-
 </f:section>
 
 </html>

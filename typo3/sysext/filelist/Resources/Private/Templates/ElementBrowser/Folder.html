@@ -3,7 +3,6 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:layout name="ElementBrowserWithNavigation" />
 
 <f:section name="Navigation">
@@ -23,14 +22,18 @@
     </f:if>
     <f:flashMessages queueIdentifier="core.template.flashMessages"/>
 
-    <div data-filelist-element="true" data-filelist-type="folder" data-filelist-identifier="{selectedFolder.combinedIdentifier}" data-filelist-state-identifier="{selectedFolder.identifier}">
+    <div
+        data-filelist-element="true"
+        data-filelist-type="folder"
+        data-filelist-identifier="{selectedFolder.combinedIdentifier}"
+        data-filelist-state-identifier="{selectedFolder.identifier}"
+    >
         <button title="{selectedFolder.storage.name}" class="btn btn-default" data-filelist-action="primary">
             <core:iconForResource resource="{selectedFolder}" />
             <f:variable name="folderLabel" value="{f:if(condition: '{selectedFolder.name} !== \'\'', then: '{selectedFolder.name}', else: '{selectedFolder.storage.name}')}" />
             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:linkTo" arguments="{0: '/{folderLabel}'}">{selectedFolder.storage.name}: {selectedFolder.identifier}</f:translate>
         </button>
     </div>
-
     <f:format.raw>{content}</f:format.raw>
 </f:section>
 

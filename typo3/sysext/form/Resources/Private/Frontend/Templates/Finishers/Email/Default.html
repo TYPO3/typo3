@@ -1,5 +1,12 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <f:layout name="SystemEmail" />
+
 <f:section name="Title">{title}</f:section>
+
 <f:section name="Main">
     <table>
         <formvh:renderAllFormValues renderable="{form.formDefinition}" as="formValue">
@@ -43,3 +50,4 @@
         </formvh:renderAllFormValues>
     </table>
 </f:section>
+</html>

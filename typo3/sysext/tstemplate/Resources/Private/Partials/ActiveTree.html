@@ -3,7 +3,6 @@
     xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:for each="{tree.nextChild}" as="child">
     <f:if condition="{displayComments} && {child.comments}">
         <li class="loose">
@@ -39,11 +38,9 @@
             </typo3-backend-tree-node-toggle>
         </f:if>
         <span class="treelist-group treelist-group-monospace">
-
             <span class="treelist-label">
                 <a href="{editUri}&nodeIdentifier={child.identifier}">{child.name}</a>
             </span>
-
             <f:if condition="!{child.valueNull}">
                 <span class="treelist-operator">=</span>
                 <span class="treelist-value">{child.value}</span>

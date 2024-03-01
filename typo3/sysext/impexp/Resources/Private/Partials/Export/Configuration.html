@@ -4,13 +4,10 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <div class="form-section">
-
     <h3 class="form-section-headline">
         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportPagetreeConfiguration" />
     </h3>
-
     <div class="row">
         <div class="col-sm-2">
             <label class="form-label">
@@ -22,7 +19,6 @@
             <input type="hidden" name="tx_impexp[pagetree][id]" value="{inData.pagetree.id}" />
         </div>
     </div>
-
     <div class="row">
         <div class="col-sm-2">
             <label class="form-label">
@@ -40,7 +36,6 @@
             </f:if>
         </div>
     </div>
-
     <div class="form-group">
         <label class="form-label" for="pagetreeLevels">
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_levels" />
@@ -55,7 +50,6 @@
             </f:for>
         </select>
     </div>
-
     <div class="form-group">
         <label class="form-label" for="pagetreeTables">
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeTables"/>
@@ -72,7 +66,6 @@
             </f:for>
         </select>
     </div>
-
     <f:if condition="{records -> f:count()} > 0">
         <h4>
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportSingleRecord"/>
@@ -93,7 +86,6 @@
             </div>
         </div>
     </f:if>
-
     <f:if condition="{tableList -> f:count()} > 0">
         <h4>
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportTablesFromPages"/>
@@ -113,11 +105,9 @@
             </div>
         </div>
     </f:if>
-
     <h4>
         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_relationsAndExclusions"/>
     </h4>
-
     <div class="form-group">
         <label class="form-label" for="externalRefTables">
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeRelationsToTables"/>
@@ -134,7 +124,6 @@
             </f:for>
         </select>
     </div>
-
     <div class="form-group">
         <label class="form-label" for="externalStaticTables">
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_useStaticRelationsFor"/>
@@ -151,7 +140,6 @@
             </f:for>
         </select>
     </div>
-
     <div class="form-group">
         <div class="form-check">
             <input type="hidden" name="tx_impexp[showStaticRelations]" value="" />
@@ -168,7 +156,6 @@
             </label>
         </div>
     </div>
-
     <div class="form-group">
         <label class="form-label">
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_excludeElements"/>
@@ -212,7 +199,6 @@
             </label>
         </div>
     </div>
-
     <div class="form-group">
         <button
             type="submit"
@@ -222,7 +208,5 @@
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeadvanc_update" />
         </button>
     </div>
-
 </div>
-
 </html>

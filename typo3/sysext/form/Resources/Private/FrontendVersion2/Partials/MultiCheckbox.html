@@ -3,7 +3,6 @@
     <f:render partial="Field/Field" arguments="{element: element, renderFieldset: '{element.properties.renderFieldset}', doNotShowLabel: '{element.properties.legendVisuallyHidden}'}" contentAs="elementContent">
         <f:form.validationResults for="{element.rootForm.identifier}.{element.identifier}">
             <f:variable name="errorClass">{f:if(condition: '{validationResults.errors}', then: '{element.rootForm.renderingOptions.fieldProperties.errorClassAttribute}')}</f:variable>
-
             <div id="{element.uniqueIdentifier}" class="{errorClass}" role="radiogroup" aria-label="{element.label}">
                 <f:for each="{element.properties.options}" as="label" key="value" iteration="idIterator">
                     <f:if condition="{element.properties.elementDescription}">
@@ -12,7 +11,6 @@
                     <f:if condition="{validationResults.errors} && {idIterator.isFirst}">
                         <f:variable name="aria" value="{invalid: 'true', describedby: '{element.uniqueIdentifier}-errors'}" />
                     </f:if>
-
                     <div class="{element.properties.containerClassAttribute}">
                         <label class="{element.properties.labelClassAttribute}" for="{element.uniqueIdentifier}-{idIterator.index}">
                             <f:form.checkbox
