@@ -729,8 +729,15 @@ class DataHandler implements LoggerAwareInterface
             }
             $hookObjectsArr[] = $hookObject;
         }
-        // Pre-process data-map and synchronize localization states
-        $this->datamap = GeneralUtility::makeInstance(SlugEnricher::class)->enrichDataMap($this->datamap);
+
+        foreach ($this->datamap as $tableName => $tableDataMap) {
+            foreach ($tableDataMap as $identifier => $fieldValues) {
+                if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
+                    $this->datamap[$tableName][$identifier] = $this->initializeSlugFieldsToEmptyString($tableName, $fieldValues);
+                }
+            }
+        }
+
         $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER, $this->referenceIndexUpdater)->process();
         // Organize tables so that the pages-table is always processed first. This is required if you want to make sure that content pointing to a new page will be created.
         $orderOfTables = [];
@@ -1083,6 +1090,22 @@ class DataHandler implements LoggerAwareInterface
             $this->processClearCacheQueue();
             $this->resetElementsToBeDeleted();
         }
+    }
+
+    /**
+     *  New records capable of handling slugs (TCA type 'slug'), always
+     *  require the field value to be set, in order to run through the validation
+     *  process to create a new slug. Fields having `null` as value are ignored
+     *  and can be used to by-pass implicit slug initialization.
+     */
+    protected function initializeSlugFieldsToEmptyString(string $tableName, array $fieldValues): array
+    {
+        foreach (($GLOBALS['TCA'][$tableName]['columns'] ?? []) as $columnName => $columnConfig) {
+            if (($columnConfig['config']['type'] ?? '') === 'slug' && !isset($fieldValues[$columnName])) {
+                $fieldValues[$columnName] = '';
+            }
+        }
+        return $fieldValues;
     }
 
     /**
@@ -1853,7 +1876,6 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name
      * @param array $incomingFieldArray the fields being explicitly set by the outside (unlike $fieldArray) for the record
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
-     * @see SlugEnricher
      * @see SlugHelper
      */
     protected function checkValueForSlug(string $value, array $tcaFieldConf, string $table, $id, int $realPid, string $field, array $incomingFieldArray = []): array

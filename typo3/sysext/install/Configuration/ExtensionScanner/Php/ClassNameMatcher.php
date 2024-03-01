@@ -2517,4 +2517,9 @@ return [
             'Deprecation-102763-ExtbaseHashService.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\SlugEnricher' => [
+        'restFiles' => [
+            'Deprecation-103244-ClassSlugEnricher.rst',
+        ],
+    ],
 ];
