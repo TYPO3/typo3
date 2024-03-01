@@ -560,12 +560,20 @@ class PageTreeRepository
             // Ensure that the LIVE id is also found
             if ($this->currentWorkspace > 0) {
                 $uidFilter = $expressionBuilder->or(
+                    // Check for UID of live record
                     $expressionBuilder->and(
                         $expressionBuilder->in('uid', $queryBuilder->createNamedParameter($searchUids, Connection::PARAM_INT_ARRAY)),
                         $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                     ),
+                    // Check for UID of live record in versioned record
                     $expressionBuilder->and(
                         $expressionBuilder->in('t3ver_oid', $queryBuilder->createNamedParameter($searchUids, Connection::PARAM_INT_ARRAY)),
+                        $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->currentWorkspace, Connection::PARAM_INT)),
+                    ),
+                    // Check for UID for new or moved versioned record
+                    $expressionBuilder->and(
+                        $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT)),
+                        $expressionBuilder->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                         $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->currentWorkspace, Connection::PARAM_INT)),
                     )
                 );
